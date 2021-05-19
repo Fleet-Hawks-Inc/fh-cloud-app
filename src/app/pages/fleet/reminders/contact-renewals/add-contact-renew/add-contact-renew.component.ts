@@ -99,6 +99,7 @@ export class AddContactRenewComponent implements OnInit {
     this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
+    console.log('this.users', this.users);
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
@@ -180,7 +181,7 @@ export class AddContactRenewComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -238,8 +239,8 @@ export class AddContactRenewComponent implements OnInit {
         for (let i = 0; i < result.subscribers.length; i++) {
           this.test.push(result.subscribers[i].id);
         }
-        this.reminderData[`createdDate`] = result.createdDate; 
-        this.reminderData[`createdTime`] = result.createdTime; 
+        this.reminderData[`createdDate`] = result.createdDate;
+        this.reminderData[`createdTime`] = result.createdTime;
         this.reminderData[`timeCreated`] = result.timeCreated;
         this.reminderData[`reminderID`] = this.reminderID;
         this.reminderData.tasks.dueDate = result.tasks.dueDate;
@@ -295,7 +296,7 @@ export class AddContactRenewComponent implements OnInit {
             }),
           )
           .subscribe((val) => {
-            this.throwErrors();
+            // this.throwErrors();
           });
 
       },
@@ -336,7 +337,7 @@ export class AddContactRenewComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -366,7 +367,7 @@ export class AddContactRenewComponent implements OnInit {
 
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },

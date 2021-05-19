@@ -1524,8 +1524,8 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact" #mReport="ngModel" required>
-                    <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}}
-                      {{driver.lastName}}</ng-option>
+                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                      {{user.firstName}} {{user.lastName}}</ng-option>
                   </ng-select>
                   <div *ngIf="mReport.invalid && (mReport.dirty || mReport.touched)" class="text-danger">
                     <div *ngIf="mReport.errors.required">
@@ -1540,8 +1540,8 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue" #mAssigned="ngModel" required>
-                    <ng-option value="Operator">Operator</ng-option>
-                    <ng-option value="Technician">Technician</ng-option>
+                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                      {{user.firstName}} {{user.lastName}}</ng-option>
                   </ng-select>
                   <div *ngIf="mAssigned.invalid && (mAssigned.dirty || mAssigned.touched)" class="text-danger">
                     <div *ngIf="mAssigned.errors.required">

@@ -15,3 +15,10 @@
 }
 html, body { height: 100%; }
 body { margin: 0;}
+.H_logo {    right: 10px;
+  position: absolute;
+  bottom: 20px;}
+  .ng-option-label {
+    word-break: break-word;
+    white-space: normal;
+  }

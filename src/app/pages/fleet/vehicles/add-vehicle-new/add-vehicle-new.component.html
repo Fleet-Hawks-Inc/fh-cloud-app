@@ -10,7 +10,6 @@
                      class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
             </div>
          </header>
-
          <section class="m-2">
             <div class="row mb-3">
                <div class="col-12">
@@ -28,19 +27,17 @@
                                     <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Name or Number for Vehicle"></i>
                                  </label>
                                  <input type="text" class="form-control" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
-                                    placeholder="eg. Recycling Truck" #vName="ngModel" required pattern="^[a-zA-Z0-9\-]+$" maxlength="10">
+                                    placeholder="eg. Recycling Truck" #vName="ngModel" required pattern="^[0-9]{4,10}$" maxlength="10">
                                  <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
                                     <div *ngIf="vName.errors.required">
                                        Vehicle name is required.
                                     </div>
                                     <div *ngIf="vName.errors.pattern">
-                                       Vehicle name must be between 1 to 10 characters and must
-                                       not contain any special characters.
+                                       Vehicle Name must contains 4-10 numbers only.
+                                       
                                     </div>
                                  </div>
                               </div>
-
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Type <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -55,26 +52,23 @@
                                     </div>
                                  </div>
                               </div>
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">VIN <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Vehicle Identification Number"></i>
                                  </label>
                                  <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
-                                    placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705" maxlength="18" #vin="ngModel" required
-                                    pattern="^[a-zA-Z0-9\-]+$">
+                                    placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705" maxlength="17" #vin="ngModel" required
+                                    pattern="^[a-zA-Z0-9]{17}$">
                                  <div *ngIf="vin.invalid && (vin.dirty || vin.touched)" class="text-danger">
                                     <div *ngIf="vin.errors.required">
                                        VIN is required.
                                     </div>
                                     <div *ngIf="vin.errors.pattern">
-                                       VIN must be between 17-18 characters and must not
-                                       contain any special characters eg. 5YJSA1DG9DFP14705.
+                                       VIN must contains 17 alphanumeric characters only eg. 5YJSA1DG9DFP14705.
                                     </div>
                                  </div>
                               </div>
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -90,7 +84,6 @@
                                     </div>
                                  </div>
                               </div>
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Year <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -145,7 +138,6 @@
                                     </div>
                                  </div>
                               </div>
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Make <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -166,7 +158,6 @@
                                  <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
                                     class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                               </div>
-
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Model <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -189,7 +180,6 @@
                                  <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelModal"
                                     class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                               </div>
-
                            </div>
                         </div>
                         <div class="col-lg-5 mb-3 offset-lg-1">
@@ -212,7 +202,6 @@
                                     </div>
                                  </div>
                               </div>
-
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -295,7 +284,7 @@
                                     </div>
                                  </div>
                                  <div class="mt-3">
-                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo Type&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                        <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100" name="uploadedPhotos"
                                           type="file" multiple>
                                     </div>
@@ -461,7 +450,13 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right">Vehicle Color <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
-                                 <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="eg. Red etc">
+                                 <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="eg. Red etc" #vColor="ngModel" pattern="^[a-zA-Z]+$">
+                                 <div *ngIf="vColor.invalid && (vColor.dirty || vColor.touched)" class="text-danger w100">
+                                    <div *ngIf="vColor.errors.pattern" >
+                                      Vehicle Color must contains uppercase and lowercase characters only.
+
+                                    </div>
+                                 </div>
                               </div>
 
                               <div class="col-lg-5">
@@ -503,20 +498,29 @@
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="d-flex">
                                     <ng-select class="form-control populate mr-2" name="inspectionFormID" [(ngModel)]="inspectionFormID"
-                                       placeHolder="Select Inspection Form">
+                                       placeHolder="Select Inspection Form" #iForm1="ngModel" required>
                                        <ng-option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
                                           {{iForm.inspectionFormName}}
                                        </ng-option>
                                     </ng-select>
+                                   
+                                   
                                  </div>
+                                 
                               </div>
+                              
 
                               <div class="col-lg-1 pl-0 mar-top-37">
                                  <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
                                        class="fas fa-plus"></i></a>
                               </div>
 
+                              <div *ngIf="iForm1.invalid && (iForm1.dirty || iForm1.touched)" class="text-danger ">
+                                 <div class="pl-2 ml-2" *ngIf="iForm1.errors.required" >
+                                    Inspection Form is required.
 
+                                 </div>
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -755,8 +759,15 @@
                                  </label>
                                  <div class="input-group">
                                     <input type="text" class="form-control" name="specifications.tareWeight" [(ngModel)]="specifications.tareWeight"
-                                        placeholder="eg. 100 , 200">
+                                        placeholder="eg. 100 , 200" #tWeight="ngModel" pattern="^[0-9]+$">
+                                 
                                     <span class="input-group-append"><span _ngcontent-dvv-c14="" class="input-group-text pt-0 pb-0"> kg </span></span>
+                                 </div>
+                                 <div *ngIf="tWeight.invalid && (tWeight.dirty || tWeight.touched)" class="text-danger ">
+                                    <div *ngIf="tWeight.errors.pattern" >
+                                       Tare Weight must contains numbers only.
+
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -771,8 +782,16 @@
                                  </label>
                                  <div class="input-group">
                                     <input type="text" class="form-control"  name="specifications.grossVehicleWeightRating"
-                                       [(ngModel)]="specifications.grossVehicleWeightRating" placeholder="eg. 100 , 200">
+                                       [(ngModel)]="specifications.grossVehicleWeightRating" placeholder="eg. 100 , 200" #gWeight="ngModel" pattern="^[0-9]+$">
+                                      
+
                                     <span class="input-group-append"><span _ngcontent-dvv-c14="" class="input-group-text pt-0 pb-0"> kg </span></span>
+                                 </div>
+                                 <div *ngIf="gWeight.invalid && (gWeight.dirty || gWeight.touched)" class="text-danger ">
+                                    <div *ngIf="gWeight.errors.pattern" >
+                                       Gross Vehicle Weight must contains numbers only.
+
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -1018,10 +1037,15 @@
                                     </div>
                                     <div class="col-lg-6 pl-0">
                                        <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1" [(ngModel)]="fluid.oilCapacityType"
-                                          placeholder="Select fuel type">
+                                          placeholder="Select fuel type" #oil1="ngModel" required>
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
                                        </ng-select>
+                                       <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
+                                          <div *ngIf="oil1.errors.required">
+                                          Oil Capacity Tank Type is required.
+                                          </div>
+                                       </div>
                                     </div>
                                  </div>
                               </div>

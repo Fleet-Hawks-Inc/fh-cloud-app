@@ -96,7 +96,7 @@
                                                 Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input type="text" class="form-control" id="issueName" name="issueName"
                                                 [(ngModel)]="issueName" placeholder="eg. brake issue" #iName="ngModel"
-                                                required pattern="^[a-zA-Z0-9\s\.\-\_]{2,30}$" maxlength="30">
+                                                required pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
                                             <div *ngIf="iName.invalid && (iName.dirty || iName.touched)"
                                                 class="text-danger">
                                                 <div *ngIf="iName.errors.required">
@@ -104,8 +104,8 @@
 
                                                 </div>
                                                 <div *ngIf="iName.errors.pattern">
-                                                    Issue name must contain uppercase,lowercase ,alphanumeric and
-                                                    special characters(period(.,-,\,space)) only .
+                                                    Issue name must contain alphanumeric and special characters for period(space) only .
+                                                   
 
                                                 </div>
 
@@ -120,7 +120,7 @@
                                                 Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                                             <input class="form-control" placeholder="yyyy-mm-dd"
-                                                [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()"
+                                                [(ngModel)]="reportedDate" (keydown)="$event.preventDefault()" name="reportedDate" (click)="d.toggle()"
                                                 ngbDatepicker #d="ngbDatepicker" #dateReport="ngModel" required>
                                                 <div *ngIf="dateReport.invalid && (dateReport.dirty || dateReport.touched)" class="text-danger">
                                                     <div *ngIf="dateReport.errors.required">
@@ -154,12 +154,16 @@
                                                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="odometer" name="odometer"  type="text"
                                                 class="form-control"
-                                                placeholder="Enter odometer miles at which issue is reported. eg. 10000" #odoMiles="ngModel" required>
+                                                placeholder="Enter odometer miles at which issue is reported. eg. 10000" #odoMiles="ngModel" required pattern="^[0-9]+$">
                                                 <div *ngIf="odoMiles.invalid && (odoMiles.dirty || odoMiles.touched)" class="text-danger">
                                                     <div *ngIf="odoMiles.errors.required">
-                                                      Odometer Miles is required and must contain numbers only.
+                                                      Odometer Miles is required.
 
                                                     </div>
+                                                    <div *ngIf="odoMiles.errors.pattern">
+                                                        Odometer Miles must contain numbers only.
+  
+                                                      </div>
 
 
 
@@ -215,14 +219,14 @@
                                     <div class="col-lg-12">
                                         <label
                                             class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
-                                            Details Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                            Details </label>
                                     </div>
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                    Photo</label>
+                                                    Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input (change)="selectDocuments($event, 'uploadedPhotos')"
                                                     name="uploadedPhotos" type="file" multiple class="form-control p-0">
                                             </div>
@@ -252,12 +256,12 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                    Document Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                    Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input (change)="selectDocuments($event, 'uploadedDocs')"
                                                     name="uploadedDocs" type="file" multiple class="form-control p-0">
                                             </div>
                                             <div class="col-lg-2  mar-top-37">
-                                                <!---- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
+                                                <!---- <a  href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
                                             </div>
                                         </div>
                                         <div class="row mt-2" *ngIf="issueDocs?.length">

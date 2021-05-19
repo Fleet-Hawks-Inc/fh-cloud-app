@@ -2,11 +2,11 @@
    <div class="inner-wrapper">
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header">
-            <div class="row pr-5 " style="padding-top:10px;">
+            <div class="row " style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                   Service Log Details
                </div>
-               <div class="col-md-8  col-lg-8 text-right pr-4">
+               <div class="col-md-8  col-lg-8 text-right">
                   <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i
                         class="fas fa-list"></i> Service Logs List</a>
                </div>
@@ -45,7 +45,7 @@
                      <div class="col-md-2 col-lg-2">
                         <div class="text-center p-4 cerbor">
                            <p class="mb-0">COMPLETION DATE</p>
-                           <p class="mb-0 text-5 font-weight-bold text-dark">{{startDate ? (startDate |
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{completionDate ? (completionDate |
                               date:'yyyy/MM/dd') : '-'}}</p>
                         </div>
                      </div>
@@ -169,14 +169,47 @@
                   </div>
 
                   <div class="row mt-3 bg-light">
-                     <div class="col-lg-12">
+                     <div class="col-lg-4">
                         <label
                            class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Description</label>
-                     </div>
-                     <div class="col-lg-12">
                         <p>
                            {{description ? description : '-'}}
                         </p>
+                     </div>
+                     <div class="col-lg-4" *ngIf="logImages?.length > 0">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
+                        <div class="row">
+                           <div class="col-lg-6 mb-2" *ngFor="let item of logImages; let i=index;">
+                              <div class="vehicle-photo-box">
+                                 <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                 <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                                 <hr class="m-3">
+                                 <div class="row">
+                                    <div class="col-lg-8"> Image {{i+1}}</div>
+                                    <div class="col-lg-4 text-right">
+                                       <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
+                                          <i class="fas fa-times text-danger" (click)="delete('image',item.name)"></i>
+                                       </a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4" *ngIf="logDocs?.length > 0">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
+                           <div class="row" *ngFor="let doc of logDocs;let d= index">
+                              <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                    (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
+                              <div class="col-lg-3 text-right">
+                                 <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                    data-target="#viewDocModal"></em>
+                                 <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form">
+                                    <em class="fas fa-times text-danger"></em></a>
+                              </div>
+                           </div>
                      </div>
                   </div>
                </div>

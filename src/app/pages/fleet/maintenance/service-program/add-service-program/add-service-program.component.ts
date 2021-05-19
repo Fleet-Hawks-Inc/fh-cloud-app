@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  vehicleModal: boolean = false; 
+  vehicleModal: boolean = false;
   vehicles: any;
   tasks: any;
   programID = '';
@@ -37,7 +37,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     taskType: 'service',
     taskName: '',
     description: '',
-    
+
   };
 
   errors = {};
@@ -89,7 +89,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
-   
+
   }
 
   addDocument() {
@@ -99,10 +99,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       repeatByTimeUnit: '',
       repeatByOdometer: '',
     })
-    
+
   }
   addServiceProgram() {
-    
+
     this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
       complete: () => { },
@@ -116,7 +116,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -167,7 +167,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       .getData('servicePrograms/' + this.programID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        
+
         this.serviceData['programID']= this.programID;
         this.serviceData.programName = result.programName;
         this.serviceData.description = result.description;
@@ -192,7 +192,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
  updateServiceProgram() {
   this.hasError = false;
   this.hasSuccess = false;
-  
+
   this.apiService.putData('servicePrograms', this.serviceData).subscribe({
     complete: () => { },
     error: (err) => {
@@ -201,14 +201,14 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           map((val: any) => {
             // We Can Use This Method
             const key = val.message.match(/'([^']+)'/)[1];
-            
+
             val.message = val.message.replace(/'.*'/, 'This Field');
             this.errors[key] = val.message;
           })
         )
         .subscribe({
           complete: () => {
-            this.throwErrors();
+            // this.throwErrors();
           },
           error: () => { },
           next: () => { },
@@ -222,7 +222,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     },
   });
 }
-  
+
   removeTasks(i) {
     this.serviceData.serviceScheduleDetails.splice(i, 1);
   }

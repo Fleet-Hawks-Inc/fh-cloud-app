@@ -40,15 +40,15 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Date/Time</td>
-                                       <td>{{fuelData.fuelDate | date : 'yyyy/mm/dd'}},{{fuelData.fuelTime}}</td>
+                                       <td>{{fuelData.fuelDate | date : 'yyyy/MM/dd'}},{{fuelData.fuelTime}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Odometer</td>
                                        <td>{{fuelData.odometer}} miles</td>
                                     </tr>
-                                    <tr *ngIf="!fuelData.lineItems">
+                                    <tr>
                                        <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
-                                       <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit | titlecase}}</td>
+                                       <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit}}</td>
                                     </tr>
                                     <tr>
                                      <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
@@ -86,7 +86,7 @@
                                        <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
                                        <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
                                     </tr>
-                                    <tr *ngIf="!fuelData.lineItems">
+                                    <tr>
                                        <td class="back-color-gray font-weight-bold">Fuel Type</td>
                                        <td>{{fuelTypeListCode[fuelData.fuelType]}}</td>
                                     </tr>
@@ -96,7 +96,7 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Location</td>
-                                       <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
+                                       <td>{{fuelData.cityName}},{{fuelData.stateName}},{{fuelData.countryName}}</td>
                                     </tr>
                                     <tr>
                                       <td class="back-color-gray font-weight-bold">Paid By</td>

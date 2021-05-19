@@ -25,21 +25,16 @@ export class CountryStateCity {
    * @param countryCode Array of country Code
    * @returns countries
    */
-  public static GetSpecificCountriesByCode = (
-    countryCode: string[]
-  ): Array<any> => {
-    let countries: [any];
-    countryCode.forEach((countryCode) => {
-      const cscRep = csc.getCountryByCode(countryCode);
+  public static GetSpecificCountryNameByCode = (
+    countryCode: string
+  ): string => {
+    const cscRep = csc.getCountryByCode(countryCode);
       if (cscRep) {
-        countries.push({
-          countryName: cscRep.name,
-          countryCode: cscRep.isoCode,
-        });
+        return cscRep.name;
+      } else {
+        return countryCode;
       }
-    });
 
-    return countries;
   };
 
   /**
@@ -73,31 +68,16 @@ export class CountryStateCity {
     countryCode: string,
     stateCode: string
   ): Array<any> => {
-    let cities: [any];
+    let cities: any = [];
     const cssRep = csc.getCitiesOfState(countryCode, stateCode);
     if (cssRep.length > 0) {
       let cityObj: any;
       cssRep.forEach((city) => {
         cityObj = { cityName: city.name };
+        cities.push(cityObj);
       });
-      cities.push(cityObj);
     }
     return cities;
-  };
-
-  /**
-   * Get Country Name
-   * @param countryCodes one or more state code
-   * @returns
-   */
-  public static GetCountryName = (countryCode: string): string => {
-    const cscRep = csc.getCountryByCode(countryCode);
-
-    if (cscRep) {
-      return cscRep.name;
-    } else {
-      return countryCode;
-    }
   };
 
   /**
@@ -130,5 +110,20 @@ export class CountryStateCity {
       });
     }
     return cities;
+  };
+
+  /**
+  * Get State Name
+  * @param countryCodes one or more state code
+  * @returns
+  */
+  public static GetStateNameFromCode = (stateCode: string, countryCode: string): string => {
+    const cscRep = csc.getStateByCodeAndCountry(stateCode, countryCode);
+
+    if (cscRep) {
+      return cscRep.name;
+    } else {
+      return stateCode;
+    }
   };
 }

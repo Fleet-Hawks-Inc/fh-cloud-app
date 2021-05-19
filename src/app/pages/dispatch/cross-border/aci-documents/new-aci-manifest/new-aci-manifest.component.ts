@@ -260,6 +260,7 @@ export class NewAciManifestComponent implements OnInit {
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.modalStates = this.listService.stateList;
+    console.log('this.modalStates',this.modalStates);
     this.modalCities = this.listService.cityList;
     this.fetchVehicles();
     this.fetchAssets();
@@ -267,7 +268,6 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchCountries();
     this.fetchUSMXStates();
     this.fetchCarrier();
-    this.fetchCities();
     this.fetchAssetType();
     this.fetchUSMXCities();
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
@@ -349,12 +349,6 @@ export class NewAciManifestComponent implements OnInit {
       .subscribe((result: any) => {
         this.acceptanceCities = result.Items;
       });
-  }
-  fetchCities() {
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.acceptanceCities = result.Items;
-      this.loadingCities = result.Items;
-    });
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
