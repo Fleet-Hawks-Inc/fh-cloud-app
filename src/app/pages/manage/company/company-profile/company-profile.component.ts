@@ -46,7 +46,7 @@ export class CompanyProfileComponent implements OnInit {
    for(let a=0; a < address.length; a++){
      address.map((e: any) => {
        if(e.manual) {
-          e.countryName =  CountryStateCity.GetCountryName(e.countryCode);
+          e.countryName =  CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
           e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
        }
      });

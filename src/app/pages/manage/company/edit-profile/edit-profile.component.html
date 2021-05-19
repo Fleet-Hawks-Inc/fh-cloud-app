@@ -66,12 +66,14 @@
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
                           placeholder="eg. +19897899879"  required pattern="^(\+1)[0-9]{10}$">
                       </div>
-                      <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
-                        <div *ngIf="ph.errors.required">
-                        Phone number is required.
-                        </div>
-                        <div *ngIf="ph.errors.pattern">
-                          Enter valid phone number eg. +12032342345.
+                      <div class="col-lg-10 offset-lg-2">
+                        <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                          <div *ngIf="ph.errors.required">
+                          Phone number is required.
+                          </div>
+                          <div *ngIf="ph.errors.pattern">
+                            Enter valid phone number eg. +12032342345.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -87,7 +89,7 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
-                        <ng-select data-plugin-selecttwo="" class="form-control populate" [(ngModel)]="findingWay"
+                        <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
                           <ng-option value="Bing">Bing</ng-option>
@@ -415,7 +417,7 @@
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Province</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
-                                name="stateCode{{i}}" placeholder="Select state">
+                                name="stateCode{{i}}" placeholder="Select province" >
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>
@@ -428,7 +430,7 @@
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 City</label>
                               <ng-select  [(ngModel)]="item.cityName"
-                                name="cityName{{i}}" placeholder="Select city">
+                                name="cityName{{i}}" placeholder="Select city" >
 
                                 <ng-option class="text-capitalize" *ngFor="let city of cities"
                                   value="{{city.cityName}}">

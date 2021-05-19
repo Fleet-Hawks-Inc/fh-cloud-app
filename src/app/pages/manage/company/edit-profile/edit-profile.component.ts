@@ -8,6 +8,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { ToastrService } from 'ngx-toastr';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 
 declare var $: any;
 @Component({
@@ -126,6 +127,8 @@ export class EditProfileComponent implements OnInit {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
         this.carriers = result.Items[0];
+        this.fetchStates();
+        this.fetchCities(this.carriers.addressDetails);
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
         this.DBAName = this.carriers.DBAName;
@@ -169,6 +172,21 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
+   fetchStates() {
+    let countryCodes: any = ['US', 'CA'];
+    this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
+   }
+   fetchCities(address){
+    for(let a=0; a< address.length; a++){
+      let cityList: any = [];
+      if(address[a].manual){
+        let countryCode = address[a].countryCode;
+        let stateCode = address[a].stateCode;
+         cityList = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      }
+      this.cities = _.merge(this.cities, cityList);
+    }
+  }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
@@ -182,10 +200,13 @@ export class EditProfileComponent implements OnInit {
     }
   }
   async getStates(id: any, oid = null) {
+    this.addressDetails[oid].stateCode = '';
+    this.addressDetails[oid].cityName = '';
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
   }
 
   async getCities(id: any, oid = null, CID: any) {
+      this.addressDetails[oid].cityName = '';
       this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
     }
   addAddress() {
@@ -326,7 +347,10 @@ export class EditProfileComponent implements OnInit {
         uploadedLogo: this.uploadedLogo
 
       };
-      console.log('data updated', data);
+      if(data.bizCountry == 'CA') {
+        data.MC = null;
+        data.DOT = null;
+      }
       // create form data instance
       const formData = new FormData();
 

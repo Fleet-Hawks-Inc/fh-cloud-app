@@ -153,7 +153,7 @@ export class DriverDetailComponent implements OnInit {
               combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal[0].stateCode,homeTerminal[0].countryCode);
             }
             if (homeTerminal[0].countryCode != '') {
-              combineAddress += `,` + CountryStateCity.GetCountryName(homeTerminal[0].countryCode);
+              combineAddress += `,` + CountryStateCity.GetSpecificCountryNameByCode(homeTerminal[0].countryCode);
             }
             if (homeTerminal[0].zipCode != '') {
               combineAddress += ` - ${homeTerminal[0].zipCode}`;
@@ -209,7 +209,7 @@ export class DriverDetailComponent implements OnInit {
           this.aciID = this.driverData.crossBorderDetails.ACI_ID;
           this.fastID = this.driverData.crossBorderDetails.fast_ID;
           this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
-          this.citizenship = CountryStateCity.GetCountryName(this.driverData.citizenship);
+          this.citizenship = CountryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
           this.csa = this.driverData.crossBorderDetails.csa;
           this.group = this.driverData.groupID;
           this.assignedVehicle = this.driverData.assignedVehicle;
@@ -224,7 +224,7 @@ export class DriverDetailComponent implements OnInit {
               documentType: this.driverData.documentDetails[i].documentType,
               document: this.driverData.documentDetails[i].document,
               issuingAuthority: this.driverData.documentDetails[i].issuingAuthority,
-              issuingCountry: CountryStateCity.GetCountryName(this.driverData.documentDetails[i].issuingCountry),
+              issuingCountry: CountryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry),
               issuingState: CountryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
               issueDate: this.driverData.documentDetails[i].issueDate,
               expiryDate: this.driverData.documentDetails[i].expiryDate,
@@ -236,7 +236,7 @@ export class DriverDetailComponent implements OnInit {
           }
           this.documents = newDocuments;
           this.liceIssueSate = CountryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
-          this.liceIssueCountry = CountryStateCity.GetCountryName(this.driverData.licenceDetails.issuedCountry);
+          this.liceIssueCountry = CountryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
           this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
           this.liceWCB = this.driverData.licenceDetails.WCB;
@@ -289,7 +289,7 @@ export class DriverDetailComponent implements OnInit {
   for(let a=0; a<address.length; a++){
    address.map((e: any) => {
        if(e.manual){
-         e.countryName = CountryStateCity.GetCountryName(e.countryCode);
+         e.countryName = CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
          e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
        }
     });

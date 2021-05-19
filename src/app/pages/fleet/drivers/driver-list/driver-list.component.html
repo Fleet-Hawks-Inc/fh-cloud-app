@@ -491,7 +491,7 @@
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
 
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.citizenship">{{ countriesObject[driver.citizenship] }}</td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.address">
                                        <div *ngIf="driver.address[0].manual">
                                           {{ driver.address[0].address1 }} {{ driver.address[0].address2}}, {{ driver.address[0].cityName }}, {{ driver.address[0].stateName }}, {{ driver.address[0].countryName }}

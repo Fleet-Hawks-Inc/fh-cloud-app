@@ -515,9 +515,10 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Country<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select placeholder="Select Country" name="countryID" [(ngModel)]="fuelData.countryID" #country="ngModel" required>
-                          <ng-option *ngFor="let country of countries | async" value="{{country.countryID}}">
-                            {{country.countryName}}</ng-option>
+                        <ng-select placeholder="Select Country" name="countryCode" [(ngModel)]="fuelData.countryCode" #country="ngModel" required (change)="onChangeHideErrors('fuelData.countryCode');getStates($event)">
+                          <ng-option value="CA">Canada</ng-option>
+                          <ng-option value="US">United States of America</ng-option>
+                          <ng-option value="MX">Mexico</ng-option>
                         </ng-select>
                         <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                           <div *ngIf="country.errors.required">
@@ -534,25 +535,23 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Province<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select placeholder="Select Province" name="stateID" [(ngModel)]="fuelData.stateID" #province="ngModel" required>
-                          <ng-container *ngFor="let state of states | async">
+                        <ng-select placeholder="Select Province" name="stateCode" [(ngModel)]="fuelData.stateCode" #province="ngModel" required (change)="onChangeHideErrors('fuelData.stateCode');getCities($event,fuelData.countryCode)">
+                          <!-- <ng-container *ngFor="let state of states | async">
                             <ng-option *ngIf="state.countryID == fuelData.countryID" value="{{state.stateID}}">
                               {{state.stateName}}</ng-option>
-                          </ng-container>
+                          </ng-container> -->
+                            <ng-option  *ngFor="let state of states" value="{{state.stateCode}}">
+                              {{state.stateName}}</ng-option>
                         </ng-select>
                         <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
                           <div *ngIf="province.errors.required">
                              Select valid province from the list is required.
-
                           </div>
-
-
-
                        </div>
                       </div>
                       <div class="col-lg-2  mar-top-37 px-0">
-                        <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                          class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                          class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                       </div>
                     </div>
                   </div>
@@ -561,26 +560,23 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">City<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select placeholder="Select City" name="cityID" [(ngModel)]="fuelData.cityID" #city="ngModel" required>
-
-                          <ng-container *ngFor="let city of cities | async">
-                            <ng-option *ngIf="city.stateID == fuelData.stateID" value="{{city.cityID}}">
+                        <ng-select placeholder="Select City" name="cityName" [(ngModel)]="fuelData.cityName" #city="ngModel" required>
+                          <!-- <ng-container *ngFor="let city of cities | async">
+                            <ng-option *ngIf="city.stateID == fuelData.stateID" value="{{city.cityName}}">
                               {{city.cityName}}</ng-option>
-                          </ng-container>
+                          </ng-container> -->
+                            <ng-option *ngFor="let city of cities" value="{{city.cityName}}">
+                              {{city.cityName}}</ng-option>
                         </ng-select>
                         <div *ngIf="city.invalid && (city.dirty || city.touched)" class="text-danger">
                           <div *ngIf="city.errors.required">
                              Select valid city name from the list is required.
-
                           </div>
-
-
-
                        </div>
                       </div>
                       <div class="col-lg-2  mar-top-37 px-0">
-                        <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                          class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                          class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                       </div>
                     </div>
                     <div class="row pt-2">
