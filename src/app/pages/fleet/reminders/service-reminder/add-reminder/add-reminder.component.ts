@@ -86,7 +86,7 @@ export class AddReminderComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.serviceForm = $('#serviceForm').validate();
+      // this.serviceForm = $('#serviceForm').validate();
     });
   }
   fetchServiceTaks() {

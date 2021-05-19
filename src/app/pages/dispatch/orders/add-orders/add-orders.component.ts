@@ -392,7 +392,7 @@ export class AddOrdersComponent implements OnInit {
 
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      // this.form = $("#form_").validate();
 
       this.timpickerInit();
     });

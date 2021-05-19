@@ -194,13 +194,16 @@
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <div class="row">
                         <div class="col-lg-6 text-right mt-1">
-                          <input class="form-control" name="fuelData.subTotal" [(ngModel)]="fuelData.subTotal" #subTotal="ngModel" required>
-                          <div *ngIf="subTotal.invalid && (subTotal.dirty || subTotal.touched)" class="text-danger">
-                            <div *ngIf="subTotal.errors.required">
-                            Subtotal must contains numbers only.
-
-
+                          <input class="form-control" name="fuelData.subTotal" [(ngModel)]="fuelData.subTotal" #subTotal="ngModel" required pattern="^[0-9\.]+$">
+                          <div *ngIf="subTotal.invalid && (subTotal.dirty || subTotal.touched)" class="text-danger w100">
+                            <div  class="pl-1 ml-0" *ngIf="subTotal.errors.required">
+                            Subtotal is required .
                             </div>
+                            <div class="pl-1 ml-0"  *ngIf="subTotal.errors.pattern">
+                              Subtotal contains numbers and special characters for period('.') only.
+  
+  
+                              </div>
 
 
 
@@ -674,7 +677,8 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Reading at
-                          Time of Fuelling (miles)</label>
+                          Time of Fuelling (miles)<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span>   </label>
                         <input placeholder="eg. 10000,20000" class="form-control" type="text" min='0' name="odometer"
                           [(ngModel)]="fuelData.odometer" #odoRead="ngModel" required pattern="^[0-9]+$">
                           <div *ngIf="odoRead.invalid && (odoRead.dirty || odoRead.touched)" class="text-danger">

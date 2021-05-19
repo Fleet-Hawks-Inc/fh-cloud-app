@@ -72,7 +72,7 @@ export class AddInspectionComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
