@@ -79,7 +79,7 @@ export class AddContactRenewComponent implements OnInit {
     this.fetchDrivers();
     this.fetchServiceTaks();
     $(document).ready(() => {
-      this.contactRenewalForm = $('#contactRenewalForm').validate();
+      // this.contactRenewalForm = $('#contactRenewalForm').validate();
     });
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
