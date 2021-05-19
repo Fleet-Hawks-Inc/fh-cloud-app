@@ -164,8 +164,12 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    this.apiService.getData(`customers`).subscribe((result: any) => {
-      this.customersDataSource.next(result.Items);
+    // this.apiService.getData(`customers`).subscribe((result: any) => {
+    //   this.customersDataSource.next(result.Items);
+    // });
+
+    this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
+      this.customersDataSource.next(result);
     });
   }
 

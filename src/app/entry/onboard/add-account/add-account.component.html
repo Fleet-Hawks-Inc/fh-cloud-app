@@ -157,7 +157,7 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
-                        <ng-select data-plugin-selecttwo="" class="form-control populate" [(ngModel)]="findingWay"
+                        <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
                           <ng-option value="Bing">Bing</ng-option>
@@ -467,7 +467,7 @@
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Province</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
-                                placeholder="Select state">
+                                placeholder="Select province">
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>
