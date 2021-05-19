@@ -90,7 +90,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.issueForm = $('#issueForm').validate();
+      // this.issueForm = $('#issueForm').validate();
     });
   }
   cancel() {

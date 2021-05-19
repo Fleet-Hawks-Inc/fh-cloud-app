@@ -92,7 +92,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchTripsByIDs();
     this.initDataTable();
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
     });
   }
 
@@ -175,13 +175,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -291,13 +291,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },

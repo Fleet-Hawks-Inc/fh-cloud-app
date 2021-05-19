@@ -267,7 +267,7 @@ export class AddVehicleNewComponent implements OnInit {
     private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
-      this.vehicleForm = $('#vehicleForm').validate();
+      // this.vehicleForm = $('#vehicleForm').validate();
     });
 
   }
