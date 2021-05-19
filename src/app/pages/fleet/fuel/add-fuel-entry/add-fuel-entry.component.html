@@ -102,7 +102,7 @@
                       </div>
                       <div class="col-lg-2 qtumbtn px-0">
                         <ng-select class="form-control populate" name="fuelUnit" [(ngModel)]="fuelData.fuelUnit" #fuelqty1="ngModel" required
-                        
+
 
                         >
                           <ng-option value="gallon">gallon</ng-option>
@@ -234,14 +234,14 @@
                         <ng-option *ngFor="let discType of fuelDiscounts" value="{{discType.fuelDiscountID}}">
                           {{discType.fuelDiscountName}}</ng-option>
                       </ng-select>
-                    
+
                     </div>
                     <div class="col-lg-4">
                       <label
                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Discount({{fuelData.billingCurrency}})</label>
                       <input type="number" class="form-control" min='0' name="discAmount"
                         [(ngModel)]="fuelData.discAmount" >
-                         
+
                     </div>
                   </div>
                     <div class="row" *ngFor="let tax of fuelData.taxes; let t = index;">
@@ -252,14 +252,14 @@
                           <ng-option *ngFor="let tax of fuelTaxes" value="{{tax.fuelTaxID}}">{{tax.fuelTaxName}}
                           </ng-option>
                         </ng-select>
-                       
+
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Tax
                           Amount({{fuelData.billingCurrency}})</label>
                         <input type="number" class="form-control" min='0' [attr.name]="'tax['+t+'].taxAmount'" [ngModelOptions]="{standalone: true}"
                           [(ngModel)]="tax.taxAmount" #taxAmount="ngModel" >
-                          
+
                       </div>
                       <div class="col-lg-2  mar-top-37 px-0">
                         <button type="button" class="btn cus-btn-padd btn-success" *ngIf="t === (fuelData.taxes.length)-1" (click)="addFuelTaxRow()"><i
@@ -411,16 +411,11 @@
                         <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" #paidBy="ngModel" required>
                           <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}}
                             {{driver.lastName}}</ng-option>
-
                         </ng-select>
                         <div *ngIf="paidBy.invalid && (paidBy.dirty || paidBy.touched)" class="text-danger">
                           <div *ngIf="paidBy.errors.required">
                              Select valid driver from the list is required.
-
                           </div>
-
-
-
                        </div>
                       </div>
                       <div class="col-lg-5">
@@ -430,27 +425,23 @@
                           [(ngModel)]="fuelData.paymentMode" #payment="ngModel" required>
                           <ng-option value="Cash">Cash</ng-option>
                           <ng-option value="Check">Check</ng-option>
-                          <ng-option value="Credit Card">Credit Card</ng-option>
+                          <ng-option value="Credit_Card">Credit Card</ng-option>
                           <ng-option value="EFT">EFT</ng-option>
-                          <ng-option value="FuelCard">Fuel Card</ng-option>
+                          <ng-option value="Fuel_Card">Fuel Card</ng-option>
                         </ng-select>
                         <div *ngIf="payment.invalid && (payment.dirty || payment.touched)" class="text-danger">
                           <div *ngIf="payment.errors.required">
                             Select valid payment mode from the list is required.
-
                           </div>
-
-
-
                        </div>
                       </div>
                     </div>
-                    <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
+                    <div class="row" *ngIf="fuelData.paymentMode === 'Fuel_Card'">
                       <div class="col-lg-5 offset-lg-5">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Card#<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" name="fuelCardNumber"
-                          [(ngModel)]="fuelData.fuelCardNumber" #fuelCard="ngModel" required pattern="^[0-9]+$">
+                          [(ngModel)]="fuelData.fuelCardNumber" #fuelCard="ngModel" [required]="fuelData.paymentMode == 'Fuel_Card'" pattern="^[0-9]+$">
                           <div *ngIf="fuelCard.invalid && (fuelCard.dirty || fuelCard.touched)" class="text-danger">
                             <div *ngIf="fuelCard.errors.required">
                               Fuel Card number is required.
@@ -458,9 +449,6 @@
                             <div *ngIf="fuelCard.errors.pattern">
                               Fuel Card number must contains numbers only.
                             </div>
-  
-  
-  
                          </div>
                       </div>
                     </div>
@@ -472,19 +460,14 @@
                           class="mandfield text-2 ml-1"><sup>*</sup></span> <span
                             class="text-1 optional-label-color">(optional when Fuel Card is used)</span></label>
                         <input type="text" class="form-control" name="reference" [(ngModel)]="fuelData.reference"
-                          placeholder="Eg. FP1234" #reference="ngModel" required pattern="^[a-zA-Z0-9]+$">
+                          placeholder="Eg. FP1234" #reference="ngModel" [required]="fuelData.paymentMode != 'Fuel_Card'" pattern="^[a-zA-Z0-9]+$">
                           <div *ngIf="reference.invalid && (reference.dirty || reference.touched)" class="text-danger">
                             <div *ngIf="reference.errors.required">
                               Reference is required.
                             </div>
                             <div *ngIf="reference.errors.pattern">
                               Reference must contains uppercase,lowercase characters and numbers only.
-
-
                             </div>
-
-
-
                          </div>
                       </div>
                     </div>
@@ -523,11 +506,7 @@
                         <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                           <div *ngIf="country.errors.required">
                             Select valid Country from the list is required.
-
                           </div>
-
-
-
                        </div>
                       </div>
                     </div>
@@ -584,18 +563,14 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select placeholder="Select Vendor" name="vendorID" [(ngModel)]="fuelData.vendorID" #vendor="ngModel" required>
-                          <ng-option *ngFor="let vendor of vendors |async" value="{{vendor.vendorID}}">
+                          <ng-option *ngFor="let vendor of vendors |async" value="{{vendor.contactID}}">
                             {{vendor.companyName}}</ng-option>
                         </ng-select>
                         <div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)" class="text-danger">
                           <div *ngIf="vendor.errors.required">
                              Select valid vendor from the list is required.
-
                           </div>
-
-
-
-                       </div>
+                        </div>
                       </div>
                       <div class="col-lg-2  mar-top-37 px-0">
                         <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
@@ -604,7 +579,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="form-group row pb-4">
                   <div class="col-lg-12">
                     <label
@@ -624,16 +598,11 @@
                         <!-- <div *ngIf="tripId.invalid && (tripId.dirty || tripId.touched)" class="text-danger">
                           <div *ngIf="tripId.errors.required">
                             Select valid trip id from the list.
-
                           </div>
-
-
-
-                       </div> -->
+                                               </div> -->
                       </div>
                     </div>
                   </div>
-
                 </div>
                 <div class="form-group row pb-4">
                   <div class="col-lg-12">
@@ -669,7 +638,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row pt-2">
                       <div class="col-lg-10">
@@ -688,8 +656,6 @@
                         <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                       </div>
                     </div>
-
-
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
@@ -699,7 +665,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-12 text-right">
