@@ -68,12 +68,16 @@ export class AddOrdersComponent implements OnInit {
   assetTypes = [];
   form;
   visibleIndex = 0;
-  customerSelected;
+  customerSelected = {
+    additionalContact : [],
+    address:[],
+    shippingAddr: false
+  };
   orderMode: string = "FTL";
 
   orderData = {
     stateTaxID: "",
-    customerID: "",
+    customerID: null,
     orderNumber: "",
     createdDate: "",
     createdTime: "",
@@ -89,7 +93,7 @@ export class AddOrdersComponent implements OnInit {
     Reference: "",
     csa: "",
     ctpat: "",
-    additionalcontactname: "",
+    additionalcontactname: '',
     pickuplocation: "",
     pickupinstruction: "",
     contactpersonatpickup: "",
@@ -106,7 +110,7 @@ export class AddOrdersComponent implements OnInit {
     shipperInfo: [],
     receiverInfo: [],
     freightDetails: {},
-    additionalContact: '',
+    additionalContact: null,
     invoiceEmail: false,
     additionalDetails: {
       trailerType: '',
@@ -764,11 +768,11 @@ export class AddOrdersComponent implements OnInit {
   /*
    * Get all customers from api
    */
-  fetchCustomers() {
-    this.apiService.getData("customers").subscribe((result: any) => {
-      this.customers = result.Items;
-    });
-  }
+  // fetchCustomers() {
+  //   this.apiService.getData("/fetch/order/customers").subscribe((result: any) => {
+  //     this.customers = result.Items;
+  //   });
+  // }
 
   /*
    * Get all shippers's IDs of names from api
@@ -898,10 +902,27 @@ export class AddOrdersComponent implements OnInit {
 
   selectedCustomer(customerID: any) {
     this.apiService
-      .getData(`customers/${customerID}`)
+      .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
-        this.customerSelected = result.Items;
+        this.customerSelected = result.Items[0];
+
+        for (let i = 0; i < this.customerSelected.address.length; i++) {
+          const element = this.customerSelected.address[i];
+          if(element.addressType == 'Shipping Address') {
+            this.customerSelected.shippingAddr = true;
+          }
+        }
       });
+  }
+
+  setAdditionalContact(event) {
+    for (let i = 0; i < this.customerSelected.additionalContact.length; i++) {
+      const element = this.customerSelected.additionalContact[i];
+      if(element.fullName == event) {
+        this.orderData.phone = element.phone;
+        this.orderData.email = element.email;
+      }
+    }
   }
 
   addCommodity(arr, parentIndex) {
