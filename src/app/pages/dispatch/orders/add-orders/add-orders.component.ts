@@ -778,7 +778,7 @@ export class AddOrdersComponent implements OnInit {
    * Get all shippers's IDs of names from api
    */
   fetchShippersByIDs() {
-    this.apiService.getData("shippers/get/list").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
       this.shippersObjects = result;
     });
   }
@@ -795,7 +795,7 @@ export class AddOrdersComponent implements OnInit {
    * Get all receivers's IDs of names from api
    */
   fetchReceiversByIDs() {
-    this.apiService.getData("receivers/get/list").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
       this.receiversObjects = result;
     });
   }
@@ -819,12 +819,10 @@ export class AddOrdersComponent implements OnInit {
    * Selecting files before uploading
    */
   selectDocuments(event) {
-    // console.log("evebt", event.target.files);
     let files = [...event.target.files];
 
     this.uploadedDocs = files;
 
-    // console.log("uploadedDocs", this.uploadedDocs);
   }
 
   getTimeFormat(date) {
@@ -1235,7 +1233,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
       this.stateShipperIndex = i;
     }
-    console.log('this.shippersReceivers', this.shippersReceivers);
     // this.visibleIndex = i;
     this.showReceiverUpdate = true;
   }
@@ -1413,7 +1410,6 @@ export class AddOrdersComponent implements OnInit {
         let length = result.shippersReceiversInfo.length;
         let emptyArr = [];
         let newArray: any = this.shippersReceivers.slice();
-        console.log('newArray', newArray);
 
         for (let i = 0; i < length; i++) {
           emptyArr.push(newArray[0]);
@@ -1721,7 +1717,6 @@ export class AddOrdersComponent implements OnInit {
               amount: selected.PST,
             },
           ];
-          // console.log(selected);
         this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
         this.calculateAmount();
 
