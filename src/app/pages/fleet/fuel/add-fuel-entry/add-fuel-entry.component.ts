@@ -143,7 +143,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.title = 'Add Fuel Entry';
     }
     $(document).ready(() => {
-      this.fuelForm = $('#fuelForm').validate();
+      // this.fuelForm = $('#fuelForm').validate();
     });
 
     this.vendors = this.listService.vendorList;

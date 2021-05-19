@@ -208,7 +208,7 @@ export class AddTripComponent implements OnInit {
         }
 
         $(document).ready(() => {
-            this.form = $('#form_').validate();
+            // this.form = $('#form_').validate();
         });
     }
 
@@ -1137,7 +1137,7 @@ export class AddTripComponent implements OnInit {
                         complete: () => {
                             this.submitDisabled = false;
                             this.spinner.hide();
-                            this.throwErrors();
+                            // this.throwErrors();
                         },
                         error: () => {
                             this.submitDisabled = false;
@@ -1630,7 +1630,7 @@ export class AddTripComponent implements OnInit {
                         complete: () => {
                             this.submitDisabled = false;
                             this.spinner.hide();
-                            this.throwErrors();
+                            // this.throwErrors();
                         },
                         error: () => {
                             this.submitDisabled = false;

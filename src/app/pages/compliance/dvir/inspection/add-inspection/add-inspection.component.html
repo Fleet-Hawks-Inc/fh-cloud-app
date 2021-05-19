@@ -28,7 +28,15 @@
                                                     class="control-label font-weight-bold labelmt text-3 text-dark">Form
                                                     Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" [(ngModel)]="inspectionFormName"
-                                                    name="formName">
+                                                    name="formName" #formInspection="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                                                    <div *ngIf="formInspection.invalid && (formInspection.dirty || formInspection.touched)" class="text-danger">
+                                                        <div *ngIf="formInspection.errors.required">
+                                                          Form Name is required.
+                                                        </div>
+                                                        <div *ngIf="formInspection.errors.pattern">
+                                                            Form name must contains alphanumeric and special characters for period(space) only.
+                                                          </div>
+                                                     </div>
                                             </div>
 
                                             <div class="col-lg-6">
@@ -36,10 +44,16 @@
                                                     class="control-label font-weight-bold labelmt text-3 text-dark">Inspection
                                                     Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <select class="form-control" [(ngModel)]="inspectionType"
-                                                    name="inspectionType">
+                                                    name="inspectionType" #ifSlt="ngModel" required>
                                                     <option value="vehicle">Vehicle</option>
                                                     <option value="asset">Asset</option>
                                                 </select>
+                                                <div *ngIf="ifSlt.invalid && (ifSlt.dirty || ifSlt.touched)" class="text-danger">
+                                                    <div *ngIf="ifSlt.errors.required">
+                                                     Select valid inspection type from the list is required.
+                                                    </div>
+                                                   
+                                                 </div>
                                             </div>
 
                                         </div>

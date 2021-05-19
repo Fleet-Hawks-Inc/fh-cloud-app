@@ -121,7 +121,8 @@ export class AddRouteComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
+
     });
 
     $('#recurringBtn').on('click', function () {
@@ -239,7 +240,7 @@ calculateActualMiles(miles){
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.routeBtnStatus = false;
             },
             error: () => {
@@ -487,7 +488,7 @@ calculateActualMiles(miles){
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.routeBtnStatus = false;
             },
             error: () => {

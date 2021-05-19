@@ -139,7 +139,7 @@ export class AddAssetsComponent implements OnInit {
       this.pageTitle = 'Add Asset';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
     });
 
     this.vendors = this.listService.vendorList;
