@@ -1,4 +1,4 @@
-import csc from "country-state-city";
+import csc from 'country-state-city';
 
 /**
  * Utility function to get country, state and cities.
@@ -18,7 +18,7 @@ export class CountryStateCity {
       });
     });
     return countries;
-  };
+  }
 
   /**
    * Get specific countries defined in array
@@ -125,5 +125,5 @@ export class CountryStateCity {
     } else {
       return stateCode;
     }
-  };
+  }
 }
