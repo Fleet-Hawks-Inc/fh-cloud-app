@@ -663,7 +663,7 @@
                               Document# is required.
                             </div>
                             <div *ngIf="docNum.errors.pattern">
-                              Document# must contains alphanumeric and special characters for period(space,#,-,_,.) only.
+                              Document# must contains alphanumeric and special characters like space,#,'-','_','.') only.
                               
                             </div>
                           </div>
@@ -1316,11 +1316,11 @@
                           <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                             name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
 
-                            placeholder="eg. 10,20" #lM2="ngModel" required pattern="^[0-9]+$">
+                            placeholder="eg. 10,20" #lM2="ngModel"  pattern="^[0-9]+$">
                             <div *ngIf="lM2.invalid && (lM2.dirty || lM2.touched)" class="text-danger">
-                              <div *ngIf="lM2.errors.required">
+<!--                               <div *ngIf="lM2.errors.required">
                               Loaded Miles(Team) is required.
-                              </div>
+                              </div> -->
                               <div *ngIf="lM2.errors.pattern">
                                Loaded Miles(Team) must contains numbers only.
                               </div>
@@ -1330,18 +1330,18 @@
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit"
-                            name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" required>
+                            name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" >
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div *ngIf="curr6.invalid && (curr6.dirty || curr6.touched)" class="text-danger">
+<!--                           <div *ngIf="curr6.invalid && (curr6.dirty || curr6.touched)" class="text-danger">
                             <div *ngIf="curr6.errors.required">
                              Select valid currency from the list is required.
                             </div>
                             
                           </div>
-
+ -->
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
@@ -1349,11 +1349,11 @@
                           <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                             name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
 
-                            placeholder="eg. 10,20" #eM3="ngModel" required pattern="^[0-9]+$">
+                            placeholder="eg. 10,20" #eM3="ngModel"  pattern="^[0-9]+$">
                             <div *ngIf="eM3.invalid && (eM3.dirty || eM3.touched)" class="text-danger">
-                              <div *ngIf="eM3.errors.required">
+<!--                               <div *ngIf="eM3.errors.required">
                                Empty Miles(Team) is required.
-                              </div>
+                              </div> -->
                               <div *ngIf="eM3.errors.pattern">
                                 Empty Miles(Team) must contains numbers only.
                               </div>
@@ -1363,17 +1363,17 @@
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit"
-                            name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" required>
+                            name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" >
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div *ngIf="curr7.invalid && (curr7.dirty || curr7.touched)" class="text-danger">
+<!--                           <div *ngIf="curr7.invalid && (curr7.dirty || curr7.touched)" class="text-danger">
                             <div *ngIf="curr7.errors.required">
                              Select valid currency from the list is required.
                             </div>
                             
-                          </div>
+                          </div> -->
 
 
                         </div>
