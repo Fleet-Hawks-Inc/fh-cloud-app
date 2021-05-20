@@ -521,10 +521,10 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]{2,7}$">
+                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[a-zA-Z0-9\s]{2,7}$">
                                 <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
-                                    Zip code  contains atleast 2 uppercase letters,numbers and no special characters except (space) only.
+                                     Zip code contains atleast 2 uppercase letters,numbers and no special characters except (space) only.
                                   </div>
                                 </div>
                             </div>
