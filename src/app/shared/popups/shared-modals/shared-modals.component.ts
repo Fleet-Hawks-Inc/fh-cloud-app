@@ -10,6 +10,7 @@ import constants from '../../../../app/pages/fleet/constants';
 import { HereMapService } from '../../../services';
 import { Auth } from 'aws-amplify';
 import * as moment from 'moment';
+import { CountryStateCity } from '../../utilities/countryStateCities';
 
 declare var $: any;
 @Component({
@@ -426,15 +427,17 @@ groupData = {
 localPhotos = [];
 activeTab = 1;
 
+// ASSETS PROPERTIES
+assetStates: any = [];
 assetsData = {
   assetIdentification: '',
   groupID: '',
   VIN: '',
-  startDate: '',
+  startDate: moment().format('YYYY-MM-DD'),
   inspectionFormID: null,
+  assetType: '',
+  currentStatus: '',
   assetDetails: {
-    assetType: '',
-    currentStatus: '',
     year: '',
     manufacturer: '',
     model: '',
@@ -449,8 +452,8 @@ assetsData = {
     GAWR_Unit: '',
     ownerShip: '',
     ownerOperator: '',
-    licenceCountryID: '',
-    licenceStateID: '',
+    licenceCountryCode: '',
+    licenceStateCode: '',
     licencePlateNumber: '',
     annualSafetyDate: '',
     annualSafetyReminder: true,
@@ -484,7 +487,6 @@ users = [];
     this.newManufacturers();
     this.fetchVehicles();
     this.fetchTasks();
-    this.fetchAssetTypes();
     this.getYears();
     this.fetchUsers();
 
@@ -526,6 +528,11 @@ this.fetchTimezones();
 
     await this.getCurrentuser();
     this.listService.ownerOperatorList;
+  }
+
+  getAssetStates(countryCode) {
+    this.assetsData.assetDetails.licenceStateCode = '';
+    this.assetStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
   /**
    * fetch vehicle manufacturers
@@ -1151,7 +1158,7 @@ fetchDrivers(){
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+                this.throwVehicleErrors();
                 this.hasError = true;
                 if(err) return reject(err);
               },
@@ -1338,7 +1345,16 @@ fetchDrivers(){
     }
 
   }
-
+  throwVehicleErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if(v == 'vehicleIdentification' || v == 'VIN') {
+          $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+        }
+      });
+  }
   fetchFuelTypes(){
     this.apiService.getData('fuelTypes').subscribe((result: any) => {
       this.fuelTypes = result.Items;
@@ -1607,7 +1623,7 @@ fetchDrivers(){
         this.cities = result.Items;
       });
   }
-  
+
 // ISSUE SECTION
   addIssue() {
     this.hideErrors();
@@ -1669,16 +1685,6 @@ fetchDrivers(){
       });
   }
 
-  /**
-   * fetch asset types from database
-   */
-  fetchAssetTypes() {
-    this.apiService.getData('assetTypes').subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-
-  }
-
   getYears() {
     var max = new Date().getFullYear(),
     min = max - 30,
@@ -1718,13 +1724,13 @@ fetchDrivers(){
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+             // val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              this.throwAssetErrors();
             },
             error: () => { },
             next: () => { },
@@ -1741,9 +1747,9 @@ fetchDrivers(){
           VIN: '',
           startDate: '',
           inspectionFormID: null,
+          assetType: '',
+          currentStatus: '',
           assetDetails: {
-            assetType: '',
-            currentStatus: '',
             year: '',
             manufacturer: '',
             model: '',
@@ -1758,8 +1764,8 @@ fetchDrivers(){
             GAWR_Unit: '',
             ownerShip: '',
             ownerOperator: '',
-            licenceCountryID: '',
-            licenceStateID: '',
+            licenceCountryCode: '',
+            licenceStateCode: '',
             licencePlateNumber: '',
             annualSafetyDate: '',
             annualSafetyReminder: true,
@@ -1784,7 +1790,16 @@ fetchDrivers(){
       },
     });
   }
-
+  throwAssetErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if(v == 'assetIdentification' || v == 'VIN') {
+          $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+        }
+      });
+  }
   clearIssueData() {
     this.issuesData = {
       issueName: '',
