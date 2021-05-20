@@ -1043,10 +1043,10 @@
                               placeholder="Enter C4 line release number" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].c4LineReleaseNumber'"
                               [(ngModel)]="commodity.c4LineReleaseNumber" #c4l="ngModel"  pattern="^[A-Z0-9]{14}$">
-                              <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
+                              <div *ngIf="c4l.invalid && (c4l.dirty || c4l.touched)" class="text-danger">
                                 <div>
 
-                                  <div *ngIf="Vehi.errors.pattern">
+                                  <div *ngIf="c4l.errors.pattern">
                                     C4 Line Release# must be alpha-numeric with no special characters.
                                    </div>
                                 </div>
