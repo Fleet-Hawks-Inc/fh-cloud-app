@@ -135,7 +135,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchTaxTypeFromID();
     this.fetchDiscFromID();
     this.fetchDriverList();
-    
+
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -143,7 +143,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.vendorList = result;
     });
   }

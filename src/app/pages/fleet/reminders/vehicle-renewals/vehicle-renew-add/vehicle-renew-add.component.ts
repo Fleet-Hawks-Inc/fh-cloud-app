@@ -84,8 +84,8 @@ export class VehicleRenewAddComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
-      this.serviceTaskForm = $('#serviceTaskForm').validate();
+      // this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
+      // this.serviceTaskForm = $('#serviceTaskForm').validate();
     });
   }
   fetchServiceTasks() {

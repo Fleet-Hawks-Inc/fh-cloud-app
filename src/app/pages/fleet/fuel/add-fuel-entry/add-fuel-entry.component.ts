@@ -143,7 +143,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.title = 'Add Fuel Entry';
     }
     $(document).ready(() => {
-      this.fuelForm = $('#fuelForm').validate();
+      // this.fuelForm = $('#fuelForm').validate();
     });
 
     this.vendors = this.listService.vendorList;
@@ -257,6 +257,10 @@ export class AddFuelEntryComponent implements OnInit {
     this.hideErrors();
     this.submitDisabled = true;
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
+    if(this.fuelData.paymentMode != 'Fuel_Card'){
+      this.fuelData.fuelCardNumber = null;
+    }
+    console.log('fuel data', this.fuelData);
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -394,6 +398,9 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     this.fuelData.uploadedPhotos = this.existingPhotos;
     this.fuelData.lineItems = this.fuelData.lineItems;
+    if(this.fuelData.paymentMode != 'Fuel_Card'){
+      this.fuelData.fuelCardNumber = null;
+    }
     // create form data instance
     const formData = new FormData();
     // append photos if any
