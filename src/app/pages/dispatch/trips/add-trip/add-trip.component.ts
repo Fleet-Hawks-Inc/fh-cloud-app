@@ -277,6 +277,7 @@ export class AddTripComponent implements OnInit {
 
             this.textFieldValues = {
                 type: '',
+                date: '',
                 pickupTime: '',
                 dropTime: '',
                 actualPickupTime: '',
@@ -351,17 +352,17 @@ export class AddTripComponent implements OnInit {
             this.getMiles();
         }
 
-        if (this.trips.length > 0) {
-            let dataCheck = this.trips.map(function (v) { return v.vehicleID; });
+        // if (this.trips.length > 0) {
+        //     let dataCheck = this.trips.map(function (v) { return v.vehicleID; });
 
-            if (dataCheck.length > 0) {
-                this.tripData.tripStatus = 'dispatched';
-            } else {
-                this.tripData.tripStatus = 'confirmed';
-            }
-        } else {
-            this.tripData.tripStatus = 'confirmed';
-        }
+        //     if (dataCheck.length > 0) {
+        //         this.tripData.tripStatus = 'dispatched';
+        //     } else {
+        //         this.tripData.tripStatus = 'confirmed';
+        //     }
+        // } else {
+        //     this.tripData.tripStatus = 'confirmed';
+        // }
     }
 
     emptyAssetModalFields() {
@@ -400,7 +401,7 @@ export class AddTripComponent implements OnInit {
 
     editRow(index) {
         this.trips[index].type = $('#editCell1' + index).val();
-        this.trips[index].date = $('#editCell2' + index).val();
+        // this.trips[index].date = $('#editCell2' + index).val();
         if ($('#editCell3' + index).val() != '' && $('#editCell3' + index).val() != null && $('#editCell3' + index).val() != undefined) {
             this.trips[index].name = $('#editCell3' + index).val();
         }
@@ -782,7 +783,7 @@ export class AddTripComponent implements OnInit {
     fetchDrivers() {
         this.apiService.getData('drivers')
             .subscribe((result: any) => {
-                result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+                result.Items.map((i) => { i.fullName = i.firstName; return i; });
                 this.drivers = result.Items;
                 this.codrivers = result.Items;
             })
@@ -830,11 +831,11 @@ export class AddTripComponent implements OnInit {
             }
 
             //change trip status to dispatched if vehicle/drivr is selected
-            if (this.tripID == undefined || this.tripID == '') {
-                if(this.textFieldValues.vehicleID != '' || this.textFieldValues.driverUsername != '' || this.textFieldValues.coDriverUsername != '') {
-                    this.tripData.tripStatus = 'dispatched';
-                }    
-            }
+            // if (this.tripID == undefined || this.tripID == '') {
+            //     if(this.textFieldValues.vehicleID != '' || this.textFieldValues.driverUsername != '' || this.textFieldValues.coDriverUsername != '') {
+            //         this.tripData.tripStatus = 'dispatched';
+            //     }    
+            // }
             
             $('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
@@ -851,16 +852,16 @@ export class AddTripComponent implements OnInit {
             this.trips[index].driverID = this.tempTextFieldValues.driverID;
             this.trips[index].coDriverID = this.tempTextFieldValues.coDriverID;
             
-            if (this.tripID == undefined || this.tripID == '') {
-                this.tripData.tripStatus = 'confirmed';
-            }
+            // if (this.tripID == undefined || this.tripID == '') {
+            //     this.tripData.tripStatus = 'confirmed';
+            // }
 
             //change trip status to dispatched if vehicle/drivr is selected
-            if (this.tripID == undefined || this.tripID == '') {
-                if(this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.driverUsername != '' || this.tempTextFieldValues.coDriverUsername != '') {
-                    this.tripData.tripStatus = 'dispatched';
-                }    
-            }
+            // if (this.tripID == undefined || this.tripID == '') {
+            //     if(this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.driverUsername != '' || this.tempTextFieldValues.coDriverUsername != '') {
+            //         this.tripData.tripStatus = 'dispatched';
+            //     }    
+            // }
 
             if(this.trips[index].vehicleID != '' || this.trips[index].driverUsername != '' || this.trips[index].coDriverUsername != '' || this.trips[index].trailerName != '') {
                 $("#editCell11"+index).prop('disabled', true);
