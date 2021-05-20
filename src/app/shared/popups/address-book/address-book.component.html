@@ -974,7 +974,7 @@
                                                         Company name is required.
                                                     </div>
                                                     <div *ngIf="VcompanyName.errors.pattern">
-                                                        Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                        Company name must contain uppercase , lowercase alphanumeric and no special character except (space .) only .
                                                     </div>
 
                                                 </div>
@@ -988,8 +988,7 @@
                                                     placeholder="eg. bookstore" #vendorDba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                     <div  *ngIf="vendorDba.invalid && (vendorDba.dirty || vendorDba.touched)" class="text-danger">
                                                         <div *ngIf="vendorDba.errors.pattern">
-                                                         DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
-
+                                                            DBA name must contain uppercase , lowercase alphanumeric and no special character except (space .) only .
                                                         </div>
 
                                                     </div>
@@ -1055,7 +1054,7 @@
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="vendorData.workPhone"
-                                                name="workPhone" type="text" class="form-control" placeholder="eg. 0016780571" #vendorPh="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                name="workPhone" type="text" class="form-control" placeholder="eg. +1203234234" #vendorPh="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                  <div *ngIf="vendorPh.invalid && (vendorPh.dirty || vendorPh.touched)" class="text-danger">
                                                    <div *ngIf="vendorPh.errors.pattern">
                                                     Enter valid phone number eg. +12032342345.
@@ -1164,10 +1163,11 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
                                                     <input [(ngModel)]="item.zipCode"
-                                                    name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="eg. 20171"  #vendorZip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                    name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="eg. 20171"  #vendorZip="ngModel" pattern="^[A-Z0-9\s]{3,7}$"
+                                                    >
                                                     <div *ngIf="vendorZip.invalid && (vendorZip.dirty || vendorZip.touched)" class="text-danger">
                                                         <div *ngIf="vendorZip.errors.pattern">
-                                                            Zip code can contain capital letters or numbers and no special characters.
+                                                            Zip code must contain atleast 3 uppercase letters,numbers and no special characters except (space).
 
                                                         </div>
 
@@ -1184,10 +1184,10 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1"
-                                                    name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center "  #vendoradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                    name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center "  #vendoradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                     <div *ngIf="vendoradLine1.invalid && (vendoradLine1.dirty || vendoradLine1.touched)" class="text-danger">
                                                         <div *ngIf="vendoradLine1.errors.pattern">
-                                                            Street address must contain small letters,capital letters or numbers and no special character except # .
+                                                            Street address must contain alphanumeric and no special character except #.-", (space) only.
 
                                                         </div>
 
@@ -1198,10 +1198,10 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2"
-                                                    name="address2{{i}}" type="text" class="form-control" placeholder="eg. 02, Business Hub Center " #vendoraddLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                    name="address2{{i}}" type="text" class="form-control" placeholder="eg. 02, Business Hub Center " #vendoraddLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                     <div *ngIf="vendoraddLine2.invalid && (vendoraddLine2.dirty || vendoraddLine2.touched)" class="text-danger">
                                                        <div *ngIf="vendoraddLine2.errors.pattern" >
-                                                        Street address must contain small letters,capital letters or numbers and no special character except # .
+                                                        Street address must contain alphanumeric and no special character except #.-", (space) only.
 
                                                        </div>
                                                     </div>
@@ -1284,7 +1284,7 @@
                                                             Company name is required.
                                                           </div>
                                                           <div *ngIf="customerName.errors.pattern">
-                                                            Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                            Company name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
                                                           </div>
                                                         </div>
                                                     </div>
@@ -1297,7 +1297,7 @@
                                                             placeholder="eg. bookstore" #customerdba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                             <div *ngIf="customerdba.invalid && (customerdba.dirty || customerdba.touched)" class="text-danger">
                                                               <div *ngIf="customerdba.errors.pattern">
-                                                                DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                                DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
                                                               </div>
                                                             </div>
                                                     </div>
@@ -1565,11 +1565,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"  #customerzip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"  #customerzip="ngModel" pattern="^[A-Z0-9\s]{3,7}$"
+                                                            >
                                                             <div *ngIf="customerzip.invalid && (customerzip.dirty || customerzip.touched)" class="text-danger">
                                                               <div *ngIf="customerzip.errors.pattern">
-                                                                Zip code can contain capital letters or numbers and no special characters.
-                                                              </div>
+                                                                Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1582,11 +1583,12 @@
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder=" eg. 01, Business Hub Center" #customeradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder=" eg. 01, Business Hub Center" #customeradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                            
                                                             <div *ngIf="customeradLine1.invalid && (customeradLine1.dirty || customeradLine1.touched)" class="text-danger">
                                                               <div *ngIf="customeradLine1.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
@@ -1594,11 +1596,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control" placeholder=" eg. 01, Business Hub Center" #customeradline2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder=" eg. 01, Business Hub Center" #customeradline2="ngModel"pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                            
                                                             <div *ngIf="customeradline2.invalid && (customeradline2.dirty || customeradline2.touched)" class="text-danger">
                                                               <div *ngIf="customeradline2.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1619,8 +1622,7 @@
                                                         <div *ngIf="customerfname1.invalid && (customerfname1.dirty || customerfname1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="customerfname1.errors.pattern">
-                                                            First name must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                            First name must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -1632,8 +1634,7 @@
                                                         <div *ngIf="customerlname1.invalid && (customerlname1.dirty || customerlname1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerlname1.errors.pattern">
-                                                            Last name must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                            last name must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -1644,8 +1645,7 @@
                                                         <div *ngIf="customerdname2.invalid && (customerdname2.dirty || customerdname2.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerdname2.errors.pattern">
-                                                            Designation must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                          Designation must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1680,11 +1680,11 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Fax&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.fax"
-                                                        name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #customerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +12129887654367" #customerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="customerfax1.invalid && (customerfax1.dirty || customerfax1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerfax1.errors.pattern">
-                                                            Enter valid fax number eg. +1-212-987654367.
+                                                            Enter valid fax number eg. +12129887654367.
                                                           </div>
                                                         </div>
                                                     </div>
@@ -1795,13 +1795,14 @@
                                                             <span class="mandfield text-2 ml-1" *ngIf="brokerData.brokerType == 'company'"><sup>*</sup></span>
                                                             &nbsp; <span class="text-1 optional-label-color" *ngIf="brokerData.brokerType == 'individual'">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="eg. Carroll Group" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
-                                                        <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
-                                                            <div *ngIf="cName.errors.required">
+                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="eg. Carroll Group" #cbName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+
+                                                        <div *ngIf="cbName.invalid && (cbName.dirty || cbName.touched)" class="text-danger">
+                                                            <div *ngIf="cbName.errors.required">
                                                                 Company name is required.
                                                              </div>
-                                                             <div *ngIf="cName.errors.pattern">
-                                                                Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                             <div *ngIf="cbName.errors.pattern">
+                                                                Company name must contain uppercase , lowercase alphanumeric and no special character except period (space .) only.
                                                              </div>
                                                         </div>
                                                     </div>
@@ -1812,7 +1813,7 @@
                                                         <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="eg. bookstore" #dba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                         <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
                                                             <div *ngIf="dba.errors.pattern">
-                                                                DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                                DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) only.
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1826,7 +1827,7 @@
                                                                 Contact First name is required.
                                                             </div>
                                                             <div *ngIf="bfName.errors.pattern">
-                                                                Contact First name must be between 2 to 30 characters and must contain letters only.
+                                                                Contact First name must contain upercase ,lowercase characters.
                                                             </div>
                                                        </div>
                                                     </div>
@@ -1838,7 +1839,7 @@
                                                         <div  *ngIf="blName.invalid && (blName.dirty || blName.touched)" class="text-danger">
                 
                                                             <div *ngIf="blName.errors.pattern">
-                                                                Contact Last name must be between 2 to 30 characters and must contain letters only.
+                                                                Contact Last name must contain upercase ,lowercase characters.
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1851,7 +1852,7 @@
                                                         <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="9 digits,beginning with 0 eg.067834562" #ein="ngModel"  pattern="^[0-9]{9}$">
                                                         <div  *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
                                                             <div *ngIf="ein.errors.pattern">
-                                                                EIN must contain 9 digits.
+                                                                EIN must contain 9 digits only.
                                                             </div>
                                                          </div>
 
@@ -1867,7 +1868,7 @@
                                                         <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="6 digits , eg. 123456" #mc="ngModel" pattern="^[0-9]{6}$">
                                                         <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
                                                           <div *ngIf="mc.errors.pattern">
-                                                            MC number must contain 6 digits.
+                                                            MC number must contain 6 digits only.
                                                           </div>
                                                         </div>
 
@@ -1882,7 +1883,7 @@
                                                         <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="8 digits , eg.12345678" #dot="ngModel" pattern="^[0-9]{8}$">
                                                         <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
                                                             <div  *ngIf="dot.errors.pattern">
-                                                                DOT number must contain 8 digits.
+                                                                DOT number must contain 8 digits only.
                                                             </div>
 
                                                         </div>
@@ -1919,7 +1920,7 @@
                                                         <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="7-12 digits , eg. 897567567456" #bac="ngModel" pattern="^[0-9]{7,12}$">
                                                         <div *ngIf="bac.invalid && (bac.dirty || bac.touched)" class="text-danger">
                                                             <div *ngIf="bac.errors.pattern">
-                                                                Account number must be between 7-12 numbers.
+                                                                Account number must be between 7-12 digits.
                                                             </div>
 
                                                         </div>
@@ -1931,7 +1932,7 @@
                                                         <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. +12032342345" #brokerphn2="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                           <div *ngIf="brokerphn2.invalid && (brokerphn2.dirty || brokerphn2.touched)" class="text-danger">
                                                             <div *ngIf="brokerphn2.errors.pattern">
-                                                                Phone number must be between Valid.
+                                                                Enter valid phone number eg. +12032342345.
                                                             </div>
 
                                                           </div>                                                        
@@ -2022,10 +2023,10 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="eg. 20171"  #bzip="ngModel" pattern="^[A-Z0-9]{6}$" >
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="eg. T2C 5J4"  #bzip="ngModel" pattern="^[A-Z0-9\s]{3,7}$" >
                                                             <div *ngIf="bzip.invalid && (bzip.dirty || bzip.touched)" class="text-danger">
                                                                 <div *ngIf="bzip.errors.pattern">
-                                                                    Zip code can contain capital letters or numbers and no special characters.
+                                                                    Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only.
                                                                 </div>
 
                                                             </div>
@@ -2041,10 +2042,10 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center" #badLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center" #badLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                             <div *ngIf="badLine1.invalid && (badLine1.dirty || badLine1.touched)" class="text-danger">
                                                                 <div *ngIf="badLine1.errors.pattern">
-                                                                    Street address must contain small letters,capital letters or numbers and no special character except # .
+                                                                    Street address must contain alphanumeric and no special character except #.-",\(space) only.
                                                                 </div>
 
                                                             </div>
@@ -2054,10 +2055,10 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control" placeholder="eg. 02, Business Hub Center" #badLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder="eg. 02, Business Hub Center" #badLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                             <div *ngIf="badLine2.invalid && (badLine2.dirty || badLine2.touched)" class="text-danger">
                                                                 <div *ngIf="badLine2.errors.pattern">
-                                                                    Street address must contain small letters,capital letters or numbers and no special character except # .
+                                                                    Street address must contain alphanumeric and no special character except #.-",\(space) only.
                                                                  </div>
                                                             </div>
                                                         </div>
@@ -2084,7 +2085,7 @@
                                                             class="form-control" placeholder="eg. John"  #brokerfName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="brokerfName.invalid && (brokerfName.dirty || brokerfName.touched)" class="text-danger">
                                                                <div *ngIf="brokerfName.errors.pattern">
-                                                                First name must be between 2 to 30 characters and must contain letters only.
+                                                                First name must contain uppercase , lowercase characters only.
                                                                </div>
                                                             </div>
                                                     </div>
@@ -2095,7 +2096,7 @@
                                                             class="form-control" placeholder="eg. Smith"  #brokerlName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="brokerlName.invalid && (brokerlName.dirty || brokerlName.touched)" class="text-danger">
                                                               <div *ngIf="brokerlName.errors.pattern">
-                                                                Last name must be between 2 to 30 characters and must contain letters only.
+                                                                Last name must contain uppercase , lowercase characters only.
                                                               </div>
                                                             </div>
                                                     </div>
@@ -2105,7 +2106,7 @@
                                                             class="form-control" placeholder="eg. Software Developer" #dName="ngModel" required pattern="^[a-zA-Z]{2,30}$" >
                                                             <div  *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
                                                                 <div *ngIf="dName.errors.pattern">
-                                                                   Designation must be between 2 to 30 characters and must contain letters only.
+                                                                   Designation must contain uppercase , lowercase characters only.
                                                                 </div>
 
                                                             </div>
@@ -2117,7 +2118,7 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.phone" name="phone_{{ad}}" type="text"
-                                                            class="form-control" placeholder="eg. 0016780571" #brokerphone="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                            class="form-control" placeholder="eg. +12032342345" #brokerphone="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                             <div *ngIf="brokerphone.invalid && (brokerphone.dirty || brokerphone.touched)" class="text-danger">
                                                                 <div *ngIf="brokerphone.errors.pattern">
                                                                     Enter valid phone number eg. +12032342345.
@@ -2138,10 +2139,10 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #bfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +12182987654367" #bfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="bfax.invalid && (bfax.dirty || bfax.touched)" class="text-danger">
                                                             <div *ngIf="bfax.errors.pattern">
-                                                                Enter valid fax number eg. +1-212-987654367.
+                                                                Enter valid fax number eg. +12129876543677.
                                                             </div>
 
                                                         </div>
@@ -2242,7 +2243,7 @@
                                                                 Company name is required.
                                                             </div>
                                                             <div *ngIf="CarriercName.errors.pattern">
-                                                                Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) 
+                                                                Company name must contain uppercase , lowercase alphanumeric and no special character except period (space .) only.
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2255,8 +2256,7 @@
                                                             placeholder="eg. bookstore" #Carrierdba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                             <div *ngIf="Carrierdba.invalid && (Carrierdba.dirty || Carrierdba.touched)" class="text-danger">
                                                              <div *ngIf="Carrierdba.errors.pattern">
-                                                                DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) 
-
+                                                                DBA name must contain uppercase , lowercase alphanumeric and no special character except period (space .) only.
                                                              </div>
                                                             </div>
                                                     </div>
@@ -2289,7 +2289,7 @@
                                                     </div> -->
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input [(ngModel)]="carrierData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 0016780571"  #carrierph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                        <input [(ngModel)]="carrierData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. +12032342345"  #carrierph="ngModel" required pattern="^(\+1)[0-9]{10}$">
 
                                                         <div *ngIf="carrierph.invalid && (carrierph.dirty || carrierph.touched)" class="text-danger">
                                                             <div *ngIf="carrierph.errors.required">
@@ -2427,7 +2427,7 @@
                                                     <input [(ngModel)]="carrierData.paymentDetails.ccc" name="ccc" type="text" class="form-control" placeholder="4 digits , eg. 1234"  #carrierccc="ngModel"  pattern="^[0-9 A-Z]{4}$">
                                                 <div *ngIf="carrierccc.invalid && (carrierccc.dirty || carrierccc.touched)" class="text-danger">
                                                     <div *ngIf="carrierccc.errors.pattern">
-                                                        CCC must be of length 4 and contains  capital letters or numbers.
+                                                        CCC must be of length 4 and contains capital letters or numbers.
                                                       </div>
 
 
@@ -2460,7 +2460,7 @@
 
                                                         <div *ngIf="carriercvor.invalid && (carriercvor.dirty || carriercvor.touched)" class="text-danger">
                                                             <div *ngIf="carriercvor.errors.pattern">
-                                                                CVOR must be of length 9  numbers.
+                                                                CVOR must be of length 9 digits.
                                                               </div>
 
 
@@ -2475,7 +2475,7 @@
 
                                                         <div *ngIf="carrierlocaltax.invalid && (carrierlocaltax.dirty || carrierlocaltax.touched)" class="text-danger">
                                                             <div *ngIf="carrierlocaltax.errors.pattern">
-                                                                Local Tax must contain numbers and only one one special character (dot) only.
+                                                                Local Tax must contain digits and only one special character (dot) only.
                                                               </div>
 
                                                         </div>
@@ -2488,7 +2488,7 @@
 
                                                         <div *ngIf="carrierfederaltax.invalid && (carrierfederaltax.dirty || carrierfederaltax.touched)" class="text-danger">
                                                             <div *ngIf="carrierfederaltax.errors.pattern">
-                                                                Federal Tax must contain numbers and only one one special character (dot) only.
+                                                                Federal Tax must contain digits and only one special character (dot) only.
                                                               </div>
 
 
@@ -2497,12 +2497,18 @@
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">
                                                         Payroll Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="carrierData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type">
+                                                    <ng-select [(ngModel)]="carrierData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type" #carrierpayrolltype="ngModel" required>
                                                         <ng-option value="Pay Per Mile" selected=true>Pay Per Mile</ng-option>
                                                         <ng-option value="Percentage">Percentage</ng-option>
                                                         <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
                                                         <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                                                     </ng-select>
+                                                    <div *ngIf="carrierpayrolltype.invalid && (carrierpayrolltype.dirty || carrierpayrolltype.touched)" class="text-danger">
+                                                        <div *ngIf="carrierpayrolltype.errors.required">
+                                                         Payroll Type is required.
+                                                        </div>
+                                                        
+                                                      </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="row" id="payPerHourForm" *ngIf="carrierData.paymentDetails.payrollType == 'Pay Per Hour'">
@@ -2511,7 +2517,7 @@
                                                             <input type="number" min="0" class="form-control" [(ngModel)]="carrierData.paymentDetails.payrollRate" name="paymentDetails.payrollRate" placeholder="eg. 5,10,15 " #carrierrate="ngModel" pattern="[0-9\.]+$">
                                                             <div *ngIf="carrierrate.invalid && (carrierrate.dirty || carrierrate.touched)" class="text-danger">
                                                                 <div *ngIf="carrierrate.errors.pattern">
-                                                                    Rate must contain numbers and only one one special character (dot) only.
+                                                                    Rate must contain digits and only one special character (dot) only.
                                                                   </div>
 
 
@@ -2534,7 +2540,7 @@
 
                                                                     <div *ngIf="carrierloadpaypercent.invalid && (carrierloadpaypercent.dirty || carrierloadpaypercent.touched)" class="text-danger">
                                                                         <div *ngIf="carrierloadpaypercent.errors.pattern">
-                                                                            Load Pay Percent must contain numbers and only one one special character (dot) only.
+                                                                            Load Pay Percent must contain digits and only one special character (dot) only.
                                                                           </div> 
 
 
@@ -2561,7 +2567,7 @@
                                                                     class="form-control" placeholder="eg. 5,10,15 " #carrierloadedmiles="ngModel" pattern="[0-9\.]+$" >
                                                                     <div  *ngIf="carrierloadedmiles.invalid && (carrierloadedmiles.dirty || carrierloadedmiles.touched)" class="text-danger" >
                                                                         <div *ngIf="carrierloadedmiles.errors.pattern">
-                                                                            Loaded Miles must contain numbers and only one one special character (dot) only.
+                                                                            Loaded Miles must contain digits and only one special character (dot) only.
                                                                           </div>
 
                                                                     </div>
@@ -2585,7 +2591,7 @@
 
                                                            <div *ngIf="carrierdeliveryrate.invalid && (carrierdeliveryrate.dirty || carrierdeliveryrate.touched)" class="text-danger">
                                                             <div *ngIf="carrierdeliveryrate.errors.pattern">
-                                                                Delivery Rate must contain numbers and only one one special character (dot) only.
+                                                                Delivery Rate must contain digits and only one special character (dot) only.
                                                               </div>
 
 
@@ -2613,7 +2619,7 @@
 
                                                                 <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
                                                                     <div *ngIf="carrieremptymiles.errors.pattern">
-                                                                        Empty Miles must contain numbers and only one one special character (dot) only.
+                                                                        Empty Miles must contain digits and only one special character (dot) only.
                                                                       </div>
 
 
@@ -2647,12 +2653,15 @@
                                                 <div class="row wsib-wrapper col-12 row m-0 p-0" *ngIf="carrierData.paymentDetails.wsib">
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">WSIB
-                                                            Account#</label>
+                                                            Account# <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="carrierData.paymentDetails.wsibAccountNumber" name="wsibAccountNumber"
 
-                                                            type="text" class="form-control" placeholder=" 7 digit eg.1234567" #carrierwsib="ngModel" pattern="^[0-7]{8}$">
+                                                            type="text" class="form-control" placeholder=" 7 digit eg.1234567" #carrierwsib="ngModel" required pattern="^[0-7]{8}$">
 
                                                             <div *ngIf="carrierwsib.invalid && (carrierwsib.dirty || carrierwsib.touched)" class="text-danger">
+                                                                <div *ngIf="carrierwsib.errors.required">
+                                                                    WSIB Account# is required 
+                                                                  </div>
                                                                 <div *ngIf="carrierwsib.errors.pattern">
                                                                     WSIB Account# must contain numbers .
                                                                   </div>
@@ -2664,10 +2673,15 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">WSIB
-                                                            Expiry</label>
+                                                            Expiry <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="carrierData.paymentDetails.wsibExpiry" name="wsibExpiry" type="text"
                                                             placeholder="yyyy/mm/dd" (click)="wsibexp.toggle()" ngbDatepicker #wsibexp="ngbDatepicker"
-                                                            class="form-control" autocomplete="off">
+                                                            class="form-control" autocomplete="off" #wsib="ngModel" required>
+                                                            <div *ngIf="wsib.invalid && (wsib.dirty || wsib.touched)" class="text-danger">
+                                                              <div *ngIf="wsib.errors.required">
+                                                                WSIB is required and must contain yyyy/mm/dd format.
+                                                              </div>
+                                                            </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2682,12 +2696,19 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="item.addressType" [attr.name]="'address['+i+'].addressType'" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                            placeholder="Select Address Type">
+                                                            placeholder="Select Address Type" #addresstypecarrier="ngModel" required>
+                                                            
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
                                                             <ng-option value="Other">Other</ng-option>
                                                         </ng-select>
+                                                        <div *ngIf="addresstypecarrier.invalid && (addresstypecarrier.dirty || addresstypecarrier.touched)" class="text-danger">
+                                                            <div *ngIf="addresstypecarrier.errors.required">
+                                                              Address Type is required.
+                                                            </div>
+                                                            
+                                                          </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2709,6 +2730,8 @@
                                                         (change)="manAddress($event, i, 'carrier')" type="checkbox">
                                                     <label for="man_address">Type Manually</label>
                                                 </div>
+                                            
+
                                             </div>
                                             <div class="col-lg-2 mar-top-37">
                                                 <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearAddress(i, 'carrier')">Clear</a>
@@ -2753,10 +2776,10 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"  #carrierzip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"  #carrierzip="ngModel" pattern="^[A-Z0-9\s]{3,7}$">
                                                             <div *ngIf="carrierzip.invalid && (carrierzip.dirty || carrierzip.touched)" class="text-danger">
                                                               <div *ngIf="carrierzip.errors.pattern">
-                                                                Zip code can contain capital letters or numbers and no special characters.
+                                                                Zip code must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
                                                               </div>
                                                             </div>
                                                         </div>
@@ -2771,11 +2794,11 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center "  #carrieradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center "  #carrieradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                             <div *ngIf="carrieradLine1.invalid && (carrieradLine1.dirty || carrieradLine1.touched)" class="text-danger">
                                                               <div *ngIf="carrieradLine1.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
@@ -2783,11 +2806,11 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 01, Business Hub Center "  #carrieradLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 01, Business Hub Center "  #carrieradLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
                                                             <div *ngIf="carrieradLine2.invalid && (carrieradLine2.dirty || carrieradLine2.touched)" class="text-danger">
                                                               <div *ngIf="carrieradLine2.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2806,7 +2829,7 @@
                                                             class="form-control" placeholder="eg. John" #carrierfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="carrierfName1.invalid && (carrierfName1.dirty || carrierfName1.touched)" class="text-danger">
                                                               <div *ngIf="carrierfName1.errors.pattern">
-                                                                First name must be between 2 to 30 characters and must contain letters only.
+                                                                First name must contain uppercase , lowercase characters only.
                                                               </div>
                                                             </div>
                                                     </div>
@@ -2818,7 +2841,7 @@
                                                             <div *ngIf="carrierlName1.invalid && (carrierlName1.dirty || carrierlName1.touched)" class="text-danger">
                                                             
                                                               <div *ngIf="carrierlName1.errors.pattern">
-                                                                last name must be between 2 to 30 characters and must contain letters only.
+                                                                last name must contain uppercase , lowercase characters only.
                                                               </div>
                                                             </div>
                                                     </div>
@@ -2829,7 +2852,7 @@
                                                             <div *ngIf="carrierdName1.invalid && (carrierdName1.dirty || carrierdName1.touched)" class="text-danger">
                                                             
                                                               <div *ngIf="carrierdName1.errors.pattern">
-                                                                Designation must be between 2 to 30 characters and must contain letters only.
+                                                                Designation must contain uppercase , lowercase characters only.
                                                               </div>
                                                             </div>
                                                     </div>
@@ -2840,7 +2863,7 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
-                                                            class="form-control" placeholder="eg. 0016780571" #cph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                            class="form-control" placeholder="eg. +12032342345" #cph="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                             <div *ngIf="cph.invalid && (cph.dirty || cph.touched)" class="text-danger">
                                                               
                                                               <div *ngIf="cph.errors.pattern">
@@ -2861,11 +2884,11 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #cfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +18212987654367" #cfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="cfax.invalid && (cfax.dirty || cfax.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="cfax.errors.pattern">
-                                                            Enter valid fax number eg. +1-212-987654367.
+                                                            Enter valid fax number eg. +18212987654367.
                                                           </div>
                                                         </div>
                                                     </div>
@@ -2958,7 +2981,7 @@
                                                             Company name is required.
                                                           </div>
                                                           <div *ngIf="owneroperatorcName.errors.pattern">
-                                                            Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                            Company name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
                                                           </div>
                                                         </div>
                                                     </div>
@@ -2970,7 +2993,7 @@
                                                             placeholder="eg. bookstore" #ownerdba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                             <div *ngIf="ownerdba.invalid && (ownerdba.dirty || ownerdba.touched)" class="text-danger">
                                                               <div *ngIf="ownerdba.errors.pattern">
-                                                                DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                                DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
                                                               </div>
                                                             </div>
                                                     </div>
@@ -3082,12 +3105,18 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             Payroll Type <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
-                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type">
+                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type" #ownerpayrolltype1="ngModel" required>
                                                             <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                                                             <ng-option value="Percentage">Percentage</ng-option>
                                                             <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
                                                             <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                                                         </ng-select>
+                                                        <div *ngIf="ownerpayrolltype1.invalid && (ownerpayrolltype1.dirty || ownerpayrolltype1.touched)" class="text-danger">
+                                                            <div *ngIf="ownerpayrolltype1.errors.required">
+                                                                Payroll Type is required.
+                                                            </div>
+                                                            
+                                                          </div>
                                                     </div>
 
                                                     <div class="col-lg-6">
@@ -3098,7 +3127,7 @@
                                                           <div *ngIf="ownersin.invalid && (ownersin.dirty || ownersin.touched)" class="text-danger">
                                                           
                                                             <div *ngIf="ownersin.errors.pattern">
-                                                              Sin must contains numbers only.
+                                                              Sin must contain numbers only.
                                                             </div>
                                                           </div>
                                                     </div>
@@ -3111,7 +3140,7 @@
 
                                                                 <div *ngIf="ownerrate.invalid && (ownerrate.dirty || ownerrate.touched)" class="text-danger">
                                                                   <div *ngIf="ownerrate.errors.pattern">
-                                                                    Rate must contain numbers and only one special character (dot) only . 
+                                                                    Rate must contain digits and only one special character (dot) only . 
                                                                   </div>
                                                                 </div>
                                                             </div>
@@ -3132,7 +3161,7 @@
 
                                                                         <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
                                                                           <div *ngIf="ownerloadpaypercent.errors.pattern">
-                                                                            Load Pay Percent must contain numbers and only one special character (dot) only . 
+                                                                            Load Pay Percent must contain digits and only one special character (dot) only . 
                                                                           </div>
                                                                         </div>
                                                                     </div>
@@ -3158,7 +3187,7 @@
 
                                                                         <div *ngIf="ownerloadedmiles.invalid && (ownerloadedmiles.dirty || ownerloadedmiles.touched)" class="text-danger">
                                                                           <div *ngIf="ownerloadedmiles.errors.pattern">
-                                                                            Loaded Miles must contain numbers and only one special character (dot) only . 
+                                                                            Loaded Miles must contain digits and only one special character (dot) only . 
                                                                           </div>
                                                                         </div>
                                                                 </div>
@@ -3176,7 +3205,7 @@
 
                                                                         <div *ngIf="ownerempty.invalid && (ownerempty.dirty || ownerempty.touched)" class="text-danger">
                                                                           <div *ngIf="ownerempty.errors.pattern">
-                                                                            Empty Miles must contain numbers and only one special character (dot) only . 
+                                                                            Empty Miles must contain digits and only one special character (dot) only . 
                                                                           </div>
                                                                         </div>
                                                                 </div>
@@ -3196,7 +3225,7 @@
 
                                                                <div *ngIf="ownerdeliveryrate.invalid && (ownerdeliveryrate.dirty || ownerdeliveryrate.touched)" class="text-danger">
                                                                  <div *ngIf="ownerdeliveryrate.errors.pattern">
-                                                                   Delivery Rate must contain numbers and only one special character (dot) only . 
+                                                                   Delivery Rate must contain digits and only one special character (dot) only . 
                                                                  </div>
                                                                </div>
                                                             </div>
@@ -3223,12 +3252,19 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <ng-select [(ngModel)]="item.addressType" [attr.name]="'address['+i+'].addressType'" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Select Address Type">
+                                                        <ng-select [(ngModel)]="item.addressType" [attr.name]="'address['+i+'].addressType'" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Select Address Type" #owneradtype="ngModel" required>
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
                                                             <ng-option value="Other">Other</ng-option>
                                                         </ng-select>
+                                                        <div *ngIf="owneradtype.invalid && (owneradtype.dirty || owneradtype.touched)" class="text-danger">
+                                                            <div *ngIf="owneradtype.errors.required">
+                                                             Address type is required.
+                                                            </div>
+                                                            
+                                                          </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -3290,11 +3326,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code" #ownerzipcode="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code" #ownerzipcode="ngModel" pattern="^[A-Z0-9\s]{3,7}$"
+                                                            >
                                                             <div *ngIf="ownerzipcode.invalid && (ownerzipcode.dirty || ownerzipcode.touched)" class="text-danger">
                                                               <div *ngIf="ownerzipcode.errors.pattern">
-                                                                Zip code can contain capital letters or numbers and no special characters.
-                                                              </div>
+                                                                Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3308,11 +3345,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center " #owneradline1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="eg. 01, Business Hub Center " #owneradline1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                            
                                                             <div *ngIf="owneradline1.invalid && (owneradline1.dirty || owneradline1.touched)" class="text-danger">
                                                               <div *ngIf="owneradline1.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
@@ -3320,11 +3358,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 01, Business Hub Center " #owneradline2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 01, Business Hub Center " #owneradline2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                            
                                                             <div *ngIf="owneradline2.invalid && (owneradline2.dirty || owneradline2.touched)" class="text-danger">
                                                               <div *ngIf="owneradline2.errors.pattern">
-                                                                Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                              </div>
+                                                                Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3344,8 +3383,7 @@
                                                         <div *ngIf="ownerfName1.invalid && (ownerfName1.dirty || ownerfName1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerfName1.errors.pattern">
-                                                            First name must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                            First name must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -3356,8 +3394,7 @@
                                                         <div *ngIf="ownerlName2.invalid && (ownerlName2.dirty || ownerlName2.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerlName2.errors.pattern">
-                                                            Last name must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                            last name must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -3368,8 +3405,7 @@
                                                         <div *ngIf="ownerdesignation1.invalid && (ownerdesignation1.dirty || ownerdesignation1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerdesignation1.errors.pattern">
-                                                            Last name must be between 2 to 30 characters and must contain letters only.
-                                                          </div>
+                                                            Designation must contain uppercase , lowercase characters only.                                                          </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3398,11 +3434,11 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #ownerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +12129987654367" #ownerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="ownerfax1.invalid && (ownerfax1.dirty || ownerfax1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="ownerfax1.errors.pattern">
-                                                            Enter valid fax number eg. +1-212-987654367.
+                                                            Enter valid fax number eg. +12129987654367.
                                                           </div>
                                                         </div>
                                                     </div>
@@ -3490,7 +3526,7 @@
                                                         Company name is required.
                                                       </div>
                                                       <div *ngIf="consignorcName.errors.pattern">
-                                                        Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                        Company name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
                                                       </div>
                                                     </div>
                                             </div>
@@ -3502,7 +3538,7 @@
                                                     placeholder="eg. bookstore" #consignordba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                     <div *ngIf="consignordba.invalid && (consignordba.dirty || consignordba.touched)" class="text-danger">
                                                       <div *ngIf="consignordba.errors.pattern">
-                                                        DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                        DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
                                                       </div>
                                                     </div>
                                             </div>
@@ -3675,10 +3711,12 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
                                                     <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
-                                                        class="form-control address_zip" placeholder="eg. 20171"  #consignorzip1="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                        class="form-control address_zip" placeholder="eg. TA6 5j4"  #consignorzip1="ngModel" 
+                                                        pattern="^[A-Z0-9\s]{3,7}$">
                                                         <div *ngIf="consignorzip1.invalid && (consignorzip1.dirty || consignorzip1.touched)" class="text-danger">
                                                           <div *ngIf="consignorzip1.errors.pattern">
-                                                            Zip code can contain capital letters or numbers and no special characters.
+                                                            Zip code must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+
                                                           </div>
                                                         </div>
                                                 </div>
@@ -3690,22 +3728,24 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                        class="form-control address_one" placeholder="eg. 01, Business Hub Center " #consignoradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                        class="form-control address_one" placeholder="eg. 01, Business Hub Center " #consignoradLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                        
                                                         <div *ngIf="consignoradLine1.invalid && (consignoradLine1.dirty || consignoradLine1.touched)" class="text-danger">
                                                           <div *ngIf="consignoradLine1.errors.pattern">
-                                                            Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                          </div>
+                                                            Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                        </div>
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                        class="form-control" placeholder="eg. 01, Business Hub Center " #consignoradLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                        class="form-control" placeholder="eg. 01, Business Hub Center " #consignoradLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                        
                                                         <div *ngIf="consignoradLine2.invalid && (consignoradLine2.dirty || consignoradLine2.touched)" class="text-danger">
                                                           <div *ngIf="consignoradLine2.errors.pattern">
-                                                            Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                          </div>
+                                                            Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                        </div>
                                                         </div>
                                                 </div>
                                             </div>
@@ -3726,7 +3766,7 @@
                                                     <div *ngIf="consignorfName1.invalid && (consignorfName1.dirty || consignorfName1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consignorfName1.errors.pattern">
-                                                        First name must be between 2 to 30 characters and must contain letters only.
+                                                        First name must contain uppercase , lowercase characters only.
                                                       </div>
                                                     </div>
                                             </div>
@@ -3738,7 +3778,7 @@
                                                     <div *ngIf="consignorlName2.invalid && (consignorlName2.dirty || consignorlName2.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consignorlName2.errors.pattern">
-                                                        Last name must be between 2 to 30 characters and must contain letters only.
+                                                        last name must contain uppercase , lowercase characters only.
                                                       </div>
                                                     </div>
                                             </div>
@@ -3749,7 +3789,7 @@
                                                     <div *ngIf="consignordesignation1.invalid && (consignordesignation1.dirty || consignordesignation1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consignordesignation1.errors.pattern">
-                                                        Designation  must be between 2 to 30 characters and must contain letters only.
+                                                        Designation must contain uppercase , lowercase characters only.
                                                       </div>
                                                     </div>
                                             </div>
@@ -3783,11 +3823,11 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span
                                                         class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control"
-                                                    placeholder="13 digits , eg. +1-212-987654367" #consignorfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                    placeholder="13 digits , eg. +12129987654367" #consignorfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                 <div *ngIf="consignorfax1.invalid && (consignorfax1.dirty || consignorfax1.touched)" class="text-danger">
                                             
                                                     <div *ngIf="consignorfax1.errors.pattern">
-                                                        Enter valid fax number eg. +1-212-987654367.
+                                                        Enter valid fax number eg. +12129987654367.
                                                     </div>
                                                 </div>
                                             </div>
@@ -3866,7 +3906,7 @@
                                                         Company name is required.
                                                       </div>
                                                       <div *ngIf="consigneecName.errors.pattern">
-                                                        Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                        Company name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
                                                       </div>
                                                     </div>
                                             </div>
@@ -3878,7 +3918,7 @@
                                                     placeholder="eg. bookstore"  #consigneedba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                     <div *ngIf="consigneedba.invalid && (consigneedba.dirty || consigneedba.touched)" class="text-danger">
                                                       <div *ngIf="consigneedba.errors.pattern">
-                                                        DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                        DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
                                                       </div>
                                                     </div>
                                             </div>
@@ -3950,7 +3990,7 @@
                                             <div class="col-lg-12 pt-1 mt-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="consigneeData.workPhone" name="workPhone" type="text"
-                                                    class="form-control" placeholder="eg. 12032342345"  #consigneeph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                    class="form-control" placeholder="eg. +12032342345"  #consigneeph="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                     <div *ngIf="consigneeph.invalid && (consigneeph.dirty || consigneeph.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneeph.errors.pattern">
@@ -4052,11 +4092,11 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
                                                     <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
-                                                        class="form-control address_zip" placeholder="eg. 20171" #consigneezip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                        class="form-control address_zip" placeholder="eg. 20171" #consigneezip="ngModel" pattern="^[A-Z0-9\s]{3,7}$">
                                                         <div *ngIf="consigneezip.invalid && (consigneezip.dirty || consigneezip.touched)" class="text-danger">
                                                           <div *ngIf="consigneezip.errors.pattern">
-                                                            Zip code can contain capital letters or numbers and no special characters.
-                                                          </div>
+                                                            Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                        </div>
                                                         </div>
                                                 </div>
                                             </div>
@@ -4069,22 +4109,24 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                        class="form-control address_one" placeholder="eg. 01, Business Hub Center" #consigneeadLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                        class="form-control address_one" placeholder="eg. 01, Business Hub Center" #consigneeadLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                       
                                                         <div *ngIf="consigneeadLine1.invalid && (consigneeadLine1.dirty || consigneeadLine1.touched)" class="text-danger">
                                                           <div *ngIf="consigneeadLine1.errors.pattern">
-                                                            Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                          </div>
+                                                            Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                        </div>
                                                         </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                        class="form-control" placeholder="eg. 01, Business Hub Center" #consigneeadLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                                        class="form-control" placeholder="eg. 01, Business Hub Center" #consigneeadLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                        
                                                         <div *ngIf="consigneeadLine2.invalid && (consigneeadLine2.dirty || consigneeadLine2.touched)" class="text-danger">
                                                           <div *ngIf="consigneeadLine2.errors.pattern">
-                                                            Street address must contain small letters,capital letters or numbers and no special character except # .
-                                                          </div>
+                                                            Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
+                                                        </div>
                                                         </div>
                                                 </div>
                                             </div>
@@ -4105,8 +4147,7 @@
                                                     <div *ngIf="consigneefName1.invalid && (consigneefName1.dirty || consigneefName1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneefName1.errors.pattern">
-                                                        First name must be between 2 to 30 characters and must contain letters only.
-                                                      </div>
+                                                        First name must contain uppercase , lowercase characters only.                                                      </div>
                                                     </div>
                                             </div>
                                             <div class="col-lg-12">
@@ -4117,7 +4158,7 @@
                                                     <div *ngIf="consigneelName1.invalid && (consigneelName1.dirty || consigneelName1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneelName1.errors.pattern">
-                                                        Last name must be between 2 to 30 characters and must contain letters only.
+                                                        Last name must contain uppercase , lowercase characters only.
                                                       </div>
                                                     </div>
                                             </div>
@@ -4128,7 +4169,7 @@
                                                     <div *ngIf="consigneedesignation.invalid && (consigneedesignation.dirty || consigneedesignation.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneedesignation.errors.pattern">
-                                                        Last name must be between 2 to 30 characters and must contain letters only.
+                                                       Designation must contain uppercase , lowercase characters only.
                                                       </div>
                                                     </div>
                                             </div>
@@ -4161,11 +4202,11 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text"
-                                                    class="form-control" placeholder="13 digits , eg. +1-212-987654367" #consigneefax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                    class="form-control" placeholder="13 digits , eg. +19212987654367" #consigneefax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                     <div *ngIf="consigneefax1.invalid && (consigneefax1.dirty || consigneefax1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneefax1.errors.pattern">
-                                                        Enter valid phone number eg. +1-212-987654367.
+                                                        Enter valid phone number eg. +19212987654367.
                                                       </div>
                                                     </div>
                                             </div>
@@ -4267,7 +4308,7 @@
                                                                     Company name is required.
                                                                 </div>
                                                                 <div *ngIf="cName.errors.pattern">
-                                                                    Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                                    Company name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
 
                                                                 </div>
 
@@ -4282,7 +4323,7 @@
                                                             placeholder="eg. bookstore" #fcdba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                                                             <div *ngIf="fcdba.invalid && (fcdba.dirty || fcdba.touched)" class="text-danger">
                                                                 <div *ngIf="fcdba.errors.pattern">
-                                                                    DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                                    DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
 
                                                                 </div>
 
@@ -4435,10 +4476,11 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
-                                                                class="form-control address_zip" placeholder="Enter Zip Code" #fczip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                                                class="form-control address_zip" placeholder="Enter Zip Code" #fczip="ngModel" pattern="^[A-Z0-9\s]{3,7}$"
+                                                                >
                                                                 <div *ngIf="fczip.invalid && (fczip.dirty || fczip.touched)" class="text-danger">
                                                                     <div *ngIf="fczip.errors.pattern">
-                                                                        Zip code can contain capital letters or numbers and no special characters.
+                                                                        Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
                                                                     </div>
 
                                                                 </div>
@@ -4453,10 +4495,11 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                                class="form-control address_one" placeholder="Enter Address 1" #fcadLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\,\.]+$">
+                                                                class="form-control address_one" placeholder="Enter Address 1" #fcadLine1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                                
                                                                 <div *ngIf="fcadLine1.invalid && (fcadLine1.dirty || fcadLine1.touched)" class="text-danger">
                                                                     <div *ngIf="fcadLine1.errors.pattern">
-                                                                        Street address must contain small letters,capital letters or numbers and no special character except ,# .
+                                                                        Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
                                                                     </div>
 
                                                                 </div>
@@ -4465,10 +4508,11 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                                class="form-control" placeholder="Enter Address 2" #fcadLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\,\.]+$">
+                                                                class="form-control" placeholder="Enter Address 2" #fcadLine2="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]+$">
+                                                                
                                                                 <div *ngIf="fcadLine2.invalid && (fcadLine2.dirty || fcadLine2.touched)" class="text-danger">
                                                                    <div  *ngIf="fcadLine2.errors.pattern">
-                                                                    Street address must contain small letters,capital letters or numbers and no special character except ,#
+                                                                    Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
 
                                                                    </div>
                                                                 </div>
@@ -4489,7 +4533,7 @@
                                                             name="accountNumber" type="text" class="form-control" placeholder="7-12 digits , eg. 897567567456" #fcac="ngModel" pattern="^[0-9]{7,12}$">
                                                             <div *ngIf="fcac.invalid && (fcac.dirty || fcac.touched)" class="text-danger">
                                                                 <div *ngIf="fcac.errors.pattern">
-                                                                    Account number must be between 7-12 numbers.
+                                                                    Account number must be between 7-12 digits.
                                                                 </div>
 
                                                             </div>
@@ -4504,7 +4548,7 @@
                                                                     name="factoringRate" type="text" class="form-control" placeholder="eg. 5,10,15 etc" #fcrate="ngModel" pattern="[0-9\.]+$" >
                                                                     <div *ngIf="fcrate.invalid && (fcrate.dirty || fcrate.touched)" class="text-danger" >
                                                                         <div *ngIf="fcac.errors.pattern">
-                                                                        Rate must contain number and only one special character (dot) only .
+                                                                        Rate must contain digits and only one special character (dot) only .
                                                                         </div>
 
                                                                     </div>

@@ -423,7 +423,7 @@
     </div>
   </div>
 </div>
-<!-- add asset model -->
+<!-- add asset model modal-->
 <div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
@@ -775,7 +775,7 @@
     </div>
   </div>
 </div>
-
+<!-- ADD vehicle MODAL -->
 <div class="modal fade" id="addVehicleModelDriver" tabindex="-1" role="dialog" aria-labelledby="addVehickeModelDriver"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1392,7 +1392,7 @@
   </div>
 </div>
 
-
+<!-- ADD ISSUES MODAL -->
 <div class="modal fade" id="addIssuesModal" tabindex="-1" role="dialog" aria-labelledby="addIssuesModal"
 
   aria-hidden="true">
@@ -1634,10 +1634,28 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.assetType" name="assetDetails.assetType"
+                          <ng-select [(ngModel)]="assetsData.assetType" name="assetType"
                             class="form-control populate" id="assetType" placeholder="Select asset type">
-                            <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
-                              {{type.assetTypeName}}</ng-option>
+                            <!-- <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
+                              {{type.assetTypeName}}</ng-option> -->
+                              <ng-option value="container">Container</ng-option>
+                              <ng-option value="double_drop">Double Drop</ng-option>
+                              <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                              <ng-option value="flat_bed">Flat bed</ng-option>
+                              <ng-option value="lowboy">Lowboy</ng-option>
+                              <ng-option value="stepDeck">StepDeck</ng-option>
+                              <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                              <ng-option value="dry_van">Dry Van</ng-option>
+                              <ng-option value="reefer">Reefer</ng-option>
+                              <ng-option value="power_only">Power Only</ng-option>
+                              <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                              <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                              <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                              <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                              <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                              <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                              <ng-option value="chassis">Chassis</ng-option>
+                              <ng-option value="tank_trailer">Tank Trailer</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">
@@ -1677,10 +1695,10 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                             Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
-                            name="assetDetails.currentStatus" placeholder="Select asset status">
-                            <ng-option value="Active">Active</ng-option>
-                            <ng-option value="Inactive">InActive</ng-option>
+                          <ng-select [(ngModel)]="assetsData.currentStatus"
+                            name="currentStatus" placeholder="Select asset status">
+                            <ng-option value="active">Active</ng-option>
+                            <ng-option value="inactive">InActive</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-12">
@@ -1702,21 +1720,23 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
-                            name="assetDetails.licenceCountryID" (change)="getStates($event)"
+                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryCode"
+                            name="assetDetails.licenceCountryCode" (change)="getAssetStates($event)"
                             placeholder="Select country" class="form-control populate">
-                            <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
+                            <!-- <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
                               {{country.countryName}}
-                            </ng-option>
+                            </ng-option> -->
+                            <ng-option value="CA">Canada</ng-option>
+                            <ng-option value="US">United States of America</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
-                            name="assetDetails.licenceStateID" class="form-control populate"
+                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
+                            name="assetDetails.licenceStateCode" class="form-control populate"
                             placeholder="Select Province">
-                            <ng-option *ngFor="let state of states" value="{{state.stateID}}">
+                            <ng-option *ngFor="let state of assetStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
                           </ng-select>

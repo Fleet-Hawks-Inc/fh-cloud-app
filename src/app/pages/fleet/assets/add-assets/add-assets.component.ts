@@ -10,6 +10,7 @@ declare var $: any;
 import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service';
 import * as moment from 'moment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -50,8 +51,8 @@ export class AddAssetsComponent implements OnInit {
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
-      licenceCountryID: null,
-      licenceStateID: null,
+      licenceCountryCode: null,
+      licenceStateCode: null,
       licencePlateNumber: '',
       annualSafetyDate: '',
       annualSafetyReminder: true,
@@ -98,7 +99,6 @@ export class AddAssetsComponent implements OnInit {
   fileName = '';
   carrierID: any;
   states = [];
-  countries = [];
   uploadedPhotos = [];
   uploadedDocs = [];
   existingPhotos = [];
@@ -127,7 +127,6 @@ export class AddAssetsComponent implements OnInit {
     this.listService.fetchAssetModels();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
-    this.fetchCountries(); // fetch countries
     this.fetchGroups();
     this.fetchAssets();
     this.fetchInspectionForms();
@@ -201,8 +200,8 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
-        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
+        licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
@@ -246,14 +245,14 @@ export class AddAssetsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
+              // val.message = val.message.replace(/".*"/, 'This Field');
+               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              // this.throwErrors();
+              this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -273,11 +272,12 @@ export class AddAssetsComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v == 'assetIdentification' || v == 'VIN') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -300,7 +300,6 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
         this.assetsData.createdTime = result.createdTime;
@@ -328,9 +327,9 @@ export class AddAssetsComponent implements OnInit {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
         this.assetsData.currentStatus = result.currentStatus;
-        this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
-        this.getStates(result.assetDetails.licenceCountryID);
-        this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
+        this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
+        this.getStates(result.assetDetails.licenceCountryCode);
+        this.assetsData.assetDetails.licenceStateCode = result.assetDetails.licenceStateCode;
         this.assetsData.assetDetails.licencePlateNumber = result.assetDetails.licencePlateNumber;
         this.assetsData.assetDetails.annualSafetyDate = result.assetDetails.annualSafetyDate;
         this.assetsData.assetDetails.annualSafetyReminder = result.assetDetails.annualSafetyReminder;
@@ -397,8 +396,8 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
-        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
+        licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
@@ -420,7 +419,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs
     };
-
     // create form data instance
     const formData = new FormData();
 
@@ -444,17 +442,18 @@ export class AddAssetsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
               // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
+              // const key = val.message.match(/'([^']+)'/)[1];
+              // val.message = val.message.replace(/'.*'/, 'This Field');
+              // this.errors[key] = val.message;
+             // val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              // this.throwErrors();
+              this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -499,17 +498,6 @@ export class AddAssetsComponent implements OnInit {
     } else {
       this.assetsData.assetDetails[`GVWR_Unit`] = value;
     }
-  }
-
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        result.Items.map(elem => {
-          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
-            this.countries.push({countryName: elem.countryName, countryID: elem.countryID})
-          }
-        });
-      });
   }
 
   fetchGroups() {
@@ -558,14 +546,9 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  getStates(id) {
-    this.spinner.show(); // loader init
-    // const countryID = this.assetsData.assetDetails['licenceCountryID'];
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-        this.spinner.hide(); // loader init
-      });
+  getStates(countryCode) {
+    this.assetsData.assetDetails.licenceStateCode = '';
+    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
 
   setPDFSrc(val) {
