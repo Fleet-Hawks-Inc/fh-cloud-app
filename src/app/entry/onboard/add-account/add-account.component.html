@@ -55,7 +55,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" 
-                          placeholder="john.smith" #uName="ngModel" required pattern="^[a-z0-9\.]{6,30}$">
+                          placeholder="john.smith" #uName="ngModel" required pattern="^[^\.][a-z0-9\.]+[^\.]{6,30}$">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
