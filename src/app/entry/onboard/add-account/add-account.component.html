@@ -54,8 +54,8 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" minlength="6"
-                          placeholder="john.smith" #uName="ngModel" required pattern="^[^\.][a-z0-9\.]+[^\.]$">
+                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" 
+                          placeholder="john.smith" #uName="ngModel" required pattern="^[a-z0-9\.]{6,30}$">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
@@ -501,7 +501,7 @@
                                 placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.\,]+$">
                                 <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
-                                    Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
+                                    Street address must contain small letters,capital letters or numbers and no special character except (#,space,period(.),comma(,)) .
                                   </div>
                                 </div>
                             </div>
@@ -521,10 +521,10 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]{2,7}$">
                                 <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
-                                    Zip code can contain capital letters or numbers and no special characters.
+                                    Zip code  contains atleast 2 uppercase letters,numbers and no special characters except (space) only.
                                   </div>
                                 </div>
                             </div>
@@ -641,8 +641,8 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <!-- <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button> -->
-                         <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button>
+                    <!-- <button type="button" class="btn btn-success" (click)="onSubmit()" >Save</button> -->
+                         <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button>
 
                   </div>
                 </div>

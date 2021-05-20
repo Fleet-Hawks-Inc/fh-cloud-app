@@ -104,7 +104,7 @@ export class AddAccountComponent implements OnInit {
   ngOnInit() {
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
-      this.carrierForm = $('#carrierForm').validate();
+      // this.carrierForm = $('#carrierForm').validate();
     });
   }
   // Show password
@@ -324,9 +324,11 @@ export class AddAccountComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+        if(v === 'email' || v==='userName' || v ==='carrierName'){
+          $('[name="' + v + '"]')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+        .addClass('error');}
+        
       });
   }
   hideErrors() {
