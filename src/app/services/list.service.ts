@@ -68,18 +68,18 @@ export class ListService {
 
   fetchVendors() {
     this.apiService.getData("vendors").subscribe((result: any) => {
-      this.vendorDataSource.next(result.Items);
+      this.vendorDataSource.next(result);
     });
   }
 
 fetchShippers() {
   this.apiService.getData("shippers").subscribe((result: any) => {
-    this.shipperDataSource.next(result.Items);
+    this.shipperDataSource.next(result);
   });
 }
 fetchReceivers() {
   this.apiService.getData("receivers").subscribe((result: any) => {
-    this.receiverDataSource.next(result.Items);
+    this.receiverDataSource.next(result);
   });
 }
   fetchManufacturers() {

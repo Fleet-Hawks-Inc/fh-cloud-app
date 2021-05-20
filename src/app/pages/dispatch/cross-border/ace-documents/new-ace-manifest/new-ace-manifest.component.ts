@@ -275,6 +275,7 @@ export class NewAceManifestComponent implements OnInit {
     this.searchLocation();
     this.fetchAssetType();
     this.shippers = this.listService.shipperList;
+    console.log('this.shippers ',this.shippers );
     this.consignees = this.listService.receiverList;
     this.passengerDocStates = this.listService.stateList;
     this.modalStates = this.listService.stateList;
@@ -1018,7 +1019,7 @@ export class NewAceManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+               // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -1046,7 +1047,7 @@ export class NewAceManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+             // this.throwErrors();
             },
             error: () => { },
             next: () => { },

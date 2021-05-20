@@ -721,7 +721,7 @@
                               Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
                               [(ngModel)]="shipment.shipperID" #Aconsi="ngModel" required>
-                              <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.shipperID}}">
+                              <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.contactID}}">
                                 {{shipper.companyName}}</ng-option>
                             </ng-select>
                             <div *ngIf="Aconsi.invalid && (Aconsi.dirty || Aconsi.touched)" class="text-danger">
@@ -744,7 +744,7 @@
                               Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID" #Aconsignee="ngModel" required>
-                              <ng-option *ngFor="let consignee of consignees  | async" value="{{consignee.receiverID}}">
+                              <ng-option *ngFor="let consignee of consignees  | async" value="{{consignee.contactID}}">
                                 {{consignee.companyName}}</ng-option>
                             </ng-select>
                             <div *ngIf="Aconsignee.invalid && (Aconsignee.dirty || Aconsignee.touched)" class="text-danger">
@@ -830,7 +830,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
                             <input type="text" class="form-control" maxlength="60" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].thirdParties['+p+'].name'"
-                              placeholder="Enter third party name" [(ngModel)]="thirdParty.name" #thirdName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                              placeholder="Enter third party name" [(ngModel)]="thirdParty.name" #thirdName="ngModel" required pattern="^[a-zA-Z\s]{2,30}$">
                               <div *ngIf="thirdName.invalid && (thirdName.dirty || thirdName.touched)" class="text-danger">
                                 <div *ngIf="thirdName.errors.required">
                                   Third Party name is required.
