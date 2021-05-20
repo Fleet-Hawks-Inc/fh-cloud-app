@@ -181,6 +181,7 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
+          this.fetchCustomersByID();
           this.customerPo = result.customerPO;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
@@ -227,7 +228,6 @@ export class OrderDetailComponent implements OnInit {
           }
 
           this.milesArr = [];
-          console.log('result.shippersReceiversInfo', result.shippersReceiversInfo);
           for (let k = 0; k < element.receivers.length; k++) {
             const element2 = element.receivers[k];
             element2.date = '';
@@ -263,7 +263,6 @@ export class OrderDetailComponent implements OnInit {
 
             this.milesArr.push(newArr);
           })
-          console.log('this.milesArr', this.milesArr);
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -355,7 +354,7 @@ export class OrderDetailComponent implements OnInit {
           //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
           // }
 
-          this.fetchCustomersByID();
+          
 
 
       }, (err) => {
@@ -366,7 +365,7 @@ export class OrderDetailComponent implements OnInit {
    * Get all shippers's IDs of names from api
    */
   fetchShippersByIDs() {
-    this.apiService.getData('shippers/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/consignor').subscribe((result: any) => {
       this.shippersObjects = result;
     });
   }
@@ -375,7 +374,7 @@ export class OrderDetailComponent implements OnInit {
    * Get all receivers's IDs of names from api
    */
   fetchReceiversByIDs() {
-    this.apiService.getData('receivers/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/consignee').subscribe((result: any) => {
       this.receiversObjects = result;
     });
   }
@@ -384,14 +383,16 @@ export class OrderDetailComponent implements OnInit {
    * Get all customers's IDs of names from api
    */
   fetchCustomersByID() {
-    this.apiService.getData(`customers/${this.customerID}`).subscribe((result: any) => {
+    this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
       result = result.Items[0];
       this.customerName = `${result.companyName}`;
 
-      if(result.address[0].manual) {
-        this.customerAddress = result.address[0].address1;
-      } else {
-        this.customerAddress = result.address[0].userLocation;
+      if(result.address.length > 0) {
+        if(result.address[0].manual) {
+          this.customerAddress = result.address[0].address1;
+        } else {
+          this.customerAddress = result.address[0].userLocation;
+        }
       }
 
       this.customerCityName = result.address[0].cityName;

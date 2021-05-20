@@ -294,12 +294,15 @@ export class DriverListComponent implements OnInit {
         e.citizenship = CountryStateCity.GetSpecificCountryNameByCode(e.citizenship);
       });
       // for(let i=0;i<drivers[d].address.length; i++){
-      drivers[d].address.map((a: any) => {
-        if (a.manual) {
-          a.countryName = CountryStateCity.GetSpecificCountryNameByCode(a.countryCode);
-          a.stateName = CountryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
+        if(drivers[d].address != undefined) {
+          drivers[d].address.map((a: any) => {
+            if (a.manual) {
+              a.countryName = CountryStateCity.GetSpecificCountryNameByCode(a.countryCode);
+              a.stateName = CountryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
+            }
+          });
         }
-      });
+      
       // }
 
     }

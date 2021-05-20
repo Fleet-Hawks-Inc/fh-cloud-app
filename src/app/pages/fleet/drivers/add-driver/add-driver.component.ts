@@ -829,7 +829,10 @@ fetchCities(address){
         this.fetchStates();
         this.fetchLicStates(result.licenceDetails.issuedCountry);
         this.fetchDocStates(result.documentDetails);
-        this.fetchCities(result.address);
+        if(result.address != undefined) {
+          this.fetchCities(result.address);
+        }
+        
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -1198,11 +1201,14 @@ fetchCities(address){
     }
 
     this.apiService.getData(`carriers/${this.currentUserCarrier}`).subscribe(result => {
-      result.Items[0].addressDetails.map(e => {
-        if (e.addressType === 'yard') {
-          this.carrierYards.push(e);
-        }
-      });
+      if(result.Items[0].addressDetails != undefined) {
+        result.Items[0].addressDetails.map(e => {
+          if (e.addressType === 'yard') {
+            this.carrierYards.push(e);
+          }
+        });
+      }
+      
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {

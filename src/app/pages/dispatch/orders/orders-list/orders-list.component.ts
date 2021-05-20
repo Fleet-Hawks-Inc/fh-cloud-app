@@ -137,7 +137,7 @@ export class OrdersListComponent implements OnInit {
    * Get all customers's IDs of names from api
    */
   fetchCustomersByIDs() {
-    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.customersObjects = result;
     });
   }
