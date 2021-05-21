@@ -19,7 +19,6 @@ import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
-import { relativeTimeRounding } from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
