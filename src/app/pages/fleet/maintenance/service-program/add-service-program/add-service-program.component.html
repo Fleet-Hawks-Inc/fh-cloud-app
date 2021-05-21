@@ -104,13 +104,15 @@
                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <div class="row">
                                                <div class="col-lg-5 pr-0">
-                                                  <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime" #Rtime="ngModel" required
-                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" >
+                                                  <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime"
+                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" #Rtime="ngModel" required pattern="^[0-9]$" >
                                                   <div *ngIf="Rtime.invalid && (Rtime.dirty || Rtime.touched)" class="text-danger">
                                                    <div *ngIf="Rtime.errors.required">
                                                      Repeat By Time is required.
                                                    </div>
-
+                                                   <div *ngIf="Rtime.errors.pattern">
+                                                    Repeat By Time must contain numbers only.
+                                                  </div>
                                                  </div>
                                                </div>
                                                <div class="col-lg-7 pr-0">

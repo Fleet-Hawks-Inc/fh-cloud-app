@@ -294,13 +294,13 @@
                             name="aisle"
                             [(ngModel)]="aisle"
                             placeholder="eg. 1,2,3 "
-
+                            #iAisle="ngModel" pattern="^[0-9]$"
                           />
-                          <!-- <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
+                          <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
                             <div *ngIf="iAisle.errors.pattern">
                               Aisle must contain numbers only.
                             </div>
-                          </div> -->
+                          </div>
                         </div>
                         <div class="col-lg-4">
                           <input
@@ -309,13 +309,13 @@
                             name="row"
                             [(ngModel)]="row"
                             placeholder="eg. 1,2,3 "
-
+                            #iRow="ngModel" pattern="^[0-9]$"
                           />
-                          <!-- <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
+                          <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
                             <div *ngIf="iRow.errors.pattern">
                               Row must contain numbers only.
                             </div>
-                          </div> -->
+                          </div>
                         </div>
                         <div class="col-lg-4">
                           <input
@@ -324,13 +324,13 @@
                             name="bin"
                             [(ngModel)]="bin"
                             placeholder="eg. 1,2,3"
-
+                            #iBin="ngModel" pattern="^[0-9]$"
                           />
-                          <!-- <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
+                          <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
                             <div *ngIf="iBin.errors.pattern">
                               Bin must contain numbers only.
                             </div>
-                          </div> -->
+                          </div>
 
                         </div>
                       </div>
@@ -351,7 +351,7 @@
                         <optgroup label="Select Vendor">
                           <ng-option
                             *ngFor="let vendor of vendors | async"
-                            value="{{ vendor.vendorID }}"
+                            value="{{ vendor.contactID }}"
                           >
                             {{ vendor.companyName }}
                           </ng-option>
@@ -706,7 +706,7 @@
         </button>
       </div>
       <div class="modal-body text-dark" id="groupForm">
-      
+
           <div class="form-row">
             <div class="form-group col-lg-12">
               <label class="control-label font-weight-bold"
@@ -721,7 +721,7 @@
               <div *ngIf="inventory.invalid && (inventory.dirty || inventory.touched)" class="text-danger">
                 <div *ngIf="inventory.errors.required">
                   Category Name is required.
-                </div>     
+                </div>
                 <div *ngIf="inventory.errors.pattern">
                        Category Name must contains uppercase, lowercase and special characters for period(space) only.
                 </div>
@@ -756,7 +756,7 @@
               </p>
             </div>
           </div>
-       
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -800,7 +800,7 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-        
+
           <div class="form-row">
             <div class="form-group col-lg-12">
               <label class="control-label font-weight-bold"
@@ -811,7 +811,7 @@
               <div *ngIf="aWarehouse.invalid && (aWarehouse.dirty || aWarehouse.touched)" class="text-danger">
                 <div *ngIf="aWarehouse.errors.required">
                   Warehouse Name is required.
-                </div>     
+                </div>
                 <div *ngIf="aWarehouse.errors.pattern">
                        Warehouse Name must contains uppercase, lowercase and special characters for period(space) only.
                 </div>
@@ -845,8 +845,8 @@
                 <div *ngIf="sltI.invalid && (sltI.dirty || sltI.touched)" class="text-danger">
                   <div *ngIf="sltI.errors.required">
                     Select valid country from the list is required.
-                  </div>     
-                  
+                  </div>
+
                 </div>
                 </div>
                 <div class="col-lg-6">
@@ -871,8 +871,8 @@
                 <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
                   <div *ngIf="sltP.errors.required">
                     Select valid province from the list is required.
-                  </div>     
-                  
+                  </div>
+
                 </div>
                 </div>
               </div>
@@ -897,8 +897,8 @@
                 <div *ngIf="sltC.invalid && (sltC.dirty || sltC.touched)" class="text-danger">
                   <div *ngIf="sltC.errors.required">
                    Select valid city from the list is required.
-                  </div>     
-                  
+                  </div>
+
                 </div>
                 </div>
                 <div class="col-lg-6">
@@ -911,7 +911,7 @@
                   <div *ngIf="cCode.invalid && (cCode.dirty || cCode.touched)" class="text-danger">
                     <div *ngIf="cCode.errors.required">
                       Zip Code is required.
-                    </div>     
+                    </div>
                     <div *ngIf="cCode.errors.pattern">
                            Zip Code must contains uppercase, lowercase, numbers and special characters for period(space) only.
                     </div>
@@ -928,7 +928,7 @@
                   <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)" class="text-danger">
                     <div *ngIf="sAddress.errors.required">
                       Street Address  is required.
-                    </div>     
+                    </div>
                     <div *ngIf="sAddress.errors.pattern">
                            Street Address must contains uppercase, lowercase, numbers and special characters for period(space,&,-,',') only.
                     </div>
@@ -945,7 +945,7 @@
               </p>
             </div>
           </div>
-       
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
