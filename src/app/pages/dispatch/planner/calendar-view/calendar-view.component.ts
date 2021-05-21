@@ -518,7 +518,6 @@ export class CalendarViewComponent implements OnInit {
   }
 
   filterTrip(tripID) {
-    console.log('tripID', tripID)
     if(tripID == undefined) {
       this.tempTrips = this.oldTrips;
     } else {
