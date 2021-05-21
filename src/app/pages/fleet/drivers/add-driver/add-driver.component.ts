@@ -19,6 +19,7 @@ import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import { relativeTimeRounding } from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -53,13 +54,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   manualAddress = false;
   nextTab: any;
   carrierID: any;
-
   statesObject: any;
   countriesObject: any;
   citiesObject: any;
-
   allDrivers: any;
-
   groupData = {
     groupType: 'drivers', // it can be users,vehicles,assets,drivers
     groupName: '',
@@ -113,7 +111,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lng: ''
       },
       manual: false,
-      userLocation: ''
+      userLocation: '',
+      states: [],
+      cities: [],
     }],
     documentDetails: [{
       documentType: '',
@@ -123,7 +123,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       issuingState: null,
       issueDate: '',
       expiryDate: '',
-      uploadedDocs: []
+      uploadedDocs: [],
+      docStates: [],
     }],
     crossBorderDetails: {
       ACI_ID: '',
@@ -273,19 +274,19 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   cpwdfieldTextType: boolean;
   finaltimezones: any = [];
   constructor(private apiService: ApiService,
-    private httpClient: HttpClient,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
-    private HereMap: HereMapService,
-    private ngbCalendar: NgbCalendar,
-    private domSanitizer: DomSanitizer,
-    private location: Location,
-    private modalService: NgbModal,
-    private modalServiceOwn: ModalService,
-    private dateAdapter: NgbDateAdapter<string>,
-    private router: Router,
-    private listService: ListService,
+              private httpClient: HttpClient,
+              private toastr: ToastrService,
+              private route: ActivatedRoute,
+              private spinner: NgxSpinnerService,
+              private HereMap: HereMapService,
+              private ngbCalendar: NgbCalendar,
+              private domSanitizer: DomSanitizer,
+              private location: Location,
+              private modalService: NgbModal,
+              private modalServiceOwn: ModalService,
+              private dateAdapter: NgbDateAdapter<string>,
+              private router: Router,
+              private listService: ListService,
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -472,7 +473,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lng: ''
       },
       manual: false,
-      userLocation: ''
+      userLocation: '',
+      states: [],
+      cities: [],
     });
   }
 
@@ -498,58 +501,54 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
 
-   getStates(id: any, oid = null) {
-    this.driverData.address[oid].stateCode = '';
-    this.driverData.address[oid].cityName = '';
-    this.states = CountryStateCity.GetStatesByCountryCode([id]);
+   getStates(countryCode: any, index: any) {
+    this.driverData.address[index].stateCode = '';
+    this.driverData.address[index].cityName = '';
+    this.driverData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-
-   getCities(id: any, oid = null, CID: any) {
-     this.driverData.address[oid].cityName = '';
-    this.cities = CountryStateCity.GetCitiesByStateCodes(CID, id);
+   getCities(stateCode: any, index: any, countryCode: any) {
+     this.driverData.address[index].cityName = '';
+     this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+     this.driverData.address[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+     this.driverData.address[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
   }
-  getDocStates(cntryCode, i){
-    this.driverData.documentDetails[i].issuingState = '';
-    this.docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  getDocStates(cntryCode: any, index: any) {
+    this.driverData.documentDetails[index].issuingState = '';
+    this.driverData.documentDetails[index].docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  getLicStates(cntryCode) {
+  getLicStates(cntryCode: any) {
     this.driverData.licenceDetails.issuedState = '';
     this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  fetchLicStates(issuedCountry){
+  fetchLicStates(issuedCountry: any) {
     this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
   }
- fetchStates() {
-  let countryCodes: any = ['US', 'CA'];
-  this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
+ fetchStates(countryCode: any, index: any) {
+  let states  = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  this.driverData.address[index].states = states;
+ }
+ fetchCities(countryCode: any, stateCode: any, index: any) {
+   this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+}
+ editAddress(address: any) {
+  for (let a = 0; a < address.length; a++) {
+    const countryCode = address[a].countryCode;
+    const stateCode = address[a].stateCode;
+    this.fetchStates(countryCode, a);
+    this.fetchCities(countryCode, stateCode, a);
+  }
  }
   fetchDocStates(docs){
-    let countryCodes: any = [];
     for(let d=0; d < docs.length; d++){
-      docs.map((e: any) => {
-        countryCodes.push(e.issuingCountry);
-      });
+      let countryCode = this.driverData.documentDetails[d].issuingCountry;
+      this.driverData.documentDetails[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
     }
-    this.docStates = CountryStateCity.GetStatesByCountryCode(countryCodes);
   }
-fetchCities(address){
-  for(let a=0; a< address.length; a++){
-    let cityList: any = [];
-    if(address[a].manual){
-      let countryCode = address[a].countryCode;
-      let stateCode = address[a].stateCode;
-       cityList = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-    }
-    this.cities = _.merge(this.cities, cityList);
-  }
-}
-
   fetchDocuments() {
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
       this.documentTypeList = data;
-    })
+    });
   }
-
 
   getToday(): string {
     return new Date().toISOString().split('T')[0];
@@ -662,8 +661,14 @@ fetchCities(address){
       });
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
+    for(let d = 0; d < this.driverData.documentDetails.length; d++){
+      const element = this.driverData.documentDetails[d];
+      delete element.docStates;
+    }
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
+      delete element.states;
+      delete element.cities;
       if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
         const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateCode} ${element.countryCode}`;
@@ -675,6 +680,7 @@ fetchCities(address){
         }
       }
     }
+    console.log('ddriver data', this.driverData);
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -809,7 +815,8 @@ fetchCities(address){
       issuingState: '',
       issueDate: '',
       expiryDate: '',
-      uploadedDocs: []
+      uploadedDocs: [],
+      docStates: []
     });
   }
 
@@ -826,23 +833,24 @@ fetchCities(address){
       .subscribe(async (result: any) => {
         result = result.Items[0];
         console.log('result', result);
-        this.fetchStates();
         this.fetchLicStates(result.licenceDetails.issuedCountry);
-        this.fetchDocStates(result.documentDetails);
+       this.driverData.address = result.address;
         if(result.address != undefined) {
-          this.fetchCities(result.address);
+          for (let a = 0; a < this.driverData.address.length; a++) {
+            const countryCode = this.driverData.address[a].countryCode;
+            const stateCode = this.driverData.address[a].stateCode;
+            this.fetchStates(countryCode, a);
+            this.fetchCities(countryCode, stateCode, a);
+          }
         }
-        
+
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
-        // this.driverData.contractorId = result.contractorId;
         this.driverData.ownerOperator = result.ownerOperator;
         this.driverData.driverStatus = result.driverStatus;
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        // this.driverData.password = result.password;
-        // this.driverData.confirmPassword = result.confirmPassword;
         this.driverData.startDate = result.startDate;
         this.driverData.terminationDate = result.terminationDate;
         this.driverData.contractStart = result.contractStart;
@@ -868,46 +876,46 @@ fetchCities(address){
         this.driverData.DOB = result.DOB;
         this.driverData.email = result.email;
         this.driverData.phone = result.phone;
-        for (let i = 0; i < result.address.length; i++) {
-          if (result.address[i].manual) {
-            this.newAddress.push({
-              addressID: result.address[i].addressID,
-              addressType: result.address[i].addressType,
-              countryCode: result.address[i].countryCode,
-              countryName: result.address[i].countryName,
-              stateCode: result.address[i].stateCode,
-              stateName: result.address[i].stateName,
-              cityName: result.address[i].cityName,
-              zipCode: result.address[i].zipCode,
-              address1: result.address[i].address1,
-              address2: result.address[i].address2,
-              geoCords: {
-                lat: result.address[i].geoCords.lat,
-                lng: result.address[i].geoCords.lng
-              },
-              manual: result.address[i].manual
-            });
-          } else {
-            this.newAddress.push({
-              addressID: result.address[i].addressID,
-              addressType: result.address[i].addressType,
-              countryCode: result.address[i].countryCode,
-              countryName: result.address[i].countryName,
-              stateCode: result.address[i].stateCode,
-              stateName: result.address[i].stateName,
-              cityName: result.address[i].cityName,
-              zipCode: result.address[i].zipCode,
-              address1: result.address[i].address1,
-              address2: result.address[i].address2,
-              geoCords: {
-                lat: result.address[i].geoCords.lat,
-                lng: result.address[i].geoCords.lng
-              },
-              userLocation: result.address[i].userLocation
-            });
-          }
-        }
-        this.driverData.address = this.newAddress;
+        // for (let i = 0; i < result.address.length; i++) {
+        //   if (result.address[i].manual) {
+        //     this.newAddress.push({
+        //       addressID: result.address[i].addressID,
+        //       addressType: result.address[i].addressType,
+        //       countryCode: result.address[i].countryCode,
+        //       countryName: result.address[i].countryName,
+        //       stateCode: result.address[i].stateCode,
+        //       stateName: result.address[i].stateName,
+        //       cityName: result.address[i].cityName,
+        //       zipCode: result.address[i].zipCode,
+        //       address1: result.address[i].address1,
+        //       address2: result.address[i].address2,
+        //       geoCords: {
+        //         lat: result.address[i].geoCords.lat,
+        //         lng: result.address[i].geoCords.lng
+        //       },
+        //       manual: result.address[i].manual
+        //     });
+        //   } else {
+        //     this.newAddress.push({
+        //       addressID: result.address[i].addressID,
+        //       addressType: result.address[i].addressType,
+        //       countryCode: result.address[i].countryCode,
+        //       countryName: result.address[i].countryName,
+        //       stateCode: result.address[i].stateCode,
+        //       stateName: result.address[i].stateName,
+        //       cityName: result.address[i].cityName,
+        //       zipCode: result.address[i].zipCode,
+        //       address1: result.address[i].address1,
+        //       address2: result.address[i].address2,
+        //       geoCords: {
+        //         lat: result.address[i].geoCords.lat,
+        //         lng: result.address[i].geoCords.lng
+        //       },
+        //       userLocation: result.address[i].userLocation
+        //     });
+        //   }
+        // }
+        // this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
           let docmnt = [];
           if (result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0) {
@@ -928,6 +936,7 @@ fetchCities(address){
           }
         }
         this.driverData.documentDetails = this.newDocuments;
+        this.fetchDocStates(this.newDocuments);
         this.driverData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.driverData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.driverData.crossBorderDetails.fast_ID = result.crossBorderDetails.fast_ID;
@@ -991,8 +1000,14 @@ fetchCities(address){
     this.driverData[`driverID`] = this.driverID;
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
+    for(let d = 0; d < this.driverData.documentDetails.length; d++){
+      const element = this.driverData.documentDetails[d];
+      delete element.docStates;
+    }
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
+      delete element.states;
+      delete element.cities;
       if (element.countryCode != '' || element.stateCode != '' || element.cityName != '') {
         let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateCode} ${element.countryCode}`;
@@ -1208,7 +1223,7 @@ fetchCities(address){
           }
         });
       }
-      
+
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {

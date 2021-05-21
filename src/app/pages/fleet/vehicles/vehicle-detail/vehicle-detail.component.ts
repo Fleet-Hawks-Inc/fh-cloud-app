@@ -217,7 +217,7 @@ export class VehicleDetailComponent implements OnInit {
     autoplay: true,
     autoplaySpeed: 5000,
   };
-
+  contactsObjects: any = {};
   vehicleTypeObects: any = {};
   ownerOperatorName = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
@@ -247,10 +247,10 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
-    this.fetchVendorsList();
+    // this.fetchVendorsList();
     this.fetchTasksList();
     this.fetchUsersList();
-
+    this.fetchContactsByIDs();
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
@@ -258,12 +258,16 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
-  fetchVendorsList() {
-    this.apiService.getData("vendors/get/list").subscribe((result: any) => {
-      this.vendors = result;
+  // fetchVendorsList() {
+  //   this.apiService.getData("vendors/get/list").subscribe((result: any) => {
+  //     this.vendors = result;
+  //   });
+  // }
+  fetchContactsByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactsObjects = result;
     });
   }
-
   fetchGroupsList() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupsList = result;
@@ -357,16 +361,16 @@ export class VehicleDetailComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
 
-        if(result.ownerOperatorID != '' && result.ownerOperatorID != undefined) {
-          this.apiService.getData(`ownerOperators/${result.ownerOperatorID}`).subscribe((result2: any) => {
-            let data = result2.Items[0];
-            this.ownerOperatorName = data.firstName+' '+data.lastName;
-          });
-        }
-
+        // if(result.ownerOperatorID != '' && result.ownerOperatorID != undefined) {
+        //   this.apiService.getData(`ownerOperators/${result.ownerOperatorID}`).subscribe((result2: any) => {
+        //     let data = result2.Items[0];
+        //     this.ownerOperatorName = data.firstName+' '+data.lastName;
+        //   });
+        // }
+        this.ownerOperatorName = result.ownerOperatorID;
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
-            this.inspectionForms = result1.Items[0]; 
+            this.inspectionForms = result1.Items[0];
             console.log('this.inspectionForms', this.inspectionForms);
           });
         }

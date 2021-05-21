@@ -256,13 +256,13 @@ export class DriverListComponent implements OnInit {
         this.suggestedDrivers = [];
         this.getStartandEndVal();
         this.drivers = result[`Items`];
-        this.fetchAddress(this.drivers); // function converts country code, stateCode inot country name and state name
+        this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
         if (this.driverID != '') {
           this.driverStartPoint = 1;
           this.driverEndPoint = this.totalRecords;
         }
         if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+          const lastEvalKey = result[`LastEvaluatedKey`].driverSK.replace(/#/g, '--');
           this.driverNext = false;
           // for prev button
           if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -294,15 +294,15 @@ export class DriverListComponent implements OnInit {
         e.citizenship = CountryStateCity.GetSpecificCountryNameByCode(e.citizenship);
       });
       // for(let i=0;i<drivers[d].address.length; i++){
-        if(drivers[d].address != undefined) {
-          drivers[d].address.map((a: any) => {
-            if (a.manual) {
-              a.countryName = CountryStateCity.GetSpecificCountryNameByCode(a.countryCode);
-              a.stateName = CountryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
-            }
-          });
-        }
-      
+      if (drivers[d].address != undefined) {
+        drivers[d].address.map((a: any) => {
+          if (a.manual) {
+            a.countryName = CountryStateCity.GetSpecificCountryNameByCode(a.countryCode);
+            a.stateName = CountryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
+          }
+        });
+      }
+
       // }
 
     }
