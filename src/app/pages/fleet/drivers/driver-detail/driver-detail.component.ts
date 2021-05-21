@@ -164,7 +164,6 @@ export class DriverDetailComponent implements OnInit {
             this.homeTerminal = homeTerminal[0].userLocation;
           }
         }
-        console.log('this.homeTerminal',this.homeTerminal);
   }
    /**
    * fetch Asset data
@@ -177,7 +176,6 @@ export class DriverDetailComponent implements OnInit {
         console.log('result', result);
         if (result) {
           this.driverData = await result[`Items`][0];
-          console.log(' this.driverData ', this.driverData );
           this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
             this.fetchCompleteAdd(this.driverData.address);
