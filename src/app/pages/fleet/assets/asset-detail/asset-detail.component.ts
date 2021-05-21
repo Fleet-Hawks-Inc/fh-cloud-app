@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import {environment} from '../../../../../environments/environment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 declare var $: any;
 
 @Component({
@@ -33,8 +34,8 @@ export class AssetDetailComponent implements OnInit {
   VIN: string;
   assetType: string;
   licencePlateNumber: string;
-  licenceStateID: string;
-  licenceCountryID: string;
+  licenceStateName: string;
+  licenceCountryName: string;
   groupID: string;
   year: string;
   manufacturer: string;
@@ -67,13 +68,9 @@ export class AssetDetailComponent implements OnInit {
   ACEID: string;
   ACIID: string;
   errors = {};
-
-  statesObject: any = {};
   assetObjects: any = {};
-  vendorObjects: any = {};
   groupsObjects: any = {};
-  countriesObject: any = {};
-
+  contactsObjects: any = {};
   uploadedDocs = [];
   uploadedPhotos = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
@@ -144,13 +141,10 @@ export class AssetDetailComponent implements OnInit {
     this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
-    this.fetchAllStatesIDs();
     this.fetchManufacturesByIDs();
     this.fetchModalsByIDs();
-   // this.fetchAssetsTypes();
-    this.fetchVendorsByIDs();
     this.fetchGroups();
-    this.fetchAllCountriesIDs();
+    this.fetchContactsByIDs();
   }
 
   fetchManufacturesByIDs() {
@@ -164,13 +158,11 @@ export class AssetDetailComponent implements OnInit {
       this.modelsObjects = result;
     });
   }
-
-  fetchVendorsByIDs() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
-      this.vendorObjects = result;
+  fetchContactsByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactsObjects = result;
     });
   }
-
   /**
    * fetch Asset data
    */
@@ -185,20 +177,13 @@ export class AssetDetailComponent implements OnInit {
           //   result['devices'] = [];
           // }
 
-          if(result.assetDetails.ownerShip == 'ownerOperator'){
-            this.apiService.getData('ownerOperators/' + result.assetDetails.ownerOperator).subscribe((result: any) => {
-              let res = result.Items[0];
-              this.ownerOperatorName = res.firstName + ' ' + res.lastName;
-            });
-          }
-
           if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
             this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
               this.inspectionFormName = res.inspectionFormName;
             });
           }
-
+          this.ownerOperatorName = result.assetDetails.ownerOperator;
           // this.fetchDevicesByID();
           this.assetIdentification = result.assetIdentification;
           this.VIN = result.VIN;
@@ -208,8 +193,8 @@ export class AssetDetailComponent implements OnInit {
           this.currentStatus =  result.currentStatus;
           this.annualSafetyDate =  result.assetDetails.annualSafetyDate;
           this.licencePlateNumber =  result.assetDetails.licencePlateNumber;
-          this.licenceCountryID = result.assetDetails.licenceCountryID;
-          this.licenceStateID =  result.assetDetails.licenceStateID;
+          this.licenceCountryName = CountryStateCity.GetSpecificCountryNameByCode(result.assetDetails.licenceCountryCode);
+          this.licenceStateName =  CountryStateCity.GetStateNameFromCode(result.assetDetails.licenceStateCode,result.assetDetails.licenceCountryCode);
           this.year =  result.assetDetails.year;
           this.manufacturer =  result.assetDetails.manufacturer;
           this.model =  result.assetDetails.model;
@@ -257,19 +242,6 @@ export class AssetDetailComponent implements OnInit {
           this.deviceData = result[`Items`];
         }
       }, (err) => {});
-  }
-
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
   }
   fetchGroups() {
     this.apiService.getData('groups/get/list')

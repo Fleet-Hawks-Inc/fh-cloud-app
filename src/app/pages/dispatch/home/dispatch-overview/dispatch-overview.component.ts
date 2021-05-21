@@ -138,9 +138,9 @@ export class DispatchOverviewComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    if(this.lastEvaluatedKey != '') {
-      this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
-    }
+    // if(this.lastEvaluatedKey != '') {
+    //   this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
+    // }
 
     this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
@@ -163,13 +163,14 @@ export class DispatchOverviewComponent implements OnInit {
         this.allActivities = result['Items'];
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
           this.dispatchNext = false;
-          this.checkPrevEvaluatedKey(result['LastEvaluatedKey']);
+          this.checkPrevEvaluatedKey(lastEvalKey);
           // for prev button
           if(this.prevKeyExist) {
-            this.dispatchPrevEvauatedKeys.push(result['LastEvaluatedKey']);
+            this.dispatchPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'];
+          this.lastEvaluatedKey = lastEvalKey;
 
         } else {
           this.dispatchNext = true;

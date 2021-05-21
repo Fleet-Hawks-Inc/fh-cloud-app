@@ -122,7 +122,7 @@ fetchReceivers() {
     this.apiService
       .getData(`ownerOperators`)
       .subscribe((result: any) => {
-        this.ownerOperatorDataSource.next(result.Items);
+        this.ownerOperatorDataSource.next(result);
       });
   }
 
@@ -148,9 +148,6 @@ fetchReceivers() {
         this.assetModelsDataSource.next(result.Items);
       });
   }
-
-
-
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);
@@ -164,8 +161,12 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    this.apiService.getData(`customers`).subscribe((result: any) => {
-      this.customersDataSource.next(result.Items);
+    // this.apiService.getData(`customers`).subscribe((result: any) => {
+    //   this.customersDataSource.next(result.Items);
+    // });
+
+    this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
+      this.customersDataSource.next(result);
     });
   }
 

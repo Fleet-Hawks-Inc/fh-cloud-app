@@ -260,6 +260,7 @@ export class NewAciManifestComponent implements OnInit {
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.modalStates = this.listService.stateList;
+    console.log('this.modalStates',this.modalStates);
     this.modalCities = this.listService.cityList;
     this.fetchVehicles();
     this.fetchAssets();

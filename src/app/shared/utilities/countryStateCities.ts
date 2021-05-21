@@ -1,4 +1,4 @@
-import csc from "country-state-city";
+import csc from 'country-state-city';
 
 /**
  * Utility function to get country, state and cities.
@@ -18,7 +18,7 @@ export class CountryStateCity {
       });
     });
     return countries;
-  };
+  }
 
   /**
    * Get specific countries defined in array
@@ -81,21 +81,6 @@ export class CountryStateCity {
   };
 
   /**
-   * Get Country Name
-   * @param countryCodes one or more state code
-   * @returns
-   */
-  public static GetCountryName = (countryCode: string): string => {
-    const cscRep = csc.getCountryByCode(countryCode);
-
-    if (cscRep) {
-      return cscRep.name;
-    } else {
-      return countryCode;
-    }
-  };
-
-  /**
    * Get State Name
    * @param countryCodes one or more state code
    * @returns
@@ -140,5 +125,5 @@ export class CountryStateCity {
     } else {
       return stateCode;
     }
-  };
+  }
 }

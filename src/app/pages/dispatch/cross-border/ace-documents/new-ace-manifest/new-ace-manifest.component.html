@@ -248,8 +248,8 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].citizenshipCountry'"
                               placeholder="Select citizenship country " [(ngModel)]="passenger.citizenshipCountry">
-                              <ng-option *ngFor="let country of countries" [value]="country.code">
-                                {{country.name}}</ng-option>
+                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
+                                {{country.countryName}}</ng-option>
                             </ng-select>
                           </div>
                         </div>
@@ -313,7 +313,6 @@
                       </div>
                       <div class="col-lg-5">
                         <div class="form-group row">
-
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Document Type<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>

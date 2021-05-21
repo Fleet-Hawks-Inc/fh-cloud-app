@@ -56,7 +56,7 @@ export class NewAceManifestComponent implements OnInit {
       { sealNumber: '' },
       { sealNumber: '' },
     ],
-    IIT: 'IMPORTER'
+    IIT: null
 
   };
   trailers = [
@@ -69,7 +69,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
-      IIT: 'IMPORTER'
+      IIT: null
     },
   ];
   borderResponses: any = [];
@@ -388,10 +388,7 @@ export class NewAceManifestComponent implements OnInit {
     });
   }
   fetchCountries() {
-   // this.countries = CountryStateCity.GetAllCountries(); fetch countries from library
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
+    this.countries = CountryStateCity.GetAllCountries(); //fetch countries from library
   }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
@@ -414,7 +411,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
-      IIT: 'IMPORTER'
+      IIT: null
     });
     this.addTrailerBtn = true;
 

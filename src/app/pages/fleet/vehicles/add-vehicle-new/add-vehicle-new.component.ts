@@ -267,7 +267,7 @@ export class AddVehicleNewComponent implements OnInit {
     private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
-      this.vehicleForm = $('#vehicleForm').validate();
+      // this.vehicleForm = $('#vehicleForm').validate();
     });
 
   }
@@ -568,7 +568,7 @@ export class AddVehicleNewComponent implements OnInit {
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                 // val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
@@ -590,7 +590,6 @@ export class AddVehicleNewComponent implements OnInit {
             this.Success = '';
             this.submitDisabled = false;
             // this.uploadFiles(); // upload selected files to bucket
-            
             this.toastr.success('Vehicle Added Successfully');
             this.router.navigateByUrl('/fleet/vehicles/list');
             // this.location.back();
@@ -607,15 +606,12 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        
-        if(v == 'vehicleIdentification') {
+        if(v == 'vehicleIdentification' || v == 'VIN') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+          .addClass('error');
         }
       });
-    // this.validateTabErrors();
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -1053,13 +1049,13 @@ export class AddVehicleNewComponent implements OnInit {
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                  //val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
               .subscribe({
                 complete: () => {
-                 
+                  this.throwErrors();
                   if (err) return reject(err);
                   this.submitDisabled = false;
                 },

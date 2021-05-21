@@ -246,7 +246,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   birthDateMaxLimit: any;
   futureDatesLimit: any;
   uploadedPhotos = [];
-
+  licStates = [];
   uploadedDocs = [];
   abstractDocs = [];
   existingPhotos = [];
@@ -356,6 +356,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
     this.fetchTimezones(); // to fetch timezone
+    this.fetchDrivers();
     await this.getCurrentuser();
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -378,6 +379,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       }
       this.spinner.hide();
     })
+  }
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe((res: any) => {
+      this.allDrivers = res.Items;
+    });
   }
   fetchTimezones() {
     const ct = require('countries-and-timezones');
@@ -493,14 +499,25 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
    getStates(id: any, oid = null) {
+    this.driverData.address[oid].stateCode = '';
+    this.driverData.address[oid].cityName = '';
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
   }
 
    getCities(id: any, oid = null, CID: any) {
+     this.driverData.address[oid].cityName = '';
     this.cities = CountryStateCity.GetCitiesByStateCodes(CID, id);
   }
-  getDocStates(cntryCode){
+  getDocStates(cntryCode, i){
+    this.driverData.documentDetails[i].issuingState = '';
     this.docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  }
+  getLicStates(cntryCode) {
+    this.driverData.licenceDetails.issuedState = '';
+    this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  }
+  fetchLicStates(issuedCountry){
+    this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
   }
  fetchStates() {
   let countryCodes: any = ['US', 'CA'];
@@ -810,8 +827,12 @@ fetchCities(address){
         result = result.Items[0];
         console.log('result', result);
         this.fetchStates();
+        this.fetchLicStates(result.licenceDetails.issuedCountry);
         this.fetchDocStates(result.documentDetails);
-        this.fetchCities(result.address);
+        if(result.address != undefined) {
+          this.fetchCities(result.address);
+        }
+        
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -1180,11 +1201,14 @@ fetchCities(address){
     }
 
     this.apiService.getData(`carriers/${this.currentUserCarrier}`).subscribe(result => {
-      result.Items[0].addressDetails.map(e => {
-        if (e.addressType === 'yard') {
-          this.carrierYards.push(e);
-        }
-      });
+      if(result.Items[0].addressDetails != undefined) {
+        result.Items[0].addressDetails.map(e => {
+          if (e.addressType === 'yard') {
+            this.carrierYards.push(e);
+          }
+        });
+      }
+      
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {
