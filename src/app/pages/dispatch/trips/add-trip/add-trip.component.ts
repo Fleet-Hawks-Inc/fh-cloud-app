@@ -351,18 +351,6 @@ export class AddTripComponent implements OnInit {
             this.actualMiles = 0;
             this.getMiles();
         }
-
-        // if (this.trips.length > 0) {
-        //     let dataCheck = this.trips.map(function (v) { return v.vehicleID; });
-
-        //     if (dataCheck.length > 0) {
-        //         this.tripData.tripStatus = 'dispatched';
-        //     } else {
-        //         this.tripData.tripStatus = 'confirmed';
-        //     }
-        // } else {
-        //     this.tripData.tripStatus = 'confirmed';
-        // }
     }
 
     emptyAssetModalFields() {
