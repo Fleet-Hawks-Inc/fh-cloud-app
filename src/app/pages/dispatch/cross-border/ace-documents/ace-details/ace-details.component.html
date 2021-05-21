@@ -744,7 +744,7 @@
                                         <td>{{thirdParty.name}}</td>
                                         <td>{{thirdPartyTypesObects[thirdParty.type]}}</td>
                                         <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{stateCodeToName[thirdParty.address.stateProvince]}},{{thirdParty.address.postalCode}}
+                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -770,7 +770,7 @@
                                         <td><span
                                                 class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}USD<br>
+                                                *ngIf="commodity.value != 0">Value:&nbsp;{{commodity.value}}USD<br></span>
                                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
@@ -862,7 +862,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
+                                        <td>{{driverData.citizenshipCountry}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>
@@ -885,7 +885,7 @@
                                   <tr>
                                       <th width="40%" class="back-color-gray">
                                           State:</th>
-                                      <td>{{stateCodeToName[driverData.usAddress.state]}}</td>
+                                      <td>{{driverData.usAddress.state}}</td>
                                   </tr>
                               </tbody>
                           </table>
@@ -921,7 +921,7 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}},{{countryCodeName[travelDocument.country]}}</td>
+                                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
                                         <td>{{documentsTypesObects[travelDocument.type]}}</td>
                                     </tr>
                                 </tbody>
@@ -978,7 +978,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
+                                        <td>{{passengerData.citizenshipCountry}}</td>
                                     </tr>
 
                                 </tbody>
@@ -1002,8 +1002,8 @@
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
                                         <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                        <td>{{countryCodeName[travelDocument.country]}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
+                                        <td>{{travelDocument.country}}</td>
+                                        <td>{{travelDocument.stateProvince}}</td>
                                     </tr>
 
                                 </tbody>

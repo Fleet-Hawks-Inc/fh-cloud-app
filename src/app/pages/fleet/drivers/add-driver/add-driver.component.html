@@ -114,7 +114,7 @@
                               <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
                                 class="form-control form-control-sm" placeholder="Select Owner Operator "
                                 (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
-                                <ng-option *ngFor="let item of ownerOperators | async" value="{{item.operatorID}}">
+                                <ng-option *ngFor="let item of ownerOperators | async" value="{{item.contactID}}">
                                   {{item.companyName}}</ng-option>
                               </ng-select>
                               </div>
