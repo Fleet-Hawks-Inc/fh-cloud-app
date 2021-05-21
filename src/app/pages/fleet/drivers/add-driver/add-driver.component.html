@@ -554,7 +554,7 @@
                               Code</label>
                             <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
 
-                              placeholder=" eg. 7V2 3R4" #zip1="ngModel" pattern="^[a-zA-Z0-9\s\#\.\'\-\/\,]{2,7}$">
+                              placeholder=" eg. 7V2 3R4" #zip1="ngModel" pattern="^[a-zA-Z0-9\s]{2,7}$">
                               <div *ngIf="zip1.invalid && (zip1.dirty || zip1.touched)" class="text-danger">
                                 <div *ngIf="zip1.errors.pattern">
                                   Zip code  contains atleast 2 uppercase letters,numbers and no special characters except (space) only.
@@ -1330,7 +1330,7 @@
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit"
-                            name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" >
+                            name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" >
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
@@ -1363,7 +1363,7 @@
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit"
-                            name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" >
+                            name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency">
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
