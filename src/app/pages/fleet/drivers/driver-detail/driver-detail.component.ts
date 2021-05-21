@@ -177,9 +177,10 @@ export class DriverDetailComponent implements OnInit {
         if (result) {
           this.driverData = await result[`Items`][0];
           this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
-          this.fetchCompleteAdd(this.driverData.address);
+          if (this.driverData.address !== undefined || this.driverData.address !== '') {
+            this.fetchCompleteAdd(this.driverData.address);
+          }
           this.cycle = this.driverData.hosDetails.hosCycle;
-         // this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.email = this.driverData.email;
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
@@ -189,12 +190,12 @@ export class DriverDetailComponent implements OnInit {
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;
           this.contractEnd = this.driverData.contractEnd;
-          if (this.driverData.driverImage != '' && this.driverData.driverImage != undefined) {
+          if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
             this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
           } else {
             this.profile = 'assets/img/driver/driver.png';
           }
-          if (this.driverData.abstractDocs != undefined && this.driverData.abstractDocs.length > 0) {
+          if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
             this.absDocs = this.driverData.abstractDocs.map(x => ({path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x}));
           }
           this.driverType = this.driverData.driverType;
@@ -263,7 +264,7 @@ export class DriverDetailComponent implements OnInit {
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
           this.payPeriod = this.driverData.paymentDetails.payPeriod;
-
+        //  this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.hosStatus = this.driverData.hosDetails.hosStatus;
           this.hosRemarks = this.driverData.hosDetails.hosRemarks;
           this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -286,14 +287,17 @@ export class DriverDetailComponent implements OnInit {
   }
 
   fetchCompleteAdd(address: any) {
-  for(let a=0; a<address.length; a++){
-   address.map((e: any) => {
-       if(e.manual){
-         e.countryName = CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-         e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+    if(address != ''){
+      for(let a=0; a<address.length; a++){
+        address.map((e: any) => {
+            if(e.manual){
+              e.countryName = CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
+              e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+            }
+         });
        }
-    });
-  }
+    }
+
   }
   fetchDocuments() {
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{

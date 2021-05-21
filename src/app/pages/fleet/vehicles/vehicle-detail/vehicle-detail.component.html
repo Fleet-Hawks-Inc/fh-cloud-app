@@ -110,7 +110,7 @@
 
                     <div class="row  m-0" *ngIf="ownership == 'ownerOperator'">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ ownerOperatorName }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ contactsObjects[ownerOperatorName] }}</div>
                     </div>
 
                     <div class="row  m-0">
@@ -294,7 +294,7 @@
                       <div class="col-lg-4 text-right">
                       </div>
                     </div>
-                  
+
                     <div class="vdtableinfoheight vdtableheight">
                       <table class="table table-responsive-lg">
                         <thead>
@@ -329,7 +329,7 @@
                           <td width="80%">Document {{ i+1}} </td>
                           <td width="20%">
                             <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument(data.name, i)" ><i class="fas fa-trash-alt"></i></a>
-                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a> 
+                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
                             <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
                           </td>
                         </tr>
@@ -468,7 +468,7 @@
                 <div class="col-lg-6">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Insurance Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[insurance.vendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[insurance.vendorID] }}</div>
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Issue:</div>
@@ -661,7 +661,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[purchase.purchaseVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[purchase.purchaseVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Price :</div>
@@ -716,7 +716,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Loan Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[loan.loanVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[loan.loanVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount of Loan:</div>

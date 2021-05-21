@@ -34,7 +34,7 @@
                                     </div>
                                     <div *ngIf="vName.errors.pattern">
                                        Vehicle Name must contains 4-10 numbers only.
-                                       
+
                                     </div>
                                  </div>
                               </div>
@@ -230,7 +230,7 @@
                                     placeholder="Select driver to assign to vehicle" (click)="driverChange('main')">
                                     <optgroup label="">
                                        <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}}
-                                          {{driver.lastName}}
+
                                        </ng-option>
                                     </optgroup>
                                  </ng-select>
@@ -246,7 +246,7 @@
                                     placeholder="Select co-driver to the vehicle" (click)="driverChange('team')">
                                     <optgroup label="">
                                        <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}}
-                                          {{driver.lastName}}
+
                                        </ng-option>
                                     </optgroup>
                                  </ng-select>
@@ -414,7 +414,7 @@
                                  <ng-select class="form-control populate" name="ownerOperatorID" [(ngModel)]="ownerOperatorID"
                                     placeholder="Select owner operator">
                                     <ng-container *ngFor="let ownerOperator of ownerOperators | async">
-                                       <ng-option value="{{ownerOperator.operatorID}}">
+                                       <ng-option value="{{ownerOperator.contactID}}">
                                           {{ownerOperator.companyName}}</ng-option>
                                     </ng-container>
                                  </ng-select>
@@ -503,12 +503,12 @@
                                           {{iForm.inspectionFormName}}
                                        </ng-option>
                                     </ng-select>
-                                   
-                                   
+
+
                                  </div>
-                                 
+
                               </div>
-                              
+
 
                               <div class="col-lg-1 pl-0 mar-top-37">
                                  <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
@@ -760,7 +760,7 @@
                                  <div class="input-group">
                                     <input type="text" class="form-control" name="specifications.tareWeight" [(ngModel)]="specifications.tareWeight"
                                         placeholder="eg. 100 , 200" #tWeight="ngModel" pattern="^[0-9]+$">
-                                 
+
                                     <span class="input-group-append"><span _ngcontent-dvv-c14="" class="input-group-text pt-0 pb-0"> kg </span></span>
                                  </div>
                                  <div *ngIf="tWeight.invalid && (tWeight.dirty || tWeight.touched)" class="text-danger ">
@@ -783,7 +783,7 @@
                                  <div class="input-group">
                                     <input type="text" class="form-control"  name="specifications.grossVehicleWeightRating"
                                        [(ngModel)]="specifications.grossVehicleWeightRating" placeholder="eg. 100 , 200" #gWeight="ngModel" pattern="^[0-9]+$">
-                                      
+
 
                                     <span class="input-group-append"><span _ngcontent-dvv-c14="" class="input-group-text pt-0 pb-0"> kg </span></span>
                                  </div>
@@ -847,7 +847,7 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Vendor <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <ng-select placeholder="Select Vendor" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
-                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}
+                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">{{vendor.companyName}}
                                     </ng-option>
                                  </ng-select>
                               </div>
@@ -1259,7 +1259,7 @@
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID" [(ngModel)]="purchase.purchaseVendorID"
                                     placeholder="Select purchase vendor">
-                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">
+                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
                                        {{vendor.companyName}}</ng-option>
                                  </ng-select>
                               </div>
@@ -1354,7 +1354,7 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor <span
                                        class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select placeholder="Select Vendor" name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">
-                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}
+                                    <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">{{vendor.companyName}}
                                     </ng-option>
                                  </ng-select>
                               </div>

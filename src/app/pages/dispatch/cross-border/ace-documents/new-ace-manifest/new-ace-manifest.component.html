@@ -561,7 +561,7 @@
                               Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
                               [(ngModel)]="shipment.shipperID">
-                              <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.shipperID}}">
+                              <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.contactID}}">
                                 {{shipper.companyName}}</ng-option>
                             </ng-select>
                           </div>
@@ -575,7 +575,7 @@
                               Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID">
-                              <ng-option *ngFor="let consignee of consignees  | async" value="{{consignee.receiverID}}">
+                              <ng-option *ngFor="let consignee of consignees  | async" value="{{consignee.contactID}}">
                                 {{consignee.companyName}}</ng-option>
                             </ng-select>
                           </div>
