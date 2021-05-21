@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from "moment";
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -63,6 +64,8 @@ export class CalendarViewComponent implements OnInit {
   viewType = 'map';
   allCustomers = [];
   tempIndex:any = '';
+  allTrips = [];
+  oldTrips = [];
 
   ngOnInit() {
     this.fetchAllTrips();
@@ -116,10 +119,11 @@ export class CalendarViewComponent implements OnInit {
       })
   }
 
+  
   fetchAllTrips() {
     let backgroundColor = '';
     let borderColor = '';
-    this.apiService.getData('trips')
+    this.apiService.getData('trips/get/calendarActive')
       .subscribe((result: any) => {
         result.Items.map((i) => { 
           if(i.tripStatus == 'confirmed') {
@@ -432,6 +436,7 @@ export class CalendarViewComponent implements OnInit {
   }
 
   async orderTripValues(val) {
+    this.allTrips = (val[0].Items.length > 0) ? val[0].Items : [];
     let fetchedTrip = val[0];
     let fetchedOrder = val[1];
 
@@ -469,7 +474,8 @@ export class CalendarViewComponent implements OnInit {
               tripObj.customersArr.push(cusObj);
 
               //for unique customer-id in array 
-              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
+              tripObj.customersArr = _.uniq(tripObj.customersArr);
+              // tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
             }
           });
         }
@@ -485,8 +491,8 @@ export class CalendarViewComponent implements OnInit {
     * Get all customers
    */
   fetchCustomers() {
-    this.apiService.getData('customers/get/all').subscribe((result: any) => {
-      this.allCustomers = result.Items;
+    this.apiService.getData('contacts/get/calendar/customers').subscribe((result: any) => {
+      this.allCustomers = result;
       this.assignCompanyName();
     });
   }
@@ -499,21 +505,28 @@ export class CalendarViewComponent implements OnInit {
           const elementp = element.customersArr[w];
 
           this.allCustomers.map(function (obj) {
-            if (obj.customerID == elementp.customerId) {
+            if (obj.id == elementp.customerId) {
               elementp.name = obj.companyName;
-
-              let custName = obj.companyName.split(' ');
-              if(custName[0] != undefined) {
-                elementp.icon = custName[0].charAt(0).toUpperCase();
-              }
-
-              if(custName[1] != undefined) {
-                elementp.icon += custName[1].charAt(0).toUpperCase();
-              }
+              elementp.icon = obj.companyLogo;
             }
           });
         }
       }
     }
+
+    this.oldTrips = this.tempTrips;
+  }
+
+  filterTrip(tripID) {
+    if(tripID == undefined) {
+      this.tempTrips = this.oldTrips;
+    } else {
+      this.tempTrips = this.tempTrips.filter((v) =>{
+        if(v.tripID == tripID) {
+          return v;
+        }
+      })
+    }
+    
   }
 }

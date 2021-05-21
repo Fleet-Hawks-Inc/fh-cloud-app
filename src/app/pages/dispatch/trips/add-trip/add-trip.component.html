@@ -251,7 +251,7 @@
                                                 <tr class="ui-sortable-handle" cdkDrag
                                                     *ngFor="let trip of trips; let i= index">
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
-                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
+                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date | date:"yyyy/MM/dd" }}</td>
                                                      <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
                                                     <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime
                                                         }}</td>
@@ -307,8 +307,11 @@
                                                         </select>
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="date" class="form-control" id="editCell2{{i}}"
-                                                            value="{{ trip.date }}">
+                                                        <input id="cell2{{i}}" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                            ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off">
+
+                                                        <!-- <input type="date" class="form-control" id="editCell2{{i}}"
+                                                            value="{{ trip.date }}"> -->
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -404,8 +407,8 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="date" class="form-control newRow" id="cell2"
-                                                            name="cell2">
+                                                        <input id="cell2" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                            ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="time" class="form-control newRow" id="cell13"
@@ -509,7 +512,7 @@
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
                                                 <p class="mb-0 text-4 font-weight-semibold text-dark">{{
                                                     trips[0].locationName }}</p>
-                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }}
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date | date:"yyyy/MM/dd" }}
                                                     {{ trips[0].time }}</p>
                                             </div>
 
@@ -543,7 +546,7 @@
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">{{
                                                         trips[trips.length-1].locationName }}</p>
                                                     <p class="mb-0 text-4 font-weight-normal text-dark">{{
-                                                        trips[trips.length-1].date }} {{ trips[trips.length-1].time }}
+                                                        trips[trips.length-1].date | date:"yyyy/MM/dd" }} {{ trips[trips.length-1].time }}
                                                     </p>
                                                 </div>
                                             </ng-template>
@@ -588,7 +591,7 @@
                                                     <div class="tripcirclen" data-toggle="tooltip" title="{{ trip.locationName }}"></div>
                                                     <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
                                                         <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
-                                                            <br>{{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}
+                                                            <br>{{ trip.date | date: "yyyy/MM/dd" }} - {{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}
                                                         </p>
                                                     </div>
                                                 </div>
