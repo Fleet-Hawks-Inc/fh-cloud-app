@@ -257,12 +257,6 @@ export class VehicleDetailComponent implements OnInit {
     }, {});
     });
   }
-
-  // fetchVendorsList() {
-  //   this.apiService.getData("vendors/get/list").subscribe((result: any) => {
-  //     this.vendors = result;
-  //   });
-  // }
   fetchContactsByIDs() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactsObjects = result;
@@ -360,13 +354,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
-        // if(result.ownerOperatorID != '' && result.ownerOperatorID != undefined) {
-        //   this.apiService.getData(`ownerOperators/${result.ownerOperatorID}`).subscribe((result2: any) => {
-        //     let data = result2.Items[0];
-        //     this.ownerOperatorName = data.firstName+' '+data.lastName;
-        //   });
-        // }
         this.ownerOperatorName = result.ownerOperatorID;
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
