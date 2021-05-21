@@ -284,7 +284,7 @@ export class AceDetailsComponent implements OnInit {
       eventID: this.manifestID,
       manifestType: 'ACE',
       status: val
-    }
+    };
     this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
