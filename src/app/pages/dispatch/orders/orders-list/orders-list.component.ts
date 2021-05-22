@@ -147,9 +147,27 @@ export class OrdersListComponent implements OnInit {
   }
 
   allignOrders(orders) {
-    this.orders.push(orders);
+    
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
+
+      for (let k = 0; k < element.shippersReceiversInfo.length; k++) {
+        const element2 = element.shippersReceiversInfo[k];
+
+        for (let m = 0; m < element2.shippers.length; m++) {
+          const element3 = element2.shippers[m];
+          let dateTime = element3.dateAndTime.split(' ');
+          element3.date = (dateTime[0] != undefined) ? dateTime[0] : '';
+          element3.time = (dateTime[1] != undefined) ? dateTime[1] : '';
+        }
+
+        for (let m = 0; m < element2.receivers.length; m++) {
+          const element3 = element2.receivers[m];
+          let dateTime = element3.dateAndTime.split(' ');
+          element3.date = (dateTime[0] != undefined) ? dateTime[0] : '';
+          element3.time = (dateTime[1] != undefined) ? dateTime[1] : '';
+        }
+      }
 
       if(element.orderStatus == 'confirmed') {
         this.confirmOrders.push(element);
@@ -165,6 +183,8 @@ export class OrdersListComponent implements OnInit {
         this.partiallyOrders.push(element);
       }
     }
+
+    this.orders.push(orders);
   }
 
   initDataTable() {

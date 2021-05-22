@@ -299,7 +299,7 @@ export class CalendarViewComponent implements OnInit {
       this.tripData.vehicleIDs = await selectedVehicles;
       this.tripData.assetIDs = await selectedAssets;
       this.tripData.tripStatus = 'dispatched';
-      this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
+      
       this.apiService.putData('trips', this.tripData).subscribe({
         complete: () => {
         },
@@ -327,9 +327,12 @@ export class CalendarViewComponent implements OnInit {
         next: (res) => {
           this.spinner.hide();
           this.response = res;
-          this.tempIndex = '';
+          this.tempTrips[this.tempIndex].btnHeading = 'Dispatched';
+          this.tempTrips[this.tempIndex].showModal = false;
+          this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
           $('#assetModal').modal('hide');
-          this.toastr.success('Assignment done successfully');
+          this.toastr.success('Dispatch done successfully');
+          this.tempIndex = '';
         },
       });
     } else {
@@ -367,7 +370,7 @@ export class CalendarViewComponent implements OnInit {
           $("#assetModal").modal('show');
           this.spinner.hide();
         } else {
-          this.toastr.error('Assignment is already done. Please refer edit trip to change the previous assignment');
+          this.toastr.error('Dispatch is already done. Please refer edit trip to make other changes');
           this.spinner.hide();
         }
       })
@@ -447,6 +450,21 @@ export class CalendarViewComponent implements OnInit {
         if(tripDate != '' && tripDate != undefined) {
           tripDate = moment(tripDate,'YYYY-MM-DD').format('DD-MM-YYYY')
         }
+        let btnHeading = '';
+        let showModal = false;
+        if(element.tripStatus === 'confirmed') {
+          if(element.driverIDs.length > 0 || element.assetIDs.length> 0 || element.vehicleIDs.length > 0 ) {
+            btnHeading = 'Dispatch';
+            showModal = false;
+          } else {
+            btnHeading = 'Assign and dispatch';
+            showModal = true;
+          }
+        } else {
+          showModal = false;
+          btnHeading = 'Dispatched';
+        }
+
         let tripObj = {
           pickupLocation: '',
           deliveryLocation: '',
@@ -458,7 +476,9 @@ export class CalendarViewComponent implements OnInit {
           tripPlan: element.tripPlanning,
           orders: element.orderId,
           customersArr: [],
-          documents: element.documents
+          documents: element.documents,
+          btnHeading: btnHeading,
+          showModal: showModal
         }
 
         for (let k = 0; k < element.orderId.length; k++) {
@@ -475,13 +495,13 @@ export class CalendarViewComponent implements OnInit {
 
               //for unique customer-id in array 
               tripObj.customersArr = _.uniq(tripObj.customersArr);
-              // tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
             }
           });
         }
         this.tempTrips.push(tripObj);
       }
     }
+    console.log('this.tempTrips', this.tempTrips);
     await this.fetchCustomers();
     await this.getTripsData(this.tempTrips);
     
@@ -527,6 +547,29 @@ export class CalendarViewComponent implements OnInit {
         }
       })
     }
+    
+  }
+
+  updateTripStatus(tripID, index, tripStatus) {
+    if(tripStatus == 'dispatched') {
+      return false;
+    } else {
+      let tripObj = {
+        entryID : tripID,
+        status: 'dispatched'
+      }
+      this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => { 
+        if(result) {
+          this.tempTrips[index].btnHeading = 'Dispatched';
+          this.tempTrips[index].showModal = false;
+          this.tempTrips[index].tripStatus = 'dispatched';
+          this.toastr.success('Trip status updated successfully');
+        } else {
+          this.toastr.error('Something went wrong. Please try again later after sometime');
+        }
+      })
+    }
+
     
   }
 }
