@@ -272,7 +272,7 @@ export class AddAssetsComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v == 'assetIdentification' || v == 'VIN') {
+        if(v === 'assetIdentification' || v === 'VIN') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');

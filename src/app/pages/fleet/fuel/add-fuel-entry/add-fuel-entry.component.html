@@ -201,8 +201,8 @@
                             </div>
                             <div class="pl-1 ml-0"  *ngIf="subTotal.errors.pattern">
                               Subtotal contains numbers and special characters for period('.') only.
-  
-  
+
+
                               </div>
 
 
@@ -413,7 +413,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" #paidBy="ngModel" required>
                           <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}}
-                            {{driver.lastName}}</ng-option>
+                            </ng-option>
                         </ng-select>
                         <div *ngIf="paidBy.invalid && (paidBy.dirty || paidBy.touched)" class="text-danger">
                           <div *ngIf="paidBy.errors.required">
