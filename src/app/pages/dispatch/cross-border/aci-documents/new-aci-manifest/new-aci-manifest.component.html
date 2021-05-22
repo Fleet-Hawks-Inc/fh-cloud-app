@@ -365,12 +365,11 @@
                               [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'"
                               [(ngModel)]="document.number" #docNum="ngModel"
-                              pattern="^[a-zA-Z0-9\s\#\.\-\_]+$">
+                              pattern="^[A-Za-z0-9\s-\/\\]{1,50}$">
                               <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
 
                                 <div *ngIf="docNum.errors.pattern">
-                                  Document# must contain combination of small letters,capital letters
-                                  ,alphanumeric and atleast one special characters(#,/,-,_,.)
+                                  Document# must contain Alphanumeric, dashes ,spaces and no other characters.
                                 </div>
                               </div>
                           </div>
@@ -707,13 +706,13 @@
                                     <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                       [attr.name]="'shipments['+s+'].cargoControlNumber'"
                                       placeholder="Starts with carrier's 4 digit canadian carrier code , 8 or 25 digits , eg. 1234PARS00012345"
-                                      [(ngModel)]="shipment.cargoControlNumber" #cargoCN="ngModel" required pattern="^[0-9]{1}[0-9A-Z-]{3}[A-Z0-9]{4,21}$">
+                                      [(ngModel)]="shipment.cargoControlNumber" #cargoCN="ngModel" required pattern="^[A-Z0-9]{4,21}$">
                                       <div *ngIf="cargoCN.invalid && (cargoCN.dirty || cargoCN.touched)" class="text-danger">
                                         <div *ngIf="cargoCN.errors.required">
                                           Cargo Control Number is required.
                                         </div>
                                         <div *ngIf="cargoCN.errors.pattern">
-                                          Cargo Control must contain alpha-numeric with no spaces or special characters, letters must be upper case.
+                                          Cargo Control must be of 4-21 alpha-numeric with no spaces or special characters, letters must be upper case.
                                         </div>
                                       </div>
                                   </div>
@@ -783,7 +782,7 @@
                                     <div>
 
                                       <div *ngIf="Impcsa.errors.pattern">
-                                        Importer CSA Business must contain Alphanumeric with no spaces or other characters. Letters must be uppercase.
+                                        Importer CSA Business must contain 15 Alphanumeric with no spaces or other characters. Letters must be uppercase.
                                        </div>
                                     </div>
 
@@ -1469,12 +1468,12 @@
                                 <input type="text" class="form-control" placeholder="eg. 4114"
                                   [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.unCode'"
-                                  [(ngModel)]="commodity.hazmatDetails.unCode" #hazC="ngModel" pattern="^[0-9]+$" >
+                                  [(ngModel)]="commodity.hazmatDetails.unCode" #hazC="ngModel" pattern="^[0-9]{4}$" >
                                   <div *ngIf="hazC.invalid && (hazC.dirty || hazC.touched)" class="text-danger">
                                     <div>
 
                                       <div *ngIf="hazC.errors.pattern">
-                                       Hazmat Code must contain numbers only.
+                                        Hazmat Code must be 4 digit number.
                                        </div>
                                     </div>
 
