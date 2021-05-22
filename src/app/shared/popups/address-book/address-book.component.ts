@@ -604,12 +604,12 @@ export class AddressBookComponent implements OnInit {
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
   loginDiv = false;
-  
+
   errorClass = false;
   errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
   fieldvisibility = 'false';
   newStaffUser = 'false';
-  
+
   // manual pagination
   customerNext = false;
   customerPrev = true;
@@ -746,7 +746,7 @@ export class AddressBookComponent implements OnInit {
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-   
+
     data.address[i].userLocation = result.address.label;
     data.address[i].geoCords.lat = result.position.lat;
     data.address[i].geoCords.lng = result.position.lng;
@@ -1315,7 +1315,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.brokerDisabled = false;
-        
+
         $('#addBrokerModal').modal('hide');
         this.brokerDraw = 0;
         this.lastEvaluatedKeyBroker = '';
@@ -1467,7 +1467,7 @@ export class AddressBookComponent implements OnInit {
         this.vendorDraw = 0;
         this.lastEvaluatedKeyVendor = '';
         this.dataMessageVendor = Constants.FETCHING_DATA;
-        
+
         this.showMainModal();
         this.vendors = [];
         this.fetchVendorsCount();
@@ -2130,7 +2130,7 @@ export class AddressBookComponent implements OnInit {
 
       }
     }
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -2141,8 +2141,8 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-    this.lastEvaluatedKeyStaff = ''; 
-    
+    this.lastEvaluatedKeyStaff = '';
+
     this.apiService.postData('contacts?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
@@ -2699,11 +2699,9 @@ export class AddressBookComponent implements OnInit {
     if(typeof item.timeCreated === 'object' && item.timeCreated !== null) {
       item.timeCreated = new Date().getTime();
     }
-
     if(typeof item.timeModified === 'object' && item.timeModified !== null) {
       item.timeModified = new Date().getTime();
     }
-    
     this.modalTitle = 'Edit ';
     this.updateButton = true;
     this.hasError = false;
@@ -3278,7 +3276,7 @@ export class AddressBookComponent implements OnInit {
     this.loginDiv = false;
     this.fieldvisibility = 'false';
     this.newStaffUser = 'false';
-    
+
   }
 
   initDataTable() {
@@ -3335,7 +3333,7 @@ export class AddressBookComponent implements OnInit {
           this.dataMessageBroker = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedBrokers = [];
-        this.suggestedBrokerCompanies = []; 
+        this.suggestedBrokerCompanies = [];
         this.getStartandEndVal('broker');
 
         this.brokers = result['Items'];
@@ -4013,35 +4011,35 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'brokerCompany') {
       this.filterVal.brokerCompanyName = searchValue;
       this.suggestedBrokerCompanies = [];
-      
+
     } else if(type == 'carrierCompany') {
       this.filterVal.carrierCompanyName = searchValue;
       this.suggestedCarrierCompanies = [];
-      
+
     } else if(type == 'consigneeCompany') {
       this.filterVal.receiverCompanyName = searchValue;
       this.suggestedConsigneeCompanies = [];
-      
+
     } else if(type == 'customerCompany') {
       this.filterVal.customerCompanyName = searchValue;
       this.suggestedCustomerCompanies = [];
-      
+
     } else if(type == 'staffCompany') {
       this.filterVal.staffCompanyName = searchValue;
       this.suggestedStaffCompanies = [];
-      
+
     } else if(type == 'factoringCompany') {
       this.filterVal.factoringCompanyName = searchValue;
       this.suggestedFactoringCompanies = [];
-      
+
     } else if(type == 'operatorCompany') {
       this.filterVal.operatorCompanyName = searchValue;
       this.suggestedOperatorCompanies = [];
-      
+
     } else if(type == 'vendorCompany') {
       this.filterVal.vendorCompanyName = searchValue;
       this.suggestedVendorCompanies = [];
-      
+
     }
   }
 
@@ -4788,7 +4786,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'shipper') {
       this.shipperStartPoint = this.shipperDraw*this.pageLength+1;
       this.shipperEndPoint = this.shipperStartPoint+this.pageLength-1;
-      
+
     } else if(type == 'consignee') {
       this.consigneeStartPoint = this.consigneeDraw*this.pageLength+1;
       this.consigneeEndPoint = this.consigneeStartPoint+this.pageLength-1;
@@ -5054,7 +5052,7 @@ export class AddressBookComponent implements OnInit {
       this.shipperStartPoint = 1;
       this.shipperEndPoint = this.pageLength;
       this.shipperDraw = 0;
-      
+
     } else if(type == 'consignee') {
       this.consigneeStartPoint = 1;
       this.consigneeEndPoint = this.pageLength;
@@ -5077,8 +5075,8 @@ export class AddressBookComponent implements OnInit {
     if(this.isCarrierID == undefined || this.isCarrierID == null) {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
-    } 
-  } 
+    }
+  }
 
   checkCompanyName = _.debounce(function(value, type, searchType='') {
 
@@ -5087,7 +5085,7 @@ export class AddressBookComponent implements OnInit {
         .subscribe((result) => {
           if(searchType == 'company') {
             this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedCustomers = result.Items;
             this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
