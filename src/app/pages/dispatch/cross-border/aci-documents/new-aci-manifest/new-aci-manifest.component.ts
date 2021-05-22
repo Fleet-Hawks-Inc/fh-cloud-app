@@ -781,7 +781,7 @@ export class NewAciManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+             // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -898,7 +898,7 @@ export class NewAciManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+               // this.throwErrors();
               },
               error: () => { },
               next: () => { },
