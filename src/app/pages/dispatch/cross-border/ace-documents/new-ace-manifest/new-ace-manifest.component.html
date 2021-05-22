@@ -12,7 +12,7 @@
         <div class="col">
           <section class="card">
             <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get" name="form" id="form_">
+              <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #aAce1="ngForm">
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <label
@@ -81,17 +81,17 @@
                         <input type="text" class="form-control" name="estimatedArrivalDate" placeholder="Enter date" #Edate="ngModel" required
                           ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle();onChangeHideErrors('estimatedArrivalDate')"
                           [(ngModel)]="estimatedArrivalDate" />
+                          <div *ngIf="Edate.invalid && (Edate.dirty || Edate.touched)" class="text-danger">
+                            <div>
 
-                      </div>
-                      <div *ngIf="Edate.invalid && (Edate.dirty || Edate.touched)" class="text-danger">
-                        <div>
+                              <div *ngIf="Edate.errors.required">
+                               Select required Estimated Arrival Date.
+                               </div>
+                            </div>
 
-                          <div *ngIf="Edate.errors.required">
-                           Select required Estimated Arrival Date.
-                           </div>
-                        </div>
+                          </div>
+                         </div>
 
-                      </div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -142,7 +142,13 @@
                         <div class="row">
                           <div class="col-lg-3" *ngFor="let seal of truck.sealNumbers; let i=index;">
                             <input type="text" class="form-control" name="sealNumbers{{i}}.sealNumber"
-                              [(ngModel)]='seal.sealNumber'>
+                              [(ngModel)]='seal.sealNumber'#Aseal="ngModel" pattern="^[a-zA-Z0-9]{4}$">
+                              <div *ngIf="Aseal.invalid && (Aseal.dirty || Aseal.touched)" class="text-danger">
+
+                                <div *ngIf="Aseal.errors.pattern">
+                                  Seal must contain a string value between 1 and 15 alphanumeric characters.
+                                </div>
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -179,21 +185,19 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                           Co-Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                          <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" placeholder="Select Co-Driver" #Acodriver="ngModel" required>
+                          <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" placeholder="Select Co-Driver" >
                             <ng-container *ngFor="let driver of fetchedDrivers">
                               <ng-option *ngIf="driver.driverID != mainDriver" [value]="driver.driverID">
                                 {{driver.firstName}} {{driver.lastName}}</ng-option>
                             </ng-container>
                         </ng-select>
-                        <div *ngIf="Acodriver.invalid && (Acodriver.dirty || Acodriver.touched)" class="text-danger">
+                        <!-- <div *ngIf="Acodriver.invalid && (Acodriver.dirty || Acodriver.touched)" class="text-danger">
                           <div>
-
                             <div *ngIf="Acodriver.errors.required">
                              Select required Co-Driver from the list.
                              </div>
                           </div>
-
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-2  mar-top-37">
                         <!-- <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i
@@ -227,7 +231,13 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].firstName'" placeholder="Enter passenger first name"
-                              [(ngModel)]="passenger.firstName">
+                              [(ngModel)]="passenger.firstName" #fName1="ngModel"  pattern="^[a-zA-Z]+$">
+                              <div *ngIf="fName1.invalid && (fName1.dirty || fName1.touched)" class="text-danger">
+
+                                <div *ngIf="fName1.errors.pattern">
+                                  First Name must not contain any special character.
+                                </div>
+                              </div>
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Gender<span
@@ -261,7 +271,15 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].lastName'" placeholder="Enter passenger last name"
-                              [(ngModel)]="passenger.lastName"> </div>
+                              [(ngModel)]="passenger.lastName" #lName="ngModel"
+                               pattern="^[a-zA-Z0-9]+$">
+                               <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
+
+                                <div *ngIf="lName.errors.pattern">
+                                  Last Name must not contain any special characters.
+                                </div>
+                              </div>
+                               </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Birth<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -274,10 +292,17 @@
                               class="fas fa-exclamation-circle" data-toggle="tooltip"
                               data-placement="top"
                               title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                            <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
+                            <input type="text" maxlength="14"  [class.error]="errorFastCard"
                               placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
                               class="form-control"  [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].fastCardNumber'"
-                              [(ngModel)]="passenger.fastCardNumber">
+                              [(ngModel)]="passenger.fastCardNumber" #fastCard="ngModel" pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$">
+                              <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
+                                <div *ngIf="fastCard.errors.pattern">
+                                  Fast Card must contain only 14 numbers beginning with 4270 or 4110 and ending with 00 or
+                                  01.
+                                </div>
+
+                              </div>
                               <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
                           </div>
                         </div>
@@ -296,7 +321,14 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" placeholder="Enter travel document number"
                             [ngModelOptions]="{standalone: true}"
-                            [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'" [(ngModel)]="document.number">
+                            [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'" [(ngModel)]="document.number" #docNum="ngModel"
+                            pattern="^[A-Za-z0-9\s-\/\\]{1,50}$">
+                            <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
+
+                              <div *ngIf="docNum.errors.pattern">
+                                Document# must contain Alphanumeric, dashes ,spaces and no other characters.
+                              </div>
+                            </div>
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country<span
@@ -375,12 +407,21 @@
                                   class="text-1 optional-label-color">(optional)</span></label>
                             <input [(ngModel)]="usAddress.address.userLocation" name="address.userLocation"
                                (keyup)="searchTerm.next($event);" type="text" class="form-control"
-                               placeholder="Type Address" [disabled]="usAddress.address.manual"  [class.error]="errorClassUserLocation">
+                               placeholder="Type Address" [disabled]="usAddress.address.manual"  [class.error]="errorClassUserLocation" #USadd="ngModel" required>
+                               <div *ngIf="USadd.invalid && (USadd.dirty || USadd.touched)" class="text-danger">
+                                <div>
+
+                                  <div *ngIf="USadd.errors.required">
+                                    US Address Details are required.
+                                   </div>
+                                </div>
+
+                              </div>
                                <div class="text-danger" *ngIf="errorClassUserLocation">This field is required.</div>
 
                             <div class="checkbox-custom pt-2">
                                <input [(ngModel)]="usAddress.address.manual" name="manual"
-                                  (change)="manAddress($event,null,null,'usAddress')" type="checkbox">
+                                  (change)="manAddress($event,null,null,'usAddress')" type="checkbox" >
                                <label for="man_address">Type Manually</label>
                             </div>
                             <div class="map-search__results bg-white">
@@ -498,7 +539,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Shipment
                               Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [attr.name]="'shipments['+s+'].type'" [(ngModel)]="shipment.type"
-                              [ngModelOptions]="{standalone: true}" #ShipT="ngModel" required>
+                              [ngModelOptions]="{standalone: true}" #ShipT="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let shipment of shipmentTypeList" [value]="shipment.code">
                                 {{shipment.description}}</ng-option>
                             </ng-select>
@@ -525,7 +566,7 @@
                                 </ng-select> -->
                                 <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
                                   [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC"
-                                  [ngModelOptions]="{standalone: true}" #ShipC="ngModel" required>
+                                  [ngModelOptions]="{standalone: true}" #ShipC="ngModel" [required]="shipments.length === 0">
                                   <ng-option value="DOTL">DOTL</ng-option>
                                   <ng-option value="FVFA">FVFA</ng-option>
                                   <ng-option value="GHGP">GHGP</ng-option>
@@ -544,13 +585,13 @@
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].shipmentControlNumber'"
                                   placeholder="Enter unique number, min 4 characters, max 12 characters"
-                                  [(ngModel)]="shipment.shipmentControlNumber" (change)="onChangeHideErrors('shipments['+s+'].shipmentControlNumber')" #ShipCn="ngModel" required pattern="^[A-Z]{4}[A-Z0-9]{4,12}$">
+                                  [(ngModel)]="shipment.shipmentControlNumber" (change)="onChangeHideErrors('shipments['+s+'].shipmentControlNumber')" #ShipCn="ngModel" [required]="shipments.length === 0" pattern="^[A-Z0-9]{4,12}$">
                                   <div *ngIf="ShipCn.invalid && (ShipCn.dirty || ShipCn.touched)" class="text-danger">
                                     <div *ngIf="ShipCn.errors.required">
                                       Shipment Control Number is required.
                                     </div>
                                     <div *ngIf="ShipCn.errors.pattern">
-                                      Shipment Control must contain alpha-numeric with no spaces or special characters, letters must be upper case.
+                                      Shipment Control must be of 4-12 alpha-numeric with no spaces or special characters, letters must be upper case.
                                     </div>
                                   </div>
                               </div>
@@ -561,7 +602,7 @@
                               Loading<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].provinceOfLoading'" [ngModelOptions]="{standalone: true}"
-                              [(ngModel)]="shipment.provinceOfLoading" #proL="ngModel" required>
+                              [(ngModel)]="shipment.provinceOfLoading" #proL="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let state of states" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
                             </ng-select>
                             <div *ngIf="proL.invalid && (proL.dirty || proL.touched)" class="text-danger">
@@ -579,16 +620,14 @@
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [ngModelOptions]="{standalone: true}"  ngbDatepicker #d7="ngbDatepicker" [minDate]="getcurrentDate" (click)="d7.toggle();"
                               [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'" placeholder="yyyy/mm/dd"
-                              [(ngModel)]="shipment.goodsAstrayDateOfExit" #goodast="ngModel" required>
-                              <div *ngIf="goodast.invalid && (goodast.dirty || goodast.touched)" class="text-danger">
+                              [(ngModel)]="shipment.goodsAstrayDateOfExit" >
+                              <!-- <div *ngIf="goodast.invalid && (goodast.dirty || goodast.touched)" class="text-danger">
                                 <div>
-
                                   <div *ngIf="goodast.errors.required">
                                    Select required Goods Astray Date of Exit.
                                    </div>
                                 </div>
-
-                              </div>
+                              </div> -->
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'IN_BOND'">
                             <div class="row">
@@ -597,7 +636,7 @@
                                   Entry Type</label>
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.type'"
-                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="shipment.inBondDetails.type" #inbond="ngModel" required>
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="shipment.inBondDetails.type" #inbond="ngModel" [required]="shipment.type === 'IN_BOND'">
                                   <ng-option *ngFor="let inbond of inbondTypesList" [value]="inbond.code">
                                     {{inbond.code}} {{inbond.longDescription}}</ng-option>
                                 </ng-select>
@@ -618,7 +657,7 @@
                                   maxlength="9" [ngModelOptions]="{standalone: true}"
                                   [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.paperInBondNumber'"
-                                  [(ngModel)]="shipment.inBondDetails.paperInBondNumber" class="form-control" #paperbond="ngModel" required pattern="^[0-9]{9}$">
+                                  [(ngModel)]="shipment.inBondDetails.paperInBondNumber" class="form-control" #paperbond="ngModel" [required]="shipment.type === 'IN_BOND'" pattern="^[0-9]{9}$">
                                   <div *ngIf="paperbond.invalid && (paperbond.dirty || paperbond.touched)" class="text-danger">
                                     <div *ngIf="paperbond.errors.required">
                                       Paper In-Bond# is required.
@@ -633,7 +672,7 @@
                                   In-Bond Destination</label>
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.usDestination'"
-                                  [(ngModel)]="shipment.inBondDetails.usDestination" #usinbond="ngModel" required>
+                                  [(ngModel)]="shipment.inBondDetails.usDestination" #usinbond="ngModel" [required]="shipment.type === 'IN_BOND'">
                                   <ng-option *ngFor="let port of USports" [value]="port.code">Code:
                                     {{port.code}},
                                     Location: {{port.portOfEntry}}</ng-option>
@@ -663,7 +702,16 @@
                                   Carrier SCAC</label>
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.onwardCarrierScac'"
-                                  [(ngModel)]="shipment.inBondDetails.onwardCarrierScac">
+                                  [(ngModel)]="shipment.inBondDetails.onwardCarrierScac" #oncarr="ngModel" pattern="^[A-Z]{4}$">
+                                  <div *ngIf="oncarr.invalid && (oncarr.dirty || oncarr.touched)" class="text-danger">
+                                    <div>
+
+                                      <div *ngIf="oncarr.errors.pattern">
+                                        Onward Carrier SCAC must contain 4 upper case letters.
+                                       </div>
+                                    </div>
+
+                                  </div>
                               </div>
                               <div class="col-lg-12">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Bonded Carrier ID</label>
@@ -671,7 +719,7 @@
                                   placeholder="The IRS Number, CBP Assigned Number, or Social Security Number of the Bonded Carrier."
                                   class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.irsNumber'"
-                                  [(ngModel)]="shipment.inBondDetails.irsNumber" #bondid="ngModel" required pattern="^[0-9-]{1,50}$">
+                                  [(ngModel)]="shipment.inBondDetails.irsNumber" #bondid="ngModel" [required]="shipment.type === 'IN_BOND'" pattern="^[0-9-]{1,50}$">
                                   <div *ngIf="bondid.invalid && (bondid.dirty || bondid.touched)" class="text-danger">
                                     <div *ngIf="bondid.errors.required">
                                       Bonded Carrier ID is required.
@@ -695,7 +743,7 @@
                                   To FDA?</label>
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.fda'"
-                                  [(ngModel)]="shipment.inBondDetails.fda" #subfda="ngModel" required>
+                                  [(ngModel)]="shipment.inBondDetails.fda" #subfda="ngModel" [required]="shipment.type === 'IN_BOND'">
                                   <ng-option [value]="true">YES</ng-option>
                                   <ng-option [value]="false">NO</ng-option>
                                 </ng-select>
@@ -719,9 +767,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                               Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
-
-                              [(ngModel)]="shipment.shipperID" #Aconsi="ngModel" required>
-
+                              [(ngModel)]="shipment.shipperID" #Aconsi="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.contactID}}">
                                 {{shipper.companyName}}</ng-option>
                             </ng-select>
@@ -744,9 +790,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                               Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
-
-                              [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID" #Aconsignee="ngModel" required>
-
+                              [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID" #Aconsignee="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let consignee of consignees  | async" value="{{consignee.contactID}}">
                                 {{consignee.companyName}}</ng-option>
                             </ng-select>
@@ -811,7 +855,7 @@
                             </label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].thirdParties['+p+'].type'"
-                              placeholder="Select type of third party" [(ngModel)]="thirdParty.type" #thirdPT="ngModel" required>
+                              placeholder="Select type of third party" [(ngModel)]="thirdParty.type" #thirdPT="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let thirdParty of thirdPartiesList" [value]="thirdParty.code">
                                 {{thirdParty.description}}</ng-option>
                             </ng-select>
@@ -833,7 +877,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
                             <input type="text" class="form-control" maxlength="60" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].thirdParties['+p+'].name'"
-                              placeholder="Enter third party name" [(ngModel)]="thirdParty.name" #thirdName="ngModel" required pattern="^[a-zA-Z\s]{2,30}$">
+                              placeholder="Enter third party name" [(ngModel)]="thirdParty.name" #thirdName="ngModel" [required]="shipments.length === 0" pattern="^[a-zA-Z\s]{2,30}$">
                               <div *ngIf="thirdName.invalid && (thirdName.dirty || thirdName.touched)" class="text-danger">
                                 <div *ngIf="thirdName.errors.required">
                                   Third Party name is required.
@@ -981,7 +1025,7 @@
                               On<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" (change)="shipmentLoadedFn(s,i)"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.type'"
-                              [(ngModel)]="commodity.loadedOn.type" #loadon="ngModel" required>
+                              [(ngModel)]="commodity.loadedOn.type" #loadon="ngModel" [required]="shipments.length === 0">
                               <ng-option value="TRUCK">Vehicle</ng-option>
                               <ng-option value="TRAILER">Asset</ng-option>
                             </ng-select>
@@ -1000,7 +1044,7 @@
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
-                              [(ngModel)]="commodity.loadedOn.number" #VehiNum1="ngModel" required>
+                              [(ngModel)]="commodity.loadedOn.number" #VehiNum1="ngModel" [required]="shipments.length === 0">
                                 <ng-container *ngFor="let vehicle of vehicles">
                                   <ng-option *ngIf="vehicle.vehicleID == truck.truckID" [value]="vehicle.vehicleID">
                                     {{vehicle.vehicleIdentification}}</ng-option>
@@ -1021,7 +1065,7 @@
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
-                              placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number" #AssetNum1="ngModel" required>
+                              placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number" #AssetNum1="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
                                 {{asset.assetIdentification}}</ng-option>
                             </ng-select>
@@ -1050,7 +1094,7 @@
                                 <div>
 
                                   <div *ngIf="c4l.errors.pattern">
-                                    C4 Line Release# must be alpha-numeric with no special characters.
+                                    C4 Line Release# must contain 14 digit be alpha-numeric number with no special characters.
                                    </div>
                                 </div>
 
@@ -1064,7 +1108,17 @@
                               Value in USD</label>
                             <input type="number" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].value'" maxlength="9"
-                              [(ngModel)]="commodity.value">
+                              [(ngModel)]="commodity.value" #commUSD="ngModel" pattern="^[0-9\.]{1,9}$">
+                              <div *ngIf="commUSD.invalid && (commUSD.dirty || commUSD.touched)" class="text-danger">
+                                <div>
+
+                                  <div *ngIf="commUSD.errors.pattern">
+                                    Commodity Value in USD must contain Numeric, with one decimal allowed. System will round to nearest whole number, or up to 1 if less than 1 before
+                                    transmitting to customs.
+                                   </div>
+                                </div>
+
+                              </div>
                           </div>
                         </div>
                         <div class="row" *ngIf="shipment.type === 'IN_BOND' && shipment.inBondDetails.type === '62'">
@@ -1086,7 +1140,7 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               placeholder="Select country of origin of commodity"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].countryOfOrigin'"
-                              [(ngModel)]="commodity.countryOfOrigin" #coo1="ngModel" required>
+                              [(ngModel)]="commodity.countryOfOrigin" #coo1="ngModel" [required]="shipments.length === 0">
                               <ng-option *ngFor="let country of countriesList" [value]="country.code">
                                 {{country.name}}</ng-option>
                             </ng-select>
@@ -1108,7 +1162,7 @@
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               placeholder="Enter name of the commodity"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].description'"
-                              [(ngModel)]="commodity.description" #commo1="ngModel" required pattern="[a-zA-Z]{2,30}$">
+                              [(ngModel)]="commodity.description" #commo1="ngModel" [required]="shipments.length === 0" pattern="[a-zA-Z]{2,30}$">
                               <div *ngIf="commo1.invalid && (commo1.dirty || commo1.touched)" class="text-danger">
                                 <div *ngIf="commo1.errors.required">
                                   Commodity is required.
@@ -1125,7 +1179,7 @@
                               <div class="col-lg-5">
                                 <input type="number" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].quantity'"
-                                  [(ngModel)]="commodity.quantity" #Quan5="ngModel" required >
+                                  [(ngModel)]="commodity.quantity" #Quan5="ngModel"[required]="shipments.length === 0" >
                                   <div *ngIf="Quan5.invalid && (Quan5.dirty || Quan5.touched)" class="text-danger">
                                     <div>
 
@@ -1139,7 +1193,7 @@
                               <div class="col-lg-7">
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].packagingUnit'"
-                                  [(ngModel)]="commodity.packagingUnit" #commoU="ngModel" required>
+                                  [(ngModel)]="commodity.packagingUnit" #commoU="ngModel" [required]="shipments.length === 0">
                                   <ng-option *ngFor="let packagingUnit of packagingUnitsList"
                                     [value]="packagingUnit.code">{{packagingUnit.name}}</ng-option>
                                 </ng-select>
@@ -1162,7 +1216,7 @@
                               <div class="col-lg-5">
                                 <input type="number" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].weight'"
-                                  [(ngModel)]="commodity.weight" #weight5="ngModel" required>
+                                  [(ngModel)]="commodity.weight" #weight5="ngModel" [required]="shipments.length === 0">
                                   <div *ngIf="weight5.invalid && (weight5.dirty || weight5.touched)" class="text-danger">
                                     <div>
 
@@ -1177,7 +1231,7 @@
                                 <ng-select data-plugin-selectTwo class="form-control populate"
                                   [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].weightUnit'"
-                                  [(ngModel)]="commodity.weightUnit" #weigU="ngModel" required>
+                                  [(ngModel)]="commodity.weightUnit" #weigU="ngModel" [required]="shipments.length === 0">
                                   <ng-option value="LB">Pounds</ng-option>
                                   <ng-option value="KG">Kilograms</ng-option>
                                 </ng-select>
@@ -1201,7 +1255,16 @@
                                 <div class="row">
                                   <div class="col-lg-3" *ngFor="let marks of commodity.marksAndNumbers; let j=index;">
                                     <input type="text" class="form-control" name="marksAndNumbers"
-                                      [ngModelOptions]="{standalone: true}" [(ngModel)]='marks.markNumber'>
+                                      [ngModelOptions]="{standalone: true}" [(ngModel)]='marks.markNumber'#marksn="ngModel" pattern="^[0-9]+$">
+                                      <div *ngIf="marksn.invalid && (marksn.dirty || marksn.touched)" class="text-danger">
+                                        <div>
+
+                                          <div *ngIf="marksn.errors.pattern">
+                                           Marks and Numbers must contain numbers only.
+                                           </div>
+                                        </div>
+
+                                      </div>
                                   </div>
                                 </div>
                               </div>
@@ -1221,7 +1284,16 @@
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.unCode'" maxlength="4"
                               [(ngModel)]="commodity.hazmatDetails.unCode"
-                              placeholder="Enter Hazmat code incase of hazardous goods">
+                              placeholder="Enter Hazmat code incase of hazardous goods" #hazC="ngModel" pattern="^[0-9]{4}$">
+                              <div *ngIf="hazC.invalid && (hazC.dirty || hazC.touched)" class="text-danger">
+                                <div>
+
+                                  <div *ngIf="hazC.errors.pattern">
+                                   Hazmat Code must be 4 digit number.
+                                   </div>
+                                </div>
+
+                              </div>
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Emergency
@@ -1230,7 +1302,13 @@
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.emergencyContactName'"
                               maxlength="24" [(ngModel)]="commodity.hazmatDetails.emergencyContactName"
-                              placeholder="Enter emergency contact number">
+                              placeholder="Enter emergency contact number" #Contact2="ngModel"  pattern="^[0-9]{7,10}$">
+                              <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
+
+                                <div *ngIf="Contact2.errors.pattern">
+                                  Enter valid Emergency Contact number eg. 2032342345.
+                                </div>
+                              </div>
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -1238,7 +1316,13 @@
                             <input type="tel" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.contactPhone'"
                               [(ngModel)]="commodity.hazmatDetails.contactPhone"
-                              placeholder="Enter the emergency contact number">
+                              placeholder="Enter the emergency contact number" #Contact2="ngModel"  pattern="^[0-9]{7,10}$">
+                              <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
+
+                                <div *ngIf="Contact2.errors.pattern">
+                                  Enter valid Contact number eg. 2032342345.
+                                </div>
+                              </div>
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -1246,7 +1330,13 @@
                             <input type="text" class="form-control" placeholder="Enter the email address"
                               [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.contactEmail'"
-                              [(ngModel)]="commodity.hazmatDetails.contactEmail">
+                              [(ngModel)]="commodity.hazmatDetails.contactEmail" #Contact3="ngModel"  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                              <div *ngIf="Contact3.invalid && (Contact3.dirty || Contact3.touched)" class="text-danger">
+
+                                <div *ngIf="Contact3.errors.pattern">
+                                  Enter valid email eg. johnsmith@test.com.
+                                </div>
+                              </div>
                           </div>
                           <!-- <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2" >Comments</label>
@@ -1338,7 +1428,13 @@
                                   <div class="col-lg-3" *ngFor="let seal of trailer.sealNumbers; let i=index;">
                                     <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                       [attr.name]="'trailers['+t+'].sealNumbers['+i+'].seal'"
-                                      [(ngModel)]='seal.sealNumber'>
+                                      [(ngModel)]='seal.sealNumber' #A2seal="ngModel" pattern="^[a-zA-Z0-9]{4}$">
+                                      <div *ngIf="A2seal.invalid && (A2seal.dirty || A2seal.touched)" class="text-danger">
+
+                                        <div *ngIf="A2seal.errors.pattern">
+                                          Seal must contain a string value between 1 and 15 alphanumeric characters.
+                                        </div>
+                                      </div>
                                   </div>
                                 </div>
                               </div>
@@ -1370,7 +1466,7 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 text-right">
                     <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
-                    <button type="button" *ngIf="!manifestID" (click)="addACEManifest()"
+                    <button type="button" *ngIf="!manifestID" (click)="addACEManifest()" [disabled]="!aAce1.form.valid"
                       class="btn btn-success">Save</button>
                     <button type="button" *ngIf="manifestID" (click)="updateACEManifest()"
                       class="btn btn-success">Update</button>
@@ -1384,4 +1480,3 @@
     </section>
   </div>
 </section>
-
