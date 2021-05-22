@@ -141,14 +141,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -217,14 +217,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -282,14 +282,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -347,14 +347,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -412,14 +412,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -477,14 +477,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
@@ -542,14 +542,14 @@
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                        <td> 
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
                                             Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
                                             <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
                                                 +{{order.shippersReceiversInfo?.length - 1}}

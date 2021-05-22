@@ -26,7 +26,7 @@
                      </div>
 
                      <div class="col-md-6  col-lg-6 text-right">
-                        <a href="javascript:;" routerLink="/dispatch/planner/map-view" class="btn btn-default btn-sm mr-2">Map View</a>
+                        <!-- <a href="javascript:;" routerLink="/dispatch/planner/map-view" class="btn btn-default btn-sm mr-2">Map View</a> -->
                         <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Trip</a>
                      </div>
                   </div>
@@ -59,17 +59,15 @@
                                         <li class=" mb-2 border" *ngFor="let trip of tempTrips; let i=index;">
                                             <div class="fc-event-main">
                                                 <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
-                        
                                                     <div class="d-inline-block" *ngFor="let customer of trip.customersArr;">
                                                         <span class="name-short">{{ customer.icon }}</span>
-                                                        {{ customer.name }}
+                                                        {{ customer.name }} 
                                                     </div>
                         
                                                     <a href="javascript:;" (click)="showAssignModal(trip.tripID, i)"
-                                                        *ngIf="trip.tripStatus == 'confirmed'"
-                                                        class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
-                                                    <a href="javascript:;" *ngIf="trip.tripStatus != 'confirmed'"
-                                                        class="pull-right modal-with-form btn btn-success btn-sm">Assigned</a>
+                                                        *ngIf="trip.showModal" class="pull-right modal-with-form btn btn-success btn-sm">{{ trip.btnHeading }}</a>
+                                                    <a href="javascript:;" *ngIf="!trip.showModal" (click)="updateTripStatus(trip.tripID, i, trip.tripStatus)"
+                                                        class="pull-right modal-with-form btn btn-success btn-sm">{{ trip.btnHeading }}</a>
                                                 </h5>
                                                 <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}</p>
                                                 <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{
