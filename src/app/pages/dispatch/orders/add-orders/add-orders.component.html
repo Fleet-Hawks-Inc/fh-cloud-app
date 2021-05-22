@@ -146,7 +146,7 @@
                      </div>
                      <div class="col-lg-5 offset-lg-1">
                         <div class="row">
-                           <div class="col-lg-10"> 
+                           <div class="col-lg-10">
                               <label
                                  class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -581,7 +581,7 @@
                                                                      <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate" type="text"
                                                                      placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
                                                                      class="form-control" autocomplete="off" #orderDate1="ngModel" required>
-                                                               
+
 
                                                                </div>
                                                                <div *ngIf="orderDate1.invalid && (orderDate1.dirty || orderDate1.touched)" class="text-danger">
@@ -621,7 +621,7 @@
 
                                                                <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
                                                                   name="pickupInstruction" class="form-control h-auto" rows="2"
-                                                                  id="textareaDefault"></textarea>
+                                                                  ></textarea>
                                                             </div>
 
                                                          </div>
@@ -1018,7 +1018,7 @@
                                                                          </div>
 
 
-<!-- 
+<!--
                                                                      <div *ngIf="drop.errors.pattern">
                                                                      Drop Off Location must contains upper, lower case and special characters for period(space,-,&,',') only.
                                                                       </div> -->
@@ -1055,7 +1055,7 @@
                                                                   <input [(ngModel)]="item.receivers.dropOffDate" name="dropOffDate" type="text"
                                                                      placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
                                                                      class="form-control" autocomplete="off" #delDate="ngModel" required >
-                                                              
+
 
                                                                </div>
                                                                <div *ngIf="delDate.invalid && (delDate.dirty || delDate.touched)" class="text-danger">
@@ -1095,7 +1095,7 @@
 
                                                                <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="item.receivers.dropOffInstruction"
                                                                   name="dropOffInstruction" class="form-control h-auto" rows="2"
-                                                                  id="textareaDefault"
+
                                                                   style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
                                                             </div>
 
@@ -1532,9 +1532,9 @@
                                     <div *ngIf="temperature.errors.pattern">
                                   Temperature must contains numbers and special characters for period('.') only.
                                      </div>
-   
-   
-   
+
+
+
                                 </div>
                            </div>
                            <div class="col-lg-4">
@@ -1568,9 +1568,9 @@
                                     <div *ngIf="temp2.errors.pattern">
                                   Temperature must contains numbers and special characters for period('.') only.
                                      </div>
-   
-   
-   
+
+
+
                                 </div>
                            </div>
                            <div class="col-lg-4">
@@ -1696,7 +1696,7 @@
                               <label class="control-label font-weight-bold text-4 text-dark"
                                  for="inputDefault">Remarks</label>
                               <textarea placeholder="eg. Enter Remarks" [(ngModel)]="orderData.remarks" name="remarks" class="form-control h-auto" rows="2"
-                                 id="textareaDefault"></textarea>
+                                 ></textarea>
                            </div>
                         </div> -->
 

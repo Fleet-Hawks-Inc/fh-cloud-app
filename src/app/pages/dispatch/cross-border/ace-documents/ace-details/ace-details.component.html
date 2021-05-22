@@ -178,8 +178,8 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}},
                                                 {{shipment.shipper.address.city}},
-                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}},
-                                                {{countryCodeName[shipment.shipper.address.country]}},
+                                                {{shipment.shipper.address.stateProvince}},
+                                                {{shipment.shipper.address.country}},
                                                 {{shipment.shipper.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
@@ -187,10 +187,9 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}},
                                                 {{shipment.consignee.address.city}},
-                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}},
-                                                {{countryCodeName[shipment.consignee.address.country]}},
+                                                {{shipment.consignee.address.stateProvince}},
+                                                {{shipment.consignee.address.country}},
                                                 {{shipment.consignee.address.postalCode}}
-
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
@@ -305,7 +304,7 @@
                                             (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
                                             <td data-toggle="modal" data-target="#showPassengerDetails"
                                             class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)"></td>
+                                            (click)="showPassengerDetails(passenger.passengerID)">--</td>
                                             <td>{{passenger.fastCardNumber}}</td>
                                             <td data-toggle="modal" data-target="#showPassengerDetails"
                                             class="modal-with-form "
@@ -425,7 +424,7 @@
                                               <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.aceId}}</td>
                                             <td><span
-                                                    *ngFor="let license of trailer.licensePlates;">{{stateCodeToName[license.stateProvince]}}</span>
+                                                    *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
                                             </td>
                                             <td><span
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
@@ -642,7 +641,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{stateCodeToName[shipmentData.provinceOfLoading]}}</td>
+                                        <td>{{shipmentData.provinceOfLoading}}</td>
                                     </tr>
                                     <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
                                       <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>

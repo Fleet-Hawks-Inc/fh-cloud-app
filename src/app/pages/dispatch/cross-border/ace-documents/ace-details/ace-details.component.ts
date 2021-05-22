@@ -35,7 +35,8 @@ export class AceDetailsComponent implements OnInit {
     licensePlates: [
       {
         number: '',
-        stateProvince: ''
+        stateProvince: '',
+        country: ''
       }
     ],
     sealNumbers: [],
@@ -153,7 +154,6 @@ export class AceDetailsComponent implements OnInit {
     this.fetchACEEntry();
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
-    this.fetchStatesCodeName();
     this.fetchDocuments();
     this.fetchPackagingUnits();
     this.fetchThirdPartyTypes();
@@ -225,11 +225,6 @@ export class AceDetailsComponent implements OnInit {
       }, {});
     });
   }
-  fetchStatesCodeName() {
-    this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
-    this.stateCodeToName = result;
-    });
-  }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
@@ -257,13 +252,33 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        console.log('result', result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
         this.currentStatus = result.currentStatus;
-        this.truck = result.truck;
+        this.truck = {
+          number: result.truck.number,
+          type: result.truck.type,
+          vinNumber: result.truck.vinNumber,
+          dotNumber: result.truck.dotNumber,
+          insurancePolicy: {
+            insuranceCompanyName: result.truck.insurancePolicy.insuranceCompanyName,
+            policyNumber: result.truck.insurancePolicy.policyNumber,
+            issuedDate: result.truck.insurancePolicy.issuedDate,
+            policyAmount: result.truck.insurancePolicy.policyAmount,
+          },
+          licensePlates: [
+            {
+              number: result.truck.licensePlates[0].number,
+              stateProvince: CountryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
+              country: CountryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
+            }
+          ],
+          sealNumbers: result.truck.sealNumbers,
+          IIT: result.truck.IIT
+          };
         this.trailers = result.trailers;
+        this.getTrailerLicState(result.trailers);
         this.mainDriver = result.mainDriver;
         this.drivers = result.drivers;
         this.passengers = result.passengers;
@@ -289,6 +304,18 @@ export class AceDetailsComponent implements OnInit {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
       });
+  }
+  getTrailerLicState(trailers: any) {
+    if(trailers !== undefined || trailers !== '') {
+      for(let t=0; t < trailers.length; t++) {
+        trailers.map((e: any) => {
+          let countryCode =  e.licensePlates[0].country;
+          e.licensePlates[0].stateProvince = CountryStateCity.GetStateNameFromCode(e.licensePlates[0].stateProvince, countryCode);
+          e.licensePlates[0].country = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+        });
+     }
+    }
+
   }
   sendCBPFn() {
     this.apiService

@@ -248,6 +248,7 @@ export class NewAceManifestComponent implements OnInit {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
+      this.getCAProvinces();
       this.route.queryParams.subscribe((params) => {
         if (params.amendManifest !== undefined) {
           this.amendManifest = params.amendManifest; // to get query parameter amend
@@ -274,9 +275,6 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
-    this.passengerDocStates = this.listService.stateList;
-    this.modalStates = this.listService.stateList;
-    this.modalCities = this.listService.cityList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
       this.USports = data;
     });
@@ -736,15 +734,6 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
 
-
-  // async fetchCitiesByName(name: string) {
-  //   const result = await this.apiService.getData(`cities/get/${name}`)
-  //     .toPromise();
-  //   if (result.Items.length > 0) {
-  //     return result.Items[0].cityID;
-  //   }
-  //   return '';
-  // }
   deleteThirdParty(i: number, s: number) {
     this.shipments[s].thirdParties.splice(i, 1);
   }
@@ -831,7 +820,6 @@ export class NewAceManifestComponent implements OnInit {
             delete element.thirdPartyCities;
           }
         }
-        console.log('data', data);
         this.addFunction(data);
       }
     } else {
@@ -882,7 +870,6 @@ export class NewAceManifestComponent implements OnInit {
         }
       }
       this.addFunction(data);
-      console.log('data', data);
     }
   }
   throwErrors() {
@@ -912,8 +899,8 @@ export class NewAceManifestComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACE/' + this.manifestID).subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result ', result);
         this.manifestID = this.manifestID;
+        this.manifestType = this.manifestType;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
         this.SCAC = result.SCAC;
@@ -934,9 +921,6 @@ export class NewAceManifestComponent implements OnInit {
         this.borderResponses = result.borderResponses;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
-        setTimeout(() => {
-          this.getCAProvinces();
-        }, 1000);
       });
   }
 
@@ -993,6 +977,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           manifestID: this.manifestID,
+          manifestType: this.manifestType,
           sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
@@ -1024,8 +1009,6 @@ export class NewAceManifestComponent implements OnInit {
             delete element.thirdPartyCities;
           }
         }
-        console.log('data', data);
-
         this.updateFunction(data);
       }
     } else {
@@ -1049,6 +1032,7 @@ export class NewAceManifestComponent implements OnInit {
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
         manifestID: this.manifestID,
+        manifestType: this.manifestType,
         sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,

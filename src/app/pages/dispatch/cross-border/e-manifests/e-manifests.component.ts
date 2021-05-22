@@ -184,11 +184,6 @@ export class EManifestsComponent implements OnInit {
       this.contactList = result;
     });
   }
-  fetchShippersList() {
-    this.apiService.getData('shippers/get/list').subscribe((result: any) => {
-      this.shippersList = result;
-    });
-  }
   ACEEntries() {
     this.spinner.show(); // loader init
     this.apiService.getData('eManifests/getACEemanifest').subscribe({
