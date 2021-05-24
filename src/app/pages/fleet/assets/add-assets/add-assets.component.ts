@@ -323,7 +323,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
         this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
         this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
-        if (result.assetDetails.ownerShip === 'Owner Operator') {
+        if (result.assetDetails.ownerShip === 'ownerOperator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
         this.assetsData.currentStatus = result.currentStatus;

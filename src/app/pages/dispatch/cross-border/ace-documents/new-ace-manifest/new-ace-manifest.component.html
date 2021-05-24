@@ -335,8 +335,8 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
-                              (change)="resetpassengerDocState(i,j)" [(ngModel)]="document.country">
-                              <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                              (change)="getPassengerDocStates($event,i,j)" [(ngModel)]="document.country">
+                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
                                 {{country.countryName}}</ng-option>
                             </ng-select>
 
@@ -359,17 +359,13 @@
                             <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
                               [(ngModel)]="document.stateProvince">
-                              <ng-container *ngFor="let state of passengerDocStates| async">
-                                <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
-                                  [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
-                              </ng-container>
+                                <ng-option *ngFor="let state of document.docStates"
+                                  [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
+
                             </ng-select>
                           </div>
                           <div class="col-lg-2 mar-top-37">
-                            <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                              class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>  -->
                             </div>
-
                         </div>
                       </div>
                     </div>
@@ -456,12 +452,9 @@
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                 <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'usAddress.address.countryID'" [class.error]="errorClassCountry"
-                                  [(ngModel)]="usAddress.address.countryID" (change)="resetusAddressState()">
-                                <ng-container *ngFor="let country of countries">
-                                  <ng-option *ngIf="country.countryCode == 'US'"
-                                    [value]="country.countryID"> {{country.countryName}}</ng-option>
-                                </ng-container>
+                                  [attr.name]="'usAddress.address.countryCode'" [class.error]="errorClassCountry"
+                                  [(ngModel)]="usAddress.address.countryCode">
+                                  <ng-option value="US">United States</ng-option>
                               </ng-select>
                                 <div class="text-danger" *ngIf="errorClassCountry">This field is required.</div>
                               </div>
@@ -470,20 +463,16 @@
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="usAddressStateSelect"
-                                  (change)="resetusAddressCity()"
-                                  [attr.name]="'usAddress.address.stateID'" [class.error]="errorClassState"
-                                  [(ngModel)]="usAddress.address.stateID">
-                                  <ng-container *ngFor="let state of modalStates| async">
-                                    <ng-option *ngIf="state.countryID == usAddress.address.countryID"
-                                      [value]="state.stateID"> {{state.stateCode}} - {{state.stateName}}</ng-option>
-                                  </ng-container>
+                                  (change)="getUSCities($event)"
+                                  [attr.name]="'usAddress.address.stateCode'" [class.error]="errorClassState"
+                                  [(ngModel)]="usAddress.address.stateCode">
+                                    <ng-option  *ngFor="let state of USStates"
+                                      [value]="state.stateCode"> {{state.stateCode}} - {{state.stateName}}</ng-option>
                                 </ng-select>
                                 <div class="text-danger" *ngIf="errorClassState">This field is required.</div>
 
                               </div>
                               <div class="col-lg-2 mar-top-37">
-                                <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                               </div>
                             </div>
                           </div>
@@ -492,15 +481,12 @@
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="usAddressCitySelect"
-                                  [attr.name]="'usAddress.address.cityID'" [class.error]="errorClassCity"
-                                  [(ngModel)]="usAddress.address.cityID">
-                                  <ng-container *ngFor="let city of modalCities| async">
-                                    <ng-option *ngIf="city.stateID == usAddress.address.stateID"
-                                      [value]="city.cityID"> {{city.cityName}}</ng-option>
-                                  </ng-container>
+                                  [attr.name]="'usAddress.address.cityName'" [class.error]="errorClassCity"
+                                  [(ngModel)]="usAddress.address.cityName">
+                                    <ng-option *ngFor="let city of USCities"
+                                      [value]="city.cityName"> {{city.cityName}}</ng-option>
                                 </ng-select>
                                 <div class="text-danger" *ngIf="errorClassCity">This field is required.</div>
-
                               </div>
                               <div class="col-lg-2 mar-top-37">
                                 <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
@@ -936,9 +922,9 @@
                                 <div class="col-lg-10">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                   <ng-select [ngModelOptions]="{standalone: true}"
-                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.countryID'"
-                                    [(ngModel)]="thirdParty.address.countryID" (change)="resetThirdPartyState(s,p)">
-                                    <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.countryCode'"
+                                    [(ngModel)]="thirdParty.address.countryCode" (change)="getThirdPartyState($event,s,p)">
+                                    <ng-option *ngFor="let country of countries" [value]="country.countryCode">
                                       {{country.countryName}}</ng-option>
                                   </ng-select>
                                 </div>
@@ -947,18 +933,14 @@
                                 <div class="col-lg-10">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
                                   <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyStateSelect"
-                                    (change)="resetThirdPartyCity(s,p)"
-                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateID'"
-                                    [(ngModel)]="thirdParty.address.stateID">
-                                    <ng-container *ngFor="let state of modalStates| async">
-                                      <ng-option *ngIf="state.countryID == shipments[s].thirdParties[p].address.countryID"
-                                        [value]="state.stateID"> {{state.stateCode}} - {{state.stateName}}</ng-option>
-                                    </ng-container>
+                                    (change)="getThirdPartyCity($event,s,p)"
+                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateCode'"
+                                    [(ngModel)]="thirdParty.address.stateCode">
+                                      <ng-option  *ngFor="let state of thirdParty.address.thirdPartyStates"
+                                        [value]="state.stateCode"> {{state.stateCode}} - {{state.stateName}}</ng-option>
                                   </ng-select>
                                 </div>
                                 <div class="col-lg-2 mar-top-37">
-                                  <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                    class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                 </div>
                               </div>
                             </div>
@@ -967,17 +949,13 @@
                                 <div class="col-lg-10">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
                                   <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyCitySelect"
-                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.cityID'"
-                                    [(ngModel)]="thirdParty.address.cityID">
-                                    <ng-container *ngFor="let city of modalCities| async">
-                                      <ng-option *ngIf="city.stateID == shipments[s].thirdParties[p].address.stateID"
-                                        [value]="city.cityID"> {{city.cityName}}</ng-option>
-                                    </ng-container>
+                                    [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.cityName'"
+                                    [(ngModel)]="thirdParty.address.cityName">
+                                      <ng-option *ngFor="let city of thirdParty.address.thirdPartyCities"
+                                        [value]="city.cityName"> {{city.cityName}}</ng-option>
                                   </ng-select>
                                 </div>
                                 <div class="col-lg-2 mar-top-37">
-                                  <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                                    class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                 </div>
                               </div>
                               <div class="row">
