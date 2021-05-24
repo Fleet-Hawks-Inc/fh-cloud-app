@@ -105,7 +105,7 @@
                                             <div class="row">
                                                <div class="col-lg-5 pr-0">
                                                   <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime"
-                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" #Rtime="ngModel" required pattern="^[0-9]$" >
+                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" #Rtime="ngModel" required pattern="^[0-9]+$" >
                                                   <div *ngIf="Rtime.invalid && (Rtime.dirty || Rtime.touched)" class="text-danger">
                                                    <div *ngIf="Rtime.errors.required">
                                                      Repeat By Time is required.
