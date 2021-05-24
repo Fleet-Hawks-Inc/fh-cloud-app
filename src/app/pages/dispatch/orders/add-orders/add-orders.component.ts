@@ -68,12 +68,16 @@ export class AddOrdersComponent implements OnInit {
   assetTypes = [];
   form;
   visibleIndex = 0;
-  customerSelected;
+  customerSelected = {
+    additionalContact : [],
+    address:[],
+    shippingAddr: false
+  };
   orderMode: string = "FTL";
 
   orderData = {
     stateTaxID: "",
-    customerID: "",
+    customerID: null,
     orderNumber: "",
     createdDate: "",
     createdTime: "",
@@ -89,7 +93,7 @@ export class AddOrdersComponent implements OnInit {
     Reference: "",
     csa: "",
     ctpat: "",
-    additionalcontactname: "",
+    additionalcontactname: '',
     pickuplocation: "",
     pickupinstruction: "",
     contactpersonatpickup: "",
@@ -106,7 +110,7 @@ export class AddOrdersComponent implements OnInit {
     shipperInfo: [],
     receiverInfo: [],
     freightDetails: {},
-    additionalContact: '',
+    additionalContact: null,
     invoiceEmail: false,
     additionalDetails: {
       trailerType: '',
@@ -388,7 +392,7 @@ export class AddOrdersComponent implements OnInit {
 
 
     $(document).ready(() => {
-      this.form = $("#form_").validate();
+      // this.form = $("#form_").validate();
 
       this.timpickerInit();
     });
@@ -764,17 +768,17 @@ export class AddOrdersComponent implements OnInit {
   /*
    * Get all customers from api
    */
-  fetchCustomers() {
-    this.apiService.getData("customers").subscribe((result: any) => {
-      this.customers = result.Items;
-    });
-  }
+  // fetchCustomers() {
+  //   this.apiService.getData("/fetch/order/customers").subscribe((result: any) => {
+  //     this.customers = result.Items;
+  //   });
+  // }
 
   /*
    * Get all shippers's IDs of names from api
    */
   fetchShippersByIDs() {
-    this.apiService.getData("shippers/get/list").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
       this.shippersObjects = result;
     });
   }
@@ -791,7 +795,7 @@ export class AddOrdersComponent implements OnInit {
    * Get all receivers's IDs of names from api
    */
   fetchReceiversByIDs() {
-    this.apiService.getData("receivers/get/list").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
       this.receiversObjects = result;
     });
   }
@@ -815,12 +819,10 @@ export class AddOrdersComponent implements OnInit {
    * Selecting files before uploading
    */
   selectDocuments(event) {
-    // console.log("evebt", event.target.files);
     let files = [...event.target.files];
 
     this.uploadedDocs = files;
 
-    // console.log("uploadedDocs", this.uploadedDocs);
   }
 
   getTimeFormat(date) {
@@ -898,10 +900,27 @@ export class AddOrdersComponent implements OnInit {
 
   selectedCustomer(customerID: any) {
     this.apiService
-      .getData(`customers/${customerID}`)
+      .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
-        this.customerSelected = result.Items;
+        this.customerSelected = result.Items[0];
+
+        for (let i = 0; i < this.customerSelected.address.length; i++) {
+          const element = this.customerSelected.address[i];
+          if(element.addressType == 'Shipping Address') {
+            this.customerSelected.shippingAddr = true;
+          }
+        }
       });
+  }
+
+  setAdditionalContact(event) {
+    for (let i = 0; i < this.customerSelected.additionalContact.length; i++) {
+      const element = this.customerSelected.additionalContact[i];
+      if(element.fullName == event) {
+        this.orderData.phone = element.phone;
+        this.orderData.email = element.email;
+      }
+    }
   }
 
   addCommodity(arr, parentIndex) {
@@ -1214,7 +1233,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
       this.stateShipperIndex = i;
     }
-    console.log('this.shippersReceivers', this.shippersReceivers);
     // this.visibleIndex = i;
     this.showReceiverUpdate = true;
   }
@@ -1392,7 +1410,6 @@ export class AddOrdersComponent implements OnInit {
         let length = result.shippersReceiversInfo.length;
         let emptyArr = [];
         let newArray: any = this.shippersReceivers.slice();
-        console.log('newArray', newArray);
 
         for (let i = 0; i < length; i++) {
           emptyArr.push(newArray[0]);
@@ -1700,7 +1717,6 @@ export class AddOrdersComponent implements OnInit {
               amount: selected.PST,
             },
           ];
-          // console.log(selected);
         this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
         this.calculateAmount();
 

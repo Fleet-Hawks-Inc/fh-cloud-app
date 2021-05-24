@@ -7,6 +7,7 @@ import Constants from '../../constants';
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 declare var H: any;
 declare var $: any;
 @Component({
@@ -33,7 +34,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     paymentMode: '',
     reference: '',
     vendorID: '',
-    cityID: '',
+    cityName: '',
     tripID: '',
     fuelQtyAmt: 0,
     fuelQty: 0,
@@ -46,8 +47,8 @@ export class FuelEntryDetailsComponent implements OnInit {
    fuelCardNumber: '',
     pricePerUnit: 0,
     totalUnits: 0,
-    countryID: '',
-    stateID: '',
+    countryName: '',
+    stateName: '',
     taxes: [],
     lineItems : [{
         fuelType: '',
@@ -118,7 +119,6 @@ export class FuelEntryDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.fuelID = this.route.snapshot.params[`fuelID`];
-    this.fetchCitiesList();
     this.fetchFuelEntry();
     this.fetchAssetList();
     this.fetchTripList();
@@ -132,12 +132,10 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchVehicleList();
     this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
-    this.fetchCountriesList();
-    this.fetchStatesList();
     this.fetchTaxTypeFromID();
     this.fetchDiscFromID();
     this.fetchDriverList();
-    
+
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -145,28 +143,13 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.vendorList = result;
     });
   }
   fetchDriverList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driverList = result;
-    });
-  }
-  fetchCountriesList() {
-    this.apiService.getData('countries/get/list').subscribe((result: any) => {
-      this.countryList = result;
-    });
-  }
-  fetchStatesList() {
-    this.apiService.getData('states/get/list').subscribe((result: any) => {
-      this.stateList = result;
-    });
-  }
-  fetchCitiesList() {
-    this.apiService.getData('cities/get/list').subscribe((result: any) => {
-      this.cityList = result;
     });
   }
   fetchTaxWEXCode() {
@@ -271,9 +254,9 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.reimburseToDriver = result.reimburseToDriver;
         this.fuelData.deductFromPay = result.deductFromPay;
         this.fuelData.vendorID = result.vendorID;
-        this.fuelData.countryID = result.countryID;
-        this.fuelData.stateID = result.stateID;
-        this.fuelData.cityID = result.cityID;
+        this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
+        this.fuelData.stateName = CountryStateCity.GetStateNameFromCode(result.stateCode, result.countryCode);
+        this.fuelData.cityName = result.cityName;
         this.fuelData.tripID = result.tripID;
         this.fuelData.odometer = result.odometer;
         this.fuelData.description = result.description;
@@ -282,12 +265,10 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.lineItems = result.lineItems;
         this.fuelData.taxes = result.taxes;
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+          this.fuelEntryImages = result.uploadedPhotos.map((x:any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         this.fetchVendorData(result.vendorID);
-      });
-
-  }
+      });  }
   deleteImage(i: number) {
     // this.carrierID =  this.apiService.getCarrierID();
     // this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);

@@ -238,12 +238,13 @@ export class FuelEntryListComponent implements OnInit {
       this.suggestedUnits = [];
       this.getStartandEndVal();
       this.fuelList = result[`Items`];
+      console.log('this.fuelList',this.fuelList);
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
       if (result[`LastEvaluatedKey`] !== undefined) {
-        const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
         if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {

@@ -6,21 +6,11 @@
             <header class="page-header">
                 <h2>{{title}}</h2>
                 <div class="right-wrapper text-right pt-2 pr-2">
-                    <!-- <div class="btn-group btn-group1 flex-wrap mr-1">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-plACIment="bottom-start"
-                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"
-                                class="dropdown-item text-1"> Edit</a>
-                        </div>
-                    </div> -->
                     <div class="btn-group btn-group1 flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">Send To CBSA<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-
 
                             <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBSAFn()">Send Trip and
                                 Shipments</a>
@@ -173,7 +163,7 @@
                                             <td>{{response.dateTime}}</td>
                                             <td>{{response.status}}</td>
                                             <td><b>{{response.message}}</b> <br>
-                                             <span *ngFor="let error of response.errors">{{error.note}},<br></span>
+                                             <span *ngFor="let error of response.errors; let s= index;">{{error.note}}<span *ngIf= "s != response.errors.length-1">,</span><br></span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -238,7 +228,7 @@
                                                 {{shipment.shipper.name}}<br>
                                                 {{shipment.shipper.address.addressLine}},
                                                 {{shipment.shipper.address.city}},
-                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}},
+                                                {{shipment.shipper.address.stateProvince}},
                                                 {{shipment.shipper.address.country}},
                                                 {{shipment.shipper.address.postalCode}}
 
@@ -249,14 +239,14 @@
                                                 {{shipment.consignee.name}}<br>
                                                 {{shipment.consignee.address.addressLine}},
                                                 {{shipment.consignee.address.city}},
-                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}},
+                                                {{shipment.consignee.address.stateProvince}},
                                                 {{shipment.consignee.address.country}},
                                                 {{shipment.consignee.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
                                                 (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}} {{packagingUnitsObjects[commodity.packagingUnit]}},</span>
+                                                    *ngFor="let commodity of shipment.commodities; let s= index;">{{commodity.quantity}} {{packagingUnitsObjects[commodity.packagingUnit]}}<span *ngIf= "s != shipment.commodities.length-1">,</span></span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
@@ -321,7 +311,7 @@
                                         <td data-toggle="modal" data-target="#showDriverDetails"
                                         class="modal-with-form "
                                         (click)="showMainDriverDetails()"><span
-                                                *ngFor="let document of mainDriver.travelDocuments">{{document.number}}</span>
+                                                *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != mainDriver.travelDocuments.length-1">,</span></span>
                                         </td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
@@ -343,7 +333,7 @@
                                             <td data-toggle="modal" data-target="#showDriverDetails"
                                             class="modal-with-form "
                                             (click)="showDriverDetails(driver.driverID)"><span
-                                                    *ngFor="let document of driver.travelDocuments">{{document.number}}</span>
+                                                    *ngFor="let document of driver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != driver.travelDocuments.length-1">,</span></span>
                                             </td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
@@ -366,7 +356,7 @@
                                             <td data-toggle="modal" data-target="#showPassengerDetails"
                                             class="modal-with-form "
                                             (click)="showPassengerDetails(passenger.passengerID)"><span
-                                                    *ngFor="let document of passenger.travelDocuments">{{document.number}}</span>
+                                                    *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
@@ -398,7 +388,7 @@
                                         <tr>
                                             <th width="15%">Vehicle Name</th>
                                             <th width="15%">Vehicle Type</th>
-                                            <th width="10%">Licence Plate Number</th>
+                                            <th width="10%">Licence Plate #</th>
                                             <th width="10%">Licence Province</th>
                                             <th width="10%">Licence Country</th>
                                             <th width="15%">IIT/Exemption(s)</th>
@@ -420,16 +410,16 @@
                                             title="Click to see details of vehicle">{{truck.licensePlate.number}}</td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle">{{stateCodeToName[truck.licensePlate.stateProvince]}}</td>
+                                            title="Click to see details of vehicle">{{truck.licensePlate.stateProvince}}</td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle">{{countryCodeName[truck.licensePlate.country]}}</td>
+                                            title="Click to see details of vehicle">{{truck.licensePlate.country}}</td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngFor="let cargo of truck.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},&nbsp;</span></td>
+                                            title="Click to see details of vehicle"><span *ngFor="let cargo of truck.cargoExemptions; let s= index;">{{cargoExemptionTypeObjects[cargo]}}<span *ngIf= "s != truck.cargoExemptions.length-1">,</span>&nbsp;</span></td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
+                                            title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers;let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span></span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -463,7 +453,7 @@
                                         <tr>
                                             <th width="15%">Asset Name</th>
                                             <th width="15%">Asset Type</th>
-                                            <th width="15%">Licence Plate Number</th>
+                                            <th width="15%">Licence Plate #</th>
                                             <th width="15%">Licence Province</th>
                                             <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
@@ -479,8 +469,8 @@
                                               <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[trailer.licensePlate.stateProvince]}}</td>
-                                            <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},</span></td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}, </span></td>
+                                            <td><span *ngFor="let cargo of trailer.cargoExemptions; let s= index;">{{cargoExemptionTypeObjects[cargo]}}<span *ngIf= "s != trailer.cargoExemptions.length-1">,</span></span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span *ngIf= "s != trailer.sealNumbers.length-1">,</span> </span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -525,8 +515,9 @@
                                             <td>{{container.number}}</td>
                                             <td><span *ngIf="container.loadedOn.type === 'TRAILER'">Asset </span>
                                                 <span *ngIf="container.loadedOn.type === 'TRUCK'">Vehicle </span>[{{container.loadedOn.number}}]</td>
-                                            <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}},</td>
-                                            <td><span *ngFor="let seal of container.sealNumbers;">{{seal}}, </span></td>
+                                                <td><span *ngFor="let cargo of container.cargoExemptions; let s= index;">{{cargoExemptionTypeObjects[cargo]}}<span *ngIf= "s != container.cargoExemptions.length-1">,</span></span></td>
+
+                                            <td><span *ngFor="let seal of container.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != container.sealNumbers.length-1">,</span> </span></td>
                                             <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -669,7 +660,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">IIT/Exemption(s):</th>
-                                        <td><span *ngFor="let exemption of truck.cargoExemptions">{{cargoExemptionTypeObjects[exemption]}},</span>
+                                        <td><span *ngFor="let exemption of truck.cargoExemptions; let s= index;">{{cargoExemptionTypeObjects[exemption]}}<span *ngIf= "s != truck.cargoExemptions.length-1">,</span></span>
                                         </td>
                                     </tr>
 
@@ -682,7 +673,7 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Seal Numbers :</th>
-                                        <td><span *ngFor="let seal of truck.sealNumbers">{{seal}}, </span></td>
+                                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span> </span></td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Insurance Vendor:</th>
@@ -781,12 +772,12 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">State/City Of Loading:</th>
-                                        <td>{{stateCodeToName[shipmentData.cityOfLoading.stateProvince]}},{{shipmentData.cityOfLoading.cityName}}
+                                        <td>{{shipmentData.cityOfLoading.stateProvince}},{{shipmentData.cityOfLoading.cityName}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">State/City Of Acceptance:</th>
-                                        <td>{{stateCodeToName[shipmentData.cityOfAcceptance.stateProvince]}},{{shipmentData.cityOfAcceptance.cityName}}
+                                        <td>{{shipmentData.cityOfAcceptance.stateProvince}},{{shipmentData.cityOfAcceptance.cityName}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -822,7 +813,7 @@
                                         <td>{{deliveryDestination.name}}</td>
                                         <td>{{deliveryDestination.contactNumber}}</td>
                                         <td>{{deliveryDestination.address.addressLine}},
-                                            {{deliveryDestination.address.city}},{{stateCodeToName[deliveryDestination.address.stateProvince]}},{{countryCodeName[deliveryDestination.address.country]}},{{deliveryDestination.address.postalCode}}
+                                            {{deliveryDestination.address.city}},{{deliveryDestination.address.stateProvince}},{{deliveryDestination.address.country}},{{deliveryDestination.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -849,7 +840,7 @@
                                       <td>{{notifyParty.name}}</td>
                                       <td>{{notifyParty.contactNumber}}</td>
                                       <td>{{notifyParty.address.addressLine}},
-                                          {{notifyParty.address.city}},{{stateCodeToName[notifyParty.address.stateProvince]}},{{countryCodeName[notifyParty.address.country]}},{{notifyParty.address.postalCode}}
+                                          {{notifyParty.address.city}},{{notifyParty.address.stateProvince}},{{notifyParty.address.country}},{{notifyParty.address.postalCode}}
                                       </td>
                                   </tr>
 
@@ -955,7 +946,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
+                                        <td>{{driverData.citizenshipCountry}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>
@@ -983,8 +974,8 @@
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
                                         <td>{{documentsTypesObjects[travelDocument.type]}}</td>
-                                        <td>{{countryCodeName[travelDocument.country]}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
+                                        <td>{{travelDocument.country}}</td>
+                                        <td>{{travelDocument.stateProvince}}</td>
 
                                     </tr>
 
@@ -1043,7 +1034,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
+                                        <td>{{passengerData.citizenshipCountry}}</td>
                                     </tr>
 
                                 </tbody>
@@ -1067,8 +1058,8 @@
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
                                         <td>{{documentsTypesObjects[travelDocument.type]}}</td>
-                                        <td>{{countryCodeName[travelDocument.country]}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
+                                        <td>{{travelDocument.country}}</td>
+                                        <td>{{travelDocument.stateProvince}}</td>
                                     </tr>
 
                                 </tbody>

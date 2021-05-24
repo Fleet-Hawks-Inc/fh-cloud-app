@@ -63,7 +63,7 @@
 
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Licence Province & Country </td>
-                                           <td class="text-capitalize">{{statesObject[licenceStateID]}}, {{countriesObject[licenceCountryID]}}</td>
+                                           <td class="text-capitalize">{{licenceStateName}}, {{licenceCountryName}}</td>
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
@@ -94,8 +94,8 @@
                                            <td class="text-capitalize">{{ownerShip ? ownerShip : '-' | titlecase}}</td>
                                         </tr>
                                         <tr *ngIf="ownerOperatorName != ''">
-                                         <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
-                                            <td class="text-capitalize">{{ownerOperatorName}}</td>
+                                            <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
+                                            <td class="text-capitalize">{{contactsObjects[ownerOperatorName]}}</td>
                                          </tr>
                                          <tr *ngIf="inspectionFormName != ''">
                                             <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
@@ -263,7 +263,7 @@
 
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Vendor</td>
-                                    <td class="text-capitalize">{{vendor ? vendorObjects[vendor] : '-'}}</td>
+                                    <td class="text-capitalize">{{vendor ? contactsObjects[vendor] : '-'}}</td>
                                  </tr>
                               </tbody>
                            </table>

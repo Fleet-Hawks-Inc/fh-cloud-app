@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -61,23 +62,24 @@ export class ListService {
   assetsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetsList = this.assetsDataSource.asObservable();
 
+  public _subject = new BehaviorSubject<any>({});
 
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
     this.apiService.getData("vendors").subscribe((result: any) => {
-      this.vendorDataSource.next(result.Items);
+      this.vendorDataSource.next(result);
     });
   }
 
 fetchShippers() {
   this.apiService.getData("shippers").subscribe((result: any) => {
-    this.shipperDataSource.next(result.Items);
+    this.shipperDataSource.next(result);
   });
 }
 fetchReceivers() {
   this.apiService.getData("receivers").subscribe((result: any) => {
-    this.receiverDataSource.next(result.Items);
+    this.receiverDataSource.next(result);
   });
 }
   fetchManufacturers() {
@@ -120,7 +122,7 @@ fetchReceivers() {
     this.apiService
       .getData(`ownerOperators`)
       .subscribe((result: any) => {
-        this.ownerOperatorDataSource.next(result.Items);
+        this.ownerOperatorDataSource.next(result);
       });
   }
 
@@ -146,9 +148,6 @@ fetchReceivers() {
         this.assetModelsDataSource.next(result.Items);
       });
   }
-
-
-
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);
@@ -162,8 +161,12 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    this.apiService.getData(`customers`).subscribe((result: any) => {
-      this.customersDataSource.next(result.Items);
+    // this.apiService.getData(`customers`).subscribe((result: any) => {
+    //   this.customersDataSource.next(result.Items);
+    // });
+
+    this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
+      this.customersDataSource.next(result);
     });
   }
 
@@ -175,18 +178,41 @@ fetchReceivers() {
 
   async fetchVehicleIssues(id: any) {
     let promise: any = await this.apiService.getData(`issues/vehicle/${id}`).toPromise();
-    this.issuesDataSource.next(promise.Items);
+    let newIssues = [];
+    promise.Items.filter(elem => {
+      if(elem.currentStatus == 'OPEN') {
+        newIssues.push(elem);
+      }
+    })
+    this.issuesDataSource.next(newIssues);
 
   }
 
   async fetchAssetsIssues(id: any) {
     let promise: any = await this.apiService.getData(`issues/asset/${id}`).toPromise();
-    this.issuesDataSource.next(promise.Items);
+    let newIssues = [];
+    promise.Items.filter(elem => {
+      if(elem.currentStatus == 'OPEN') {
+        newIssues.push(elem);
+      }
+    })
+    this.issuesDataSource.next(newIssues);
   }
 
   fetchAssets() {
     this.apiService.getData(`assets`).subscribe((result: any) => {
       this.assetsDataSource.next(result.Items);
     });
+  }
+
+  abc(data: any){
+    console.log('console0', data);
+    this._subject.next(data);
+    this.abc1();
+  }
+
+  abc1() {
+    console.log('console1');
+    return this._subject.asObservable()
   }
 }
