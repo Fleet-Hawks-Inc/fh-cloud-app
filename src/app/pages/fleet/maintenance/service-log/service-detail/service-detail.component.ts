@@ -11,7 +11,7 @@ import Constants from '../../../constants';
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
-  Asseturl = this.apiService.AssetUrl;
+  logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
   programs;
@@ -52,6 +52,9 @@ export class ServiceDetailComponent implements OnInit {
   photos: any = [];
   docs: any = [];
   users: any = [];
+
+  logImages = []
+  logDocs = [];
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -112,18 +115,15 @@ export class ServiceDetailComponent implements OnInit {
 
         this.currency = result.allServiceParts.currency;
         
-        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.photos = result.uploadedPhotos.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+       if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.logImages = result.uploadedPhotos.map(x => ({
+            path: `${this.logurl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-          this.docs = result.uploadedDocs.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
-            name: x,
-          }));
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+          this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
         this.spinner.hide(); // loader init
       },

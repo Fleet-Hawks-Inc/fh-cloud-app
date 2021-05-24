@@ -106,15 +106,26 @@
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input [(ngModel)]="reminderData.tasks.time" name="tasks.time" type="number" min='1'
-                                                class="form-control">
+                                                class="form-control" #time1="ngModel" required>
+                                                <div *ngIf="time1.invalid && (time1.dirty || time1.touched)" class="text-danger">
+                                                   <div *ngIf="time1.errors.required">
+                                                      Time is required.
+                                                   </div>
+                                                </div>
+
                                           </div>
                                           <div class="col-lg-6 pl-0">
-                                             <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit" placeholder="Select Duration">
+                                             <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit" placeholder="Select Duration" #timeZone="ngModel" required >
                                                 <ng-option value="day">Day(s)</ng-option>
                                                 <ng-option value="week">Week(s)</ng-option>
                                                 <ng-option value="month">Month(s)</ng-option>
                                                 <ng-option value="year">Year(s)</ng-option>
                                              </ng-select>
+                                             <div *ngIf="timeZone.invalid && (timeZone.dirty || timeZone.touched)" class="text-danger">
+                                                <div *ngIf="timeZone.errors.required">
+                                                   Select valid time period is required.
+                                                </div>
+                                             </div>
                                           </div>
                                        </div>
                                     </div>
@@ -124,9 +135,9 @@
                                           Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="reminderData.tasks.odometer"
                                           placeholder="Miles to repeat service task" name="task.odometer" type="text"
-                                          class="form-control"  #odo="ngModel" required>
-                                       <div *ngIf="odo.invalid && (odo.dirty || odo.touched)" class="text-danger">
-                                          <div *ngIf="odo.errors.required">
+                                          class="form-control"  #odo1="ngModel" required>
+                                       <div *ngIf="odo1.invalid && (odo1.dirty || odo1.touched)" class="text-danger">
+                                          <div *ngIf="odo1.errors.required">
                                              Odometer Miles is required and must contain number only.
                                           </div>
                                        </div>
@@ -143,9 +154,12 @@
                                     Date (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.lastServiceDate" name="reminderData.lastServiceDate" type="text"
                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker
-                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" *ngIf="!reminderID">
+                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" *ngIf="!reminderID" #date123="ngModel" required>
+                                    
                               </div>
+                              
                            </div>
+                           
                         </div>
 
                         <div class="col-lg-5 offset-lg-1" *ngIf="!reminderID">
@@ -155,7 +169,12 @@
                                     Odometer (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.lastServiceOdometer"
                                     placeholder="Approximate odometers of last service" name="lastServiceOdometer"
-                                    type="number" class="form-control" min='0'>
+                                    type="number" class="form-control" min='0' #meter1="ngModel" required>
+                                    <div *ngIf="meter1.invalid && (meter1.dirty || meter1.touched)" class="text-danger">
+                                       <div *ngIf="meter1.errors.required">
+                                          Last Service Odometer is required.
+                                       </div>
+                                    </div>
                               </div>
                            </div>
                         </div>

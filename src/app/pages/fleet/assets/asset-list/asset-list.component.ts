@@ -219,7 +219,7 @@ export class AssetListComponent implements OnInit {
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+          const lastEvalKey = result[`LastEvaluatedKey`].assetSK.replace(/#/g, '--');
           this.assetNext = false;
           // for prev button
           if (!this.assetPrevEvauatedKeys.includes(lastEvalKey)) {

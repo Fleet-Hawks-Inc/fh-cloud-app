@@ -11,7 +11,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "bundle-report": "webpack-bundle-analyzer dist/fleethawks-dashboard/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -45,7 +46,7 @@
     "aws-iot-device-sdk-v2": "1.0.3",
     "aws-sdk": "2.683.0",
     "buffer": "5.4.3",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "countries-and-timezones": "^2.4.0",
     "country-state-city": "^2.1.0",
     "hammerjs": "^2.0.8",
@@ -113,7 +114,8 @@
     "protractor": "^5.4.0",
     "ts-node": "7.0.0",
     "tslint": "5.15.0",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "browser": {
     "tls": false,

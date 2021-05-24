@@ -9,6 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import constants from '../../../../app/pages/fleet/constants';
 import { HereMapService } from '../../../services';
 import { Auth } from 'aws-amplify';
+import * as moment from 'moment';
+import { CountryStateCity } from '../../utilities/countryStateCities';
 
 declare var $: any;
 @Component({
@@ -43,6 +45,12 @@ export class SharedModalsComponent implements OnInit {
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+
+      this.listService.abc1().subscribe(res => {
+       this.issuesData.unitID = res.name;
+       this.issuesData.unitType = res.type;
+       this.issuesData.odometer = res.odometer;
+      })
      }
 
 stateData = {
@@ -75,6 +83,7 @@ assets: any = [];
 
 fuelTypes = [];
 // Vehicles variables start
+vehicleStates: any  = [];
   vehicleID: string;
   vehicleTypeList: any = [];
   vehicleIdentification = '';
@@ -85,8 +94,8 @@ fuelTypes = [];
   manufacturerID = '';
   modelID = '';
   plateNumber = '';
-  countryID = '';
-  stateID = '';
+  countryCode = '';
+  stateCode = '';
   driverID = '';
   teamDriverID = '';
   servicePrograms = [];
@@ -248,6 +257,8 @@ fuelTypes = [];
 // hasHos: boolean = false;
 
 driverData = {
+  createdDate: '',
+  createdTime: '',
   userName: '',
   lastName: '',
   phone: '',
@@ -268,12 +279,12 @@ driverData = {
   gender: 'M',
   DOB: '',
   address: [{
+    addressID: '',
     addressType: '',
-    countryID: '',
     countryName: '',
-    stateID: '',
+    countryCode: '',
+    stateCode: '',
     stateName: '',
-    cityID: '',
     cityName: '',
     zipCode: '',
     address1: '',
@@ -282,7 +293,10 @@ driverData = {
       lat: '',
       lng: ''
     },
-    manual: false
+    manual: false,
+    userLocation: '',
+    states: [],
+    cities: [],
   }],
   documentDetails: [{
     documentType: '',
@@ -292,7 +306,8 @@ driverData = {
     issuingState: '',
     issueDate: '',
     expiryDate: '',
-    uploadedDocs: []
+    uploadedDocs: [],
+    docStates: []
   }],
   crossBorderDetails: {},
   paymentDetails: {
@@ -327,14 +342,15 @@ driverData = {
 
   },
   hosDetails: {
+    hosStatus: null,
+    timezone: null,
+    type: null,
+    hosRemarks: '',
+    hosCycle: null,
+    homeTerminal: null,
     pcAllowed: false,
     ymAllowed: false,
-    hosCycle: '',
-    hosStatus: '',
-    hosRemarks: '',
-    type: '',
-    homeTerminal: '',
-    timezone: '',
+    hosCycleName: '',
     optZone: 'South (Canada)'
   },
   emergencyDetails: {},
@@ -363,6 +379,8 @@ fieldTextType: boolean;
   cpwdfieldTextType: boolean;
   licCountries: any = [];
 finaltimezones: any = [];
+driverCountries: any = [];
+licStates: any = [];
 // driver variables ends
 
 // Issues variables ends
@@ -371,12 +389,12 @@ issuesData = {
   currentStatus: 'OPEN',
   unitID: '',
   unitType: 'vehicle',
-  reportedDate: '',
+  reportedDate: moment().format('YYYY-MM-DD'),
   description: '',
   odometer: null,
   reportedBy: '',
   assignedTo: '',
-}
+};
 
 
 
@@ -419,15 +437,17 @@ groupData = {
 localPhotos = [];
 activeTab = 1;
 
+// ASSETS PROPERTIES
+assetStates: any = [];
 assetsData = {
   assetIdentification: '',
   groupID: '',
   VIN: '',
-  startDate: '',
+  startDate: moment().format('YYYY-MM-DD'),
   inspectionFormID: null,
+  assetType: '',
+  currentStatus: '',
   assetDetails: {
-    assetType: '',
-    currentStatus: '',
     year: '',
     manufacturer: '',
     model: '',
@@ -442,8 +462,8 @@ assetsData = {
     GAWR_Unit: '',
     ownerShip: '',
     ownerOperator: '',
-    licenceCountryID: '',
-    licenceStateID: '',
+    licenceCountryCode: '',
+    licenceStateCode: '',
     licencePlateNumber: '',
     annualSafetyDate: '',
     annualSafetyReminder: true,
@@ -472,20 +492,15 @@ users = [];
   async ngOnInit() {
     this.fetchCountries();
     // this.fetchAssetManufacturers();
-
     this.fetchAssetModels();
     this.newManufacturers();
     this.fetchVehicles();
     this.fetchTasks();
-    this.fetchAssetTypes();
     this.getYears();
     this.fetchUsers();
-
     this.fetchInspectionForms();
     this.fetchInspectionFormsAssets();
-    this.fetchDocuments();
     this.fetchGroups();
-    this.fetchCycles(); // fetch cycles
     this.fetchAssets();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
@@ -497,7 +512,7 @@ users = [];
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
     this.listService.fetchAssetManufacturers();
-this.fetchTimezones();
+
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
       this.form = $('#cityForm').validate();
@@ -519,6 +534,29 @@ this.fetchTimezones();
 
     await this.getCurrentuser();
     this.listService.ownerOperatorList;
+
+
+    // DRIVER FUNCTIONS
+    this.fetchTimezones();
+    this.fetchCycles(); // fetch cycles
+    this.fetchDocuments();
+    this.fetchDriverCountries();
+  }
+  // DRIVER FUNCTIONS
+  getDocStates(cntryCode: any, index: any) {
+    this.driverData.documentDetails[index].issuingState = '';
+    this.driverData.documentDetails[index].docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  }
+  fetchDriverCountries() {
+    this.driverCountries = CountryStateCity.GetAllCountries();
+  }
+  getLicStates(cntryCode: any) {
+    this.driverData.licenceDetails.issuedState = '';
+    this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  }
+  getAssetStates(countryCode: any) {
+    this.assetsData.assetDetails.licenceStateCode = '';
+    this.assetStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
   /**
    * fetch vehicle manufacturers
@@ -952,7 +990,12 @@ fetchDrivers(){
   async changeTab(value){
     this.activeTab = value;
   }
-
+// VEHICLE STATES
+getVehicleStates(event: any) {
+  const countryCode: any = event;
+  this.stateCode = '';
+  this.vehicleStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+}
   async addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -968,8 +1011,8 @@ fetchDrivers(){
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
-      countryID: this.countryID,
-      stateID: this.stateID,
+      countryID: this.countryCode,
+      stateID: this.stateCode,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       servicePrograms: this.servicePrograms,
@@ -1144,7 +1187,7 @@ fetchDrivers(){
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+                this.throwVehicleErrors();
                 this.hasError = true;
                 if(err) return reject(err);
               },
@@ -1165,8 +1208,8 @@ fetchDrivers(){
             manufacturerID: '',
             modelID: '',
             plateNumber: '',
-            countryID: '',
-            stateID: '',
+            countryCode: '',
+            stateCode: '',
             driverID: '',
             teamDriverID: '',
             servicePrograms: [],
@@ -1331,7 +1374,16 @@ fetchDrivers(){
     }
 
   }
-
+  throwVehicleErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if(v == 'vehicleIdentification' || v == 'VIN') {
+          $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+        }
+      });
+  }
   fetchFuelTypes(){
     this.apiService.getData('fuelTypes').subscribe((result: any) => {
       this.fuelTypes = result.Items;
@@ -1357,10 +1409,6 @@ fetchDrivers(){
     this.modelID = '';
     $('#vehicleSelect').val('');
   }
-  resetState(){
-    this.stateID = '';
-    $('#stateSelect').val('');
-  }
   // DRIVER SECTION
 
     // Show password
@@ -1378,15 +1426,35 @@ fetchDrivers(){
     // this.register();
     this.spinner.show();
     this.hideErrors();
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
+    if (this.driverData.hosDetails.hosCycle !== '') {
+      let cycleName = '';
+      this.cycles.map((v: any) => {
+        if (this.driverData.hosDetails.hosCycle === v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      });
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+    for(let d = 0; d < this.driverData.documentDetails.length; d++){
+      const element = this.driverData.documentDetails[d];
+      delete element.docStates;
+    }
+    for (let i = 0; i < this.driverData.address.length; i++) {
+      const element = this.driverData.address[i];
+      delete element.states;
+      delete element.cities;
+    }
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for(let i = 0; i < this.uploadedPhotos.length; i++){
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
-    //append docs if any
+    // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       for (let k = 0; k < this.uploadedDocs[j].length; k++) {
         let file = this.uploadedDocs[j][k];
@@ -1394,17 +1462,15 @@ fetchDrivers(){
       }
     }
 
-    //append abstact history docs if any
+    // append abstact history docs if any
     for(let k = 0; k < this.abstractDocs.length; k++){
       formData.append('abstractDocs', this.abstractDocs[k]);
     }
 
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(this.driverData));
-
-
     try {
-      return await new Promise((resolve, reject) => {this.apiService.postData('drivers',formData, true).subscribe({
+      return await new Promise((resolve, reject) => {this.apiService.postData('drivers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1435,15 +1501,16 @@ fetchDrivers(){
         this.isSubmitted = true;
         this.spinner.hide();
       },
-    })})
+    });
+  });
   } catch (error) {
     return 'error found';
   }}
 
   fetchDocuments() {
-    this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
       this.documentTypeList = data;
-    })
+    });
   }
   addDriverDocument() {
     this.driverData.documentDetails.push({
@@ -1454,7 +1521,8 @@ fetchDrivers(){
       issuingState: '',
       issueDate: '',
       expiryDate: '',
-      uploadedDocs: []
+      uploadedDocs: [],
+      docStates: [],
     });
   }
 
@@ -1474,7 +1542,7 @@ fetchDrivers(){
   }
 
   onChangeUnitType(str, value: any) {
-    if(str == 'driver_type') {
+    if(str === 'driver_type') {
       if (value === 'employee') {
         delete this.driverData.ownerOperator;
         delete this.driverData.contractStart;
@@ -1489,27 +1557,34 @@ fetchDrivers(){
       this.driverData.gender = value;
     }
   }
-
-
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     let currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
-    if(this.currentUser.userType == 'Cloud Admin') {
+    if (this.currentUser.userType === 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
-      if(isCarrierID != undefined) {
+      if (isCarrierID !== undefined) {
         currentUserCarrier = isCarrierID;
       }
     }
-    this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
-      result.Items.map(e => {
-        if(e.addressType == 'yard') {
-          this.carrierYards.push(e);
-        }
-      });
+    this.apiService.getData(`carriers/${currentUserCarrier}`).subscribe(result => {
+      if(result.Items[0].addressDetails !== undefined) {
+        result.Items[0].addressDetails.map(e => {
+          if (e.addressType === 'yard') {
+            this.carrierYards.push(e);
+          }
+        });
+      }
+      for (let a = 0; a < this.carrierYards.length; a++) {
+        this.carrierYards.map((e: any) => {
+          if (e.manual) {
+            e.countryName = CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
+            e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+          }
+        });
+      }
     });
   }
-
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
       if (addressID != null) {
@@ -1520,7 +1595,6 @@ fetchDrivers(){
       this.driverData.documentDetails.splice(i, 1);
     }
   }
-
   changePaymentModeForm(value) {
     if (value === 'Pay Per Mile') {
       delete this.driverData.paymentDetails.loadPayPercentage;
@@ -1600,6 +1674,107 @@ fetchDrivers(){
         this.cities = result.Items;
       });
   }
+  clearDriverData() {
+    this.driverData = {
+      createdDate: '',
+      createdTime: '',
+      userName: '',
+      lastName: '',
+      phone: '',
+      email: '',
+      firstName: '',
+      password: '',
+      confirmPassword: '',
+      citizenship: '',
+      driverStatus: '',
+      ownerOperator: '',
+      startDate: '',
+      terminationDate: '',
+      contractStart: '',
+      contractEnd: '',
+      employeeContractorId: '',
+      driverType: 'employee',
+      entityType: 'driver',
+      gender: 'M',
+      DOB: '',
+      address: [{
+        addressID: '',
+        addressType: '',
+        countryName: '',
+        countryCode: '',
+        stateCode: '',
+        stateName: '',
+        cityName: '',
+        zipCode: '',
+        address1: '',
+        address2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        manual: false,
+        userLocation: '',
+        states: [],
+        cities: [],
+      }],
+      documentDetails: [{
+        documentType: '',
+        document: '',
+        issuingAuthority: '',
+        issuingCountry: '',
+        issuingState: '',
+        issueDate: '',
+        expiryDate: '',
+        uploadedDocs: [],
+        docStates: []
+      }],
+      crossBorderDetails: {},
+      paymentDetails: {
+        rate: '',
+        rateUnit: '',
+        waitingPay: '',
+        waitingPayUnit: '',
+        waitingHourAfter: '',
+        deliveryRate: '',
+        deliveryRateUnit: '',
+        loadPayPercentage: '',
+        loadPayPercentageOf: '',
+        loadedMiles: '',
+        loadedMilesUnit: '',
+        emptyMiles: '',
+        emptyMilesUnit: '',
+        loadedMilesTeam: '',
+        loadedMilesTeamUnit: '',
+        emptyMilesTeam: '',
+        emptyMilesTeamUnit: '',
+        paymentType: '',
+        payPeriod: '',
+      },
+      SIN: '',
+      CDL_Number: '',
+      licenceDetails: {
+        licenceExpiry: '',
+        licenceNotification: true,
+        issuedCountry: '',
+        issuedState: '',
+        vehicleType: '',
+
+      },
+      hosDetails: {
+        pcAllowed: false,
+        ymAllowed: false,
+        hosCycle: '',
+        hosStatus: '',
+        hosRemarks: '',
+        type: '',
+        timezone: '',
+        homeTerminal: '',
+        optZone: 'South (Canada)',
+        hosCycleName: '',
+      },
+      emergencyDetails: {},
+    };
+  }
 // ISSUE SECTION
   addIssue() {
     this.hideErrors();
@@ -1661,16 +1836,6 @@ fetchDrivers(){
       });
   }
 
-  /**
-   * fetch asset types from database
-   */
-  fetchAssetTypes() {
-    this.apiService.getData('assetTypes').subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-
-  }
-
   getYears() {
     var max = new Date().getFullYear(),
     min = max - 30,
@@ -1710,13 +1875,13 @@ fetchDrivers(){
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+             // val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              this.throwAssetErrors();
             },
             error: () => { },
             next: () => { },
@@ -1733,9 +1898,9 @@ fetchDrivers(){
           VIN: '',
           startDate: '',
           inspectionFormID: null,
+          assetType: '',
+          currentStatus: '',
           assetDetails: {
-            assetType: '',
-            currentStatus: '',
             year: '',
             manufacturer: '',
             model: '',
@@ -1750,8 +1915,8 @@ fetchDrivers(){
             GAWR_Unit: '',
             ownerShip: '',
             ownerOperator: '',
-            licenceCountryID: '',
-            licenceStateID: '',
+            licenceCountryCode: '',
+            licenceStateCode: '',
             licencePlateNumber: '',
             annualSafetyDate: '',
             annualSafetyReminder: true,
@@ -1776,7 +1941,16 @@ fetchDrivers(){
       },
     });
   }
-
+  throwAssetErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if(v === 'assetIdentification' || v === 'VIN') {
+          $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+        }
+      });
+  }
   clearIssueData() {
     this.issuesData = {
       issueName: '',
@@ -1808,8 +1982,8 @@ fetchDrivers(){
     this.manufacturerID = '';
     this.modelID = '';
     this.plateNumber = '';
-    this.countryID = '';
-    this.stateID = '';
+    this.countryCode = '';
+    this.stateCode = '';
     this.driverID = '';
     this.teamDriverID = '';
     this.servicePrograms = [];
@@ -1956,98 +2130,5 @@ fetchDrivers(){
     };
   }
 
-  clearDriverData (){
-    this.driverData = {
-      userName: '',
-      lastName: '',
-      phone: '',
-      email: '',
-      firstName: '',
-      password: '',
-      confirmPassword: '',
-      citizenship: '',
-      driverStatus: '',
-      ownerOperator: '',
-      startDate: '',
-      terminationDate: '',
-      contractStart: '',
-      contractEnd: '',
-      employeeContractorId: '',
-      driverType: 'employee',
-      entityType: 'driver',
-      gender: 'M',
-      DOB: '',
-      address: [{
-        addressType: '',
-        countryID: '',
-        countryName: '',
-        stateID: '',
-        stateName: '',
-        cityID: '',
-        cityName: '',
-        zipCode: '',
-        address1: '',
-        address2: '',
-        geoCords: {
-          lat: '',
-          lng: ''
-        },
-        manual: false
-      }],
-      documentDetails: [{
-        documentType: '',
-        document: '',
-        issuingAuthority: '',
-        issuingCountry: '',
-        issuingState: '',
-        issueDate: '',
-        expiryDate: '',
-        uploadedDocs: []
-      }],
-      crossBorderDetails: {},
-      paymentDetails: {
-        rate: '',
-        rateUnit: '',
-        waitingPay: '',
-        waitingPayUnit: '',
-        waitingHourAfter: '',
-        deliveryRate: '',
-        deliveryRateUnit: '',
-        loadPayPercentage: '',
-        loadPayPercentageOf: '',
-        loadedMiles: '',
-        loadedMilesUnit: '',
-        emptyMiles: '',
-        emptyMilesUnit: '',
-        loadedMilesTeam: '',
-        loadedMilesTeamUnit: '',
-        emptyMilesTeam: '',
-        emptyMilesTeamUnit: '',
-        paymentType: '',
-        payPeriod: '',
-      },
-      SIN: '',
-      CDL_Number: '',
-      licenceDetails: {
-        licenceExpiry: '',
-        licenceNotification: true,
-        issuedCountry: '',
-        issuedState: '',
-        vehicleType: '',
 
-      },
-      hosDetails: {
-        pcAllowed: false,
-        ymAllowed: false,
-        hosCycle: '',
-        hosStatus: '',
-        hosRemarks: '',
-        type: '',
-        timezone: '',
-        homeTerminal: '',
-        optZone: 'South (Canada)'
-      },
-      emergencyDetails: {},
-    };
-  }
 }

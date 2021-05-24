@@ -31,7 +31,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   response: any = '';
   hasError = false;
-  hasSuccess = false; 
+  hasSuccess = false;
   Error = '';
   Success = '';
   activityData = {
@@ -115,7 +115,7 @@ export class DispatchOverviewComponent implements OnInit {
   dispatchStartPoint = 1;
   dispatchEndPoint = this.pageLength;
   pageload = true;
-  activitiesCount = 0; 
+  activitiesCount = 0;
   prevKeyExist = true;
 
   constructor(private apiService: ApiService,
@@ -138,10 +138,10 @@ export class DispatchOverviewComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    if(this.lastEvaluatedKey != '') {
-      this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
-    }
-    
+    // if(this.lastEvaluatedKey != '') {
+    //   this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
+    // }
+
     this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
@@ -163,14 +163,15 @@ export class DispatchOverviewComponent implements OnInit {
         this.allActivities = result['Items'];
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
           this.dispatchNext = false;
-          this.checkPrevEvaluatedKey(result['LastEvaluatedKey']);
+          this.checkPrevEvaluatedKey(lastEvalKey);
           // for prev button
           if(this.prevKeyExist) {
-            this.dispatchPrevEvauatedKeys.push(result['LastEvaluatedKey']);
+            this.dispatchPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'];
-          
+          this.lastEvaluatedKey = lastEvalKey;
+
         } else {
           this.dispatchNext = true;
           this.lastEvaluatedKey = '';
@@ -196,7 +197,7 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
-  fetchAllTrips() { 
+  fetchAllTrips() {
     this.spinner.show();
     this.apiService.getData('trips').
       subscribe((result: any) => {
@@ -282,7 +283,7 @@ export class DispatchOverviewComponent implements OnInit {
       subscribe(async (result: any) => {
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             if(element.tableName === 'serviceroutes') {
               element.type = 'Route No.';
               this.fetchRouteDetail(element.eventID, i, function(data){
@@ -326,7 +327,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAceManifest() {
     this.spinner.show();
-    this.apiService.getData('ACIeManifest').
+    this.apiService.getData('eManifests/get/ACErecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aceManifestCount = result.Count;
@@ -374,7 +375,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAciManifest() {
     this.spinner.show();
-    this.apiService.getData('ACEeManifest').
+    this.apiService.getData('eManifests/get/ACIrecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aciManifestCount = result.Count;

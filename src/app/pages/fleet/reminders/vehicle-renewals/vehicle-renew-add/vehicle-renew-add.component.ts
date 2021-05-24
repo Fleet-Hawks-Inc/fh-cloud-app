@@ -84,8 +84,8 @@ export class VehicleRenewAddComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
-      this.serviceTaskForm = $('#serviceTaskForm').validate();
+      // this.vehicleRenewalForm = $('#vehicleRenewalForm').validate();
+      // this.serviceTaskForm = $('#serviceTaskForm').validate();
     });
   }
   fetchServiceTasks() {
@@ -177,7 +177,7 @@ export class VehicleRenewAddComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { 
@@ -302,7 +302,7 @@ export class VehicleRenewAddComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -335,7 +335,7 @@ export class VehicleRenewAddComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -364,7 +364,7 @@ export class VehicleRenewAddComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },

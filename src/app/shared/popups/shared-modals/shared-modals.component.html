@@ -55,7 +55,7 @@
                     <div class="col-lg-12">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Notes (optional)</label>
                       <textarea class="form-control heighta" placeholder="Enter notes" rows="3"
-                        id="textareaDefault"></textarea>
+                        ></textarea>
                     </div>
                   </div>
                 </div>
@@ -133,7 +133,7 @@
                     <div class="col-lg-12">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Notes (optional)</label>
                       <textarea class="form-control heighta" placeholder="Enter notes" rows="3"
-                        id="textareaDefault"></textarea>
+                        ></textarea>
                     </div>
                   </div>
                 </div>
@@ -423,7 +423,7 @@
     </div>
   </div>
 </div>
-<!-- add asset model -->
+<!-- add asset model modal-->
 <div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
@@ -775,7 +775,7 @@
     </div>
   </div>
 </div>
-
+<!-- ADD vehicle MODAL -->
 <div class="modal fade" id="addVehicleModelDriver" tabindex="-1" role="dialog" aria-labelledby="addVehickeModelDriver"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -880,16 +880,11 @@
 
 
 
-                          <ng-select class="form-control populate" (change)="getStates($event)" name="countryID"
-                            [(ngModel)]="countryID" placeholder="Select state" #mCountry="ngModel" required >
+                          <ng-select class="form-control populate" (change)="getVehicleStates($event)" name="countryCode"
+                            [(ngModel)]="countryCode" placeholder="Select state" #mCountry="ngModel" required >
 
-                            <optgroup label="">
-                              <ng-container *ngFor="let country of countries ">
-                                <ng-option
-                                  *ngIf="country.countryID == '8e8a0700-8979-11ea-94e8-ddabdd2e57f0' || country.countryID == '73cba1a0-8977-11ea-b61f-0996be58fec9'"
-                                  value="{{country.countryID}}">{{country.countryName}}</ng-option>
-                              </ng-container>
-                            </optgroup>
+                            <ng-option value="CA">Canada</ng-option>
+                            <ng-option value="US">United States of America</ng-option>
                           </ng-select>
                           <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
                             <div *ngIf="mCountry.errors.required">
@@ -1021,14 +1016,11 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Province<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID"
+                          <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode"
                             placeholder="Select Province" id="stateSelect" #mProvince="ngModel" required>
-                            <optgroup label="">
-                              <ng-container *ngFor="let state of states">
-                                <ng-option *ngIf="state.countryID == countryID" value="{{state.stateID}}">
-                                  {{state.stateName}}</ng-option>
-                              </ng-container>
-                            </optgroup>
+                            <ng-option *ngFor="let state of vehicleStates" value="{{state.stateCode}}">
+                              {{state.stateName}}
+                            </ng-option>
                           </ng-select>
                           <div *ngIf="mProvince.invalid && (mProvince.dirty || mProvince.touched)" class="text-danger">
                             <div *ngIf="mProvince.errors.required">
@@ -1392,7 +1384,7 @@
   </div>
 </div>
 
-
+<!-- ADD ISSUES MODAL -->
 <div class="modal fade" id="addIssuesModal" tabindex="-1" role="dialog" aria-labelledby="addIssuesModal"
 
   aria-hidden="true">
@@ -1524,8 +1516,8 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact" #mReport="ngModel" required>
-                    <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}}
-                      {{driver.lastName}}</ng-option>
+                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                      {{user.firstName}} {{user.lastName}}</ng-option>
                   </ng-select>
                   <div *ngIf="mReport.invalid && (mReport.dirty || mReport.touched)" class="text-danger">
                     <div *ngIf="mReport.errors.required">
@@ -1540,8 +1532,8 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue" #mAssigned="ngModel" required>
-                    <ng-option value="Operator">Operator</ng-option>
-                    <ng-option value="Technician">Technician</ng-option>
+                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                      {{user.firstName}} {{user.lastName}}</ng-option>
                   </ng-select>
                   <div *ngIf="mAssigned.invalid && (mAssigned.dirty || mAssigned.touched)" class="text-danger">
                     <div *ngIf="mAssigned.errors.required">
@@ -1634,10 +1626,28 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.assetType" name="assetDetails.assetType"
+                          <ng-select [(ngModel)]="assetsData.assetType" name="assetType"
                             class="form-control populate" id="assetType" placeholder="Select asset type">
-                            <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
-                              {{type.assetTypeName}}</ng-option>
+                            <!-- <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
+                              {{type.assetTypeName}}</ng-option> -->
+                              <ng-option value="container">Container</ng-option>
+                              <ng-option value="double_drop">Double Drop</ng-option>
+                              <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                              <ng-option value="flat_bed">Flat bed</ng-option>
+                              <ng-option value="lowboy">Lowboy</ng-option>
+                              <ng-option value="stepDeck">StepDeck</ng-option>
+                              <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                              <ng-option value="dry_van">Dry Van</ng-option>
+                              <ng-option value="reefer">Reefer</ng-option>
+                              <ng-option value="power_only">Power Only</ng-option>
+                              <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                              <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                              <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                              <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                              <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                              <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                              <ng-option value="chassis">Chassis</ng-option>
+                              <ng-option value="tank_trailer">Tank Trailer</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">
@@ -1677,10 +1687,10 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                             Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
-                            name="assetDetails.currentStatus" placeholder="Select asset status">
-                            <ng-option value="Active">Active</ng-option>
-                            <ng-option value="Inactive">InActive</ng-option>
+                          <ng-select [(ngModel)]="assetsData.currentStatus"
+                            name="currentStatus" placeholder="Select asset status">
+                            <ng-option value="active">Active</ng-option>
+                            <ng-option value="inactive">InActive</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-12">
@@ -1702,21 +1712,23 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
-                            name="assetDetails.licenceCountryID" (change)="getStates($event)"
+                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryCode"
+                            name="assetDetails.licenceCountryCode" (change)="getAssetStates($event)"
                             placeholder="Select country" class="form-control populate">
-                            <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
+                            <!-- <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
                               {{country.countryName}}
-                            </ng-option>
+                            </ng-option> -->
+                            <ng-option value="CA">Canada</ng-option>
+                            <ng-option value="US">United States of America</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
-                            name="assetDetails.licenceStateID" class="form-control populate"
+                          <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
+                            name="assetDetails.licenceStateCode" class="form-control populate"
                             placeholder="Select Province">
-                            <ng-option *ngFor="let state of states" value="{{state.stateID}}">
+                            <ng-option *ngFor="let state of assetStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
                           </ng-select>
@@ -1879,7 +1891,7 @@
                                     <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
                                       class="form-control form-control-sm" placeholder="Select Owner Operator "
                                       (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
-                                      <ng-option *ngFor="let item of ownerOperators | async" value="{{item.operatorID}}">
+                                      <ng-option *ngFor="let item of ownerOperators | async" value="{{item.contactID}}">
                                         {{item.companyName}}</ng-option>
                                     </ng-select>
                                     <div *ngIf="oSlt.invalid && (oSlt.dirty || oSlt.touched)" class="text-danger">
@@ -1953,7 +1965,6 @@
                                       </div>
                                       <div *ngIf="lName.errors.pattern">
                                         Last Name must not contain any special characters.
-
                                       </div>
                                     </div>
                                   </div>
@@ -1986,7 +1997,6 @@
                                           Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                                         </div>
                                       </div>
-
                                   </div>
                                   <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
@@ -2003,7 +2013,6 @@
                                               }"
                                               (click)="togglecpwdfieldTextType()"></i>
                                             </span>
-
                                          </div>
                                       </div>
                                     <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
@@ -2117,13 +2126,12 @@
                                     </label>
                                     <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                       [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
-                                      data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
-                                      required>
+                                       class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
+                                      >
                                     <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                                       <div *ngIf="tDate.errors.required" class="text-danger">
                                         Termination Date must contain yyyy/mm/dd format.
                                       </div>
-
                                     </div>
                                   </div>
                                   <!-- driver is owner operator -->
@@ -2138,7 +2146,6 @@
                                     <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                                       <div *ngIf="dSlt.errors.required">
                                         Start Date is required and must contain yyyy/mm/dd format.
-
                                       </div>
                                     </div>
                                   </div>
@@ -2171,8 +2178,8 @@
                                 <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
                                   placeholder="Select the citizenship country of driver"
                                   (change)="onChangeHideErrors('citizenship')" #cSlt="ngModel" required>
-                                  <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                    value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                  <ng-option class="text-capitalize" *ngFor="let country of driverCountries"
+                                    value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="cSlt.invalid && (cSlt.dirty || cSlt.touched)" class="text-danger">
                                   <div *ngIf="cSlt.errors.required">
@@ -2209,8 +2216,6 @@
                         </div>
                         <div class="form-group row text-dark border-0 mb-0 pb-0" id="document-one"
                           *ngFor="let document of driverData.documentDetails;let i = index">
-
-
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-lg-12">
@@ -2221,10 +2226,8 @@
                                   [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                                   placeholder="Select document type"
                                   (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc="ngModel" required>
-
                                   <ng-option *ngFor="let documentType of documentTypeList" [value]="documentType.code">
                                     {{documentType.description}}</ng-option>
-
                                 </ng-select>
                                 <div *ngIf="doc.invalid && (doc.dirty || doc.touched)" class="text-danger">
                                   <div *ngIf="doc.errors.required">
@@ -2264,9 +2267,8 @@
                                   <input [(ngModel)]="document.issuingAuthority"
                                     [attr.name]="'documentDetails['+i+'].issuingAuthority'"
                                     [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                                    placeholder="eg. Ontario,canada" #authority="ngModel" required pattern="^[a-zA-z\,]+$">
+                                    placeholder="eg. Ontario,canada" #authority="ngModel" pattern="^[a-zA-z\,]+$">
                                   <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
-
                                     <div *ngIf="authority.errors.pattern">
                                       Issuing Authority must contain letters and special characters(period(,)) only .
                                     </div>
@@ -2282,12 +2284,12 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <ng-select
-                                  (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getStates($event)"
+                                  (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
                                   [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
                                   [ngModelOptions]="{standalone: true}" class="form-control populate"
                                   placeholder="Select the issuing country">
-                                  <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                    value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                  <ng-option class="text-capitalize" *ngFor="let country of driverCountries"
+                                    value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-6">
@@ -2296,7 +2298,7 @@
                                   (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                                   [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
                                   [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
-                                  <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
+                                  <ng-option class="text-capitalize" *ngFor="let state of document.docStates" value="{{state.stateCode}}">
                                     {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
@@ -2305,7 +2307,8 @@
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-6">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date</label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="document.issueDate"
                                   (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
                                   #d="ngbDatepicker" type="text" class="form-control" [maxDate]="getcurrentDate"
@@ -2344,8 +2347,6 @@
                                   (change)="selectDocuments($event, i)" type="file" multiple>
                               </div>
                             </div>
-
-
                           </div>
                           <div class="col-lg-6 text-right pt-2"> <a href="javascript:;" (click)="remove('document', i)"
                               class="btn btn-danger"><i class="fa fa-minus"></i></a>
@@ -2406,13 +2407,13 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country <span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
-                                <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getStates($event)"
+                                <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getLicStates($event)"
                                   [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
                                   name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel" required>
-
-                                  <ng-option class="text-capitalize" *ngFor="let country of licCountries"
-                                    value="{{country.countryID}}">{{country.countryName}}</ng-option>
-
+                                  <!-- <ng-option class="text-capitalize" *ngFor="let country of licCountries"
+                                    value="{{country.countryCode}}">{{country.countryName}}</ng-option> -->
+                                    <ng-option value="CA">Canada</ng-option>
+                                    <ng-option value="US">United States</ng-option>
                                 </ng-select>
                                 <div *ngIf="conSlt.invalid && (conSlt.dirty || conSlt.touched)" class="text-danger">
                                   <div *ngIf="conSlt.errors.required">
@@ -2428,7 +2429,7 @@
                                   placeholder="Select Province"
                                   (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
                                   required>
-                                  <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
+                                  <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                                     {{state.stateName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
@@ -2745,7 +2746,7 @@
                                   <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
                                     value="{{yard.addressID}}">
                                     <div *ngIf="yard.manual">
-                                      {{ yard.address1 }} {{ yard.address2}}, {{ yard.cityName }}, {{
+                                      {{ yard.address }}, {{ yard.cityName }}, {{
                                     yard.stateName }}, {{ yard.countryName }}
                                     </div>
                                     <div *ngIf="!yard.manual">

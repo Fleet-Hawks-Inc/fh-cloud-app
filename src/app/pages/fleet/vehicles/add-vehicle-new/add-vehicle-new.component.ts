@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import constants from '../../constants';
 import { ListService } from '../../../../services';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 
 declare var $: any;
 
@@ -63,8 +64,8 @@ export class AddVehicleNewComponent implements OnInit {
   manufacturerID = null;
   modelID = null;
   plateNumber = '';
-  countryID = null;
-  stateID = null;
+  countryCode = null;
+  stateCode = null;
   driverID = null;
   teamDriverID = null;
   servicePrograms = null;
@@ -267,7 +268,7 @@ export class AddVehicleNewComponent implements OnInit {
     private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
-      this.vehicleForm = $('#vehicleForm').validate();
+      // this.vehicleForm = $('#vehicleForm').validate();
     });
 
   }
@@ -281,7 +282,6 @@ export class AddVehicleNewComponent implements OnInit {
     this.listService.fetchManufacturers()
     this.listService.fetchCountries();
     this.listService.fetchModels();
-    this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
@@ -312,7 +312,6 @@ export class AddVehicleNewComponent implements OnInit {
     this.manufacturers = this.listService.manufacturerList;
     this.countries = this.listService.countryList;
     this.models = this.listService.modelList;
-    this.states = this.listService.stateList;
     this.ownerOperators = this.listService.ownerOperatorList;
     this.serviceProgramss = this.listService.serviceProgramList;
     this.drivers = this.listService.driversList;
@@ -325,22 +324,12 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
-  resetState() {
-    this.apiService.getData(`countries/${this.countryID}`).subscribe((result: any) => {
-      this.countryName = result.Items[0].countryName;
-      console.log('countryName', this.countryName)
-    });
-
-    this.stateID = null;
-    $('#stateSelect').val('');
+  getStates(event: any) {
+    const countryCode: any = event;
+    this.stateCode = '';
+    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
 
-  selectedState() {
-    this.apiService.getData(`states/${this.stateID}`).subscribe((result: any) => {
-      this.stateName = result.Items[0].stateName;
-      console.log('stateName', this.stateName)
-    });
-  }
 
   resetModel() {
     this.modelID = null;
@@ -389,8 +378,8 @@ export class AddVehicleNewComponent implements OnInit {
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
-      countryID: this.countryID,
-      stateID: this.stateID,
+      countryID: this.countryCode,
+      stateID: this.stateCode,
       countryName: this.countryName,
       stateName: this.stateName,
       driverID: this.driverID,
@@ -545,6 +534,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
+    console.log('data',data);
     // create form data instance
     const formData = new FormData();
 
@@ -568,7 +558,7 @@ export class AddVehicleNewComponent implements OnInit {
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                 // val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
@@ -590,7 +580,6 @@ export class AddVehicleNewComponent implements OnInit {
             this.Success = '';
             this.submitDisabled = false;
             // this.uploadFiles(); // upload selected files to bucket
-            
             this.toastr.success('Vehicle Added Successfully');
             this.router.navigateByUrl('/fleet/vehicles/list');
             // this.location.back();
@@ -607,12 +596,12 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v == 'vehicleIdentification' || v == 'VIN') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+          .addClass('error');
+        }
       });
-    // this.validateTabErrors();
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -621,7 +610,7 @@ export class AddVehicleNewComponent implements OnInit {
         $('[name="' + v + '"]')
           .removeClass('error')
           .next()
-          .remove('label')
+          .remove('label');
       });
     this.errors = {};
   }
@@ -666,8 +655,9 @@ export class AddVehicleNewComponent implements OnInit {
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
-        this.countryID = result.countryID
-        this.stateID = result.stateID;
+        this.countryCode = result.countryID;
+        this.getStates(result.countryID);
+        this.stateCode = result.stateID;
         this.countryName = result.countryName;
         this.stateName = result.stateName;
         this.driverID = result.driverID;
@@ -866,8 +856,8 @@ export class AddVehicleNewComponent implements OnInit {
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
-      countryID: this.countryID,
-      stateID: this.stateID,
+      countryID: this.countryCode,
+      stateID: this.stateCode,
       countryName: this.countryName,
       stateName: this.stateName,
       driverID: this.driverID,
@@ -1024,7 +1014,6 @@ export class AddVehicleNewComponent implements OnInit {
       uploadedDocs: this.existingDocs,
       activeTab: this.activeTab
     };
-
     // create form data instance
     const formData = new FormData();
 
@@ -1050,7 +1039,7 @@ export class AddVehicleNewComponent implements OnInit {
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                  //val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
