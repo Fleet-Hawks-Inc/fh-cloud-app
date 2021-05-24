@@ -48,6 +48,7 @@ export class NewAceManifestComponent implements OnInit {
   estimatedArrivalDateTime: string;
   currentUser: any = '';
   getcurrentDate: any;
+  manifestType = 'ACE';
   truck = {
     truckID: '',
     sealNumbers: [
@@ -134,13 +135,10 @@ export class NewAceManifestComponent implements OnInit {
           type: '',
           name: '',
           address: {
-            countryID: '',
             countryName: '',
             countryCode: '',
-            stateID: '',
             stateName: '',
             stateCode: '',
-            cityID: '',
             cityName: '',
             postalCode: '',
             addressLine: '',
@@ -149,7 +147,9 @@ export class NewAceManifestComponent implements OnInit {
               lng: ''
             },
             manual: false,
-            userLocation: ''
+            userLocation: '',
+            thirdPartyStates: [],
+            thirdPartyCities: [],
           }
         }
       ],
@@ -188,13 +188,10 @@ export class NewAceManifestComponent implements OnInit {
   public searchResults: any;
   usAddress = {
     address: {
-      countryID: '',
       countryName: '',
       countryCode: '',
-      stateID: '',
       stateName: '',
       stateCode: '',
-      cityID: '',
       cityName: '',
       postalCode: '',
       addressLine: '',
@@ -209,6 +206,8 @@ export class NewAceManifestComponent implements OnInit {
   fetchedCoDrivers = [];
   borderAssetTypes: any = [];
   borderAssetType: any = [];
+  USStates: any = [];
+  USCities: any = [];
   /**
    * for front end validation of US address
    */
@@ -242,8 +241,6 @@ export class NewAceManifestComponent implements OnInit {
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
-
-
   }
   ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
@@ -251,6 +248,7 @@ export class NewAceManifestComponent implements OnInit {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
+      this.getCAProvinces();
       this.route.queryParams.subscribe((params) => {
         if (params.amendManifest !== undefined) {
           this.amendManifest = params.amendManifest; // to get query parameter amend
@@ -274,11 +272,9 @@ export class NewAceManifestComponent implements OnInit {
     this.getCurrentuser();
     this.searchLocation();
     this.fetchAssetType();
+    this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
-    this.passengerDocStates = this.listService.stateList;
-    this.modalStates = this.listService.stateList;
-    this.modalCities = this.listService.cityList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
       this.USports = data;
     });
@@ -331,9 +327,9 @@ export class NewAceManifestComponent implements OnInit {
     });
   }
 
-   /***
-   * fetch asset types from json file
-   */
+  /***
+  * fetch asset types from json file
+  */
   fetchAssetType() {
     this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
       this.borderAssetType = data;
@@ -348,15 +344,54 @@ export class NewAceManifestComponent implements OnInit {
 
   }
   getCAProvinces() {
-     this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
+    this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
   }
-  resetusAddressState() {
-    this.usAddress.address.stateID = '';
-    $('#usAddressStateSelect').val('');
+  fetchUSStates() {
+    this.USStates = CountryStateCity.GetStatesByCountryCode(['US']);
   }
-  resetusAddressCity() {
-    this.usAddress.address.cityID = '';
-    $('#usAddressCitySelect').val('');
+  getUSCities(event: any) {
+    const stateCode = event;
+    const countryCode = 'US';
+    this.usAddress.address.cityName = '';
+    this.usAddress.address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.usAddress.address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.USCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+
+  // PASSENGER FUNCTIONS
+  getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
+    this.passengers[Pindex].travelDocuments[Dindex].stateProvince = '';
+    this.passengers[Pindex].travelDocuments[Dindex].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  fetchPassengerDocStates(passengers: any) {
+    for (let p = 0; p < passengers.length; p++) {
+      for (let d = 0; d < passengers[p].travelDocuments.length; d++) {
+        const countryCode = this.passengers[p].travelDocuments[d].country;
+        this.passengers[p].travelDocuments[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+      }
+    }
+  }
+  // THIRD PARTY FUNCTION
+  getThirdPartyState(countryCode: any, sIndex: any, pIndex: any) {
+    this.shipments[sIndex].thirdParties[pIndex].address.stateCode = '';
+    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getThirdPartyCity(stateCode: any, sIndex: any, pIndex: any) {
+    const countryCode = this.shipments[sIndex].thirdParties[pIndex].address.countryCode;
+    this.shipments[sIndex].thirdParties[pIndex].address.cityName = '';
+    this.shipments[sIndex].thirdParties[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shipments[sIndex].thirdParties[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  fetchThirdPartyAddress(shipments: any) {
+   for(let s = 0; s < shipments.length; s++) {
+    for(let p = 0; p < shipments[s].thirdParties.length; p++) {
+      const countryCode: any = this.shipments[s].thirdParties[p].address.countryCode;
+      const stateCode: any = this.shipments[s].thirdParties[p].address.stateCode;
+      this.shipments[s].thirdParties[p].address.thirdPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+      this.shipments[s].thirdParties[p].address.thirdPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    }
+   }
   }
   onChangeHideErrors(fieldname = '') {
     $('[name="' + fieldname + '"]')
@@ -364,18 +399,7 @@ export class NewAceManifestComponent implements OnInit {
       .next()
       .remove('label');
   }
-  resetThirdPartyState(s, p) {
-    this.shipments[s].thirdParties[p].address.stateID = '';
-    $('#thirdPartyStateSelect').val('');
-  }
-  resetThirdPartyCity(s, p) {
-    this.shipments[s].thirdParties[p].address.cityID = '';
-    $('#thirdPartyCitySelect').val('');
-  }
-  resetpassengerDocState(i, j) {
-    this.passengers[i].travelDocuments[j].stateProvince = '';
-    $('#passengerDocStateSelect').val('');
-  }
+
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.fetchedDrivers = result.Items;
@@ -510,6 +534,7 @@ export class NewAceManifestComponent implements OnInit {
           number: '',
           country: '',
           stateProvince: '',
+          docStates: []
         },
       ],
     });
@@ -575,13 +600,10 @@ export class NewAceManifestComponent implements OnInit {
         type: '',
         name: '',
         address: {
-          countryID: '',
           countryName: '',
           countryCode: '',
-          stateID: '',
           stateName: '',
           stateCode: '',
-          cityID: '',
           cityName: '',
           postalCode: '',
           addressLine: '',
@@ -590,7 +612,9 @@ export class NewAceManifestComponent implements OnInit {
             lng: ''
           },
           manual: false,
-          userLocation: ''
+          userLocation: '',
+          thirdPartyStates: [],
+          thirdPartyCities: []
         }
       });
     }
@@ -629,18 +653,26 @@ export class NewAceManifestComponent implements OnInit {
       if (callType === 'thirdParty') {
         $(event.target).closest('.address-item').addClass('open');
         this.shipments[s].thirdParties[p].address[`userLocation`] = '';
+        this.shipments[s].thirdParties[p].address.countryCode = '';
+        this.shipments[s].thirdParties[p].address.stateCode = '';
+        this.shipments[s].thirdParties[p].address.stateName = '';
+        this.shipments[s].thirdParties[p].address.cityName = '';
+        this.shipments[s].thirdParties[p].address.postalCode = '';
       } else {
         $(event.target).closest('.address-item').addClass('open');
         this.usAddress.address[`userLocation`] = '';
+        this.usAddress.address.countryCode = '';
+        this.usAddress.address.stateCode = '';
+        this.usAddress.address.cityName = '';
+        this.usAddress.address.postalCode = '';
       }
     } else {
       if (callType === 'thirdParty') {
         $(event.target).closest('.address-item').removeClass('open');
-        this.shipments[s].thirdParties[p].address.countryID = '';
+        this.shipments[s].thirdParties[p].address.countryCode = '';
         this.shipments[s].thirdParties[p].address.countryName = '';
-        this.shipments[s].thirdParties[p].address.stateID = '';
+        this.shipments[s].thirdParties[p].address.stateCode = '';
         this.shipments[s].thirdParties[p].address.stateName = '';
-        this.shipments[s].thirdParties[p].address.cityID = '';
         this.shipments[s].thirdParties[p].address.cityName = '';
         this.shipments[s].thirdParties[p].address.postalCode = '';
         this.shipments[s].thirdParties[p].address.addressLine = '';
@@ -648,11 +680,10 @@ export class NewAceManifestComponent implements OnInit {
         this.shipments[s].thirdParties[p].address.geoCords.lng = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.usAddress.address.countryID = '';
+        this.usAddress.address.countryCode = '';
         this.usAddress.address.countryName = '';
-        this.usAddress.address.stateID = '';
+        this.usAddress.address.stateCode = '';
         this.usAddress.address.stateName = '';
-        this.usAddress.address.cityID = '';
         this.usAddress.address.cityName = '';
         this.usAddress.address.postalCode = '';
         this.usAddress.address.addressLine = '';
@@ -689,11 +720,11 @@ export class NewAceManifestComponent implements OnInit {
       this.usAddress.address.countryName = result.address.countryName;
       this.usAddress.address.countryCode = result.address.countryCode;
       this.usAddress.address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      $('div').removeClass('show-search__result');
       this.usAddress.address.stateName = result.address.state;
       this.usAddress.address.stateCode = result.address.stateCode;
       this.usAddress.address.cityName = result.address.city;
       this.usAddress.address.postalCode = result.address.postalCode;
+      $('div').removeClass('show-search__result');
       if (result.address.houseNumber === undefined) {
         result.address.houseNumber = '';
       }
@@ -703,15 +734,6 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
 
-
-  async fetchCitiesByName(name: string) {
-    const result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
   deleteThirdParty(i: number, s: number) {
     this.shipments[s].thirdParties.splice(i, 1);
   }
@@ -726,17 +748,17 @@ export class NewAceManifestComponent implements OnInit {
       if (this.usAddress.address.manual === true) {
         this.errorClassUserLocation = false;
         // to show error on empty US address
-        if (this.usAddress.address.countryID === '') {
+        if (this.usAddress.address.countryCode === '') {
           this.errorClassCountry = true;
         } else {
           this.errorClassCountry = false;
         }
-        if (this.usAddress.address.stateID === '') {
+        if (this.usAddress.address.stateCode === '') {
           this.errorClassState = true;
         } else {
           this.errorClassState = false;
         }
-        if (this.usAddress.address.cityID === '') {
+        if (this.usAddress.address.cityName === '') {
           this.errorClassCity = true;
         } else {
           this.errorClassCity = false;
@@ -752,8 +774,8 @@ export class NewAceManifestComponent implements OnInit {
           this.errorClassPostal = false;
         }
         if (
-          this.usAddress.address.stateID !== '' &&
-          this.usAddress.address.cityID !== '' &&
+          this.usAddress.address.stateCode !== '' &&
+          this.usAddress.address.cityName !== '' &&
           this.usAddress.address.addressLine !== '' &&
           this.usAddress.address.postalCode !== ''
         ) {
@@ -771,6 +793,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           SCAC: this.SCAC,
+          manifestType: this.manifestType,
           tripNumber: this.SCAC + this.tripNumber,
           usPortOfArrival: this.usPortOfArrival,
           estimatedArrivalDate: this.estimatedArrivalDate,
@@ -784,19 +807,28 @@ export class NewAceManifestComponent implements OnInit {
           shipments: this.shipments,
           currentStatus: 'Draft',
         };
-        console.log('data', data);
-         this.addFunction(data);
+        for (let p = 0; p < data.passengers.length; p++) {
+          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+            const element = data.passengers[p].travelDocuments[d];
+            delete element.docStates;
+          }
+        }
+        for (let s = 0; s < data.shipments.length; s++) {
+          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
+            const element = data.shipments[s].thirdParties[p].address;
+            delete element.thirdPartyStates;
+            delete element.thirdPartyCities;
+          }
+        }
+        this.addFunction(data);
       }
     } else {
       this.usAddress = {
         address: {
-          countryID: '',
           countryName: '',
           countryCode: '',
-          stateID: '',
           stateName: '',
           stateCode: '',
-          cityID: '',
           cityName: '',
           postalCode: '',
           addressLine: '',
@@ -810,6 +842,7 @@ export class NewAceManifestComponent implements OnInit {
       };
       const data = {
         SCAC: this.SCAC,
+        manifestType: this.manifestType,
         tripNumber: this.SCAC + this.tripNumber,
         usPortOfArrival: this.usPortOfArrival,
         estimatedArrivalDate: this.estimatedArrivalDate,
@@ -823,8 +856,20 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-       this.addFunction(data);
-      console.log('data', data);
+      for (let p = 0; p < data.passengers.length; p++) {
+        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+          const element = data.passengers[p].travelDocuments[d];
+          delete element.docStates;
+        }
+      }
+      for (let s = 0; s < data.shipments.length; s++) {
+        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
+          const element = data.shipments[s].thirdParties[p].address;
+          delete element.thirdPartyStates;
+          delete element.thirdPartyCities;
+        }
+      }
+      this.addFunction(data);
     }
   }
   throwErrors() {
@@ -854,8 +899,8 @@ export class NewAceManifestComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACE/' + this.manifestID).subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result ',result );
         this.manifestID = this.manifestID;
+        this.manifestType = this.manifestType;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
         this.SCAC = result.SCAC;
@@ -868,15 +913,14 @@ export class NewAceManifestComponent implements OnInit {
         this.coDrivers = result.coDrivers;
         this.trailers = result.trailers;
         this.passengers = result.passengers;
+        this.fetchPassengerDocStates(this.passengers);
         this.shipments = result.shipments;
+        this.fetchThirdPartyAddress(this.shipments);
         this.currentStatus = result.currentStatus;
         this.usAddress = result.usAddress;
         this.borderResponses = result.borderResponses;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
-        setTimeout(() => {
-          this.getCAProvinces();
-        }, 1000);
       });
   }
 
@@ -888,17 +932,17 @@ export class NewAceManifestComponent implements OnInit {
       if (this.usAddress.address.manual === true) {
         this.errorClassUserLocation = false;
         // to show error on empty US address
-        if (this.usAddress.address.countryID === '') {
+        if (this.usAddress.address.countryCode === '') {
           this.errorClassCountry = true;
         } else {
           this.errorClassCountry = false;
         }
-        if (this.usAddress.address.stateID === '') {
+        if (this.usAddress.address.stateCode === '') {
           this.errorClassState = true;
         } else {
           this.errorClassState = false;
         }
-        if (this.usAddress.address.cityID === '') {
+        if (this.usAddress.address.cityName === '') {
           this.errorClassCity = true;
         } else {
           this.errorClassCity = false;
@@ -914,8 +958,8 @@ export class NewAceManifestComponent implements OnInit {
           this.errorClassPostal = false;
         }
         if (
-          this.usAddress.address.stateID !== '' &&
-          this.usAddress.address.cityID !== '' &&
+          this.usAddress.address.stateCode !== '' &&
+          this.usAddress.address.cityName !== '' &&
           this.usAddress.address.addressLine !== '' &&
           this.usAddress.address.postalCode !== ''
         ) {
@@ -933,6 +977,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           manifestID: this.manifestID,
+          manifestType: this.manifestType,
           sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
@@ -946,24 +991,33 @@ export class NewAceManifestComponent implements OnInit {
           usAddress: this.usAddress,
           passengers: this.passengers,
           shipments: this.shipments,
-          borderResponses : this.borderResponses,
+          borderResponses: this.borderResponses,
           createdDate: this.createdDate,
           createdTime: this.createdTime,
           currentStatus: 'Draft',
         };
-        console.log('data',data);
+        for (let p = 0; p < data.passengers.length; p++) {
+          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+            const element = data.passengers[p].travelDocuments[d];
+            delete element.docStates;
+          }
+        }
+        for (let s = 0; s < data.shipments.length; s++) {
+          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
+            const element = data.shipments[s].thirdParties[p].address;
+            delete element.thirdPartyStates;
+            delete element.thirdPartyCities;
+          }
+        }
         this.updateFunction(data);
       }
     } else {
       this.usAddress = {
         address: {
-          countryID: '',
           countryName: '',
           countryCode: '',
-          stateID: '',
           stateName: '',
           stateCode: '',
-          cityID: '',
           cityName: '',
           postalCode: '',
           addressLine: '',
@@ -978,6 +1032,7 @@ export class NewAceManifestComponent implements OnInit {
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
         manifestID: this.manifestID,
+        manifestType: this.manifestType,
         sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
@@ -991,11 +1046,24 @@ export class NewAceManifestComponent implements OnInit {
         usAddress: this.usAddress,
         passengers: this.passengers,
         shipments: this.shipments,
-        borderResponses : this.borderResponses,
+        borderResponses: this.borderResponses,
         createdDate: this.createdDate,
         createdTime: this.createdTime,
         currentStatus: 'Draft',
       };
+      for (let p = 0; p < data.passengers.length; p++) {
+        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+          const element = data.passengers[p].travelDocuments[d];
+          delete element.docStates;
+        }
+      }
+      for (let s = 0; s < data.shipments.length; s++) {
+        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
+          const element = data.shipments[s].thirdParties[p].address;
+          delete element.thirdPartyStates;
+          delete element.thirdPartyCities;
+        }
+      }
       this.updateFunction(data);
     }
   }

@@ -34,8 +34,7 @@ export class EManifestsComponent implements OnInit {
   vehiclesList: any = {};
   assetsList: any = {};
   driversList: any = {};
-  consigneesList: any = {};
-  shippersList: any = {};
+  contactList: any = {};
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -103,9 +102,8 @@ export class EManifestsComponent implements OnInit {
     this.ACIEntries();
     this.fetchVehiclesList();
     this.fetchAssetsList();
-    this.fetchShippersList();
     this.fetchDriversList();
-    this.fetchConsigneesList();
+    this.fetchContactsList();
     this.getACECount();
     this.getACICount();
     this.initDataTableACI();
@@ -181,14 +179,9 @@ export class EManifestsComponent implements OnInit {
       this.driversList = result;
     });
   }
-  fetchConsigneesList() {
-    this.apiService.getData('receivers/get/list').subscribe((result: any) => {
-      this.consigneesList = result;
-    });
-  }
-  fetchShippersList() {
-    this.apiService.getData('shippers/get/list').subscribe((result: any) => {
-      this.shippersList = result;
+  fetchContactsList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactList = result;
     });
   }
   ACEEntries() {

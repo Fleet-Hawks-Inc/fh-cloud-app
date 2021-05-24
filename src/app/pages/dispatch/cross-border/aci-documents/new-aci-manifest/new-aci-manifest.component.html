@@ -147,7 +147,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select Driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
-                            {{driver.firstName}} {{driver.lastName}}</ng-option>
+                            {{driver.firstName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-10">
@@ -156,13 +156,11 @@
                         <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" placeholder="Select Co-Driver">
                             <ng-container *ngFor="let driver of drivers">
                               <ng-option *ngIf="driver.driverID != mainDriver" [value]="driver.driverID">
-                                {{driver.firstName}} {{driver.lastName}}</ng-option>
+                                {{driver.firstName}}</ng-option>
                             </ng-container>
                         </ng-select>
                       </div>
                       <div class="col-lg-2  mar-top-37">
-                        <!-- <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i
-                                          class="fas fa-plus"></i></a> -->
                       </div>
                     </div>
                   </div>
@@ -271,10 +269,10 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select placeholder="Select Issuing Country" (change)="resetpassengerDocState(i,j)" [ngModelOptions]="{standalone: true}"
+                              <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
-                              [(ngModel)]="document.country">
-                              <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                              (change)="getPassengerDocStates($event,i,j)" [(ngModel)]="document.country">
+                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
                                 {{country.countryName}}</ng-option>
                             </ng-select>
 
@@ -283,7 +281,6 @@
                       </div>
                       <div class="col-lg-5">
                         <div class="form-group row">
-
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Document Type<span
                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -298,18 +295,15 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province<span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select placeholder="Select Issuing Province"[ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
-                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
-                              [(ngModel)]="document.stateProvince">
-                              <ng-container *ngFor="let state of modalStates| async">
-                                <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
-                                  [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
-                              </ng-container>
-                            </ng-select>
+                                <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
+                                [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
+                                [(ngModel)]="document.stateProvince">
+                                  <ng-option *ngFor="let state of document.docStates"
+                                    [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
+
+                              </ng-select>
                           </div>
                           <div class="col-lg-2 mar-top-37">
-                            <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                              class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>  -->
                             </div>
                         </div>
                       </div>
@@ -618,7 +612,7 @@
                                   Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select placeholder="Select Consignor"[ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].shipperID'" [(ngModel)]="shipment.shipperID">
-                                  <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.shipperID}}">
+                                  <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.contactID}}">
                                     {{shipper.companyName}}</ng-option>
                                 </ng-select>
                               </div>
@@ -633,22 +627,30 @@
                                 <ng-select placeholder="Select Consignee"[ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID">
                                   <ng-option *ngFor="let consignee of consignees | async"
-                                    value="{{consignee.receiverID}}">
+                                    value="{{consignee.contactID}}">
                                     {{consignee.companyName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-2 mar-top-37">
-                                <!-- <a data-toggle="modal" data-target="#addConsigneeModal"
-                                             class="modal-with-form btn btn-sm btn-success text-light"><i
-                                                class="fas fa-plus"></i></a> -->
+                              </div>
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Country of Loading<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <ng-select placeholder="Select country" [ngModelOptions]="{standalone: true}"
+                                [attr.name]="'shipments['+s+'].cityOfLoading.country'" (change)="getLoadingStates($event,s)"
+                                [(ngModel)]="shipment.cityOfLoading.country">
+                                <ng-option value="MX">Mexico</ng-option>
+                                <ng-option value="US">United States of America</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
                               </div>
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">State
                                   of Loading<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                <ng-select placeholder="Select State of Loading" [ngModelOptions]="{standalone: true}"
+                                <ng-select placeholder="Select State of Loading" [ngModelOptions]="{standalone: true}"  (change)=getLoadingCities($event,s)
                                   [attr.name]="'shipments['+s+'].cityOfLoading.stateProvince'"
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince">
-                                  <ng-option *ngFor="let state of loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                                  <ng-option *ngFor="let state of shipment.cityOfLoading.loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -657,9 +659,20 @@
                                 <ng-select placeholder="Select City of Loading " [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.cityName'"
                                   [(ngModel)]="shipment.cityOfLoading.cityName">
-                                  <ng-option *ngFor="let city of loadingCities" value="{{city.cityName}}">
+                                  <ng-option *ngFor="let city of shipment.cityOfLoading.loadingCities" value="{{city.cityName}}">
                                     {{city.cityName}}</ng-option>
                                 </ng-select>
+                              </div>
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Country of Acceptance</label>
+                                <ng-select placeholder="Select country" [ngModelOptions]="{standalone: true}"
+                                [attr.name]="'shipments['+s+'].cityOfAcceptance.country'" (change)="getAcceptanceStates($event,s)"
+                                [(ngModel)]="shipment.cityOfAcceptance.country">
+                                <ng-option value="MX">Mexico</ng-option>
+                                <ng-option value="US">United States of America</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
                               </div>
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">State
@@ -668,10 +681,9 @@
                                     class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                     title="Mandatory if state of loading is different than state of acceptance.."></i></label>
                                 <ng-select placeholder="Select State of Acceptance" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'shipments['+s+'].cityOfAcceptance.stateProvince'"
-                                  (change)="getAcceptanceCities(s)"
+                                  [attr.name]="'shipments['+s+'].cityOfAcceptance.stateProvince'"  (change)=getAcceptanceCities($event,s)
                                   [(ngModel)]="shipment.cityOfAcceptance.stateProvince">
-                                  <ng-option *ngFor="let state of loadingStates" [value]="state.stateCode">{{state.stateCode}} -
+                                  <ng-option *ngFor="let state of shipment.cityOfAcceptance.acceptanceStates" [value]="state.stateCode">{{state.stateCode}} -
                                     {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
@@ -683,7 +695,7 @@
                                 <ng-select placeholder="Select City of Acceptance" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfAcceptance.cityName'"
                                   [(ngModel)]="shipment.cityOfAcceptance.cityName">
-                                      <ng-option *ngFor="let city of loadingCities" value="{{city.cityName}}">
+                                      <ng-option *ngFor="let city of shipment.cityOfAcceptance.acceptanceCities" value="{{city.cityName}}">
                                         {{city.cityName}}</ng-option>
                                 </ng-select>
                               </div>
@@ -783,10 +795,10 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
-                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.countryID'"
-                                          (change)="resetDeliveryDestinationState(s,p)" placeholder="Select Country"
-                                          [(ngModel)]="deliveryDestination.address.countryID">
-                                          <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.countryCode'"
+                                          (change)="getDeliveryDestinationState($event,s,p)" placeholder="Select Country"
+                                          [(ngModel)]="deliveryDestination.address.countryCode">
+                                          <ng-option *ngFor="let country of countries" [value]="country.countryCode">
                                             {{country.countryName}}</ng-option>
                                         </ng-select>
                                       </div>
@@ -795,19 +807,14 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
-                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.stateID'" placeholder="Select Province"
-                                          [(ngModel)]="deliveryDestination.address.stateID"
-                                          (change)="resetDeliveryDestinationCity(s,p)">
-                                          <ng-container *ngFor="let state of modalStates| async">
-                                            <ng-option *ngIf="state.countryID == shipments[s].deliveryDestinations[p].address.countryID" [value]="state.stateID">
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.stateCode'" placeholder="Select Province"
+                                          [(ngModel)]="deliveryDestination.address.stateCode"
+                                          (change)="getDeliveryDestinationCity($event,s,p)">
+                                            <ng-option *ngFor="let state of deliveryDestination.address.deliveryDestinationStates" [value]="state.stateCode">
                                               {{state.stateCode}} - {{state.stateName}}</ng-option>
-                                          </ng-container>
                                         </ng-select>
-
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                   </div>
@@ -816,18 +823,13 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
-                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.cityID'" placeholder="Select City"
-                                          [(ngModel)]="deliveryDestination.address.cityID">
-                                            <ng-container *ngFor="let city of modalCities| async">
-                                              <ng-option *ngIf="city.stateID == shipments[s].deliveryDestinations[p].address.stateID"
-                                                [value]="city.cityID"> {{city.cityName}}</ng-option>
-                                            </ng-container>
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.cityName'" placeholder="Select City"
+                                          [(ngModel)]="deliveryDestination.address.cityName">
+                                              <ng-option *ngFor="let city of deliveryDestination.address.deliveryDestinationCities"
+                                                [value]="city.cityName"> {{city.cityName}}</ng-option>
                                         </ng-select>
-
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                     <div class="row">
@@ -937,10 +939,10 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
-                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.countryID'"
-                                          (change)="resetNotifyPartyState(s,p)" placeholder= "Select Country"
-                                          [(ngModel)]="notifyParty.address.countryID">
-                                          <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.countryCode'"
+                                          (change)="getNotifyPartyState($event,s,p)" placeholder= "Select Country"
+                                          [(ngModel)]="notifyParty.address.countryCode">
+                                          <ng-option *ngFor="let country of countries" [value]="country.countryCode">
                                             {{country.countryName}}</ng-option>
                                         </ng-select>
                                       </div>
@@ -949,18 +951,15 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
-                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.stateID'" id="notifyPartyStateSelect" placeholder="Select Province"
-                                          [(ngModel)]="notifyParty.address.stateID"
-                                          (change)="resetNotifyPartyCity(s,p)">
-                                          <ng-container *ngFor="let state of modalStates| async">
-                                          <ng-option *ngIf="state.countryID == shipments[s].notifyParties[p].address.countryID" [value]="state.stateID">
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.stateCode'" id="notifyPartyStateSelect" placeholder="Select Province"
+                                          [(ngModel)]="notifyParty.address.stateCode"
+                                          (change)="getNotifyPartyCity($event,s,p)">
+                                          <ng-option *ngFor="let state of notifyParty.address.notifyPartyStates" [value]="state.stateCode">
                                             {{state.stateCode}} - {{state.stateName}}</ng-option>
-                                      </ng-container>
+
                                     </ng-select>
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                   </div>
@@ -969,17 +968,13 @@
                                       <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
                                         <ng-select [ngModelOptions]="{standalone: true}" id="notifyPartyCitySelect"
-                                        [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.cityID'" placeholder="Select City"
-                                        [(ngModel)]="notifyParty.address.cityID">
-                                        <ng-container *ngFor="let city of modalCities| async">
-                                          <ng-option *ngIf="city.stateID == shipments[s].notifyParties[p].address.stateID"
-                                            [value]="city.cityID"> {{city.cityName}}</ng-option>
-                                        </ng-container>
+                                        [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.cityName'" placeholder="Select City"
+                                        [(ngModel)]="notifyParty.address.cityName">
+                                          <ng-option *ngFor="let city of notifyParty.address.notifyPartyCities"
+                                            [value]="city.cityName"> {{city.cityName}}</ng-option>
                                       </ng-select>
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                     <div class="row">
@@ -1191,7 +1186,7 @@
                           </td>
                           <td>
                             <div class="row mr-1">
-                              <div class="col-lg-10">
+                              <div class="col-lg-11">
                                 <div class="row">
                                   <div class="col-lg-3" *ngFor="let seal of trailer.sealNumbers; let i=index;">
                                     <input type="text" class="form-control" placeholder="eg. 1,2,3" [ngModelOptions]="{standalone: true}"
@@ -1201,7 +1196,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-lg-2"><button type="button" class="btn btn-success btn-sm"
+                              <div class="col-lg-1"><button type="button" class="btn btn-success btn-sm"
                                   (click)="addTrailerSeal(t)">
                                   <i class="fas fa-plus"></i></button></div>
                             </div>
