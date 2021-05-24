@@ -294,7 +294,7 @@
                             name="aisle"
                             [(ngModel)]="aisle"
                             placeholder="eg. 1,2,3 "
-                            #iAisle="ngModel" pattern="^[0-9]$"
+                            #iAisle="ngModel" pattern="^[0-9]+$"
                           />
                           <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
                             <div *ngIf="iAisle.errors.pattern">
@@ -309,7 +309,7 @@
                             name="row"
                             [(ngModel)]="row"
                             placeholder="eg. 1,2,3 "
-                            #iRow="ngModel" pattern="^[0-9]$"
+                            #iRow="ngModel" pattern="^[0-9]+$"
                           />
                           <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
                             <div *ngIf="iRow.errors.pattern">
@@ -324,7 +324,7 @@
                             name="bin"
                             [(ngModel)]="bin"
                             placeholder="eg. 1,2,3"
-                            #iBin="ngModel" pattern="^[0-9]$"
+                            #iBin="ngModel" pattern="^[0-9]+$"
                           />
                           <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
                             <div *ngIf="iBin.errors.pattern">
