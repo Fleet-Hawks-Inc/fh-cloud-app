@@ -274,7 +274,6 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchAssetType();
     this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
-    console.log('this.shippers ',this.shippers );
     this.consignees = this.listService.receiverList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
       this.USports = data;
