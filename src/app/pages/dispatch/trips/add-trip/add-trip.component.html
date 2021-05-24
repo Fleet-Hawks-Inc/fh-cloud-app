@@ -40,7 +40,7 @@
 
                                                 <input type="text" class="form-control" name="tripNo"
                                                     [(ngModel)]="tripData.tripNo" placeholder="eg. Trip 1234"
-                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9\-\/]+$">
+                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9\-\/]+$" [disabled]="tripNoDisabled">
                                                 <div *ngIf="tripNumber.invalid && (tripNumber.dirty || tripNumber.touched)"
                                                     class="text-danger">
                                                     <div>

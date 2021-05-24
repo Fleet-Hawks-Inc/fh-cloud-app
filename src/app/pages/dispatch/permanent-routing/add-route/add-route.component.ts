@@ -31,10 +31,10 @@ export class AddRouteComponent implements OnInit {
     routeNo: '',
     routeName: '',
     notes: '',
-    VehicleID: '',
-    AssetID: '',
-    driverUserName: '',
-    coDriverUserName: '',
+    VehicleID: null,
+    AssetID: null,
+    driverID: null,
+    coDriverID: null,
     miles: 0,
     sourceInformation: {
       sourceAddress: '',
@@ -202,7 +202,7 @@ calculateActualMiles(miles){
   this.actualMiles+=miles;
 }
   resetCodrivers() {
-    this.routeData.coDriverUserName = '';
+    this.routeData.coDriverID = null;
   }
 
   mapShow() {
@@ -279,70 +279,35 @@ calculateActualMiles(miles){
     this.errors = {};
   }
 
-  async assignLocation(elem, label, index='') {
+  async assignLocation(elem, label, index:any='') {
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
     const item = {
       stopName: label,
-      stopNotes: ''
+      stopNotes: '',
+      state: '',
+      country: ''
     };
+    if(labelResult.address.countryName !== undefined) {
+      item.country = `${labelResult.address.countryName}`;
+    }
+
+    if(labelResult.address.state !== undefined) {
+      item.state = `${labelResult.address.state}`;
+    }
     if (elem === 'source') {
-      this.routeData.sourceInformation['sourceAddress'] = '';
-      this.routeData.sourceInformation['sourceCountry'] = '';
-      this.routeData.sourceInformation['sourceState'] = '';
-      this.routeData.sourceInformation['sourceCity'] = '';
-      this.routeData.sourceInformation['sourceZipCode'] = '';
-
-      this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}` ;
-      
-      if(labelResult.address.countryName !== undefined) {
-        this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
-      }
-
-      if(labelResult.address.state !== undefined) {
-        this.routeData.sourceInformation['sourceState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
-      }
-
-      if(labelResult.address.city !== undefined) {
-        this.routeData.sourceInformation['sourceCity'] = `${labelResult.address.city}`;
-      }
-      
-      if(labelResult.address.postalCode !== undefined) {
-        this.routeData.sourceInformation['sourceZipCode'] = `${labelResult.address.postalCode}`;
-      }
-      
-      // this.routeData.stops.splice(1, 0, item);
+      this.setSourceValue(labelResult)
       this.routeData.stops[0] = item;
+
     } else if(elem === 'destination') {
-      this.routeData.destinationInformation['destinationAddress'] = '';
-      this.routeData.destinationInformation['destinationCountry'] = '';
-      this.routeData.destinationInformation['destinationState'] = '';
-      this.routeData.destinationInformation['destinationCity'] = '';
-      this.routeData.destinationInformation['destinationZipCode'] = '';
-
-      this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
-      
-      if(labelResult.address.countryName !== undefined) {
-        this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
-      }
-
-      if(labelResult.address.state !== undefined) {
-        this.routeData.destinationInformation['destinationState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
-      }
-      
-      if(labelResult.address.city !== undefined) {
-        this.routeData.destinationInformation['destinationCity'] = `${labelResult.address.city}`;
-      }
-      
-      if(labelResult.address.postalCode !== undefined) {
-        this.routeData.destinationInformation['destinationZipCode'] = `${labelResult.address.postalCode}`;
-      }
-      
+      this.setDestinationValue(labelResult);
       let stopLen = this.routeData.stops.length; 
       if(stopLen == 0) {
         this.routeData.stops[0] = {
           stopName: '',
-          stopNotes: ''
+          stopNotes: '',
+          country: '',
+          state: ''
         };
         this.routeData.stops[1] = item;
       } else if(stopLen == 1 || stopLen == 2) {
@@ -351,19 +316,81 @@ calculateActualMiles(miles){
         this.routeData.stops[stopLen-1] = item;
       }
       
-
-      // this.routeData.stops.splice(1, 1);
-      // this.routeData.stops.splice(1, 0, item);
     } else {
-      
+      if(labelResult.address.countryName !== undefined) {
+        this.routeData.stops[index]['country'] = `${labelResult.address.countryName}`;
+      }
+  
+      if(labelResult.address.state !== undefined) {
+        this.routeData.stops[index]['state'] = `${labelResult.address.state}`;
+      }
       this.routeData.stops[index]['stopName'] = label;
+
+      if(index == 0 || index == this.routeData.stops.length-1) {
+        if(index === 0) {
+          this.setSourceValue(labelResult)
+        } else {
+          this.setDestinationValue(labelResult);
+        }
+      }
     }
     this.searchResults = false;
     this.reinitMap();
     $('div').removeClass('show-search__result');
-
+    console.log('this.routeData.stops', this.routeData.stops);
   }
 
+  setSourceValue(labelResult) {
+    this.routeData.sourceInformation['sourceAddress'] = '';
+    this.routeData.sourceInformation['sourceCountry'] = '';
+    this.routeData.sourceInformation['sourceState'] = '';
+    this.routeData.sourceInformation['sourceCity'] = '';
+    this.routeData.sourceInformation['sourceZipCode'] = '';
+    this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}`;
+
+    if (labelResult.address.countryName !== undefined) {
+      this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
+    }
+
+    if (labelResult.address.state !== undefined) {
+      this.routeData.sourceInformation['sourceState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    }
+
+    if (labelResult.address.city !== undefined) {
+      this.routeData.sourceInformation['sourceCity'] = `${labelResult.address.city}`;
+    }
+
+    if (labelResult.address.postalCode !== undefined) {
+      this.routeData.sourceInformation['sourceZipCode'] = `${labelResult.address.postalCode}`;
+    }
+  }
+
+  setDestinationValue(labelResult) {
+    this.routeData.destinationInformation['destinationAddress'] = '';
+    this.routeData.destinationInformation['destinationCountry'] = '';
+    this.routeData.destinationInformation['destinationState'] = '';
+    this.routeData.destinationInformation['destinationCity'] = '';
+    this.routeData.destinationInformation['destinationZipCode'] = '';
+
+    this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
+
+    if (labelResult.address.countryName !== undefined) {
+      this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
+    }
+
+    if (labelResult.address.state !== undefined) {
+      this.routeData.destinationInformation['destinationState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    }
+
+    if (labelResult.address.city !== undefined) {
+      this.routeData.destinationInformation['destinationCity'] = `${labelResult.address.city}`;
+    }
+
+    if (labelResult.address.postalCode !== undefined) {
+      this.routeData.destinationInformation['destinationZipCode'] = `${labelResult.address.postalCode}`;
+    }
+  }
+  
   addStops() {
     const item = {
       stopName: '',
@@ -405,8 +432,8 @@ calculateActualMiles(miles){
         this.routeData['notes']     = result.notes;
         this.routeData['VehicleID'] = result.VehicleID;
         this.routeData['AssetID']   = result.AssetID;
-        this.routeData['driverUserName'] = result.driverUserName;
-        this.routeData['coDriverUserName'] = result.coDriverUserName;
+        this.routeData['driverID'] = result.driverID;
+        this.routeData['coDriverID'] = result.coDriverID;
         this.routeData['miles'] = result.miles;
         
         this.routeData['sourceInformation'] = {

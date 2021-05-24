@@ -10,7 +10,6 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
 import { GoogleMapsService } from 'src/app/services/google-maps.service';
-import { zipObject } from 'lodash';
 import * as moment from "moment";
 
 declare var $: any;
@@ -175,6 +174,7 @@ export class AddTripComponent implements OnInit {
     submitDisabled = false;
     orderStops = [];
     isEdit = false;
+    tripNoDisabled = false;
 
     ngOnInit() {
 
@@ -1348,6 +1348,7 @@ export class AddTripComponent implements OnInit {
         this.spinner.show();
         this.apiService.getData('trips/' + this.tripID).
             subscribe((result: any) => {
+                this.tripNoDisabled = true;
                 this.isEdit = true;
                 result = result.Items[0];
                 let tripPlanning = result.tripPlanning;
@@ -1870,8 +1871,8 @@ export class AddTripComponent implements OnInit {
 
     fetchLastTripNumber(){
         this.apiService.getData('trips/get/last/tripNo').subscribe((result) => {
-          this.tripData.tripNo = result.toString();
-          console.log('this.tripData.tripNo', this.tripData.tripNo);
+            this.tripNoDisabled = result.prevData;
+            this.tripData.tripNo = result.tripNo.toString();
         });
     }
 

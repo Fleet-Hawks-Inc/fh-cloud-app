@@ -876,46 +876,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.DOB = result.DOB;
         this.driverData.email = result.email;
         this.driverData.phone = result.phone;
-        // for (let i = 0; i < result.address.length; i++) {
-        //   if (result.address[i].manual) {
-        //     this.newAddress.push({
-        //       addressID: result.address[i].addressID,
-        //       addressType: result.address[i].addressType,
-        //       countryCode: result.address[i].countryCode,
-        //       countryName: result.address[i].countryName,
-        //       stateCode: result.address[i].stateCode,
-        //       stateName: result.address[i].stateName,
-        //       cityName: result.address[i].cityName,
-        //       zipCode: result.address[i].zipCode,
-        //       address1: result.address[i].address1,
-        //       address2: result.address[i].address2,
-        //       geoCords: {
-        //         lat: result.address[i].geoCords.lat,
-        //         lng: result.address[i].geoCords.lng
-        //       },
-        //       manual: result.address[i].manual
-        //     });
-        //   } else {
-        //     this.newAddress.push({
-        //       addressID: result.address[i].addressID,
-        //       addressType: result.address[i].addressType,
-        //       countryCode: result.address[i].countryCode,
-        //       countryName: result.address[i].countryName,
-        //       stateCode: result.address[i].stateCode,
-        //       stateName: result.address[i].stateName,
-        //       cityName: result.address[i].cityName,
-        //       zipCode: result.address[i].zipCode,
-        //       address1: result.address[i].address1,
-        //       address2: result.address[i].address2,
-        //       geoCords: {
-        //         lat: result.address[i].geoCords.lat,
-        //         lng: result.address[i].geoCords.lng
-        //       },
-        //       userLocation: result.address[i].userLocation
-        //     });
-        //   }
-        // }
-        // this.driverData.address = this.newAddress;
         for (let i = 0; i < result.documentDetails.length; i++) {
           let docmnt = [];
           if (result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0) {
