@@ -1014,7 +1014,6 @@ export class AddVehicleNewComponent implements OnInit {
       uploadedDocs: this.existingDocs,
       activeTab: this.activeTab
     };
-console.log('data',data);
     // create form data instance
     const formData = new FormData();
 

@@ -253,6 +253,7 @@ export class AciDetailsComponent implements OnInit {
             policyNumber: result.truck.insurancePolicy.policyNumber,
             issuedDate: result.truck.insurancePolicy.issuedDate,
             policyAmount: result.truck.insurancePolicy.policyAmount,
+            amountCurrency: result.truck.insurancePolicy.amountCurrency
           },
           licensePlate: {
               number: result.truck.licensePlate.number,

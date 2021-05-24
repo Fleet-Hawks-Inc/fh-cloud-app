@@ -203,10 +203,9 @@
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode" placeholder="Select Province"
                                     id="stateSelect" #province="ngModel" required>
-
                                     <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
                                       {{state.stateName}}
-                                    </ng-option>>
+                                    </ng-option>
 
                                  </ng-select>
                                  <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
