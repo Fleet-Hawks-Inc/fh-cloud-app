@@ -47,28 +47,10 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
-                                    Users/Groups&nbsp;<span
-                                       class="text-1 optional-label-color">(optional)</span></label>
-                                 <ng-select [multiple]="true" [(ngModel)]="subscribers"
-                                    placeholder="Select user(s)/group(s) to send Email" name="subscribers"
-                                    style="width: 100%;">
-                                    <optgroup label="Select User">
-                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}}
-                                          {{user.lastName}}
-                                       </ng-option>
-                                    </optgroup>
-                                    <optgroup label="Select Group">
-                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">
-                                          {{group.groupName}}</ng-option>
-                                    <optgroup>
-                                 </ng-select>
+                                    Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
+                                    placeholder="e.g james@email.com, maria@email.com">
                               </div>
-                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
-                                 <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                    class="modal-with-form btn cus-btn-padd btn-success text-light"><i
-                                       class="fas fa-plus"></i> </button>
-                              </div>
-
                            </div>
                         </div>
                         <div class="col-lg-5 offset-lg-1">
@@ -99,14 +81,24 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reminder By<span
+                                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="reminderData.tasks.remindByUnit" placeholder="Select reminder by" name="remindByUnit">
+                                          <ng-option value="time">Time </ng-option>
+                                          <ng-option value="odometer">Odometer </ng-option>
+                                       </ng-select>
+                                    
+                                    </div>
+
+                                    <div class="col-lg-7" *ngIf="reminderData.tasks.remindByUnit == 'time'">
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Time<span
                                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input [(ngModel)]="reminderData.tasks.time" name="tasks.time" type="number" min='1'
-                                                class="form-control" #time1="ngModel" required>
+                                                class="form-control" #time1="ngModel" placeholder="Enter time e.g 5" required>
                                                 <div *ngIf="time1.invalid && (time1.dirty || time1.touched)" class="text-danger">
                                                    <div *ngIf="time1.errors.required">
                                                       Time is required.
@@ -129,7 +121,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-7" *ngIf="reminderData.tasks.remindByUnit == 'odometer'">
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -147,14 +139,14 @@
                            </div>
                         </div>
 
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1" *ngIf="!reminderID && reminderData.tasks.remindByUnit == 'time'">
                            <div class="row pt-2">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" *ngIf="!reminderID">Last Service
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Last Service
                                     Date (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.lastServiceDate" name="reminderData.lastServiceDate" type="text"
                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker
-                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" *ngIf="!reminderID" #date123="ngModel" required>
+                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" #date123="ngModel" required>
                                     
                               </div>
                               
@@ -162,7 +154,7 @@
                            
                         </div>
 
-                        <div class="col-lg-5 offset-lg-1" *ngIf="!reminderID">
+                        <div class="col-lg-5 offset-lg-1" *ngIf="!reminderID && reminderData.tasks.remindByUnit == 'odometer'">
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Last Service
@@ -204,71 +196,6 @@
       </section>
    </div>
 </section>
-
-<!-- GROUP MODAL -->
-<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal"
-   aria-hidden="true">
-   <div class="modal-dialog" style="max-width: 600px;" role="document">
-      <div class="modal-content">
-         
-         <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #reminderForm="ngForm">
-         <div class="modal-header">
-            <h5 class="modal-title">Add Users/Groups</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-            </button>
-         </div>
-         <div class="modal-body text-dark">
-            <div class="card-body p-0">
-                  <div class="form-row">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold">Group Name <span
-                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
-                           placeholder="Enter users group name" #rGroup="ngModel" required pattern="^[a-zA-Z\s]+$">
-                           <div *ngIf="rGroup.invalid && (rGroup.dirty || rGroup.touched)" class="text-danger">
-                              <div *ngIf="rGroup.errors.required">
-                                Group Name is required.
-                              </div>     
-                              <div *ngIf="rGroup.errors.pattern">
-                                     Group Name must contains uppercase, lowercase and special characters for period(space) only.
-                              </div>
-                            </div>
-                     </div>
-                  </div>
-                  <div class="form-row mt-2">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold">Group Members&nbsp;<span
-                              class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
-                           placeholder="Select group members, other users" style="width: 100%;">
-                           <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}}
-                              {{user.lastName}}
-                           </ng-option>
-                        </ng-select>
-                     </div>
-                  </div>
-                  <div class="form-row mt-2">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
-                              class="text-1 optional-label-color">(optional)</span></label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
-                           id="comment" placeholder="Enter user group description"></textarea>
-                     </div>
-                  </div>
-               
-            </div>
-         </div>
-         <div class="modal-footer text-right">
-
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addGroup()" [disabled]="!reminderForm.form.valid">Save</button>
-         </div>
-      </form>
-      </div>
-   </div>
-</div>
-
 
 <div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
    aria-hidden="true">
