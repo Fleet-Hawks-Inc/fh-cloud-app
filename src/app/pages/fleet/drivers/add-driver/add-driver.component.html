@@ -397,15 +397,14 @@
                                 End Date is required and must contain yyyy/mm/dd format.
                               </div>
                             </div>
-
                           </div>
                           <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                            <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                              name="driverImage" type="file" class="hidden_input1 w-100" />
-                            <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-
-                              Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-
+                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                              Photo
+                              <input  class="hidden_input1 w-100" (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
+                              name="driverImage"
+                                 type="file">
+                           </div>
                           </div>
                         </div>
                       </div>
@@ -426,9 +425,11 @@
                         </div>
                       </div>
                       <div class="col-lg-5 mar-top-37">
-                        <input type="file" id="upload" hidden />
-                        <label class="btn btn-sm btn-block btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                          Abstract History Document <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                          Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name="driverData.abstractDocs"
+                             type="file">
+                       </div>
                       </div>
                     </div>
                     <div class="row">
@@ -447,7 +448,7 @@
                             <div class="col-lg-3 text-right">
                               <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
                                 data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('abs',item.name, d)" class="modal-with-form"><i
+                              <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form"><i
                                   class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
@@ -746,7 +747,7 @@
                             <div class="col-lg-3 text-right">
                               <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                                 data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form"><i
+                              <a href="javascript:;" (click)="delete('doc',doc.name, i,d)" class="modal-with-form"><i
                                   class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>

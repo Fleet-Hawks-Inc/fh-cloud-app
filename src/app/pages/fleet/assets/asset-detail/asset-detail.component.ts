@@ -61,7 +61,7 @@ export class AssetDetailComponent implements OnInit {
   reminderBefore: string;
   reminderBeforeUnit: string;
   vendor: string;
-
+  public assetDataDetail: any  = [];
   devices: any;
   allDevices = [];
 
@@ -173,10 +173,11 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((res: any) => {
         if (res) {
           let result = res.Items[0];
+          this.assetDataDetail = res.Items[0];
           // if (!result.hasOwnProperty('devices')) {
           //   result['devices'] = [];
           // }
-          if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
+          if(result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
             this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
               this.inspectionFormName = res.inspectionFormName;
@@ -334,12 +335,51 @@ export class AssetDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string,name: string){
-    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchAsset();
-    });
-  }
+  // delete(type: string,name: string){
+  //   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+  //     this.fetchAsset();
+  //   });
+  // }
+// delete uploaded images and documents
+delete(type: string, name: string, index: any) {
 
+  delete this.assetDataDetail.carrierID;
+  delete this.assetDataDetail.timeModified;
+  delete this.assetDataDetail.isDelActiveSK;
+  delete this.assetDataDetail.assetSK;
+  delete this.assetDataDetail.carrierID;
+  delete this.assetDataDetail.timeModified;
+  if (type === 'doc') {
+    this.assetsDocs.splice(index, 1);
+    this.assetDataDetail.uploadedDocs.splice(index, 1);
+    this.deleteUploadedFile(type, name, index);
+    try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(this.assetDataDetail));
+      this.apiService.putData('assets', formData, true).subscribe({
+        complete: () => { this.fetchAsset(); }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    this.assetsImages.splice(index, 1);
+    this.assetDataDetail.uploadedPhotos.splice(index, 1);
+    this.deleteUploadedFile(type, name, index);
+    try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(this.assetDataDetail));
+      this.apiService.putData('assets', formData, true).subscribe({
+        complete: () => { this.fetchAsset(); }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+deleteUploadedFile(type: string, name: string, index: any) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+}
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
