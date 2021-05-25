@@ -108,7 +108,7 @@ export class DriverDetailComponent implements OnInit {
   citiesObject: any = {};
   groupsObjects: any = {};
   ownerOperatorsObjects: any = {};
-
+  vehicleList: any = {};
   docs = [];
   assetsDocs = [];
   absDocs = [];
@@ -138,6 +138,13 @@ export class DriverDetailComponent implements OnInit {
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
     this.fetchDriverTrips();
+    this. fetchVehicleList();
+    this.fetchDriverTrips();
+  }
+  fetchVehicleList() {
+    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+      this.vehicleList = result;
+    });
   }
   fetchHomeTerminal(homeTerminal){
       if (homeTerminal && homeTerminal.length > 0) {
@@ -164,7 +171,6 @@ export class DriverDetailComponent implements OnInit {
             this.homeTerminal = homeTerminal[0].userLocation;
           }
         }
-        console.log('this.homeTerminal',this.homeTerminal);
   }
    /**
    * fetch Asset data
@@ -174,10 +180,8 @@ export class DriverDetailComponent implements OnInit {
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
-        console.log('result', result);
         if (result) {
           this.driverData = await result[`Items`][0];
-          console.log(' this.driverData ', this.driverData );
           this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
             this.fetchCompleteAdd(this.driverData.address);
@@ -356,7 +360,7 @@ export class DriverDetailComponent implements OnInit {
       this.fetchDriver();
     });
   }
-  fetchDriverTrips(){
+  fetchDriverTrips() {
     this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
       console.log('trip result', result);
     });

@@ -1114,7 +1114,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
 
   }
-
+  changeCurrency(currency: any) {
+    this.driverData.paymentDetails.rateUnit = currency;
+    this.driverData.paymentDetails.deliveryRateUnit = currency;
+    this.driverData.paymentDetails.loadedMilesUnit = currency;
+    this.driverData.paymentDetails.emptyMilesUnit = currency;
+    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
+    this.driverData.paymentDetails.waitingPayUnit = currency;
+  }
   concatArray(path) {
     this.concatArrayKeys = '';
     for (const i in path) {
@@ -1149,6 +1157,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
   // delete uploaded images and documents
   delete(type: string, name: string, index: string) {
+    if(type === "doc") {
+      this.driverData.documentDetails[index].uploadedDocs.splice(index, 1);
+      this.assetsDocs[index].splice(index,1);
+    }
+
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
       this.absDocs.splice(parseInt(index), 1);
     });
