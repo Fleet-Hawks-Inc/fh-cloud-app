@@ -1201,4 +1201,19 @@ export class AddVehicleNewComponent implements OnInit {
       this.documentSlides.splice(parseInt(index), 1);
     });
   }
+
+  changeUnit(str, value) {
+    if(str == 'dim') {
+      this.specifications.groundClearnceUnit = value;
+      this.specifications.heightUnit = value;
+    } else if(str == 'cur') {
+      this.insurance.premiumCurrency = value;
+      this.insurance.amountCurrency = value;
+      this.purchase.purchasePriceCurrency = value;
+      this.loan.amountOfLoanCurrency = value;
+      this.loan.amountOfLoanCurrency = value;
+      this.loan.downPaymentCurrency = value;
+      this.loan.monthlyPaymentCurrency = value;
+    }
+  }
 }

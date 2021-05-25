@@ -237,6 +237,7 @@ export class AddServiceComponent implements OnInit {
 
     this.serviceData.taskIds = taskIds;
 
+    console.log('darta', this.serviceData)
     // create form data instance
     const formData = new FormData();
 
