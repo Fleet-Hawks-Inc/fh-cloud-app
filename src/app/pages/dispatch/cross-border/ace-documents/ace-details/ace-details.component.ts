@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpClient } from '@angular/common/http';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { unescapeLeadingUnderscores } from 'typescript';
 @Component({
   selector: 'app-ace-details',
   templateUrl: './ace-details.component.html',
@@ -33,7 +35,8 @@ export class AceDetailsComponent implements OnInit {
     licensePlates: [
       {
         number: '',
-        stateProvince: ''
+        stateProvince: '',
+        country: ''
       }
     ],
     sealNumbers: [],
@@ -151,7 +154,6 @@ export class AceDetailsComponent implements OnInit {
     this.fetchACEEntry();
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
-    this.fetchStatesCodeName();
     this.fetchDocuments();
     this.fetchPackagingUnits();
     this.fetchThirdPartyTypes();
@@ -223,11 +225,6 @@ export class AceDetailsComponent implements OnInit {
       }, {});
     });
   }
-  fetchStatesCodeName() {
-    this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
-    this.stateCodeToName = result;
-    });
-  }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
@@ -255,13 +252,35 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        console.log('result', result);
+        console.log('result',result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
         this.currentStatus = result.currentStatus;
-        this.truck = result.truck;
+        this.truck = {
+          number: result.truck.number,
+          type: result.truck.type,
+          vinNumber: result.truck.vinNumber,
+          dotNumber: result.truck.dotNumber,
+          insurancePolicy: {
+            insuranceCompanyName: result.truck.insurancePolicy.insuranceCompanyName,
+            policyNumber: result.truck.insurancePolicy.policyNumber,
+            issuedDate: result.truck.insurancePolicy.issuedDate,
+            policyAmount: result.truck.insurancePolicy.policyAmount,
+            amountCurrency: result.truck.insurancePolicy.amountCurrency
+          },
+          licensePlates: [
+            {
+              number: result.truck.licensePlates[0].number,
+              stateProvince: CountryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
+              country: CountryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
+            }
+          ],
+          sealNumbers: result.truck.sealNumbers,
+          IIT: result.truck.IIT
+          };
         this.trailers = result.trailers;
+        this.getTrailerLicState(result.trailers);
         this.mainDriver = result.mainDriver;
         this.drivers = result.drivers;
         this.passengers = result.passengers;
@@ -282,11 +301,23 @@ export class AceDetailsComponent implements OnInit {
       eventID: this.manifestID,
       manifestType: 'ACE',
       status: val
-    }
+    };
     this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
       });
+  }
+  getTrailerLicState(trailers: any) {
+    if(trailers !== undefined || trailers !== '') {
+      for(let t=0; t < trailers.length; t++) {
+        trailers.map((e: any) => {
+          let countryCode =  e.licensePlates[0].country;
+          e.licensePlates[0].stateProvince = CountryStateCity.GetStateNameFromCode(e.licensePlates[0].stateProvince, countryCode);
+          e.licensePlates[0].country = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+        });
+     }
+    }
+
   }
   sendCBPFn() {
     this.apiService
@@ -307,7 +338,7 @@ export class AceDetailsComponent implements OnInit {
     this.shipmentData = {
       shipmentControlNumber: shipmentDataFetched[0].shipmentControlNumber,
       type: shipmentDataFetched[0].type,
-      provinceOfLoading: shipmentDataFetched[0].provinceOfLoading,
+      provinceOfLoading: CountryStateCity.GetStateNameFromCode(shipmentDataFetched[0].provinceOfLoading, 'CA'),
       goodsAstrayDateOfExit: shipmentDataFetched[0].goodsAstrayDateOfExit,
       shipperName: shipmentDataFetched[0].shipper.name,
       consigneeName: shipmentDataFetched[0].consignee.name,
@@ -340,6 +371,8 @@ export class AceDetailsComponent implements OnInit {
     }
   }
   showMainDriverDetails() {
+    const countryCode = 'US';
+    const stateCode = this.mainDriver.usAddress.state;
     this.driverData = {
       driverID: this.mainDriver.driverID,
       driverNumber: this.mainDriver.driverNumber,
@@ -347,11 +380,23 @@ export class AceDetailsComponent implements OnInit {
       gender: this.mainDriver.gender,
       lastName: this.mainDriver.lastName,
       dateOfBirth: this.mainDriver.dateOfBirth,
-      citizenshipCountry: this.mainDriver.citizenshipCountry,
+      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(this.mainDriver.citizenshipCountry),
       fastCardNumber: this.mainDriver.fastCardNumber,
       travelDocuments: this.mainDriver.travelDocuments,
-      usAddress: this.mainDriver.usAddress
+      usAddress: {
+        addressLine: this.mainDriver.usAddress.addressLine,
+        state: CountryStateCity.GetStateNameFromCode(stateCode, countryCode),
+        city: this.mainDriver.usAddress.city,
+        zipCode: this.mainDriver.usAddress.zipCode
+      }
     };
+    for(let d=0; d < this.mainDriver.travelDocuments.length; d++) {
+      this.mainDriver.travelDocuments.map((e: any) => {
+         e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+         e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+      });
+    }
+
   }
   showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
@@ -362,11 +407,22 @@ export class AceDetailsComponent implements OnInit {
       gender: driverDataFetched[0].gender,
       lastName: driverDataFetched[0].lastName,
       dateOfBirth: driverDataFetched[0].dateOfBirth,
-      citizenshipCountry: driverDataFetched[0].citizenshipCountry,
+      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(driverDataFetched[0].citizenshipCountry),
       fastCardNumber: driverDataFetched[0].fastCardNumber,
       travelDocuments: driverDataFetched[0].travelDocuments,
-      usAddress: driverDataFetched[0].usAddress
+      usAddress: {
+        addressLine: this.mainDriver.usAddress.addressLine,
+        state: CountryStateCity.GetStateNameFromCode(driverDataFetched[0].usAddress.state, 'US'),
+        city: this.mainDriver.usAddress.city,
+        zipCode: this.mainDriver.usAddress.zipCode
+      }
     };
+    for(let d=0; d < driverDataFetched[0].travelDocuments.length; d++) {
+      driverDataFetched[0].travelDocuments.map((e: any) => {
+        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+      });
+    }
 
   }
   showPassengerDetails(passengerID) {
@@ -377,12 +433,20 @@ export class AceDetailsComponent implements OnInit {
       gender: passengerDataFetched[0].gender,
       lastName: passengerDataFetched[0].lastName,
       dateOfBirth:  passengerDataFetched[0].dateOfBirth,
-      citizenshipCountry: passengerDataFetched[0].citizenshipCountry,
+      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(passengerDataFetched[0].citizenshipCountry),
       fastCardNumber: passengerDataFetched[0].fastCardNumber,
       travelDocuments: passengerDataFetched[0].travelDocuments
     };
+    for(let d=0; d < passengerDataFetched[0].travelDocuments.length; d++) {
+      passengerDataFetched[0].travelDocuments.map((e: any) => {
+        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+      });
+    }
   }
+  // getPassengerDocData(travelDocuments: any){
 
+  // }
   cancelManifest(manifestID){
     this.apiService.getData(`eManifests/ACEmanifest/cancelManifest/` + manifestID).subscribe();
   }

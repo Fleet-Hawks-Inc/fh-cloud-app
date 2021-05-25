@@ -122,7 +122,7 @@
                                             <td>{{response.dateTime}}</td>
                                             <td>{{response.status}}</td>
                                             <td><b>{{response.message}}</b>&nbsp;&nbsp;
-                                                     <span *ngFor="let error of response.errors">{{error.note}},<br></span>
+                                                     <span *ngFor="let error of response.errors; let s = index;">{{error.note}}<span *ngIf= "s != response.errors.length-1">,</span><br></span>
                                                 </td>
                                         </tr>
                                     </tbody>
@@ -178,8 +178,8 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}},
                                                 {{shipment.shipper.address.city}},
-                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}},
-                                                {{countryCodeName[shipment.shipper.address.country]}},
+                                                {{shipment.shipper.address.stateProvince}},
+                                                {{shipment.shipper.address.country}},
                                                 {{shipment.shipper.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
@@ -187,10 +187,9 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}},
                                                 {{shipment.consignee.address.city}},
-                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}},
-                                                {{countryCodeName[shipment.consignee.address.country]}},
+                                                {{shipment.consignee.address.stateProvince}},
+                                                {{shipment.consignee.address.country}},
                                                 {{shipment.consignee.address.postalCode}}
-
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
@@ -199,7 +198,7 @@
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
                                                 (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}},</span>
+                                                    *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}}<span *ngIf= "s != shipment.commodities.length-1">,</span></span>
                                             </td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
@@ -261,7 +260,7 @@
                                         <td data-toggle="modal" data-target="#showDriverDetails"
                                         class="modal-with-form "
                                         (click)="showMainDriverDetails()"><span
-                                                *ngFor="let document of mainDriver.travelDocuments">{{document.number}},</span>
+                                                *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != mainDriver.travelDocuments.length-1">,</span></span>
                                         </td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
@@ -285,7 +284,7 @@
                                             class="modal-with-form "
                                             (click)="showDriverDetails(driver.driverID)">{{driver.fastCardNumber}}</td>
                                             <td><span
-                                                    *ngFor="let document of driver.travelDocuments">{{document.number}},</span>
+                                                    *ngFor="let document of driver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != driver.travelDocuments.length-1">,</span></span>
                                             </td>
 
                                             <!-- <td>Address</td> -->
@@ -305,12 +304,12 @@
                                             (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
                                             <td data-toggle="modal" data-target="#showPassengerDetails"
                                             class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)"></td>
+                                            (click)="showPassengerDetails(passenger.passengerID)">--</td>
                                             <td>{{passenger.fastCardNumber}}</td>
                                             <td data-toggle="modal" data-target="#showPassengerDetails"
                                             class="modal-with-form "
                                             (click)="showPassengerDetails(passenger.passengerID)"><span
-                                                    *ngFor="let document of passenger.travelDocuments">{{document.number}},</span>
+                                                    *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
                                             <!-- <td>Address</td> -->
                                             <td class="actions">
@@ -331,7 +330,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Vehicle on<b>{{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Vehicle on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <!-- <button class="btn btn-success btn-sm"> Set IIT Status</button> -->
                                 </div>
@@ -344,7 +343,7 @@
                                             <th width="10%">Type</th>
                                             <th width="15%">VIN</th>
                                             <th width="10%">DOT#</th>
-                                            <th width="15%">Licence Plate Number</th>
+                                            <th width="15%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -378,7 +377,7 @@
                                                 importers bond.</span></td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
+                                            title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span></span></td>
                                             <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
@@ -412,7 +411,7 @@
                                             <th width="10%">Type</th>
                                             <th width="15%">ACE ID</th>
                                             <th width="10%">Licence Province</th>
-                                            <th width="15%">Licence Plate Number</th>
+                                            <th width="15%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -425,7 +424,7 @@
                                               <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.aceId}}</td>
                                             <td><span
-                                                    *ngFor="let license of trailer.licensePlates;">{{stateCodeToName[license.stateProvince]}}</span>
+                                                    *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
                                             </td>
                                             <td><span
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
@@ -434,7 +433,7 @@
                                               carriers bond.</span>
                                               <span *ngIf="trailer.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
                                                 importers bond.</span></td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span *ngIf= "s != trailer.sealNumbers.length-1">,</span></span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -585,7 +584,7 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Seal Numbers :</th>
-                                        <td><span *ngFor="let seal of truck.sealNumbers">{{seal}}, </span></td>
+                                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span> </span></td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Insurance Vendor:</th>
@@ -642,7 +641,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{stateCodeToName[shipmentData.provinceOfLoading]}}</td>
+                                        <td>{{shipmentData.provinceOfLoading}}</td>
                                     </tr>
                                     <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
                                       <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>
@@ -664,11 +663,13 @@
                                         <td>{{shipmentData.consigneeName}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Broker:</th>
-                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}
-<br>
-                                       Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                        <th width="40%" class="back-color-gray">Broker :</th>
+                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
                                     </tr>
+                                    <tr>
+                                      <th width="40%" class="back-color-gray">Broker Port Location:</th>
+                                      <td>{{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                  </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -744,7 +745,7 @@
                                         <td>{{thirdParty.name}}</td>
                                         <td>{{thirdPartyTypesObects[thirdParty.type]}}</td>
                                         <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{stateCodeToName[thirdParty.address.stateProvince]}},{{thirdParty.address.postalCode}}
+                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -770,7 +771,7 @@
                                         <td><span
                                                 class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}USD<br>
+                                                *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'">Value:&nbsp;{{commodity.value}}USD<br></span>
                                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
@@ -802,7 +803,7 @@
                                             <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'" class="font-weight-semibold">Harmonized
                                                 Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
                                             <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
-                                                *ngFor="let marks of commodity.marksAndNumbers">{{marks}},</span>
+                                                *ngFor="let marks of commodity.marksAndNumbers; let s=index;">{{marks}}<span *ngIf= "s != commodity.marksAndNumbers.length-1">,</span></span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -862,7 +863,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
+                                        <td>{{driverData.citizenshipCountry}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>
@@ -885,7 +886,7 @@
                                   <tr>
                                       <th width="40%" class="back-color-gray">
                                           State:</th>
-                                      <td>{{stateCodeToName[driverData.usAddress.state]}}</td>
+                                      <td>{{driverData.usAddress.state}}</td>
                                   </tr>
                               </tbody>
                           </table>
@@ -921,7 +922,7 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}},{{countryCodeName[travelDocument.country]}}</td>
+                                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
                                         <td>{{documentsTypesObects[travelDocument.type]}}</td>
                                     </tr>
                                 </tbody>
@@ -978,7 +979,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
+                                        <td>{{passengerData.citizenshipCountry}}</td>
                                     </tr>
 
                                 </tbody>
@@ -1002,8 +1003,8 @@
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
                                         <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                        <td>{{countryCodeName[travelDocument.country]}}</td>
-                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
+                                        <td>{{travelDocument.country}}</td>
+                                        <td>{{travelDocument.stateProvince}}</td>
                                     </tr>
 
                                 </tbody>

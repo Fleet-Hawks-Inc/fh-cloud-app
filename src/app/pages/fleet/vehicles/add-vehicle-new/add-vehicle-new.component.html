@@ -187,14 +187,10 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Country <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select Country"
-                                    (change)="resetState()" #country="ngModel" required>
-                                       <ng-container *ngFor="let country of countries | async">
-                                          <ng-option
-                                             *ngIf="country.countryID == '8e8a0700-8979-11ea-94e8-ddabdd2e57f0' || country.countryID == '73cba1a0-8977-11ea-b61f-0996be58fec9'"
-                                             value="{{country.countryID}}">
-                                             {{country.countryName}}</ng-option>
-                                       </ng-container>
+                                 <ng-select class="form-control populate" name="countryCode" [(ngModel)]="countryCode" placeholder="Select Country"
+                                    (change)="getStates($event)" #country="ngModel" required>
+                                    <ng-option value="CA">Canada</ng-option>
+                                    <ng-option value="US">United States of America</ng-option>
                                  </ng-select>
                                  <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                                     <div *ngIf="country.errors.required">
@@ -205,12 +201,12 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID" placeholder="Select Province"
-                                    id="stateSelect" #province="ngModel" required (change)="selectedState()">
-                                       <ng-container *ngFor="let state of states | async">
-                                          <ng-option *ngIf="state.countryID == countryID" value="{{state.stateID}}">{{state.stateName}}
-                                          </ng-option>
-                                       </ng-container>
+                                 <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode" placeholder="Select Province"
+                                    id="stateSelect" #province="ngModel" required>
+                                    <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
+                                      {{state.stateName}}
+                                    </ng-option>
+
                                  </ng-select>
                                  <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
                                     <div *ngIf="province.errors.required">

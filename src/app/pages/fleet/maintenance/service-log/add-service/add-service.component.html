@@ -139,7 +139,7 @@
                               <div class="col-lg-10" data-select2-id="118">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor" #Ven="ngModel" required>
-                                     <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
+                                     <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.contactID}}">{{vendor.companyName}}</ng-option>
                                  </ng-select>
                                  <!-- <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
                                   <div>
@@ -245,7 +245,12 @@
                                    <tbody>
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
-                                         <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
+                                         <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control" #lab1="ngModel" pattern="^[0-9]+$"></td>
+                                         <div *ngIf="lab1.invalid && (lab1.dirty || lab1.touched)" class="text-danger">
+                                          <div *ngIf="lab1.errors.pattern">
+                                            Labor must contain numbers only.
+                                          </div>
+                                        </div>
                                          <td>
                                              <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
                                                 <i class="fas fa-times"></i>
@@ -352,8 +357,18 @@
                                           </td>
                                          <th>{{inventoryQuantity[part.partNumber]}}</th>
                                          <td>{{part.description ? part.description : '-'}}</td>
-                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (keyup)="checkQuantity(j)" (blur)="calculateParts()" value="0.00" class="form-control"></td>
-                                         <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control"></td>
+                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (keyup)="checkQuantity(j)" (blur)="calculateParts()" value="0.00" class="form-control" #quan12="ngModel" pattern="^[0-9]+$"></td>
+                                         <div *ngIf="quan12.invalid && (quan12.dirty || quan12.touched)" class="text-danger">
+                                          <div *ngIf="quan12.errors.pattern">
+                                            Quantity must contain numbers only.
+                                          </div>
+                                        </div>
+                                         <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control" #rate12="ngModel" pattern="^[0-9]+$"></td>
+                                         <div *ngIf="rate12.invalid && (rate12.dirty || rate12.touched)" class="text-danger">
+                                          <div *ngIf="rate12.errors.pattern">
+                                            Rate must contain numbers only.
+                                          </div>
+                                        </div>
                                          <td><input readonly type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
                                          <td>
                                              <button class="btn btn-sm btn-danger" type="button" (click)="remove('parts', part, j)">

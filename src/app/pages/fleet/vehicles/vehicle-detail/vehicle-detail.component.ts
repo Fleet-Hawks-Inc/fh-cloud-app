@@ -8,6 +8,7 @@ import { rest } from "lodash";
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import  Constants  from '../../constants';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 
 @Component({
   selector: "app-vehicle-detail",
@@ -257,6 +258,7 @@ export class VehicleDetailComponent implements OnInit {
     }, {});
     });
   }
+
   fetchContactsByIDs() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.contactsObjects = result;
@@ -358,6 +360,7 @@ export class VehicleDetailComponent implements OnInit {
       .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
+
         this.ownerOperatorName = result.ownerOperatorID;
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
@@ -373,10 +376,8 @@ export class VehicleDetailComponent implements OnInit {
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
-        this.stateID = result.stateID;
-        this.countryID = result.countryID;
-        this.countryName = result.countryName;
-        this.stateName = result.stateName;
+        this.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryID);
+        this.stateName = CountryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;
