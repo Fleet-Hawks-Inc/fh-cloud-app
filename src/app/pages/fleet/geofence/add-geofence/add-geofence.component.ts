@@ -89,7 +89,7 @@ export class AddGeofenceComponent implements OnInit {
     this.searchLocation();
     this.fetchGeofenceTypes();
     $(document).ready(() => {
-      this.form = $('#form_, #geofenceTypeForm').validate();
+      //this.form = $('#form_, #geofenceTypeForm').validate();
     });
   }
 

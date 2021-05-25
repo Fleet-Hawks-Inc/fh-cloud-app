@@ -1084,7 +1084,7 @@ export class NewAceManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+               // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -1112,7 +1112,7 @@ export class NewAceManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+             // this.throwErrors();
             },
             error: () => { },
             next: () => { },
