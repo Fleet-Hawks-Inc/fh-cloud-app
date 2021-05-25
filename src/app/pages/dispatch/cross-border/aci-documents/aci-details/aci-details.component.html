@@ -730,6 +730,11 @@
                                         <td>{{shipmentData.cargoControlNumber}}</td>
                                     </tr>
                                     <tr>
+                                      <th width="40%" class="back-color-gray">Reference Shipment:</th>
+                                      <td><span *ngIf="shipmentData.referenceOnlyShipment">YES</span>
+                                        <span *ngIf="!shipmentData.referenceOnlyShipment">NO</span></td>
+                                  </tr>
+                                    <tr>
                                         <th width="40%" class="back-color-gray"> First Canadian Port Of Entry:</th>
                                         <td>{{shipmentData.portOfEntry}} - {{canadianPortsObjects[shipmentData.portOfEntry]}}</td>
                                     </tr>
@@ -750,10 +755,7 @@
                                   <th width="40%" class="back-color-gray"> Unique Consignment Reference#:</th>
                                   <td>{{shipmentData.uniqueConsignmentReferenceNumber}}</td>
                               </tr>
-                                  <tr>
-                                    <th width="40%" class="back-color-gray">Special Instructions :</th>
-                                    <td>{{shipmentData.specialInstructions}}</td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -788,7 +790,10 @@
                                         <th width="40%" class="back-color-gray">Consignee:</th>
                                         <td>{{shipmentData.consignee}}</td>
                                     </tr>
-
+                                    <tr>
+                                      <th width="40%" class="back-color-gray">Special Instructions :</th>
+                                      <td>{{shipmentData.specialInstructions}}</td>
+                                  </tr>
                                 </tbody>
                             </table>
                         </div>
