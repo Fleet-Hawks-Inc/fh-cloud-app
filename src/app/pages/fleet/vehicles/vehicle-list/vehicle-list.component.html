@@ -6,7 +6,7 @@
 
 <section class="body">
     <div class="inner-wrapper">
-       
+
         <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header">
                 <form class="form-horizontal" method="get">
@@ -188,7 +188,7 @@
                                                 <th class="col18 extra">Engine Summary</th>
                                                 <!-- <th class="col19 extra">Primary Meter</th>
                                                 <th class="col20 extra">Fuel Unit</th> -->
-                                                
+
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -240,12 +240,12 @@
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.serviceProgram" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     <span *ngFor="let prog of vehicle.servicePrograms; let p=index">
-                                                        {{ p+1 }}) {{ serviceProgramsList[prog] }} 
+                                                        {{ p+1 }}) {{ serviceProgramsList[prog] }}
                                                         <br>
                                                     </span>
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.serviceDate" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.lifeCycle.startDate | date:'yyyy-MM-dd'}}
+                                                    {{vehicle.lifeCycle.startDate | date:"yyyy/MM/dd"}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.insuranceVendor" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vendorsList[vehicle.insurance.vendorID]}}
@@ -262,7 +262,7 @@
                                                 <td class="hand-icon" *ngIf="hideShow.fuelUnit" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.settings.fuelUnit}}
                                                 </td> -->
-                                                
+
                                                 <td>
                                                     <div class="dropdown dropright">
                                                         <button class="bg-transparent border-0" type="button"
