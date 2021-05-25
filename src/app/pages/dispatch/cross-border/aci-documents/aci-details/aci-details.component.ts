@@ -71,6 +71,7 @@ export class AciDetailsComponent implements OnInit {
     },
     CCC: '',
     cargoControlNumber: '',
+    referenceOnlyShipment: '',
     portOfEntry: '',
     releaseOffice: '',
     subLocation: '',
@@ -232,6 +233,7 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACIdetails/' + this.manifestID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.manifestID = this.manifestID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -327,6 +329,7 @@ export class AciDetailsComponent implements OnInit {
       },
       CCC: fetchedShipmentData[0].CCC,
       cargoControlNumber: fetchedShipmentData[0].cargoControlNumber,
+      referenceOnlyShipment: fetchedShipmentData[0].referenceOnlyShipment,
       portOfEntry: fetchedShipmentData[0].portOfEntry,
       releaseOffice: fetchedShipmentData[0].releaseOffice,
       subLocation: fetchedShipmentData[0].subLocation,

@@ -876,17 +876,11 @@ export class NewAciManifestComponent implements OnInit {
   }
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
-      $('[name="' + v + '"]')
-        .after(
-          '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          '</label>'
-        )
+      if(v === 'tripNumber') {
+        $('[name="' + v + '"]')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
         .addClass('error');
+      }
     });
   }
 

@@ -663,11 +663,13 @@
                                         <td>{{shipmentData.consigneeName}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Broker:</th>
-                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}
-<br>
-                                       Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                        <th width="40%" class="back-color-gray">Broker :</th>
+                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
                                     </tr>
+                                    <tr>
+                                      <th width="40%" class="back-color-gray">Broker Port Location:</th>
+                                      <td>{{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                  </tr>
                                 </tbody>
                             </table>
                         </div>
