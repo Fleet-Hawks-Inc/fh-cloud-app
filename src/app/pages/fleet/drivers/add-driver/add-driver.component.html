@@ -265,10 +265,18 @@
                           </div>
                           <div class="col-lg-4 px-0">
                             <div class="btn-group-toggle" data-toggle="buttons">
-                              <label class="btn btn-outline btn-yesno mr-2 active mb-2">
-                                <input id="male" name="male" type="radio">Male</label>
-                              <label class="btn btn-outline btn-yesno mr-2 mb-2">
-                                <input id="female" name="female" type="radio">Female</label>
+                              <label class="btn btn-outline btn-yesno  mr-2"
+                                [class.active]="driverData.gender === 'M'" style="width:110px;"
+                                (click)="onChangeUnitType('gender', 'M')">
+                                <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked hidden
+                                  value="M"> Male
+                              </label>
+                              <label class="btn btn-outline btn-yesno mr-2 " style="width:110px;"
+                                [class.active]="driverData.gender === 'F'"
+                                (click)="onChangeUnitType('gender', 'F')">
+                                <input type="radio" id="female" [(ngModel)]="driverData.gender" name="gender" hidden
+                                  value="F"> Female
+                              </label>
                             </div>
                           </div>
                           <div class="col-lg-3 text-right">

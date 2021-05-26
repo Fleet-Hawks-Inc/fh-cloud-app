@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Constants from 'src/app/pages/fleet/constants';
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
-
+  dataMessage: string = Constants.FETCHING_DATA;
+ contactID = '';
   users: any = [];
   totalRecords = 20;
   pageLength = 10;
@@ -16,7 +18,7 @@ export class UsersListComponent implements OnInit {
   userName = '';
   currentStatus = '';
   departmentName = '';
-
+  companyName = '';
   userNext = false;
   userPrev = true;
   userDraw = 0;
@@ -30,35 +32,40 @@ export class UsersListComponent implements OnInit {
     this.fetchUsers();
     this.initDataTable();
   }
-  
+
   fetchUsers() {
-    this.apiService.getData('users/get/count?userName=' + this.userName + '&currentStatus=' + this.currentStatus + '&departmentName=' + this.departmentName)
+    this.apiService.getData('contacts/get/count/employee?searchValue=' + this.contactID + '&companyName=' + this.companyName.toLowerCase())
       .subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
           this.totalRecords = result.Count;
+          console.log('this.totalRecords', this.totalRecords);
         },
       });
   }
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('users/fetch/paginate/records?userName=' + this.userName + '&currentStatus=' + this.currentStatus + '&departmentName=' + this.departmentName + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('contacts/fetch/records/employee?searchValue=' + this.contactID + '&companyName=' + this.companyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.users = result['Items'];
-        if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.users = result[`Items`];
+        if (this.contactID !== '' || this.departmentName !== '') {
           this.userStartPoint = 1;
           this.userEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.userNext = false;
           // for prev button
-          if (!this.userPrevEvauatedKeys.includes(result['LastEvaluatedKey'].userName)) {
-            this.userPrevEvauatedKeys.push(result['LastEvaluatedKey'].userName);
+          if (!this.userPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.userPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].userName;
+          this.lastEvaluatedKey = lastEvalKey;
 
         } else {
           this.userNext = true;
