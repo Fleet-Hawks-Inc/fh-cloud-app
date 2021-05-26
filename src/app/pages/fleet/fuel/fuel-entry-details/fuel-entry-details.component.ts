@@ -38,7 +38,10 @@ export class FuelEntryDetailsComponent implements OnInit {
   fuelTime:'',
   fuelType:'',
   paidBy:'',
+  DEFFuelQty:'',
+  DEFFuelQtyAmt:'',
   fuelCardNumber:'',
+  paymentMode:'',
   vendorID:'',
   countryName:'',
   stateName:'',
@@ -52,8 +55,9 @@ export class FuelEntryDetailsComponent implements OnInit {
   useType:'',
   taxes:[],
   unitOfMeasure:'',
-    reimburseToDriver: false,
-    deductFromPay: false,
+  reference:'',
+    reimburseToDriver:'',
+    deductFromPay: '',
       odometer: 0,
       description: '',
       uploadedPhotos: []
@@ -229,7 +233,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       .getData('fuelEntries/' + this.fuelID)
       .subscribe((result: any) => {
 
-        //console.log(result)
+       // console.log(result)
         
         if(result.Items[0].fuelProvider=="WEX"){
           let tax=[];
@@ -277,12 +281,14 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.tripID = result.tripID;
          this.fuelData.odometer = result.odometer;
          this.fuelData.quantity=result.quantity;
-         
+         this.fuelData.reference=result.transactionID
+
          this.fuelData.taxes = tax;
         
         }
-/*
-*/
+
+        /* Manual entry Display
+        */
 
         else if(result.Items[0].fuelProvider=="Manual"){
           let tax=[];
@@ -308,17 +314,20 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.unitOfMeasure=result.fuelUnit;
         this.fuelData.discountType = this.discountList[result.discType];
         this.fuelData.discountAmount = result.discAmount;
+        this.fuelData.DEFFuelQty=result.DEFFuelQty;
+        this.fuelData.DEFFuelQtyAmt=result.DEFFuelQtyAmt
         
          this.fuelData.ppu =  result.pricePerUnit;
          this.fuelData.amount= result.fuelQtyAmt;
-        //  this.fuelData.retailPpu=result.retailPpu;
-        //  this.fuelData.retailAmount=result.retailAmount;
+         this.fuelData.retailPpu="";
+          this.fuelData.retailAmount="";
          this.fuelData.fuelType=result.fuelType
-         this.fuelData.transactionID=result.refrence;
+         this.fuelData.transactionID=result.reference;
         
          this.fuelData.fuelDateTime =  date.format('MMM Do YYYY, h:mm a')
          this.fuelData.paidBy = this.driverList[result.paidBy];
-         //this.fuelData.fuelCardNumber = result.fuelCardNumber;
+         this.fuelData.fuelCardNumber = "";
+         this.fuelData.reimburseToDriver=result.reimburseToDriver
         
          this.fuelData.vendorID = result.cityName;
          this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
@@ -327,7 +336,10 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.tripID = result.tripID;
          this.fuelData.odometer = result.odometer;
          this.fuelData.quantity=result.fuelQty;
-         this.fuelData.fuelProvider=result.fuelProvider
+         this.fuelData.fuelProvider=result.fuelProvider;
+         this.fuelData.uploadedPhotos=result.uploadedPhotos;
+         this.fuelData.paymentMode=result.paymentMode;
+         this.fuelData.reference=result.reference;
          
          this.fuelData.taxes = tax;
         }
