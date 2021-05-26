@@ -83,6 +83,7 @@ assets: any = [];
 
 fuelTypes = [];
 // Vehicles variables start
+vehicleStates: any  = [];
   vehicleID: string;
   vehicleTypeList: any = [];
   vehicleIdentification = '';
@@ -93,8 +94,8 @@ fuelTypes = [];
   manufacturerID = '';
   modelID = '';
   plateNumber = '';
-  countryID = '';
-  stateID = '';
+  countryCode = '';
+  stateCode = '';
   driverID = '';
   teamDriverID = '';
   servicePrograms = [];
@@ -542,6 +543,15 @@ users = [];
     this.fetchDriverCountries();
   }
   // DRIVER FUNCTIONS
+  changeCurrency(currency: any) {
+    this.driverData.paymentDetails.rateUnit = currency;
+    this.driverData.paymentDetails.deliveryRateUnit = currency;
+    this.driverData.paymentDetails.loadedMilesUnit = currency;
+    this.driverData.paymentDetails.emptyMilesUnit = currency;
+    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
+    this.driverData.paymentDetails.waitingPayUnit = currency;
+  }
   getDocStates(cntryCode: any, index: any) {
     this.driverData.documentDetails[index].issuingState = '';
     this.driverData.documentDetails[index].docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
@@ -989,7 +999,12 @@ fetchDrivers(){
   async changeTab(value){
     this.activeTab = value;
   }
-
+// VEHICLE STATES
+getVehicleStates(event: any) {
+  const countryCode: any = event;
+  this.stateCode = '';
+  this.vehicleStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+}
   async addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -1005,8 +1020,8 @@ fetchDrivers(){
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
-      countryID: this.countryID,
-      stateID: this.stateID,
+      countryID: this.countryCode,
+      stateID: this.stateCode,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       servicePrograms: this.servicePrograms,
@@ -1202,8 +1217,8 @@ fetchDrivers(){
             manufacturerID: '',
             modelID: '',
             plateNumber: '',
-            countryID: '',
-            stateID: '',
+            countryCode: '',
+            stateCode: '',
             driverID: '',
             teamDriverID: '',
             servicePrograms: [],
@@ -1402,10 +1417,6 @@ fetchDrivers(){
   resetModel(){
     this.modelID = '';
     $('#vehicleSelect').val('');
-  }
-  resetState(){
-    this.stateID = '';
-    $('#stateSelect').val('');
   }
   // DRIVER SECTION
 
@@ -1980,8 +1991,8 @@ fetchDrivers(){
     this.manufacturerID = '';
     this.modelID = '';
     this.plateNumber = '';
-    this.countryID = '';
-    this.stateID = '';
+    this.countryCode = '';
+    this.stateCode = '';
     this.driverID = '';
     this.teamDriverID = '';
     this.servicePrograms = [];
