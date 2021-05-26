@@ -974,7 +974,7 @@
                                                         Company name is required.
                                                     </div>
                                                     <div *ngIf="VcompanyName.errors.pattern">
-                                                        Company name can only contains alphanumeric characters.
+                                                        Company name can only contain alphanumeric characters.
                                                     </div>
 
                                                 </div>
@@ -985,7 +985,7 @@
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <input [(ngModel)]="vendorData.dbaName" name="dbaName" type="text" class="form-control"
-                                                    placeholder="eg. bookstore" >
+                                                    placeholder="eg. Bookstore" >
                                                     <!-- <div  *ngIf="vendorDba.invalid && (vendorDba.dirty || vendorDba.touched)" class="text-danger">
                                                         <div *ngIf="vendorDba.errors.pattern">
                                                             DBA name must contain uppercase , lowercase alphanumeric and no special character except (space .) only .
@@ -1142,10 +1142,10 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or State</label>
+                                                        Province or state</label>
                                                     <ng-select (change)= "getCities($event, 'vendor', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select Province or State">
+                                                        placeholder="Select Province or state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -1284,7 +1284,7 @@
                                                             Company name is required.
                                                           </div>
                                                           <div *ngIf="customerName.errors.pattern">
-                                                            Company name can only contains alphanumeric characters. 
+                                                            Company name can only contain alphanumeric characters. 
                                                           </div>
                                                         </div>
                                                     </div>
@@ -1294,7 +1294,7 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">DBA
                                                             Name <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.dbaName" name="dbaName" type="text" class="form-control"
-                                                            placeholder="eg. bookstore">
+                                                            placeholder="eg. Bookstore">
                                                             <!-- <div *ngIf="customerdba.invalid && (customerdba.dirty || customerdba.touched)" class="text-danger">
                                                               <div *ngIf="customerdba.errors.pattern">
                                                                 DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
@@ -1339,7 +1339,7 @@
                                                             title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.ein"
-                                                        name="ein" type="text" class="form-control" placeholder="Employer Identification Number used for internal revenue" >
+                                                        name="ein" type="text" class="form-control" placeholder="Employer identification number  used for internal revenue" >
 
                                                         <!-- <div *ngIf="customerein.invalid && (customerein.dirty || customerein.touched)" class="text-danger">
                                                           <div *ngIf="customerein.errors.pattern">
@@ -1409,7 +1409,7 @@
                                                             title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.dot"
-                                                        name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT Number" >
+                                                        name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT number" >
                                                         <!-- <div *ngIf="customerdot.invalid && (customerdot.dirty || customerdot.touched)" class="text-danger">
                                                           <div *ngIf="customerdot.errors.pattern">
                                                             DOT number must contain 8 digits.
@@ -1493,7 +1493,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Address Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
                                                         <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
-                                                        placeholder="Select Address Type">
+                                                        placeholder="Select address type">
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
@@ -1509,7 +1509,7 @@
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
-                                                class="form-control" placeholder="eg. 1107 Port Washington Road" [disabled]="item.manual">
+                                                class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                         <li *ngFor="let item of searchResults;">
@@ -1538,16 +1538,16 @@
                                                                 Country</label>
                                                             <ng-select (change)= "getStates($event, 'customer', i)" [(ngModel)]="item.countryCode"
                                                                 name="countryID{{i}}" class="form-control populate address_country"
-                                                                    placeholder="Select Country">
+                                                                    placeholder="Select country">
                                                                     <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or State</label>
+                                                                Province or state</label>
                                                             <ng-select (change)= "getCities($event, 'customer', i)" [(ngModel)]="item.stateCode"
                                                             name="stateCode{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select Province or State">
+                                                                placeholder="Select province or state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -1556,7 +1556,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
                                                             <ng-select [(ngModel)]="item.cityName" name="cityCode{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City">
+                                                                placeholder="Select city">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -1583,7 +1583,7 @@
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder=" eg. 1107 Port Washington Road" >
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder=" eg. 1107 Port washington road" >
                                                             
                                                             <!-- <div *ngIf="customeradLine1.invalid && (customeradLine1.dirty || customeradLine1.touched)" class="text-danger">
                                                               <div *ngIf="customeradLine1.errors.pattern">
@@ -1596,7 +1596,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control" placeholder=" eg. 1107 Port Washington Road" >
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder=" eg. 1107 Port washington road" >
                                                             
                                                             <!-- <div *ngIf="customeradline2.invalid && (customeradline2.dirty || customeradline2.touched)" class="text-danger">
                                                               <div *ngIf="customeradline2.errors.pattern">
@@ -1805,7 +1805,7 @@
                                                                 Company name is required.
                                                              </div>
                                                              <div *ngIf="cbName.errors.pattern">
-                                                                Company name can only contains alphanumeric characters.
+                                                                Company name can only contain alphanumeric characters.
                                                           </div>
                                                         </div>
                                                     </div>
@@ -1813,7 +1813,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             DBA Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="eg. bookstore" >
+                                                        <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="eg. Bookstore" >
                                                         <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
                                                             <div *ngIf="dba.errors.pattern">
                                                                 DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) only.
@@ -1852,7 +1852,7 @@
                                                           data-placement="top"
                                                           title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Employer Identification Number used for internal revenue" >
+                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Employer identification number used for internal revenue" >
                                                         <!-- <div  *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
                                                             <div *ngIf="ein.errors.pattern">
                                                                 EIN must contain 9 digits only.
@@ -1883,7 +1883,7 @@
                                                           title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
 
-                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT Number" >
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT number" >
                                                         <!-- <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
                                                             <div  *ngIf="dot.errors.pattern">
                                                                 DOT number must contain 8 digits only.
@@ -1968,7 +1968,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
-                                                class="form-control" placeholder="eg. 1107 Port Washington Road" [disabled]="item.manual">
+                                                class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
@@ -1997,16 +1997,16 @@
                                                                 Country</label>
                                                             <ng-select (change)= "getStates($event, 'broker', i)" [(ngModel)]="item.countryCode"
                                                             name="countryID{{i}}" class="form-control populate address_country"
-                                                                placeholder="Select Country">
+                                                                placeholder="Select country">
                                                                 <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or State</label>
+                                                                Province or state</label>
                                                             <ng-select (change)= "getCities($event, 'broker', i)" [(ngModel)]="item.stateCode"
                                                             name="stateID{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select Province or State">
+                                                                placeholder="Select province or state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2017,7 +2017,7 @@
 
                                                             <ng-select [(ngModel)]="item.cityName"
                                                             name="cityID{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City">
+                                                                placeholder="Select city">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2045,7 +2045,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 1107 Port Washington Road" >
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="eg. 1107 Port washington road" >
                                                             <!-- <div *ngIf="badLine1.invalid && (badLine1.dirty || badLine1.touched)" class="text-danger">
                                                                 <div *ngIf="badLine1.errors.pattern">
                                                                     Street address must contain alphanumeric and no special character except #.-",\(space) only.
@@ -2058,7 +2058,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control" placeholder="eg. 1107 Port Washington Road" >
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder="eg. 1107 Port washington road" >
                                                             <!-- <div *ngIf="badLine2.invalid && (badLine2.dirty || badLine2.touched)" class="text-danger">
                                                                 <div *ngIf="badLine2.errors.pattern">
                                                                     Street address must contain alphanumeric and no special character except #.-",\(space) only.
@@ -2246,7 +2246,7 @@
                                                                 Company name is required.
                                                             </div>
                                                             <div *ngIf="CarriercName.errors.pattern">
-                                                                Company name can only contains alphanumeric characters.
+                                                                Company name can only contain alphanumeric characters.
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2256,7 +2256,7 @@
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="carrierData.dbaName" name="dbaName" type="text" class="form-control"
-                                                            placeholder="eg. bookstore" >
+                                                            placeholder="eg. Bookstore" >
                                                             <!-- <div *ngIf="Carrierdba.invalid && (Carrierdba.dirty || Carrierdba.touched)" class="text-danger">
                                                              <div *ngIf="Carrierdba.errors.pattern">
                                                                 DBA name must contain uppercase , lowercase alphanumeric and no special character except period (space .) only.
@@ -2386,7 +2386,7 @@
                                                       data-placement="top"
                                                       title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                    <input [(ngModel)]="carrierData.paymentDetails.dot"  name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT Number">
+                                                    <input [(ngModel)]="carrierData.paymentDetails.dot"  name="dot" type="text" class="form-control" placeholder="Carrier’s US DOT number">
                                                     <!-- <div *ngIf="carrierdot.invalid && (carrierdot.dirty || carrierdot.touched)" class="text-danger">
                                                         <div *ngIf="carrierdot.errors.pattern">
                                                             DOT number must contain 8 digits.
@@ -2617,7 +2617,7 @@
                                                         <div class="col-lg-8">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles</label>
                                                             <input type="number" [(ngModel)]="carrierData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
-                                                                class="form-control" placeholder="Enter Empty Miles" >
+                                                                class="form-control" placeholder="eg. 5" >
 
                                                                 <!-- <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
                                                                     <div *ngIf="carrieremptymiles.errors.pattern">
@@ -2658,7 +2658,7 @@
                                                             Account# <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="carrierData.paymentDetails.wsibAccountNumber" name="wsibAccountNumber"
 
-                                                            type="text" class="form-control" placeholder=" Work Safety Insurance Board No." >
+                                                            type="text" class="form-control" placeholder=" Work safety insurance board no." >
 
                                                             <!-- <div *ngIf="carrierwsib.invalid && (carrierwsib.dirty || carrierwsib.touched)" class="text-danger">
                                                                 <div *ngIf="carrierwsib.errors.required">
@@ -2698,7 +2698,7 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="item.addressType" [attr.name]="'address['+i+'].addressType'" [ngModelOptions]="{standalone: true}" class="form-control"
-                                                            placeholder="Select Address Type" #addresstypecarrier="ngModel" required>
+                                                            placeholder="Select address type" #addresstypecarrier="ngModel" required>
                                                             
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
@@ -2707,7 +2707,7 @@
                                                         </ng-select>
                                                         <div *ngIf="addresstypecarrier.invalid && (addresstypecarrier.dirty || addresstypecarrier.touched)" class="text-danger">
                                                             <div *ngIf="addresstypecarrier.errors.required">
-                                                              Address Type is required.
+                                                              Address type is required.
                                                             </div>
                                                             
                                                           </div>
@@ -2719,7 +2719,7 @@
                                                     Your Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
-                                                    class="form-control" placeholder="eg. 1107 Port Washington Road" [disabled]="item.manual">
+                                                    class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
@@ -2750,16 +2750,16 @@
                                                                 Country</label>
                                                             <ng-select (change)= "getStates($event, 'carrier', i)" [(ngModel)]="item.countryCode"
                                                             [attr.name]="'address['+i+'].countryCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
-                                                                placeholder="Select Country">
+                                                                placeholder="Select country">
                                                                 <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or State</label>
+                                                                Province or state</label>
                                                             <ng-select (change)= "getCities($event, 'carrier', i)" [(ngModel)]="item.stateCode"
                                                             [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
-                                                                placeholder="Select Province or State">
+                                                                placeholder="Select province or state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2769,7 +2769,7 @@
                                                                 City</label>
                                                             <ng-select [(ngModel)]="item.cityName"
                                                             [attr.name]="'address['+i+'].cityName'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
-                                                                placeholder="Select City">
+                                                                placeholder="Select city">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2808,7 +2808,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 1107 Port Washington Road "  >
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 1107 Port washington road "  >
                                                             <!-- <div *ngIf="carrieradLine2.invalid && (carrieradLine2.dirty || carrieradLine2.touched)" class="text-danger">
                                                               <div *ngIf="carrieradLine2.errors.pattern">
                                                                 Street address must contain alphanumeric and no special character except #.-",/ (space) only. 
@@ -2983,7 +2983,7 @@
                                                             Company name is required.
                                                           </div>
                                                           <div *ngIf="owneroperatorcName.errors.pattern">
-                                                            Company name can only contains alphanumeric characters.
+                                                            Company name can only contain alphanumeric characters.
                                                           </div>
                                                         </div>
                                                     </div>
@@ -2992,7 +2992,7 @@
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="ownerData.dbaName" name="dbaName" type="text" class="form-control"
-                                                            placeholder="eg. bookstore" >
+                                                            placeholder="eg. Bookstore" >
                                                             <!-- <div *ngIf="ownerdba.invalid && (ownerdba.dirty || ownerdba.touched)" class="text-danger">
                                                               <div *ngIf="ownerdba.errors.pattern">
                                                                 DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
@@ -3272,7 +3272,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}"
-                                                (keyup)="searchTerm.next($event);" class="form-control" placeholder="eg. 1107 Port Washington Road" [disabled]="item.manual">
+                                                (keyup)="searchTerm.next($event);" class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left" >
                                                         <li *ngFor="let item of searchResults;">
@@ -3300,15 +3300,15 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
                                                             <ng-select (change)= "getStates($event, 'operator', i)" [(ngModel)]="item.countryCode"
                                                             [attr.name]="'address['+i+'].countryCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
-                                                                placeholder="Select Country">
+                                                                placeholder="Select country">
                                                                 <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Province or State</label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Province or state</label>
                                                             <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateCode"
                                                             [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
-                                                                placeholder="Select Province or State">
+                                                                placeholder="Select province or state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -3317,7 +3317,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
                                                             <ng-select [(ngModel)]="item.cityName"
                                                             [attr.name]="'address['+i+'].cityName'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
-                                                                placeholder="Select City">
+                                                                placeholder="Select city">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -3358,7 +3358,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 1107 Port Washington Road " >
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="eg. 1107 Port washington road " >
                                                           <!--                                                             
                                                             <div *ngIf="owneradline2.invalid && (owneradline2.dirty || owneradline2.touched)" class="text-danger">
                                                               <div *ngIf="owneradline2.errors.pattern">
@@ -3529,7 +3529,7 @@
                                                         Company name is required.
                                                       </div>
                                                       <div *ngIf="consignorcName.errors.pattern">
-                                                        Company name can only contains alphanumeric characters.           
+                                                        Company name can only contain alphanumeric characters.           
                                                          </div>
                                                     </div>
                                             </div>
@@ -3538,7 +3538,7 @@
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <input [(ngModel)]="shipperData.dbaName" name="dbaName" type="text" class="form-control"
-                                                    placeholder="eg. bookstore">
+                                                    placeholder="eg. Bookstore">
                                                     <!-- <div *ngIf="consignordba.invalid && (consignordba.dirty || consignordba.touched)" class="text-danger">
                                                       <div *ngIf="consignordba.errors.pattern">
                                                         DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space .) .
@@ -3592,7 +3592,7 @@
                                                     data-placement="top"
                                                     title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                <input [(ngModel)]="shipperData.dot" name="dot"  type="text" class="form-control" placeholder="Carrier’s US DOT Number">
+                                                <input [(ngModel)]="shipperData.dot" name="dot"  type="text" class="form-control" placeholder="Carrier’s US DOT number">
                                                 <!-- <div *ngIf="consignordot.invalid && (consignordot.dirty || consignordot.touched)" class="text-danger">
                                                   <div *ngIf="consignordot.errors.pattern">
                                                     DOT number must contain 8 digits.
@@ -3646,7 +3646,7 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Address Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
-                                                    placeholder="Select Address Type">
+                                                    placeholder="Select address type">
                                                     <ng-option value="Billing Address">Billing Address</ng-option>
                                                     <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                     <ng-option value="Office">Office</ng-option>
@@ -3658,7 +3658,7 @@
                                     <div class="col-lg-4">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
-                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="eg. 1107 Port Washington Road" [disabled]="item.manual">
+                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                         <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
                                                 <li *ngFor="let item of searchResults;">
@@ -3688,16 +3688,16 @@
                                                         Country</label>
                                                     <ng-select (change)= "getStates($event, 'shipper', i)" [(ngModel)]="item.countryCode"
                                                     name="countryCode{{i}}" class="form-control populate address_country"
-                                                        placeholder="Select Country">
+                                                        placeholder="Select country">
                                                         <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or State</label>
+                                                        Province or state</label>
                                                     <ng-select (change)= "getCities($event, 'shipper', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select Province or State">
+                                                        placeholder="Select province or state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -3706,7 +3706,7 @@
                                                         City</label>
                                                     <ng-select [(ngModel)]="item.cityName"
                                                     name="cityName{{i}}" class="form-control populate address_city"
-                                                        placeholder="Select City">
+                                                        placeholder="Select city">
                                                         <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -3730,7 +3730,7 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                        class="form-control address_one" placeholder="eg. 1107 Port Washington Road " >
+                                                        class="form-control address_one" placeholder="eg. 1107 Port washington road " >
                                                         
                                                         <!-- <div *ngIf="consignoradLine1.invalid && (consignoradLine1.dirty || consignoradLine1.touched)" class="text-danger">
                                                           <div *ngIf="consignoradLine1.errors.pattern">
@@ -3742,7 +3742,7 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                        class="form-control" placeholder="eg. 1107 Port Washington Road " >
+                                                        class="form-control" placeholder="eg. 1107 Port washington road " >
                                                         
                                                         <!-- <div *ngIf="consignoradLine2.invalid && (consignoradLine2.dirty || consignoradLine2.touched)" class="text-danger">
                                                           <div *ngIf="consignoradLine2.errors.pattern">
@@ -3908,7 +3908,7 @@
                                                         Company name is required.
                                                       </div>
                                                       <div *ngIf="consigneecName.errors.pattern">
-                                                        Company name can only contains alphanumeric characters. 
+                                                        Company name can only contain alphanumeric characters. 
                                                       </div>
                                                     </div>
                                             </div>
@@ -3917,7 +3917,7 @@
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <input [(ngModel)]="consigneeData.dbaName" name="dbaName" type="text" class="form-control"
-                                                    placeholder="eg. bookstore"  >
+                                                    placeholder="eg. Bookstore"  >
                                                     <!-- <div *ngIf="consigneedba.invalid && (consigneedba.dirty || consigneedba.touched)" class="text-danger">
                                                       <div *ngIf="consigneedba.errors.pattern">
                                                         DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
@@ -3970,7 +3970,7 @@
                                                   data-placement="top"
                                                   title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                <input [(ngModel)]="consigneeData.dot" name="dot"  type="text" class="form-control" placeholder="Carrier’s US DOT Number" >
+                                                <input [(ngModel)]="consigneeData.dot" name="dot"  type="text" class="form-control" placeholder="Carrier’s US DOT number" >
                                                 <!-- <div *ngIf="consigneedot.invalid && (consigneedot.dirty || consigneedot.touched)" class="text-danger">
                                                   <div *ngIf="consigneedot.errors.pattern">
                                                     DOT number must contain 8 digits.
@@ -4025,7 +4025,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                     Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
-                                                    placeholder="Select Address Type">
+                                                    placeholder="Select address type">
                                                     <ng-option value="Billing Address">Billing Address</ng-option>
                                                     <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                     <ng-option value="Office">Office</ng-option>
@@ -4038,12 +4038,12 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                             Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
-                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
+                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                         <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
-                                                        (click)="userAddress(consigneeData, i, item)">{{item.address.label}}</a>
+                                                        (click)="useraddress(consigneeData, i, item)">{{item.address.label}}</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -4068,16 +4068,16 @@
                                                         Country</label>
                                                     <ng-select (change)= "getStates($event, 'consignee', i)" [(ngModel)]="item.countryCode"
                                                     name="countryCode{{i}}" class="form-control populate address_country"
-                                                        placeholder="Select Country">
+                                                        placeholder="Select country">
                                                         <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or State</label>
+                                                        Province or state</label>
                                                     <ng-select (change)= "getCities($event, 'consignee', i)" [(ngModel)]="item.stateCode"
                                                     name="stateCode{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select Province or State">
+                                                        placeholder="Select province or state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -4086,7 +4086,7 @@
                                                         City</label>
                                                     <ng-select [(ngModel)]="item.cityName"
                                                     name="cityName{{i}}" class="form-control populate address_city"
-                                                        placeholder="Select City">
+                                                        placeholder="Select city">
                                                         <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -4111,7 +4111,7 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                        class="form-control address_one" placeholder="eg. 1107 Port Washington Road" >
+                                                        class="form-control address_one" placeholder="eg. 1107 Port washington road" >
                                                        
                                                         <!-- <div *ngIf="consigneeadLine1.invalid && (consigneeadLine1.dirty || consigneeadLine1.touched)" class="text-danger">
                                                           <div *ngIf="consigneeadLine1.errors.pattern">
@@ -4123,7 +4123,7 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                        class="form-control" placeholder="eg. 1107 Port Washington Road" >
+                                                        class="form-control" placeholder="eg. 1107 Port washington road" >
                                                         
                                                         <!-- <div *ngIf="consigneeadLine2.invalid && (consigneeadLine2.dirty || consigneeadLine2.touched)" class="text-danger">
                                                           <div *ngIf="consigneeadLine2.errors.pattern">
@@ -4310,7 +4310,7 @@
                                                                     Company name is required.
                                                                 </div>
                                                                 <div *ngIf="cName.errors.pattern">
-                                                                    Company name can only contains alphanumeric characters.
+                                                                    Company name can only contain alphanumeric characters.
 
                                                                 </div>
 
@@ -4322,7 +4322,7 @@
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="fcCompanyData.dbaName" name="dbaName" type="text" class="form-control"
-                                                            placeholder="eg. bookstore" >
+                                                            placeholder="eg. Bookstore" >
                                                             <!-- <div *ngIf="fcdba.invalid && (fcdba.dirty || fcdba.touched)" class="text-danger">
                                                                 <div *ngIf="fcdba.errors.pattern">
                                                                     DBA name must contain uppercase , lowercase alphanumeric and no special character except period(space.) .
@@ -4408,7 +4408,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
-                                                            placeholder="Select Address Type">
+                                                            placeholder="Select address type">
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
@@ -4422,7 +4422,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                                     (keyup)="searchTerm.next($event);" class="form-control"
-                                                    placeholder="Type Address" [disabled]="item.manual">
+                                                    placeholder="eg. 1107 Port washington road" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                         <li *ngFor="let item of searchResults;">
@@ -4452,16 +4452,16 @@
                                                                 Country</label>
                                                             <ng-select (change)= "getStates($event, 'company', i)" [(ngModel)]="item.countryCode"
                                                             name="countryCode{{i}}" class="form-control populate address_country"
-                                                                placeholder="Select Country">
+                                                                placeholder="Select country">
                                                                 <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or State</label>
+                                                                Province or state</label>
                                                             <ng-select (change)= "getCities($event, 'company', i)" [(ngModel)]="item.stateCode"
                                                             name="stateCode{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select Province or State">
+                                                                placeholder="Select province or state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -4470,7 +4470,7 @@
                                                                 City</label>
                                                             <ng-select [(ngModel)]="item.cityName"
                                                             name="cityName{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City">
+                                                                placeholder="Select city">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -4497,7 +4497,7 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                                class="form-control address_one" placeholder="eg. 1107 Port Washington Road" >
+                                                                class="form-control address_one" placeholder="eg. 1107 Port washington road" >
                                                                 
                                                                 <!-- <div *ngIf="fcadLine1.invalid && (fcadLine1.dirty || fcadLine1.touched)" class="text-danger">
                                                                     <div *ngIf="fcadLine1.errors.pattern">
@@ -4510,7 +4510,7 @@
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                                class="form-control" placeholder="eg. 1107 Port Washington Road" >
+                                                                class="form-control" placeholder="eg. 1107 Port washington road" >
                                                                 
                                                                 <!-- <div *ngIf="fcadLine2.invalid && (fcadLine2.dirty || fcadLine2.touched)" class="text-danger">
                                                                    <div  *ngIf="fcadLine2.errors.pattern">
@@ -4558,7 +4558,7 @@
                                                             <div class="col-lg-4">
                                                                 <ng-select [(ngModel)]="fcCompanyData.fcDetails.factoringUnit"
                                                                 name="factoringUnit" class="form-control populate address_city"
-                                                                    placeholder="Select Factoring Unit">
+                                                                    placeholder="Select factoring unit">
                                                                     <ng-option value="%">%</ng-option>
                                                                     <ng-option value="$">$</ng-option>
                                                                 </ng-select>
@@ -4645,14 +4645,14 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="staffData.companyName" name="companyName"
-                                                            type="text" class="form-control" placeholder="eg. Ziemann Inc">
+                                                            type="text" class="form-control" placeholder="eg. Ziemann inc">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="staffData.dbaName" name="dbaName" type="text" class="form-control"
-                                                            placeholder="eg. bookstore">
+                                                            placeholder="eg. Bookstore">
                                                     </div>
                                                     <!-- <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
@@ -5151,7 +5151,7 @@
                                 <td>{{item.countryName}}</td>
                             </tr>
                             <tr *ngIf="item.manual == true">
-                                <th width="40%" class="back-color-gray">Province or State:</th>
+                                <th width="40%" class="back-color-gray">Province or state:</th>
                                 <td>{{item.stateName}}</td>
                             </tr>
                             <tr *ngIf="item.manual == true">
