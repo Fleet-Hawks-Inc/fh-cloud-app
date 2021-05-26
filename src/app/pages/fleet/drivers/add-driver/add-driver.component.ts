@@ -680,7 +680,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-    console.log('ddriver data', this.driverData);
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -856,12 +855,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.groupID = result.groupID;
         this.driverData.createdDate = result.createdDate;
         this.driverData.createdTime = result.createdTime;
+        this.driverData.driverImage = result.driverImage;
         if (result.driverImage !== '' && result.driverImage !== undefined) {
           this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
           this.showIcons = true;
-          this.profileTitle = 'Change';
         } else {
-          this.driverProfileSrc = 'assets/img/driver/driver.png';
+          this.driverProfileSrc = '';
         }
         this.driverData[`abstractDocs`] = [];
         if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
@@ -1156,7 +1155,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(type === 'doc') {
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(index, 1);
-    } else{
+    } else if (type === 'image') {
+      this.driverProfileSrc = '';
+      this.driverData.driverImage = '';
+      this.uploadedPhotos = [];
+    } else {
       this.absDocs.splice(index, 1);
       this.driverData.abstractDocs.splice(index, 1);
     }

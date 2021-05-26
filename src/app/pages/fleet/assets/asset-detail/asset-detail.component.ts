@@ -334,12 +334,6 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
-  // delete uploaded images and documents
-  // delete(type: string,name: string){
-  //   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-  //     this.fetchAsset();
-  //   });
-  // }
 // delete uploaded images and documents
 delete(type: string, name: string, index: any) {
 
@@ -352,7 +346,7 @@ delete(type: string, name: string, index: any) {
   if (type === 'doc') {
     this.assetsDocs.splice(index, 1);
     this.assetDataDetail.uploadedDocs.splice(index, 1);
-    this.deleteUploadedFile(type, name, index);
+    this.deleteUploadedFile(type, name);
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify(this.assetDataDetail));
@@ -365,7 +359,7 @@ delete(type: string, name: string, index: any) {
   } else {
     this.assetsImages.splice(index, 1);
     this.assetDataDetail.uploadedPhotos.splice(index, 1);
-    this.deleteUploadedFile(type, name, index);
+    this.deleteUploadedFile(type, name);
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify(this.assetDataDetail));
@@ -377,7 +371,7 @@ delete(type: string, name: string, index: any) {
     }
   }
 }
-deleteUploadedFile(type: string, name: string, index: any) { // delete from aws
+deleteUploadedFile(type: string, name: string) { // delete from aws
   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
 }
   setPDFSrc(val) {
