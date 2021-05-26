@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient} from '@angular/common/http'
 import * as _ from 'lodash';
 import Constants from '../../constants';
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 declare var H: any;
 declare var $: any;
 @Component({
@@ -22,43 +24,34 @@ export class FuelEntryDetailsComponent implements OnInit {
   fuelList;
   /********** Form Fields ***********/
   fuelData = {
-    unitID: '',
-    fuelUnit: '',
-    unitType: '',
-    fuelID: '',
-    billingCurrency: '',
-    fuelTime: '',
-    fuelDate: '',
-    fuelType: '',
-    paidBy: '',
-    paymentMode: '',
-    reference: '',
-    vendorID: '',
-    cityName: '',
-    tripID: '',
-    fuelQtyAmt: 0,
-    fuelQty: 0,
-    DEFFuelQty: 0,
-    DEFFuelQtyAmt: 0,
-    subTotal: 0,
-    discType: '',
-    discAmount: 0,
-    amountPaid: 0,
-   fuelCardNumber: '',
-    pricePerUnit: 0,
-    totalUnits: 0,
-    countryName: '',
-    stateName: '',
-    taxes: [],
-    lineItems : [{
-        fuelType: '',
-        quantity: '',
-        amount: '',
-        pricePerUnit: '',
-        retailAmount: '',
-        retailPricePerUnit: '',
-        useType: ''
-    }],
+  fuelID:'',
+  billingCurrency:'',
+  unitType:'',
+  unitID:'',
+  ppu:'',
+  fuelDateTime:'',
+  amount:'',
+  quantity:'',
+  retailPpu:'',
+  retailAmount:'',
+  fuelDate:'',
+  fuelTime:'',
+  fuelType:'',
+  paidBy:'',
+  fuelCardNumber:'',
+  vendorID:'',
+  countryName:'',
+  stateName:'',
+  cityName:'',
+  tripID:'',
+  fuelProvider:'',
+  discountAmount:'',
+  discountType:'',
+  transactionID:'',
+  unitNumber:'',
+  useType:'',
+  taxes:[],
+  unitOfMeasure:'',
     reimburseToDriver: false,
     deductFromPay: false,
       odometer: 0,
@@ -114,27 +107,30 @@ export class FuelEntryDetailsComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService, private HereMap: HereMapService) {
+    private toastr: ToastrService, private HereMap: HereMapService,
+    private httpClient: HttpClient,
+    ) {
   }
 
   ngOnInit() {
     this.fuelID = this.route.snapshot.params[`fuelID`];
-    this.fetchFuelEntry();
+    
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
     this.fetchFuelTypeList();
-    this.fetchFuelTypeWEXCode();
+    this. fetchWEXCode();
     this.fetchTaxWEXCode();
     this.fetchWEXDiscountCode();
     this.fetchWEXuseTypeCode();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
-    this.HereMap.mapSetAPI();
-    this.map = this.HereMap.mapInit();
+   // this.HereMap.mapSetAPI();
+    //this.map = this.HereMap.mapInit();
     this.fetchTaxTypeFromID();
     this.fetchDiscFromID();
     this.fetchDriverList();
+    this.fetchFuelEntry();
 
   }
   fetchVehicleList() {
@@ -153,7 +149,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
   fetchTaxWEXCode() {
-    this.apiService.getData('fuelTaxes/get/WEXCode').subscribe((result: any) => {
+    this.httpClient.get('assets/jsonFiles/fuel/wexTaxType.json').subscribe((result: any) => {    
     this.WEXTaxCodeList = result;
     });
   }
@@ -168,14 +164,16 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
   fetchWEXDiscountCode() {
-    this.apiService.getData('fuelDiscounts/get/WEXCode').subscribe((result: any) => {
+    this.httpClient.get('assets/jsonFiles/fuel/wexDiscountType.json').subscribe((result: any) => {    
       this.WEXDiscountCodeList = result;
     });
   }
   fetchWEXuseTypeCode() {
-    this.apiService.getData('WEXuseTypes/get/WEXCode').subscribe((result: any) => {
-        this.WEXuseTypeCodeList = result;
-    });
+    this.WEXuseTypeCodeList={
+      0:"non-fuel",
+      1:"Vehicle",
+      2:"Reefer product"
+    }
   }
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
@@ -187,11 +185,14 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.fuelTypeListCode = result;
     });
   }
-  fetchFuelTypeWEXCode() {
-    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
-      this.fuelTypeWEXCode = result;
+  fetchWEXCode() {
+    this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {      
+      result.forEach(element => {
+        this.fuelTypeWEXCode[element.code]=element.type
+      });
     });
   }
+
   fetchTripList() {
     this.apiService.getData('trips/get/list').subscribe((result: any) => {
       this.tripList = result;
@@ -227,47 +228,109 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.apiService
       .getData('fuelEntries/' + this.fuelID)
       .subscribe((result: any) => {
-        result = result.Items[0];
-        this.carrierID = result.carrierID;
-        this.fuelData.fuelID = this.fuelID;
-        this.fuelData.billingCurrency = result.billingCurrency,
-        this.fuelData.unitType = result.unitType;
-        this.fuelData.unitID = result.unitID;
-        this.fuelData.fuelUnit = result.fuelUnit;
-        this.fuelData.fuelQty = result.fuelQty;
-        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
-        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.fuelData.discType = result.discType;
-        this.fuelData.discAmount = result.discAmount;
-        this.fuelData.subTotal = result.subTotal;
-        this.fuelData.totalUnits = result.totalUnits;
-        this.fuelData.pricePerUnit =  result.pricePerUnit;
-        this.fuelData.amountPaid = result.amountPaid;
-        this.fuelData.fuelDate =  moment(result.fuelDate).format('YYYY/MM/DD');
-        this.fuelData.fuelTime = result.fuelTime;
-        this.fuelData.fuelType = result.fuelType;
-        this.fuelData.paidBy = result.paidBy;
-        this.fuelData.paymentMode = result.paymentMode;
-        this.fuelData.fuelCardNumber = result.fuelCardNumber;
-        this.fuelData.reference = result.reference;
-        this.fuelData.reimburseToDriver = result.reimburseToDriver;
-        this.fuelData.deductFromPay = result.deductFromPay;
-        this.fuelData.vendorID = result.vendorID;
-        this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
-        this.fuelData.stateName = CountryStateCity.GetStateNameFromCode(result.stateCode, result.countryCode);
-        this.fuelData.cityName = result.cityName;
-        this.fuelData.tripID = result.tripID;
-        this.fuelData.odometer = result.odometer;
-        this.fuelData.description = result.description;
-        this.fuelData.uploadedPhotos = result.uploadedPhotos;
-        this.existingPhotos = result.uploadedPhotos;
-        this.fuelData.lineItems = result.lineItems;
-        this.fuelData.taxes = result.taxes;
-        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.uploadedPhotos.map((x:any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+
+        //console.log(result)
+        
+        if(result.Items[0].fuelProvider=="WEX"){
+          let tax=[];
+          
+         result = result.Items[0];
+         if(result.tax.length>0){
+         result.tax.forEach(element=>{
+           let singleTax={
+             taxCode:element.taxCode,
+             taxDesc:this.WEXTaxCodeList[element.taxCode],
+             taxAmount:element.amount
+           }
+           tax.push(singleTax)
+         })
         }
-        this.fetchVendorData(result.vendorID);
+        //console.log(tax);
+         let date = moment(result.transactionDateTime)
+         this.carrierID = result.carrierID;
+         this.fuelData.fuelID = this.fuelID;
+         this.fuelData.billingCurrency = result.billingCurrency,
+         this.fuelData.unitType = this.WEXuseTypeCodeList[result.useType];
+         this.fuelData.unitNumber = result.unitNumber;
+        this.fuelData.unitOfMeasure=result.unitOfMeasure;
+        this.fuelData.discountType =this.WEXDiscountCodeList[result.discType];
+        this.fuelData.discountAmount = result.discAmount;
+        
+         this.fuelData.ppu =  result.ppu;
+         this.fuelData.amount= result.amount;
+         this.fuelData.retailPpu=result.retailPpu;
+         this.fuelData.retailAmount=result.retailAmount;
+         this.fuelData.fuelType=this.fuelTypeWEXCode[result.fuelType] || "non-fuel"
+         this.fuelData.transactionID=result.transactionID;
+        
+         this.fuelData.fuelDateTime =  date.format('MMM Do YYYY, h:mm a')
+         
+        
+         this.fuelData.paidBy = result.driverID;
+        
+         this.fuelData.fuelCardNumber = result.fuelCardNumber;
+        
+         this.fuelData.vendorID = result.cityName;
+        this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
+         this.fuelData.stateName = CountryStateCity.GetStateNameFromCode(result.locationState, result.countryCode);
+         this.fuelData.cityName = result.cityName;
+         this.fuelData.tripID = result.tripID;
+         this.fuelData.odometer = result.odometer;
+         this.fuelData.quantity=result.quantity;
+         
+         this.fuelData.taxes = tax;
+        
+        }
+/*
+*/
+
+        else if(result.Items[0].fuelProvider=="Manual"){
+          let tax=[];
+          
+         result = result.Items[0];
+         if(result.taxes.length>0){
+         result.taxes.forEach(element=>{
+           let singleTax={
+             taxCode:element.taxType,
+             taxDesc:this.taxTypeList[element.taxType],
+             taxAmount:element.taxAmount
+           }
+           tax.push(singleTax)
+         })
+        }
+
+         let date = moment(result.fuelDate+" "+result.fuelTime)
+         this.carrierID = result.carrierID;
+         this.fuelData.fuelID = this.fuelID;
+         this.fuelData.billingCurrency = result.billingCurrency,
+         this.fuelData.unitType = result.unitType;
+         this.fuelData.unitNumber = this.vehicleList[result.unitID];
+        this.fuelData.unitOfMeasure=result.fuelUnit;
+        this.fuelData.discountType = this.discountList[result.discType];
+        this.fuelData.discountAmount = result.discAmount;
+        
+         this.fuelData.ppu =  result.pricePerUnit;
+         this.fuelData.amount= result.fuelQtyAmt;
+        //  this.fuelData.retailPpu=result.retailPpu;
+        //  this.fuelData.retailAmount=result.retailAmount;
+         this.fuelData.fuelType=result.fuelType
+         this.fuelData.transactionID=result.refrence;
+        
+         this.fuelData.fuelDateTime =  date.format('MMM Do YYYY, h:mm a')
+         this.fuelData.paidBy = this.driverList[result.paidBy];
+         //this.fuelData.fuelCardNumber = result.fuelCardNumber;
+        
+         this.fuelData.vendorID = result.cityName;
+         this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
+         this.fuelData.stateName = CountryStateCity.GetStateNameFromCode(result.stateCode, result.countryCode);
+         this.fuelData.cityName = result.cityName;
+         this.fuelData.tripID = result.tripID;
+         this.fuelData.odometer = result.odometer;
+         this.fuelData.quantity=result.fuelQty;
+         this.fuelData.fuelProvider=result.fuelProvider
+         
+         this.fuelData.taxes = tax;
+        }
       });  }
   deleteImage(i: number) {
     // this.carrierID =  this.apiService.getCarrierID();
