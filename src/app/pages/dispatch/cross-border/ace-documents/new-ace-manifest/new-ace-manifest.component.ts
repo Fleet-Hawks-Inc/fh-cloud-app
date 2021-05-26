@@ -873,12 +873,13 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
   throwErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
+    from(Object.keys(this.errors)).subscribe((v) => {
+      if(v === 'tripNumber') {
         $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
-      });
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+        .addClass('error');
+      }
+    });
   }
 
   hideErrors() {
@@ -1083,7 +1084,7 @@ export class NewAceManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+               // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -1111,7 +1112,7 @@ export class NewAceManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+             // this.throwErrors();
             },
             error: () => { },
             next: () => { },

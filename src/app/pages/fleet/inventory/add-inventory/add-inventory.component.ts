@@ -102,9 +102,9 @@ export class AddInventoryComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.form = $('#form').validate();
-      this.groupForm = $('#groupForm').validate();
-      this.warehoseForm = $('#warehoseForm').validate();
+     // this.form = $('#form').validate();
+      //this.groupForm = $('#groupForm').validate();
+      //this.warehoseForm = $('#warehoseForm').validate();
     });
   }
 

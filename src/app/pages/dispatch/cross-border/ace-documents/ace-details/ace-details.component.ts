@@ -338,7 +338,7 @@ export class AceDetailsComponent implements OnInit {
     this.shipmentData = {
       shipmentControlNumber: shipmentDataFetched[0].shipmentControlNumber,
       type: shipmentDataFetched[0].type,
-      provinceOfLoading: shipmentDataFetched[0].provinceOfLoading,
+      provinceOfLoading: CountryStateCity.GetStateNameFromCode(shipmentDataFetched[0].provinceOfLoading, 'CA'),
       goodsAstrayDateOfExit: shipmentDataFetched[0].goodsAstrayDateOfExit,
       shipperName: shipmentDataFetched[0].shipper.name,
       consigneeName: shipmentDataFetched[0].consignee.name,
