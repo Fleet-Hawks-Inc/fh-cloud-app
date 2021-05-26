@@ -1247,26 +1247,28 @@ export class AddTripComponent implements OnInit {
     * Get all shippers's IDs of names from api
    */
     fetchShippersByIDs() {
-        this.apiService.getData('shippers/get/list').subscribe((result: any) => {
-            this.shippersObjects = result;
-        });
+        // this.apiService.getData('contacts/get/list/consignor').subscribe((result: any) => {
+        //     this.shippersObjects = result;
+        // });
     }
 
-    /*
-   * Get all receivers's IDs of names from api
-   */
+//     /*
+//    * Get all receivers's IDs of names from api
+//    */
     fetchReceiversByIDs() {
-        this.apiService.getData('receivers/get/list').subscribe((result: any) => {
-            this.receiversObjects = result;
-        });
+        // this.apiService.getData('contacts/get/list/consignee').subscribe((result: any) => {
+        //     this.receiversObjects = result;
+        // });
     }
 
     /*
     * Get all customer's IDs of names from api
    */
     fetchCustomerByIDs() {
-        this.apiService.getData('customers/get/list').subscribe((result: any) => {
+        this.apiService.getData('contacts/get/list').subscribe((result: any) => {
             this.customersObjects = result;
+            this.shippersObjects = result;
+            this.receiversObjects = result;
         });
     }
 
