@@ -39,6 +39,7 @@ export class RouteDetailComponent implements OnInit {
   destinationCityName = '';
   destinationZipcode = '';
   newCoords = [];
+  stopNumber = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, 
     private spinner: NgxSpinnerService,private route: ActivatedRoute, private hereMap: HereMapService) {}
@@ -59,6 +60,10 @@ export class RouteDetailComponent implements OnInit {
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;
+
+          for (let k = 0; k < result.stops.length; k++) {
+            this.stopNumber.push(k);
+          }
 
           if (result.stops.length > 1) {
             this.getCoords(result.stops);

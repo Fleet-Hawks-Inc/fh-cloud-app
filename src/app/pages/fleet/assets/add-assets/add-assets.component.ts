@@ -347,14 +347,14 @@ export class AddAssetsComponent implements OnInit {
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
 
-        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
-          this.assetsImages = result.uploadedPhotos.map(x => ({
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+          this.assetsImages = result.uploadedPhotos.map((x: any) => ({
             path: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
           this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
@@ -442,11 +442,6 @@ export class AddAssetsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              // We Can Use This Method
-              // const key = val.message.match(/'([^']+)'/)[1];
-              // val.message = val.message.replace(/'.*'/, 'This Field');
-              // this.errors[key] = val.message;
-             // val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
@@ -562,10 +557,19 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  // delete uploaded images and documents
-  delete(type: string, name: string) {
-    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchAssetByID();
-    });
+// delete uploaded images and documents
+delete(type: string, name: string, index: any) {
+  if (type === 'doc') {
+    this.assetsDocs.splice(index, 1);
+    this.existingDocs.splice(index, 1);
+    this.deleteUploadedFile(type, name);
+  } else {
+    this.assetsImages.splice(index, 1);
+    this.existingPhotos.splice(index, 1);
+    this.deleteUploadedFile(type, name);
   }
+}
+deleteUploadedFile(type: string, name: string) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+}
 }
