@@ -46,7 +46,7 @@
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required>
+                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required>
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
                                    <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
@@ -64,7 +64,7 @@
                              <div class="row" *ngIf="serviceData.unitType === 'asset'">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2" > Select Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required>
+                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required>
                                      <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
                                  </ng-select>
                                  <div *ngIf="Asse.invalid && (Asse.dirty || Asse.touched)" class="text-danger">

@@ -97,8 +97,9 @@ export class LoginComponent implements OnInit {
       // });
       await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+      const jwt = (await Auth.currentSession()).getIdToken().getJwtToken()
       localStorage.setItem('currentLoggedUserName', this.userName);
-      console.log('isActivatedUser', isActivatedUser)
+      
       // if (!isActivatedUser.carrierID) {
       if (!isActivatedUser.carrierID) {
         this.hasError = true;
@@ -119,6 +120,7 @@ export class LoginComponent implements OnInit {
           role: Role.FleetManager
         };
         localStorage.setItem('LoggedIn', 'true');
+        localStorage.setItem('accessToken', jwt);//save token in session storage
         await this.router.navigate(['/Map-Dashboard']);
         // if(isActivatedUser.userType == 'Cloud Admin') {
         //   /**

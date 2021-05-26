@@ -634,7 +634,7 @@ export class AddVehicleNewComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
+          this.slides.push(e.target.result);
         }
         reader.readAsDataURL(files[i]);
       }

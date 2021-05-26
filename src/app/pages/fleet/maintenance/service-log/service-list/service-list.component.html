@@ -110,8 +110,8 @@
                                                                         {{item.unitType}}
                                                                     </td>
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        {{vehiclesObject[item.vehicleID]}}
-                                                                        <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br>
+                                                                        {{item.unitID}}
+                                                                        <!-- <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br> -->
                                                                         <span class="text-success text-capitalize" 
                                                                             [ngClass]="{'text-danger': item.currentStatus == 'sold', 
                                                                             'text-muted' : item.currentStatus === 'out of service'}"

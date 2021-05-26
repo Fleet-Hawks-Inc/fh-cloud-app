@@ -50,8 +50,7 @@ export class AddServiceComponent implements OnInit {
   serviceData = {
     unitType: 'vehicle',
     reference: `Ref-${new Date().getTime()}`,
-    vehicleID: '',
-    assetID: '',
+    unitID: '',
     odometer: '',
     completionDate: '',
     vendorID: '',
@@ -185,21 +184,21 @@ export class AddServiceComponent implements OnInit {
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
       if(this.fetchedLocalData.unitType === 'vehicle'){
-        this.serviceData.vehicleID =   this.fetchedLocalData.unitID;
+        this.serviceData.unitID =   this.fetchedLocalData.unitID;
         this.getVehicleIssues(this.fetchedLocalData.unitID);
         this.serviceData.unitType = 'vehicle';
         window.localStorage.removeItem('unit');
       }
       else{
        this.serviceData.unitType = 'asset';
-       this.serviceData.assetID =   this.fetchedLocalData.unitID;
+       this.serviceData.unitID =   this.fetchedLocalData.unitID;
        this.getAssetIssues(this.fetchedLocalData.unitID);
        window.localStorage.removeItem('unit');
       }
     }
      this.localReminderUnitID = JSON.parse(window.localStorage.getItem('reminderUnitID'));
      if(this.localReminderUnitID) {
-      this.serviceData.vehicleID =   this.localReminderUnitID.unitID;
+      this.serviceData.unitID =   this.localReminderUnitID.unitID;
       this.getVehicleIssues(this.localReminderUnitID.unitID);
       this.serviceData.unitType = 'vehicle';
       window.localStorage.removeItem('reminderUnitID');
@@ -419,6 +418,18 @@ export class AddServiceComponent implements OnInit {
     this.apiService.getData('items').subscribe((result: any) => {
       result = result.Items;
       this.inventory = result;
+    });
+  }
+
+  getResolvedIssues(id){
+    id = JSON.stringify(id);
+    this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        element.selected = true;
+        this.issues.push(element)
+        
+      }
     });
   }
 
@@ -713,18 +724,17 @@ export class AddServiceComponent implements OnInit {
     // this.spinner.show(); // loader init
     this.apiService
       .getData('serviceLogs/' + this.logID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
 
         this.serviceData['logID'] = this.logID;
         this.serviceData.unitType = result.unitType;
-        if (result.vehicleID) {
-          this.getVehicleIssues(result.vehicleID);
-
-          this.serviceData.vehicleID = result.vehicleID;
+        if (result.unitType == 'vehicle') {
+          await this.getVehicleIssues(result.unitID);
+          this.serviceData.unitID = result.unitID;
         } else {
-          this.getAssetIssues(result.assetID);
-          this.serviceData.assetID = result.assetID;
+          await this.getAssetIssues(result.unitID);
+          this.serviceData.unitID = result.unitID;
         }
 
         this.serviceData.odometer = result.odometer;
@@ -786,6 +796,10 @@ export class AddServiceComponent implements OnInit {
         this.totalQuantity = result.allServiceParts['totalQuantity'];
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
+        if(result.selectedIssues.length > 0) {
+          this.getResolvedIssues(result.selectedIssues)
+        }
+        
 
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -807,10 +821,7 @@ export class AddServiceComponent implements OnInit {
     this.serviceData['unitType'] = value;
     this.issues = [];
     if (value === 'asset') {
-      delete this.serviceData.vehicleID;
       delete this.serviceData.odometer;
-    } else {
-      delete this.serviceData.assetID;
     }
   }
 
@@ -826,16 +837,15 @@ export class AddServiceComponent implements OnInit {
     });
 
     this.serviceData.taskIds = taskIds;
-    if(this.serviceData.vehicleID == '' || this.serviceData.vehicleID == null) {
-      delete this.serviceData.vehicleID;
-    }
+    // if(this.serviceData.vehicleID == '' || this.serviceData.vehicleID == null) {
+    //   delete this.serviceData.vehicleID;
+    // }
 
     const data = {
       logID: this.logID,
       unitType: this.serviceData.unitType,
       reference: this.serviceData.reference,
-      vehicleID: this.serviceData.vehicleID,
-      assetID: this.serviceData.assetID,
+      unitID: this.serviceData.unitID,
       odometer: this.serviceData.odometer,
       completionDate: this.serviceData.completionDate,
       vendorID: this.serviceData.vendorID,
@@ -952,15 +962,15 @@ export class AddServiceComponent implements OnInit {
     $('#addIssuesModal').modal('show');
     let selectedUnit: any = {
       type: this.serviceData.unitType,
-      name: this.serviceData.vehicleID ? this.serviceData.vehicleID : this.serviceData.assetID,
+      name: this.serviceData.unitID,
     }
-    if(this.serviceData.vehicleID){
+    if(this.serviceData.unitType == 'vehicle'){
       selectedUnit.odometer = this.serviceData.odometer
     } else {
       delete selectedUnit.odometer
     }
     localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
-    this.listService.abc(selectedUnit);
+    this.listService.appendIssues(selectedUnit);
   }
 
   currencyChange(value: string) {
