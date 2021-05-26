@@ -31,13 +31,20 @@
                                           >Unit Type:</label>
                                     </div>
                                     <div class="col-lg-6">
-                                      <div class="btn-group-toggle" data-toggle="buttons">
+                                      <div class="btn-group-toggle" data-toggle="buttons" *ngIf="!logID">
                                         <label class="btn btn-outline btn-fleet mr-2" [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
                                           <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType" checked hidden value="vehicle" > Vehicle </label>
                                         <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="serviceData.unitType === 'asset'" (click) = "onChangeUnitType('asset')">
                                           <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType"
                                                hidden value="asset" > Asset </label>
                                       </div>
+
+                                      <div class="btn-group-toggle" *ngIf="logID">
+                                       <label class="btn btn-outline btn-fleet mr-2" [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;">
+                                         <input type="radio" name="unitType" checked hidden value="vehicle" > Vehicle </label>
+                                       <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="serviceData.unitType === 'asset'">
+                                         <input type="radio" name="unitType" hidden value="asset" > Asset </label>
+                                     </div>
                                     </div>
                                  </div>
                               </div>
@@ -46,7 +53,7 @@
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required>
+                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required [disabled]="vehicleDisabled">
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
                                    <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
@@ -64,7 +71,7 @@
                              <div class="row" *ngIf="serviceData.unitType === 'asset'">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2" > Select Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required>
+                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required [disabled]="vehicleDisabled">
                                      <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
                                  </ng-select>
                                  <div *ngIf="Asse.invalid && (Asse.dirty || Asse.touched)" class="text-danger">
@@ -141,7 +148,7 @@
                                  <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor" #Ven="ngModel" required>
                                      <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.contactID}}">{{vendor.companyName}}</ng-option>
                                  </ng-select>
-                                 <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
+                                 <!-- <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
                                   <div>
 
                                     <div *ngIf="Ven.errors.required">
@@ -149,7 +156,7 @@
                                      </div>
                                   </div>
 
-                                </div>
+                                </div> -->
                               </div>
                               <div class="col-lg-2  mar-top-37 pl-0">
                                   <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>

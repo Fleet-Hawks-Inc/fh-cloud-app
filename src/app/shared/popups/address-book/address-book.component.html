@@ -94,7 +94,7 @@
                             <table id="customerTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
-                                        <th width="15%">Company Name</th>
+                                        <th width="15%">Company Name</th> 
                                         <!-- <th width="15%">Customer Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
@@ -204,7 +204,7 @@
                                         <td colspan="6">{{ dataMessageBroker }}</td>
                                     </tr>
                                     <tr *ngFor="let broker of brokers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, broker,'Broker')">{{broker.companyName}}</td>
+                                        <td (click)="openDetail(content, broker,'Broker')">{{ (broker.companyName != '') ? broker.companyName : broker.firstName + broker.lastName }}</td>
                                         <!-- <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td> -->
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
@@ -1077,7 +1077,7 @@
                                             <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
                                                     class="business_image_style" [src]="profilePath" />
                                                 <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                 </div>
                                             </div>
 
@@ -1381,7 +1381,7 @@
                                                         <img
                                                         [src]="profilePath" height="150px" width="150px"><br>
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -1910,7 +1910,7 @@
                                                     <div class="col-lg-7 offset-lg-4 text-center"> <img class="business_image_style"
                                                             [src]="profilePath" />
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12 mt-1">
@@ -2344,7 +2344,7 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="business_image_style"
                                                         [src]="profilePath" />
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2525,7 +2525,7 @@
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                            <ng-select [(ngModel)]="carrierData.paymentDetails.payrollRateCurrency" class="form-control" name="paymentDetails.payrollRateCurrency" placeholder="Select Currency">
+                                                            <ng-select [(ngModel)]="carrierData.paymentDetails.payrollRateCurrency" (change)="updateCurrency($event, 'carrier')" class="form-control" name="paymentDetails.payrollRateCurrency" placeholder="Select Currency">
                                                                 <ng-option value="CAD">CAD</ng-option>
                                                                 <ng-option value="USD">USD</ng-option>
                                                             </ng-select>
@@ -2574,7 +2574,7 @@
                                                             </div>
                                                             <div class="col-lg-4">
                                                                 <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                                <ng-select [(ngModel)]="carrierData.paymentDetails.loadedMilesCurrency" class="form-control" name="paymentDetails.loadedMilesCurrency" placeholder="Select Currency">
+                                                                <ng-select [(ngModel)]="carrierData.paymentDetails.loadedMilesCurrency" (change)="updateCurrency($event, 'carrier')" class="form-control" name="paymentDetails.loadedMilesCurrency" placeholder="Select Currency">
                                                                     <ng-option value="CAD">CAD</ng-option>
                                                                     <ng-option value="USD">USD</ng-option>
                                                                 </ng-select>
@@ -2601,7 +2601,7 @@
                                                         <div class="col-lg-4">
                                                            <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                               ></label>
-                                                           <ng-select class="" [(ngModel)]="carrierData.paymentDetails.deliveryRateCurrency" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
+                                                           <ng-select class="" [(ngModel)]="carrierData.paymentDetails.deliveryRateCurrency" (change)="updateCurrency($event, 'carrier')" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
 
                                                                  <ng-option value="CAD">CAD</ng-option>
                                                                  <ng-option value="USD">USD</ng-option>
@@ -2628,7 +2628,7 @@
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                            <ng-select [(ngModel)]="carrierData.paymentDetails.emptyMilesCurrency" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
+                                                            <ng-select [(ngModel)]="carrierData.paymentDetails.emptyMilesCurrency" (change)="updateCurrency($event, 'carrier')" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
                                                                 <ng-option value="CAD">CAD</ng-option>
                                                                 <ng-option value="USD">USD</ng-option>
                                                             </ng-select>
@@ -3063,7 +3063,7 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="img-fluid"
                                                             [src]="profilePath" />
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3146,7 +3146,7 @@
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                                <ng-select [(ngModel)]="ownerData.paymentDetails.payrollRateCurrency" class="form-control" placeholder="eg. 1,2,3 "name="paymentDetails.payrollRateCurrency" placeholder="Select Currency">
+                                                                <ng-select [(ngModel)]="ownerData.paymentDetails.payrollRateCurrency" class="form-control" (change)="updateCurrency($event, 'ownerOperator')" placeholder="eg. 1,2,3 "name="paymentDetails.payrollRateCurrency" placeholder="Select Currency">
                                                                     <ng-option value="CAD">CAD</ng-option>
                                                                     <ng-option value="USD">USD</ng-option>
                                                                 </ng-select>
@@ -3193,7 +3193,7 @@
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                                    <ng-select [(ngModel)]="ownerData.paymentDetails.loadedMilesCurrency" class="form-control" name="paymentDetails.loadedMilesCurrency" placeholder="Select Currency">
+                                                                    <ng-select [(ngModel)]="ownerData.paymentDetails.loadedMilesCurrency" class="form-control" (change)="updateCurrency($event, 'ownerOperator')" name="paymentDetails.loadedMilesCurrency" placeholder="Select Currency">
                                                                         <ng-option value="CAD">CAD</ng-option>
                                                                         <ng-option value="USD">USD</ng-option>
                                                                     </ng-select>
@@ -3211,7 +3211,7 @@
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                                    <ng-select [(ngModel)]="ownerData.paymentDetails.emptyMilesCurrency" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
+                                                                    <ng-select [(ngModel)]="ownerData.paymentDetails.emptyMilesCurrency" class="form-control" (change)="updateCurrency($event, 'ownerOperator')" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
                                                                         <ng-option value="CAD">CAD</ng-option>
                                                                         <ng-option value="USD">USD</ng-option>
                                                                     </ng-select>
@@ -3232,7 +3232,7 @@
                                                             <div class="col-lg-6">
                                                                <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                                   ></label>
-                                                               <ng-select class="mt-2" [(ngModel)]="ownerData.paymentDetails.deliveryRateCurrency" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
+                                                               <ng-select class="mt-2" [(ngModel)]="ownerData.paymentDetails.deliveryRateCurrency" (change)="updateCurrency($event, 'ownerOperator')" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
 
                                                                      <ng-option value="CAD">CAD</ng-option>
                                                                      <ng-option value="USD">USD</ng-option>
@@ -3469,8 +3469,8 @@
             <div class="modal-footer px-4">
                 <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious">Prev</button>
                 <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext">Next</a>
-                <button type="button" class="btn btn-success modal-dismiss ml-2" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
                 <button type="button" class="btn btn-default ml-2" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success modal-dismiss ml-2" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
                 <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()" [disabled]="operatorDisabled">Update</button>
             </div>
         </div>
@@ -3605,7 +3605,7 @@
                                                 <img height="150px" width="150px" [src]="profilePath" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-2">
@@ -3984,7 +3984,7 @@
                                                 [src]="profilePath" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-4">
@@ -4297,11 +4297,11 @@
                                                             
                                             
                                                         <div class="checkbox-custom pt-2">
-                                                            <input [(ngModel)]="fcCompanyData.isDefault" name="isDefault"
+                                                            <!-- <input [(ngModel)]="fcCompanyData.isDefault" name="isDefault"
                                                                 type="checkbox" name="terms">
                                                             <label for="w1-terms">Make this Factoring Company as
-                                                                Default</label>
-                                                            </div>
+                                                                Default</label>-->
+                                                            </div> 
 
                                                             <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger" >
                                                                 <div *ngIf="cName.errors.required">
@@ -4391,7 +4391,7 @@
                                                     <div class="col-lg-7 offset-lg-4 margin_50 text-center">
                                                         <img class="business_image_style" [src]="profilePath"/>
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4695,7 +4695,7 @@
                                                     <div class="col-lg-12 margin_50 text-center"> <img class="business_image_style d-block mx-auto"
                                                         [src]="profilePath" />
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"><em class="fas fa-plus"></em> {{ imageText }}
-                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100 imgField" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -5066,7 +5066,7 @@
                                         <td>{{userDetailData.dateOfBirth}}</td>
                                     </tr>
 
-                                    <tr>
+                                    <tr *ngIf="detailTab == 'Broker' && userDetailData.firstName != ''">
                                         <th width="40%" class="back-color-gray">{{detailTab}} Name:</th>
                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
                                     </tr>
@@ -5094,9 +5094,9 @@
                                         <th width="40%" class="back-color-gray">FAST Expiry:</th>
                                         <td>{{userDetailData.fastExpiry | date:'yyyy/MM/dd'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.preferedVendor">
+                                    <tr *ngIf="userDetailData.preferedVendor != undefined">
                                         <th width="40%" class="back-color-gray">Preferred Vendor:</th>
-                                        <td>Yes</td>
+                                        <td>{{ (userDetailData.preferedVendor) ? 'Yes' : 'No' }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -5120,17 +5120,17 @@
                                         <th width="40%" class="back-color-gray">Email:</th>
                                         <td>{{userDetailData.workEmail}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.csa">
+                                    <tr *ngIf="userDetailData.csa != undefined">
                                         <th width="40%" class="back-color-gray">CSA:</th>
-                                        <td>Yes</td>
+                                        <td>{{ (userDetailData.csa) ? 'Yes' : 'No' }}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.ctpat">
+                                    <tr *ngIf="userDetailData.ctpat != undefined">
                                         <th width="40%" class="back-color-gray">CTPAT:</th>
-                                        <td>Yes</td>
+                                        <td>{{ (userDetailData.ctpat) ? 'Yes' : 'No'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.pip">
+                                    <tr *ngIf="userDetailData.pip != undefined">
                                         <th width="40%" class="back-color-gray">PIP:</th>
-                                        <td>Yes</td>
+                                        <td>{{ (userDetailData.pip) ? 'Yes' : 'No'}}</td> 
                                     </tr>
                                 </tbody>
                             </table>
@@ -5176,35 +5176,29 @@
                     </table>
                 </div>
                 <div id="customerAdditionalContact" class="tab-pane" *ngIf="userDetailData.additionalContact">
-                    <table class="table table-bordered m-0">
+                    <table class="table table-bordered m-0 mt-3" *ngFor="let addCont of userDetailData.additionalContact">
                         <tbody>
                             <tr>
                                 <th width="40%" class="back-color-gray">Name:</th>
                                 <td>
-                                    {{userDetailData.additionalContact.firstName ?
-                                    userDetailData.additionalContact.firstName : '-'}}
-                                    {{userDetailData.additionalContact.lastName ?
-                                    userDetailData.additionalContact.lastName : ''}}</td>
+                                    {{addCont.firstName ? addCont.firstName : '-'}}
+                                    {{addCont.lastName ? addCont.lastName : ''}}</td>
                             </tr>
                             <tr>
                                 <th width="40%" class="back-color-gray">Designation:</th>
-                                <td>{{userDetailData.additionalContact.designation ?
-                                    userDetailData.additionalContact.designation : '-'}}</td>
+                                <td>{{addCont.designation ? addCont.designation : '-'}}</td>
                             </tr>
                             <tr>
                                 <th width="40%" class="back-color-gray">Phone:</th>
-                                <td>{{userDetailData.additionalContact.phone ? userDetailData.additionalContact.phone :
-                                    '-'}}</td>
+                                <td>{{addCont.phone ? addCont.phone : '-'}}</td>
                             </tr>
                             <tr>
                                 <th width="40%" class="back-color-gray">Email:</th>
-                                <td>{{userDetailData.additionalContact.email ? userDetailData.additionalContact.email :
-                                    '-' }}</td>
+                                <td>{{addCont.email ? addCont.email : '-' }}</td>
                             </tr>
                             <tr>
                                 <th width="40%" class="back-color-gray">Fax:</th>
-                                <td>{{userDetailData.additionalContact.fax ? userDetailData.additionalContact.fax :
-                                    '-'}}</td>
+                                <td>{{addCont.fax ? addCont.fax : '-'}}</td>
                             </tr>
                         </tbody>
                     </table>
