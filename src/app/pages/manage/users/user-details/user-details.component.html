@@ -1,17 +1,17 @@
-<section class="body">
+<!-- <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header">
                <div class="row pr-5 " style="padding-top:10px;">
                   <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                     User {{employeeID}} <span class="badge badge-dark p-1">{{currentStatus}}</span>                   
+                     User {{employeeID}} <span class="badge badge-dark p-1">{{currentStatus}}</span>
                   </div>
                   <div class="col-md-8  col-lg-8 text-right pr-4">
-                     <a [routerLink]="['/manage','users','list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Users List</a>  
+                     <a [routerLink]="['/manage','users','list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Users List</a>
                      <div class="btn-group flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                
+
                            <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{userName}}">Edit</a>
                            <a class="modal-with-form dropdown-item text-1" (click)="deleteUser(userName)" href="javascript:;">Delete</a>
                         </div>
@@ -59,7 +59,7 @@
                               </div>
                            </div>
 
-                         
+
                         </div>
                         <div class=" row">
                            <div class="col-lg-12">
@@ -83,9 +83,9 @@
                                              <td>{{phone}}</td>
                                           </tr>
                                           <tr>
-                                             <td class="back-color-gray font-weight-bold">Email</td>
+                                             <td class="back-color-gray font-weight-bold">paymentDetails.</td>
                                              <td>{{email}}</td>
-                                          </tr>  
+                                          </tr>
                                           <tr *ngIf="groupID != ''">
                                              <td class="back-color-gray font-weight-bold">Group</td>
                                              <td>{{groupList[groupID]}}</td>
@@ -101,11 +101,11 @@
                                     </table>
                                  </div>
                               </div>
-                             
+
                            </div>
                            <div class="col-lg-6">
-                              
-                              <!-- MAP -->
+
+
                               <div class="row">
                               <div class="col-lg-6 offset-lg-3">
                                              <div class="vehicle-photo-box">
@@ -114,7 +114,6 @@
                                                 <div class="row">
                                                    <div class="col-lg-8">{{userName}}'s Profile Image</div>
                                                    <div class="col-lg-4 text-right">
-                                                   <!-- <a href="#deleteModal" class="modal-with-form"><i class="fas fa-times text-danger"></i></a> -->
                                                    </div>
                                                 </div>
                                              </div>
@@ -122,8 +121,8 @@
                               </div>
                            </div>
                         </div>
-                      
-                     <!-- Delete MODAL -->
+
+
                      <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
                         <section class="card">
                            <header class="card-header">
@@ -149,11 +148,233 @@
                            </footer>
                         </section>
                      </div>
-                    
+
                      </form>
                   </div>
                </div>
             </div>
          </section>
     </div>
+</section> -->
+<section class="body">
+  <div class="inner-wrapper">
+  <section role="main" class="content-body pl-0 pt-0 mr50">
+     <header class="page-header pr-5 zindex9910" id="pageheaderindex">
+        <form class="form-horizontal" method="get">
+           <div class="row pr-1 mr-1" style="padding-top:10px;">
+              <div class="col-md-1 col-lg-1 pr-0">
+                 <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">User</h4>
+              </div>
+              <div class="col-md-11 col-lg-11 pr-1 text-right">
+                 <a [routerLink]="['/manage','users','list']" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Users List</a>
+              </div>
+           </div>
+        </form>
+     </header>
+     <section class="m-2">
+        <div class="row mb-3">
+           <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                 <div class="form-group row adddriverpl pt-3">
+                    <div class="col-lg-9">
+                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Basic Details</label>
+                    </div>
+        <div class="col-lg-2 mb-2 text-right">
+       <a href="#" class="btn btn-success" >
+       <i class="fas fa-eye text-light"></i> View Photo
+       </a>
+      </div>
+
+      <!-- Photo -->
+      <div id="myModal3" class="modal">
+       <div class="modal-content bgnone">
+         <span class="close cursor" onclick="closeModal()"><i class="fas fa-times"></i></span>
+         <div class="mySlides">
+           <img src="">
+         </div>
+       </div>
+     </div>
+
+
+                    <div class="col-lg-5 mb-3">
+                       <table class="table table-bordered m-0">
+                          <tbody>
+                             <tr>
+                                <th width="40%" class="back-color-gray">First Name:</th>
+                                <td>{{userData.firstName}}</td>
+                             </tr>
+                             <tr>
+                                <th width="40%" class="back-color-gray">Last Name:</th>
+                                <td>{{userData.lastName}}</td>
+                             </tr>
+                             <tr>
+                                <th width="40%" class="back-color-gray">Employee ID:</th>
+                                <td>{{userData.employeeID}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1 mb-3">
+                       <table class="table table-bordered m-0">
+                          <tbody>
+                             <tr>
+                                <th width="40%" class="back-color-gray">Date of Birth:</th>
+                                <td>{{userData.dateOfBirth}}</td>
+                             </tr>
+                             <tr>
+                                <th width="40%" class="back-color-gray">Phone:</th>
+                                <td>{{userData.phone}}</td>
+                             </tr>
+                             <tr>
+                                <th width="40%" class="back-color-gray">Email:</th>
+                                <td>{{userData.email}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="row mb-3">
+           <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                 <div class="row adddriverpl pt-3">
+                    <div class="col-lg-10">
+                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Address</label>
+                    </div>
+                 </div>
+                 <div class="row" *ngFor="let address of userData.address">
+                  <div class="col-lg-5 mb-3">
+                    <table class="table table-bordered table-responsive-lg">
+                       <tbody>
+                          <tr>
+                             <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
+                             <td width="60%">{{address.addressType}}</td>
+                          </tr>
+                          <tr>
+                             <td class="back-color-gray font-weight-bold">Address 1</td>
+                             <td><span *ngIf="address.manual">{{address.address1? address.address1: '-'}}</span>
+                              <span *ngIf="!address.manual">{{address.userLocation? address.userLocation: '-'}}</span>
+                            </td>
+                          </tr>
+                          <tr>
+                             <td class="back-color-gray font-weight-bold">Address 2</td>
+                             <td>{{address.address2 ? address.address2 : '-'}}</td>
+                          </tr>
+                          <tr>
+                             <td width="40%" class="back-color-gray font-weight-bold">Country</td>
+                             <td width="60%">{{address.countryName}}</td>
+                          </tr>
+                       </tbody>
+                    </table>
+                 </div>
+                 <div class="col-lg-5 offset-lg-1 mb-3">
+                    <table class="table table-bordered table-responsive-lg">
+                       <tbody>
+                          <tr>
+                             <td class="back-color-gray font-weight-bold">State</td>
+                             <td>{{address.stateName}}</td>
+                          </tr>
+                          <tr>
+                             <td class="back-color-gray font-weight-bold">City</td>
+                             <td>{{address.cityName}}</td>
+                          </tr>
+                          <tr>
+                             <td class="back-color-gray font-weight-bold">ZIP/Postal Code</td>
+                             <td>{{address.zipCode}}</td>
+                          </tr>
+                       </tbody>
+                    </table>
+                 </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="row mb-3">
+           <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                 <div class="form-group row adddriverpl pt-3">
+                    <div class="col-lg-10">
+                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">User Account</label>
+                    </div>
+                    <div class="col-lg-5 mb-3">
+                       <table class="table table-bordered table-responsive-lg">
+                          <tbody>
+                             <tr>
+                                <td width="40%" class="back-color-gray font-weight-bold">Contract Start Date</td>
+                                <td width="60%">{{userData.userAccount.contractStartDate}}</td>
+                             </tr>
+                             <tr>
+                                <td class="back-color-gray font-weight-bold">Contract End Date</td>
+                                <td>{{userData.userAccount.contractEndDate}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1 mb-3">
+                       <table class="table table-bordered table-responsive-lg">
+                          <tbody>
+                             <tr>
+                                <td width="40%" class="back-color-gray font-weight-bold">Department</td>
+                                <td width="60%">{{userData.userAccount.department}}</td>
+                             </tr>
+                             <tr>
+                                <td class="back-color-gray font-weight-bold">Designation</td>
+                                <td>{{userData.userAccount.designation}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                 </div>
+
+
+              </div>
+           </div>
+        </div>
+        <div class="row mb-3">
+           <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                 <div class="form-group row adddriverpl pt-3">
+                    <div class="col-lg-10">
+                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Payment Details</label>
+                    </div>
+                    <div class="col-lg-5 mb-3">
+                       <table class="table table-bordered table-responsive-lg">
+                          <tbody>
+                             <tr>
+                                <td width="40%" class="back-color-gray font-weight-bold">Payroll type</td>
+                                <td width="60%">{{userData.paymentDetails.payrollType}}</td>
+                             </tr>
+                             <tr>
+                                <td class="back-color-gray font-weight-bold">Pay Period</td>
+                                <td>{{userData.paymentDetails.payPeriod}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1 mb-3">
+                       <table class="table table-bordered table-responsive-lg">
+                          <tbody>
+                             <tr>
+                                <td width="40%" class="back-color-gray font-weight-bold">Rate</td>
+                                <td width="60%">{{userData.paymentDetails.payrollRate}} {{userData.paymentDetails.payrollRateUnit}}</td>
+                             </tr>
+                             <tr>
+                                <td class="back-color-gray font-weight-bold">SIN#</td>
+                                <td>{{userData.paymentDetails.SIN}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+
+                 </div>
+
+
+              </div>
+           </div>
+        </div>
+     </section>
+  </section>
+  </div>
 </section>

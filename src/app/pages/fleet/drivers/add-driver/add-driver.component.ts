@@ -637,8 +637,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addDriverGroupModal').modal('hide');
-
-
+        this.groupData = {
+        groupType: 'drivers',
+        groupName: '',
+        groupMembers: '',
+        description: '',
+      };
       },
     });
   }
@@ -1180,9 +1184,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
 
-    if (this.currentUser.userType == 'Cloud Admin') {
+    if (this.currentUser.userType === 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
-      if (isCarrierID != undefined) {
+      if (isCarrierID !== undefined) {
         this.currentUserCarrier = isCarrierID;
       }
     }

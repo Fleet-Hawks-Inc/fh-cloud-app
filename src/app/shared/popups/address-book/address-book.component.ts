@@ -2708,7 +2708,7 @@ export class AddressBookComponent implements OnInit {
 
     //to show profile image
     if(item.profileImg != '' && item.profileImg != undefined) {
-      this.profilePath = `${this.Asseturl}/${item.carrierID}/${item.profileImg}`;;
+      this.profilePath = `${this.Asseturl}/${item.carrierID}/${item.profileImg}`;
       this.imageText = 'Update Picture';
     } else {
       this.profilePath = this.defaultProfilePath;

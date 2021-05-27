@@ -925,17 +925,12 @@
                                   [attr.name]="'shipments['+s+'].cityOfLoading.stateProvince'"
 
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince" #proS="ngModel" required>
-                                  <ng-option *ngFor="let state of loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
-
+                                  <ng-option *ngFor="let state of shipment.cityOfLoading.loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="proS.invalid && (proS.dirty || proS.touched)" class="text-danger">
-                                  <div>
-
                                     <div *ngIf="proS.errors.required">
                                      Select required State of Loading from the list.
                                      </div>
-                                  </div>
-
                                 </div>
                               </div>
                               <div class="col-lg-5">
@@ -945,17 +940,16 @@
                                   [attr.name]="'shipments['+s+'].cityOfLoading.cityName'"
 
                                   [(ngModel)]="shipment.cityOfLoading.cityName" #proC="ngModel" required >
-                                  <ng-option *ngFor="let city of loadingCities" value="{{city.cityName}}">
+                                  <ng-option *ngFor="let city of shipment.cityOfLoading.loadingCities" value="{{city.cityName}}">
 
                                     {{city.cityName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="proC.invalid && (proC.dirty || proC.touched)" class="text-danger">
-                                  <div>
 
                                     <div *ngIf="proC.errors.required">
                                      Select required City of Loading from the list.
                                      </div>
-                                  </div>
+
 
                                 </div>
                               </div>

@@ -5,8 +5,11 @@ import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { ActivatedRoute } from '@angular/router';
+import { HighlightSpanKind } from 'typescript';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -22,16 +25,19 @@ export class AddUserComponent implements OnInit {
   currentUser: any = '';
   carrierID: '';
   userForm;
+  suggestedUsers = [];
+  searchUserName = '';
   userData = {
-    companyName: this.currentUser,
+    companyName: '',
     dbaName: '',
     firstName: '',
     lastName: '',
     employeeID: '',
     dateOfBirth: '',
-    workPhone: '',
-    workEmail: '',
+    phone: '',
+    email: '',
     entityType: 'employee',
+    profileImg: '',
     loginEnabled: false,
     paymentDetails: {
       payrollType: '',
@@ -67,16 +73,23 @@ export class AddUserComponent implements OnInit {
       department: '',
       designation: ''
     },
-    userData : {
-      username: '',
+    currentStatus: 'active',
+    userLoginData: {
+      userName: '',
       userType: '',
       password: '',
       confirmPassword: ''
     }
   };
+  public profilePath: any = 'assets/img/driver/driver.png';
+  public detailImgPath: any = 'assets/img/driver/driver.png';
+  public defaultProfilePath: any = 'assets/img/driver/driver.png';
+  imageText = 'Add Picture';
+  fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
   loginDiv = false;
   fieldvisibility = 'false';
-  uploadedPhotos: any  = [];
+  uploadedPhotos: any = [];
   errors = {};
   userDisabled = false;
   public searchTerm = new Subject<string>();
@@ -99,7 +112,17 @@ export class AddUserComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
+  isEdit = false;
+  enableUserLogin = false;
   ngOnInit() {
+    this.contactID = this.route.snapshot.params[`contactID`];
+    if (this.contactID) {
+      this.title = 'Edit User';
+      this.fetchUserByID();
+      this.isEdit = true;
+    } else {
+      this.title = 'Add User';
+    }
     this.getCurrentuser();
     this.searchLocation();
   }
@@ -108,11 +131,11 @@ export class AddUserComponent implements OnInit {
     private toastr: ToastrService,
     private HereMap: HereMapService,
     private location: Location,
-  )
-{ }
+    private route: ActivatedRoute,
+  ) { }
   getCurrentuser = async () => {
     this.isCarrierID = localStorage.getItem('carrierID');
-    if(this.isCarrierID === undefined || this.isCarrierID === null) {
+    if (this.isCarrierID === undefined || this.isCarrierID === null) {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
     }
@@ -140,7 +163,7 @@ export class AddUserComponent implements OnInit {
     });
   }
   removeAddress(index: any) {
-      this.userData.address.splice(index, 1);
+    this.userData.address.splice(index, 1);
   }
   public searchLocation() {
     let target;
@@ -182,16 +205,22 @@ export class AddUserComponent implements OnInit {
       result.address.street = '';
     }
   }
-  getStates(countryCode: any, index:any) {
+  getStates(countryCode: any, index: any) {
     this.userData.address[index].stateCode = '';
     this.userData.address[index].cityName = '';
     this.userData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-   getCities(stateCode: any, index: any, countryCode: any) {
+  getCities(stateCode: any, index: any, countryCode: any) {
     this.userData.address[index].cityName = '';
     this.userData.address[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     this.userData.address[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.userData.address[index].cities   = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.userData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  fetchStates(countryCode: any, index: any) {
+    this.userData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.userData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
     this.userData.address[i][`userLocation`] = '';
@@ -201,6 +230,12 @@ export class AddUserComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.userData.address[i][`userLocation`] = '';
+      this.userData.address[i].countryCode = '';
+      this.userData.address[i].stateCode = '';
+      this.userData.address[i].cityName = '';
+      this.userData.address[i].zipCode = '';
+      this.userData.address[i].address1 = '';
+      this.userData.address[i].address2 = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
@@ -208,13 +243,27 @@ export class AddUserComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
+  // Show password
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  togglecpwdfieldTextType() {
+    this.cpwdfieldTextType = !this.cpwdfieldTextType;
+  }
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
+  }
   selectPhoto(event) {
     let files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
-    console.log('this.uploadedPhotos',this.uploadedPhotos);
+    console.log('this.uploadedPhotos', this.uploadedPhotos);
   }
- async addUser() {
+
+  async addUser() {
     this.hasError = false;
     this.hasSuccess = false;
     this.userDisabled = true;
@@ -225,7 +274,7 @@ export class AddUserComponent implements OnInit {
       delete element.states;
       delete element.cities;
       if (element.countryName !== '' && element.stateName !== '' && element.cityName !== '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
         result = result.items[0];
@@ -233,12 +282,12 @@ export class AddUserComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
       }
     }
-console.log('userdata', this.userData);
+    console.log('userdata', this.userData);
     // create form data instance
     const formData = new FormData();
 
     // append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -253,7 +302,7 @@ console.log('userdata', this.userData);
           from(err.error)
             .pipe(
               map((val: any) => {
-              //  val.message = val.message.replace(/".*"/, 'This Field');
+                //  val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[val.context.key] = val.message;
               })
             )
@@ -264,12 +313,12 @@ console.log('userdata', this.userData);
               },
               error: () => {
                 this.userDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
         next: (res) => {
-         // this.spinner.hide();
+          // this.spinner.hide();
           this.response = res;
           this.userDisabled = false;
           this.hasSuccess = true;
@@ -297,6 +346,137 @@ console.log('userdata', this.userData);
     this.errors = {};
   }
 
+  fetchUserByID() {
+    this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
+      result = result.Items[0];
+      console.log('result = result.Items;', result);
+      this.userData = {
+        companyName: result.companyName,
+        dbaName: result.dbaName,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        employeeID: result.employeeID,
+        dateOfBirth: result.dateOfBirth,
+        phone: result.phone,
+        email: result.email,
+        entityType: 'employee',
+        loginEnabled: result.loginEnabled,
+        profileImg: result.profileImg,
+        currentStatus: result.currentStatus,
+        paymentDetails: {
+          payrollType: result.paymentDetails.payrollType,
+          payrollRate: result.paymentDetails.payrollRate,
+          payrollRateUnit: result.paymentDetails.payrollRateUnit,
+          payPeriod: result.paymentDetails.payPeriod,
+          SIN: result.paymentDetails.SIN,
+          WCB: result.paymentDetails.WCB,
+          healthCare: result.paymentDetails.healthCare,
+        },
+        address: result.address,
+        userAccount: {
+          contractStartDate: result.userAccount.contractStartDate,
+          contractEndDate: result.userAccount.contractEndDate,
+          department: result.userAccount.department,
+          designation: result.userAccount.designation,
+        },
+        userLoginData: {
+          userName: result.userLoginData.userName,
+          userType: result.userLoginData.userType,
+          password: '',
+          confirmPassword: ''
+        }
+      };
+      if (this.userData.address !== undefined) {
+        for (let a = 0; a < this.userData.address.length; a++) {
+          const countryCode = this.userData.address[a].countryCode;
+          const stateCode = this.userData.address[a].stateCode;
+          this.fetchStates(countryCode, a);
+          this.fetchCities(countryCode, stateCode, a);
+        }
+      }
+      if(this.userData.loginEnabled === true) {
+        this.enableUserLogin = true;
+      } else{
+        this.enableUserLogin = false;
+      }
+      this.userData[`timeCreated`] = result.timeCreated;
+      this.userData[`createdDate`] = result.createdDate;
+      this.userData[`createdTime`] = result.createdTime;
+      // to show profile image
+      if (result.profileImg !== '' && result.profileImg !== undefined) {
+        this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
+        this.imageText = 'Update Picture';
+      } else {
+        this.profilePath = this.defaultProfilePath;
+        this.imageText = 'Add Picture';
+      }
+    });
+  }
+  async updateUser() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.userDisabled = true;
+    this.hideErrors();
+    // this.spinner.show();
+    this.userData[`contactID`] = this.contactID;
+    if (this.userData.loginEnabled === false) {
+      this.userData.userLoginData.userName = '';
+    }
+    for (let i = 0; i < this.userData.address.length; i++) {
+      const element = this.userData.address[i];
+      delete element.states;
+      delete element.cities;
+      if (element.countryName !== '' && element.stateName !== '' && element.cityName !== '') {
+        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
+        let result = await this.HereMap.geoCode(fullAddress);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+      }
+    }
+    console.log('userdata put', this.userData);
+    // create form data instance
+    const formData = new FormData();
 
+    // append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+    // append other fields
+    formData.append('data', JSON.stringify(this.userData));
+    // this.lastEvaluatedKeyStaff = '';
 
+    this.apiService.putData('contacts', formData, true).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                //  val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.userDisabled = false;
+              },
+              error: () => {
+                this.userDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          // this.spinner.hide();
+          this.response = res;
+          this.userDisabled = false;
+          this.hasSuccess = true;
+          this.location.back();
+          this.toastr.success('User is updated successfully');
+        }
+      });
+  }
 }

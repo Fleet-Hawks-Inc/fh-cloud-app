@@ -11,6 +11,8 @@ import Constants from 'src/app/pages/fleet/constants';
 export class UsersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
  contactID = '';
+ suggestedUsers = [];
+  searchUserName = '';
   users: any = [];
   totalRecords = 20;
   pageLength = 10;
@@ -25,14 +27,39 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-
   constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.fetchUsers();
     this.initDataTable();
   }
+  getSuggestions(value) {
+    this.contactID = '';
+    value = value.toLowerCase();
+    if (value != '') {
+      this.apiService
+        .getData(`contacts/getEmployee/suggestions/${value}`)
+        .subscribe((result) => {
+          result.Items.map((v) => {
+            if (v.lastName === undefined) {
+              v.lastName = '';
+            }
+            return v;
+          });
+          this.suggestedUsers = result.Items;
+          console.log('this.suggestedUsers', result);
+        });
+    } else {
+      this.suggestedUsers = [];
+    }
+  }
 
+  setUser(contactID, firstName, lastName) {
+    this.searchUserName = firstName + ' ' + lastName;
+    // this.driverID = driverID;
+    this.contactID = firstName + '-' + lastName;
+    this.suggestedUsers = [];
+  }
   fetchUsers() {
     this.apiService.getData('contacts/get/count/employee?searchValue=' + this.contactID + '&companyName=' + this.companyName.toLowerCase())
       .subscribe({
@@ -108,19 +135,33 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-  deleteUser(userName) {
+  // deleteUser(userName) {
+  //   if (confirm('Are you sure you want to delete?') === true) {
+  //     this.apiService
+  //       .getData(`users/isDeleted/${userName}/` + 1)
+  //       .subscribe((result: any) => {
+  //         this.users = [];
+  //         this.fetchUsers();
+  //         this.initDataTable();
+  //         this.toastr.success('User Deleted Successfully!');
+  //       });
+  //   }
+  // }
+ async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`users/isDeleted/${userName}/` + 1)
-        .subscribe((result: any) => {
-          this.users = [];
-          this.fetchUsers();
-          this.initDataTable();
-          this.toastr.success('User Deleted Successfully!');
-        });
+      await this.apiService
+      .getData(`contacts/delete/employee/${contactID}`)
+      .subscribe(async(result: any) => {
+        this.userDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.users = [];
+        this.fetchUsers();
+        this.initDataTable();
+        this.toastr.success('User deleted successfully');
+      });
     }
   }
-
   getStartandEndVal() {
     this.userStartPoint = this.userDraw * this.pageLength + 1;
     this.userEndPoint = this.userStartPoint + this.pageLength - 1;
