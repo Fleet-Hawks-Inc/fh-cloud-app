@@ -263,13 +263,22 @@
                           <div class="col-lg-3">
                             <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
                           </div>
-                          <div class="col-lg-5 px-0">
+                          <div class="col-lg-4 px-0">
                             <div class="btn-group-toggle" data-toggle="buttons">
                               <label class="btn btn-outline btn-yesno mr-2 active mb-2">
                                 <input id="male" name="male" type="radio">Male</label>
                               <label class="btn btn-outline btn-yesno mr-2 mb-2">
                                 <input id="female" name="female" type="radio">Female</label>
                             </div>
+                          </div>
+                          <div class="col-lg-3 text-right">
+                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                              Photo
+                              <input  class="hidden_input1 w-100" (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
+                              name="driverImage"
+                                 type="file">
+                           </div>
+
                           </div>
                         </div>
                       </div>
@@ -350,7 +359,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-4" *ngIf="driverData.driverType !== 'contractor'">
+                          <div class="col-lg-6" *ngIf="driverData.driverType !== 'contractor'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date <span
                                 class="text-1 optional-label-color">(optional)</span>
                             </label>
@@ -383,7 +392,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-4" *ngIf="driverData.driverType === 'contractor'">
+                          <div class="col-lg-6" *ngIf="driverData.driverType === 'contractor'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">End Date <span
                                 class="text-1 optional-label-color">(optional)</span>
                             </label>
@@ -397,16 +406,15 @@
                                 End Date is required and must contain yyyy/mm/dd format.
                               </div>
                             </div>
-
                           </div>
-                          <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                            <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                              name="driverImage" type="file" class="hidden_input1 w-100" />
-                            <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-
-                              Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-
-                          </div>
+                          <!-- <div class="col-lg-2 pl-0 pr-0 mar-top-37">
+                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                              Photo
+                              <input  class="hidden_input1 w-100" (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
+                              name="driverImage"
+                                 type="file">
+                           </div>
+                          </div> -->
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -426,9 +434,11 @@
                         </div>
                       </div>
                       <div class="col-lg-5 mar-top-37">
-                        <input type="file" id="upload" hidden />
-                        <label class="btn btn-sm btn-block btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                          Abstract History Document <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                          Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name="driverData.abstractDocs"
+                             type="file">
+                       </div>
                       </div>
                     </div>
                     <div class="row">
@@ -447,7 +457,7 @@
                             <div class="col-lg-3 text-right">
                               <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
                                 data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('abs',item.name, d)" class="modal-with-form"><i
+                              <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form"><i
                                   class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
@@ -746,7 +756,7 @@
                             <div class="col-lg-3 text-right">
                               <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                                 data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form"><i
+                              <a href="javascript:;" (click)="delete('doc',doc.name, i,d)" class="modal-with-form"><i
                                   class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
@@ -1546,6 +1556,26 @@
         <button class="btn btn-success" (click)="addGroup()" [disabled]="!grouphide.form.valid">Save</button>
       </div>
     </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverProfileModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Profile Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <img [src]="driverProfileSrc" class="img-fluid rounded" height="200px" width="100%">
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 </div>

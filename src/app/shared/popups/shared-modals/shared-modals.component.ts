@@ -46,7 +46,7 @@ export class SharedModalsComponent implements OnInit {
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
 
-      this.listService.abc1().subscribe(res => {
+      this.listService.fetchAppendIssues().subscribe(res => {
        this.issuesData.unitID = res.name;
        this.issuesData.unitType = res.type;
        this.issuesData.odometer = res.odometer;
@@ -543,6 +543,15 @@ users = [];
     this.fetchDriverCountries();
   }
   // DRIVER FUNCTIONS
+  changeCurrency(currency: any) {
+    this.driverData.paymentDetails.rateUnit = currency;
+    this.driverData.paymentDetails.deliveryRateUnit = currency;
+    this.driverData.paymentDetails.loadedMilesUnit = currency;
+    this.driverData.paymentDetails.emptyMilesUnit = currency;
+    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
+    this.driverData.paymentDetails.waitingPayUnit = currency;
+  }
   getDocStates(cntryCode: any, index: any) {
     this.driverData.documentDetails[index].issuingState = '';
     this.driverData.documentDetails[index].docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
