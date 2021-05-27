@@ -341,7 +341,11 @@ export class VehicleDetailComponent implements OnInit {
     this.apiService
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
-        this.issues = result.Items;
+        result.Items.map(elem => {
+          if(elem.currentStatus == 'OPEN') {
+            this.issues.push(elem);
+          }
+        })
       });
   }
 

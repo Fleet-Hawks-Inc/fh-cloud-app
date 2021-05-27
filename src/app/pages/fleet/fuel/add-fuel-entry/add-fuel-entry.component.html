@@ -384,8 +384,8 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Type<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select placeholder="Select Fuel Type" name="fuelType" [(ngModel)]="fuelData.fuelType" #fType="ngModel" required>
-                          <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
-                            {{fuelType.fuelTypeName}}</ng-option>
+                          <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType}}">
+                            {{fuelType}}</ng-option>
                         </ng-select>
                         <div *ngIf="fType.invalid && (fType.dirty || fType.touched)" class="text-danger">
                           <div *ngIf="fType.errors.required">

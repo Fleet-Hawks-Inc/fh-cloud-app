@@ -252,9 +252,15 @@
                                        class="fas fa-plus"></i></a>
                               </div>
 
-                              <div class="col-lg-10">
-                                 <div width="80%" style="overflow-y: scroll;overflow-x:hidden; min-height:auto;max-height:437px">
+                              <div class="col-lg-6 mt-3">
+                                 <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                                    <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+                                      <img src="{{slide}}" class="img-fluid" alt="" style="margin: auto;">
+                                    </div>
+                                  </ngx-slick-carousel>
+                                 <!-- <div width="80%" style="overflow-y: scroll;overflow-x:hidden; min-height:auto;max-height:437px">
                                     <div class="row">
+                                       
                                        <div class="col-lg-6" *ngFor="let slide of slides; let i = index">
                                           <div class="vehicle-photo-box mb-1">
                                              <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1"
@@ -278,7 +284,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                 </div>
+                                 </div> -->
                                  <div class="mt-3">
                                     <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                        <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100" name="uploadedPhotos"
@@ -697,7 +703,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select placeholder="Select unit" class="form-control populate" name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit"
+                                       <ng-select (change)="changeUnit('dim', $event)" placeholder="Select unit" class="form-control populate" name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit"
                                           #hType="ngModel" required>
                                           <ng-option value="Feet">Feet</ng-option>
                                           <ng-option value="Meter">Meter</ng-option>
@@ -723,7 +729,7 @@
                                           [(ngModel)]="specifications.groundClearnce">
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select  placeholder="Select unit" class="form-control populate" name="specifications.groundClearnceUnit"
+                                       <ng-select (change)="changeUnit('dim', $event)" placeholder="Select unit" class="form-control populate" name="specifications.groundClearnceUnit"
                                           [(ngModel)]="specifications.groundClearnceUnit">
                                           <ng-option value="Feet">Feet</ng-option>
                                           <ng-option value="Meter">Meter</ng-option>
@@ -826,7 +832,7 @@
                                           [(ngModel)]="insurance.premiumAmount" placeholder="eg. 100,200">
                                     </div>
                                     <div class="col-lg-6 pl-0">
-                                       <ng-select placeholder="Select Currency" class="form-control populate" name="insurance.premiumCurrency" [(ngModel)]="insurance.premiumCurrency">
+                                       <ng-select (change)="changeUnit('cur', $event)" placeholder="Select Currency" class="form-control populate" name="insurance.premiumCurrency" [(ngModel)]="insurance.premiumCurrency">
                                           <optgroup label="">
                                              <ng-option value="USD">USD</ng-option>
                                              <ng-option value="CAD">CAD</ng-option>
@@ -903,7 +909,7 @@
                                           placeholder="eg. 100 , 200">
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select class="form-control populate" name="insurance.amountCurrency" [(ngModel)]="insurance.amountCurrency"
+                                       <ng-select  (change)="changeUnit('cur', $event)" class="form-control populate" name="insurance.amountCurrency" [(ngModel)]="insurance.amountCurrency"
                                           placeholder="Select currency">
                                              <ng-option value="USD">USD</ng-option>
                                              <ng-option value="CAD">CAD</ng-option>
@@ -1276,7 +1282,7 @@
 
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
-                                 <ng-select class="form-control populate" name="purchase.purchasePriceCurrency"
+                                 <ng-select (change)="changeUnit('cur', $event)" class="form-control populate" name="purchase.purchasePriceCurrency"
                                     [(ngModel)]="purchase.purchasePriceCurrency" placeholder="Select currency">
                                     <ng-option value="USD">USD</ng-option>
                                     <ng-option value="CAD">CAD</ng-option>
@@ -1369,7 +1375,7 @@
                                           placeholder="eg. 10000, 20000">
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select class="form-control populate" name="loan.amountOfLoanCurrency" [(ngModel)]="loan.amountOfLoanCurrency"
+                                       <ng-select (change)="changeUnit('cur', $event)" class="form-control populate" name="loan.amountOfLoanCurrency" [(ngModel)]="loan.amountOfLoanCurrency"
                                           placeholder="Select currency">
                                           <optgroup label="">
                                              <ng-option value="USD">USD</ng-option>
@@ -1396,7 +1402,7 @@
                                           placeholder="eg. 5000 ">
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select class="form-control populate" name="loan.downPaymentCurrency" [(ngModel)]="loan.downPaymentCurrency"
+                                       <ng-select (change)="changeUnit('cur', $event)" class="form-control populate" name="loan.downPaymentCurrency" [(ngModel)]="loan.downPaymentCurrency"
                                           placeholder="Select currency">
                                           <optgroup label="">
                                              <ng-option value="USD">USD</ng-option>
@@ -1439,7 +1445,7 @@
                                           placeholder="eg. 1000, 2000">
                                     </div>
                                     <div class="col-lg-6">
-                                       <ng-select class="form-control populate" name="loan.monthlyPaymentCurrency" [(ngModel)]="loan.monthlyPaymentCurrency"
+                                       <ng-select (change)="changeUnit('cur', $event)" class="form-control populate" name="loan.monthlyPaymentCurrency" [(ngModel)]="loan.monthlyPaymentCurrency"
                                           placeholder="Select currency">
                                           <optgroup label="">
                                              <ng-option value="USD">USD</ng-option>

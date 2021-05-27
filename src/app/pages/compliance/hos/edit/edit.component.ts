@@ -6,7 +6,6 @@ import {  ActivatedRoute } from '@angular/router';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {split} from 'ts-node';
 declare var $: any;
 
 @Component({

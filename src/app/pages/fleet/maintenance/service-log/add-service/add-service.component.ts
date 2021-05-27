@@ -972,7 +972,7 @@ export class AddServiceComponent implements OnInit {
       delete selectedUnit.odometer
     }
     localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
-    this.listService.abc(selectedUnit);
+    this.listService.appendIssues(selectedUnit);
   }
 
   currencyChange(value: string) {

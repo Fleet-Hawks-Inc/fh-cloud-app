@@ -111,6 +111,7 @@
                                                                     </td>
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                                         {{ item.unitName}} <br>
+
                                                                         <span class="text-success text-capitalize" 
                                                                             [ngClass]="{'text-danger': item.currentStatus == 'sold', 
                                                                             'text-muted' : item.currentStatus === 'outOfService'}">

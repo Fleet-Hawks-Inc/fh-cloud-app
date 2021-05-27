@@ -46,7 +46,7 @@ export class SharedModalsComponent implements OnInit {
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
 
-      this.listService.abc1().subscribe(res => {
+      this.listService.fetchAppendIssues().subscribe(res => {
        this.issuesData.unitID = res.name;
        this.issuesData.unitType = res.type;
        this.issuesData.odometer = res.odometer;
