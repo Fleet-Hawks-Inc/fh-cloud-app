@@ -1,0 +1,94 @@
+[
+    {
+        "code":1,
+        "name":"Diesel #1",
+        "type":"Diesel"
+    },
+    {
+        "code":2,
+        "name":"Diesel #2",
+        "type":"Diesel"
+    },
+    {
+        "code":4,
+        "name":"Unleaded Regular Gasoline",
+        "type":"Gasoline"
+    },
+    {
+        "code":8,
+        "name":"Unleaded Midgrade Gasoline",
+        "type":"Gasoline"
+    },
+    {
+
+        "code":16,
+        "name":"Unleaded Premium Gasoline",
+        "type":"Gasoline"
+    },
+    {
+        "code":32,
+        "name":"Propane",
+        "type":"Propane"
+    },
+    {
+        "code":128,
+        "name":"Marked/Dyed Diesel",
+        "type":"Diesel"
+    },
+    {
+        "code":256,
+        "name":"Bio Diesel",
+        "type":"Diesel"
+    },
+    {
+        "code":512,
+        "name":"Car Diesel",
+        "type":"Diesel"
+    },
+    {
+        "code":1024,
+        "name":"Agricultural Fuel",
+        "type":"Agricultural"
+    },
+    {
+        "code":2048,
+        "name":"Gashole",
+        "type":"Gashole"
+    },
+    {
+        "code":4096,
+        "name":"Natural Gas",
+        "type":"Gas"
+    },
+    {
+        "code":8192,
+        "name":"Ultra Low Sulfer Diesel ULSD",
+        "type":"Diesel"
+    },
+    {
+        "code":16384,
+        "name":"Aviation Fuel",
+        "type":"Aviation"
+    },
+    {
+        "code":65536,
+        "name":"Unleaded Card Lock Gasoline",
+        "type":"Gasoline"
+    },
+    {
+        "code":2097152,
+        "name":"Furnace Oil",
+        "type":"Furnace Oil"
+    },
+    {
+        "code":8388608,
+        "name":"Compressed Natural Gas",
+        "type":"Gas"
+    }
+    ,
+    {
+        "code":16777216,
+        "name":"Liquid Natural Gas",
+        "type":"Gas"
+    }
+]
