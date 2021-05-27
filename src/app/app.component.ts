@@ -81,6 +81,8 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
              // Perform logout
              //Navigate to login/home
               this.router.navigate(['/Login']); 
+           } else {
+            this.router.navigate(['/Map-Dashboard']); 
            }
       }
   });
