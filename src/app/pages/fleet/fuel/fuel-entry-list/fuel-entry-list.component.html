@@ -161,7 +161,7 @@
                       <ng-template [ngIf]="fuelEntry.fuelProvider=='Manual'">
                         <tr style="cursor: pointer;">
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
-                            {{fuelEntry.fuelDate  | date : 'yyyy/mm/dd'}}, {{fuelEntry.fuelTime}}</td>
+                            {{fuelEntry.dateTime}}</td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">{{fuelEntry.paymentMode}}</td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
                             {{vehicleList[fuelEntry.unitID]}}
@@ -194,7 +194,8 @@
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
 
-                            {{fuelEntry.vendorID}}
+                           <span *ngIf="vendorList[fuelEntry.vendorID]"> {{vendorList[fuelEntry.vendorID]}}</span>
+                           <span *ngIf="!vendorList[fuelEntry.vendorID]"> No Vendor found</span>
 
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">

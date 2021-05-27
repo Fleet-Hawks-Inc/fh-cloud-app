@@ -79,10 +79,10 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
-    this.initDataTable();
     this.fetchAllAssets();
     this.fetchAllVehicles();
     this.fetchVendorList();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -137,6 +137,7 @@ export class FuelEntryListComponent implements OnInit {
 
   fetchVendorList() {
     this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      console.log(result)
       this.vendorList = result;
     });
   }
@@ -249,13 +250,16 @@ export class FuelEntryListComponent implements OnInit {
         element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
         }
         else{
-          let dateTime=element.date+" "+ element.time
-          element.dateTime=moment(dateTime).format('MMM Do YYYY, h:mm a')
+          let dateTime=element.fuelDate
+          element.dateTime=moment(dateTime).format('MMM Do YYYY')+" "+element.fuelTime
+         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+          
         }
+
         
       });
       this.fuelList = result[`Items`];
-      //console.log('this.fuelList',result);
+      console.log('this.fuelList',result);
 
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
