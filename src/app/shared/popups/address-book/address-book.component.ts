@@ -730,6 +730,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, data, type) {
+    console.log('data----', data);
     this.userDetailData = {};
     if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
       this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;
@@ -737,7 +738,8 @@ export class AddressBookComponent implements OnInit {
       this.detailImgPath = this.defaultProfilePath;
     }
     $('.modal').modal('hide');
-    this.userDetailTitle = data.firstName;
+    // this.userDetailTitle = data.firstName;
+    this.userDetailTitle = data.companyName;
     this.modalService.open(targetModal);
     this.userDetailData = data;
     this.detailTab = type;
@@ -895,7 +897,7 @@ export class AddressBookComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.spinner.hide();
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
                 this.customerDisabled = false;
@@ -986,7 +988,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.customerDisabled = false;
               this.Error = 'Please see the errors';
@@ -1064,7 +1066,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.brokerDisabled = false;
               this.Error = 'Please see the errors';
@@ -1143,7 +1145,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.operatorDisabled = false;
               this.Error = 'Please see the errors';
@@ -1222,7 +1224,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.operatorDisabled = false;
               this.Error = 'Please see the errors';
@@ -1300,7 +1302,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.brokerDisabled = false;
               this.Error = 'Please see the errors';
@@ -1377,7 +1379,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.vendorDisabled = false;
                 this.Error = 'Please see the errors';
@@ -1448,7 +1450,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.vendorDisabled = false;
               this.Error = 'Please see the errors';
@@ -1530,7 +1532,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.carrierDisabled = false;
                 this.Error = 'Please see the errors';
@@ -1607,7 +1609,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.carrierDisabled = false;
               this.Error = 'Please see the errors';
@@ -1690,7 +1692,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.consignorDisabled = false;
                 this.Error = 'Please see the errors';
@@ -1767,7 +1769,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.consignorDisabled = false;
               this.Error = 'Please see the errors';
@@ -1850,7 +1852,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.consigneeDisabled = false;
                 this.Error = 'Please see the errors';
@@ -1927,7 +1929,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.consigneeDisabled = false;
               this.Error = 'Please see the errors';
@@ -2005,7 +2007,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.companyDisabled = false;
                 this.Error = 'Please see the errors';
@@ -2077,7 +2079,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.companyDisabled = false;
               this.Error = 'Please see the errors';
@@ -2156,7 +2158,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.spinner.hide();
                 this.hasError = true;
                 this.employeeDisabled = false;
@@ -2233,7 +2235,7 @@ export class AddressBookComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              //this.throwErrors();
+              this.throwErrors();
               this.hasError = true;
               this.employeeDisabled = false;
               this.Error = 'Please see the errors';
@@ -2276,9 +2278,11 @@ export class AddressBookComponent implements OnInit {
           this.errorClass = true;
           this.errorClassMsg = this.errors[v];
         } else {
-          $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          if(v == 'companyName' || v == 'email') {
+            $('[name="' + v + '"]')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
+          }
         }
       });
 
@@ -2771,7 +2775,8 @@ export class AddressBookComponent implements OnInit {
       this.updateButton = false;
     }
     this.custCurrentTab = 1;
-    this.clearModalData()
+    this.clearModalData();
+    $('.imgField').val('');
 
     this.searchResults = [];
   }
@@ -4622,7 +4627,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                //this.throwErrors();
+                this.throwErrors();
                 this.hasError = true;
                 this.toastr.error('Please see the errors');
               },
@@ -5235,6 +5240,22 @@ export class AddressBookComponent implements OnInit {
       this.customerData.additionalContact.splice(index, 1);
     } else if(type == 'ownerOperator') {
       this.ownerData.additionalContact.splice(index, 1);
+    }
+  }
+
+  updateCurrency(currency, type) {
+    if(type == 'carrier') {
+      this.carrierData.paymentDetails.payrollRateCurrency = currency;
+      this.carrierData.paymentDetails.loadedMilesCurrency = currency;
+      this.carrierData.paymentDetails.deliveryRateCurrency = currency;
+      this.carrierData.paymentDetails.emptyMilesCurrency = currency;
+
+    } else if(type == 'ownerOperator') {
+      this.ownerData.paymentDetails.payrollRateCurrency = currency;
+      this.ownerData.paymentDetails.loadedMilesCurrency = currency;
+      this.ownerData.paymentDetails.emptyMilesCurrency = currency;
+      this.ownerData.paymentDetails.deliveryRateCurrency = currency;
+
     }
   }
 }

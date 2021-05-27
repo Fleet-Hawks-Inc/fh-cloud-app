@@ -131,6 +131,7 @@ export class AddServiceComponent implements OnInit {
   logDocs = [];
   existingPhotos = [];
   existingDocs = [];
+  vehicleDisabled = false;
 
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -158,6 +159,7 @@ export class AddServiceComponent implements OnInit {
     this.logID = this.route.snapshot.params['logID'];
     if (this.logID) {
       this.pageTitle = 'Edit Service Log';
+      this.vehicleDisabled = true;
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
