@@ -215,7 +215,7 @@ export class AddTripComponent implements OnInit {
     fetchCarriers() {
         this.apiService.getData('externalCarriers')
             .subscribe((result: any) => {
-                this.carriers = result.Items;
+                this.carriers = result;
             })
     }
 
@@ -1364,6 +1364,14 @@ export class AddTripComponent implements OnInit {
                 this.dateCreated = result.dateCreated;
                 this.orderNo = '';
                 
+                if(result.mapFrom == 'order') {
+                    this.mapOrderActive = 'active';
+                    this.mapRouteActive = '';    
+                } else {
+                    this.mapOrderActive = '';
+                    this.mapRouteActive = 'active';    
+                }
+
                 //fetch order details
                 if(result.orderId.length > 0){
                     this.fetchOrderDetails(result.orderId);
