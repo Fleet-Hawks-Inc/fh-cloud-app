@@ -481,7 +481,7 @@
                                 Province or State</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
                                 placeholder="Select province">
-                                <ng-option class="text-capitalize" *ngFor="let state of states"
+                                <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>
                             </div>
@@ -495,7 +495,7 @@
                               <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}"
                                 placeholder="Select city">
 
-                                <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityName}}">
+                                <ng-option class="text-capitalize" *ngFor="let city of item.cities" value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
                               </ng-select>

@@ -634,7 +634,7 @@ export class AddVehicleNewComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
+          this.slides.push(e.target.result);
         }
         reader.readAsDataURL(files[i]);
       }
@@ -1190,5 +1190,20 @@ export class AddVehicleNewComponent implements OnInit {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
       this.documentSlides.splice(parseInt(index), 1);
     });
+  }
+
+  changeUnit(str, value) {
+    if(str == 'dim') {
+      this.specifications.groundClearnceUnit = value;
+      this.specifications.heightUnit = value;
+    } else if(str == 'cur') {
+      this.insurance.premiumCurrency = value;
+      this.insurance.amountCurrency = value;
+      this.purchase.purchasePriceCurrency = value;
+      this.loan.amountOfLoanCurrency = value;
+      this.loan.amountOfLoanCurrency = value;
+      this.loan.downPaymentCurrency = value;
+      this.loan.monthlyPaymentCurrency = value;
+    }
   }
 }

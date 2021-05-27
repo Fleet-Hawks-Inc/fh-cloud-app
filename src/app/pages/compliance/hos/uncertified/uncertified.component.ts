@@ -4,7 +4,6 @@ import * as moment from "moment";
 declare var $: any;
 import { NgbDateParserFormatter } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { result } from "lodash";
 
 @Component({
   selector: "app-uncertified",

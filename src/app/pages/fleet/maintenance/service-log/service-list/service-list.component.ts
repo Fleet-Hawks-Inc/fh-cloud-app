@@ -66,9 +66,6 @@ export class ServiceListComponent implements OnInit {
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
-    this.initDataTable();
-    this.fetchAllAssets();
-    this.fetchAllVehicles();
   }
 
   getSuggestions(value) {
@@ -90,14 +87,14 @@ export class ServiceListComponent implements OnInit {
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
-        this.vehiclesObject = result;
+        this.vehiclesObject = result; 
       });
   }
 
   fetchAllVendorsIDs() {
-    this.apiService.getData('vendors/get/list')
+    this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result;
+        this.vendorsObject = result; 
       });
   }
 
@@ -134,6 +131,7 @@ export class ServiceListComponent implements OnInit {
         if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogEndPoint = this.totalRecords;
         }
+        this.initDataTable();
       },
     });
   }
@@ -150,7 +148,7 @@ export class ServiceListComponent implements OnInit {
     this.basicActive = 'active';
     this.addressActive = '';
     this.vendorTextStatus = true;
-    this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
+    this.apiService.getData(`contacts/detail/${vendorID}`).subscribe(res => {
       this.vendorTextStatus = false;
       this.vendorsData =  res.Items[0];
       this.vendorAddress = res.Items[0].address;
@@ -167,6 +165,7 @@ export class ServiceListComponent implements OnInit {
         this.getStartandEndVal();
 
         this.logs = result['Items'];
+        console.log('logs', this.logs);
         if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;
@@ -207,7 +206,6 @@ export class ServiceListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.fetchLogsCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -222,24 +220,24 @@ export class ServiceListComponent implements OnInit {
       this.taskID = null;
       this.logs = [];
       this.fetchLogsCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
     }
   }
 
-  deleteProgram(entryID) {
+  deleteProgram(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`serviceLogs/isDeleted/${entryID}/`+1)
-      .subscribe((result: any) => {
+      let record = {
+        eventID: eventData.logID,
+        entityID: eventData.unitID
+      }
+      this.apiService.postData('serviceLogs/delete', record).subscribe((result: any) => {
         this.logs = [];
         this.serviceLogDraw = 0;
         this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchLogsCount();
-        this.initDataTable();
         this.toastr.success('Service log deleted successfully!');
       });
     }
@@ -271,17 +269,5 @@ export class ServiceListComponent implements OnInit {
     this.serviceLogStartPoint = 1;
     this.serviceLogEndPoint = this.pageLength;
     this.serviceLogDraw = 0;
-  }
-
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
-    });
-  }
-
-  fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.allAssets = result.Items;
-    });
   }
 }
