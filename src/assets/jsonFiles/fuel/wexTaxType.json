@@ -1,0 +1,18 @@
+{
+    "FET": "Federal Excise Tax",
+    "QST": "Quebec Sales Tax",
+    "GST": "Goods & Services Tax",
+    "FED": "Federal Fuel Tax",
+    "SFTX": "State Fuel Tax",
+    "PST": "Provincial Sales Tax",
+    "CAP": "Competitive Advantage Program (Saskatchewan)",
+    "PFT": "Provincial Fuel Tax",
+    "HST": "Harmonized Sales Tax",
+    "MEXC": "IVA-Customer Fee Tax",
+    "MEXS": "IVA-Supplier Fee Tax",
+    "GWT": "Ground Water Tax",
+    "VTT": "Victoria and Vancouver Transit Tax,known as 'UTT'",
+    "FNT": "First Nations Tax",
+    "MEX15": "IVA-Fuel tax 15",
+    "MEX10": "IVA-Fuel tax 10"
+}
