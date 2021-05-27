@@ -302,6 +302,7 @@ export class AddAccountComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
+                
                 this.throwErrors();
                 this.submitDisabled = true;
               },
@@ -324,9 +325,12 @@ export class AddAccountComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v=== 'userName' || v==='email'){
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
+        
       });
   }
   hideErrors() {

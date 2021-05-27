@@ -239,6 +239,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  
   Error = '';
   Success = '';
   visibleIndex = 0;
