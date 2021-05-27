@@ -74,7 +74,7 @@
                                             <th>Service Task </th>
                                             <th>Next Due</th>
                                             <th>Last Completed</th>
-                                            <th>Subscribers</th>
+                                            <th width="20%">Subscribers</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -90,8 +90,11 @@
                                                     *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
                                                 <span class="font-weight-bold"
                                                     title="Service Task">{{tasksList[item.tasks.taskID]}}</span>
-                                                <br><span class="font-size-12">Every {{item.tasks.time}}
-                                                    {{item.tasks.timeUnit}}(s) or {{item.tasks.odometer}} miles</span>
+                                                <br>
+                                                <span class="font-size-12">
+                                                    <span *ngIf="item.tasks.remindByUnit == 'time'">Every {{item.tasks.time}} {{item.tasks.timeUnit}}(s) </span>
+                                                    <span *ngIf="item.tasks.remindByUnit == 'odometer'">Every {{item.tasks.odometer}} miles</span>
+                                                </span>
                                             </td>
                                             <td>
                                                 <span *ngIf="item.tasks.remainingDays > 0">{{item.tasks.remainingDays}} Days from now</span>
@@ -100,15 +103,7 @@
                                                 {{item.tasks.remainingMiles}} miles from now
                                             </td>
                                             <td>{{item.lastCompleted | date:'yyyy/MM/dd'}}</td>
-                                            <td><span *ngFor="let s of item.subscribers; let g=index">
-                                                    <span *ngIf="s.type === 'user'">
-                                                        {{users[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="s.type === 'group'">
-                                                        {{groups[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="g<item.subscribers.length-1">,</span>
-                                                </span></td>
+                                            <td> {{item.subscribers}}</td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="btn p-0" data-toggle="dropdown"><i

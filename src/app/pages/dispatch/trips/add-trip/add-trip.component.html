@@ -387,7 +387,7 @@
                                                             id="editCell11{{i}}">
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
-                                                                value="{{ carrier.infoID }}">
+                                                                value="{{ carrier.contactID }}">
                                                                 {{ carrier.companyName }}
                                                             </option>
                                                         </select>
@@ -674,18 +674,18 @@
                                             routerLink="/dispatch/trips/trip-list">Cancel</a>
 
                                         <!-- if there is some error in validation  -->
-                                        <button *ngIf="!tripID && !tripForm.form.valid" class="btn btn-success mt-1"
-                                            [disabled]="!tripForm.form.valid">Create Trip</button>
+                                        <!-- <button *ngIf="!tripID && !tripForm.form.valid" class="btn btn-success mt-1"
+                                            [disabled]="!tripForm.form.valid">Create Trip</button> -->
 
                                         <!-- if validations are ok and now the button will disable on submit click  -->
-                                        <button (click)="createTrip()" *ngIf="!tripID && tripForm.form.valid" class="btn btn-success mt-1"
+                                        <button (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1"
                                             [disabled]="submitDisabled">Create Trip</button>
 
                                         <!-- update case -->
-                                        <button *ngIf="tripID && !tripForm.form.valid" class="btn btn-success mt-1" [disabled]="!tripForm.form.valid">
-                                            Update Trip</button>
+                                        <!-- <button *ngIf="tripID && !tripForm.form.valid" class="btn btn-success mt-1" [disabled]="!tripForm.form.valid">
+                                            Update Trip</button> -->
 
-                                        <button (click)="updateTrip()" *ngIf="tripID && tripForm.form.valid" class="btn btn-success mt-1"
+                                        <button (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1"
                                             [disabled]="submitDisabled">Update Trip</button>
                                     </div>
                                 </div>

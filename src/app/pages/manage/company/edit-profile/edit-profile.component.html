@@ -192,7 +192,8 @@
                             <hr class="m-3">
                             <div class="row">
                                <div class="col-lg-8">Company Logo</div>
-                               <div class="col-lg-4 text-right">
+                               <div class="col-lg-4 text-right" (click)="deleteLogo()"><i
+                                class="fas fa-times text-danger"></i>
                                </div>
                             </div>
                          </div>
@@ -418,7 +419,7 @@
                                 Province</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
                                 name="stateCode{{i}}" placeholder="Select province" >
-                                <ng-option class="text-capitalize" *ngFor="let state of states"
+                                <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>
                             </div>
@@ -432,7 +433,7 @@
                               <ng-select  [(ngModel)]="item.cityName"
                                 name="cityName{{i}}" placeholder="Select city" >
 
-                                <ng-option class="text-capitalize" *ngFor="let city of cities"
+                                <ng-option class="text-capitalize" *ngFor="let city of item.cities"
                                   value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
