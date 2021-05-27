@@ -73,7 +73,7 @@
                                                     <div>
 
                                                         <div *ngIf="order.errors.required">
-                                                            Select valid order is required from the list.
+                                                             Order is required .
                                                         </div>
 
 
@@ -98,7 +98,7 @@
                                                         value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
-                                                
+
                                             </div>
                                         </div>
                                         <div class="row">
@@ -135,9 +135,9 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
-                                                    [(ngModel)]="tripData.bol" placeholder="eg. 13253578" #BOL="ngModel"
-                                                     pattern="^[a-zA-Z0-9\-\/]+$">
-                                                <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
+                                                    [(ngModel)]="tripData.bol" placeholder="eg. 13253578"
+                                                    >
+                                                <!-- <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
                                                     class="text-danger">
                                                     <div>
                                                         <div *ngIf="BOL.errors.pattern">
@@ -146,7 +146,7 @@
                                                         </div>
                                                     </div>
 
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -167,8 +167,7 @@
                                                     <div>
 
                                                         <div *ngIf="tDate.errors.required">
-                                                            Select valid trip date is required and
-                                                            follow yyyy/mm/dd format.
+                                                             Trip date is required.
                                                         </div>
 
 
@@ -190,9 +189,9 @@
                                                         <input type="number" class="form-control"
                                                             name="reeferTemperature"
                                                             [(ngModel)]="tripData.reeferTemperature"
-                                                            placeholder="eg. 340.95 °C or °F " #reeferTemp="ngModel"
+                                                            placeholder="eg. 10 °C or °F "
                                                             >
-                                                        <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
+                                                        <!-- <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
                                                             class="text-danger">
                                                             <div>
 
@@ -202,7 +201,7 @@
 
                                                             </div>
 
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
                                                         <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
@@ -212,7 +211,7 @@
                                                             <ng-option value="C">°C</ng-option>
                                                             <ng-option value="F">°F</ng-option>
                                                         </ng-select>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -584,7 +583,7 @@
                                                 <div class="tripbarn"></div>
                                             </div>
                                         </div>
-                
+
                                         <div class="tripinfoscroll">
                                             <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
                                                 <div class="text-center" *ngFor="let trip of trips">
