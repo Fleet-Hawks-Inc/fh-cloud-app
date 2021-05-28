@@ -99,7 +99,7 @@ export class AddVehicleNewComponent implements OnInit {
   };
   specifications = {
     height: '',
-    heightUnit: null,
+    heightUnit: 'Feet',
     length: '',
     lengthUnit: '',
     width: '',
@@ -107,7 +107,7 @@ export class AddVehicleNewComponent implements OnInit {
     interiorVolume: '',
     passangerVolume: '',
     groundClearnce: '',
-    groundClearnceUnit: null,
+    groundClearnceUnit: 'Feet',
     bedLength: '',
     bedLengthUnit: '',
     cargoVolume: '',
@@ -134,14 +134,14 @@ export class AddVehicleNewComponent implements OnInit {
   fluid = {
     fuelType: null,
     fuelTankOneCapacity: '',
-    fuelTankOneType: null,
+    fuelTankOneType: 'Litres',
     fuelQuality: '',
     fuelTankTwoCapacity: '',
-    fuelTankTwoType: null,
+    fuelTankTwoType: 'Litres',
     oilCapacity: '',
-    oilCapacityType: null,
+    oilCapacityType: 'Litres',
     def: '',
-    defType: null
+    defType: 'Litres'
   };
   wheelsAndTyres = {
     numberOfTyres: '',
@@ -534,7 +534,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
-    console.log('data',data);
+    
     // create form data instance
     const formData = new FormData();
 
@@ -1192,18 +1192,4 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
-  changeUnit(str, value) {
-    if(str == 'dim') {
-      this.specifications.groundClearnceUnit = value;
-      this.specifications.heightUnit = value;
-    } else if(str == 'cur') {
-      this.insurance.premiumCurrency = value;
-      this.insurance.amountCurrency = value;
-      this.purchase.purchasePriceCurrency = value;
-      this.loan.amountOfLoanCurrency = value;
-      this.loan.amountOfLoanCurrency = value;
-      this.loan.downPaymentCurrency = value;
-      this.loan.monthlyPaymentCurrency = value;
-    }
-  }
 }

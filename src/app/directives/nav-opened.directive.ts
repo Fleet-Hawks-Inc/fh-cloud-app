@@ -11,7 +11,6 @@ export class NavOpenedDirective implements AfterViewInit {
     @HostListener('click') toggleExpanded() {
       this.sharedService.activeSubNav.next(this.expandedNav);
       // this.isExpanded = !this.isExpanded;
-      // console.log(this.expandedNav);
     }
 
     constructor(private sharedService: SharedServiceService) {
@@ -19,7 +18,6 @@ export class NavOpenedDirective implements AfterViewInit {
 
         this.sharedService.activeSubNav
           .subscribe((val) => {
-            console.log(val + ' ' + this.expandedNav );
             if (val === this.expandedNav) {
               this.isExpanded = !this.isExpanded;
             }

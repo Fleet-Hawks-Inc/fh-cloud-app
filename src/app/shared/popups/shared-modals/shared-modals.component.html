@@ -1226,8 +1226,11 @@
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="fluid.fuelType" [(ngModel)]="fluid.fuelType"
                             placeholder="Select fuel type" #mFuel="ngModel" required>
-                            <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
-                              {{fuelType.fuelTypeName}}</ng-option>
+                            <!-- <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
+                              {{fuelType.fuelTypeName}}</ng-option> -->
+                              <ng-option value="Diesel">Diesel</ng-option>
+                                    <ng-option value="Gasoline">Gasoline</ng-option>
+                                    <ng-option value="Propane">Propane</ng-option>
                           </ng-select>
                           <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
                             <div *ngIf="mFuel.errors.required">

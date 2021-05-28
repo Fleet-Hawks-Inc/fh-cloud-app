@@ -102,8 +102,7 @@ export class SafetyOverviewComponent implements OnInit {
     this.apiService.getData('drivers')
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        // console.log('this.drivers')
-        // console.log(result.Items)
+        
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           if (element.isDeleted === 0) {
@@ -140,8 +139,7 @@ export class SafetyOverviewComponent implements OnInit {
             
             this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName+'?start='+start+'&end='+end)
               .subscribe((result1: any) => {
-                // console.log('result1--')
-                // console.log(result1)
+                
                 for (let j = 0; j < result1.Items.length; j++) {
                   const element1 = result1.Items[j];
                   if (element1.criticalityType === 'harshAcceleration') {
@@ -588,7 +586,7 @@ export class SafetyOverviewComponent implements OnInit {
     
     this.apiService.getData('safety/eventLogs/fetch/all-events?start='+start+'&end='+end)
       .subscribe((result: any) => {
-        console.log(result.Items);
+        
         // this.events = result.Items;
 
         for (let i = 0; i < result.Items.length; i++) {
@@ -601,8 +599,7 @@ export class SafetyOverviewComponent implements OnInit {
           let year  = check.format('YYYY');
 
           // let eventMonth = eventdate[1];
-          // console.log('eventMonth')
-          // console.log(element.eventType)
+        
 
           if(element.eventType === "critical") {
             this.events.criticalEventsCount += 1; 
@@ -610,8 +607,7 @@ export class SafetyOverviewComponent implements OnInit {
 
           if(element.eventType === "incident") {
             this.events.incidentCount += 1; 
-            // console.log('this.events.incidentCount') 
-            // console.log(this.events.incidentCount) 
+            
           }
 
           if(element.eventType === "hosViolation") {

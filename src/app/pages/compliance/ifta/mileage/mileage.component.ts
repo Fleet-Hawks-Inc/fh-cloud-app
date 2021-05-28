@@ -78,7 +78,6 @@ export class MileageComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        // console.log(result);
         this.fuelList = result;
       },
     });
@@ -90,7 +89,6 @@ export class MileageComponent implements OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        // console.log(result);
         this.stateList = result;
         for(let i=0; i < this.stateList.length; i++){
            this.totalGallons = this.totalGallons + this.stateList[i].fuelGal;

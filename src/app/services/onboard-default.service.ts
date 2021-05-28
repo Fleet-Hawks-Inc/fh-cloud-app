@@ -14,7 +14,6 @@ export class OnboardDefaultService {
    formData = await this.apiService.getData('inspectionForms').toPromise()
     if (formData.Count == 0){
       let govtApprovedForms= await this.getDefaultInspectionForm();
-      console.log(govtApprovedForms.Count)
       if(govtApprovedForms.Count>0){
         govtApprovedForms.Items.forEach(element => {
           delete element.isGovtApproved

@@ -27,13 +27,11 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.jwt = localStorage.getItem('jwt');
-   // console.log('auth session');
-   // console.log(Auth.currentSession());
+   // 
     // from(Auth.currentSession())
     //     .pipe(
     //         switchMap((auth: any) => { // switchMap() is used instead of map().
-    //           //console.log(auth);
-    //           console.log(auth);
+    //          
     //           const jwt = auth.accessToken.jwtToken;
     //           // this.httpOptions = {
     //           //   headers: new HttpHeaders({
@@ -106,11 +104,9 @@ export class ApiService {
     from(Auth.currentSession())
         .pipe(
             switchMap((auth: any) => { // switchMap() is used instead of map().
-              console.log('auth');
-              console.log(auth);
-
+              
               const jwt = auth.accessToken.jwtToken;
-              // console.log('jwt' , jwt);
+              
               this.httpOptions = {
                 headers: new HttpHeaders({
                   'Authorization': `Bearer ${jwt}`,
@@ -137,7 +133,7 @@ export class ApiService {
 
     } catch (error) {
       return undefined;
-      console.log('Error gettting carrierId');
+      
     }
   }
 

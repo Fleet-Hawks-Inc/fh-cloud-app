@@ -215,7 +215,7 @@ export class ListingComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask+'&status='+this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        console.log('result', result);
+        
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -229,7 +229,7 @@ export class ListingComponent implements OnInit {
           v.lastCompleted = moment().format('YYYY-MM-DD');
         })
         this.remindersData = result[`Items`];
-        console.log('this.remindersData', this.remindersData);
+        
         // this.fetchReminders();
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.serviceStartPoint = 1;

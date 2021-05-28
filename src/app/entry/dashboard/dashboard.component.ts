@@ -40,7 +40,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/Map-Dashboard']);
 
     // this.device.on("connect", function() {
-    //   console.log("connect");
     //   this.device.subscribe("gps/kunal");
     // });
 

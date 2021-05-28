@@ -698,6 +698,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
+
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -846,6 +847,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+
         this.fetchLicStates(result.licenceDetails.issuedCountry);
        this.driverData.address = result.address;
         if(result.address != undefined) {
