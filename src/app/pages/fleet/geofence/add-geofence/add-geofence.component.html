@@ -132,7 +132,7 @@
                  </div>
                  <div class="form-group row">
                     <div class="col-lg-11 text-right">
-                       <button class="btn btn-default mr-2">Cancel</button>
+                       <a class="btn btn-default mr-2" href="javascript:;" routerLink="/fleet/geofence/list">Cancel</a>
                        <button *ngIf="!getGeofenceID" class="btn btn-success" (click)="addGeofence()">Save</button>
                        <button *ngIf="getGeofenceID" class="btn btn-success" (click)="updateGeofence()">Update</button>
 
