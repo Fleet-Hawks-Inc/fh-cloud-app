@@ -341,9 +341,10 @@
                                         <tr>
                                             <th width="10%">Vehicle Name</th>
                                             <th width="10%">Type</th>
-                                            <th width="15%">VIN</th>
+                                            <th width="10%">VIN</th>
                                             <th width="10%">DOT#</th>
-                                            <th width="15%">Licence Plate #</th>
+                                            <th width="10%">Licence Province</th>
+                                            <th width="10%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -367,7 +368,12 @@
                                             <td data-toggle="tooltip"
                                             data-placement="top"
                                             title="Click to see details of vehicle"><span
-                                                *ngFor="let license of truck.licensePlates;">{{license.number}},{{license.stateProvince}}</span>
+                                                *ngFor="let license of truck.licensePlates;">{{license.stateProvince}}</span>
+                                        </td>
+                                            <td data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Click to see details of vehicle"><span
+                                                *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
@@ -493,48 +499,6 @@
     </div>
 </section>
 <!-- TRUCK  DETAILS -->
-<!-- <div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Vehicle Insurance Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row mt-2">
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Insurance Vendor</th>
-                                        <th>Issued Date</th>
-                                        <th>Policy Number</th>
-                                        <th>Policy Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
-                                        <td>{{truck.insurancePolicy.issuedDate}}</td>
-                                        <td>{{truck.insurancePolicy.policyNumber}}</td>
-                                        <td>{{truck.insurancePolicy.policyAmount}}{{}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
@@ -684,7 +648,7 @@
                                   <tbody>
                                       <tr>
                                           <th width="40%" class="back-color-gray">Entry Type:</th>
-                                          <td>{{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
+                                          <td>{{shipmentData.inBondDetails.type}} - {{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
                                       </tr>
                                       <tr>
                                           <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
@@ -696,8 +660,8 @@
                                       </tr>
                                       <tr>
                                         <th width="40%" class="back-color-gray">Subject To FDA?:</th>
-                                        <td><span *ngIf="shipmentData.inBondDetails.fda === true">YES</span>
-                                            <span *ngIf="shipmentData.inBondDetails.fda === false">NO</span>
+                                        <td><span *ngIf="shipmentData.inBondDetails.fda">YES</span>
+                                            <span *ngIf="!shipmentData.inBondDetails.fda">NO</span>
                                         </td>
                                     </tr>
                                   </tbody>

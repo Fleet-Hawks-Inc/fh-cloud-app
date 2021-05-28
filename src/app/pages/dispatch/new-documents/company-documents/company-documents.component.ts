@@ -328,7 +328,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
 
-          this.toastr.error('Document deleted successfully.'); 
+          this.toastr.success('Document deleted successfully.'); 
           this.fetchDocuments();
           this.initDataTable(); 
         });
@@ -397,6 +397,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.documents = [];
         this.suggestions = [];
+        this.filterValues.searchValue = this.filterValues.searchValue.toLowerCase();
         if (this.filterValues.startDate !== '') {
           this.filterValues.start = this.filterValues.startDate;
         }
