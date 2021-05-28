@@ -260,25 +260,34 @@
                     <div class="row">
                       <div class="col-lg-12 pt-2">
                         <div class="row">
-                          <div class="col-lg-3">
+                          <div class="col-lg-2">
                             <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
                           </div>
-                          <div class="col-lg-4 px-0">
+                          <div class="col-lg-3 px-0">
                             <div class="btn-group-toggle" data-toggle="buttons">
-                              <label class="btn btn-outline btn-yesno mr-2 active mb-2">
-                                <input id="male" name="male" type="radio">Male</label>
-                              <label class="btn btn-outline btn-yesno mr-2 mb-2">
-                                <input id="female" name="female" type="radio">Female</label>
+                              <label class="btn btn-outline btn-yesno  mr-2"
+                                [class.active]="driverData.gender === 'M'"
+                                (click)="onChangeUnitType('gender', 'M')">
+                                <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked hidden
+                                  value="M"> Male
+                              </label>
+                              <label class="btn btn-outline btn-yesno mr-2 "
+                                [class.active]="driverData.gender === 'F'"
+                                (click)="onChangeUnitType('gender', 'F')">
+                                <input type="radio" id="female" [(ngModel)]="driverData.gender" name="gender" hidden
+                                  value="F"> Female
+                              </label>
                             </div>
                           </div>
-                          <div class="col-lg-3 text-right">
-                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                              Photo
-                              <input  class="hidden_input1 w-100" (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                              name="driverImage"
-                                 type="file">
-                           </div>
-
+                          <div class="col-lg-5">
+                                <button type="button" data-toggle="modal" *ngIf="driverID"
+                                data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
+                                <div *ngIf="!driverID" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+                                  <input [disabled]="driverID" class="hidden_input1 w-100" (change)="selectPhoto($event,nullVar)" type="file">
+                               </div>
+                               <div *ngIf="driverID" class="btn btn-sm btn-success pull-right"><i class="fas fa-plus"></i> Change Photo
+                                <input [disabled]="!driverID" class="hidden_input" (change)="selectPhoto($event,driverData.driverImage)" type="file">
+                             </div>
                           </div>
                         </div>
                       </div>
@@ -407,14 +416,6 @@
                               </div>
                             </div>
                           </div>
-                          <!-- <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                              Photo
-                              <input  class="hidden_input1 w-100" (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                              name="driverImage"
-                                 type="file">
-                           </div>
-                          </div> -->
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -463,6 +464,27 @@
                           </div>
                         </div>
                       </div>
+                      <!-- <div class="col-lg-10 mt-2" *ngIf="localAbsDocs.length > 0">
+                        <div class="vehicle-common-box p-3">
+                          <div class="row">
+                            <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Abstract History
+                                Document(s)</label></div>
+                            <div class="col-lg-6 text-right">
+                            </div>
+                          </div>
+                          <hr class="solid mt-2">
+                          <div class="row mb-1" *ngFor="let item of localAbsDocs;let d= index">
+                            <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
+                            <div class="col-lg-3 text-right">
+                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                data-target="#viewDocModal"></i>
+                              <a href="javascript:;" (click)="localDelete('abs',item.name, d,nullVar)" class="modal-with-form"><i
+                                  class="fas fa-times text-danger"></i></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>

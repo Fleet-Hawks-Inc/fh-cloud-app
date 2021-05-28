@@ -936,15 +936,13 @@
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince" #proS="ngModel" required>
                                   <ng-option *ngFor="let state of shipment.cityOfLoading.loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
 
+
+
                                 </ng-select>
                                 <div *ngIf="proS.invalid && (proS.dirty || proS.touched)" class="text-danger">
-                                  <div>
-
                                     <div *ngIf="proS.errors.required">
                                      State of loading is required.
                                      </div>
-                                  </div>
-
                                 </div>
                               </div>
                               <div class="col-lg-5">
@@ -959,12 +957,11 @@
                                     {{city.cityName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="proC.invalid && (proC.dirty || proC.touched)" class="text-danger">
-                                  <div>
 
                                     <div *ngIf="proC.errors.required">
                                      City of loading is required.
                                      </div>
-                                  </div>
+
 
                                 </div>
                               </div>

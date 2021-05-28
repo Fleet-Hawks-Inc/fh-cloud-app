@@ -63,6 +63,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
+  wexCategories:any={};
 
   constructor(
     private apiService: ApiService,
@@ -82,6 +83,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchAllAssets();
     this.fetchAllVehicles();
     this.fetchVendorList();
+    this.fetchWexCategories();
     this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
@@ -95,6 +97,12 @@ export class FuelEntryListComponent implements OnInit {
     this.suggestedUnits = [];
   }
 
+  fetchWexCategories(){
+    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {  
+      
+      this.wexCategories = result;
+    })
+  }
   getSuggestions(value) {
     value = value.toLowerCase();
     if(value != '') {

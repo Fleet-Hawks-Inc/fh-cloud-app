@@ -20,7 +20,7 @@ declare var $: any;
 })
 export class AddressBookComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-  @ViewChild("content", {static: false}) modalContent: TemplateRef<any>;
+  @ViewChild('content', {static: false}) modalContent: TemplateRef<any>;
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   brokers = [];
@@ -2048,14 +2048,11 @@ export class AddressBookComponent implements OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
-
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
-
     // create form data instance
     const formData = new FormData();
 
@@ -2715,7 +2712,7 @@ export class AddressBookComponent implements OnInit {
 
     //to show profile image
     if(item.profileImg != '' && item.profileImg != undefined) {
-      this.profilePath = `${this.Asseturl}/${item.carrierID}/${item.profileImg}`;;
+      this.profilePath = `${this.Asseturl}/${item.carrierID}/${item.profileImg}`;
       this.imageText = 'Update Picture';
     } else {
       this.profilePath = this.defaultProfilePath;
