@@ -539,7 +539,7 @@
                                                                   #location="ngModel" required>
                                                                   <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
                                                                      <div *ngIf="location.errors.required">
-                                                                      PickUp Location is required.
+                                                                      PickUp location is required.
                                                                          </div>
 
                                                                      <!-- <div *ngIf="location.errors.pattern">
@@ -587,7 +587,7 @@
                                                                </div>
                                                                <div *ngIf="orderDate1.invalid && (orderDate1.dirty || orderDate1.touched)" class="text-danger">
                                                                   <div *ngIf="orderDate1.errors.required">
-                                                                   PickUp Date and time is required.
+                                                                   PickUp date and time is required.
                                                                       </div>
                                                               </div>
                                                                <span class="text-danger"
@@ -1016,7 +1016,7 @@
                                                                   <div *ngIf="drop.invalid && (drop.dirty || drop.touched)" class="text-danger">
 
                                                                      <div *ngIf="drop.errors.required">
-                                                                        Drop Off Location is required.
+                                                                        Drop off location is required.
                                                                          </div>
 
 
@@ -1063,7 +1063,7 @@
                                                                <div *ngIf="delDate.invalid && (delDate.dirty || delDate.touched)" class="text-danger">
 
                                                                   <div *ngIf="delDate.errors.required">
-                                                                 Delivery Date and Time is required.
+                                                                 Delivery date and time is required.
                                                                    </div>
 
 
@@ -1681,7 +1681,7 @@
                                   Total Miles is requird.
                                      </div>
                                      <div *ngIf="tMiles.errors.pattern">
-                                       Total Miles must contains number and special character for period(.) only.
+                                       Total miles must contains number and with decimal allowed.
                                           </div>
 
 
@@ -1740,7 +1740,7 @@
                               <div *ngIf="sltFreight.invalid && (sltFreight.dirty || sltFreight.touched)" class="text-danger">
 
                                  <div *ngIf="sltFreight.errors.required">
-                                  Freight Fee is required.
+                                  Freight fee is required.
                                   </div>
 
 
@@ -2035,7 +2035,7 @@
                               </div>
                            </div>
                            <div class="col-lg-10 offset-lg-2" *ngIf="!orderData.zeroRated">
-                              <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Provinces</label>
+                              <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Provinces/States</label>
                            </div>
                            <div class="col-lg-5 offset-lg-2" *ngIf="!orderData.zeroRated">
                               <ng-select
