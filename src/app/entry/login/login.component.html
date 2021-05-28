@@ -21,7 +21,7 @@
                 class="form-control login form-control-lg" [(ngModel)]="userName" #login="ngModel" required />
                 <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
                   <div class="pl-4 ml-2" *ngIf="login.errors.required" >
-                    UserName is required.
+                    Username is required.
                   </div>
                   <!-- <div *ngIf="login.errors.pattern">
                       The length of  Username must be 6 characters and may contain combination of lowercase letters, numbers and special character(.).

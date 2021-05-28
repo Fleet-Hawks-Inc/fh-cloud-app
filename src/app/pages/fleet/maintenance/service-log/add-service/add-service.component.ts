@@ -1275,10 +1275,14 @@ export class AddServiceComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string) {
-    this.apiService.deleteData(`assets/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchServiceByID();
+  delete(type: string, name: string, index:any) {
+    this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      console.log('image result', result);
+      if(type == 'image') {
+        this.logImages.splice(index, 1);
+      } else {
+        this.logDocs.splice(index,1);
+      }
     });
   }
-
 }
