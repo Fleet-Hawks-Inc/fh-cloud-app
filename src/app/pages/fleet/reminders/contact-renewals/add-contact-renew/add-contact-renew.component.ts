@@ -99,7 +99,7 @@ export class AddContactRenewComponent implements OnInit {
     this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
-    console.log('this.users', this.users);
+    
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {

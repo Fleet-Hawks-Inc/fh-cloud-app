@@ -25,6 +25,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   fuelData = {
     unitType: 'vehicle',
+    fuelProvider: 'Manual',
     unitID: null,
     billingCurrency: 'CAD',
     fuelUnit: 'litre',
@@ -85,7 +86,7 @@ export class AddFuelEntryComponent implements OnInit {
   trips = [];
   fuelEntryImages = [];
   fuelDiscounts = [];
-  fuelTypes = [];
+  fuelTypes = ["Diesel","Gasoline","Propane"];
   fuelTaxes = [];
   image;
   vehicleData: any;
@@ -130,7 +131,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fetchTrips();
     this.fetchAssets();
     this.fetchDrivers();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.fetchFuelTaxes();
     this.fetchFuelDiscounts();
     this.listService.fetchVendors();
@@ -165,11 +166,11 @@ export class AddFuelEntryComponent implements OnInit {
   deleteTaxRow(t) {
     this.fuelData.taxes.splice(t, 1);
   }
-  fetchFuelTypes() {
-    this.apiService.getData('fuelTypes').subscribe((result: any) => {
-      this.fuelTypes = result.Items;
-    });
-  }
+  // fetchFuelTypes() {
+  //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
+  //     this.fuelTypes = result.Items;
+  //   });
+  // }
   fetchFuelTaxes() {
     this.apiService.getData('fuelTaxes').subscribe((result: any) => {
       this.fuelTaxes = result.Items;
@@ -257,10 +258,11 @@ export class AddFuelEntryComponent implements OnInit {
     this.hideErrors();
     this.submitDisabled = true;
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
+    
     if(this.fuelData.paymentMode != 'Fuel_Card'){
       this.fuelData.fuelCardNumber = null;
     }
-    console.log('fuel data', this.fuelData);
+    
     // create form data instance
     const formData = new FormData();
     // append photos if any

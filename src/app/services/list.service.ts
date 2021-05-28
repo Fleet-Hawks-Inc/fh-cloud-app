@@ -63,6 +63,7 @@ export class ListService {
   assetsList = this.assetsDataSource.asObservable();
 
   public _subject = new BehaviorSubject<any>({});
+  statusChanged$: any;
 
   constructor(private apiService: ApiService) {}
 
@@ -205,14 +206,13 @@ fetchReceivers() {
     });
   }
 
-  abc(data: any){
-    console.log('console0', data);
+  appendIssues(data: any){
     this._subject.next(data);
-    this.abc1();
+    this.fetchAppendIssues();
   }
 
-  abc1() {
-    console.log('console1');
+  fetchAppendIssues() {
     return this._subject.asObservable()
   }
+  
 }

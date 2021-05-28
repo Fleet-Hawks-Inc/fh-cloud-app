@@ -23,7 +23,6 @@ export class InspectionSummaryComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.dailyInspections = result.Items;
-        console.log(this.dailyInspections);
       },
     });
   }

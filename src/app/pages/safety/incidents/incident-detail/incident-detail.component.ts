@@ -97,7 +97,7 @@ export class IncidentDetailComponent implements OnInit {
   fetchDriverDetail(driverUserName) {
     this.apiService.getData('drivers/userName/' + driverUserName)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].firstName != undefined) {
           this.event.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
         }
@@ -107,7 +107,7 @@ export class IncidentDetailComponent implements OnInit {
   fetchVehicleDetail(vehicleID) {
     this.apiService.getData('vehicles/' + vehicleID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].vehicleIdentification != undefined) {
           this.event.vehicleName = result.Items[0].vehicleIdentification
         }
@@ -117,7 +117,7 @@ export class IncidentDetailComponent implements OnInit {
   fetchUserDetail(userName) {
     this.apiService.getData('users/' + userName)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].firstName != undefined) {
           this.event.AsigneeName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
         }
@@ -127,7 +127,7 @@ export class IncidentDetailComponent implements OnInit {
   fetchTripDetail(tripID) {
     this.apiService.getData('trips/' + tripID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].tripNo != undefined) {
           this.event.tripNo = result.Items[0].tripNo;
         }

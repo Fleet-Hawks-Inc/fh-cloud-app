@@ -210,7 +210,7 @@ export class EManifestsComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.ACEList = result[`Items`];
-        console.log('ace list', this.ACEList);
+        
         if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
           this.aceStartPoint = 1;
           this.aceEndPoint = this.totalRecords;

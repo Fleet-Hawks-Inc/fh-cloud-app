@@ -79,14 +79,9 @@ export class PdfAutomationComponent implements OnInit {
 
   selectOpt = '';
   selectfile(value) {
-    console.log(value);
+    
   }
   constructor(private service: PdfAutomationService, private http: HttpClient) {
-
-
-    console.log("pdfservice called");
-
-
 
     $(() => {
       // const canvas = document.getElementById('src');
@@ -151,7 +146,7 @@ export class PdfAutomationComponent implements OnInit {
        
 
           let files: any = e.target.files[0];
-          console.log(files);
+          
 
           const contentType = files.type;
           const bucket = new S3(
@@ -171,21 +166,19 @@ export class PdfAutomationComponent implements OnInit {
           };
           bucket.upload(params, function (err, data) {
             if (err) {
-              console.log('There was an error uploading your file: ', err);
               return false;
             }
-            console.log('Successfully uploaded file.', data);
             return true;
           });
           //for upload progress   
           /*bucket.upload(params).on('httpUploadProgress', function (evt) {
-                    console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+                    
                 }).send(function (err, data) {
                     if (err) {
-                        console.log('There was an error uploading your file: ', err);
+                        
                         return false;
                     }
-                    console.log('Successfully uploaded file.', data);
+                    
                     return true;
                 });*/
 
@@ -195,8 +188,7 @@ export class PdfAutomationComponent implements OnInit {
 
 
           for (var i = 0, f; f = files[i]; i++) {
-            console.log("working")
-
+            
             var reader = new FileReader();
 
             if (!f.type.match('image.*')) {
@@ -219,9 +211,6 @@ export class PdfAutomationComponent implements OnInit {
           //   await delay(2000);
 
 
-
-          console.log("hello!");
-          console.log(files.webkitRelativePath)
           const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
 
 
@@ -235,12 +224,11 @@ export class PdfAutomationComponent implements OnInit {
 
 
           loadingTask.promise.then((pdf) => {
-            console.log('PDF loaded');
-
+            
             // Fetch the first page
             const pageNumber = 1;
             pdf.getPage(pageNumber).then(function (page) {
-              console.log('Page loaded');
+              
 
               const scale = 2;
               const viewport = page.getViewport({ scale: scale });
@@ -261,12 +249,11 @@ export class PdfAutomationComponent implements OnInit {
               };
               renderTask = page.render(renderContext);
               renderTask.promise.then(() => {
-                console.log('Page rendered');
               });
             });
           }, (reason) => {
             // PDF loading error
-            console.error(reason);
+            
           });
         
 
@@ -284,8 +271,7 @@ export class PdfAutomationComponent implements OnInit {
         uf.onchange = (e?: HTMLInputEvent) => {
 
           let files: any = e.target.files[0];
-          console.log(files);
-
+          
           const contentType = files.type;
           const bucket = new S3(
             {
@@ -304,21 +290,17 @@ export class PdfAutomationComponent implements OnInit {
           };
           bucket.upload(params, function (err, data) {
             if (err) {
-              console.log('There was an error uploading your file: ', err);
               return false;
             }
-            console.log('Successfully uploaded file.', data);
             return true;
           });
           //for upload progress   
           /*bucket.upload(params).on('httpUploadProgress', function (evt) {
-                    console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+                    
                 }).send(function (err, data) {
                     if (err) {
-                        console.log('There was an error uploading your file: ', err);
                         return false;
                     }
-                    console.log('Successfully uploaded file.', data);
                     return true;
                 });*/
 
@@ -328,8 +310,6 @@ export class PdfAutomationComponent implements OnInit {
 
 
           for (var i = 0, f; f = files[i]; i++) {
-            console.log("working")
-
             var reader = new FileReader();
 
             if (!f.type.match('image.*')) {
@@ -351,16 +331,8 @@ export class PdfAutomationComponent implements OnInit {
           // (async () => {
           //   await delay(2000);
 
-
-
-          console.log("hello!");
-          console.log(files.webkitRelativePath)
           const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
 
-
-
-             console.log("uf.onchange");
-       
           // Loaded via <script> tag, create shortcut to access PDF.js exports.
           const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -371,13 +343,10 @@ export class PdfAutomationComponent implements OnInit {
 
 
           loadingTask.promise.then((pdf) => {
-            console.log('PDF loaded');
-
 
             const pageNumber = 1;
             pdf.getPage(pageNumber).then(function (page) {
-              console.log('Page loaded');
-
+ 
               const scale = 2;
               const viewport = page.getViewport({ scale: scale });
 
@@ -394,12 +363,11 @@ export class PdfAutomationComponent implements OnInit {
               };
               renderTask = page.render(renderContext);
               renderTask.promise.then(() => {
-                console.log('Page rendered');
+                
               });
             });
           }, (reason) => {
             // PDF loading error
-            console.error(reason);
           });
 
 
@@ -407,12 +375,7 @@ export class PdfAutomationComponent implements OnInit {
             await delay(2000);
 
             this.http.get(this.url + "/78fe60b0-6c37-11eb-9a16-fd33a4993a22").subscribe((data: any) => {
-              console.log(this.$jsonfile)
-
-              console.log(data.Items[0].rct[0][1]);
-              console.log(data.Items[0].rct[0][2]);
-              console.log(data.Items[0].rct[0][3]);
-              console.log(data.Items[0].rct[0][4]);
+              
               const rectangles = [];
               for (let i = 0; i < data.Items[0].rct.length; i++) {
                 let a = {
@@ -423,9 +386,7 @@ export class PdfAutomationComponent implements OnInit {
                 }
                 rectangles.push(a)
               }
-              console.log(rectangles);
-
-
+              
               // const rectangles = [
               //   {
               //     left:data.Items[0].rct[0][1],
@@ -449,10 +410,10 @@ export class PdfAutomationComponent implements OnInit {
               for (let i = 0; i < rectangles.length; i++) {
                 const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
                 if (cropImgCanvas) {
-                  console.log("crop successful");
+                  
                 }
                 else {
-                  console.log("crop not successful");
+                  
                 }
 
                 // just renderint to visualize - no need for actual crop
@@ -466,9 +427,9 @@ export class PdfAutomationComponent implements OnInit {
 
                 worker.recognize(cropImgCanvas)
                   .progress(progress => {
-                    //console.log('progress:', progress);
+                    
                   }).then(result => {
-                    console.log('result:', result.text);
+                    
 
                     const para = document.createElement('P');
                     const h = document.createElement('h3');
@@ -482,7 +443,7 @@ export class PdfAutomationComponent implements OnInit {
                     this.$pdfjson[data.Items[0].rct[i][0]] = result.text;
 
                     JSON.stringify(this.$pdfjson);
-                    console.log(this.$pdfjson);
+                    
 
 
                     document.getElementById('myDIV').appendChild(h);
@@ -546,10 +507,10 @@ export class PdfAutomationComponent implements OnInit {
 
   cropImage(sourceImage, rect) {
     if (!sourceImage) {
-      console.log("no image loaded")
+      
     }
     else {
-      console.log("image loaded")
+      
     }
     this.$rect = rect;
     // parameterize them
@@ -569,9 +530,6 @@ export class PdfAutomationComponent implements OnInit {
 
   mymousedown(e) {
 
-
-
-    console.log("mousedownworks" + this.$canvas.offsetLeft);
     this.$rect.startX = e.pageX - this.$canvas.offsetLeft  - 280;
     this.$rect.startY = e.pageY - this.$canvas.offsetTop - 195;
 
@@ -582,16 +540,11 @@ export class PdfAutomationComponent implements OnInit {
   }
 
   mymouseup(e) {
-    console.log("mouseupworks");
-
+    
     this.drag = false;
 
 
     this.$ctx.strokeRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
-
-
-    console.log(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h)
-
 
     //var canvas = document.getElementById('src');
 
@@ -608,13 +561,13 @@ export class PdfAutomationComponent implements OnInit {
 
 
     const rct = { left: this.$rect.startX, top: this.$rect.startY, width: this.$rect.w, height: this.$rect.h };
-    console.log('rct' + rct);
+    
     const cropImgCanvas = this.cropImage(this.$canvas, rct);//img
     if (cropImgCanvas) {
-      console.log("crop successful");
+      
     }
     else {
-      console.log("crop not successful");
+ 
     }
 
     // just renderint to visualize - no need for actual crop
@@ -626,9 +579,9 @@ export class PdfAutomationComponent implements OnInit {
     // todo: pass the rect info and promise them all?
     worker.recognize(cropImgCanvas)
       .progress(progress => {
-        //console.log('progress:', progress);
+        
       }).then(result => {
-        console.log('result:', result.text);
+        
         // document.getElementById('text').value = result.text;
         // text = result.text
 
@@ -638,7 +591,7 @@ export class PdfAutomationComponent implements OnInit {
           "carrierId": "carrierId"
         }]
         this.$sitePersonel.objects = objects;
-        console.log(this.$sitePersonel);
+        
 
 
         this.$xmin = rct.left;
@@ -664,13 +617,13 @@ export class PdfAutomationComponent implements OnInit {
         i = i + 1;
         this.$text = result.text;
         this.$sitePersonel.objects.push(object);
-        console.log(this.$sitePersonel);
+        
 
 
 
         // document.getElementById('input').value = text;
         this.modalBody = this.$text;
-        console.log(JSON.stringify(this.$sitePersonel));
+        
         const value = JSON.stringify(this.$sitePersonel);
 
 
@@ -685,7 +638,7 @@ export class PdfAutomationComponent implements OnInit {
   }
 
   mybutton() {
-    console.log('H1');
+    
     let rct = "rct" + this.i;
 
 
@@ -701,7 +654,7 @@ export class PdfAutomationComponent implements OnInit {
 
     this.$obj.rct.push(newData);
 
-    console.log(this.$obj);
+    
 
 
     this.$jsonfile = {
@@ -734,12 +687,12 @@ export class PdfAutomationComponent implements OnInit {
     // // this.$ymin,
     // // this.$ymax;
 
-    // console.log(this.$annotateinfo + "this.$annotateinfo ")
+    
 
     // this.i++;
 
     JSON.stringify(this.$jsonfile);
-    console.log(this.$jsonfile);
+    
 
 
 
@@ -762,7 +715,7 @@ export class PdfAutomationComponent implements OnInit {
     this.$pdfjson[this.selectOpt] = inputValue;
 
     JSON.stringify(this.$pdfjson);
-    console.log(this.$pdfjson);
+    
     this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     document.getElementById('myDIV').appendChild(h);
     document.getElementById('myDIV').appendChild(para);
@@ -771,15 +724,13 @@ export class PdfAutomationComponent implements OnInit {
   myclick(e) {
     this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     this.http.post(this.url, this.$obj).subscribe((data) => {
-      console.log(this.$obj)
-      console.log("done");
+      
     });
     // this.http.get(this.url + "/fgfd").subscribe((data : any) => {
-    //   console.log(this.$jsonfile)
-    //   console.log(data.Items[0].documentId);
+    
     // });
 
-    console.log('valsend=====>' + JSON.stringify(this.$pdfjson));
+    
     this.service.missionAnnouncedSource.next(this.$pdfjson);
 
 
@@ -808,9 +759,6 @@ export class PdfAutomationComponent implements OnInit {
 
 
     }
-
-    console.log("mousemove works");
-
 
   }
 

@@ -99,7 +99,7 @@ export class AddVehicleNewComponent implements OnInit {
   };
   specifications = {
     height: '',
-    heightUnit: null,
+    heightUnit: 'Feet',
     length: '',
     lengthUnit: '',
     width: '',
@@ -107,7 +107,7 @@ export class AddVehicleNewComponent implements OnInit {
     interiorVolume: '',
     passangerVolume: '',
     groundClearnce: '',
-    groundClearnceUnit: null,
+    groundClearnceUnit: 'Feet',
     bedLength: '',
     bedLengthUnit: '',
     cargoVolume: '',
@@ -134,14 +134,14 @@ export class AddVehicleNewComponent implements OnInit {
   fluid = {
     fuelType: null,
     fuelTankOneCapacity: '',
-    fuelTankOneType: null,
+    fuelTankOneType: 'Litres',
     fuelQuality: '',
     fuelTankTwoCapacity: '',
-    fuelTankTwoType: null,
+    fuelTankTwoType: 'Litres',
     oilCapacity: '',
-    oilCapacityType: null,
+    oilCapacityType: 'Litres',
     def: '',
-    defType: null
+    defType: 'Litres'
   };
   wheelsAndTyres = {
     numberOfTyres: '',
@@ -534,7 +534,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
-    console.log('data',data);
+    
     // create form data instance
     const formData = new FormData();
 
@@ -634,7 +634,7 @@ export class AddVehicleNewComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
+          this.slides.push(e.target.result);
         }
         reader.readAsDataURL(files[i]);
       }
@@ -1191,4 +1191,5 @@ export class AddVehicleNewComponent implements OnInit {
       this.documentSlides.splice(parseInt(index), 1);
     });
   }
+
 }

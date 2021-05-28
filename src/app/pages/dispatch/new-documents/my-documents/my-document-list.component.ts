@@ -221,14 +221,14 @@ export class MyDocumentListComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-    console.log('currentID', this.currentID);
+    
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        console.log(result);
+        
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
@@ -459,7 +459,7 @@ export class MyDocumentListComponent implements OnInit {
   }
 
   selectDoc(event) {
-    console.log('edd', event);
+    
     let files = [...event.target.files];
     this.uploadeddoc = [];
     this.uploadeddoc.push(files[0])
