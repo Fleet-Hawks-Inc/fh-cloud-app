@@ -238,7 +238,6 @@ export class AddServiceComponent implements OnInit {
 
     this.serviceData.taskIds = taskIds;
 
-    console.log('darta', this.serviceData)
     // create form data instance
     const formData = new FormData();
 
@@ -330,7 +329,6 @@ export class AddServiceComponent implements OnInit {
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       if(result != null){
-        console.log('groups result', result);
         this.groups = result.Items;
       } else {
         this.groups = [];
@@ -564,7 +562,7 @@ export class AddServiceComponent implements OnInit {
 
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    // console.log('result****', result)
+    
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
     this.selectedTasks.push(result.Items[0]);
@@ -862,7 +860,6 @@ export class AddServiceComponent implements OnInit {
 
     };
 
-    console.log('data', data)
     // create form data instance
     const formData = new FormData();
 

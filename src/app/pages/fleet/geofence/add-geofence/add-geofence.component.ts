@@ -134,13 +134,10 @@ export class AddGeofenceComponent implements OnInit {
     });
 
     map.on('pm:cut', function (e) {
-      // console.log('cut event on map');
-      // console.log(e);
+      
     });
     map.on('pm:remove', function (e) {
-     // console.log('pm:remove event fired.');
-      // alert('pm:remove event fired. See console for details');
-      // console.log(e);
+     
     });
   }
 

@@ -233,7 +233,7 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACIdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        console.log('result', result);
+        
         this.manifestID = this.manifestID;
         this.data = result.data;
         this.sendId = result.sendId;

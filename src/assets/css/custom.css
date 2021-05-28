@@ -1576,9 +1576,36 @@ text-decoration: underline;
   .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
   .boxshadow0{box-shadow: none !important;}
 
-  /* width */
+  /* padding classes */
+  
+  /* padding right */
+  .pr2{padding-right:2px !important;}
+  .pr5{padding-right:5px !important;}
+  .pr8{padding-right:8px !important;}
+  .pr10{padding-right:10px !important;}
+  .pr19{padding-right:19px !important;}
+  .pr32{padding-right:32px !important;}
+  
+  /* padding left */
+  .pl4{padding-left:4px !important;}
+  .pl11{padding-left:11px !important;}
+  
+  /* padding all */
+  .p7{padding:7px !important;}
+  .p11{padding:11px !important;}
+  .pr10{padding-right:10px;}
+
+
+/* width */
   .w100{width: 100%;}
+  .w25{width: 25% !important;}
+  .w33{width: 33% !important;}
+  .w6rem{min-width: 4rem !important;}
   .w150px{width: 150px;}
+
+  .btnw200px{width: 200px;}
+  .btnw100px{width: 100px;}
+  .btnw90px{width: 90px;}
 
   /* color */
   .blue1{color: #1c79c8;}
@@ -1593,6 +1620,8 @@ text-decoration: underline;
   /* bg color */
   .bgcol1{background: #f0f0f0;}
   .bgcol2{background: #dcdcdc;}
+  .bgnone{background: none;}
+  .bggreyn{background: #f6f6f6 !important;}
 
   /* line height */
   .LH16{line-height: 16px !important;}
@@ -1603,6 +1632,17 @@ text-decoration: underline;
 /* cursor */
 .text-white{color: #fff;}
   .divcenter{display: flex; justify-content: center;}
+
+  /* margin */
+  .mt-1-c1, .my-1-c1 {margin-top: 0.15rem !important;}
+  .mr50{margin-right:50px !important;}
+  .mar-top-2{margin-top:2px !important;}
+  
+  
+  /* z-index */
+  .zindex9910{z-index:9910 !important;}
+  .zindex9920{z-index:9920 !important;}
+  .zindex9930{z-index:9930 !important;}
 
 .profile-heading
 {
@@ -1967,7 +2007,32 @@ table.dataTable thead th, table.dataTable thead td {
 
 .bggreyn{background: #f6f6f6 !important;}
 
+/* clickable button */
 
+.btn-alert {
+  color: rgb(0, 0, 0); float:left; width: 175px; margin-top:0px !important;
+  background-color: #f0f1f2; border-radius:4px; padding:12px;
+  background-image: none; font-size:14px;
+  border-color: #f0f1f2;
+  font-weight: 600;
+}
+
+.btn-alert.active, .btn-alert:active {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+
+
+/* no trip in dispatch planner classes */
+
+.notrip-dp{height:800px; border:solid 4px #e5e5e5; width:100%; display:block; justify-content:center;}
+.notrip-dp img{width:100px; height:auto; display: block; margin: auto; margin-top:300px; opacity:0.2;}
+.notrip-dp p{text-align:center;}
+
+/* no trip in dispatch planner classes end */
+
+/* planner modal classes for scroll each column*/
 
 /* miles buttons */
 .btn-miles {
@@ -2010,16 +2075,174 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* height */
 .heighta{height:auto !important;}
+.h31{height: 31px !important;}
+
+/* min height */
+.mh31{min-height: 31px !important;}
 
 /* padding left sign in button page */
 .pl-signin{padding-left: 46px;}
 
+/* more than two orders in trip detail page */
+.orderinfoheight
+{
+    max-height: 240px !important;
+    overflow: scroll;
+}
+
+.attachheight
+{
+    max-height: 200px !important;
+    overflow: scroll;
+}
+
+
+/* scrollbar in vehicle detail page */
+.vdtableinfoheight
+{
+    max-height: 240px !important;
+    overflow: scroll;
+}
+
+.vdtableheight
+{
+    max-height: 210px !important;
+    overflow: scroll;
+}
+
+
+/* no Activity in Timelines in dispatch home page classes */
+.noactivity-dh{height:740px; border:solid 4px #e5e5e5; width:100%; display:block; justify-content:center;}
+.noactivity-dh img{width:100px; height:auto; display: block; margin: auto; margin-top:266px; opacity:0.2;}
+.noactivity-dh p{text-align:center;}
+/* no Activity in Timelines in dispatch home page classes end */
+
+/* Associated Company classes */
+.assoc{float:left; width:100%;}
+.assoc a{text-decoration:none; background:#eeeeee; display:block; color:#333; width:100%; float:left; height:40px; line-height:40px; font-weight:600; padding-left:10px; font-size:13px;}
+.assoc a:hover{text-decoration:none; background:#4f4f4f; display:block; color:#fff;}
+/* Associated Company classes end */
+
+
+/* Safety Summary height of driver page */
+.ssdriver{height:570px;}
+/* Safety Summary height of driver page end*/
+
+
+/* no trip on main home overview page classes */
+
+.notrip-oview{height:100%; border:solid 4px #e5e5e5; background:#ffffff; width:100%; display:block; justify-content:center;}
+.notrip-oview img{width:100px; height:auto; display:block; margin: auto; margin-top:70%; opacity:0.2;}
+.notrip-oview p{text-align:center;}
+
+/* no trip on main home overview page classes end */
+
+
+/* order detail page attachment start */
+.min-heightat{min-height: 237px;}
+
+.attachul ul{list-style:none; float:left; padding-left:0px;}
+.attachul ul li{float:left; margin-right:15px}
+.attachul ul li img{width:79px; height:100px;}
+/* order detail page attachment end */
+
 /* choose file line height class start*/
 .choosefileLH{line-height: 16px !important;}
+
+/* column visibility scroll */
+
+.colvisi-scrollbar {
+	position: relative;
+	height: 500px;
+	overflow-y: auto;
+}
+
+
 /* choose file line height class end*/
 .adddriverpl {
   padding-left: 73px;
 }
+
+/* add orderpadding class start 11.05.21 */
+.adddriverpl2{padding-left:52px;}
+/* add driver class end */
+
+/* address book classes start */
+.heightab{height:670px;}
+
+.addressbook-scrollbar {
+	position: relative;
+	height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.addressbook-scroll-y {
+	display: block;
+}
+
+.heighaddtab{height:600px;}
+
+.padding-top-5{padding-top:5px;}
+
+.margin-top-37 {
+  margin-top: 37px;
+}
+
+.margin-left-27 {
+  margin-left: 27px;
+}
+
+
+.address-book-icon {
+    position: fixed;
+    bottom: 130px;
+    left: 23px;
+    background: #ffffff;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+}
+
+.address-left-icon
+{
+    position: fixed;
+    left: 20px;
+    bottom: 30px !important;
+    z-index: 1010 !important;
+}
+.address-left-icon a{
+	background:#ffffff; border-radius: 50%;
+	box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+	padding:12px 12px 9px 12px;
+}
+
+.addcontbtn{display:none;}
+/* address book classes end */
+
+
+/* pic zoom classes */
+
+/* The Close Button */
+.close {
+  color: #ff0000;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 
 /* circles in trips and routes */
 .tripbarn{

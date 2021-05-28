@@ -1226,8 +1226,11 @@
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="fluid.fuelType" [(ngModel)]="fluid.fuelType"
                             placeholder="Select fuel type" #mFuel="ngModel" required>
-                            <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
-                              {{fuelType.fuelTypeName}}</ng-option>
+                            <!-- <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
+                              {{fuelType.fuelTypeName}}</ng-option> -->
+                              <ng-option value="Diesel">Diesel</ng-option>
+                                    <ng-option value="Gasoline">Gasoline</ng-option>
+                                    <ng-option value="Propane">Propane</ng-option>
                           </ng-select>
                           <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
                             <div *ngIf="mFuel.errors.required">
@@ -1824,7 +1827,7 @@
                                         value="contractor"> Contractor
                                     </label>
                                   </div>
-                                                                </div>
+                                </div>
                               </div>
                               <div class="col-lg-12" id="employeeIDDiv">
                                 <div class="row">
@@ -2033,12 +2036,20 @@
                                   <div class="col-lg-4">
                                     <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
                                   </div>
-                                  <div class="col-lg-5 px-0">
+                                  <div class="col-lg-6 px-0">
                                     <div class="btn-group-toggle" data-toggle="buttons">
-                                      <label class="btn btn-outline btn-yesno mr-2 active mb-2">
-                                        <input id="male" name="male" type="radio">Male</label>
-                                      <label class="btn btn-outline btn-yesno mr-2 mb-2">
-                                        <input id="female" name="female" type="radio">Female</label>
+                                      <label class="btn btn-outline btn-yesno  mr-2"
+                                        [class.active]="driverData.gender === 'M'" style="width:90px;"
+                                        (click)="onChangeUnitType('gender', 'M')">
+                                        <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked hidden
+                                          value="M"> Male
+                                      </label>
+                                      <label class="btn btn-outline btn-yesno mr-2 " style="width:90px;"
+                                        [class.active]="driverData.gender === 'F'"
+                                        (click)="onChangeUnitType('gender', 'F')">
+                                        <input type="radio" id="female" [(ngModel)]="driverData.gender" name="gender" hidden
+                                          value="F"> Female
+                                      </label>
                                     </div>
                                   </div>
                                 </div>
@@ -2075,36 +2086,6 @@
                                   </div>
                                 </div>
                               </div>
-                              <!-- <div class="col-lg-4">
-                                <label class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group <span
-                                    class="text-1 optional-label-color">(optional)</span>
-                                </label>
-                                <ng-select class="form-control form-control-sm" [(ngModel)]="driverData.groupID" name="groupID"
-                                  placeholder="Select group of which driver will be part of">
-                                  <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
-                                    {{group.groupName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-1 mar-top-37 text-right"> <a data-toggle="modal"
-                                  data-target="#addDriverGroupModal" href="javascript:;"
-                                  class="modal-with-form btn cus-btn-padd btn-success">
-                                  <em class="fas fa-plus"></em>
-                                </a>
-                              </div>
-                              <div class="col-lg-4">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle <span
-                                    class="text-1 optional-label-color">(optional)</span>
-                                </label>
-                                <ng-select [(ngModel)]="driverData.assignedVehicle" name="assignedVehicle"
-                                  placeholder="Assign vehicle to driver">
-                                  <ng-option *ngFor="let vehicle of vehicles | async;" value="{{vehicle.vehicleID}}">
-                                    {{vehicle.vehicleIdentification}}
-                                  </ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-1 mar-top-37 text-right"><a (click)="gotoVehiclePage();" href="javascript:;"
-                                  class="btn btn-success cus-btn-padd"><em class="fas fa-plus"></em></a>
-                              </div> -->
                               <div class="col-lg-12">
                                 <div class="row">
                                   <div class="col-lg-6" *ngIf="driverData.driverType !== 'contractor'">
@@ -2163,12 +2144,6 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <!-- <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                                    <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                                      name="driverImage" type="file" class="hidden_input1 w-100" />
-                                    <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                                      Photo</label>
-                                  </div> -->
                                 </div>
                               </div>
                               <div class="col-lg-6">
