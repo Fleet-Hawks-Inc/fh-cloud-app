@@ -97,15 +97,7 @@
                                                     Before</span></td>
                                             <td><span class="font-size-12">{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</span></td>
                                             <td>
-                                                <span *ngFor="let s of item.subscribers; let g=index">
-                                                    <span *ngIf="s.type === 'user'">
-                                                        {{usersList[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="s.type === 'group'">
-                                                        {{groups[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="g<item.subscribers.length-1">,</span>
-                                                </span>
+                                                {{item.subscribers}}
                                             </td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
