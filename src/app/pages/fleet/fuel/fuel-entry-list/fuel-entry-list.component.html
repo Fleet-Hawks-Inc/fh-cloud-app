@@ -162,7 +162,12 @@
                         <tr style="cursor: pointer;">
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
                             {{fuelEntry.dateTime}}</td>
-                          <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">{{fuelEntry.paymentMode}}</td>
+                          <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
+                            <span *ngIf="!fuelEntry.fuelCardNumber" >{{fuelEntry.paymentMode}}</span>
+                            <span *ngIf="fuelEntry.fuelCardNumber" >{{fuelEntry.fuelCardNumber}}</span>
+
+
+                            </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
                             {{vehicleList[fuelEntry.unitID]}}
                           </td>
@@ -184,7 +189,7 @@
                           </td>
 
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
-                            {{fuelEntry.fuelQty}} &nbsp; {{fuelEntry.unitOfMeasure}}
+                            {{fuelEntry.fuelQty}}&nbsp;{{fuelEntry.fuelUnit}}
                             <!-- <span *ngIf="fuelEntry.lineItems.length != 0"><span
                           *ngFor="let lItems of fuelEntry.lineItems">{{lItems.quantity}} &nbsp;litre<br></span></span>
                       <span *ngIf="fuelEntry.lineItems.length == 0"><span *ngIf="fuelEntry.fuelQtyAmt">Fuel -
@@ -200,7 +205,7 @@
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
 
-                            {{fuelEntry.cityName}}, {{fuelEntry.countryCode}}
+                            {{fuelEntry.cityName}},{{fuelEntry.stateCode}},{{fuelEntry.countryCode}}
 
                           </td>
                           <!-- <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
