@@ -122,9 +122,6 @@ export class AddReminderComponent implements OnInit {
       .getData('reminders/detail/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        for (let i = 0; i < result.subscribers.length; i++) {
-          this.test.push(result.subscribers[i].id);
-        }
         this.reminderData[`reminderID`] = this.reminderID;
         this.reminderData[`createdDate`] = result.createdDate; 
         this.reminderData[`createdTime`] = result.createdTime; 
@@ -138,7 +135,7 @@ export class AddReminderComponent implements OnInit {
         this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
         this.reminderData.lastServiceDate = result.lastServiceDate;
         this.reminderData.lastServiceOdometer = result.lastServiceOdometer;
-        this.subscribers = this.test;
+        this.reminderData.subscribers = result.subscribers;
       });
 
   }

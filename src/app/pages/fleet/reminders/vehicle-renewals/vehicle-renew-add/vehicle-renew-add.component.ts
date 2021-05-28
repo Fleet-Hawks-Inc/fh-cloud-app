@@ -27,11 +27,11 @@ export class VehicleRenewAddComponent implements OnInit {
       taskID: '',
       remindByDays: 0,
       dueDate: '',
-      time: 0,
-      timeUnit: ''
+      time: 1,
+      timeUnit: 'month'
     },
     status: '',
-    subscribers: [],
+    subscribers: '',
   };
   serviceTask = {
     taskName: '',
@@ -159,7 +159,7 @@ export class VehicleRenewAddComponent implements OnInit {
       this.reminderData.status = '';
     }
 
-    this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
+    // this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
     this.reminderData.tasks.remindByDays = this.numberOfDays;
 
     this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
@@ -201,7 +201,7 @@ export class VehicleRenewAddComponent implements OnInit {
             timeUnit: ''
           },
           status: '',
-          subscribers: [],
+          subscribers: '',
         };
       },
     });
@@ -214,9 +214,9 @@ export class VehicleRenewAddComponent implements OnInit {
       .getData('reminders/detail/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        for (let i = 0; i < result.subscribers.length; i++) {
-          this.test.push(result.subscribers[i].id);
-        }
+        // for (let i = 0; i < result.subscribers.length; i++) {
+        //   this.test.push(result.subscribers[i].id);
+        // }
         this.reminderData[`createdDate`] = result.createdDate; 
         this.reminderData[`createdTime`] = result.createdTime; 
         this.reminderData[`timeCreated`] = result.timeCreated;
@@ -226,7 +226,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.reminderData.tasks.time = result.tasks.time;
         this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
         this.entityID = result.entityID;
-        this.reminderData.subscribers = this.test;
+        this.reminderData.subscribers =result.subscribers;
       });
 
   }
@@ -285,7 +285,7 @@ export class VehicleRenewAddComponent implements OnInit {
     }
     
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
+    // this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
     
     this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
     this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';

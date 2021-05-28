@@ -50,26 +50,13 @@
                            </div>
 
 
-                           <div class="row pt-2">
+                           <div class="row pt-2"> 
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
-                                    Users/Groups&nbsp;<span
-                                       class="text-1 optional-label-color">(optional)</span></label>
-
-                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
-                                    style="width: 100%;" placeholder="Select user(s)/group(s) to send email">
-                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}}
-                                       {{user.lastName}}</ng-option>
-                                    <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
-                                    </ng-option>
-                                 </ng-select>
+                                    Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
+                                    placeholder="e.g james@email.com, maria@email.com">
                               </div>
-                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
-                                 <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                    class="modal-with-form btn cus-btn-padd btn-success text-light"><i
-                                       class="fas fa-plus"></i> </button>
-                              </div>
-
                            </div>
                         </div>
                         <div class="col-lg-5 offset-lg-1">
@@ -96,7 +83,7 @@
                               </div>
                            </div>
                            <div class="row pt-2">
-                              <div class="col-lg-5">
+                              <div class="col-lg-4">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due
                                     Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
@@ -109,7 +96,7 @@
 
                                  </div>
                               </div>
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time
                                     (Reminder of Due Soon)<span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
