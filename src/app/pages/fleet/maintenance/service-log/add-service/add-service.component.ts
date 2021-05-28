@@ -131,6 +131,7 @@ export class AddServiceComponent implements OnInit {
   logDocs = [];
   existingPhotos = [];
   existingDocs = [];
+  vehicleDisabled = false;
 
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -158,6 +159,7 @@ export class AddServiceComponent implements OnInit {
     this.logID = this.route.snapshot.params['logID'];
     if (this.logID) {
       this.pageTitle = 'Edit Service Log';
+      this.vehicleDisabled = true;
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
@@ -1270,10 +1272,14 @@ export class AddServiceComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string) {
-    this.apiService.deleteData(`assets/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchServiceByID();
+  delete(type: string, name: string, index:any) {
+    this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      console.log('image result', result);
+      if(type == 'image') {
+        this.logImages.splice(index, 1);
+      } else {
+        this.logDocs.splice(index,1);
+      }
     });
   }
-
 }

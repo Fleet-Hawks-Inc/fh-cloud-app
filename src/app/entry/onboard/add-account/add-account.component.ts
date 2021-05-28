@@ -60,7 +60,9 @@ export class AddAccountComponent implements OnInit {
       lat: '',
       lng: ''
     },
-    manual: false
+    manual: false,
+    states: [],
+    cities: []
   }];
   banks = [{
     branchName: '',
@@ -79,7 +81,6 @@ export class AddAccountComponent implements OnInit {
   citiesObject: any = {};
   newAddress = [];
   addressCountries = [];
-  deletedAddress = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -125,18 +126,25 @@ export class AddAccountComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  async getStates(id: any, oid = null) {
-    this.addressDetails[oid].stateCode = '';
-    this.addressDetails[oid].cityName = '';
-    this.states = CountryStateCity.GetStatesByCountryCode([id]);
+  getStates(countryCode: any, index:any) {
+    this.addressDetails[index].stateCode = '';
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  async getCities(id: any, oid = null, CID: any) {
-    this.addressDetails[oid].cityName = '';
-    this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
+   getCities(stateCode: any, index: any, countryCode: any) {
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities   = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
@@ -156,15 +164,14 @@ export class AddAccountComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        manual: false
+        manual: false,
+        states: [],
+        cities: []
       });
     }
   }
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID);
-      }
       this.addressDetails.splice(i, 1);
     }
   }
@@ -195,12 +202,12 @@ export class AddAccountComponent implements OnInit {
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
-    $('div').removeClass('show-search__result');
+    this.addressDetails[i].countryCode = result.address.countryCode;
     this.addressDetails[i].stateCode = result.address.stateCode;
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryCode = ''; // empty the fields if manual is false (if manual was true IDs were stored)
     this.addressDetails[i].zipCode = result.address.postalCode;
+    $('div').removeClass('show-search__result');
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
@@ -219,6 +226,8 @@ export class AddAccountComponent implements OnInit {
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
+      delete element.states;
+      delete element.cities;
       if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
         let fullAddress = `${element.address} ${element.cityName}
     ${element.stateCode} ${element.countryCode}`;
@@ -273,7 +282,7 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
-      if(data.bizCountry == 'CA') {
+      if(data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;
       }

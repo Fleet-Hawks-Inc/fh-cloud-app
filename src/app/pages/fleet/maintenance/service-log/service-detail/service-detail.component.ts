@@ -87,8 +87,8 @@ export class ServiceDetailComponent implements OnInit {
         this.fetchSelectedIssues(this.logsData.selectedIssues);
        
         result = result.Items[0];
-        this.vehicle = result.vehicleID;
-        this.assetID = result.assetID;
+        this.vehicle = result.unitID;
+        this.assetID = result.unitID;
         this.vendorID = result.vendorID;
         this.completionDate = result.completionDate;
         this.odometer = result.odometer;
@@ -139,9 +139,10 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchAllVendorsIDs() {
-    this.apiService.getData('vendors/get/list')
+    this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result;
+        console.log('result vendor', result)
+        this.vendorsObject = result; 
       });
   }
 

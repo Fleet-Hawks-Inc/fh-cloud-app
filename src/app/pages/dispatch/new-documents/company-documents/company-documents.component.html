@@ -240,7 +240,7 @@
                                 <div>
 
                                     <div *ngIf="dTrip.errors.required">
-                                        Select valid trip from the list is required.
+                                        Trip is required.
                                     </div>
 
 
@@ -267,7 +267,7 @@
                                 <div>
 
                                     <div *ngIf="docTypeName.errors.required">
-                                        Select valid document type from the list is required.
+                                        Document type is required.
                                     </div>
 
 
@@ -291,7 +291,7 @@
                                         Document Name is required.
                                     </div>
                                     <div *ngIf="documentName.errors.pattern">
-                                        Document Name must contains uppercase, lowercase, numbers and special characters for
+                                        Document Name must contains alphanumeric and special characters for
                                         period(space,-,_,.) only.
                                     </div>
 

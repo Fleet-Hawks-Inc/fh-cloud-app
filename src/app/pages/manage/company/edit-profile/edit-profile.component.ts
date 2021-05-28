@@ -69,7 +69,9 @@ export class EditProfileComponent implements OnInit {
       lat: '',
       lng: ''
     },
-    manual: false
+    manual: false,
+    states: [],
+    cities: []
   }];
   banks: any = [{
     branchName: '',
@@ -126,9 +128,7 @@ export class EditProfileComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
-        this.carriers = result.Items[0];
-        this.fetchStates();
-        this.fetchCities(this.carriers.addressDetails);
+        this.carriers = result.Items[0];;
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
         this.DBAName = this.carriers.DBAName;
@@ -162,7 +162,14 @@ export class EditProfileComponent implements OnInit {
           trucks: this.carriers.fleets.trucks,
         };
         this.addressDetails = this.carriers.addressDetails;
-        this.fetchAddress(this.carriers.addressDetails);
+        if (this.carriers.addressDetails !== undefined) {
+          for (let a = 0; a < this.carriers.addressDetails.length; a++) {
+            const countryCode = this.carriers.addressDetails[a].countryCode;
+            const stateCode = this.carriers.addressDetails[a].stateCode;
+            this.fetchStates(countryCode, a);
+            this.fetchCities(countryCode, stateCode, a);
+          }
+        }
         this.banks = this.carriers.banks;
         this.uploadedLogo = this.carriers.uploadedLogo;
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
@@ -172,20 +179,11 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
-   fetchStates() {
-    let countryCodes: any = ['US', 'CA'];
-    this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
-   }
-   fetchCities(address){
-    for(let a=0; a< address.length; a++){
-      let cityList: any = [];
-      if(address[a].manual){
-        let countryCode = address[a].countryCode;
-        let stateCode = address[a].stateCode;
-         cityList = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-      }
-      this.cities = _.merge(this.cities, cityList);
-    }
+  fetchStates(countryCode: any, index: any) {
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
@@ -195,20 +193,26 @@ export class EditProfileComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  async getStates(id: any, oid = null) {
-    this.addressDetails[oid].stateCode = '';
-    this.addressDetails[oid].cityName = '';
-    this.states = CountryStateCity.GetStatesByCountryCode([id]);
+  getStates(countryCode: any, index: any) {
+    this.addressDetails[index].stateCode = '';
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-
-  async getCities(id: any, oid = null, CID: any) {
-      this.addressDetails[oid].cityName = '';
-      this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
-    }
+  getCities(stateCode: any, index: any, countryCode: any) {
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
@@ -227,7 +231,9 @@ export class EditProfileComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        manual: false
+        manual: false,
+        states: [],
+        cities: []
       });
     }
   }
@@ -267,10 +273,12 @@ export class EditProfileComponent implements OnInit {
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
-    $('div').removeClass('show-search__result');
+    this.addressDetails[i].countryCode = result.address.countryCode;
     this.addressDetails[i].stateCode = result.address.stateCode;
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
+    this.addressDetails[i].zipCode = result.address.postalCode;
+    $('div').removeClass('show-search__result');
     this.addressDetails[i].countryCode = ''; // empty the fields if manual is false (if manual was true IDs were stored)
     this.addressDetails[i].zipCode = result.address.postalCode;
     if (result.address.houseNumber === undefined) {
@@ -290,6 +298,8 @@ export class EditProfileComponent implements OnInit {
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
+      delete element.states;
+      delete element.cities;
       if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
         let fullAddress = `${element.address} ${element.cityName}
     ${element.stateCode} ${element.countryCode}`;
@@ -347,7 +357,7 @@ export class EditProfileComponent implements OnInit {
         uploadedLogo: this.uploadedLogo
 
       };
-      if(data.bizCountry == 'CA') {
+      if (data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;
       }
@@ -376,7 +386,7 @@ export class EditProfileComponent implements OnInit {
                 this.throwErrors();
                 this.submitDisabled = false;
               },
-              error: () => {this.submitDisabled = false; },
+              error: () => { this.submitDisabled = false; },
               next: () => { },
             });
         },
@@ -394,14 +404,14 @@ export class EditProfileComponent implements OnInit {
   }
   updateUser() {
     let currentLoggedUserName = localStorage.getItem('currentLoggedUserName');
-    if(currentLoggedUserName == this.userName){
-      let currentUser = `${this.firstName} ${this.lastName}`;
-      const outputName = currentUser.match(/\b(\w)/g);
-      let smallName = outputName.join('');
-      localStorage.setItem('currentUserName', currentUser);
-      localStorage.setItem('nickName', smallName);
-      this.headerComponentFunction();
-    }
+    //  if(currentLoggedUserName == this.userName){
+    let currentUser = `${this.firstName} ${this.lastName}`;
+    const outputName = currentUser.match(/\b(\w)/g);
+    let smallName = outputName.join('');
+    localStorage.setItem('currentUserName', currentUser);
+    localStorage.setItem('nickName', smallName);
+    this.headerComponentFunction();
+    //  }
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -433,16 +443,6 @@ export class EditProfileComponent implements OnInit {
       this.fetchCarrier();
     });
   }
-  fetchAddress(address: any) {
-    for(let a=0; a < address.length; a++){
-      let countryCodes :any = [];
-      address.map((e: any) => {
-        if(e.manual) {
-          countryCodes.push(e.countryCode);
-        }
-        this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
-      });
-    }
-   }
+
 
 }

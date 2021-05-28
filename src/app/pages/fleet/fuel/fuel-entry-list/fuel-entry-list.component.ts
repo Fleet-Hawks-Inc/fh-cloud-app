@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
 import { environment } from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment'
 declare var $: any;
 
 @Component({
@@ -61,11 +63,13 @@ export class FuelEntryListComponent implements OnInit {
   fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
+  wexCategories:any={};
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private httpClient: HttpClient) {
   }
   ngOnInit() {
     this.fuelEntriesCount();
@@ -76,10 +80,11 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
-    this.initDataTable();
     this.fetchAllAssets();
     this.fetchAllVehicles();
     this.fetchVendorList();
+    this.fetchWexCategories();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -92,6 +97,12 @@ export class FuelEntryListComponent implements OnInit {
     this.suggestedUnits = [];
   }
 
+  fetchWexCategories(){
+    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {  
+      
+      this.wexCategories = result;
+    })
+  }
   getSuggestions(value) {
     value = value.toLowerCase();
     if(value != '') {
@@ -134,6 +145,7 @@ export class FuelEntryListComponent implements OnInit {
 
   fetchVendorList() {
     this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      console.log(result)
       this.vendorList = result;
     });
   }
@@ -142,6 +154,7 @@ export class FuelEntryListComponent implements OnInit {
       this.vehicleList = result;
     });
   }
+
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
@@ -168,8 +181,11 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
   fetchWEXCode() {
-    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
-      this.WEXCodeList = result;
+    this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
+      
+      result.forEach(element => {
+        this.WEXCodeList[element.code]=element.type
+      });
     });
   }
   fuelEntriesCount() {
@@ -237,18 +253,34 @@ export class FuelEntryListComponent implements OnInit {
       }
       this.suggestedUnits = [];
       this.getStartandEndVal();
+      result[`Items`].forEach(element => {
+        if(element.fuelProvider=="WEX"){
+        element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
+        }
+        else{
+          let dateTime=element.fuelDate
+          element.dateTime=moment(dateTime).format('MMM Do YYYY')+" "+element.fuelTime
+         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+          
+        }
+
+        
+      });
       this.fuelList = result[`Items`];
-      
+
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
       if (result[`LastEvaluatedKey`] !== undefined) {
+        
         const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
+        //console.log(this.fuelPrevEvauatedKeys)
         if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
           this.fuelPrevEvauatedKeys.push(lastEvalKey);
+        
         }
         this.lastEvaluatedKey = lastEvalKey;
 
@@ -320,7 +352,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelPrev = true;
     this.fuelDraw += 1;
     this.initDataTable();
-    // this.getStartandEndVal();
+    //this.getStartandEndVal();
   }
 
   // prev button func
@@ -330,7 +362,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelDraw -= 1;
     this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
     this.initDataTable();
-    // this.getStartandEndVal();
+    //this.getStartandEndVal();
   }
 
   resetCountResult() {
