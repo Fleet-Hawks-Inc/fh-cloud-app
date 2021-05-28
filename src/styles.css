@@ -22,3 +22,20 @@ body { margin: 0;}
     word-break: break-word;
     white-space: normal;
   }
+
+
+
+.ng-select.ng-select-single .ng-select-container {
+    height: 31px !important;
+}
+
+  .ng-select.custom {
+    height: 31px !important;
+}
+.ng-select.custom .ng-select-container  {            
+    min-height: 31px !important;     
+}
+
+.ng-select .ng-select-container {
+  min-height: 31px !important;
+}
