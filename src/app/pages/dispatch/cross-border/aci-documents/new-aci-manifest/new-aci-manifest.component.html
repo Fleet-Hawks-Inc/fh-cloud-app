@@ -50,10 +50,10 @@
                               placeholder="8 or 25 digits , eg. TEST0001 " [(ngModel)]="tripNumber" #TripNum1="ngModel" required pattern="^[A-Z0-9]{4,21}$" >
                               <div *ngIf="TripNum1.invalid && (TripNum1.dirty || TripNum1.touched)" class="text-danger">
                                 <div *ngIf="TripNum1.errors.required">
-                                  Trip Number is required.
+                                  Trip number is required.
                                 </div>
                                 <div *ngIf="TripNum1.errors.pattern">
-                                  Trip Number must be of 4-21 upper case letters and numbers with no spaces or special characters.
+                                  Trip number must be of 4-21 alphanumeric with no spaces or special characters and letters must be upper case.
                                 </div>
                               </div>
                           </div>
@@ -73,7 +73,7 @@
                           <div>
 
                             <div *ngIf="Port2.errors.required">
-                             Canadian Port of Entry is required.
+                             Canadian port of entry is required.
                              </div>
                           </div>
 
@@ -103,7 +103,7 @@
                             <div>
 
                               <div *ngIf="Edate1.errors.required">
-                               Estimated Arrival Date is required.
+                               Estimated arrival date is required.
                                </div>
                             </div>
 
@@ -123,7 +123,7 @@
                           <div>
 
                             <div *ngIf="Etime1.errors.required">
-                             Estimated Arrival Time is required.
+                             Estimated arrival time is required.
                              </div>
                           </div>
 
@@ -145,7 +145,7 @@
                           <div>
 
                             <div *ngIf="Ezone.errors.required">
-                             ETA Time Zone is required.
+                             ETA time zone is required.
                              </div>
                           </div>
 
@@ -168,7 +168,7 @@
                           <div>
 
                             <div *ngIf="A1vehicle.errors.required">
-                              Assign Vehicle is required.
+                              Assign vehicle is required.
                              </div>
                           </div>
 
@@ -190,7 +190,7 @@
                               <div *ngIf="A1seal.invalid && (A1seal.dirty || A1seal.touched)" class="text-danger">
 
                                 <div *ngIf="A1seal.errors.pattern">
-                                  Seal must contain a string value between 2 and 15 letters and numbers.
+                                  Seal must contain an alphanumeric string value between 2 and 15.
                                 </div>
                               </div>
                           </div>
@@ -221,7 +221,7 @@
                           <div>
 
                             <div *ngIf="A1driver.errors.required">
-                             Main Driver is required.
+                             Main driver is required.
                              </div>
                           </div>
 
@@ -274,7 +274,7 @@
                               <div *ngIf="fName2.invalid && (fName2.dirty || fName2.touched)" class="text-danger">
 
                                 <div *ngIf="fName2.errors.pattern">
-                                  First Name must not contain any special character.
+                                  First name must not contain any special character.
                                 </div>
                               </div>
                           </div>
@@ -314,7 +314,7 @@
                               <div *ngIf="L1Name.invalid && (L1Name.dirty || L1Name.touched)" class="text-danger">
 
                                 <div *ngIf="L1Name.errors.pattern">
-                                  Last Name must not contain any special characters.
+                                  Last name must not contain any special characters.
                                 </div>
                               </div>
                              </div>
@@ -367,7 +367,7 @@
                               <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
 
                                 <div *ngIf="docNum.errors.pattern">
-                                  Document# must contain letters, numbers, dashes ,spaces and no other characters.
+                                  Document# must contain alphanumeric, dashes ,spaces and no other characters.
                                 </div>
                               </div>
                           </div>
@@ -398,7 +398,7 @@
 
 
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State or Province<span
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State<span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                                 [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
@@ -460,10 +460,10 @@
                           [(ngModel)]="container.number" maxlength="14" #contnum="ngModel" required pattern="^[A-Z0-9\s-]{4,14}$">
                           <div *ngIf="contnum.invalid && (contnum.dirty || contnum.touched)" class="text-danger">
                             <div *ngIf="contnum.errors.required">
-                              Container Number is required.
+                              Container number is required.
                             </div>
                             <div *ngIf="contnum.errors.pattern">
-                              Container Number must contain upper case letters and numbers with no special characters.
+                              Container number must contain alphanumeric with no special characters and letters must be upper case.
                             </div>
                           </div>
                       </div>
@@ -524,7 +524,7 @@
                               <div *ngIf="A2seal.invalid && (A2seal.dirty || A2seal.touched)" class="text-danger">
 
                                 <div *ngIf="A2seal.errors.pattern">
-                                  Seal must contain a string value between 2 and 15 letters and numbers.
+                                  Seal must contain an alphanumeric string value between 2 and 15.
                                 </div>
                               </div>
                           </div>
@@ -604,7 +604,7 @@
                                   <div>
 
                                     <div *ngIf="VehiNum1.errors.required">
-                                     Vehicle Name is required.
+                                     Vehicle name is required.
                                      </div>
                                   </div>
 
@@ -622,7 +622,7 @@
                                   <div>
 
                                     <div *ngIf="AssetNum1.errors.required">
-                                     Asset Name is required.
+                                     Asset name is required.
                                      </div>
                                   </div>
 
@@ -643,7 +643,7 @@
                                   <div>
 
                                     <div *ngIf="ContainerNum1.errors.required">
-                                     Container Number is required.
+                                     Container number is required.
                                      </div>
                                   </div>
 
@@ -661,7 +661,7 @@
                                   <div>
 
                                     <div *ngIf="ShipT1.errors.required">
-                                     Shipment Type is required.
+                                     Shipment type is required.
                                      </div>
                                   </div>
 
@@ -690,7 +690,7 @@
                                       <div>
 
                                         <div *ngIf="cargoC.errors.required">
-                                         Cargo Control is required.
+                                         Cargo control is required.
                                          </div>
                                       </div>
 
@@ -703,10 +703,10 @@
                                       [(ngModel)]="shipment.cargoControlNumber" #cargoCN="ngModel" required pattern="^[A-Z0-9]{4,21}$">
                                       <div *ngIf="cargoCN.invalid && (cargoCN.dirty || cargoCN.touched)" class="text-danger">
                                         <div *ngIf="cargoCN.errors.required">
-                                          Cargo Control Number is required.
+                                          Cargo control number is required.
                                         </div>
                                         <div *ngIf="cargoCN.errors.pattern">
-                                          Cargo Control must be of 4-21 letters and numbers with no spaces or special characters.
+                                          Cargo control must be of 4-21 alphanumeric with no spaces or special characters and letters must be upper case.
                                         </div>
                                       </div>
                                   </div>
@@ -725,7 +725,7 @@
                                   <div>
 
                                     <div *ngIf="Canport.errors.required">
-                                     First Canadian Port of Entry is required.
+                                     First canadian port of entry is required.
                                      </div>
                                   </div>
 
@@ -746,7 +746,7 @@
                                   <div>
 
                                     <div *ngIf="Reloff.errors.required">
-                                     Release Office is required.
+                                     Release office is required.
                                      </div>
                                   </div>
 
@@ -776,7 +776,7 @@
                                     <div>
 
                                       <div *ngIf="Impcsa.errors.pattern">
-                                        Importer CSA Business must contain 15 letters and numbers with no spaces or other characters.
+                                        Importer CSA business must contain 15 alphanumeric with no spaces or other characters.
                                        </div>
                                     </div>
 
@@ -792,7 +792,7 @@
                                     <div>
 
                                       <div *ngIf="Unicon.errors.pattern">
-                                        Unique Consignment Reference must not contain special characters.
+                                        Unique consignment reference must not contain special characters.
                                        </div>
                                     </div>
 
@@ -814,7 +814,7 @@
                                     <div>
 
                                       <div *ngIf="E1date.errors.required">
-                                       Estimated Arrival Date is required.
+                                       Estimated arrival date is required.
                                        </div>
                                     </div>
 
@@ -833,7 +833,7 @@
                                   <div>
 
                                     <div *ngIf="E1time.errors.required">
-                                      Estimated Arrival Time is required.
+                                      Estimated arrival time is required.
                                      </div>
                                   </div>
 
@@ -855,7 +855,7 @@
                                   <div>
 
                                     <div *ngIf="E1zone.errors.required">
-                                     ETA Time zone is required.
+                                     ETA time zone is required.
                                      </div>
                                   </div>
 
@@ -919,7 +919,7 @@
                                   <div>
 
                                     <div *ngIf="counL.errors.required">
-                                      Country of Loading is required.
+                                      Country of loading is required.
                                      </div>
                                   </div>
 
@@ -936,15 +936,13 @@
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince" #proS="ngModel" required>
                                   <ng-option *ngFor="let state of shipment.cityOfLoading.loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
 
+
+
                                 </ng-select>
                                 <div *ngIf="proS.invalid && (proS.dirty || proS.touched)" class="text-danger">
-                                  <div>
-
                                     <div *ngIf="proS.errors.required">
-                                     State of Loading is required.
+                                     State of loading is required.
                                      </div>
-                                  </div>
-
                                 </div>
                               </div>
                               <div class="col-lg-5">
@@ -959,12 +957,11 @@
                                     {{city.cityName}}</ng-option>
                                 </ng-select>
                                 <div *ngIf="proC.invalid && (proC.dirty || proC.touched)" class="text-danger">
-                                  <div>
 
                                     <div *ngIf="proC.errors.required">
-                                     City of Loading is required.
+                                     City of loading is required.
                                      </div>
-                                  </div>
+
 
                                 </div>
                               </div>
@@ -1061,7 +1058,7 @@
                                   <div *ngIf="Contactn.invalid && (Contactn.dirty || Contactn.touched)" class="text-danger">
 
                                     <div *ngIf="Contactn.errors.pattern">
-                                      Enter valid Contact number eg. +12234567891.
+                                      Enter valid contact number eg. +12234567891.
                                     </div>
                                   </div>
                               </div>
@@ -1123,7 +1120,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province/State</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
                                           [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.stateCode'" placeholder="Select Province"
                                           [(ngModel)]="deliveryDestination.address.stateCode"
@@ -1217,7 +1214,7 @@
                                   <div *ngIf="Contact1.invalid && (Contact1.dirty || Contact1.touched)" class="text-danger">
 
                                     <div *ngIf="Contact1.errors.pattern">
-                                      Enter valid Contact number eg. +12234567891.
+                                      Enter valid contact number eg. +12234567891.
                                     </div>
                                   </div>
                               </div>
@@ -1279,7 +1276,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province/State</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
                                           [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.stateCode'" id="notifyPartyStateSelect" placeholder="Select Province"
                                           [(ngModel)]="notifyParty.address.stateCode"
@@ -1453,7 +1450,7 @@
                                     <div>
 
                                       <div *ngIf="marksn.errors.pattern">
-                                       Marks and Numbers must contain numbers only.
+                                       Marks and numbers must contain numbers only.
                                        </div>
                                     </div>
 
@@ -1483,7 +1480,7 @@
                                     <div>
 
                                       <div *ngIf="hazC.errors.pattern">
-                                        Hazmat Code must be 4 digit number.
+                                        Hazmat code must be 4 digit number.
                                        </div>
                                     </div>
 
@@ -1494,13 +1491,13 @@
                                   Contact
                                   Name&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  placeholder="eg. John Smith"
+                                  placeholder="eg.John Smith"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.emergencyContactName'"
-                                  [(ngModel)]="commodity.hazmatDetails.emergencyContactName" #Contact2="ngModel"  pattern="^(\+1)[0-9]{10}$">
+                                  [(ngModel)]="commodity.hazmatDetails.emergencyContactName" #Contact2="ngModel"  pattern="^[a-zA-Z\s]+$">
                                   <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
 
                                     <div *ngIf="Contact2.errors.pattern">
-                                      Enter valid Contact number eg. +12032342345.
+                                      Emergency contact name must not contain any special character.
                                     </div>
                                   </div>
                               </div>
@@ -1508,13 +1505,13 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                   Number&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                 <input type="tel" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                  [ngModelOptions]="{standalone: true}" placeholder="eg.3452346789"
+                                  [ngModelOptions]="{standalone: true}" placeholder="eg. +12234567891"
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.contactPhone'"
                                   [(ngModel)]="commodity.hazmatDetails.contactPhone" #Contact3="ngModel"  pattern="^(\+1)[0-9]{10}$">
                                   <div *ngIf="Contact3.invalid && (Contact3.dirty || Contact3.touched)" class="text-danger">
 
                                     <div *ngIf="Contact3.errors.pattern">
-                                      Enter valid Contact number eg. +12032342345.
+                                      Enter valid contact number eg. +12234567891.
                                     </div>
                                   </div>
                               </div>
@@ -1598,7 +1595,7 @@
                                   <div>
 
                                     <div *ngIf="assetT2.errors.required">
-                                      Asset Type is required.
+                                      Asset type is required.
                                      </div>
                                   </div>
 
@@ -1617,7 +1614,7 @@
                                       <div *ngIf="A3seal.invalid && (A3seal.dirty || A3seal.touched)" class="text-danger">
 
                                         <div *ngIf="A3seal.errors.pattern">
-                                          Seal must contain a string value between 2 and 15 letters and numbers.
+                                          Seal must contain an alphanumeric string value between 2 and 15.
                                         </div>
                                       </div>
                                   </div>
