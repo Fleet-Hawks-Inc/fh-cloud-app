@@ -135,7 +135,7 @@
                               <div class="col-5 offset-1">
                                  <div class="row">
                                     <div class="col-10">
-                                       <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2">Cancel</a>
+                                       <a href="javascript:;" routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default mr-2">Cancel</a>
                                        <button *ngIf="!reminderID" (click)="addRenewal()"
                                           class="btn btn-success" [disabled]="submitDisabled">Save</button>
                                        <button *ngIf="reminderID" (click)="updateRenewal()"
