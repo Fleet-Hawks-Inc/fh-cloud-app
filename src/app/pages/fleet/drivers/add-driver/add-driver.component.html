@@ -14,7 +14,7 @@
         </div>
       </header>
       <form id="driverForm" class="form-horizontal form-bordered bg-white" name="driverForm" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
-        (ngSubmit)="onSubmit()" novalidate="novalidate" #driverF="ngForm">
+        (ngSubmit)="onSubmit()" novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-12">
@@ -65,7 +65,7 @@
                                 Employee id is required.
                               </div>
                               <div *ngIf="dName.errors.pattern">
-                                Employee id should be of minimum 4 characters which can be a combination of letters and numbers only.
+                                Employee id should be of minimum 4 characters which can be a combination of alphanumeric only.
                               </div>
                             </div>
                           </div>
@@ -83,7 +83,7 @@
                                 Contractor id is required.
                               </div>
                               <div *ngIf="cName.errors.pattern">
-                                Contractor id should be of minimum 4 characters which can be a combination of letters and numbers only.
+                                Contractor id should be of minimum 4 characters which can be a combination of alphanumeric only.
                               </div>
                             </div>
                           </div>
@@ -364,8 +364,8 @@
                             <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
-                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
-                              required>
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
+                              >
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
 
                               <div *ngIf="tDate.errors.required" class="text-danger">
@@ -397,7 +397,7 @@
                             <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
-                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
                               required>
                             <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
@@ -538,7 +538,7 @@
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                              Province or State</label>
+                              Province/State</label>
                             <ng-select (change)="getCities($event,i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
                               placeholder="Select Province">
                               <ng-option class="text-capitalize" *ngFor="let state of item.states" value="{{state.stateCode}}">
@@ -655,7 +655,7 @@
                           <input [(ngModel)]="document.issuingAuthority"
                             [attr.name]="'documentDetails['+i+'].issuingAuthority'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                            placeholder="eg. Ontario,canada" #authority="ngModel" required pattern="^[a-zA-z\s\,]+$">
+                            placeholder="eg. Ontario,canada" #authority="ngModel" pattern="^[a-zA-z\s\,]+$">
                           <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
 
                             <div *ngIf="authority.errors.pattern">
@@ -682,7 +682,7 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province or State </label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State </label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -791,7 +791,7 @@
                           pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
                         <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
-                            ACI id must contain letters and numbers only.
+                            ACI id must contain alphanumeric only.
                           </div>
 
                         </div>
@@ -805,7 +805,7 @@
                           pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
                         <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
-                            ACE id must contain letters and numbers only.
+                            ACE id must contain alphanumeric only.
                           </div>
 
                         </div>
@@ -913,7 +913,7 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province or State <span
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
@@ -925,7 +925,7 @@
                         </ng-select>
                         <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
                           <div *ngIf="ipSlt.errors.required">
-                            Issued Province or State is required.
+                            Issued Province/State is required.
                           </div>
                         </div>
                       </div>
@@ -958,7 +958,7 @@
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
                           name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
-                          class="form-control" placeholder="yyyy/mm/dd">
+                          class="form-control" placeholder="yyyy/mm/dd" >
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Health Care# <span
@@ -967,7 +967,7 @@
                         <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare"
                           type="text" class="form-control"
                           placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB"
-                          #hCare="ngModel">
+                          >
                         <!-- <div *ngIf="hCare.invalid && (hCare.dirty || hCare.touched)" class="text-danger">
                           <div *ngIf="hCare.errors.pattern">
                             Health Care must contain 13 characters only in which 2 is alphabetical and 11 is numeric.
@@ -1561,11 +1561,11 @@
                                              
                     <!-- if there is some error in validation  -->
                     <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID && !driverF.form.valid" [disabled]="!driverF.form.valid" >Save</button>
-                     
+                    
                     <!-- if validations are ok and now the button will disable on submit click  --> 
                     <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID && driverF.form.valid" [disabled]="submitDisabled" >Save</button>
                     
-                       <!-- update case --> 
+                       <!---- update case --> 
                     <button type="button" (click)="updateDriver()" *ngIf="driverID && !driverF.form.valid" [disabled]="!driverF.form.valid" class="btn cus-btn-padd btn-success" >Update</button>
 
                     <button type="button" (click)="updateDriver()" *ngIf="driverID && driverF.form.valid" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
@@ -1588,7 +1588,7 @@
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content"> 
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

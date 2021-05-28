@@ -64,7 +64,7 @@
 
                                 </div>
                                 <div *ngIf="gName.errors.pattern">
-                                 Geofence name must contain letters ,numbers and special characters (.) or # only.
+                                 Geofence name must contain alphanumeric and special characters (.) or # only.
 
                                 </div>
                              </div>
@@ -99,14 +99,10 @@
                                        </ng-option>
                                    </ng-select>
                                    <div *ngIf="gType.invalid && (gType.dirty || gType.touched)" class="text-danger">
-                                    <div>
-
-                                      <div *ngIf="gType.errors.required">
-                                       Select valid Type from the list.
+                                   <div *ngIf="gType.errors.required">
+                                       Type is required.
                                        </div>
-                                    </div>
-
-                                  </div>
+                                     </div>
                                 </div>
                                 <div class="col-lg-1 pl-0">
                                    <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn cus-btn-padd text-light btn-success"><i class="fas fa-plus"></i></a>
@@ -180,16 +176,9 @@
                      <label class="font-weight-bold control-label">Geofence Type
                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                      </label>
-                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="eg. Parking Yard" #geoWarehouse="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
-                     <div *ngIf="geoWareHouse.invalid && (geoWareHouse.dirty || geoWareHouse.touched)" class="text-danger">
-                        <div *ngIf="geoWareHouse.errors.required">
-                       Geofence types is required.
-                        </div>
-
-                      </div>
-
-
+                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="eg. Parking Yard" #geoWarehouse1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                   </div>
+                  
                </div>
                <div class="form-row mt-2">
                   <div class="form-group col-md-12">

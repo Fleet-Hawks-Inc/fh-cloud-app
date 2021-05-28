@@ -24,7 +24,7 @@
          <div class="row">
             <div class="col">
                <div class="card-body text-dark">
-                  <form class="form-horizontal form-bordered" name="contactRenewalForm" method="get" id="contactRenewalForm">
+                  <form class="form-horizontal form-bordered" name="contactRenewalForm" method="get" id="contactRenewalForm" #contactF="ngForm">
                      <div class="row pt-2">
                         <div class="col-lg-12">
                            <label
@@ -44,7 +44,7 @@
                                  </ng-select>
                                  <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                     <div *ngIf="cnt.errors.required">
-                                     Select Contact is required.
+                                      Contact is required.
                                        </div>
                                        
                                     </div>
@@ -84,7 +84,7 @@
                                  </ng-select>
                                  <div *ngIf="rtSlt.invalid && (rtSlt.dirty || rtSlt.touched)" class="text-danger">
                                     <div *ngIf="rtSlt.errors.required">
-                                       Select Renewal Type is required.
+                                        Renewal type is required.
                                     </div>
                               
                                  </div>
@@ -102,7 +102,7 @@
                                     #d="ngbDatepicker" />
                                     <div *ngIf="exp.invalid && (exp.dirty || exp.touched)" class="text-danger">
                                        <div *ngIf="exp.errors.required">
-                                        Expiration Date is required.
+                                        Expiration date is required.
                                           </div>
                                           
                                        </div>
@@ -147,10 +147,12 @@
                                  <div class="row">
                                     <div class="col-10">
                                        <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                                       <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()"
-                                          class="btn btn-success">Save</a>
-                                       <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()"
-                                          class="btn btn-success">Update</a>
+                                       <button  *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid" (click)="addRenewal()" class="btn btn-success">Save</button>
+                                       <button  *ngIf="!reminderID && contactF.form.valid" [disabled]="submitDisabled" (click)="addRenewal()" class="btn btn-success">Save</button>
+                                          
+                                       <button  *ngIf="reminderID && !contactF.form.valid " [disabled]="!contactF.form.valid"  (click)="updateRenewal()" class="btn btn-success">Update</button>
+                                       <button  *ngIf="reminderID &&  contactF.form.valid" [disabled]="submitDisabled" (click)="updateRenewal()" class="btn btn-success">Update</button>
+                                          
                                     </div>
                                  </div>
                               </div>

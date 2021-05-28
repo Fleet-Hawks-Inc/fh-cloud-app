@@ -1,4 +1,4 @@
-<!----- -<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> ----->
+<!-------- -<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> ----->
 <section class="body">
 
 
@@ -74,7 +74,7 @@
                           data-toggle="tooltip" data-placement="top" title="Vehicle Identification Number."></i></label>
                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
                         placeholder="17-18 digits Alphanumeric,eg. 2G1WH55K5Y9322458" class="form-control"
-                        maxlength="18" #vName="ngModel" required pattern="^[A-Z0-9]{17,18}$">
+                        maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                       <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
@@ -472,8 +472,8 @@
                       </div>
                     </div>
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province or
-                        State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province/State
+                        <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
                         name="assetDetails.licenceStateCode" class="form-control populate" placeholder="Select Province"
                         #lpName="ngModel" required>
@@ -483,7 +483,7 @@
                       </ng-select>
                       <div *ngIf="lpName.invalid && (lpName.dirty || lpName.touched)" class="text-danger">
                         <div *ngIf="lpName.errors.required">
-                          Licence Province or State is required.
+                          Licence Province/State is required.
                         </div>
                       </div>
                     </div>
@@ -494,13 +494,13 @@
                         Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. CAL 890 "
                         name="assetDetails.licencePlateNumber" class="form-control" type="text" maxlength="8"
-                        #pName="ngModel" required pattern="^[A-Z0-9\s]{7,8}$">
+                        #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
                       <div *ngIf="pName.invalid && (pName.dirty || pName.touched)" class="text-danger">
                         <div *ngIf="pName.errors.required">
                           Licence plate number is required.
                         </div>
                         <div *ngIf="pName.errors.pattern">
-                          Licence plate number must be between 7-8 uppercase letters and numbers only.
+                          Licence plate number must be between 7-8 alphanumeric characters only.
                         </div>
                       </div>
                     </div>

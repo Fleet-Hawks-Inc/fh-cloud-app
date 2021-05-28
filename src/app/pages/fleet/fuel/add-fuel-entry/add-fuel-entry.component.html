@@ -714,7 +714,7 @@
                           <!-- if validations are ok and now the button will disable on submit click  -->
                           <button type="button" *ngIf="!fuelID && fuelF.form.valid" (click)="addFuelEntry()"
                             class="btn btn-success cus-btn-padd" [disabled]="submitDisabled">Save</button>
-                          <!-- update case -->
+                          <!---- update case -->
                           <button type="button" *ngIf="fuelID && !fuelF.form.valid" (click)="updateFuelEntry()"
                             class="btn btn-success cus-btn-padd" [disabled]="!fuelF.form.valid">Update</button>
                           <button type="button" *ngIf="fuelID && fuelF.form.valid" (click)="updateFuelEntry()"

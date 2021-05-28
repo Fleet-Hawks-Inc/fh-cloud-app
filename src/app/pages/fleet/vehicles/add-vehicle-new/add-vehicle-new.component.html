@@ -10,6 +10,7 @@
                      class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
             </div>
          </header>
+         <form  class="form-horizontal form-bordered" method="get" name="form" id="form_" #vehicleF="ngForm">
          <section class="m-2">
             <div class="row mb-3">
                <div class="col-12">
@@ -33,7 +34,7 @@
                                        Vehicle name is required.
                                     </div>
                                     <div *ngIf="vName.errors.pattern">
-                                       Vehicle name must contain letters and numbers only.
+                                       Vehicle name must contain alphanumeric characters only.
 
                                     </div>
                                  </div>
@@ -59,7 +60,7 @@
                                  </label>
                                  <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
                                     placeholder="17-18 digits Alphanumeric,eg. 2G1WH55K5Y9322458" maxlength="18" #vin="ngModel" required
-                                    pattern="^[a-zA-Z0-9]{17}$">
+                                    pattern="^[a-zA-Z0-9]{17,18}$">
                                  <div *ngIf="vin.invalid && (vin.dirty || vin.touched)" class="text-danger">
                                     <div *ngIf="vin.errors.required">
                                        VIN is required.
@@ -73,13 +74,13 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber" placeholder="eg. CAL 890"
-                                    #pNum="ngModel" required pattern="^[A-Z0-9\s]{7,8}$">
+                                    #pNum="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
                                  <div *ngIf="pNum.invalid && (pNum.dirty || pNum.touched)" class="text-danger">
                                     <div *ngIf="pNum.errors.required">
                                        Plate Number is required.
                                     </div>
                                     <div *ngIf="pNum.errors.pattern">
-                                       Plate number must be between 7-8 uppercase letters and numbers only.
+                                       Plate number must be between 7-8  alphanumeric characters only.
                                     </div>
                                  </div>
                               </div>
@@ -198,7 +199,7 @@
                                  </div>
                               </div>
                               <div class="col-lg-5">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2">Province or State <span
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Province/State <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode" placeholder="Select Province"
                                     id="stateSelect" #province="ngModel" required>
@@ -209,7 +210,7 @@
                                  </ng-select>
                                  <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
                                     <div *ngIf="province.errors.required">
-                                   Province or State is required.
+                                   Province/State is required.
                                     </div>
                                  </div>
                               </div>
@@ -1486,9 +1487,13 @@
                      <div class="form-group border-0 row">
                         <div class="col-lg-12 pr-5 text-right pb-4">
                            <button type="button" class="btn btn-default mr-2 mt-4" (click)="cancel()">Cancel</button>
-                           <button *ngIf="!vehicleID" [routerLink]="" [disabled]="submitDisabled" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
-                              
-                           <button *ngIf="vehicleID" [routerLink]="" [disabled]="submitDisabled" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
+                            <!-- if there is some error in validation  -->
+                           <button *ngIf="!vehicleID && !vehicleF.form.valid" [routerLink]="" [disabled]="!vehicleF.form.valid" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
+                           <!-- if validations are ok and now the button will disable on submit click  --> 
+                           <button *ngIf="!vehicleID && vehicleF.form.valid" [routerLink]="" [disabled]="submitDisabled" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
+                                <!-- update case -->
+                           <button *ngIf="vehicleID && !vehicleF.form.valid" [routerLink]="" [disabled]=" !vehicleF.form.valid" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
+                           <button *ngIf="vehicleID && vehicleF.form.valid" [routerLink]="" [disabled]="submitDisabled" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
                               
                         </div>
                      </div>
@@ -1496,7 +1501,9 @@
                </div>
             </div>
          </section>
+      </form>
       </section>
+  
    </div>
 </section>
 
