@@ -316,7 +316,7 @@ export class AddOrdersComponent implements OnInit {
     this.pdfService.dataSubscribe$
       .pipe(
         tap((v) => {
-          // console.log("pdf service" + v);
+          
           if (v.toString() !== "" && v !== "undefined" && v !== undefined) {
             const d = JSON.parse(v);
 
@@ -503,12 +503,12 @@ export class AddOrdersComponent implements OnInit {
     const service = platform.getSearchService();
     if (location !== "") {
       let result = await service.geocode({ q: location });
-      // console.log('result', result);
+      // 
       result.items.forEach((res) => {
-        // console.log('res', res);
+        // 
         geoCodeResponse = res;
       });
-      // console.log('geoCodeResponse', geoCodeResponse);
+      // 
     }
 
     //check if all required fields are filled
@@ -880,11 +880,11 @@ export class AddOrdersComponent implements OnInit {
         // this.origin = this.googleCords[0];
         // this.googleCords.shift();
         // this.destination = this.googleCords;
-        // // console.log('google this.googleCords', this.googleCords);
+        // // 
         // this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
-        // console.log('this.orderData.milesInfo.totalMiles', this.orderData.milesInfo.totalMiles);
+        // 
       } else if (value === "pcmiles") {
-        // console.log('this.getAllCords', this.getAllCords);
+        // 
         this.google.pcMiles.next(true);
         this.google
           .pcMilesDistance(this.getAllCords.join(";"))
@@ -991,11 +991,11 @@ export class AddOrdersComponent implements OnInit {
       !this.orderData.milesInfo.calculateBy
 
     ) {
-      // console.log("inside false");
+      // 
       return false;
     }
 
-    // console.log("inside true");
+    // 
     return true;
   }
 
@@ -1064,7 +1064,7 @@ export class AddOrdersComponent implements OnInit {
               if(key == 'order'){
                 this.toastr.error("This Order already exists.");
               }
-              // console.log(this.errors[key]);
+              // 
             })
           )
           .subscribe({

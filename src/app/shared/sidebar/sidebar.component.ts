@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
+import { filter } from 'rxjs/operators';
 import {SharedServiceService} from '../../services/shared-service.service';
 @Component({
   selector: 'app-sidebar',
@@ -13,12 +14,15 @@ export class SidebarComponent implements OnInit {
 
   constructor(private router: Router,
               private sharedService: SharedServiceService) {
+
+                
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem('active-header');
       if(activeTab != undefined && activeTab != ''){
         val = activeTab;
+        this.active_nav = val;
       }
-      this.active_nav = val;
+      
     });
   }
 
@@ -35,17 +39,13 @@ export class SidebarComponent implements OnInit {
 
 
   Logout() {
-    console.log('clicked');
+    
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
   }
 
-  // @Input()
-  // navClicked($data) {
-  //   console.log($data);
-  //   this.active_nav = $data;
-  // }
+  
 
 
 }

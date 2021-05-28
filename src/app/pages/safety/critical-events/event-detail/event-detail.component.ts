@@ -77,7 +77,7 @@ export class EventDetailComponent implements OnInit {
   fetchDriverDetail(driverUserName) {
     this.apiService.getData('drivers/userName/' + driverUserName)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].firstName != undefined) {
           this.event.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
         }

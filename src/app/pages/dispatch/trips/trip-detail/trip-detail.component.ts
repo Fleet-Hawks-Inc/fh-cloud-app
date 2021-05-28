@@ -152,7 +152,7 @@ export class TripDetailComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-          console.log('detail element', element);
+          
           let obj = {
             assetID: element.assetID,
             carrierID: element.carrierID,
@@ -409,7 +409,7 @@ export class TripDetailComponent implements OnInit {
         },
         next: (res:any) => {
           this.tripData.documents = res; 
-          console.log('res', res);
+          
           this.uploadedDocSrc = [];
           if (res.length > 0) {
             for (let k = 0; k < res.length; k++) {

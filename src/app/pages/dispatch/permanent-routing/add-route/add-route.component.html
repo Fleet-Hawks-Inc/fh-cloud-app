@@ -37,7 +37,7 @@
                                                         Route is required.
                                                     </div>
                                                     <div *ngIf="routeNumber.errors.pattern">
-                                                        Route must contains numbers only.
+                                                        Route must contain numbers only.
                                                     </div>
 
 
@@ -50,16 +50,16 @@
                                                     Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
                                                     [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"
-                                                    #routeName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                                                    #routeName="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
                                                 <div *ngIf="routeName.invalid && (routeName.dirty || routeName.touched)"
                                                     class="text-danger">
 
                                                     <div *ngIf="routeName.errors.required">
-                                                        Route Name is required.
+                                                        Route name is required.
                                                     </div>
                                                     <div *ngIf="routeName.errors.pattern">
-                                                        Route name must contains uppercase ,lowercase special characters
-                                                        for period(space)only.
+                                                        Route name must be alphanumeric only.
+
                                                     </div>
 
 
@@ -179,7 +179,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sAddress.errors.required">
-                                                        Source Address is required.
+                                                        Source address is required.
                                                     </div>
 
 
@@ -207,14 +207,14 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCountry.errors.required">
-                                                        Source Country is required.
+                                                        Source country is required.
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    Province<span
+                                                  Province/State<span
                                                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
@@ -224,7 +224,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sProvince.errors.required">
-                                                        Source Province is required.
+                                                        Source province/state is required.
                                                     </div>
 
 
@@ -241,7 +241,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCity.errors.required">
-                                                        Source City is required.
+                                                        Source city is required.
                                                     </div>
 
                                                 </div>
@@ -258,7 +258,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCode.errors.required">
-                                                        Source Zip Code is required.
+                                                        Source zip code is required.
                                                     </div>
 
 
@@ -288,7 +288,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dAddress.errors.required">
-                                                        Destination Address is required.
+                                                        Destination address is required.
                                                     </div>
 
                                                 </div>
@@ -315,7 +315,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCountry.errors.required">
-                                                        Destination Country is required.
+                                                        Destination country is required.
                                                     </div>
 
 
@@ -323,7 +323,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    Province<span
+                                                  Province/State<span
                                                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
@@ -333,7 +333,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dProvince.errors.required">
-                                                        Destination Province is required.
+                                                        Destination province/state is required.
                                                     </div>
 
 
@@ -350,7 +350,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCity.errors.required">
-                                                        Destination City is required.
+                                                        Destination city is required.
                                                     </div>
 
 
@@ -368,7 +368,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCode.errors.required">
-                                                        Destination Zip Code is required.
+                                                        Destination zip code is required.
                                                     </div>
 
 
@@ -477,7 +477,7 @@
                                 </div>
 
                                 <div class="row mt-4" *ngIf="mapVisible">
-                                    
+
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -510,7 +510,7 @@
                                                         <div class="tripbarn"></div>
                                                     </div>
                                                 </div>
-                        
+
                                                 <div class="tripinfoscroll">
                                                     <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
                                                         <div class="text-center" *ngFor="let data of routeData.stops; let i=index;">
@@ -588,7 +588,16 @@
                                                                     <td>
                                                                         <input type="text" class="form-control"
                                                                             placeholder="Notes" name="stopNotes_{{i}}"
-                                                                            [(ngModel)]="routeData.stops[i].stopNotes">
+                                                                            [(ngModel)]="routeData.stops[i].stopNotes" >
+                                                                            <!-- <div *ngIf="NoteR.invalid && (NoteR.dirty || NoteR.touched)" class="text-danger">
+                                                                              <div>
+
+                                                                                <div *ngIf="NoteR.errors.pattern">
+                                                                                  Only 500 characters are allowed..
+                                                                                 </div>
+                                                                              </div>
+
+                                                                            </div> -->
                                                                     </td>
                                                                     <td *ngIf="i >= 1 && i < routeData.stops?.length-1">
                                                                         <span (click)="removeStops(i)"

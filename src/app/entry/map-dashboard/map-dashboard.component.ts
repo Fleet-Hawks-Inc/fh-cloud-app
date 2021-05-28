@@ -343,7 +343,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
       error: () => {},
       next: (result: any) => {
         this.activeTrips = result.Items;
-        console.log('this.activeTrips', this.activeTrips);
       },
     });
   }

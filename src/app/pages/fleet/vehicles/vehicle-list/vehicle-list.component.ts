@@ -141,7 +141,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
     });
   }
@@ -473,7 +473,7 @@ export class VehicleListComponent implements OnInit {
 
   createNewSK() {
     this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
-      console.log('done result', result);
+      
     });
   }
 }

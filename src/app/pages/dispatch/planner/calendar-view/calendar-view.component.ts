@@ -501,7 +501,7 @@ export class CalendarViewComponent implements OnInit {
         this.tempTrips.push(tripObj);
       }
     }
-    console.log('this.tempTrips', this.tempTrips);
+    
     await this.fetchCustomers();
     await this.getTripsData(this.tempTrips);
     

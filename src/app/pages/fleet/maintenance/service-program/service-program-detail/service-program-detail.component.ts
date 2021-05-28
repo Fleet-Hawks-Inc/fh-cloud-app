@@ -60,7 +60,7 @@ export class ServiceProgramDetailComponent implements OnInit {
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
-        console.log("tasks", this.programs);
+        
         this.spinner.hide(); // loader hide
       },
     });

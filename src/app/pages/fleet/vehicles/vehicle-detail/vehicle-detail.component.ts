@@ -341,7 +341,11 @@ export class VehicleDetailComponent implements OnInit {
     this.apiService
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
-        this.issues = result.Items;
+        result.Items.map(elem => {
+          if(elem.currentStatus == 'OPEN') {
+            this.issues.push(elem);
+          }
+        })
       });
   }
 
@@ -361,7 +365,6 @@ export class VehicleDetailComponent implements OnInit {
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
             this.inspectionForms = result1.Items[0];
-            console.log('this.inspectionForms', this.inspectionForms);
           });
         }
         this.annualSafetyDate = result.annualSafetyDate;
