@@ -47,7 +47,6 @@ export class UsersListComponent implements OnInit {
             return v;
           });
           this.suggestedUsers = result.Items;
-          console.log('this.suggestedUsers', result);
         });
     } else {
       this.suggestedUsers = [];
@@ -61,20 +60,20 @@ export class UsersListComponent implements OnInit {
     this.suggestedUsers = [];
   }
   fetchUsers() {
-    this.apiService.getData('contacts/get/count/employee?searchValue=' + this.contactID + '&companyName=' + this.companyName.toLowerCase())
+    this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID )
       .subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
           this.totalRecords = result.Count;
-          console.log('this.totalRecords', this.totalRecords);
+          this.initDataTable();
         },
       });
   }
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/employee?searchValue=' + this.contactID + '&companyName=' + this.companyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('contacts/fetch/employee/records?searchValue=' + this.contactID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -113,40 +112,24 @@ export class UsersListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
+    if (this.searchUserName !== '') {
       this.users = [];
       this.fetchUsers();
-      this.initDataTable();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
-      this.userName = '';
-      this.currentStatus = '';
-      this.departmentName = '';
+    if (this.searchUserName !== '') {
+      this.searchUserName = '';
+      this.contactID = '';
       this.users = [];
       this.fetchUsers();
-      this.initDataTable();
     } else {
       return false;
     }
   }
-
-  // deleteUser(userName) {
-  //   if (confirm('Are you sure you want to delete?') === true) {
-  //     this.apiService
-  //       .getData(`users/isDeleted/${userName}/` + 1)
-  //       .subscribe((result: any) => {
-  //         this.users = [];
-  //         this.fetchUsers();
-  //         this.initDataTable();
-  //         this.toastr.success('User Deleted Successfully!');
-  //       });
-  //   }
-  // }
  async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService

@@ -186,7 +186,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   };
   public searchTerm = new Subject<string>();
   public searchResults: any;
-
+  localAbsDocs = [];
   currentUserCarrier: string;
   newDocuments = [];
   newAddress = [];
@@ -425,6 +425,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       $(event.target).closest('.address-item').addClass('open');
       this.driverData.address[i][`userLocation`] = '';
       this.driverData.address[i].zipCode = '';
+      this.driverData.address[i].countryCode = '';
+      this.driverData.address[i].stateCode = '';
+      this.driverData.address[i].cityName = '';
+      this.driverData.address[i].zipCode = '';
+      this.driverData.address[i].address1 = '';
+      this.driverData.address[i].address2 = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
       this.driverData.address[i].countryCode = '';
@@ -564,23 +570,31 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.uploadedDocs[i] = files;
 
     } else {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.localAbsDocs.push(e.target.result);
+      };
+      reader.readAsDataURL(files[0]);
       this.abstractDocs = [];
       this.abstractDocs = files;
     }
 
   }
 
-  selectPhoto(event) {
-    const files = [...event.target.files];
-    const reader = new FileReader();
-    reader.onload = e => this.driverProfileSrc = reader.result;
-    reader.readAsDataURL(files[0]);
+  selectPhoto(event, name: any) {
+   if(name === null) {
     this.uploadedPhotos = [];
+    const files = [...event.target.files];
     this.uploadedPhotos.push(files[0]);
+   } else{
+    const type = 'image';
+    const index = 0;
+    this.uploadedPhotos = [];
+    const files = [...event.target.files];
+    this.uploadedPhotos.push(files[0]);
+    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {});
+   }
 
-    if (this.uploadedPhotos.length > 0) {
-      this.profileTitle = 'Change';
-    }
 
   }
 
@@ -1159,17 +1173,21 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(type === 'doc') {
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(index, 1);
-    } else if (type === 'image') {
-      this.driverProfileSrc = '';
-      this.driverData.driverImage = '';
-      this.uploadedPhotos = [];
     } else {
       this.absDocs.splice(index, 1);
       this.driverData.abstractDocs.splice(index, 1);
     }
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {});
   }
-
+  localDelete(type: string, name: string, index: any, dIndex: any) {
+    if(type === 'doc') {
+      this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
+      this.assetsDocs[index].splice(index, 1);
+    } else {
+      this.localAbsDocs.splice(index, 1);
+      this.abstractDocs.splice(index, 1);
+    }
+  }
   complianceChange(value) {
     if (value === 'non_Exempted') {
       this.driverData.hosDetails.type = 'ELD';

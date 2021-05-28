@@ -76,7 +76,6 @@ export class UserDetailsComponent implements OnInit {
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result = result.Items;', result);
       this.userData = {
         companyName: result.companyName,
         dbaName: result.dbaName,

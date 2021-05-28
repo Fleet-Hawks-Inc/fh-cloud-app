@@ -5,7 +5,7 @@
                 <div class="row px-4" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2 pr-0 pl-0">
                       <div class="input-group input-group-md">
-                        <input type="text" autocomplete="off" name="name" [(ngModel)]="name"
+                        <input type="text" autocomplete="off" name="searchUserName" [(ngModel)]="searchUserName"
                           placeholder="Search user by name" class="form-control" (input)="getSuggestions($event.target.value)">
                      </div>
                      <div *ngIf="suggestedUsers?.length > 0" class="result-suggestions">

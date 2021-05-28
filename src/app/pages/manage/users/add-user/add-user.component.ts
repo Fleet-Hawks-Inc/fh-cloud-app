@@ -81,9 +81,9 @@ export class AddUserComponent implements OnInit {
       confirmPassword: ''
     }
   };
-  public profilePath: any = 'assets/img/driver/driver.png';
+  public profilePath: any = '';
   public detailImgPath: any = 'assets/img/driver/driver.png';
-  public defaultProfilePath: any = 'assets/img/driver/driver.png';
+  public defaultProfilePath: any = '';
   imageText = 'Add Picture';
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
@@ -260,7 +260,6 @@ export class AddUserComponent implements OnInit {
     let files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
-    console.log('this.uploadedPhotos', this.uploadedPhotos);
   }
 
   async addUser() {
@@ -349,7 +348,6 @@ export class AddUserComponent implements OnInit {
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result = result.Items;', result);
       this.userData = {
         companyName: result.companyName,
         dbaName: result.dbaName,
@@ -406,9 +404,6 @@ export class AddUserComponent implements OnInit {
       if (result.profileImg !== '' && result.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
         this.imageText = 'Update Picture';
-      } else {
-        this.profilePath = this.defaultProfilePath;
-        this.imageText = 'Add Picture';
       }
     });
   }
@@ -435,7 +430,6 @@ export class AddUserComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
       }
     }
-    console.log('userdata put', this.userData);
     // create form data instance
     const formData = new FormData();
 
@@ -479,4 +473,5 @@ export class AddUserComponent implements OnInit {
         }
       });
   }
+
 }

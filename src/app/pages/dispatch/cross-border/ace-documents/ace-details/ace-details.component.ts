@@ -316,7 +316,6 @@ export class AceDetailsComponent implements OnInit {
           e.licensePlates[0].country = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
         });
      }
-     console.log('trailers',trailers);
     }
 
   }
