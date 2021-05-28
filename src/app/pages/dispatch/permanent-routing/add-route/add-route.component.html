@@ -37,7 +37,7 @@
                                                         Route is required.
                                                     </div>
                                                     <div *ngIf="routeNumber.errors.pattern">
-                                                        Route must contains numbers only.
+                                                        Route must contain numbers only.
                                                     </div>
 
 
@@ -55,10 +55,10 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="routeName.errors.required">
-                                                        Route Name is required.
+                                                        Route name is required.
                                                     </div>
                                                     <div *ngIf="routeName.errors.pattern">
-                                                        Route name must contains letters and numbers only.
+                                                        Route name must be alphanumeric only.
 
                                                     </div>
 
@@ -179,7 +179,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sAddress.errors.required">
-                                                        Source Address is required.
+                                                        Source address is required.
                                                     </div>
 
 
@@ -207,14 +207,14 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCountry.errors.required">
-                                                        Source Country is required.
+                                                        Source country is required.
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  Province or State<span
+                                                  Province/State<span
                                                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
@@ -224,7 +224,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sProvince.errors.required">
-                                                        Source Province or State is required.
+                                                        Source province/state is required.
                                                     </div>
 
 
@@ -241,7 +241,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCity.errors.required">
-                                                        Source City is required.
+                                                        Source city is required.
                                                     </div>
 
                                                 </div>
@@ -258,7 +258,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="sCode.errors.required">
-                                                        Source Zip Code is required.
+                                                        Source zip code is required.
                                                     </div>
 
 
@@ -288,7 +288,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dAddress.errors.required">
-                                                        Destination Address is required.
+                                                        Destination address is required.
                                                     </div>
 
                                                 </div>
@@ -315,7 +315,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCountry.errors.required">
-                                                        Destination Country is required.
+                                                        Destination country is required.
                                                     </div>
 
 
@@ -323,7 +323,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  Province or State<span
+                                                  Province/State<span
                                                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
@@ -333,7 +333,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dProvince.errors.required">
-                                                        Destination Province or State is required.
+                                                        Destination province/state is required.
                                                     </div>
 
 
@@ -350,7 +350,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCity.errors.required">
-                                                        Destination City is required.
+                                                        Destination city is required.
                                                     </div>
 
 
@@ -368,7 +368,7 @@
                                                     class="text-danger">
 
                                                     <div *ngIf="dCode.errors.required">
-                                                        Destination Zip Code is required.
+                                                        Destination zip code is required.
                                                     </div>
 
 
