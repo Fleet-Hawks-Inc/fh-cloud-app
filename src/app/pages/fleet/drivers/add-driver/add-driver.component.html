@@ -791,7 +791,7 @@
                           pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
                         <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
-                            ACI id must contain alphanumeric only.
+                            ACI id must 10 alphanumeric characters only.
                           </div>
 
                         </div>
@@ -805,7 +805,7 @@
                           pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
                         <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
-                            ACE id must contain alphanumeric only.
+                            ACE id must contain 10 alphanumeric characters only.
                           </div>
 
                         </div>
