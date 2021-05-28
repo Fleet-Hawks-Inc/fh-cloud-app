@@ -61,8 +61,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   carrierFee:'',
   conversionRate:'',
   reference:'',
-    reimburseToDriver:'',
-    deductFromPay: '',
+  reimburseToDriver:false,
+  deductFromPay:false,
       odometer: 0,
       description: '',
       uploadedPhotos: []
@@ -308,6 +308,8 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.odometer = result.odometer;
          this.fuelData.quantity=result.quantity;
          this.fuelData.reference=result.transactionID
+        //  this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
+        //  this.fuelData.deductFromPay=result.deductFromPay || false;
          
 
          this.fuelData.taxes = tax;
