@@ -52,7 +52,7 @@
                               Trip number is required.
                             </div>
                             <div *ngIf="TripNum.errors.pattern">
-                              Trip number must be of 4-21 upper case letter and numbers with no spaces or special characters.
+                              Trip number must be of 4-21 alphanumeric with no spaces or special characters and letters must be upper case.
                             </div>
                           </div>
                       </div>
@@ -146,7 +146,7 @@
                               <div *ngIf="Aseal.invalid && (Aseal.dirty || Aseal.touched)" class="text-danger">
 
                                 <div *ngIf="Aseal.errors.pattern">
-                                  Seal must contain a string value between 2 and 15 letters and number.
+                                  Seal must contain an alphanumeric string value between 2 and 15.
                                 </div>
                               </div>
                           </div>
@@ -326,7 +326,7 @@
                             <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
 
                               <div *ngIf="docNum.errors.pattern">
-                                Document# must contain letters, numbers, dashes ,spaces and no other characters.
+                                Document# must contain alphanumeric, dashes, spaces and no other characters.
                               </div>
                             </div>
                           </div>
@@ -577,7 +577,7 @@
                                       Shipment Control Number is required.
                                     </div>
                                     <div *ngIf="ShipCn.errors.pattern">
-                                      Shipment control must be of 4-12 upper case letters and numbers with no spaces or special characters.
+                                      Shipment control must be of 4-12 alphanumeric with no spaces or special characters and letters must be upper case.
                                     </div>
                                   </div>
                               </div>
@@ -1072,7 +1072,7 @@
                                 <div>
 
                                   <div *ngIf="c4l.errors.pattern">
-                                    C4 line release# must contain 14 digit with letters and numbers with no special characters.
+                                    C4 line release# must contain 14 digit of alphanumeric no special characters.
                                    </div>
                                 </div>
 
@@ -1091,7 +1091,7 @@
                                 <div>
 
                                   <div *ngIf="commUSD.errors.pattern">
-                                    Commodity value in USD must contain numbers, with one decimal allowed.
+                                    Commodity value in USD must contain numbers with one decimal allowed.
                                    </div>
                                 </div>
 
@@ -1409,7 +1409,7 @@
                                       <div *ngIf="A2seal.invalid && (A2seal.dirty || A2seal.touched)" class="text-danger">
 
                                         <div *ngIf="A2seal.errors.pattern">
-                                          Seal must contain a string value between 2 and 15 letters and numbers.
+                                          Seal must contain an alphanumeric string value between 2 and 15.
                                         </div>
                                       </div>
                                   </div>
