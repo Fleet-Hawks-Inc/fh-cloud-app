@@ -154,13 +154,13 @@
                                    </tr>
                                    <tr *ngIf="fuelData.reimburseToDriver">
                                     <td class="back-color-gray font-weight-bold">Reimburse to driver</td>
-                                    <td><span *ngIf="fuelData.reimburseToDriver === 'true'">YES</span>
-                                      <span *ngIf="fuelData.reimburseToDriver === 'false'">NO</span></td>
+                                    <td><span *ngIf="fuelData.reimburseToDriver">YES</span>
+                                      <!-- <span *ngIf="fuelData.reimburseToDriver == false">NO</span></td> -->
                                  </tr>
                                  <tr *ngIf="fuelData.deductFromPay">
                                   <td class="back-color-gray font-weight-bold">Deduct from pay</td>
-                                  <td><span *ngIf="fuelData.deductFromPay === 'true'">YES</span>
-                                    <span *ngIf="fuelData.deductFromPay === 'false'">NO</span></td>
+                                  <td><span *ngIf="fuelData.deductFromPay">YES</span>
+                                    <!-- <span *ngIf="fuelData.deductFromPay == false">NO</span></td> -->
                                </tr>
                                    <tr *ngIf="fuelData.paymentMode">
                                     <td class="back-color-gray font-weight-bold">Payment Mode</td>

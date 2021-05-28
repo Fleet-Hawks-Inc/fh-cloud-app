@@ -72,6 +72,7 @@ export class FuelEntryListComponent implements OnInit {
     private httpClient: HttpClient) {
   }
   ngOnInit() {
+    this.fetchVendorList();
     this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
@@ -82,7 +83,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
-    this.fetchVendorList();
+    
     this.fetchWexCategories();
     this.initDataTable();
     $(document).ready(() => {
@@ -144,10 +145,14 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
-      console.log(result)
-      this.vendorList = result;
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      
+       result.forEach(element=>{
+         this.vendorList[element.contactID]=element.companyName
+      
+      });
     });
+  
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {

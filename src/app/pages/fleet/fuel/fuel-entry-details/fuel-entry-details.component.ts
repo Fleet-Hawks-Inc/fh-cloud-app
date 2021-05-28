@@ -61,8 +61,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   carrierFee:'',
   conversionRate:'',
   reference:'',
-    reimburseToDriver:'',
-    deductFromPay: '',
+  reimburseToDriver:false,
+  deductFromPay:false,
       odometer: 0,
       description: '',
       uploadedPhotos: []
@@ -151,23 +151,28 @@ export class FuelEntryDetailsComponent implements OnInit {
     })
   }
 
-  fetchVehicleList() {
-    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+  async fetchVehicleList() {
+    await this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
   }
-  fetchVendorList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.vendorList = result;
+  async fetchVendorList() {
+    await this.apiService.getData('vendors').subscribe((result: any) => {
+      
+       result.forEach(element=>{
+         this.vendorList[element.contactID]=element.companyName
+      
+      });
     });
+  
   }
   fetchDriverList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driverList = result;
     });
   }
-  fetchTaxWEXCode() {
-    this.httpClient.get('assets/jsonFiles/fuel/wexTaxType.json').subscribe((result: any) => {    
+  async fetchTaxWEXCode() {
+    await this.httpClient.get('assets/jsonFiles/fuel/wexTaxType.json').subscribe((result: any) => {    
     this.WEXTaxCodeList = result;
     });
   }
@@ -248,13 +253,16 @@ export class FuelEntryDetailsComponent implements OnInit {
       .subscribe((result: any) => {
 
        // console.log(result)
+       console.log(result)
         
         if(result.Items[0].fuelProvider=="WEX"){
           let tax=[];
           
          result = result.Items[0];
+         
          if(result.tax.length>0){
          result.tax.forEach(element=>{
+           
            let singleTax={
              taxCode:element.taxCode,
              taxDesc:this.WEXTaxCodeList[element.taxCode],
@@ -292,7 +300,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         
          this.fuelData.fuelCardNumber = result.fuelCardNumber;
         
-         this.fuelData.vendorID = result.cityName;
+         this.fuelData.vendorID = this.vendorList[result.vendorID] || result.cityName;
         this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.locationCountry);
          this.fuelData.stateName = CountryStateCity.GetStateNameFromCode(result.locationState, result.locationCountry);
          this.fuelData.cityName = result.cityName;
@@ -300,6 +308,9 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.odometer = result.odometer;
          this.fuelData.quantity=result.quantity;
          this.fuelData.reference=result.transactionID
+        //  this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
+        //  this.fuelData.deductFromPay=result.deductFromPay || false;
+         
 
          this.fuelData.taxes = tax;
         
@@ -334,7 +345,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.discountAmount = result.discAmount;
         this.fuelData.DEFFuelQty=result.DEFFuelQty;
         this.fuelData.DEFFuelQtyAmt=result.DEFFuelQtyAmt
-        
+        this.fuelData.fuelCardNumber=result.fuelCardNumber;
          this.fuelData.ppu =  result.pricePerUnit;
          this.fuelData.amount= result.fuelQtyAmt;
          this.fuelData.retailPpu="";
@@ -345,7 +356,8 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.fuelDateTime =  date.format('MMM Do YYYY, h:mm a')
          this.fuelData.paidBy = this.driverList[result.paidBy];
          this.fuelData.fuelCardNumber = "";
-         this.fuelData.reimburseToDriver=result.reimburseToDriver
+         this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
+         this.fuelData.deductFromPay=result.deductFromPay || false;
         
          this.fuelData.vendorID = result.cityName;
          this.fuelData.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryCode);
@@ -358,6 +370,7 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.uploadedPhotos=result.uploadedPhotos;
          this.fuelData.paymentMode=result.paymentMode;
          this.fuelData.reference=result.reference;
+         this.fuelData.description=result.description
          
          this.fuelData.taxes = tax;
         }
