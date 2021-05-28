@@ -355,7 +355,7 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province or State</label>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State</label>
                             <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
                               [(ngModel)]="document.stateProvince">
@@ -931,7 +931,7 @@
                               </div>
                               <div class="row">
                                 <div class="col-lg-10">
-                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province/State</label>
                                   <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyStateSelect"
                                     (change)="getThirdPartyCity($event,s,p)"
                                     [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateCode'"
