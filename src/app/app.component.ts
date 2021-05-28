@@ -73,6 +73,19 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
 
   ngOnInit() {
     this.listenToLoading();
+
+    window.addEventListener('storage', (event) => {
+      if (event.storageArea == localStorage) {
+           let token = localStorage.getItem('accessToken');
+           if(token == undefined) { 
+             // Perform logout
+             //Navigate to login/home
+              this.router.navigate(['/Login']); 
+           } else {
+            this.router.navigate(['/Map-Dashboard']); 
+           }
+      }
+  });
   }
 
   /**

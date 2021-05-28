@@ -90,7 +90,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
-    this.initDataTable();
+    
     $(document).ready(() => {
       // this.form = $('#form_').validate();
     });
@@ -106,6 +106,7 @@ export class CompanyDocumentsComponent implements OnInit {
         if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
           this.docEndPoint = this.totalRecords;
         }
+        this.initDataTable();
       },
     });
   }
@@ -327,6 +328,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
 
+          this.toastr.success('Document deleted successfully.'); 
           this.fetchDocuments();
           this.initDataTable(); 
         });
@@ -395,6 +397,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.documents = [];
         this.suggestions = [];
+        this.filterValues.searchValue = this.filterValues.searchValue.toLowerCase();
         if (this.filterValues.startDate !== '') {
           this.filterValues.start = this.filterValues.startDate;
         }
@@ -403,7 +406,6 @@ export class CompanyDocumentsComponent implements OnInit {
         }
         // this.pageLength = this.totalRecords;
         this.fetchDocumentsCount();
-        this.initDataTable();
       }
     } else {
       return false;
@@ -425,7 +427,6 @@ export class CompanyDocumentsComponent implements OnInit {
       };
       this.resetCountResult();
       this.fetchDocumentsCount();
-      this.initDataTable();
       
     } else {
       return false;
