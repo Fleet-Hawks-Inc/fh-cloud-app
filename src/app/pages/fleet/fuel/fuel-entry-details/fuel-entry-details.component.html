@@ -53,6 +53,23 @@
                                        <td>{{fuelData.unitNumber}} </td>
                                     </tr>
                                     
+                                    <tr *ngIf="fuelData.category">
+                                       <td class="back-color-gray font-weight-bold">Item Type</td>
+                                       <td>{{fuelData.category}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.groupCategory">
+                                       <td class="back-color-gray font-weight-bold">Category</td>
+                                       <td>{{fuelData.groupCategory}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.carrierFee">
+                                       <td class="back-color-gray font-weight-bold">Carrier Fee</td>
+                                       <td>{{fuelData.carrierFee}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.conversionRate">
+                                       <td class="back-color-gray font-weight-bold">Conversion Rate</td>
+                                       <td>{{fuelData.conversionRate}} </td>
+                                    </tr>
+
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Odometer</td>
                                        <td>{{fuelData.odometer}} </td>
@@ -117,8 +134,6 @@
                                        <td class="back-color-gray font-weight-bold">Fuel Type</td>
                                        <td >
                                           {{fuelData.fuelType}}
-                                          
-
                                           </td>
 
                                     </tr>

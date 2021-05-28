@@ -98,10 +98,10 @@
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
                             <span *ngIf="fuelEntry.useType == 2">Reefer</span>
                             <span *ngIf="fuelEntry.useType == 1">Vehicle</span>
-                            <span *ngIf="fuelEntry.useType == 0">Non-Fuel</span>
+                            <span *ngIf="fuelEntry.useType == 0">{{fuelEntry.category}}</span>
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
-                            <span *ngIf="fuelEntry.useType == 0">Non-Fuel</span>
+                            <span *ngIf="fuelEntry.useType == 0">{{fuelEntry.category}}</span>
                             <span *ngIf="fuelEntry.fuelType">{{WEXCodeList[fuelEntry.fuelType]}}</span>
                           </td>
 
@@ -131,7 +131,7 @@
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
 
-                            {{fuelEntry.locationState}}, {{fuelEntry.countryCode}}
+                            {{fuelEntry.locationState}}, {{fuelEntry.locationCountry}}
 
                           </td>
                           <!-- <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
