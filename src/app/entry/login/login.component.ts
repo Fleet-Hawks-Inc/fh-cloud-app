@@ -85,9 +85,9 @@ export class LoginComponent implements OnInit {
       this.showSigupCode = true;
     }
   }
-    /** Cognito user action */
+   /** Cognito user action */
   loginAction1 = async () => {
-     let token = localStorage.getItem('accessToken');
+    let token = localStorage.getItem('accessToken');
     if(token != null) {
       this.router.navigate(['/Map-Dashboard']);
     }
@@ -162,6 +162,13 @@ export class LoginComponent implements OnInit {
       this.hasError = true;
       this.Error = err.message || 'Error during login';
     }
+  }
+  else{
+    this.hasError = true;
+    this.Error='Username and password is required'
+
+  }
+
   }
   submitConfirmationCode = async () => {
     if (this.signUpCode !== '') {
