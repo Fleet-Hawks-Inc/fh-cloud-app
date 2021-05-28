@@ -398,7 +398,7 @@
 
 
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State or Province<span
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State<span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                                 [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
@@ -1123,7 +1123,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province/State</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
                                           [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.stateCode'" placeholder="Select Province"
                                           [(ngModel)]="deliveryDestination.address.stateCode"
@@ -1279,7 +1279,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Province/State</label>
                                         <ng-select [ngModelOptions]="{standalone: true}"
                                           [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.stateCode'" id="notifyPartyStateSelect" placeholder="Select Province"
                                           [(ngModel)]="notifyParty.address.stateCode"
