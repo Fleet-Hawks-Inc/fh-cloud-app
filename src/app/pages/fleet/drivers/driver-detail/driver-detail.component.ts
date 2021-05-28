@@ -141,7 +141,6 @@ export class DriverDetailComponent implements OnInit {
     this.fetchDocuments();
     this.fetchDriverTrips();
     this.fetchVehicleList();
-    this.fetchDriverTrips();
     this.fetchDriverList();
     this.fetchAssetList();
   }
@@ -410,7 +409,6 @@ export class DriverDetailComponent implements OnInit {
   fetchDriverTrips() {
     this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
       this.trips = result.Items;
-      console.log('this.trips', this.trips);
     });
   }
 }
