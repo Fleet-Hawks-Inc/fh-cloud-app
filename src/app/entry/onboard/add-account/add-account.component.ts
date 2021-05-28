@@ -133,12 +133,10 @@ export class AddAccountComponent implements OnInit {
     this.addressDetails[oid].stateCode = '';
     this.addressDetails[oid].cityName = '';
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
-  //  console.log('this.states', this.states);
   }
   async getCities(id: any, oid = null, CID: any) {
     this.addressDetails[oid].cityName = '';
     this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
-  //  console.log('this.cities', this.cities);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
@@ -193,7 +191,6 @@ export class AddAccountComponent implements OnInit {
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    console.log('result address',result);
     this.addressDetails[i][`userLocation`] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
@@ -236,7 +233,6 @@ export class AddAccountComponent implements OnInit {
     for(let i=0; i < this.addressDetails.length;i++){
       if(this.addressDetails[i].addressType === 'yard') {
         this.yardAddress = true;
-        console.log('this.addressDetails[i].addressType', this.addressDetails[i].addressType);
         break;
       }else{
         this.yardAddress = false;
@@ -281,7 +277,6 @@ export class AddAccountComponent implements OnInit {
         data.MC = null;
         data.DOT = null;
       }
-      console.log('data',data);
       // create form data instance
       const formData = new FormData();
       // append photos if any

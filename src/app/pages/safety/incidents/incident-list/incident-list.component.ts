@@ -218,7 +218,7 @@ export class IncidentListComponent implements OnInit {
   fetchevents() {
     this.apiService.getData('safety/eventLogs/fetch?event=incident')
       .subscribe((result: any) => {
-        // console.log(result);
+       
         this.totalRecords = result.Count;
       })
   }

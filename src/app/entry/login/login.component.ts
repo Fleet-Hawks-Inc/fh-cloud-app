@@ -25,12 +25,14 @@ export class LoginComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private router: Router,
-              private authService: AuthService) {}
+              private authService: AuthService) {
+                if (this.authService.isAuthenticated()) {
+                  this.router.navigate(['/Map-Dashboard']);
+                }
+              }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/Map-Dashboard']);
-    }
+    
   }
 
   toggleFieldTextType() {
@@ -48,8 +50,7 @@ export class LoginComponent implements OnInit {
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
-        console.log(this.Error);
-       // console.log("clickes");
+       
       },
       next: (res) => {
         const user: User =   { id: '1',
@@ -84,6 +85,11 @@ export class LoginComponent implements OnInit {
   }
   /** Cognito user action */
   loginAction1 = async () => {
+
+    let token = localStorage.getItem('accessToken');
+    if(token != null) {
+      this.router.navigate(['/Map-Dashboard']);
+    }
     if((this.userName)&&(this.password)){
     try {
       // This should go in Register component
@@ -106,8 +112,7 @@ export class LoginComponent implements OnInit {
         this.Error = 'User has not active devices';
 
       } else {
-        console.log('user logged In');
-
+        
         /**
          * For the Role Management
          * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}

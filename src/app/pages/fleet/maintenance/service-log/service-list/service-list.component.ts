@@ -167,7 +167,7 @@ export class ServiceListComponent implements OnInit {
         this.getStartandEndVal();
 
         this.logs = result['Items'];
-        console.log('logs', this.logs);
+        
         if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;

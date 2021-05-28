@@ -88,7 +88,6 @@ export class EditComponent implements OnInit, OnDestroy {
       )
       .subscribe((result: any) => {
         this.lastEvent = result;
-        console.log(this.lastEvent);
         this.getGraphData();
       });
   }
@@ -156,14 +155,14 @@ export class EditComponent implements OnInit, OnDestroy {
       });
 
     // this.sharedData$.subscribe((result) => {
-    //   console.log(result);
+    //   
     //
     //   for (let i = 0; i < result.length; i++) {
     //     for (const key in result[i]) {
     //       if (result[i].hasOwnProperty(key)) {
     //         //add event list localy
     //         //this.eventList = result[i][key].eventList;
-    //         //console.log(this.eventList);
+    //         
     //         //Add duty status data
     //         this.refineDutyStatusData(result[i][key].dutyCycleChanges);
     //
@@ -181,7 +180,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
        // map((result) =>  result.time ) )
       //.subscribe((result: any) => {
-      //  console.log(result);
+      //  
 
 
 
@@ -190,7 +189,7 @@ export class EditComponent implements OnInit, OnDestroy {
         //     if (result[i].hasOwnProperty(key)) {
         //       //add event list localy
         //       this.eventList = result[i][key].eventList;
-        //       //console.log(this.eventList);
+        //       
         //       //Add duty status data
         //       this.refineDutyStatusData(result[i][key].dutyCycleChanges);
         //
@@ -210,7 +209,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
   isTimeClashes_() {
     this.timeClash = false;
-    //console.log(this.fromTime_.nativeElement.value + ' ' + this.toTime_.nativeElement.value);
+    
     this.eventType = $('#eventType').val();
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
@@ -245,13 +244,13 @@ export class EditComponent implements OnInit, OnDestroy {
     //  * If The Dates Are Valid From The User
     //  */
     // if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
-    //   console.log('E2E dates true');
+    //   
     // }
     // /**
     //  * If The Dates Are InValid From The User
     //  */
     // else {
-    //   console.log('E2E dates false');
+    //   
     // }
     //
     // /*********************************/
@@ -295,7 +294,7 @@ export class EditComponent implements OnInit, OnDestroy {
   addEvent() {
     //check if entered time clashes with others
 
-    //console.log(this.selectedDate);
+    //
 
     if (!this.isTimeClashes_()) {
 
@@ -315,9 +314,6 @@ export class EditComponent implements OnInit, OnDestroy {
 
       this.toTimeStamp = moment(explodedDate[2] + '-' + explodedDate[1] + '-' + explodedDate[0] + ' ' + this.toTime).unix();
 
-      console.log('from unix timestamp ' + this.fromTimeStamp);
-      console.log('to unix timestamp ' + this.toTimeStamp);
-
       // this.toastr.success('Success', 'Event Successfully Saved', {
       //   timeOut: 3000
       // });
@@ -332,7 +328,6 @@ export class EditComponent implements OnInit, OnDestroy {
         toTimeStamp: this.toTimeStamp
       };
 
-      console.log(data);
       this.apiService
         .postData('eventLogs/HOSAddAndModify', data)
         .subscribe((result: any) => {
@@ -408,8 +403,6 @@ export class EditComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(this.duties);
-    console.log(this.lastEvent);
   }
 
   calculateTimeDiffInMinutes(start: any, end: any) {
@@ -509,13 +502,8 @@ export class EditComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    console.log(this.fromTime);
-    console.log(this.toTime);
     let list = this.eventList;
     for (let i = 0; i < list.length; i++) {
-
-
-     console.log('you need to remove between '+ list[i].time + ' ' + list[i].toTime);
     }
   }
 

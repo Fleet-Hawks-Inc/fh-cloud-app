@@ -40,10 +40,10 @@ export class QuoteDetailComponent implements OnInit {
           this.shipperInfo = this.quoteData[0].shipperInfo;
           this.receiverInfo = this.quoteData[0].receiverInfo;
           this.freightInfo = this.quoteData[0].freightInfo;
-          console.log('this.quoteData', this.quoteData);
+          
         }
       }, (err) => {
-        console.log('quote detail', err);
+        
       });
   }
 }

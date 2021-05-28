@@ -93,7 +93,7 @@ export class AddInventoryComponent implements OnInit {
     private listService: ListService
   ) {
     this.itemID = this.route.snapshot.params[`itemID`];
-    console.log(this.itemID);
+    
     if (this.itemID) {
       this.pageTitle = `Edit Driver`;
       this.getInventory();

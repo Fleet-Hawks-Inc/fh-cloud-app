@@ -252,7 +252,7 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        console.log('result',result);
+        
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;

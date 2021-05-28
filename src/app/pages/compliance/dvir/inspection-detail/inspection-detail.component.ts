@@ -29,7 +29,6 @@ export class InspectionDetailComponent implements OnInit {
         result = result.Items[0];
         this.tripType = result.tripType;
         this.fetchCarrier(result.carrierID);
-        console.log(result);
       });
   }
 

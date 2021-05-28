@@ -362,7 +362,7 @@ export class DriverDetailComponent implements OnInit {
   }
   fetchDriverTrips() {
     this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
-      console.log('trip result', result);
+      
     });
   }
 }

@@ -82,7 +82,7 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
-        console.log('this.logsData', this.logsData);
+        
 
         this.fetchSelectedIssues(this.logsData.selectedIssues);
        
@@ -158,7 +158,7 @@ export class ServiceDetailComponent implements OnInit {
   fetchUsers(){
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.users = result;
-      console.log('this.users', this.users)
+      
     });
   }
 

@@ -238,7 +238,7 @@ export class FuelEntryListComponent implements OnInit {
       this.suggestedUnits = [];
       this.getStartandEndVal();
       this.fuelList = result[`Items`];
-      console.log('this.fuelList',this.fuelList);
+      
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;

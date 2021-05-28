@@ -33,8 +33,6 @@ export class HeaderComponent implements OnInit {
         val = activeTab;
       }
       this.navSelected = val;
-
-      console.log('this.navSelected', this.navSelected);
     });
   }
 
@@ -71,7 +69,7 @@ fetchCarrier() {
 }
 
   Logout() {
-    console.log('logout');
+    
     Auth.signOut();
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');

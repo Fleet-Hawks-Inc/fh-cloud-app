@@ -2305,7 +2305,7 @@ export class AddressBookComponent implements OnInit {
 
   getStates(countryCode, type='', index='') {
     let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    console.log('states=======', states);
+    
     let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     if(type == 'vendor') {
       this.vendorData.address[index].countryName = countryName;

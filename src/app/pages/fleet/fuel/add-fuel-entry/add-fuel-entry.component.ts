@@ -260,7 +260,7 @@ export class AddFuelEntryComponent implements OnInit {
     if(this.fuelData.paymentMode != 'Fuel_Card'){
       this.fuelData.fuelCardNumber = null;
     }
-    console.log('fuel data', this.fuelData);
+    
     // create form data instance
     const formData = new FormData();
     // append photos if any

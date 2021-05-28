@@ -337,7 +337,7 @@ calculateActualMiles(miles){
     this.searchResults = false;
     this.reinitMap();
     $('div').removeClass('show-search__result');
-    console.log('this.routeData.stops', this.routeData.stops);
+    
   }
 
   setSourceValue(labelResult) {
