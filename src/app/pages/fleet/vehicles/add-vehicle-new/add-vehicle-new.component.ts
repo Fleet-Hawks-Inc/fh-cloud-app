@@ -1192,4 +1192,12 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
+  clearGroup() {
+    this.groupData = {
+      groupType: 'vehicles',
+      groupName: '',
+      groupMembers: [],
+      description: '',
+    };
+  }
 }
