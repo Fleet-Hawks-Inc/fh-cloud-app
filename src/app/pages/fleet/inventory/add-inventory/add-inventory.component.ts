@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { DomSanitizer} from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 declare var $: any;
 
 @Component({
@@ -25,7 +26,7 @@ export class AddInventoryComponent implements OnInit {
   quantity = '';
   itemName = '';
   description = '';
-  categoryID = '';
+  category = '';
   warehouseID = '';
   aisle = '';
   row = '';
@@ -42,7 +43,6 @@ export class AddInventoryComponent implements OnInit {
   photos = [];
   documents = [];
   vendors: any = [];
-  itemGroups = [];
   warehouses = [];
   existingPhotos = [];
   existingDocs = [];
@@ -63,16 +63,17 @@ export class AddInventoryComponent implements OnInit {
    * warehouse props
    */
   warehouseName = '';
-  countryID = '';
-  stateID = '';
-  cityID = '';
+  countryName = '';
+  countryCode = '';
+  stateName = '';
+  stateCode = '';
+  cityName = '';
   zipCode = '';
   address = '';
   warehoseForm = '';
   hasWarehouseSuccess = false;
   warehouseSuccess = '';
   pdfSrc: any;
-  countries = [];
   states = [];
   cities = [];
 
@@ -93,7 +94,7 @@ export class AddInventoryComponent implements OnInit {
     private listService: ListService
   ) {
     this.itemID = this.route.snapshot.params[`itemID`];
-    
+
     if (this.itemID) {
       this.pageTitle = `Edit Driver`;
       this.getInventory();
@@ -135,7 +136,7 @@ export class AddInventoryComponent implements OnInit {
       this.quantity = result.quantity;
       this.itemName = result.itemName;
       this.description = result.description;
-      this.categoryID = result.categoryID;
+      this.category = result.category;
       this.warehouseID = result.warehouseID;
       this.aisle = result.aisle;
       this.row = result.row;
@@ -170,39 +171,28 @@ export class AddInventoryComponent implements OnInit {
   }
   ngOnInit() {
     this.listService.fetchVendors();
-    this.fetchItemGroups();
-    this.fetchCountries();
     this.fetchWarehouses();
 
     this.vendors = this.listService.vendorList;
   }
 
   fetchWarehouses() {
-    this.apiService.getData('warehouses').subscribe((result: any) => {
+    this.apiService.getData('items/get/warehouses').subscribe((result: any) => {
       this.warehouses = result.Items;
     });
   }
 
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
 
-  getStates() {
-    this.apiService
-      .getData('states/country/' + this.countryID)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+  getStates(countryCode: any) {
+    this.stateCode = '';
+    this.cityName = '';
+    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-
-  getCities() {
-    this.apiService
-      .getData('cities/state/' + this.stateID)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
+   getCities(countryCode: any, stateCode: any) {
+    this.cityName = '';
+    this.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.cities   = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
 
   showWarehoseModal() {
@@ -219,11 +209,6 @@ export class AddInventoryComponent implements OnInit {
     });
   }
 
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
-    });
-  }
 
   addInventory() {
     this.hasError = false;
@@ -237,7 +222,7 @@ export class AddInventoryComponent implements OnInit {
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
-      categoryID: this.categoryID,
+      category: this.category,
       warehouseID: this.warehouseID,
       aisle: this.aisle,
       row: this.row,
@@ -269,7 +254,7 @@ export class AddInventoryComponent implements OnInit {
      // append other fields
      formData.append('data', JSON.stringify(data));
 
-    this.apiService.postData("items", formData, true).subscribe({
+    this.apiService.postData('items/add/item', formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -298,7 +283,7 @@ export class AddInventoryComponent implements OnInit {
         this.quantity = '';
         this.itemName = '';
         this.description = '';
-        this.categoryID = '';
+        this.category = '';
         this.warehouseID = '';
         this.aisle = '';
         this.row = '';
@@ -312,7 +297,6 @@ export class AddInventoryComponent implements OnInit {
         this.days = '';
         this.time = '';
         this.notes = '';
-        this.Success = 'Inventory Added successfully';
         this.toastr.success('Inventory Added Successfully');
         this.router.navigateByUrl('/fleet/inventory/list');
       },
@@ -339,45 +323,7 @@ export class AddInventoryComponent implements OnInit {
     this.errors = {};
   }
 
-  addGroup() {
-    this.hasGroupSuccess = false;
-    this.hideErrors();
 
-    const data = {
-      groupName: this.groupName,
-      groupDescription: this.groupDescription,
-    };
-
-    this.apiService.postData('itemGroups', data).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => {},
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasGroupSuccess = true;
-        this.groupSuccess = 'Group Added successfully';
-        this.groupName = '';
-        this.groupDescription = '';
-        this.fetchItemGroups();
-        $('#categoryModal').modal('hide');
-        this.toastr.success('Category Added successfully');
-      },
-    });
-  }
 
   updateInventory() {
     this.hasError = false;
@@ -392,7 +338,7 @@ export class AddInventoryComponent implements OnInit {
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
-      categoryID: this.categoryID,
+      category: this.category,
       warehouseID: this.warehouseID,
       aisle: this.aisle,
       row: this.row,
@@ -412,16 +358,16 @@ export class AddInventoryComponent implements OnInit {
      // create form data instance
      const formData = new FormData();
 
-     //append photos if any
+     // append photos if any
      for(let i = 0; i < this.uploadedPhotos.length; i++){
        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
      }
-     //append docs if any
+     // append docs if any
      for(let j = 0; j < this.uploadedDocs.length; j++){
        formData.append('uploadedDocs', this.uploadedDocs[j]);
      }
 
-     //append other fields
+     // append other fields
      formData.append('data', JSON.stringify(data));
 
     this.apiService.putData('items', formData, true).subscribe({
@@ -444,14 +390,16 @@ export class AddInventoryComponent implements OnInit {
 
     const data = {
       warehouseName: this.warehouseName,
-      countryID: this.countryID,
-      stateID: this.stateID,
-      cityID: this.cityID,
+      countryCode: this.countryCode,
+      countryName: this.countryName,
+      stateCode: this.stateCode,
+      stateName: this.stateName,
+      cityName: this.cityName,
       zipCode: this.zipCode,
       address: this.address,
     };
 
-    this.apiService.postData('warehouses', data).subscribe({
+    this.apiService.postData('items/add/warehouse', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -474,9 +422,11 @@ export class AddInventoryComponent implements OnInit {
         this.hasWarehouseSuccess = true;
         this.warehouseSuccess = 'Warehouse Added successfully';
         this.warehouseName = '';
-        this.countryID = '';
-        this.stateID = '';
-        this.cityID = '';
+        this.countryCode = '';
+        this.stateCode = '';
+        this.countryName = '';
+        this.stateName = '';
+        this.cityName = '';
         this.zipCode = '';
         this.address = '';
         this.fetchWarehouses();

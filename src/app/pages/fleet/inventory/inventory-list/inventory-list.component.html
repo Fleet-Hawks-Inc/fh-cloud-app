@@ -40,7 +40,7 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="itemGroupID" name="itemGroupID" style="width: 100%;" placeholder="Search items by category">
-                                <ng-option *ngFor="let data of allCompanies" [value]="data.groupID">{{data.groupName}}</ng-option>
+                                <ng-option [value]="hardware">Hardware</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -449,9 +449,9 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">From
                                         Warehouse</label>
                                     <select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
-                                   
+
                                         [(ngModel)] ="warehouseID1">
-                                        
+
                                         <optgroup label="Select Warehouse">
                                             <option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
