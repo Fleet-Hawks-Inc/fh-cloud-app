@@ -62,10 +62,10 @@
                             </div>
                             <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
                               <div *ngIf="dName.errors.required">
-                                Employee id is required.
+                                Employee ID is required.
                               </div>
                               <div *ngIf="dName.errors.pattern">
-                                Employee id should be of minimum 4 characters which can be a combination of alphanumeric only.
+                                Employee ID can only contains alphanumeric characters with length between 4-120.                              
                               </div>
                             </div>
                           </div>
@@ -80,10 +80,10 @@
                             </div>
                             <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                               <div *ngIf="cName.errors.required">
-                                Contractor id is required.
+                                Contractor ID is required.
                               </div>
                               <div *ngIf="cName.errors.pattern">
-                                Contractor id should be of minimum 4 characters which can be a combination of alphanumeric only.
+                                Contractor ID can only contains alphanumeric characters with length between 4-120.
                               </div>
                             </div>
                           </div>
@@ -143,7 +143,7 @@
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must contain small letters,numbers and special characters(period(.)) only.
+                            Username must contain letters, numbers and allowed characters(.).
                            
                           </div>
                         </div>
@@ -176,7 +176,7 @@
                                 First name is required.
                               </div>
                               <div *ngIf="fName.errors.pattern">
-                                First name must contain letters only.
+                                First name must contain letters.
                               </div>
                             </div>
                           </div>
@@ -186,13 +186,13 @@
                             </label>
                             <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
                               name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                              required pattern="^[a-zA-Z0-9]+$" maxlength="30">
+                              required pattern="^[a-zA-Z]+$" maxlength="30">
                             <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                               <div *ngIf="lName.errors.required">
                                 Last name is required.
                               </div>
                               <div *ngIf="lName.errors.pattern">
-                                Last name must contain letters only.
+                                Last name must contain letters.
                               </div>
                             </div>
                           </div>
@@ -222,7 +222,7 @@
                                   Password is required.
                                 </div>
                                 <div *ngIf="pwd.errors.pattern">
-                                  Password must be a minimum of 8 digits long and a combination of small letters, capital letters,numbers and at least one special character (#,@,$,&).
+                                  Password must be 8 digits long and a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                                 </div>
                               </div>
                           </div>
@@ -665,7 +665,7 @@
                               Document# is required.
                             </div>
                             <div *ngIf="docNum.errors.pattern">
-                              Document# must contain a combination of letters, capital letters, numbers, and at least one special character (#,/,-,_,.)
+                              Document# must contain a combination of alphanumeric characters and atleast one special character (#,/,-,_,.).
                             </div>
                           </div>
                         </div>
@@ -680,7 +680,7 @@
                           <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
 
                             <div *ngIf="authority.errors.pattern">
-                              Issuing authority must contain letter and special characters(period(,)) only .
+                              Issuing authority must contain letters, numbers and allowed characters(,).
                             </div>
                           </div>
                         </div>
@@ -806,10 +806,10 @@
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
                           type="text" class="form-control" placeholder="10 digits , eg.4567895676" #aci="ngModel"
-                          pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
+                          pattern="^[0-9]{2,10}$" maxlength="10">
                         <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
-                            ACI id must contain 10 alphanumeric characters only.
+                            ACI ID must contain 10 numbers.
                           </div>
 
                         </div>
@@ -820,10 +820,10 @@
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
                           type="text" class="form-control" placeholder="10 digits , eg.4567895676" #ace="ngModel"
-                          pattern="^[a-zA-Z0-9]{2,10}$" maxlength="10">
+                          pattern="^[0-9]{10}$" maxlength="10">
                         <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
-                            ACE id must contain 10 alphanumeric characters only.
+                            ACE ID must contain 10 numbers.
                           </div>
 
                         </div>
@@ -847,11 +847,11 @@
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
                             type="text" class="form-control"
-                            placeholder="14 digits, beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
+                            placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
                             #fastCard="ngModel" pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$" maxlength="14">
                           <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
                             <div *ngIf="fastCard.errors.pattern">
-                              Fast Card must contain only 14 numbers beginning with 4270 or 4110 and ending with 00 or  01.
+                              Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
                              
                             </div>
 
@@ -894,7 +894,7 @@
                             CDL# is required.
                           </div>
                           <div *ngIf="cdl.errors.pattern">
-                            CDL# must contain numbers only and special characters(period(-)) only.
+                            CDL# must contain 9 numbers.
                           </div>
                         </div>
                       </div>
@@ -943,7 +943,7 @@
                         </ng-select>
                         <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
                           <div *ngIf="ipSlt.errors.required">
-                            Issued Province/State is required.
+                            Issued province/state is required.
                           </div>
                         </div>
                       </div>
@@ -1032,7 +1032,7 @@
                         </ng-select>
                         <div *ngIf="paySlt.invalid && (paySlt.dirty || paySlt.touched)" class="text-danger">
                           <div *ngIf="paySlt.errors.required">
-                            Default payment Type is required.
+                            Default payment type is required.
                           </div>
                         </div>
                       </div>
@@ -1048,7 +1048,7 @@
                             SIN is required.
                           </div>
                           <div *ngIf="sin.errors.pattern">
-                            SIN must contain numbers only.
+                            SIN must contain 9 numbers.
                           </div>
                         </div>
                       </div>
@@ -1068,7 +1068,7 @@
                               Rate is required.
                             </div>
                             <div *ngIf="payHour.errors.pattern">
-                             Rate must contain numbers only.
+                             Rate must contain numbers.
                             </div>
                           </div>
                       </div>
@@ -1099,7 +1099,7 @@
                               Waiting period pay is required.
                             </div>
                             <div *ngIf="payWait.errors.pattern">
-                             Waiting period pay must contain numbers only.
+                             Waiting period pay must contain numbers.
                             </div>
                           </div>
                       </div>
@@ -1131,7 +1131,7 @@
                               Waiting hour start is required.
                             </div>
                             <div *ngIf="payWait1.errors.pattern">
-                             Waiting hour start must contain numbers only.
+                             Waiting hour start must contain numbers.
                             </div>
                           </div>
 
@@ -1151,7 +1151,7 @@
                               Delivery rate is required.
                             </div>
                             <div *ngIf="dRate.errors.pattern">
-                             Delivery rate must contain numbers only.
+                             Delivery rate must contain numbers.
                             </div>
                           </div>
 
@@ -1190,7 +1190,7 @@
                                  Load pay percent is required.
                                 </div>
                                 <div *ngIf="lPay1.errors.pattern">
-                                Load pay percent must contain numbers only.
+                                Load pay percent must contain numbers.
                                 </div>
                               </div>
 
@@ -1235,7 +1235,7 @@
                                Loaded miles is required.
                               </div>
                               <div *ngIf="payM.errors.pattern">
-                              Loaded miles must contain numbers only.
+                              Loaded miles must contain numbers.
                               </div>
                             </div>
 
@@ -1269,7 +1269,7 @@
                                Empty miles is required.
                               </div>
                               <div *ngIf="eMiles1.errors.pattern">
-                              Empty miles must contain numbers only.
+                              Empty miles must contain numbers.
                               </div>
                             </div>
 
@@ -1345,7 +1345,7 @@
                           </ng-select>
                           <div *ngIf="ppSlt.invalid && (ppSlt.dirty || ppSlt.touched)" class="text-danger">
                             <div *ngIf="ppSlt.errors.required">
-                              Pay period Type is required.
+                              Pay period type is required.
                             </div>
                           </div>
 
@@ -1479,7 +1479,7 @@
                         </ng-select>
                         <div *ngIf="ht.invalid && (ht.dirty || ht.touched)" class="text-danger">
                           <div *ngIf="ht.errors.required">
-                            Hime terminal timezone is required.
+                            Home terminal timezone is required.
                           </div>
                         </div>
 
@@ -1540,7 +1540,7 @@
                           class="form-control" placeholder="eg. John Smith" #eName="ngModel" pattern="^[a-zA-Z\s]+$">
                         <div *ngIf="eName.invalid && (eName.dirty || eName.touched)" class="text-danger">
                           <div *ngIf="eName.errors.pattern">
-                            Name must contain letters only.
+                            Name must contain letters.
                           </div>
                         </div>
                       </div>
@@ -1566,7 +1566,7 @@
                           #rel="ngModel" pattern="^[a-zA-Z\s]+$">
                         <div *ngIf="rel.invalid && (rel.dirty || rel.touched)" class="text-danger">
                           <div *ngIf="rel.errors.pattern">
-                            Relationship must contain letters only.
+                            Relationship must contain letters.
                           </div>
                         </div>
                       </div>
@@ -1654,7 +1654,7 @@
                       Group name is required.
                     </div>
                     <div *ngIf="groupModel.errors.pattern">
-                        Group name must contain letters only.
+                        Group name must contain letters.
                     </div>
                   </div>
               </div>
