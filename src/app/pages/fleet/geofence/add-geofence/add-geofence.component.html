@@ -64,7 +64,7 @@
 
                                 </div>
                                 <div *ngIf="gName.errors.pattern">
-                                 Geofence name must contain alphanumeric and special characters (.) or # only.
+                                 Geofence name must contain letters, numbers and allowed characters(. ,#)
 
                                 </div>
                              </div>
@@ -75,7 +75,7 @@
                              <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="eg. Calgary, AB, Canada" #Loca="ngModel" required>
                              <div *ngIf="Loca.invalid && (Loca.dirty || Loca.touched)" class="text-danger">
                               <div *ngIf="Loca.errors.required">
-                              Location field is required.
+                              Location is required.
                               </div>
 
                             </div>
