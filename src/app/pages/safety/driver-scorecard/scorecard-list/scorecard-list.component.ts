@@ -36,8 +36,7 @@ export class ScorecardListComponent implements OnInit {
     this.apiService.getData('drivers')
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        console.log('this.drivers')
-        console.log(result.Items)
+        
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           if (element.isDeleted === 0) {

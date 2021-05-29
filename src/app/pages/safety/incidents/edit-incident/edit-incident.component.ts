@@ -128,8 +128,7 @@ export class EditIncidentComponent implements OnInit {
     fetchUsers() {
         this.apiService.getData('users/fetch/records')
             .subscribe((result: any) => {
-                console.log('users');
-                console.log(result.Items)
+                
                 result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
                 this.users = result.Items;
             })
@@ -205,7 +204,7 @@ export class EditIncidentComponent implements OnInit {
     }
 
     throwErrors() {
-        console.log(this.errors);
+        
         from(Object.keys(this.errors))
             .subscribe((v) => {
                 $('[name="' + v + '"]')
@@ -229,7 +228,7 @@ export class EditIncidentComponent implements OnInit {
         this.spinner.show();
         this.apiService.getData('safety/eventLogs/details/' + this.eventID)
             .subscribe((result: any) => {
-                console.log(result.Items)
+                
                 this.event.eventID = result.Items[0].eventID;
                 this.event.eventDate = moment(result.Items[0].date).format("DD-MM-YYYY");
                 this.event.eventTime = moment(result.Items[0].date).format("HH:mm");

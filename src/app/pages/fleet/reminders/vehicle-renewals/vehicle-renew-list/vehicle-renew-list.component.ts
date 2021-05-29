@@ -56,16 +56,10 @@ export class VehicleRenewListComponent implements OnInit {
   ngOnInit() {
     this.getRemindersCount();
     this.fetchServiceTaks();
-    this.fetchGroupsList();
+    // this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
-    this.fetchUsers();
-  }
-
-  fetchGroupsList() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groups = result;
-    });
+    // this.fetchUsers();
   }
 
   fetchServiceTaks() {
@@ -73,12 +67,6 @@ export class VehicleRenewListComponent implements OnInit {
     this.apiService.getData('tasks').subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
-    });
-  }
-
-  fetchUsers() {
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
-      this.users = result;
     });
   }
 
@@ -96,44 +84,6 @@ export class VehicleRenewListComponent implements OnInit {
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-
-  // fetchRenewals = async () => {
-  //   this.remindersData = [];
-  //   for (let j = 0; j < this.allRemindersData.length; j++) {
-  //     let reminderStatus: string;
-  //     let someDateString = moment(this.allRemindersData[j].reminderTasks.dueDate).format('YYYY-MM-DD');
-  //     let newDueDate = moment(someDateString, 'YYYY-MM-DD');
-  //     const remainingDays = newDueDate.diff(this.currentDate, 'days');
-  //     if (remainingDays < 0) {
-  //       reminderStatus = 'OVERDUE';
-  //     }
-  //     else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
-  //       reminderStatus = 'DUE SOON';
-  //     }
-  //     const data = {
-  //       reminderID: this.allRemindersData[j].reminderID,
-  //       reminderIdentification: this.allRemindersData[j].reminderIdentification,
-  //       reminderTasks: {
-  //         task: this.allRemindersData[j].reminderTasks.task,
-  //         remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-  //         reminderStatus: reminderStatus,
-  //         remainingDays: remainingDays,
-  //         dueDate: this.allRemindersData[j].reminderTasks.dueDate,
-  //       },
-  //       subscribers: this.allRemindersData[j].subscribers,
-  //     };
-  //     this.remindersData.push(data);
-  //   }
-  //   if (this.filterStatus === Constants.OVERDUE) {
-  //     this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-  //   }
-  //   else if (this.filterStatus === Constants.DUE_SOON) {
-  //     this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-  //   }
-  //   else if (this.filterStatus === Constants.ALL) {
-  //     this.remindersData = this.remindersData;
-  //   }
-  // }
 
   deleteRenewal(eventData) { 
     if (confirm('Are you sure you want to delete?') === true) {

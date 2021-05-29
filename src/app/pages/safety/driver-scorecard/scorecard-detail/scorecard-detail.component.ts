@@ -389,7 +389,7 @@ export class ScorecardDetailComponent implements OnInit {
 
     this.apiService.getData('safety/eventLogs/fetch/driver/eventData/'+this.driverUsername+'?type='+type)
       .subscribe((result: any) => {
-        // console.log(result)
+        
         this.totalEvents = result.Items;
     })
 

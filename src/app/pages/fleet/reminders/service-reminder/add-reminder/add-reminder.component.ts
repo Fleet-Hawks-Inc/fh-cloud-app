@@ -74,8 +74,8 @@ export class AddReminderComponent implements OnInit {
   ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchVehicles();
-    this.fetchUsers();
-    this.fetchGroups();
+    // this.fetchUsers();
+    // this.fetchGroups();
     this.fetchServiceTaks();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
@@ -103,16 +103,16 @@ export class AddReminderComponent implements OnInit {
       this.vehicles = result.Items;
     });
   }
-  fetchUsers() {
-    this.apiService.getData('users').subscribe((result: any) => {
-      this.users = result.Items;
-    });
-  }
-  fetchGroups() {
-    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
-      this.groups = result.Items;
-    });
-  }
+  // fetchUsers() {
+  //   this.apiService.getData('users').subscribe((result: any) => {
+  //     this.users = result.Items;
+  //   });
+  // }
+  // fetchGroups() {
+  //   this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
+  //     this.groups = result.Items;
+  //   });
+  // }
 
   /*
   * Fetch Reminder details before updating
@@ -142,30 +142,30 @@ export class AddReminderComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  getSubscribers(arr: any[]) {
-    this.finalSubscribers = [];
-    for (let i = 0; i < arr.length; i++) {
-      let test: any = [];
-      test = this.groups.filter((g: any) => g.groupID === arr[i]);
-      if (test.length > 0) {
-        this.finalSubscribers.push({
-          type: 'group',
-          id: arr[i]
-        });
-      }
-      else {
-        this.finalSubscribers.push({
-          type: 'user',
-          id: arr[i]
-        });
-      }
-    }
-    return this.finalSubscribers;
-  }
+  // getSubscribers(arr: any[]) {
+  //   this.finalSubscribers = [];
+  //   for (let i = 0; i < arr.length; i++) {
+  //     let test: any = [];
+  //     test = this.groups.filter((g: any) => g.groupID === arr[i]);
+  //     if (test.length > 0) {
+  //       this.finalSubscribers.push({
+  //         type: 'group',
+  //         id: arr[i]
+  //       });
+  //     }
+  //     else {
+  //       this.finalSubscribers.push({
+  //         type: 'user',
+  //         id: arr[i]
+  //       });
+  //     }
+  //   }
+  //   return this.finalSubscribers;
+  // }
   addReminder() {
     this.hideErrors();
     this.submitDisabled = true;
-    switch (this.timeType) {
+    switch (this.reminderData.tasks.timeUnit) {
       case 'day': {
         this.numberOfDays = this.time * 1;
         break;
@@ -190,17 +190,8 @@ export class AddReminderComponent implements OnInit {
     }
     this.reminderData.tasks.remindByDays = this.numberOfDays;
 
-    const convertedDate = moment(this.reminderData.lastServiceDate).add(this.reminderData.tasks.remindByDays, 'days');
-    let remainingDays = convertedDate.diff(this.currentDate, 'days');
-    if (remainingDays < 0) {
-      this.reminderData.status = 'overdue';
-    } else if (remainingDays <= 7 && remainingDays >= 0) {
-      this.reminderData.status = 'dueSoon';
-    }
-
     this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
     this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
-    // this.reminderData.subscribers = this.getSubscribers(this.subscribers);
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -239,7 +230,6 @@ export class AddReminderComponent implements OnInit {
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -257,7 +247,7 @@ export class AddReminderComponent implements OnInit {
   async updateReminder() {
     this.hideErrors();
     this.submitDisabled = true;
-    switch (this.timeType) {
+    switch (this.reminderData.tasks.timeUnit) {
       case 'day': {
         this.numberOfDays = this.time * 1;
         break;
@@ -282,10 +272,8 @@ export class AddReminderComponent implements OnInit {
     }
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    // let remainingDays = this.numberOfDays;
     this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
     this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
-    // this.reminderData.subscribers = await this.getSubscribers(this.subscribers);
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -317,7 +305,6 @@ export class AddReminderComponent implements OnInit {
     });
   }
 
-
   // SERVICE TASK
   addServiceTask() {
     this.apiService.postData('tasks', this.serviceTask).subscribe({
@@ -343,43 +330,6 @@ export class AddReminderComponent implements OnInit {
         $('#addServiceTasks').modal('toggle');
         this.toastr.success('Service Task Added Successfully');
         this.fetchServiceTaks();
-        this.router.navigateByUrl('/fleet/reminders/service-reminder/add');
-      },
-    });
-  }
-  // GROUP MODAL
-  addGroup() {
-    this.apiService.postData('groups', this.groupData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.fetchGroups();
-        this.toastr.success('Group added successfully');
-        $('#addGroupModal').modal('hide');
-        this.fetchGroups();
-        this.groupData = {
-          groupName: '',
-          groupType: constants.GROUP_USERS,
-          description: '',
-          groupMembers: []
-        };
       },
     });
   }

@@ -38,7 +38,7 @@
                                  <ng-select [(ngModel)]="entityID"
                                     name="entityID" placeholder="Select contact" #cnt="ngModel" required>
 
-                                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                                    <ng-option *ngFor="let user of users" value="{{user.contactID}}">
                                        {{user.firstName}} {{user.lastName}}</ng-option>
 
                                  </ng-select>
@@ -52,24 +52,13 @@
                            </div>
 
 
-                           <div class="row pt-2">
-                             <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
-                                    class="text-1 optional-label-color">(optional)</span></label>
-                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
-                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
-                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
-                                    </ng-option>
-                                    <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
-                                    </ng-option>
-                                 </ng-select>
+                           <div class="row pt-2"> 
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
+                                    Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
+                                    placeholder="e.g james@email.com, maria@email.com">
                               </div>
-                             <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
-                              <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                              class="modal-with-form btn cus-btn-padd btn-success text-light"><i
-                                 class="fas fa-plus"></i> </button>
-                              </div>
-
                            </div>
                         </div>
                         <div class="col-lg-5 offset-lg-1">
@@ -95,7 +84,7 @@
                               </div>
                            </div>
                            <div class="row pt-2">
-                              <div class="col-lg-5">
+                              <div class="col-lg-4">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
                                     [(ngModel)]="reminderData.tasks.dueDate" (click)="d.toggle()" ngbDatepicker #exp="ngModel" required
@@ -107,7 +96,7 @@
                                           
                                        </div>
                               </div>
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
                                     <div class="col-lg-4">
@@ -146,6 +135,7 @@
                               <div class="col-5 offset-1">
                                  <div class="row">
                                     <div class="col-10">
+
                                        <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                        <button  *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid" (click)="addRenewal()" class="btn btn-success">Save</button>
                                        <button  *ngIf="!reminderID && contactF.form.valid" [disabled]="submitDisabled" (click)="addRenewal()" class="btn btn-success">Save</button>
@@ -153,6 +143,7 @@
                                        <button  *ngIf="reminderID && !contactF.form.valid " [disabled]="!contactF.form.valid"  (click)="updateRenewal()" class="btn btn-success">Update</button>
                                        <button  *ngIf="reminderID &&  contactF.form.valid" [disabled]="submitDisabled" (click)="updateRenewal()" class="btn btn-success">Update</button>
                                           
+
                                     </div>
                                  </div>
                               </div>
@@ -215,64 +206,4 @@
       </form>
       </div>
    </div>
-</div>
-
-<!-- GROUP MODAL -->
-<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 600px;" role="document">
-    <div class="modal-content">
-      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #rContact="ngForm">
-     <div class="modal-header">
-        <h5 class="modal-title">Add Users/Groups</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-            </button>
-     </div>
-     <div class="modal-body text-dark">
-            <div class="card-body p-0">
-           
-              <div class="form-row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold">Group Name <span
-                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name" #aContact="ngModel" required pattern="^[a-zA-Z\s]+">
-                  <div *ngIf="aContact.invalid && (aContact.dirty || aContact.touched)" class="text-danger">
-                     <div *ngIf="aContact.errors.required">
-                       Group Name is required.
-                     </div>     
-                     <div *ngIf="aContact.errors.pattern">
-                            Group Name must contains uppercase, lowercase and special characters for period(space) only.
-                     </div>
-                   </div>
-                </div>
-              </div>
-              <div class="form-row mt-2">
-                 <div class="col-lg-12">
-                   <label class="control-label font-weight-bold">Group Members&nbsp;<span
-                    class="text-1 optional-label-color">(optional)</span></label>
-                   <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members, other users"
-                   style="width: 100%;">
-                   <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
-                   </ng-option>
-                </ng-select>
-                 </div>
-               </div>
-              <div class="form-row mt-2">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
-                     class="text-1 optional-label-color">(optional)</span></label>
-                  <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
-               </div>
-              </div>
-           
-         </div>
-     </div>
-     <div class="modal-footer text-right">
-
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="addGroup()" [disabled]="!rContact.form.valid">Save</button>
-     </div>
-   </form>
-  </div>
-</div>
 </div>

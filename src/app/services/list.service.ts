@@ -207,13 +207,11 @@ fetchReceivers() {
   }
 
   appendIssues(data: any){
-    console.log('console0', data);
     this._subject.next(data);
     this.fetchAppendIssues();
   }
 
   fetchAppendIssues() {
-    console.log('console1');
     return this._subject.asObservable()
   }
   

@@ -119,7 +119,7 @@ export class CompanyDocumentsComponent implements OnInit {
       const element = files[i];
       let name = element.name.split('.');
       let ext = name[name.length - 1];
-      console.log('ext', ext);
+      
 
       if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
       && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
@@ -142,7 +142,7 @@ export class CompanyDocumentsComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log('doc result', result)
+        
         this.totalRecords = result.Count;
       }
     });
@@ -248,14 +248,14 @@ export class CompanyDocumentsComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-    console.log('currentID', this.currentID);
+    
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        console.log(result);
+        
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;

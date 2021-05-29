@@ -81,7 +81,6 @@ export class AddAccountComponent implements OnInit {
   citiesObject: any = {};
   newAddress = [];
   addressCountries = [];
-  deletedAddress = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -127,6 +126,11 @@ export class AddAccountComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
@@ -168,9 +172,6 @@ export class AddAccountComponent implements OnInit {
   }
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID);
-      }
       this.addressDetails.splice(i, 1);
     }
   }

@@ -59,7 +59,7 @@ export class HosDetailComponent implements OnInit {
   fetchDriverDetail(driverUserName) {
     this.apiService.getData('drivers/userName/' + driverUserName)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].firstName != undefined) {
           this.event.driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
         }
@@ -71,7 +71,7 @@ export class HosDetailComponent implements OnInit {
   fetchVehicleDetail(vehicleID) {
     this.apiService.getData('vehicles/' + vehicleID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
+        
         if (result.Items[0].vehicleIdentification != undefined) {
           this.event.vehicleName = result.Items[0].vehicleIdentification
         }

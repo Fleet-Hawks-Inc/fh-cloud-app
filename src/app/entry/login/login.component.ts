@@ -27,12 +27,14 @@ export class LoginComponent implements OnInit {
 
   constructor(private apiService: ApiService,
               private router: Router,
-              private authService: AuthService) {}
+              private authService: AuthService) {
+                if (this.authService.isAuthenticated()) {
+                  this.router.navigate(['/Map-Dashboard']);
+                }
+              }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/Map-Dashboard']);
-    }
+    
   }
 
   toggleFieldTextType() {
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
       error : (err) => {
         this.hasError = true;
         this.Error = err.error;
+
       },
       next: (res) => {
         const user: User =   { id: '1',
@@ -82,8 +85,12 @@ export class LoginComponent implements OnInit {
       this.showSigupCode = true;
     }
   }
-  /** Cognito user action */
+   /** Cognito user action */
   loginAction1 = async () => {
+    let token = localStorage.getItem('accessToken');
+    if(token != null) {
+      this.router.navigate(['/Map-Dashboard']);
+    }
     if((this.userName)&&(this.password)){
     try {
       // This should go in Register component

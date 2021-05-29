@@ -63,6 +63,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
+  wexCategories:any={};
 
   constructor(
     private apiService: ApiService,
@@ -71,6 +72,7 @@ export class FuelEntryListComponent implements OnInit {
     private httpClient: HttpClient) {
   }
   ngOnInit() {
+    this.fetchVendorList();
     this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
@@ -81,7 +83,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
-    this.fetchVendorList();
+    
+    this.fetchWexCategories();
     this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
@@ -95,6 +98,12 @@ export class FuelEntryListComponent implements OnInit {
     this.suggestedUnits = [];
   }
 
+  fetchWexCategories(){
+    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {  
+      
+      this.wexCategories = result;
+    })
+  }
   getSuggestions(value) {
     value = value.toLowerCase();
     if(value != '') {
@@ -136,10 +145,14 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
-      console.log(result)
-      this.vendorList = result;
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      
+       result.forEach(element=>{
+         this.vendorList[element.contactID]=element.companyName
+      
+      });
     });
+  
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -259,7 +272,6 @@ export class FuelEntryListComponent implements OnInit {
         
       });
       this.fuelList = result[`Items`];
-      console.log('this.fuelList',result);
 
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
