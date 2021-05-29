@@ -39,7 +39,7 @@
                           Asset name is required.
                         </div>
                         <div *ngIf="aName.errors.pattern">
-                          Asset name contain letters only.
+                          Asset name must contain alphanumeric characters.
                         </div>
                       </div>
                   </div>
@@ -84,7 +84,7 @@
                           VIN is required.
                         </div>
                         <div *ngIf="vName.errors.pattern">
-                          VIN contains 17-18 alphanumeric characters only eg.2G1WH55K5Y9322458
+                          VIN contains 17-18 alphanumeric characters eg.2G1WH55K5Y9322458
                            </div>
 
                     </div>
@@ -253,7 +253,7 @@
                         <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
                           <div>
                             <div *ngIf="heightTxt.errors.required">
-                            Height must contains numbers only.
+                            Height must contain numbers.
                             </div>
                           </div>
 
@@ -348,7 +348,7 @@
 
 
                               <div *ngIf="gvwr.errors.pattern">
-                               GVWR must contain numbers only.
+                               GVWR must contain numbers.
                               </div>
 
 
@@ -389,7 +389,7 @@
                                 GAWR must contain numbers only.
                                </div> -->
                                <div *ngIf="gawr.errors.pattern">
-                                GAWR must contain numbers only.
+                                GAWR must contain numbers.
                                </div>
 
 
@@ -503,7 +503,7 @@
                           Licence plate number is required.
                         </div>
                           <div *ngIf="pName.errors.pattern">
-                            Licence plate number must be between 7-8 alphanumeric characters only.
+                            Licence plate number must be between 7-8 alphanumeric characters.
                           </div>
                       </div>
                   </div>
@@ -730,7 +730,7 @@
                         <div>
 
                           <div *ngIf="aciIdName.errors.pattern">
-                           ACI ID must contain 10 numbers only eg.4567895676
+                           ACI ID must contain 10 numbers eg.4567895676
                            </div>
                         </div>
 
@@ -750,7 +750,7 @@
                         <div>
 
                           <div *ngIf="aceIdName.errors.pattern">
-                           ACE ID must contain 10 numbers only eg.4567895676
+                           ACE ID must contain 10 numbers eg.4567895676
                            </div>
                         </div>
 
@@ -901,10 +901,10 @@
                   class="form-control" #aAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="aAsset.invalid && (aAsset.dirty || aAsset.touched)" class="text-danger">
                     <div *ngIf="aAsset.errors.required">
-                      Group Name is required.
+                      Group name is required.
                     </div>
                     <div *ngIf="aAsset.errors.pattern">
-                           Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                           Group name must contain letters.
                     </div>
                   </div>
 
