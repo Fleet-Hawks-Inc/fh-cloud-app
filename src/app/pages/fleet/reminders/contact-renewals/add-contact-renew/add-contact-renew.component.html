@@ -136,7 +136,7 @@
                                  <div class="row">
                                     <div class="col-10">
 
-                                       <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                                    <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
                                        <button  *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid" (click)="addRenewal()" class="btn btn-success">Save</button>
                                        <button  *ngIf="!reminderID && contactF.form.valid" [disabled]="submitDisabled" (click)="addRenewal()" class="btn btn-success">Save</button>
                                           
@@ -146,7 +146,7 @@
 
                                     </div>
                                  </div>
-                              </div>
+                              </div> 
                            </div>
                         </div>
                      </div>
