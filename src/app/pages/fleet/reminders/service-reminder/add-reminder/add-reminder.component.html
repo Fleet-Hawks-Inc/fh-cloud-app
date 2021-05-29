@@ -138,7 +138,7 @@
                                           class="form-control"  #odo1="ngModel" [required]="reminderData.tasks.remindByUnit == 'odometer'">
                                        <div *ngIf="odo1.invalid && (odo1.dirty || odo1.touched)" class="text-danger">
                                           <div *ngIf="odo1.errors.required">
-                                             Odometer miles is required and must contain number only.
+                                             Odometer miles is required and must contain numbers.
                                           </div>
                                        </div>
                                     </div>
@@ -238,10 +238,10 @@
                         placeholder="Enter service task name" #txtTask="ngModel" required pattern="^[a-zA-Z\s]+">
                         <div *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)" class="text-danger">
                            <div *ngIf="txtTask.errors.required">
-                             Service Task Name is required.
+                             Service task name is required.
                            </div>     
                            <div *ngIf="txtTask.errors.pattern">
-                                  Service Task Name must contains uppercase, lowercase and special characters for period(space) only.
+                                  Service task name must contain letters.
                            </div>
                          </div>
                   </div>
