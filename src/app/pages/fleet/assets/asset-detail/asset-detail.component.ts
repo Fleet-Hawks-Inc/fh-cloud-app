@@ -78,6 +78,11 @@ export class AssetDetailComponent implements OnInit {
   messageStatus = true;
   ownerOperatorName = '';
   inspectionFormName = '';
+  inspectionForms = {
+    inspectionFormName : '',
+    parameters: [],
+    inspectionType: ''
+  };
   // Charts
   public chartOptions = {
     scaleShowVerticalLines: false,
@@ -180,6 +185,7 @@ export class AssetDetailComponent implements OnInit {
           if(result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
             this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
+              this.inspectionForms = res;
               this.inspectionFormName = res.inspectionFormName;
             });
           }
