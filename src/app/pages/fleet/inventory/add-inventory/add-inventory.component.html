@@ -43,7 +43,7 @@
                           Part number is required.
                         </div>
                         <div *ngIf="iPart.errors.pattern">
-                          Part number must contain digits and letters only.
+                          Part number must contain alphanumeric characters.
                         </div>
                       </div>
                     </div>
@@ -59,7 +59,7 @@
                           Item name is required.
                         </div>
                         <div *ngIf="iItem.errors.pattern">
-                          Item name must contain letters only.
+                          Item name must contain letters.
                         </div>
                       </div>
                     </div>
@@ -140,7 +140,7 @@
                         [(ngModel)]="quantity" placeholder="eg. 1,2,3" #iQuan="ngModel" required />
                       <div *ngIf="iQuan.invalid && (iQuan.dirty || iQuan.touched)" class="text-danger">
                         <div *ngIf="iQuan.errors.required">
-                          Quantity must contain numbers only.
+                          Quantity must contain numbers.
                         </div>
 
                       </div>
@@ -191,7 +191,7 @@
                         <div>
 
                           <div *ngIf="WareH.errors.required">
-                            Select valid Warehouse from the list.
+                            Warehouse is required.
                           </div>
                         </div>
 
@@ -549,7 +549,7 @@
                   Category name is required.
                 </div>
                 <div *ngIf="inventory.errors.pattern">
-                  Category name must contain letters only.
+                  Category name must contain letters.
                 </div>
               </div>
             </div>
@@ -616,7 +616,7 @@
                   Warehouse name is required.
                 </div>
                 <div *ngIf="aWarehouse.errors.pattern">
-                  Warehouse name must contains letters only.
+                  Warehouse name must contains letters.
                 </div>
               </div>
             </div>
@@ -645,7 +645,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Province or State <span
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Province/State <span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select data-plugin-selectTwo class="form-control populate" name="stateID" [(ngModel)]="stateID"
                     (change)="getCities()" placeholder="Select Province" #sltP="ngModel" required>
@@ -657,7 +657,7 @@
                   </ng-select>
                   <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
                     <div *ngIf="sltP.errors.required">
-                      Province or State is required.
+                      Province/State is required.
                     </div>
 
                   </div>
@@ -688,10 +688,10 @@
                     placeholder="Enter zip code" #cCode="ngModel" required pattern="^[a-zA-Z0-9\s]+$" />
                   <div *ngIf="cCode.invalid && (cCode.dirty || cCode.touched)" class="text-danger">
                     <div *ngIf="cCode.errors.required">
-                      Zip Code is required.
+                      Zip code is required.
                     </div>
                     <div *ngIf="cCode.errors.pattern">
-                      Zip Code must contain alphanumeric characters only.
+                      Zip code must contain alphanumeric characters.
                     </div>
                   </div>
                 </div>
