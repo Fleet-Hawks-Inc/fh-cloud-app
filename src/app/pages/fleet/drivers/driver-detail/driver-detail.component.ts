@@ -160,7 +160,6 @@ export class DriverDetailComponent implements OnInit {
     });
   }
   fetchHomeTerminal(homeTerminal) {
-    console.log('homeTerminal',homeTerminal);
     if (homeTerminal !== undefined) {
       if (homeTerminal.manual) {
         let combineAddress: any;
@@ -379,7 +378,7 @@ export class DriverDetailComponent implements OnInit {
     if (type === 'doc') {
       this.assetsDocs[index].splice(docIndex, 1);
       this.driverDataUpdate.documentDetails[index].uploadedDocs.splice(docIndex, 1);
-      this.deleteUploadedFile(type, name, index);
+      this.deleteUploadedFile(name);
       try {
         const formData = new FormData();
         formData.append('data', JSON.stringify(this.driverDataUpdate));
@@ -392,7 +391,7 @@ export class DriverDetailComponent implements OnInit {
     } else {
       this.absDocs.splice(index, 1);
       this.driverDataUpdate.abstractDocs.splice(index, 1);
-      this.deleteUploadedFile(type, name, index);
+      this.deleteUploadedFile(name);
       try {
         const formData = new FormData();
         formData.append('data', JSON.stringify(this.driverDataUpdate));
@@ -404,8 +403,8 @@ export class DriverDetailComponent implements OnInit {
       }
     }
   }
-  deleteUploadedFile(type: string, name: string, index: any) { // delete from aws
-    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => { });
+  deleteUploadedFile(name: string) { // delete from aws
+    this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
   }
   fetchDriverTrips() {
     this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {

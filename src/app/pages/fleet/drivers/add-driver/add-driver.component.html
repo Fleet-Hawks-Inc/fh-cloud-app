@@ -437,9 +437,10 @@
                       <div class="col-lg-5 mar-top-37">
                         <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
                           Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                          <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name="driverData.abstractDocs"
+                          <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
                              type="file">
                        </div>
+                       <label class=""  name="abstractDocs"></label>
                       </div>
                     </div>
                     <div class="row">
@@ -522,7 +523,6 @@
                       <input [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                         type="text" class="form-control" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                         [disabled]="item.manual">
-
                       <div class="checkbox-custom pt-2">
                         <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
                           type="checkbox">
@@ -557,7 +557,7 @@
                               (change)="getStates($event, i)" class="form-control populate"
                               placeholder="Select country">
                               <ng-option value="CA">Canada</ng-option>
-                              <ng-option value="US">United States of America</ng-option>
+                              <ng-option value="US">United States</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-5">
@@ -577,7 +577,6 @@
                               <ng-option class="text-capitalize" *ngFor="let city of item.cities" value="{{city.cityName}}">
                                 {{city.cityName}}</ng-option>
                             </ng-select>
-
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Zip
@@ -605,7 +604,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -639,8 +637,10 @@
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                           placeholder="Select document type"
                           (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc="ngModel" required>
-                          <ng-option *ngFor="let documentType of documentTypeList" [value]="documentType.code">
-                            {{documentType.description}}</ng-option>
+                          <ng-container *ngFor="let documentType of documentTypeList">
+                            <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
+                              {{documentType.description}}</ng-option>
+                          </ng-container>
                         </ng-select>
                         <div *ngIf="doc.invalid && (doc.dirty || doc.touched)" class="text-danger">
                           <div *ngIf="doc.errors.required">
@@ -880,6 +880,9 @@
                 <div class="form-group row text-dark adddriverpl">
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Licence Details</label>
+                  </div>
+                  <div class="col-lg-10">
+                    <label class="control-label text-4 pt-2">Add other license details(eg. Enhanced drivers license) in the documents section.</label>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
