@@ -123,7 +123,7 @@
                               Carrier name is required.
                             </div>
                             <div *ngIf="cName.errors.pattern">
-                              Carrier name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                              Carrier can only contains alphanumeric characters with length between 4-120.
                             </div>
                           </div>
                       </div>
@@ -259,7 +259,7 @@
                               MC number is required.
                             </div>
                             <div *ngIf="mc.errors.pattern">
-                              MC number must contain 6 digits.
+                              MC number must contain 6 numbers.
                             </div>
                           </div>
 
@@ -273,7 +273,7 @@
                         [(ngModel)]="DOT" name="DOT" #dot="ngModel" pattern="^[0-9]{8}$">
                           <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
                             <div *ngIf="dot.errors.pattern">
-                              DOT number must contain 8 digits.
+                              DOT number must contain 8 numbers.
                             </div>
                           </div>
 
@@ -561,7 +561,7 @@
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
-                              Transit number must be of 9 digits.
+                              Transit number must be of 9 numbers.
                             </div>
                           </div>
                       </div>
