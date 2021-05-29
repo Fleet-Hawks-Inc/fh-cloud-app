@@ -184,10 +184,10 @@
                         placeholder="Enter renewal type name" #Rname="ngModel" required pattern="^[a-zA-Z\s]+$">
                         <div *ngIf="Rname.invalid && (Rname.dirty || Rname.touched)" class="text-danger">
                            <div *ngIf="Rname.errors.required">
-                             Renewal Name is required.
+                             Renewal name is required.
                            </div>     
                            <div *ngIf="Rname.errors.pattern">
-                                  Renewal Name must contains uppercase, lowercase and special characters for period(space) only.
+                                  Renewal name must contain letters.
                            </div>
                          </div>
                   </div>
