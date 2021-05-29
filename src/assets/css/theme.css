@@ -8240,9 +8240,10 @@ select {
 .form-control:not(.form-control-sm):not(.form-control-lg) {
 	font-size: 13.6px;
 	font-size: 0.85rem;
-	line-height: 1.85;
+	line-height: 1.80;
 	min-height: 38.4px;
-	min-height: 2.0rem;
+	min-height: 1.0rem;
+	height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
 
 .form-control.form-control-focused {
