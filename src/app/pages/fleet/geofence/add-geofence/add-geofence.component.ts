@@ -363,5 +363,10 @@ export class AddGeofenceComponent implements OnInit {
     $('div').removeClass('show-search__result');
   }
 
-
-}
+  clearGeofenceData() {
+    this.geofenceTypeData = {
+      geofenceType: '',
+      description: '',
+    };
+  }
+} 
