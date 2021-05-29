@@ -937,12 +937,12 @@
 </div>
 
 <!-- Add modals start -->
-<div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" aria-hidden="true">
+<div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ modalTitle }} Vendor</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
             <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
           </button>
         </div>
@@ -1239,12 +1239,12 @@
 
     
 <!-- Add CUSTOMER Modal -->
-<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModal"  aria-hidden="true">
+<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModal" data-backdrop="static" data-keyboard="false"  aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1733,12 +1733,12 @@
 
 <!-- Add Broker MODAL -->
 <div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Broker</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2188,12 +2188,12 @@
 
 <!-- ADD CARRIER MODAL -->
 <div class="modal fade" id="addCarrierModal" tabindex="-1" role="dialog" aria-labelledby="addCarrierModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Carrier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2931,12 +2931,12 @@
 
 <!-- ADD owner operator MODAL -->
 <div class="modal fade" id="addOwnerOperatorModal" tabindex="-1" role="dialog" aria-labelledby="addOwnerOperatorModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Owner Operator</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -3482,12 +3482,12 @@
 
 <!-- ADD SHIPPER MODAL -->
 <div class="modal fade" id="addShipperModal" tabindex="-1" role="dialog" aria-labelledby="addShipperModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Consignor </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -3868,12 +3868,12 @@
 
 <!-- ADD CONSIGNEE MODAL -->
 <div class="modal fade" id="addConsigneeModal" tabindex="-1" role="dialog" aria-labelledby="addConsigneeModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Consignee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -4250,12 +4250,12 @@
 
 <!-- ADD Factoring Company MODAL -->
 <div class="modal fade" id="addFCModal" tabindex="-1" role="dialog" aria-labelledby="addFCModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Factoring Company</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>

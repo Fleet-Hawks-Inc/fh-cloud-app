@@ -2139,5 +2139,43 @@ getVehicleStates(event: any) {
     };
   }
 
+  clearVehicleMake() {
+    this.vehicleMakeData.manufacturerName = '';
+  }
 
+  clearVehicleModal(){
+    this.vehicleModelData.manufacturerID = '';
+    this.vehicleModelData.modelName = '';
+  }
+
+  clearAssetMake() {
+    this.assetMakeData.manufacturerName = '';
+  }
+  clearAssetModal() {
+    this.assetModelData = {
+      manufacturerID: '',
+      modelName:''
+    }
+  }
+
+  clearServiceProg() {
+    this.serviceData.programName = '';
+    this.serviceData.description = ''
+    this.serviceData.serviceScheduleDetails = [{
+      serviceTask: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: '',
+    }];
+    this.serviceData.vehicles = [];
+  }
+
+  clearServiceTask() {
+    this.taskData = {
+      taskType: 'service',
+      taskName: '',
+      description: ''
+    };
+  }
+  
 }

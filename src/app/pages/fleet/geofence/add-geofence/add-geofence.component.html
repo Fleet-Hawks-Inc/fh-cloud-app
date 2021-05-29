@@ -89,7 +89,7 @@
                                 class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
                                 >Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-11">
                                    <ng-select
                                       placeholder="Select geofence type"
                                       class="form-control populate" name="geofenceType" #gType="ngModel" required [(ngModel)]="geofenceData.geofenceType">
@@ -155,12 +155,12 @@
 </section>
 
 <div class="modal fade" id="addGeofenceCategoryModal" tabindex="-1" role="dialog"
-   aria-labelledby="addGeofenceCategoryModal" aria-hidden="true">
+   aria-labelledby="addGeofenceCategoryModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title">Add Geofence Type</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" (click)="clearGeofenceData()" class="close" data-dismiss="modal" aria-label="Close">
                <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
             </button>
          </div>

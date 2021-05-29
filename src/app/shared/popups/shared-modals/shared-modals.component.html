@@ -266,13 +266,13 @@
 
 <!-- add vehicle make modal -->
 <div class="modal fade" id="addVehicleMakeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleMakeModal"
-  aria-hidden="true" >
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleMakeForm" #mForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle Make</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" (click)="clearVehicleMake()" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -315,13 +315,13 @@
 
 <!-- add vehicle model modal -->
 <div class="modal fade" id="addVehicleModelModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModelModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleModelForm" #makeModel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle Model</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearVehicleModal()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -381,13 +381,13 @@
 
 <!-- add asset make modal -->
 <div class="modal fade" id="addAssetMakeModal" tabindex="-1" role="dialog" aria-labelledby="addAssetMakeModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetMakeForm" #aMakeForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Asset Make</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearAssetMake()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -425,13 +425,13 @@
 </div>
 <!-- add asset model modal-->
 <div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm" #amodel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Asset Model</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearAssetModal()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
       </div>
@@ -489,13 +489,13 @@
 
 <!--Service program modal-->
 <div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" style="max-width: 1190px" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered" id="serviceProgramForm" method="get" #sService="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">New Service Program</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearServiceProg()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
       </div>
@@ -722,14 +722,14 @@
 
 <!--Service task modal-->
 <div class="modal fade" id="addServiceTaskModal" tabindex="-1" role="dialog" aria-labelledby="addServiceTaskModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
 
       <form class="form-horizontal form-bordered" id="form1_" method="get" #serviceModel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Service Task </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearServiceTask()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -782,7 +782,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" (click)="clearVehicleData()" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -1390,12 +1390,12 @@
 <!-- ADD ISSUES MODAL -->
 <div class="modal fade" id="addIssuesModal" tabindex="-1" role="dialog" aria-labelledby="addIssuesModal"
 
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Issue </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearIssueData()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
 
@@ -1785,12 +1785,12 @@
 
 <!-- DRIVER MODAL -->
 <div class="modal fade" id="addDriverModelVehicle" tabindex="-1" role="dialog" aria-labelledby="addDriverModelVehicle"
-  aria-hidden="true">
+  aria-hidden="true"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Driver</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" (click)="clearDriverData()" data-dismiss="modal" aria-label="Close">
             <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
           </button>
         </div>
