@@ -635,7 +635,7 @@
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                           placeholder="Select document type"
 
-                          (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc="ngModel" required>
+                          (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc1="ngModel" required>
                           <ng-container *ngFor="let documentType of documentTypeList">
                             <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
                               {{documentType.description}}</ng-option>
