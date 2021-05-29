@@ -557,7 +557,7 @@
                               (change)="getStates($event, i)" class="form-control populate"
                               placeholder="Select country">
                               <ng-option value="CA">Canada</ng-option>
-                              <ng-option value="US">United States of America</ng-option>
+                              <ng-option value="US">United States</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-5">
@@ -923,7 +923,7 @@
                           name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel" required>
 
                           <ng-option value="CA">Canada</ng-option>
-                              <ng-option value="US">United States of America</ng-option>
+                              <ng-option value="US">United States</ng-option>
 
                         </ng-select>
                         <div *ngIf="conSlt.invalid && (conSlt.dirty || conSlt.touched)" class="text-danger">
