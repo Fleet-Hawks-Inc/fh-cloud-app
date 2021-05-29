@@ -181,10 +181,10 @@
                   name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type" #nameR="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="nameR.invalid && (nameR.dirty || nameR.touched)" class="text-danger">
                      <div *ngIf="nameR.errors.required">
-                       Renewal Name is required.
+                       Renewal name is required.
                      </div>     
                      <div *ngIf="nameR.errors.pattern">
-                            Renewal Name must contains uppercase, lowercase and special characters for period(space) only.
+                            Renewal name must contain alphanumeric characters.
                      </div>
                    </div>
                 </div>
