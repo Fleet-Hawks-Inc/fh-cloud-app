@@ -308,8 +308,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
-    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate() };
-    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
+    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() +12, day: date.getDate() };
+    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() +12, day: date.getDate() };
     this.futureDatesLimit = { year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate() };
   }
 
@@ -847,10 +847,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
         this.fetchLicStates(result.licenceDetails.issuedCountry);
        this.driverData.address = result.address;
-        if(result.address != undefined) {
+        if(result.address !== undefined) {
           for (let a = 0; a < this.driverData.address.length; a++) {
             const countryCode = this.driverData.address[a].countryCode;
             const stateCode = this.driverData.address[a].stateCode;
@@ -858,7 +857,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.fetchCities(countryCode, stateCode, a);
           }
         }
-
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         this.driverData.ownerOperator = result.ownerOperator;
@@ -955,7 +953,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.hosDetails.type = result.hosDetails.type;
         this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
         this.driverData.hosDetails.hosCycle = result.hosDetails.hosCycle;
-        this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal[0].addressID;
+        this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal.addressID;
         this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
         this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
         this.driverData.hosDetails.timezone = result.hosDetails.timezone;
@@ -1004,6 +1002,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
+    console.log('datadata', this.driverData);
     // create form data instance
     const formData = new FormData();
 

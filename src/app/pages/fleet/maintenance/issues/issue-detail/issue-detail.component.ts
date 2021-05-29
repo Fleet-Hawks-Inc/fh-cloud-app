@@ -95,7 +95,6 @@ export class IssueDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reportedBy = result.reportedBy;
         this.assignedTo = result.assignedTo;
-        
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.issueImages = result.uploadedPhotos.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }

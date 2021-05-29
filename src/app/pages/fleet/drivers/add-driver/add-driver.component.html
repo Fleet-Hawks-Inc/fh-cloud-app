@@ -651,7 +651,6 @@
                     </div>
                   </div>
                   <div class="col-lg-6">
-                    <div>
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span
@@ -689,7 +688,6 @@
                           </div>
                         </div>
                       </div>
-                    </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -785,10 +783,8 @@
                         </div>
                       </div>
                     </div>
-
-
                   </div>
-                  <div class="col-lg-6 text-right"> <a href="javascript:;" (click)="remove('document', i)"
+                  <div class="col-lg-6 text-right"> <a href="javascript:;" *ngIf="i != 0"  (click)="remove('document', i)"
                       class="btn btn-danger"><i class="fa fa-minus"></i></a>
                   </div>
                 </div>
@@ -1483,9 +1479,6 @@
         </section>
       </form>
     </section>
-
-
-
   </div>
 </section>
 
