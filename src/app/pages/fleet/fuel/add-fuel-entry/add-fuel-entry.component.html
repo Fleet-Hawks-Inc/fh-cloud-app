@@ -101,7 +101,7 @@
                         <div *ngIf="fuelQuantity.invalid && (fuelQuantity.dirty || fuelQuantity.touched)"
                           class="text-danger">
                           <div *ngIf="fuelQuantity.errors.required">
-                            Fuel quantity must contain numbers only.
+                            Fuel quantity must contain numbers.
                           </div>
                         </div>
                       </div>
@@ -130,7 +130,7 @@
                           [(ngModel)]="fuelData.fuelQtyAmt" #amount="ngModel" required>
                         <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
                           <div *ngIf="amount.errors.required">
-                            Amount must contain numbers only.
+                            Amount must contain numbers.
 
 
                           </div>
@@ -294,7 +294,7 @@
                             [(ngModel)]="fuelData.pricePerUnit" #cost="ngModel" required>
                           <div *ngIf="cost.invalid && (cost.dirty || cost.touched)" class="text-danger">
                             <div *ngIf="cost.errors.required">
-                              Cost must contain numbers only.
+                              Cost must contain numbers.
 
 
                             </div>
@@ -338,7 +338,7 @@
                           <div *ngIf="amountPaid.invalid && (amountPaid.dirty || amountPaid.touched)"
                             class="text-danger">
                             <div *ngIf="amountPaid.errors.required">
-                              Amount must contain numbers only.
+                              Amount must contain numbers.
 
 
                             </div>
@@ -467,7 +467,7 @@
                           Fuel card is required.
                         </div>
                         <div *ngIf="fuelCard.errors.pattern">
-                          Fuel card must contain numbers only.
+                          Fuel card must contain numbers.
                         </div>
                       </div>
                     </div>
@@ -487,7 +487,7 @@
                           Reference is required.
                         </div>
                         <div *ngIf="reference.errors.pattern">
-                          Reference must contain alphanumeric characters only.
+                          Reference must contain alphanumeric characters.
                         </div>
                       </div>
                     </div>
@@ -677,7 +677,7 @@
                           Odometer is required.
                         </div>
                         <div *ngIf="odoRead.errors.pattern">
-                          Odometer must contain numbers only.
+                          Odometer must contain numbers.
                         </div>
                       </div>
                       <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
