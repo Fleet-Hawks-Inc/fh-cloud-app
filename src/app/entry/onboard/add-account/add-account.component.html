@@ -31,7 +31,7 @@
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must be between 2 to 30 characters and must contain letters only.
+                            First name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -45,7 +45,7 @@
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must be between 2 to 30 characters and must contain letters only.
+                            Last name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -61,7 +61,7 @@
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must be of atleast 6 characters and  contain small letters,numbers and special characters(period(.)) only .
+                           Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
                           </div>
                         </div>
                       </div>
@@ -316,7 +316,7 @@
                               MC number is required.
                             </div>
                             <div *ngIf="mc.errors.pattern">
-                              MC number must contain 6 digits.
+                              MC number must contain 6 numbers.
                             </div>
                           </div>
                       </div>
@@ -332,7 +332,7 @@
                               DOT number is required.
                             </div>
                             <div *ngIf="dot.errors.pattern">
-                              DOT number must contain 8 digits.
+                              DOT number must contain 8 numbers.
                             </div>
                           </div>
                       </div>
@@ -627,7 +627,7 @@
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
-                              Transit number must be of 9 digits.
+                              Transit number must contain 9 numbers.
                             </div>
                           </div>
                       </div>
