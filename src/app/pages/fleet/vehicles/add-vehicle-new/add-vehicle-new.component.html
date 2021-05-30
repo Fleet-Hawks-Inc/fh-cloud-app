@@ -190,7 +190,7 @@
                                  <ng-select class="form-control populate" name="countryCode" [(ngModel)]="countryCode" placeholder="Select Country"
                                     (change)="getStates($event)" #country="ngModel" required>
                                     <ng-option value="CA">Canada</ng-option>
-                                    <ng-option value="US">United States of America</ng-option>
+                                    <ng-option value="US">United States</ng-option>
                                  </ng-select>
                                  <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                                     <div *ngIf="country.errors.required">

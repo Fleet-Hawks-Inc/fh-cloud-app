@@ -214,18 +214,17 @@
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of serviceReminders">
-                                <td>-</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
+                                <td>{{ data.nextServiceDate | date:"yyyy/MM/dd" }}</td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                      <span *ngIf="users.type == 'user'">
-                                        {{ usersList[users.id] }}
-                                      </span>
-                                      <span *ngIf="users.type == 'group'">
-                                        {{ groupsList[users.id] }}
-                                      </span>
-                                      <span *ngIf="u<data.subscribers.length-1">,</span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'time'">
+                                    Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
                                   </span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'odometer'">
+                                    Every {{ data.tasks.odometer }} miles 
+                                  </span>
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
@@ -263,17 +262,11 @@
                               </tr>
                               <tr *ngFor="let data of renewalReminders">
                                 <td>{{ data.tasks.dueDate | date:"yyyy/MM/dd" }}</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                    <span *ngIf="users.type == 'user'">
-                                      {{ usersList[users.id] }}
-                                    </span>
-                                    <span *ngIf="users.type == 'group'">
-                                      {{ groupsList[users.id] }}
-                                    </span>
-                                    <span *ngIf="u<data.subscribers.length-1">,</span>
-                                </span>
+                                  Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
