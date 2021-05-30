@@ -31,7 +31,7 @@
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must be between 2 to 30 characters and must contain letters only.
+                            First name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -45,7 +45,7 @@
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must be between 2 to 30 characters and must contain letters only.
+                            Last name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -123,7 +123,7 @@
                               Carrier name is required.
                             </div>
                             <div *ngIf="cName.errors.pattern">
-                              Carrier can only contains alphanumeric characters with length between 4-120.
+                              Carrier can only contain alphanumeric characters with length between 4-120.
                             </div>
                           </div>
                       </div>
