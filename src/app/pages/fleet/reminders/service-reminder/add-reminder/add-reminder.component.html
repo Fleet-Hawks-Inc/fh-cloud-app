@@ -195,7 +195,7 @@
                                       
                                        <button *ngIf="!reminderID && !serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Save</button>
                                       
-                                      <!-- if validations are ok and now the button will disable on submit click  --> 
+                                      <!--- if validations are ok and now the button will disable on submit click  --> 
                                        <button *ngIf="!reminderID && serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="submitDisabled">Save</button>
                                            <!-- update case -->
                                        <button *ngIf="reminderID  && !serviceF.form.valid" (click)="updateReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Update</button>
