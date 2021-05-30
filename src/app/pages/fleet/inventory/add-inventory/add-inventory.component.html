@@ -497,7 +497,7 @@
                           <button *ngIf="!itemID && inventoryF.form.valid" (click)="addInventory()"
                             class="btn btn-success" [disabled]="submitDisabled">Save</button>
 
-                          <!-- update case -->
+                          <!--- update case -->
                           <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
                             [disabled]="!inventoryF.form.valid" class="btn btn-success">Update</button>
 
@@ -616,7 +616,7 @@
                   Warehouse name is required.
                 </div>
                 <div *ngIf="aWarehouse.errors.pattern">
-                  Warehouse name must contains letters.
+                  Warehouse name must contain letters.
                 </div>
               </div>
             </div>
