@@ -104,7 +104,7 @@
 
                                                 </div>
                                                 <div *ngIf="iName.errors.pattern">
-                                                    Issue name must contains atleast 4 alphanumeric characters .
+                                                    Issue name must contain atleast 4 alphanumeric characters.
                                                    
 
                                                 </div>
@@ -308,7 +308,7 @@
                                                         <a type="button" (click)="cancel()"
                                                             class="btn btn-default btnPrevious mr-2">Cancel</a>
                                                              
-                                                            <!-- if there is some error in validation  -->
+                                                            <!--- if there is some error in validation  -->
                                             <button type="button" *ngIf="!issueID && !issueF.form.valid" [disabled]="!issueF.form.valid" (click)="addIssue()" class="btn btn-success">Save</button>
                                                                 
                                                           <!-- if validations are ok and now the button will disable on submit click  -->
