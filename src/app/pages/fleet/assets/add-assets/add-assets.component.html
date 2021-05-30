@@ -15,7 +15,7 @@
       </header>
 
       <section class="m-2">
-        <form class="form-horizontal form-bordered" method="get" name="form" id="form_" >
+        <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #assetF="ngForm">
 
         
         <div class="row mb-3">
@@ -28,18 +28,20 @@
               <div class="col-lg-5 mb-3">
                <div class="row">
                 <div class="col-lg-12">
+
                  <!-- <label class="control-label font-weight-bold text-lg-right pt-2">Height <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label> -->
+
                  <div class="row">
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification" maxlength="20" minlength="2"
-                      class="form-control" placeholder="eg. XYZ,123 etc." #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                      class="form-control" placeholder="eg. Box asset" #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                       <div *ngIf="aName.invalid && (aName.dirty || aName.touched)" class="text-danger">
                         <div *ngIf="aName.errors.required">
                           Asset name is required.
                         </div>
                         <div *ngIf="aName.errors.pattern">
-                          Asset name contains no special character.
+                          Asset name must contain alphanumeric characters.
                         </div>
                       </div>
                   </div>
@@ -77,14 +79,14 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                       data-placement="top" title="Vehicle Identification Number."></i></label>
                   <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                    placeholder="17 digits Alphanumeric , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="17" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17}$">
+                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                     <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
                           VIN is required.
                         </div>
                         <div *ngIf="vName.errors.pattern">
-                           VIN contains 17 alphanumeric numbers only eg.2G1WH55K5Y9322458
+                          VIN contain 17-18 alphanumeric characters eg.2G1WH55K5Y9322458
                            </div>
 
                     </div>
@@ -95,10 +97,10 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                     [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                    class="form-control" #dSlt="ngModel" required>
-                    <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
+                    class="form-control" #sd1="ngModel" required>
+                    <div *ngIf="sd1.invalid && (sd1.dirty || sd1.touched)" class="text-danger">
 
-                        <div *ngIf="dSlt.errors.required">
+                        <div *ngIf="sd1.errors.required">
                         Start date is required.
                         </div>
 
@@ -154,7 +156,7 @@
                     <!-- <div class="text-danger" [class.d-none]="aSlt.valid || aSlt.untouched">select asset type</div> -->
                     <div *ngIf="aSlt.invalid && (aSlt.dirty || aSlt.touched)" class="text-danger">
                         <div *ngIf="aSlt.errors.required">
-                         Select Asset type is required.
+                          Asset type is required.
                         </div>
                     </div>
                   </div>
@@ -206,7 +208,7 @@
                     <div *ngIf="sSlt.invalid && (sSlt.dirty || sSlt.touched)" class="text-danger">
                       <div>
                         <div *ngIf="sSlt.errors.required">
-                         Select Status is required.
+                          Status is required.
                         </div>
                       </div>
 
@@ -249,11 +251,11 @@
                     <div class="row">
                       <div class="col-lg-6">
                       <input [(ngModel)]="assetsData.assetDetails.height" name="assetDetails.height" min="0" type="number"
-                        class="form-control" placeholder="eg. 10,20 etc." #heightTxt="ngModel" required>
+                        class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #heightTxt="ngModel" required>
                         <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
                           <div>
                             <div *ngIf="heightTxt.errors.required">
-                            Height must contains numbers only.
+                            Height must contain numbers.
                             </div>
                           </div>
 
@@ -269,7 +271,7 @@
                       </ng-select>
                       <div *ngIf="hName.invalid && (hName.dirty || hName.touched)" class="text-danger">
                       <div *ngIf="hName.errors.required">
-                        Select Height type is required.
+                        Height type is required.
                       </div>
                       </div>
                       </div>
@@ -281,7 +283,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <input [(ngModel)]="assetsData.assetDetails.length" name="assetDetails.length" min="0" type="number"
-                          class="form-control" placeholder="eg. 10,20 etc." #length="ngModel" >
+                          class="form-control" placeholder="eg. 10–26 feet " #length="ngModel" >
                           <!-- <div *ngIf="length.invalid && (length.dirty || length.touched)" class="text-danger">
 
                               <div *ngIf="length.errors.required">
@@ -342,13 +344,13 @@
                       <span class="text-1 optional-label-color">(optional)</span></label>
                     <div class="row">
                       <div class="col-lg-6">
-                        <input  placeholder="eg. 100,200 etc"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
-                          class="form-control" #gvwr="ngModel"  pattern="^[0-9]+$">
+                        <input  placeholder="eg. 6350 Kg or 14000 Pounds"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
+                          class="form-control" #gvwr="ngModel"  pattern="^[0-9\.]+$">
                           <div *ngIf="gvwr.invalid && (gvwr.dirty || gvwr.touched)" class="text-danger">
 
 
                               <div *ngIf="gvwr.errors.pattern">
-                               GVWR must contain numbers only.
+                               GVWR must contain numbers.
                               </div>
 
 
@@ -381,15 +383,15 @@
                       <span class="text-1 optional-label-color">(optional)</span></label>
                     <div class="row">
                       <div class="col-lg-6">
-                        <input  placeholder="eg. 100,200 etc" [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
-                          class="form-control" #gawr="ngModel"  pattern="^[0-9]+$">
+                        <input  placeholder="eg. 5669 kg or 1250 Pounds " [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
+                          class="form-control" #gawr="ngModel"  pattern="^[0-9\.]+$">
                           <div *ngIf="gawr.invalid && (gawr.dirty || gawr.touched)" class="text-danger">
 
                               <!-- <div *ngIf="gawr.errors.required">
                                 GAWR must contain numbers only.
                                </div> -->
                                <div *ngIf="gawr.errors.pattern">
-                                GAWR must contain numbers only.
+                                GAWR must contain numbers.
                                </div>
 
 
@@ -476,7 +478,7 @@
                     </div>
                   </div>
                   <div class="col-lg-5">
-                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span
+                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province/State<span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode" name="assetDetails.licenceStateCode"
                       class="form-control populate" placeholder="Select Province" #lpName="ngModel" required>
@@ -486,7 +488,7 @@
                     </ng-select>
                     <div *ngIf="lpName.invalid && (lpName.dirty || lpName.touched)" class="text-danger">
                         <div *ngIf="lpName.errors.required">
-                          Licence province is required.
+                          Licence province/state is required.
                         </div>
                     </div>
                   </div>
@@ -496,14 +498,14 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                       Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
-                      placeholder="eg. 345678 " name="assetDetails.licencePlateNumber"
+                      placeholder="eg. CAL 745" name="assetDetails.licencePlateNumber"
                       class="form-control" type="text" maxlength="8" #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
                       <div *ngIf="pName.invalid && (pName.dirty || pName.touched)"  class="text-danger">
                         <div *ngIf="pName.errors.required">
                           Licence plate number is required.
                         </div>
                           <div *ngIf="pName.errors.pattern">
-                          Licence plate number contains 7-8 uppercase, lowercase, numbers and special characters for period(space)only .
+                            Licence plate number must be between 7-8 alphanumeric characters.
                           </div>
                       </div>
                   </div>
@@ -561,7 +563,13 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes&nbsp; <span
                         class="text-1 optional-label-color">(optional)</span></label>
                     <textarea [(ngModel)]="assetsData.assetDetails.remarks" name="assetDetails.remarks"
-                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset"></textarea>
+                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset" #aNotes="ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                      <div *ngIf="aNotes.invalid && (aNotes.dirty || aNotes.touched)" class="text-danger">
+                        <div *ngIf="aNotes.errors.pattern">
+                         Only 500 characters are allowed.
+                        </div>
+
+                     </div>
                   </div>
                 </div>
                </div>
@@ -719,12 +727,12 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
                       ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
-                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aciIdName="ngModel" pattern="^[0-9]{2,10}$">
+                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aciIdName="ngModel" pattern="^[0-9]{10}$">
                       <div *ngIf="aciIdName.invalid && (aciIdName.dirty || aciIdName.touched)" class="text-danger">
                         <div>
 
                           <div *ngIf="aciIdName.errors.pattern">
-                           ACI ID must contains 10 alphanumeric number only eg.4567895676
+                           ACI ID must contain 10 numbers eg.4567895676
                            </div>
                         </div>
 
@@ -739,12 +747,12 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
                       ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
-                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aceIdName="ngModel" pattern="^[0-9]{2,10}$">
+                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aceIdName="ngModel" pattern="^[0-9]{10}$">
                       <div *ngIf="aceIdName.invalid && (aceIdName.dirty || aceIdName.touched)" class="text-danger">
                         <div>
 
                           <div *ngIf="aceIdName.errors.pattern">
-                           ACE ID must contains 10 alphanumeric number only eg.4567895676
+                           ACE ID must contain 10 numbers eg.4567895676
                            </div>
                         </div>
 
@@ -837,9 +845,21 @@
                     <div class="row">
                       <div class="col-11 pr-0">
                         <a routerLink="/fleet/assets/list" class="btn cus-btn-padd btn-default mr-2">Cancel</a>
-                        <button [disabled]="submitDisabled" *ngIf="!assetID" (click)="addAsset()" class="btn cus-btn-padd btn-success"
-                          id="nextBtn">Save</button>
-                        <button [disabled]="submitDisabled" *ngIf="assetID" (click)="updateAsset()" class="btn cus-btn-padd btn-success">Update</button>
+                        <!-- if there is some error in validation  -->
+
+                        <button [disabled]="!assetF.form.valid" *ngIf="!assetID && !assetF.form.valid"
+                        (click)="addAsset()" class="btn cus-btn-padd btn-success" id="nextBtn">Save</button>
+                      
+                        <!-- if validations are ok and now the button will disable on submit click  -->
+
+                      <button [disabled]="submitDisabled" *ngIf="!assetID && assetF.form.valid" (click)="addAsset()"
+                        class="btn cus-btn-padd btn-success" id="nextBtn">Save</button>
+                      
+                        <!-- update case -->
+                      <button [disabled]="!assetF.form.valid" *ngIf="assetID && !assetF.form.valid"
+                        (click)="updateAsset()" class="btn cus-btn-padd btn-success">Update</button>
+                      <button [disabled]="submitDisabled" *ngIf="assetID && assetF.form.valid"
+                        (click)="updateAsset()" class="btn cus-btn-padd btn-success">Update</button>
                       </div>
                     </div>
                   </div>
@@ -883,10 +903,10 @@
                   class="form-control" #aAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="aAsset.invalid && (aAsset.dirty || aAsset.touched)" class="text-danger">
                     <div *ngIf="aAsset.errors.required">
-                      Group Name is required.
+                      Group name is required.
                     </div>
                     <div *ngIf="aAsset.errors.pattern">
-                           Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                           Group name must contain letters.
                     </div>
                   </div>
 

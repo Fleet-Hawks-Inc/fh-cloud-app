@@ -336,8 +336,10 @@
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.zipCode ? item.zipCode : '-'}}</div>
           </div>
+
           <div class="row  m-0" *ngIf="item.manual">
-            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Province:</div>
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Province/State:</div>
+
             <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.stateName ? item.stateName : '-'}}</div>
           </div>
           <div class="row  m-0" *ngIf="item.manual">
@@ -368,7 +370,7 @@
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingCountry}}</div>
             </div>
             <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Province:</div>
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Province/State:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingState}}</div>
             </div>
             <div class="row  m-0">
@@ -449,11 +451,13 @@
                     <div class="col-lg-12 font-weight-bold text-4 text-dark">Licence Details</div>
                   </div>
                   <div class="row  m-0">
+
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CDL#:</div>
                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{CDL}}</div>
                   </div>
                   <div class="row  m-0">
-                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Province:</div>
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Province/State:</div>
+
                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceIssueSate}}</div>
                   </div>
                   <div class="row  m-0">

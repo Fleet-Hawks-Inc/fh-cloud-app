@@ -61,6 +61,7 @@ export class AddContactRenewComponent implements OnInit {
   Success: string;
   response: any = '';
   hasError = false;
+  submitDisabled = false;
   hasSuccess = false;
   currentDate = moment().format('YYYY-MM-DD');
 
@@ -100,6 +101,7 @@ export class AddContactRenewComponent implements OnInit {
   
   addRenewal() {
     this.hideErrors();
+    this.submitDisabled = true;
     switch (this.reminderData.tasks.timeUnit) {
       case 'day': {
         this.numberOfDays = this.reminderData.tasks.time * 1;
@@ -131,12 +133,16 @@ export class AddContactRenewComponent implements OnInit {
           .subscribe({
             complete: () => {
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Contact Renewal Reminder Added Successfully!');
         this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
@@ -198,6 +204,7 @@ export class AddContactRenewComponent implements OnInit {
   }
   // UPDATING REMINDER
   updateRenewal() {
+    this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -241,10 +248,12 @@ export class AddContactRenewComponent implements OnInit {
           )
           .subscribe((val) => {
             // this.throwErrors();
+            this.submitDisabled = false;
           });
 
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Contact Renewal Reminder Updated Successfully');
         this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');

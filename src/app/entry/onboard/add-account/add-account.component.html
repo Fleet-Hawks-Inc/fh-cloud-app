@@ -31,7 +31,7 @@
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must be between 2 to 30 characters and must contain letters only.
+                            First name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -45,7 +45,7 @@
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must be between 2 to 30 characters and must contain letters only.
+                            Last name must be between 2 to 30 characters and must contain letters.
                           </div>
                         </div>
                       </div>
@@ -55,13 +55,13 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" minlength="6"
-                          placeholder="john.smith" #uName="ngModel" required pattern="^[^\.][a-z0-9\.]+[^\.]$">
+                          placeholder="eg. john.smith" #uName="ngModel" required pattern="^[^\.][a-z0-9\.]+[^\.]$">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must be of atleast 6 characters and  contain small letters,numbers and special characters(period(.)) only .
+                           Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
                           </div>
                         </div>
                       </div>
@@ -89,7 +89,7 @@
                               Password is required.
                             </div>
                             <div *ngIf="pwd.errors.pattern">
-                              Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                              Password must be 8 digits long and a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                             </div>
                           </div>
                       </div>
@@ -125,7 +125,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
-                          placeholder="eg. +19897899879" #ph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                          placeholder="eg. +12234567891" #ph="ngModel" required pattern="^(\+1)[0-9]{10}$">
                           <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
                             <div *ngIf="ph.errors.required">
                             Phone number is required.
@@ -142,7 +142,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"
-                          placeholder="eg. johnsmith@testmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                          placeholder="eg. johnsmith@gmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                           <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
                             <div *ngIf="em.errors.required">
                               Email is required.
@@ -183,13 +183,13 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Registered Company Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName"
-                          placeholder="eg. XYZ logistics" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                          placeholder="eg. Westjet" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                           <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                             <div *ngIf="cName.errors.required">
                               Company name is required.
                             </div>
                             <div *ngIf="cName.errors.pattern">
-                              Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                              Company name can only contains alphanumeric characters with length between 4-120.
                             </div>
                           </div>
                       </div>
@@ -259,13 +259,13 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Doing Business As"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" placeholder="eg. xyz logistics" [(ngModel)]="DBAName"
-                          name="DBAName" #dba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
-                          <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
+                        <input type="text" class="form-control" placeholder="eg. Bookstore" [(ngModel)]="DBAName"
+                          name="DBAName" #dba="ngModel" >
+                          <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
                             <div *ngIf="dba.errors.pattern">
-                              DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                              DBA name can only contains alphanumeric characters with length between 4-120.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
@@ -274,13 +274,13 @@
                                         entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
                                         for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN"  #ein="ngModel"  pattern="^[0-9]{9}$">
+                        <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN"  #ein="ngModel">
 
-                        <div *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
+                        <!-- <div *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
                           <div *ngIf="ein.errors.pattern">
                             EIN must contain 9 digits.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <div class="row">
@@ -288,25 +288,35 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
                           Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required
+                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" #bCountry="ngModel" required
                           placeholder="Select business operating country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States of America</ng-option>
                         </ng-select>
+                        <div *ngIf="bCountry.invalid && (bCountry.dirty || bCountry.touched)" class="text-danger">
+                          <div *ngIf="bCountry.errors.required">
+                            Business country is required.
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row pt-2" *ngIf="bizCountry==='US'">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">MC# &nbsp;<i
+                        <label class="control-label font-weight-bold text-lg-right pt-2">MC#
+                          <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span> &nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="MC number (Motor Carrier number) is 6 digit number, an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>
                         </label>
-                        <input type="number"  min="0" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC"
-                        #mc="ngModel" pattern="^[0-9]{6}$" name="MC">
+                        <input type="number"  min="0" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC" [required]="bizCountry==='US'"
+                        #mc="ngModel" pattern="^[0-9]{6}$" name="MC" >
                           <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
+                            <div *ngIf="mc.errors.required">
+                              MC number is required.
+                            </div>
                             <div *ngIf="mc.errors.pattern">
-                              MC number must contain 6 digits.
+                              MC number must contain 6 numbers.
                             </div>
                           </div>
                       </div>
@@ -318,8 +328,11 @@
                         <input type="number" min="0" class="form-control" placeholder="Enter 8 digit  DOT number" [required]="bizCountry==='US'"
                         [(ngModel)]="DOT" name="DOT" #dot="ngModel" pattern="^[0-9]{8}$">
                           <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
+                            <div *ngIf="dot.errors.required">
+                              DOT number is required.
+                            </div>
                             <div *ngIf="dot.errors.pattern">
-                              DOT number must contain 8 digits.
+                              DOT number must contain 8 numbers.
                             </div>
                           </div>
                       </div>
@@ -331,12 +344,12 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" pattern="^[0-9 A-Z]{4}$">
-                          <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
+                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" >
+                          <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
                             <div *ngIf="ccc.errors.pattern">
                               CCC must be of length 4 and contains  capital letters or numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
@@ -344,12 +357,12 @@
                             title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
-                        #scac="ngModel"  pattern="^[0-9 A-Z]{4}$">
-                          <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
+                        #scac="ngModel"  >
+                          <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
                               SCAC must be of length 4 and contains  capital letters or numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -465,7 +478,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                Province</label>
+                                Province/State</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
                                 placeholder="Select province">
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
@@ -498,12 +511,12 @@
                               <label
                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
                               <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
-                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.\,]+$">
-                                <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
+                                placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel" >
+                                <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
                                     Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
                                   </div>
-                                </div>
+                                </div> -->
                             </div>
                           </div>
                           <div class="row">
@@ -521,7 +534,7 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9]{6}$">
+                                placeholder="eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
                                 <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
@@ -561,12 +574,12 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
-                          placeholder="eg. XYZ Bank">
-                          <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
+                          placeholder="eg. Bank of Nova Scotia">
+                          <!-- <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
                               Branch name must be between 2 to 30 characters and must not contain special characters.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                     <div class="row">
@@ -574,12 +587,12 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
-                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" pattern="^[0-9]{7,12}$">
-                          <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
+                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" >
+                          <!-- <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
                               Account number must be between 7-12 numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                   </div>
@@ -593,11 +606,11 @@
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
                         #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
-                          <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
+                          <!-- <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
                               Routing number must be of 9 digits.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                     <div class="row">
@@ -614,7 +627,7 @@
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
-                              Transit number must be of 9 digits.
+                              Transit number must contain 9 numbers.
                             </div>
                           </div>
                       </div>
@@ -627,13 +640,13 @@
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
-                        #ins="ngModel" pattern="^[0-9]{3}$" placeholder="eg. 219"
+                        #ins="ngModel" placeholder="eg. 219"
                         [attr.name]="'banks['+b+'].institutionNumber'">
-                          <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
+                          <!-- <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
                             <div *ngIf="ins.errors.pattern">
                               Institution number must be of 3 digits.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                   </div>
@@ -641,8 +654,8 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <!-- <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button> -->
-                         <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button>
+                    <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button>
+                         <!---- <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button> -->
 
                   </div>
                 </div>
