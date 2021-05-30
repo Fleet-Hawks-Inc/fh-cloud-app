@@ -139,7 +139,7 @@
                                        <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
                                        
                                       
-                                      <!-- if there is some error in validation  -->
+                                      <!--- if there is some error in validation  -->
 
                   <button *ngIf="!reminderID && !vehicleRF.form.valid" (click)="addRenewal()" class="btn btn-success" [disabled]="!vehicleRF.form.valid">Save</button>
                   <!-- if validations are ok and now the button will disable on submit click  --> 
