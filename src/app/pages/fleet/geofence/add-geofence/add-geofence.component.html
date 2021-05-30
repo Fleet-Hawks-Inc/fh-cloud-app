@@ -134,7 +134,7 @@
                        
                         <button *ngIf="!getGeofenceID && !geofenceF.form.valid" class="btn btn-success" (click)="addGeofence()" [disabled]="!geofenceF.form.valid">Save</button>
                          
-                        <!-- if validations are ok and now the button will disable on submit click  -->
+                        <!--- if validations are ok and now the button will disable on submit click  -->
                         <button *ngIf="!getGeofenceID && geofenceF.form.valid" class="btn btn-success" (click)="addGeofence()" [disabled]="submitDisabled">Save</button>
                                   <!-- update case -->
                        <button *ngIf="getGeofenceID && !geofenceF.form.valid" class="btn btn-success" (click)="updateGeofence()" [disabled]="!geofenceF.form.valid">Update</button>
