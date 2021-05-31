@@ -337,11 +337,9 @@ export class NewAceManifestComponent implements OnInit {
   }
   async getBorderAssetTypes(e) {
     // const assetID = e;
-    // console.log('event data', e);
     // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
     // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
-    // console.log('this.borderAssetTypes', this.borderAssetTypes);
-
+    
   }
   getCAProvinces() {
     this.states = CountryStateCity.GetStatesByCountryCode(['CA']);

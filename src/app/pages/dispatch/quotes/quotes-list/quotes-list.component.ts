@@ -39,7 +39,6 @@ export class QuotesListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         // this.quotes = result.Items;
-        // console.log("quotes", this.quotes);
         this.totalRecords = result.Count;
         }
       });

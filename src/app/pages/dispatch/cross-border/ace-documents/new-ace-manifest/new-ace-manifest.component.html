@@ -1283,7 +1283,9 @@
                               <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
 
                                 <div *ngIf="Contact2.errors.pattern">
-                                  Emergency contact name must not contain any special character.
+
+                                  Emergency contact name must contain letters only.
+
                                 </div>
                               </div>
                           </div>

@@ -33,8 +33,6 @@ export class HeaderComponent implements OnInit {
         val = activeTab;
       }
       this.navSelected = val;
-
-      console.log('this.navSelected', this.navSelected);
     });
   }
 
@@ -71,7 +69,7 @@ fetchCarrier() {
 }
 
   Logout() {
-    console.log('logout');
+    
     Auth.signOut();
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
@@ -83,6 +81,8 @@ fetchCarrier() {
     localStorage.removeItem('active-header');
     localStorage.removeItem('currentUserName');
     localStorage.removeItem('nickName');
+    localStorage.setItem('signOut', 'true'); //trigger flag
+    localStorage.removeItem('accessToken'); //Remove token from local
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
   }

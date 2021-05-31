@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -81,7 +81,6 @@ export class HosChartComponent implements OnChanges {
           };
         },
         label: (tooltipItem): any => {
-          console.log(tooltipItem.label);
           switch (tooltipItem.yLabel) {
             case 1.5:
               return "Driving";
@@ -193,7 +192,6 @@ export class HosChartComponent implements OnChanges {
   constructor(private apiService: ApiService) { }
 
   ngOnChanges(): void {
-    console.log('username is', this.userName);
     this.plotHosGraph();
   }
 

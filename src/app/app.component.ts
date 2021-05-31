@@ -2,7 +2,7 @@ import {Component, OnInit, Inject, AfterContentChecked, ChangeDetectorRef} from 
 import {Router, Event, NavigationStart, NavigationEnd, NavigationError, NavigationCancel} from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import {delay} from 'rxjs/operators';
-import {HttpLoadingService} from './services';
+import {HttpLoadingService, SharedServiceService} from './services';
 declare var $: any;
 @Component({
   selector: 'app-root',
@@ -14,34 +14,36 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
   loading = false;
   token: boolean = false;
   currentURL = '';
-  constructor(private router: Router,
+  constructor(private router: Router,private sharedService: SharedServiceService,
               @Inject(DOCUMENT) private document: Document,
               private changeDetector: ChangeDetectorRef,
               private httpLoadingService: HttpLoadingService) {
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName( 'html' )[0];
+    
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        console.log('token', this.token);
         this.currentURL = event.url;
+        let currentModule = this.currentURL.split('/')[1];
+        localStorage.setItem('active-header', currentModule)
         if (event.url === '/Map-Dashboard') {
           rootHtml.classList.add('fixed');
           rootHtml.classList.add('sidebar-light');
           rootHtml.classList.add('sidebar-left-collapsed');
-        } else {
+          localStorage.setItem('active-header', 'fleet')
+        } 
+        else {
           rootHtml.classList.add('fixed');
           rootHtml.classList.remove('sidebar-left-collapsed');
         }
-        console.log('currentURL', this.currentURL);
+        this.sharedService.activeParentNav.next(currentModule);
         
-        console.log('local storage', localStorage.getItem('LoggedIn') );
         if(localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn') && localStorage.getItem('LoggedIn') != null) {
           this.token = true;
         } else {
           this.token = false;
         }
 
-        console.log(' last token', this.token);
       }
 
 
@@ -73,6 +75,26 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
 
   ngOnInit() {
     this.listenToLoading();
+
+    window.addEventListener('storage', (event) => {
+      if (event.storageArea == localStorage) {
+           let token = localStorage.getItem('accessToken');
+           if(token == undefined) { 
+             //Navigate to login
+              this.router.navigate(['/Login']); 
+           } 
+          
+      }
+  }, false);
+
+  
+  }
+
+  getToken(){
+    if(localStorage.getItem('accessToken') != undefined) {
+      return true
+    }
+    return false;
   }
 
   /**

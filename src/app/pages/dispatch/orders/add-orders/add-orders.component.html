@@ -495,52 +495,74 @@
 
 
                                                              </div>
-                                                              <span class="text-danger"
-                                                                 *ngIf="isShipperSubmit && shippersReceivers[i].shippers.shipperID == ''"
-                                                                 >
-                                                                 This Field is required
-                                                              </span>
-                                                           </div>
-                                                           <div class="col-lg-1 mar-top-37  pl-0">
-                                                              <a data-toggle="modal" data-target="#addShipperModal" href="javascript:;"
-                                                                 class="modal-with-form btn btn-sm btn-success">
-                                                                 <em class="fas fa-plus"></em>
-                                                             </a>
+
+                                                         </div>
+                                                         <div class="row mt-3">
+
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pickup Location
+                                                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               </label>
+
+                                                               <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.shippers.pickupLocation"
+                                                                  name="pickupLocation" (keyup)="searchTerm.next($event);"
+                                                                  class="form-control " #pickupLocation="ngModel" required
+                                                                  pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
+                                                                  #location="ngModel" required>
+                                                                  <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
+                                                                     <div *ngIf="location.errors.required">
+                                                                      PickUp location is required.
+                                                                         </div>
+
+                                                                     <!-- <div *ngIf="location.errors.pattern">
+                                                                     Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
+                                                                      </div> -->
+
+
+
+                                                                 </div>
+
+                                                               <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
+                                                                  <ul class="p-0 m-0 text-left">
+                                                                     <li *ngFor="let item of searchResults;">
+                                                                        <a href="javascript:;" (click)="assignLocation(i, 'shipper', item.address.label)"
+                                                                           title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                     </li>
+                                                                  </ul>
+                                                               </div>
+
+                                                               <span class="text-danger"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupLocation == ''"
+                                                                  >
+                                                                  This Field is required
+                                                               </span>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mt-3">
 
-                                                           <div class="col-lg-12 col-md-12">
-                                                              <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                 for="inputDefault">Pickup Location
-                                                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                              </label>
-
-                                                              <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.shippers.pickupLocation"
-                                                                 name="pickupLocation" (keyup)="searchTerm.next($event);"
-                                                                 class="form-control " #pickupLocation="ngModel" required
-                                                                 pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                                 #location="ngModel" required>
-                                                                 <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
-                                                                    <div *ngIf="location.errors.required">
-                                                                     PickUp location is required.
-                                                                        </div>
-
-                                                                    <!-- <div *ngIf="location.errors.pattern">
-                                                                    Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
-                                                                     </div> -->
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pick Date and Time
+                                                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               </label>
+                                                            </div>
+                                                            <div class="col-lg-6">
 
 
+                                                               <div class="input-group">
 
-                                                                </div>
+                                                                     <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate" type="text"
+                                                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
+                                                                     class="form-control" autocomplete="off" #orderDate1="ngModel" required>
 
-                                                              <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
-                                                                 <ul class="p-0 m-0 text-left">
-                                                                    <li *ngFor="let item of searchResults;">
-                                                                       <a href="javascript:;" (click)="assignLocation(i, 'shipper', item.address.label)"
-                                                                          title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                    </li>
-                                                                 </ul>
+
+                                                               </div>
+                                                               <div *ngIf="orderDate1.invalid && (orderDate1.dirty || orderDate1.touched)" class="text-danger">
+                                                                  <div *ngIf="orderDate1.errors.required">
+                                                                   PickUp date and time is required.
+                                                                      </div>
+
                                                               </div>
 
                                                               <span class="text-danger"
@@ -957,9 +979,11 @@
                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required >
                                                                  <div *ngIf="drop.invalid && (drop.dirty || drop.touched)" class="text-danger">
 
-                                                                    <div *ngIf="drop.errors.required">
-                                                                       Drop off location is required.
-                                                                        </div>
+
+                                                                     <div *ngIf="drop.errors.required">
+                                                                        Drop off location is required.
+                                                                         </div>
+
 
 
 <!--
@@ -1004,9 +1028,11 @@
                                                               </div>
                                                               <div *ngIf="delDate.invalid && (delDate.dirty || delDate.touched)" class="text-danger">
 
-                                                                 <div *ngIf="delDate.errors.required">
-                                                                Delivery date and time is required.
-                                                                  </div>
+
+                                                                  <div *ngIf="delDate.errors.required">
+                                                                 Delivery date and time is required.
+                                                                   </div>
+
 
 
 
@@ -1869,6 +1895,14 @@
                           </div>
 
 
+                                    <div *ngIf="tMiles.errors.required">
+                                  Total Miles is requird.
+                                     </div>
+                                     <div *ngIf="tMiles.errors.pattern">
+                                       Total miles must contains number and with decimal allowed.
+                                          </div>
+
+
                        </div>
 
                        <div class="row">
@@ -1877,6 +1911,67 @@
                                 <div class="col-lg-12">
                                    &nbsp;
                                 </div>
+
+                                 <span class="text-danger"
+                                    *ngIf="isSubmit && !orderData.milesInfo.totalMiles">
+                                    This Field is required
+                                 </span>
+                              </div>
+                           </div>
+
+                        <!-- <div class="row mt-1">
+                           <div class="col-lg-8 offset-lg-2 mt-3">
+                              <label class="control-label font-weight-bold text-4 text-dark"
+                                 for="inputDefault">Remarks</label>
+                              <textarea placeholder="eg. Enter Remarks" [(ngModel)]="orderData.remarks" name="remarks" class="form-control h-auto" rows="2"
+                                 ></textarea>
+                           </div>
+                        </div> -->
+
+
+                     </div>
+
+                     <div class="col-lg-6">
+                        <div class="row">
+                           <div class="col-lg-10 offset-lg-2">
+                              <h4 class="text-dark font-weight-bold text-5">Charges</h4>
+                           </div>
+                        </div>
+
+                        <div class="row mt-3">
+                           <div class="col-lg-10 offset-lg-2">
+                              <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                 for="inputDefault">Freight Fee
+                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                              </label>
+                           </div>
+                           <div class="col-lg-3 offset-lg-2 col-md-12">
+                              <ng-select placeholder="eg. Flat Fee " [(ngModel)]="orderData.charges.freightFee.type" name="freight_type"
+
+                              #freightType="ngModel" required freightType
+
+                                 class="form-control populate" #sltFreight="ngModel" required >
+                                    <ng-option value="Flat Fee">Flat Fee</ng-option>
+                                    <!-- <ng-option value="Per Mile">Per Mile</ng-option>
+                                    <ng-option value="Bag">Bag</ng-option>
+                                    <ng-option value="Box">Box</ng-option>
+                                    <ng-option value="Carton">Carton</ng-option>
+                                    <ng-option value="Case">Case</ng-option>
+                                    <ng-option value="Container Bulk Cargo">Container Bulk Cargo</ng-option>
+                                    <ng-option value="Pieces">Pieces</ng-option>
+                                    <ng-option value="Parcel">Parcel</ng-option>
+                                    <ng-option value="Skid">Skid</ng-option>
+                                    <ng-option value="Unit">Unit</ng-option> -->
+                              </ng-select>
+                              <div *ngIf="sltFreight.invalid && (sltFreight.dirty || sltFreight.touched)" class="text-danger">
+
+                                 <div *ngIf="sltFreight.errors.required">
+                                  Freight fee is required.
+                                  </div>
+
+
+
+
                              </div>
                           </div>
                           <div class="col-lg-5">
@@ -2044,10 +2139,210 @@
 
 
 
-           </div>
-        </div>
-     </section>
-  </div>
+
+                              </ng-select>
+                              <!-- <div *ngIf="dCurrency.invalid && (dCurrency.dirty || dCurrency.touched)" class="text-danger">
+
+                                 <div *ngIf="dCurrency.errors.required">
+                                    Select valid currency from the list.
+                                  </div>
+
+
+
+                             </div> -->
+                           </div>
+                           <div class="col-lg-1">
+                              <a *ngIf="i != 0" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessDeduct', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
+                              <a *ngIf="i == 0" class="btn btn-success btn-sm" href="javascript:;" (click)="addAccessFee('accessDeduct')"><i class="fas fa-plus"></i></a>
+                           </div>
+
+
+                           <div class="col-lg-2">
+                              <p class="text-right"> <span>{{item.amount}} </span></p>
+                           </div>
+
+
+                        </div>
+
+                        <div class="row">
+                           <div class="col-lg-7">
+                              <div class="rows mt-4 pt-3">
+                                 <div class="col-lg-12">
+                                    &nbsp;
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-5">
+                              <div class="row mt-3 pb-1 mb-1">
+                                 <div class="col-lg-9 pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Order Total</h5>
+                                 </div>
+                                 <div class="col-lg-3 pt-1">
+                                    <p class="text-right"><span [innerHTML]="subTotal"> </span></p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+
+                        <div class="row mt-3">
+                           <div class="col-lg-10 offset-lg-2 pl-3 mb-2">
+                              <div class="checkbox-custom checkbox-default">
+                                 <input type="checkbox" id="ZeroRated" (change)="calculateAmount()" [(ngModel)]="orderData.zeroRated" name="zeroRated">
+                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Zero Rated</label>
+                              </div>
+                           </div>
+                           <div class="col-lg-10 offset-lg-2" *ngIf="!orderData.zeroRated">
+                              <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Provinces/States</label>
+                           </div>
+                           <div class="col-lg-5 offset-lg-2" *ngIf="!orderData.zeroRated">
+                              <ng-select
+                              [(ngModel)]="orderData.stateTaxID"
+                              name="stateTaxID"
+                               (change)="stateSelectChange()"
+                                 class="form-control populate">
+                                 <ng-option *ngFor="let stateTax of stateTaxes" selected value="{{stateTax.stateTaxID}}">{{stateTax.stateName}}</ng-option>
+                              </ng-select>
+                           </div>
+                        </div>
+
+                        <!-- <div class="row">
+                           <div class="col-lg-8">
+                              <div class="row mt-3" *ngFor="let item of orderData.taxesInfo; let i = index;">
+                                 <div class="col-lg-2 offset-lg-3 pl-0">
+                                    <label class="control-label font-weight-bold text-3 text-dark pt-2">{{item.name}}</label>
+                                 </div>
+                                 <div class="col-lg-3">
+                                    <div class="input-group">
+                                       <input type="text" class="form-control" value="{{item.amount}}" placeholder="0" disabled>
+                                       <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">
+                                             %
+                                          </span>
+                                       </span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-4">
+                              <div class="row">
+                                 <div class="col-lg-9 bordtop pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Taxes</h5>
+                                 </div>
+                                 <div class="col-lg-3 bordtop pt-1">
+                                    <p class="text-right">
+                                       $<span [innerHTML]="tax"> </span>
+                                    </p>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-9 bordtop pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
+                                 </div>
+                                 <div class="col-lg-3 bordtop pt-1">
+                                    <p class="text-right"> $ <span [innerHTML]="totalAmount"> </span> </p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div> -->
+
+
+                        <div class="row">
+                           <div class="col-lg-5 offset-lg-2">
+                              <div *ngIf="!orderData.zeroRated">
+                                 <div class="row mt-4" *ngFor="let item of orderData.taxesInfo; let i = index;">
+                                    <div class="col-lg-5">
+                                       <input type="text" class="form-control" value="{{item.name}}" disabled>
+                                    </div>
+                                    <div class="col-lg-7">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="0.00" value="{{item.amount}}" disabled>
+                                          <span class="input-group-append">
+                                          <span class="input-group-text pt-0 pb-0">%</span>
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-10 offset-lg-2">
+                                       <span>&nbsp;</span>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <!-- <div class="row mt-3">
+                                 <div class="col-lg-5">
+                                    <input type="number" min="0"  name="advance" [(ngModel)]="orderData.advance" class="form-control" (blur)="calculateAmount()">
+                                 </div>
+                              </div>
+
+                              <div class="row mt-4">
+                                 <div class="col-lg-10 offset-lg-2">
+                                    <span>&nbsp;</span>
+                                 </div>
+                              </div> -->
+                           </div>
+                           <div class="col-lg-5">
+                              <div *ngIf="!orderData.zeroRated">
+                                 <div class="row mt-1 pb-1 mb-1" *ngFor="let item of orderData.taxesInfo; let i = index">
+                                    <div class="col-lg-9 pt-1">
+                                    </div>
+                                    <div class="col-lg-3 pt-1">
+                                       <p class="text-right">{{item.amount ? item.amount : 0}}</p>
+                                    </div>
+                                 </div>
+                              </div>
+
+
+                              <div class="row mt-4">
+                                 <div class="col-lg-9 bordtop pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
+                                 </div>
+                                 <div class="col-lg-3 bordtop pt-1">
+                                    <p class="text-right"><span [innerHTML]="totalAmount"> </span></p>
+                                 </div>
+                              </div>
+                              <!-- <div class="row">
+                                 <div class="col-lg-9 bordtop pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Advance Paid</h5>
+                                 </div>
+                                 <div class="col-lg-3 bordtop pt-1">
+                                    <p class="text-right" [innerHTML]="orderData.advance"></p>
+                                 </div>
+                              </div> -->
+                              <!-- <div class="row">
+                                 <div class="col-lg-9 bordtop pt-1">
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
+                                 </div>
+                                 <div class="col-lg-3 bordtop pt-1">
+                                    <p class="text-right" [innerHTML]="orderData.finalAmount"></p>
+                                 </div>
+                              </div> -->
+                           </div>
+                        </div>
+
+                     </div>
+
+                  </div>
+
+                  <div class="form-group row">
+                     <div class="col-lg-12 text-right">
+                        <a href="javascript:;" routerLink="dispatch/orders"
+                           class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
+                        <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="!aOrder1.form.valid" class="btn btn-success" >Save</button>
+                        <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="!aOrder1.form.valid" class="btn btn-success text-white" >Update</button>
+                     </div>
+                  </div>
+               </form>
+
+
+
+
+            </div>
+         </div>
+      </section>
+   </div>
+
 </section>
 
 

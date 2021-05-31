@@ -266,13 +266,13 @@
 
 <!-- add vehicle make modal -->
 <div class="modal fade" id="addVehicleMakeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleMakeModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleMakeForm" #mForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle Make</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" (click)="clearVehicleMake()" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -315,13 +315,13 @@
 
 <!-- add vehicle model modal -->
 <div class="modal fade" id="addVehicleModelModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModelModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleModelForm" #makeModel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle Model</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearVehicleModal()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -381,13 +381,13 @@
 
 <!-- add asset make modal -->
 <div class="modal fade" id="addAssetMakeModal" tabindex="-1" role="dialog" aria-labelledby="addAssetMakeModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetMakeForm" #aMakeForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Asset Make</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearAssetMake()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -425,13 +425,13 @@
 </div>
 <!-- add asset model modal-->
 <div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm" #amodel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Asset Model</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearAssetModal()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
       </div>
@@ -489,13 +489,13 @@
 
 <!--Service program modal-->
 <div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" style="max-width: 1190px" role="document">
     <div class="modal-content">
       <form class="form-horizontal form-bordered" id="serviceProgramForm" method="get" #sService="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">New Service Program</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearServiceProg()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
       </div>
@@ -722,14 +722,14 @@
 
 <!--Service task modal-->
 <div class="modal fade" id="addServiceTaskModal" tabindex="-1" role="dialog" aria-labelledby="addServiceTaskModal"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
 
       <form class="form-horizontal form-bordered" id="form1_" method="get" #serviceModel="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Service Task </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearServiceTask()" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -777,12 +777,12 @@
 </div>
 <!-- ADD vehicle MODAL -->
 <div class="modal fade" id="addVehicleModelDriver" tabindex="-1" role="dialog" aria-labelledby="addVehickeModelDriver"
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Vehicle</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" (click)="clearVehicleData()" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
@@ -884,7 +884,7 @@
                             [(ngModel)]="countryCode" placeholder="Select state" #mCountry="ngModel" required >
 
                             <ng-option value="CA">Canada</ng-option>
-                            <ng-option value="US">United States of America</ng-option>
+                            <ng-option value="US">United States</ng-option>
                           </ng-select>
                           <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
                             <div *ngIf="mCountry.errors.required">
@@ -1226,8 +1226,11 @@
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="fluid.fuelType" [(ngModel)]="fluid.fuelType"
                             placeholder="Select fuel type" #mFuel="ngModel" required>
-                            <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
-                              {{fuelType.fuelTypeName}}</ng-option>
+                            <!-- <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
+                              {{fuelType.fuelTypeName}}</ng-option> -->
+                              <ng-option value="Diesel">Diesel</ng-option>
+                                    <ng-option value="Gasoline">Gasoline</ng-option>
+                                    <ng-option value="Propane">Propane</ng-option>
                           </ng-select>
                           <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
                             <div *ngIf="mFuel.errors.required">
@@ -1387,12 +1390,12 @@
 <!-- ADD ISSUES MODAL -->
 <div class="modal fade" id="addIssuesModal" tabindex="-1" role="dialog" aria-labelledby="addIssuesModal"
 
-  aria-hidden="true">
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Issue </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clearIssueData()" class="close" data-dismiss="modal" aria-label="Close">
           <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
         </button>
 
@@ -1719,7 +1722,7 @@
                               {{country.countryName}}
                             </ng-option> -->
                             <ng-option value="CA">Canada</ng-option>
-                            <ng-option value="US">United States of America</ng-option>
+                            <ng-option value="US">United States</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">
@@ -1782,12 +1785,12 @@
 
 <!-- DRIVER MODAL -->
 <div class="modal fade" id="addDriverModelVehicle" tabindex="-1" role="dialog" aria-labelledby="addDriverModelVehicle"
-  aria-hidden="true">
+  aria-hidden="true"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Driver</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" (click)="clearDriverData()" data-dismiss="modal" aria-label="Close">
             <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
           </button>
         </div>
@@ -1824,7 +1827,7 @@
                                         value="contractor"> Contractor
                                     </label>
                                   </div>
-                                                                </div>
+                                </div>
                               </div>
                               <div class="col-lg-12" id="employeeIDDiv">
                                 <div class="row">
@@ -2033,12 +2036,20 @@
                                   <div class="col-lg-4">
                                     <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
                                   </div>
-                                  <div class="col-lg-5 px-0">
+                                  <div class="col-lg-6 px-0">
                                     <div class="btn-group-toggle" data-toggle="buttons">
-                                      <label class="btn btn-outline btn-yesno mr-2 active mb-2">
-                                        <input id="male" name="male" type="radio">Male</label>
-                                      <label class="btn btn-outline btn-yesno mr-2 mb-2">
-                                        <input id="female" name="female" type="radio">Female</label>
+                                      <label class="btn btn-outline btn-yesno  mr-2"
+                                        [class.active]="driverData.gender === 'M'" style="width:90px;"
+                                        (click)="onChangeUnitType('gender', 'M')">
+                                        <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked hidden
+                                          value="M"> Male
+                                      </label>
+                                      <label class="btn btn-outline btn-yesno mr-2 " style="width:90px;"
+                                        [class.active]="driverData.gender === 'F'"
+                                        (click)="onChangeUnitType('gender', 'F')">
+                                        <input type="radio" id="female" [(ngModel)]="driverData.gender" name="gender" hidden
+                                          value="F"> Female
+                                      </label>
                                     </div>
                                   </div>
                                 </div>
@@ -2075,36 +2086,6 @@
                                   </div>
                                 </div>
                               </div>
-                              <!-- <div class="col-lg-4">
-                                <label class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group <span
-                                    class="text-1 optional-label-color">(optional)</span>
-                                </label>
-                                <ng-select class="form-control form-control-sm" [(ngModel)]="driverData.groupID" name="groupID"
-                                  placeholder="Select group of which driver will be part of">
-                                  <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
-                                    {{group.groupName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-1 mar-top-37 text-right"> <a data-toggle="modal"
-                                  data-target="#addDriverGroupModal" href="javascript:;"
-                                  class="modal-with-form btn cus-btn-padd btn-success">
-                                  <em class="fas fa-plus"></em>
-                                </a>
-                              </div>
-                              <div class="col-lg-4">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle <span
-                                    class="text-1 optional-label-color">(optional)</span>
-                                </label>
-                                <ng-select [(ngModel)]="driverData.assignedVehicle" name="assignedVehicle"
-                                  placeholder="Assign vehicle to driver">
-                                  <ng-option *ngFor="let vehicle of vehicles | async;" value="{{vehicle.vehicleID}}">
-                                    {{vehicle.vehicleIdentification}}
-                                  </ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-1 mar-top-37 text-right"><a (click)="gotoVehiclePage();" href="javascript:;"
-                                  class="btn btn-success cus-btn-padd"><em class="fas fa-plus"></em></a>
-                              </div> -->
                               <div class="col-lg-12">
                                 <div class="row">
                                   <div class="col-lg-6" *ngIf="driverData.driverType !== 'contractor'">
@@ -2163,12 +2144,6 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <!-- <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                                    <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
-                                      name="driverImage" type="file" class="hidden_input1 w-100" />
-                                    <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                                      Photo</label>
-                                  </div> -->
                                 </div>
                               </div>
                               <div class="col-lg-6">
@@ -2188,8 +2163,11 @@
                                 </div>
                               </div>
                               <div class="col-lg-6 mar-top-37">
-                                <input type="file" id="upload" hidden />
-                                <label class="btn btn-sm btn-block btn-success" for="upload"><i class="fas fa-plus"></i> Abstract History Document <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                                  Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                  <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
+                                     type="file">
+                               </div>
                               </div>
                             </div>
                           </div>
@@ -2226,8 +2204,10 @@
                                   [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                                   placeholder="Select document type"
                                   (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc="ngModel" required>
-                                  <ng-option *ngFor="let documentType of documentTypeList" [value]="documentType.code">
-                                    {{documentType.description}}</ng-option>
+                                  <ng-container *ngFor="let documentType of documentTypeList">
+                                    <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
+                                      {{documentType.description}}</ng-option>
+                                  </ng-container>
                                 </ng-select>
                                 <div *ngIf="doc.invalid && (doc.dirty || doc.touched)" class="text-danger">
                                   <div *ngIf="doc.errors.required">
@@ -2348,7 +2328,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-6 text-right pt-2"> <a href="javascript:;" (click)="remove('document', i)"
+                          <div class="col-lg-6 text-right pt-2"> <a href="javascript:;" *ngIf="i != 0" (click)="remove('document', i)"
                               class="btn btn-danger"><i class="fa fa-minus"></i></a>
                           </div>
                         </div>
@@ -2361,6 +2341,9 @@
                         <div class="form-group row text-dark">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Licence Details</label>
+                          </div>
+                          <div class="col-lg-10">
+                            <label class="control-label text-4 pt-2">Add other license details(eg. Enhanced drivers license) in the documents section.</label>
                           </div>
                           <div class="col-lg-6">
                             <div class="row">
@@ -2458,7 +2441,7 @@
                                   Payment Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                                   placeholder="Select the payment type" id="paymentTypeForm"
-                                  (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event)"
+                                  (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event);"
                                   #paySlt="ngModel" required>
                                   <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                                   <ng-option value="Percentage">Percentage</ng-option>
@@ -2500,7 +2483,7 @@
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit"
+                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" (change)="changeCurrency($event)"
                                   name="paymentDetails.rateUnit" placeholder="Select Currency">
 
                                   <ng-option value="CAD">CAD</ng-option>
@@ -2515,7 +2498,7 @@
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit"
+                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" (change)="changeCurrency($event)"
                                   name="paymentDetails.waitingPayUnit" placeholder="Select Currency">
 
                                   <ng-option value="CAD">CAD</ng-option>
@@ -2541,7 +2524,7 @@
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit"
+                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit" (change)="changeCurrency($event)"
                                   name="paymentDetails.deliveryRateUnit" placeholder="Select Currency">
 
                                   <ng-option value="CAD">CAD</ng-option>
@@ -2583,63 +2566,63 @@
                             <div>
                               <div class="row" id="payPerMileForm"
                                 *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Mile'" style="display: flex;">
-                                <div class="col-lg-4 pr-0">
+                                <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
                                     type="text" class="form-control" placeholder="eg. 10,20">
                                 </div>
-                                <div class="col-lg-2 ">
+                                <div class="col-lg-3 ">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                   <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit"
-                                    name="paymentDetails.loadedMilesUnit" placeholder="Select Currency"
+                                    name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
                                     (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')">
 
                                     <ng-option value="CAD">CAD</ng-option>
                                     <ng-option value="USD">USD</ng-option>
                                   </ng-select>
                                 </div>
-                                <div class="col-lg-4 pr-0">
+                                <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
                                     type="text" class="form-control" placeholder="eg. 10,20">
                                 </div>
-                                <div class="col-lg-2 ">
+                                <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit"
+                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" (change)="changeCurrency($event)"
                                     name="paymentDetails.emptyMilesUnit" placeholder="Currency"
                                     (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')">
                                     <ng-option value="CAD">CAD</ng-option>
                                     <ng-option value="USD">USD</ng-option>
                                   </ng-select>
                                 </div>
-                                <div class="col-lg-4 pr-0">
+                                <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles (Team) </label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                                     name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
                                     placeholder="eg. 10,20">
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit"
+                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit" (change)="changeCurrency($event)"
                                     name="paymentDetails.loadedMilesTeamUnit" placeholder="Currency">
 
                                     <ng-option value="CAD">CAD</ng-option>
                                     <ng-option value="USD">USD</ng-option>
                                   </ng-select>
                                 </div>
-                                <div class="col-lg-4 pr-0">
+                                <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                                     Miles (Team)</label>
                                   <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                                     name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
                                     placeholder="eg. 10,20">
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit"
+                                  <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit" (change)="changeCurrency($event)"
                                     name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency">
 
                                     <ng-option value="CAD">CAD</ng-option>

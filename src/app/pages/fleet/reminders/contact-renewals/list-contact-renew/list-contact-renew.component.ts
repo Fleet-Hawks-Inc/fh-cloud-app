@@ -50,10 +50,8 @@ export class ListContactRenewComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.fetchAllVehicles();
     this.getRemindersCount();
     this.fetchServiceTaks();
-    this.fetchGroups();
     this.fetchUsersList();
     this.fetchTasksList();
     $(document).ready(() => {
@@ -74,25 +72,16 @@ export class ListContactRenewComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });
   }
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groups = result;
-    });
-  }
+
   fetchUsersList() {
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/employee').subscribe((result: any) => {
       this.usersList = result;
     });
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  fetchAllVehicles() {
-    this.apiService.getData('users').subscribe((result: any) => {
-      this.allUsers = result.Items;
-    });
-  }
-
+  
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=contact').subscribe({
       complete: () => {},

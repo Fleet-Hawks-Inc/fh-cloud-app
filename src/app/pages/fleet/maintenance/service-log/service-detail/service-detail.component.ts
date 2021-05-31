@@ -82,13 +82,13 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
-        console.log('this.logsData', this.logsData);
+        
 
         this.fetchSelectedIssues(this.logsData.selectedIssues);
        
         result = result.Items[0];
-        this.vehicle = result.vehicleID;
-        this.assetID = result.assetID;
+        this.vehicle = result.unitID;
+        this.assetID = result.unitID;
         this.vendorID = result.vendorID;
         this.completionDate = result.completionDate;
         this.odometer = result.odometer;
@@ -139,9 +139,10 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchAllVendorsIDs() {
-    this.apiService.getData('vendors/get/list')
+    this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result;
+        console.log('result vendor', result)
+        this.vendorsObject = result; 
       });
   }
 
@@ -158,7 +159,7 @@ export class ServiceDetailComponent implements OnInit {
   fetchUsers(){
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.users = result;
-      console.log('this.users', this.users)
+      
     });
   }
 

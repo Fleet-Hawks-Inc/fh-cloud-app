@@ -256,7 +256,7 @@ export class CommonSideBarComponent implements OnInit {
     });
   }
   Logout() {
-    //console.log('clicked');
+    
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
     //this.router.navigate(['/Login']);

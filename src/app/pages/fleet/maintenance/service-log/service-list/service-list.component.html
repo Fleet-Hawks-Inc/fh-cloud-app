@@ -24,16 +24,16 @@
 
                         <div class="col-md-2 col-lg-2 pr-0 pl-0">
 							<div class="input-group input-group-sm mb-3"> 
-								<ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search issues by vehicle">
-									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
-								</ng-select>
-							</div>
+                                <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
+                                    <ng-option *ngFor="let data of vehiclesObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                                </ng-select>
+							</div> 
 						</div>
 						<div class="col-md-2 col-lg-2 pr-0 pl-2">
 							<div class="input-group input-group-sm mb-3">
-								<ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search issues by asset">
-									<ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
-								</ng-select>
+                                <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search by asset">
+                                    <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                                </ng-select>
 							</div>
 						</div>
 
@@ -110,12 +110,11 @@
                                                                         {{item.unitType}}
                                                                     </td>
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        {{vehiclesObject[item.vehicleID]}}
-                                                                        <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br>
+                                                                        {{ item.unitName}} <br>
+
                                                                         <span class="text-success text-capitalize" 
                                                                             [ngClass]="{'text-danger': item.currentStatus == 'sold', 
-                                                                            'text-muted' : item.currentStatus === 'out of service'}"
-                                                                        >
+                                                                            'text-muted' : item.currentStatus === 'outOfService'}">
                                                                             {{item.currentStatus}}
                                                                         </span>
                                                                     </td>
@@ -167,7 +166,7 @@
                                                                             <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                                 <a class="dropdown-item"
                                                                                     routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                                <a class="dropdown-item" (click)="deleteProgram(item.logID)"
+                                                                                <a class="dropdown-item" (click)="deleteProgram(item)"
                                                                                     href="javascript:;">Delete</a>
                                                                             </div>
                                                                         </div>

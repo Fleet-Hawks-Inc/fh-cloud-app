@@ -1491,13 +1491,17 @@
                                   Contact
                                   Name&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+
                                   placeholder="eg.John Smith"
+
                                   [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.emergencyContactName'"
                                   [(ngModel)]="commodity.hazmatDetails.emergencyContactName" #Contact2="ngModel"  pattern="^[a-zA-Z\s]+$">
                                   <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
 
                                     <div *ngIf="Contact2.errors.pattern">
-                                      Emergency contact name must not contain any special character.
+
+                                      Emergency contact name must contain letters only.
+
                                     </div>
                                   </div>
                               </div>

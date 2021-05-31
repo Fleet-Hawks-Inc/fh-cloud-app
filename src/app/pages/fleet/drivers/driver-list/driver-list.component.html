@@ -485,10 +485,12 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.assets">Live Status</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.contact">{{driver.phone}} </td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.CDL_Number}}</td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
                                           class="font-weight-bold">Issue Province:
-                                       </span>{{driver.documentDetails[0].issuingState}}</td>
+                                       </span>{{driver.documentDetails[0].issuingState}}
+                                       <span *ngIf="driver.documentDetails.length === 2" class="badge badge-dark p-1 text-uppercase">+1</span>
+                                       <span *ngIf="driver.documentDetails.length === 3" class="badge badge-dark p-1 text-uppercase">+2</span></td>
 
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
