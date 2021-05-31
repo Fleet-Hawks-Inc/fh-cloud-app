@@ -81,7 +81,7 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     // this.initDataTable();
-    this.fetchFuelTypesbyIDs();
+    //this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -189,11 +189,15 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
-  fetchFuelTypesbyIDs(){
-    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
-      this.fuelTypesObjects = result;
-    });
-  }
+  // async fetchFuelTypesbyIDs(){
+  //   await this.httpClient.get('assets/jsonFiles/fuel/fuelTypes.json').subscribe((result: any) => { 
+  //     console.log(result)
+  //     result.Items.forEach(element=>{
+  //       this.fuelTypesObjects[element.fuelTypeID] = element.fuelTypeName;
+  //     })
+      
+  //   });
+  // }
 
   initDataTable() {
     this.spinner.show();

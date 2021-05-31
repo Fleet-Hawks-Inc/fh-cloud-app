@@ -277,7 +277,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchCountries();
@@ -340,11 +340,11 @@ export class AddVehicleNewComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  fetchFuelTypes() {
-    this.apiService.getData('fuelTypes').subscribe((result: any) => {
-      this.fuelTypes = result.Items;
-    });
-  }
+  // fetchFuelTypes() {
+  //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
+  //     this.fuelTypes = result.Items;
+  //   });
+  // }
   gotoVehiclePage() {
     $('#addDriverModelVehicle').modal('show');
   }

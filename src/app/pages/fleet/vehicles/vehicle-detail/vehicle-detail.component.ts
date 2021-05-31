@@ -241,7 +241,7 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
     this.fetchCountriesList();
@@ -349,11 +349,11 @@ export class VehicleDetailComponent implements OnInit {
       });
   }
 
-  fetchFuelTypes(){
-    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
-      this.fuelTypes = result;
-    });
-  }
+  // fetchFuelTypes(){
+  //   this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+  //     this.fuelTypes = result;
+  //   });
+  // }
 
   getVehicle() {
     this.apiService
