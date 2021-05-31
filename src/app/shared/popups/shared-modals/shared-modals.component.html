@@ -2729,7 +2729,7 @@
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
-                                    type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paym1entDetails.paym1entType == 'Pay Per Mile'">
+                                    type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
                                     <div *ngIf="payM1.invalid && (payM1.dirty || payM1.touched)" class="text-danger">
                                       <div *ngIf="payM1.errors.required">
                                        Loaded miles is required.
