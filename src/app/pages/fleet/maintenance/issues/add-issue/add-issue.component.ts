@@ -9,6 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var $: any;
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-add-issue',
   templateUrl: './add-issue.component.html',
@@ -27,12 +29,14 @@ export class AddIssueComponent implements OnInit {
   unitID = '';
   unitType = 'vehicle';
   currentStatus = 'OPEN';
-  reportedDate: NgbDateStruct;
+  reportedDate = moment().format('YYYY-MM-DD');
   description = '';
   odometer: number;
   reportedBy = '';
   assignedTo = '';
   carrierID;
+  fetchedUnitID;
+  fetchedUnitType;
   vehicles = [];
   assets = [];
   contacts = [];
@@ -49,6 +53,7 @@ export class AddIssueComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled=false;
   Error = '';
   errors = {};
   Success  = '';
@@ -86,7 +91,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.issueForm = $('#issueForm').validate();
+      // this.issueForm = $('#issueForm').validate();
     });
   }
   cancel() {
@@ -102,7 +107,7 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
-    fetchUsers(){
+    fetchUsers() {
       this.apiService.getData('users').subscribe((result: any) => {
         this.users = result.Items;
       });
@@ -116,16 +121,26 @@ export class AddIssueComponent implements OnInit {
       return new Date().toISOString().split('T')[0];
     }
     onChangeUnitType(value: any) {
-      this.unitType = value;
-      if(this.issueID){
+      if (this.issueID) {
+        if(value != this.fetchedUnitType){
+          this.unitID = '';
+          this.unitType = value;
+        }
+        else{
+          this.unitID = this.fetchedUnitID;
+          this.unitType = this.fetchedUnitType;
+        }
+      } else {
+        this.unitType = value;
         this.unitID = '';
       }
 
     }
   addIssue() {
     this.hideErrors();
+    this.submitDisabled=true;
     const data = {
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitType: this.unitType,
       unitID: this.unitID,
       currentStatus: this.currentStatus,
@@ -137,7 +152,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-
     // create form data instance
     const formData = new FormData();
 
@@ -167,14 +181,18 @@ export class AddIssueComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+                // this.throwErrors();
+                this.submitDisabled=false;
               },
-              error: () => { },
+              error: () => { 
+                this.submitDisabled=false;
+              },
               next: () => { },
             });
         },
         next: (res) => {
           this.response = res;
+          this.submitDisabled=false;
           this.toaster.success('Issue Added successfully');
           this.cancel();
         }
@@ -233,6 +251,8 @@ hideErrors() {
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
+      this.fetchedUnitID = result.unitID;
+      this.fetchedUnitType = result.unitType;
       this.unitType = result.unitType;
       this.currentStatus = result.currentStatus;
       this.reportedDate = result.reportedDate;
@@ -242,7 +262,6 @@ hideErrors() {
       this.assignedTo = result.assignedTo;
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
-
       if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
         this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
@@ -272,11 +291,12 @@ setSrcValue(){
   */
   updateIssue() {
     this.errors = {};
+    this.submitDisabled=true;
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
       issueID: this.issueID,
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitID: this.unitID,
       unitType: this.unitType,
       currentStatus: this.currentStatus,
@@ -317,14 +337,18 @@ setSrcValue(){
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
+              this.submitDisabled=false;
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled=false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled=false;
         this.toaster.success('Issue Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/issues/list');
       }

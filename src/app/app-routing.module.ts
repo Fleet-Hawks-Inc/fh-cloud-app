@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, PathLocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
@@ -78,10 +78,6 @@ const routes: Routes = [
     component: ErrorComponent
   },
   {
-    path: "carriers",
-    component: AllCarriersComponent
-  },
-  {
     path: "**",
     redirectTo: '/404'
   }
@@ -89,7 +85,8 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     {
-      preloadingStrategy: PreLoadStrategy
+      preloadingStrategy: PreLoadStrategy,
+      useHash: true
     }
   ), CommonModule, ChartsModule],
   exports: [RouterModule],

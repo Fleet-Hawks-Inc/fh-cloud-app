@@ -3,12 +3,14 @@ import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-issue-detail',
   templateUrl: './issue-detail.component.html',
   styleUrls: ['./issue-detail.component.css']
 })
 export class IssueDetailComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   photoSlides = [];
   docSlides = [];
   Asseturl = this.apiService.AssetUrl;
@@ -25,6 +27,7 @@ export class IssueDetailComponent implements OnInit {
   assignedTo: string;
   carrierID;
   contactName: string;
+  usersList: any = {};
   image;
   vehicles = [];
   assets = [];
@@ -49,13 +52,13 @@ export class IssueDetailComponent implements OnInit {
     this.issueID = this.route.snapshot.params[`issueID`];
     this.fetchIssue();
     this.fetchVehicleList();
-    this.fetchDriverList();
+    this.fetchUsersList();
     this.fetchAssetList();
-    if(localStorage.getItem('issueID') != null) {
-      this.route.paramMap.subscribe(res=> {
-        console.log('res', res);
-      })
-    }
+    // if(localStorage.getItem('issueID') != null) {
+    //   this.route.paramMap.subscribe(res=> {
+    
+    //   })
+    // }
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -63,9 +66,9 @@ export class IssueDetailComponent implements OnInit {
     });
   }
 
-  fetchDriverList() {
-    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
-      this.driverList = result;
+  fetchUsersList() {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.usersList = result;
     });
   }
   fetchAssetList() {
@@ -92,7 +95,6 @@ export class IssueDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reportedBy = result.reportedBy;
         this.assignedTo = result.assignedTo;
-
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.issueImages = result.uploadedPhotos.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }

@@ -1,360 +1,447 @@
-
 <section class="body">
-	<div class="inner-wrapper">
-		<section role="main" class="content-body pl-0 pr-0 pt-0">
-			<header class="page-header pr-5">
-				<div class="row pr-1 mr-1" style="padding-top:10px;">
-					<div class="col-md-4 col-lg-4">
-						<h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
-					</div>
-					<div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/manage/users/list"
-							class="btn btn-default btn-sm"><i class="fas fa-list"></i> Users List</a> </div>
-				</div>
-			</header>
-			<div class="row text-dark">
-				<div class="col pr-0">
-                    <form id="userForm" class="form-horizontal form-bordered bg-white" #userForm="ngForm" (ngSubmit)="onSubmit()">
-                        <div class="p-2">
-                            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)" [routerLink]="">Basic Details</a>
-                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" [routerLink]="">Address Details</a>
-                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" [routerLink]="">Account Details</a>
-                                 </li>
-                            </ul>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+        <form class="form-horizontal" method="get">
+          <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="col-md-1 col-lg-1 pr-0">
+              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">{{title}}</h4>
+            </div>
+            <div class="col-md-11 col-lg-11 pr-1 text-right">
+              <a routerLink="/manage/users/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Users
+                List</a>
+            </div>
+          </div>
+        </form>
+      </header>
+      <div class="row text-dark">
+        <div class="col pr-0">
+          <div class="card-body">
+            <section class="card form-wizard" id="w1">
+              <div class="card-body card-body-nopadding">
+                <form id="userForm" class="form-horizontal form-bordered bg-white" name="userForm" [mustMatch]="['password', 'confirmPassword']"
+                #uForm="ngForm" novalidate="novalidate">
+                  <div class="row pt-3">
+                    <div class="col-lg-11">
+                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
+                    </div>
+
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Company Name <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" [(ngModel)]="userData.companyName" name="companyName"
+                            placeholder="eg. Parambir">
                         </div>
-                        <div class="card-body">
-                            <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                                <div class="tab-pane show active" [ngClass]="{'active show': currentTab == 1}" id="addUserBasic" role="tabpanel" aria-labelledby="addUserBasic-tab">
-                                    <div class="form-group row">
-                                        <div class="col-lg-10">
-                                            <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
-                                        </div>
-                                        <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">First Name</label>
-                                                    <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName"> </div>
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Last Name</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="lastName" name="lastName"> </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Employee ID</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="employeeID" name="employeeID"> </div>
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
-                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text"
-                                                  class="form-control" placeholder="Select Date">
-                                                   </div>
-                                                <div class="col-lg-5">
-                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
-                                                      <ng-select [(ngModel)]="currentStatus" name="currentStatus"
-                                                      placeholder="Select user status">
-                                                      <ng-option value="ACTIVE">Active</ng-option>
-                                                      <ng-option value="INACTIVE">Inactive</ng-option>
-                                                   </ng-select>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Work Phone</label>
-                                                   <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
-                                                   <div class="col-lg-10">
-                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Work Email</label>
-                                                      <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                          <div class="row">
-                                             <div class="col-lg-10  text-center">
-                                                <div id="male_photo" class="business_image_style position-relative mx-auto"
-                                                   style="display: block;">
-                                                   <img [src]="userProfileSrc" id="male_photo" class="w-100 h-100"
-                                                      style="object-fit: cover;">
-                                                      <span class="text-danger profile-cross"
-                                                      (click)="removeProfile()" *ngIf="showIcons === true"
-                                                      style="cursor: pointer;"
-                                                      >
-                                                      <i class="fa fa-times"></i>
-                                                   </span>
-                                                </div>
-                                                <div class="mt-2">
-                                                   <div class="btn btn-sm btn-success overflow-hidden position-relative"><i
-                                                         class="fas fa-plus"></i> {{profileTitle}} Photo
-                                                      <input (change)="selectPhoto($event)"
-                                                         [(ngModel)]="userImage" name="userImage" type="file"
-                                                         class="hidden_input1 w-100" />
-                                                   </div>
-                                                </div>
-                                             </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- ADDRESS -->
-                                <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 2}" id="addUserAddress" role="tabpanel" aria-labelledby="addUserAddress-tab">
-                                    <div class="row">
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address
-                                              Details</label>
-                                        </div>
-                                     </div>
-                                     <div *ngFor="let item of addressDetails; let i = index;" class="address-item">
-                                        <div class="form-group row">
-                                           <div class="col-lg-5 offset-lg-1">
-                                              <div class="row">
-                                                 <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                    <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
-                                                       placeholder="Select address type">
-                                                       <ng-option value="Work">Work</ng-option>
-                                                       <ng-option  value="Home">Home</ng-option>
-                                                       <!-- <ng-option value="Office">Office</ng-option> -->
-                                                    </ng-select>
-                                                 </div>
-                                              </div>
-                                           </div>
-                                           <div class="col-lg-4">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
-                                                 location&nbsp; <span
-                                                    class="text-1 optional-label-color">(optional)</span></label>
-                                              <input [(ngModel)]="item.userLocation" name="userLocation{{i}}"
-                                                 (keyup)="searchTerm.next($event);" type="text" class="form-control"
-                                                 placeholder="Type Address">
-                                              <div class="checkbox-custom pt-2">
-                                                 <input [(ngModel)]="item.manual" name="manual{{i}}"
-                                                    (change)="manAddress($event, i)" type="checkbox">
-                                                 <label for="man_address">Type Manually</label>
-                                              </div>
-                                              <div class="map-search__results bg-white">
-                                                 <ul class="p-0 m-0 text-left">
-                                                    <li *ngFor="let item of searchResults;">
-                                                       <a href="javascript:;"
-                                                          (click)="userAddress(i, item)">{{item.address.label}}</a>
-                                                    </li>
-                                                 </ul>
-                                              </div>
-                                           </div>
-                                           <div class="col-lg-2 mar-top-37">
-                                              <a class="btn btn-dark mr-2" href="javascript:;"
-                                                 (click)="clearUserLocation(i);">Clear</a>
-                                              <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
-                                                   ><i class="fa fa-plus fa-fw"></i></a>
-                                              <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)" class="btn btn-success"
-                                                 href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
-                                           </div>
-                                        </div>
-                                        <div class="address-inner" *ngIf="item.manual">
-                                           <div class="row mb-3 border-bottom pb-4">
-                                              <div class="col-lg-5 offset-lg-1 pt-3">
-                                                 <div class="row">
-                                                    <div class="col-lg-5">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                          Country</label>
-                                                       <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}"
-                                                          data-plugin-selectTwo (change)="getStates($event, i)"
-                                                          class="form-control populate" placeholder="Select country">
-                                                          <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                                             value="{{country.countryID}}">{{country.countryName}}</ng-option>
-                                                       </ng-select>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                          State</label>
-                                                       <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                          name="stateID{{i}}" placeholder="Select state">
-                                                          <ng-option class="text-capitalize" *ngFor="let state of states"
-                                                             value="{{state.stateID}}">{{state.stateName}}</ng-option>
-                                                       </ng-select>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                          City</label>
-                                                       <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID"
-                                                          name="cityID{{i}}" placeholder="Select city">
 
-                                                          <ng-option class="text-capitalize" *ngFor="let city of cities"
-                                                             value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">DBA Name <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input type="text" class="form-control" placeholder="eg. Parambir"
+                            [(ngModel)]="userData.dbaName" name="dbaName">
+                        </div>
 
-                                                       </ng-select>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                                          Code</label>
-                                                       <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
-                                                          class="form-control" placeholder="Enter zipode eg. 7V2 3R4">
-                                                    </div>
-                                                 </div>
-                                              </div>
-                                              <div class="col-lg-5 pt-4">
-                                                 <div class="row">
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right">Address
-                                                          1</label>
-                                                       <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
-                                                          class="form-control" placeholder="Enter street level address">
-                                                    </div>
-                                                    <div class="col-lg-10">
-                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Address
-                                                          2&nbsp; <span
-                                                             class="text-1 optional-label-color">(optional)</span></label>
-                                                       <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
-                                                          class="form-control" placeholder="Enter street level address">
-                                                    </div>
-                                                 </div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
-                                </div>
-                                <!-- User Account -->
-                                <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 3}" id="addUserAccount" role="tabpanel" aria-labelledby="addUserAccount-tab">
-                                    <div class="form-group row">
-                                        <div class="col-lg-12">
-                                            <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Account Details</label>
-                                        </div>
-                                        <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select Department</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName">
-                                                            <ng-option value="Fleet">Fleet</ng-option>
-                                                            <ng-option value="Operations">Operations</ng-option>
-                                                            <ng-option value="Safety">Safety</ng-option>
-                                                            <ng-option value="Maintenance">Maintenance</ng-option>
-                                                            <ng-option value="Dispatch">Dispatch</ng-option>
-                                                            <ng-option value="Compliance">Compliance</ng-option>
-                                                            <ng-option value="Road Assistance">Road Assistance</ng-option>
-                                                            <ng-option value="Accounts">Accounts</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">
-                                                                    <ng-option value="Full Admin">Full Admin</ng-option>
-                                                                    <ng-option value="Read Only Admin">Read Only Admin</ng-option>
-                                                                    <ng-option value="Dispatch">Dispatch</ng-option>
-                                                                    <ng-option value="Maintenance">Maintenance</ng-option>
-                                                                    <ng-option value="Safety Manager">Safety Manager</ng-option>
-                                                                    <ng-option value="Other">Other</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                                <div class="col-lg-2 mar-top-37">
-                                                        <!-- <a href="#addUserTypeModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
-                                                          </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" placeholder="eg. Parambir"
+                            [(ngModel)]="userData.firstName" name="firstName">
+                        </div>
 
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Group&nbsp; <span
-                                                        class="text-1 optional-label-color">(optional)</span></label>
-                                                      <ng-select  [(ngModel)]="groupID" name="groupID" style="width: 100%;" placeholder="Select group for the vehicle">
-                                                      <optgroup label="Select Group">
-                                                         <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
-                                                            {{group.groupName}}</ng-option>
-                                                      <optgroup>
-                                                   </ng-select>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" placeholder="eg. Bhullar"
+                            [(ngModel)]="userData.lastName" name="lastName">
+                        </div>
 
-                                                </div>
-                                                <div class="col-lg-2 mar-top-37">
-                                                    <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                                    class="modal-with-form btn btn-sm btn-success text-light"><i
-                                                       class="fas fa-plus"></i></button>
-                                                       </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                        <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">User Name</label>
-                                                    <input type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]="disableInput">
-                                                 </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
-                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
-                                                 </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password</label>
-                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="confirmUserPassword" name="confirmUserPassword" [disabled]="disableInput">
-                                                 </div>
-                                                 <div *ngIf="errorClass" class="col-lg-10 text-danger">Password and Confirm Password must match and can not be empty.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
+
+                      </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Employee ID <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" placeholder="eg. 4516788"
+                            [(ngModel)]="userData.employeeID" name="employeeID">
+                        </div>
+
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Date of Birth <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
+                            (click)="staffdob.toggle()" ngbDatepicker #staffdob="ngbDatepicker"
+                            [(ngModel)]="userData.dateOfBirth" name="dateOfBirth">
+                        </div>
+
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Phone <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" placeholder="eg. 7869945123"
+                            [(ngModel)]="userData.phone" name="phone">
+                        </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Email <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" placeholder="eg. fleethawks@support.com" [disabled]="enableUserLogin"
+                            [(ngModel)]="userData.email" name="email">
+                        </div>
+
+
+                        <div class="col-lg-12 mt-3">
+                          <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> {{imageText}}
+                            <input  class="hidden_input1 w-100" (change)="selectPhoto($event)"
+                               type="file">
+                         </div>
+                        </div>
+                        <div class="col-lg-6" *ngIf="contactID &&  profilePath != ''">
+                          <div class="vehicle-photo-box">
+                            <img src="{{profilePath}}" width="100%" class="img-fluid"
+                              style="height: 200px; object-fit: cover;">
+                            <hr class="m-3">
+                            <div class="row">
+                              <div class="col-lg-8">Profile Photo</div>
+                              <div class="col-lg-4 text-right">
+                                <!-- <i class="fas fa-times text-danger" (click)="delete(photo.name)"></i> -->
+                              </div>
                             </div>
+                          </div>
                         </div>
-                        <div class="form-group row mt-3">
-                            <div class="col-lg-12 text-right pb-4 pr-5">
-                                <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
-                                <button type="button" *ngIf="currentTab > 1" (click)="prevStep()"
-                                   class="btn btn-default btnPrevious mr-2">Prev</button>
-                                <a href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 3"
-                                   class="btn btn-success btnNext">Next</a>
-                                <button type="submit" *ngIf="currentTab == 3 && !userID"
-                                   class="btn btn-success">Submit</button>
-                                <a href="javascript:;" *ngIf="currentTab == 3 && userID" (click)="updateUser()"
-                                   class="btn btn-success">Update</a>
-                             </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-lg-11">
+                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="row pt-3" *ngFor="let item of userData.address;let i = index;">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                            Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                          <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}"
+                            class="form-control populate" placeholder="Select Address Type">
+                            <ng-option value="Billing Address">Billing Address</ng-option>
+                            <ng-option value="Shipping Address">Shipping Address</ng-option>
+                            <ng-option value="Office">Office</ng-option>
+                            <ng-option value="Other">Other</ng-option>
+                          </ng-select>
+
                         </div>
-                    </form>
-                </div>
-			</div>
-		</section>
-	</div>
+                        <div class="col-lg-4 offset-lg-1">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                            Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                          <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
+                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address"
+                            [disabled]="item.manual">
+                          <div class="map-search__results bg-white">
+                            <ul class="p-0 m-0 text-left">
+                              <li *ngFor="let item of searchResults;">
+                                <a href="javascript:;"
+                                  (click)="userAddress(i, item)">{{item.address.label}}</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="checkbox-custom pt-2">
+                            <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
+                              type="checkbox">
+                            <label for="man_address">Type Manually</label>
+                          </div>
+                        </div>
+                        <div class="col-lg-2 mar-top-37">
+                          <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearUserLocation(i)">Clear</a>
+                          <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success"
+                            href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
+                          <a *ngIf="i != 0;" (click)="removeAddress(i)" class="btn btn-danger" href="javascript:;"><i
+                              class="fa fa-minus fa-fw"></i></a>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="row" *ngIf="item.manual">
+                              <div class="col-lg-6 pt-4">
+                                <div class="row">
+                                  <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                      Country</label>
+                                    <ng-select (change)="getStates($event, i)" [(ngModel)]="item.countryCode"
+                                      name="countryCode{{i}}" class="form-control populate address_country"
+                                      placeholder="Select Country">
+                                      <ng-option value="CA">Canada</ng-option>
+                                      <ng-option value="US">United States</ng-option>
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-lg-5 offset-lg-1">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                      Province</label>
+                                    <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
+                                      name="stateCode{{i}}" class="form-control populate address_state"
+                                      placeholder="Select Province">
+                                      <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">
+                                        {{state.stateName}}</ng-option>
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                      City</label>
+                                    <ng-select [(ngModel)]="item.cityName" name="cityName{{i}}"
+                                      class="form-control populate address_city" placeholder="Select City">
+                                      <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">
+                                        {{city.cityName}}</ng-option>
+                                    </ng-select>
+                                  </div>
+                                  <div class="col-lg-5 offset-lg-1">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                      Code</label>
+                                    <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
+                                      class="form-control address_zip" placeholder="eg. 20171">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6 pt-4">
+                                <div class="row">
+                                  <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                      1</label>
+                                    <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
+                                      class="form-control address_one" placeholder="eg. 01, Business Hub Center">
+                                  </div>
+                                  <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                                      2</label>
+                                    <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control"
+                                      placeholder="eg. 03, Business Hub Center">
+                                  </div>
+                                </div>
+                              </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-11">
+                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">User Account</label>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract Start Date
+                            <span class="text-1 optional-label-color">(optional)</span></label>
+                          <input [(ngModel)]="userData.userAccount.contractStartDate" name="contractStartDate"
+                            type="text" placeholder="yyyy/mm/dd" (click)="contStart.toggle()" ngbDatepicker
+                            #contStart="ngbDatepicker" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract End Date
+                            <span class="text-1 optional-label-color">(optional)</span></label>
+                          <input [(ngModel)]="userData.userAccount.contractEndDate" name="contractEndDate" type="text"
+                            placeholder="yyyy/mm/dd" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
+                            class="form-control" autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Designation <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <ng-select [(ngModel)]="userData.userAccount.designation" name="designation"
+                            class="form-control" placeholder="Select Designation">
+                            <ng-option value="Executive">Executive</ng-option>
+                            <ng-option value="Manager">Manager</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">Department <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <ng-select [(ngModel)]="userData.userAccount.department" name="department"
+                            class="form-control" placeholder="Select Department">
+                            <ng-option value="Fleet">Fleet</ng-option>
+                            <ng-option value="Operations">Operations</ng-option>
+                            <ng-option value="Safety">Safety</ng-option>
+                            <ng-option value="Maintenance">Maintenance</ng-option>
+                            <ng-option value="Dispatch">Dispatch</ng-option>
+                            <ng-option value="Compliance">Compliance</ng-option>
+                            <ng-option value="Road Assistance">Road Assistance</ng-option>
+                            <ng-option value="Accounts">Accounts</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="checkbox-custom pt-2">
+                        <input  type="checkbox" [(ngModel)]="userData.loginEnabled"
+                          name="loginEnabled" >
+                        <label for="enableLogin">Enable Login</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="userData.loginEnabled">
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Username <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
+                            placeholder="eg. John_Smith"  class="form-control" [disabled]="enableUserLogin">
+                        </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Type <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <ng-select class="form-control populate" [(ngModel)]="userData.userLoginData.userType"
+                            name="userType"  placeholder="Select User Type">
+                            <ng-option value="Super Admin">Super Admin</ng-option>
+                            <!-- <ng-option value="Full Admin">Full Admin</ng-option>
+                            <ng-option value="Read Only Admin">Read Only Admin</ng-option>
+                            <ng-option value="Dispatch">Dispatch</ng-option>
+                            <ng-option value="Maintenance">Maintenance</ng-option>
+                            <ng-option value="Safety Manager">Safety Manager</ng-option>
+                            <ng-option value="Other">Other</ng-option> -->
+                          </ng-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Password <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                               <div class="input-group">
+                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                                  />
+                                  <div class="input-group-append">
+                                    <span class="input-group-text eye">
+                                      <i class="fa" [ngClass]="{
+                                        'fa-eye-slash': !fieldTextType,
+                                        'fa-eye': fieldTextType
+                                      }"
+                                      (click)="toggleFieldTextType()"></i>
+                                    </span>
+                                 </div>
+                              </div>
+                              <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                                <div *ngIf="pwd.errors.required">
+                                  Password is required.
+                                </div>
+                                <div *ngIf="pwd.errors.pattern">
+                                  Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                                </div>
+                              </div>
+                            </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Confirm Password<span
+                            class="text-1 optional-label-color">(optional)</span>
+                            </label>
+                            <div class="input-group">
+                              <input  id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword" [disabled]="enableUserLogin"  name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"/>
+                                <div class="input-group-append">
+                                  <span class="input-group-text eye">
+                                    <i class="fa" [ngClass]="{
+                                      'fa-eye-slash': !cpwdfieldTextType,
+                                      'fa-eye': cpwdfieldTextType
+                                    }"
+                                    (click)="togglecpwdfieldTextType()"></i>
+                                  </span>
+                               </div>
+                            </div>
+                          <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
+                            <div *ngIf="cpwd.errors.required">
+                              Confirm password is required.
+                            </div>
+                            <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                          </div>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-11">
+                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment Details</label>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Payroll Type <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType"
+                            class="form-control" placeholder="Select Payroll Type">
+                            <ng-option value="Hours">Hours</ng-option>
+                            <ng-option value="Flat">Flat</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-3">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Rate <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input [(ngModel)]="userData.paymentDetails.payrollRate" name="payrollRate" type="text"
+                            class="form-control" placeholder="eg. 1,2,3">
+                        </div>
+                        <div class="col-lg-3">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">&nbsp;</label>
+                          <ng-select [(ngModel)]="userData.paymentDetails.payrollRateUnit" name="payrollRateUnit"
+                            class="form-control pt-1" placeholder="Select Rate Unit">
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">WCB# <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input [(ngModel)]="userData.paymentDetails.WCB" name="WCB" type="text" class="form-control"
+                            placeholder="7 digits , 1 is alphabetical and 6 is numeric , eg. A123456">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Pay Period <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <ng-select [(ngModel)]="userData.paymentDetails.payPeriod" name="payPeriod"
+                            class="form-control" placeholder="Select Pay Period">
+                            <ng-option value="Weekly">Weekly</ng-option>
+                            <ng-option value="Biweekly">Biweekly</ng-option>
+                            <ng-option value="Monthly">Monthly</ng-option>
+                            <ng-option value="Quaterly">Quaterly</ng-option>
+                            <ng-option value="Annually">Annually</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-6">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">SIN <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control"
+                            placeholder=" 9 digits eg. 123-456-789">
+                        </div>
+
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Health Care# <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                          <input type="text" class="form-control" [(ngModel)]="userData.paymentDetails.healthCare"
+                            name="healthCare" placeholder="eg. 45812366">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-11 text-right mt-3">
+
+                      <button class="btn btn-default mr-1" data-dismiss="modal" type="button" (click)="cancel()">Cancel</button>
+                      <button type="button" class="btn btn-success mr-1"
+                      (click)="addUser()" *ngIf="!contactID" >Save</button>
+                      <button class="btn btn-success btnNext ng-star-inserted mr-1"
+                        (click)="updateUser()" *ngIf="contactID" >Update</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
-
-<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal"
-	aria-hidden="true">
-	<div class="modal-dialog" style="max-width: 600px;" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Add Users Group</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-				</button>
-			</div>
-			<div class="modal-body text-dark">
-				<div class="card-body p-0">
-					<form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
-						<div class="form-row">
-							<div class="form-group col-lg-12 mb-0">
-								<label class="control-label font-weight-bold">Users Group Name</label>
-								<input [(ngModel)]="groupData.groupName" name="groupName" type="text" placeholder="Enter group name"
-									class="form-control">
-							</div>
-							<div class="form-group col-lg-12">
-								<label class="control-label font-weight-bold">Group Members (Users)&nbsp;<span
-									class="text-1 optional-label-color">(optional)</span></label>
-								<ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members"
-									style="width: 100%;">
-									<ng-option *ngFor="let user of users;" value={{user.userName}}>
-										{{user.userName}}</ng-option>
-								</ng-select>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="form-group col-lg-12">
-								<div class="row">
-									<div class="col-lg-12">
-										<label
-											class="control-label font-weight-bold text-lg-right pt-2">Descriptio&nbsp; <span
-											class="text-1 optional-label-color">(optional)</span></label>
-										<textarea [(ngModel)]="groupData.description" name="description"
-											class="form-control" rows="4" id="comment" placeholder="Enter group description"></textarea>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="modal-footer text-right">
-				<button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
-				<button type="button" class="btn btn-default modal-dismiss" (click)="cancelModel()">Cancel</button>
-			</div>
-		</div>
-	</div>
-</div>
-

@@ -1,17 +1,21 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pr-0 pt-0 pl-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" class="form-control" [(ngModel)]="searchedRouteName" name="searchedRouteName"
                             (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Route Name">
                         </div>
-                        <div *ngFor="let data of suggestedRoutes" style="cursor: pointer" (click)="searchSelectedRoute(data)">
-                            {{ data.name }}
-                        </div>
+                        <div *ngIf="suggestedRoutes?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let data of suggestedRoutes" style="cursor: pointer;" (click)="searchSelectedRoute(data)">
+                                {{ data.routeName }}
+                                </li>
+                            </ul>
+                         </div>
                     </div>
 
                     <div class="col-md-2 col-lg-2">   
@@ -19,9 +23,9 @@
                         <a href="javascript:;" class="btn btn-success btn-sm ml-2 modal-with-form" style="color:white;" (click)="resetFilter()">Reset</a>
                     </div>
 
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                    <div class="col-md-8 col-lg-8 text-right">
                             
-                        <div class="btn-group flex-wrap mr-2">
+                        <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                 <a class="dropdown-item text-1" href="">Import</a>
@@ -41,23 +45,37 @@
                                 <thead>
                                     <tr>
                                         <th>Route Name</th>
-                                        <th>Source</th>
-                                        <th>Destination</th>
-                                        <th>Distance</th>
+                                        <th>Source Location</th>
+                                        <th>Destination Location</th>
+                                        <th>Miles</th>
                                         <th>Recurring</th>
                                         <!-- <th>Stops</th>
                                         <th>Notes</th> -->
-                                        <th>Action</th>
+                                        <th>Actions</th>
                                         </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="routes.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let route of routes; let i= index">
                                         <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">{{ route.routeName }}</td>
-                                        <td>{{ route.sourceInformation.sourceAddress }}</td>                                                
-                                        <td>{{ route.destinationInformation.destinationAddress }}</td>
+                                        <td>
+                                            <span *ngIf="route.stops.length == 0">
+                                                - 
+                                            </span>
+                                            <span *ngIf="route.stops.length > 0">
+                                                {{ route.stops[0].stopName }}
+                                            </span>
+                                        </td>                                                
+                                        <td>
+                                            <span *ngIf="route.stops.length <= 1">
+                                                - 
+                                            </span>
+                                            <span *ngIf="route.stops.length > 1">
+                                                {{ route.stops[route.stops.length-1].stopName }}
+                                            </span>
+                                        </td>
                                         <td>{{ route.miles }} miles</td>
                                         <td>
                                             <span *ngIf="route.recurring">

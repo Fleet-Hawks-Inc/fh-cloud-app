@@ -8,7 +8,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { DomSanitizer} from '@angular/platform-browser';
-import { ListService } from '../../../../services/list.service'
+import { ListService } from '../../../../services/list.service';
+import * as moment from 'moment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -25,40 +27,45 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
+    inspectionFormID:'',
     assetIdentification: '',
-    groupID: '',
+    groupID: null,
     VIN: '',
-    startDate: '',
+    startDate:  moment().format('YYYY-MM-DD'),
+    assetType: null,
+    currentStatus: null,
+    createdDate: '',
+    createdTime: '',
     assetDetails: {
-      assetType: '',
-      currentStatus: '',
-      year: '',
-      manufacturer: '',
-      model: '',
-      length: '',
-      lengthUnit: '',
+      year: null,
+      manufacturer: null,
+      model: null,
+      length: 0,
+      lengthUnit: null,
+      height: 0,
+      heightUnit: null,
       axle: '',
       GVWR: '',
-      GVWR_Unit: '',
+      GVWR_Unit: null,
       GAWR: '',
-      GAWR_Unit: '',
-      ownerShip: '',
-      ownerOperator: '',
-      licenceCountryID: '',
-      licenceStateID: '',
+      GAWR_Unit: null,
+      ownerShip: null,
+      ownerOperator: null,
+      licenceCountryCode: null,
+      licenceStateCode: null,
       licencePlateNumber: '',
       annualSafetyDate: '',
       annualSafetyReminder: true,
       remarks: '',
     },
     insuranceDetails: {
-      dateOfIssue: '',
+      dateOfIssue: null,
       premiumAmount: '',
-      premiumCurrency: '',
-      dateOfExpiry: '',
+      premiumCurrency: null,
+      dateOfExpiry: null,
       reminderBefore: '',
       reminderBeforeUnit: '',
-      vendor: ''
+      vendor: null
     },
     crossBorderDetails: {
       ACI_ID: '',
@@ -82,6 +89,7 @@ export class AddAssetsComponent implements OnInit {
   groups = [];
 
 
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -91,18 +99,18 @@ export class AddAssetsComponent implements OnInit {
   fileName = '';
   carrierID: any;
   states = [];
-  countries = [];
   uploadedPhotos = [];
   uploadedDocs = [];
   existingPhotos = [];
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
+  inspectionForms = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
   ownOperators: any = [];
-
+  submitDisabled = false;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -119,10 +127,9 @@ export class AddAssetsComponent implements OnInit {
     this.listService.fetchAssetModels();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
-    this.fetchCountries(); // fetch countries
     this.fetchGroups();
     this.fetchAssets();
-    this.fetchAssetTypes();
+    this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
     if (this.assetID) {
       this.pageTitle = 'Edit Asset';
@@ -131,7 +138,7 @@ export class AddAssetsComponent implements OnInit {
       this.pageTitle = 'Add Asset';
     }
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
     });
 
     this.vendors = this.listService.vendorList;
@@ -149,49 +156,43 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
-
-  // fetchAllAssetTypes() {
-  //   this.httpClient.get('assets/trailers.json').subscribe(data =>{
-  //     this.allAssetTypes = data;
-  //   });
-  // }
-
 
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
   }
-  /**
-   * fetch asset types from database
-   */
-  fetchAssetTypes() {
-    this.apiService.getData('assetTypes').subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
 
+  fetchInspectionForms() {
+    this.apiService
+      .getData('inspectionForms/type/asset')
+      .subscribe((result: any) => {
+        this.inspectionForms = result.Items;
+      });
   }
+
   /*
    * Add new asset
    */
   addAsset() {
     this.hideErrors();
-    console.log('data', this.assetsData)
+    this.submitDisabled = true;
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      currentStatus: this.assetsData.currentStatus,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
         model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        height: this.assetsData.assetDetails.height,
+        heightUnit: this.assetsData.assetDetails.heightUnit,
         axle: this.assetsData.assetDetails.axle,
         GVWR: this.assetsData.assetDetails.GVWR,
         GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,
@@ -199,9 +200,8 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
-        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
-        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
+        licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
@@ -223,7 +223,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    
     // create form data instance
     const formData = new FormData();
 
@@ -246,19 +245,23 @@ export class AddAssetsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
+              // val.message = val.message.replace(/".*"/, 'This Field');
+               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Asset added successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
@@ -269,11 +272,12 @@ export class AddAssetsComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v === 'assetIdentification' || v === 'VIN') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -296,32 +300,36 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
+        this.assetsData.createdTime = result.createdTime;
+        this.assetsData.createdDate = result.createdDate;
         this.assetsData.groupID = result.groupID;
+        this.assetsData.inspectionFormID = result.inspectionFormID;
         this.assetsData.VIN = result.VIN;
         this.assetsData.startDate = result.startDate;
-        this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
+        this.assetsData.assetType = result.assetType;
         this.assetsData.assetDetails.year = result.assetDetails.year;
         this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
         // this.getModels(result.assetDetails.manufacturer);
         this.assetsData.assetDetails.model = result.assetDetails.model;
         this.assetsData.assetDetails.length = result.assetDetails.length;
         this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
+        this.assetsData.assetDetails.height = result.assetDetails.height,
+        this.assetsData.assetDetails.heightUnit = result.assetDetails.heightUnit,
         this.assetsData.assetDetails.axle = result.assetDetails.axle;
         this.assetsData.assetDetails.GVWR = result.assetDetails.GVWR;
         this.assetsData.assetDetails.GVWR_Unit = result.assetDetails.GVWR_Unit;
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
         this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
         this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
-        if (result.assetDetails.ownerShip === 'Owner Operator') {
+        if (result.assetDetails.ownerShip === 'ownerOperator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
-        this.assetsData.assetDetails.currentStatus = result.assetDetails.currentStatus;
-        this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
-        this.getStates(result.assetDetails.licenceCountryID);
-        this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
+        this.assetsData.currentStatus = result.currentStatus;
+        this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
+        this.getStates(result.assetDetails.licenceCountryCode);
+        this.assetsData.assetDetails.licenceStateCode = result.assetDetails.licenceStateCode;
         this.assetsData.assetDetails.licencePlateNumber = result.assetDetails.licencePlateNumber;
         this.assetsData.assetDetails.annualSafetyDate = result.assetDetails.annualSafetyDate;
         this.assetsData.assetDetails.annualSafetyReminder = result.assetDetails.annualSafetyReminder;
@@ -339,14 +347,14 @@ export class AddAssetsComponent implements OnInit {
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
 
-        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
-          this.assetsImages = result.uploadedPhotos.map(x => ({
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+          this.assetsImages = result.uploadedPhotos.map((x: any) => ({
             path: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
           this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
@@ -361,19 +369,26 @@ export class AddAssetsComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    this.submitDisabled = true;
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
+      createdTime: this.assetsData.createdTime,
+      createdDate: this.assetsData.createdDate,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      currentStatus: this.assetsData.currentStatus,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer,
         model: this.assetsData.assetDetails.model,
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        height: this.assetsData.assetDetails.height,
+        heightUnit: this.assetsData.assetDetails.heightUnit,
         axle: this.assetsData.assetDetails.axle,
         GVWR: this.assetsData.assetDetails.GVWR,
         GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,
@@ -381,9 +396,8 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
-        licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
-        licenceStateID: this.assetsData.assetDetails.licenceStateID,
+        licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
+        licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
@@ -405,8 +419,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs
     };
-
-
     // create form data instance
     const formData = new FormData();
 
@@ -430,22 +442,22 @@ export class AddAssetsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/'([^']+)'/)[1];
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully.');
@@ -483,15 +495,8 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
-  }
-
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -517,7 +522,7 @@ export class AddAssetsComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -536,14 +541,9 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  getStates(id) {
-    this.spinner.show(); // loader init
-    // const countryID = this.assetsData.assetDetails['licenceCountryID'];
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-        this.spinner.hide(); // loader init
-      });
+  getStates(countryCode) {
+    this.assetsData.assetDetails.licenceStateCode = '';
+    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
 
   setPDFSrc(val) {
@@ -557,10 +557,28 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  // delete uploaded images and documents
-  delete(type: string, name: string) {
-    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchAssetByID();
-    });
+// delete uploaded images and documents
+delete(type: string, name: string, index: any) {
+  if (type === 'doc') {
+    this.assetsDocs.splice(index, 1);
+    this.existingDocs.splice(index, 1);
+    this.deleteUploadedFile(type, name);
+  } else {
+    this.assetsImages.splice(index, 1);
+    this.existingPhotos.splice(index, 1);
+    this.deleteUploadedFile(type, name);
   }
+}
+deleteUploadedFile(type: string, name: string) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+}
+
+clearAssetGroup() {
+  this.groupData = {
+    groupName: '',
+    groupType : 'assets',
+    description: '',
+    groupMembers: []
+  };
+}
 }

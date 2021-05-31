@@ -1,9 +1,9 @@
 <mat-progress-bar mode="indeterminate" *ngIf="loading"> </mat-progress-bar>
 <app-header
-  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+  *ngIf="getToken() && currentURL != '/Login' && currentURL != '/'"
 ></app-header>
 <app-sidebar
-  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+  *ngIf="getToken() && currentURL != '/Login' && currentURL != '/'"
 ></app-sidebar>
 <router-outlet></router-outlet>
 <!-- <ngx-spinner
@@ -14,5 +14,5 @@
   ><p style="color: white">Loading...</p></ngx-spinner
 > -->
 <app-fixed-right-sidebar
-  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+  *ngIf="getToken() && currentURL != '/Login' && currentURL != '/'"
 ></app-fixed-right-sidebar>

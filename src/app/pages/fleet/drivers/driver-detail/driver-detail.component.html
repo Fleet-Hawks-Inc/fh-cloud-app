@@ -1,1174 +1,660 @@
 <section class="body">
-    
-    <div class="inner-wrapper">
-      
-      <section role="main" class="content-body pr-0 pl-0 pt-0">
-        <header class="page-header">
-           <div class="row pr-4 pl-2" style="padding-top:10px;">
-              <div class="col-md-4 col-lg-4">
-               <h4 class="text-4 mt-0 mb-0 text-dark">Driver Profile</h4>
-              </div>
-              <div class="col-md-8  col-lg-8 text-right pr-5">
-                 <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers List</a>
-              </div>
-           </div>
-        </header>
-        <!-- start: page -->
-        <div class="row text-dark">
-           <div class="col pr-0">
-              <section class="card">
-                 <div class="card-body">
-                    <div class="row">
-                       <div class="col-lg-3 col-xl-3  mb-xl-0 pr-0">
-                          <div class="thumb-info">
-                             <img [src]="profile" class="rounded img-fluid" alt="">
-                             <div class="thumb-info-title">
-                                <span class="thumb-info-inner">{{driverName}}</span>
-                             </div>
-                          </div>
-                          <div class="widget-toggle-expand mb-1">
-                             <div class="row  m-0">
-                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">CDL:</div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header">
+        <div class="row pr-1" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Driver Profile</h4>
+          </div>
 
-                                <div class="col-lg-7 p-2 bor_half">{{CDL}}</div>
-
-                             </div>
-                             <div class="row  m-0" >
-                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
-                                <div class="col-lg-7 p-2 bor_half">{{cycle ? cycleObjects[cycle] : '-'}}</div>
-                             </div>
-                             <!-- <div class="row  m-0">
-                                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Exempted/Non-Exempted:</div>
-                                <div class="col-lg-6 p-2 bor_half">Non-Exempted</div>
-                                </div> -->
-                             <div class="row  m-0">
-                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-7 p-2 bor_half">{{homeTerminal}}</div>
-                             </div>
-                             <div class="row  m-0">
-                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-
-                                <div class="col-lg-7 p-2 bor_half">{{workPhone}}</div>
-                             </div>
-                             <div class="row  m-0">
-                                <div class="col-lg-5 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
-                                <div class="col-lg-7 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
-
-                             </div>
-                          </div>
-                          <div class="row" style="margin-top:20px;">
-                             <div class="col-lg-12 text-center">
-                                <a class="text-uppercase btn btn-dark " data-toggle="modal" data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-9 col-xl-9 pl-0 pr-0">
-                          <div class=" ">
-                             <ul class="nav nav-tabs top-tabs pl-3" style="background-color:white;">
-                                <li class="nav-item active">
-                                   <a class="nav-link active" href="#logsDriverProfile" data-toggle="tab">Logs</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#vUtilizationDriverProfile" data-toggle="tab">Vehicle Utilization</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#driverScorecardDriverProfile" data-toggle="tab">Scorecard</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#driverDocumentsDriverProfile" data-toggle="tab">Documents</a>
-                                </li>
-                                <li class="nav-item">
-                                   <a class="nav-link" href="#driverTripsDriverProfile" data-toggle="tab">Trips</a>
-                                </li>
-                             </ul>
-                             <div class="tab-content mt-1" style="box-shadow:none;border:none;">
-                                <div id="logsDriverProfile" class="tab-pane active">
-                                   <div >
-                                      <table class="table table-striped table-bordered simple-table">
-                                         <thead>
-                                            <tr style="background-color:#ccc;">
-                                               <th>Date</th>
-                                               <th>Hours Worked</th>
-                                               <th>Distance</th>
-                                               <th>Hours of Service</th>
-                                               <th>Form & Manner</th>
-                                               <th>Inspection Report</th>
-                                            </tr>
-                                         </thead>
-                                         <tbody>
-                                            <tr>
-                                               <td>Jun 12</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td>No Violations</td>
-                                               <td>No Errors</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1</td>
-                                               <td>00:00</td>
-                                               <td></td>
-                                               <td>No Violations</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td  style="color:red;">Driving Time Exceeded</td>
-                                               <td>No Errors</td>
-                                               <td>No Defects</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 28</td>
-                                               <td>10:00</td>
-                                               <td>345 km</td>
-                                               <td style="color:red;">Off-Duty Time</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td>No Violations</td>
-                                               <td>No Errors</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1</td>
-                                               <td>00:00</td>
-                                               <td></td>
-                                               <td>No Violations</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td  style="color:red;">Driving Time Exceeded</td>
-                                               <td>No Errors</td>
-                                               <td>No Defects</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 28</td>
-                                               <td>10:00</td>
-                                               <td>345 km</td>
-                                               <td style="color:red;">Off-Duty Time</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td>No Violations</td>
-                                               <td>No Errors</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1</td>
-                                               <td>00:00</td>
-                                               <td></td>
-                                               <td>No Violations</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>12:00</td>
-                                               <td>345 km</td>
-                                               <td  style="color:red;">Driving Time Exceeded</td>
-                                               <td>No Errors</td>
-                                               <td>No Defects</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 28</td>
-                                               <td>10:00</td>
-                                               <td>345 km</td>
-                                               <td style="color:red;">Off-Duty Time</td>
-                                               <td style="color:red;">Driver Signature</td>
-                                               <td>No Inspection Reports</td>
-                                            </tr>
-                                         </tbody>
-                                      </table>
-                                   </div>
-                                </div>
-                                <!-- Vehicle Utilization -->
-                                <div id="vUtilizationDriverProfile" class="tab-pane">
-                                   <div>
-                                      <table class="table table-striped table-bordered simple-table">
-                                         <thead>
-                                            <tr style="background-color:#ccc;">
-                                               <th>Date</th>
-                                               <th>Vehicle</th>
-                                               <th>Utilization</th>
-                                               <th>Idle Time</th>
-                                               <th>Idle Fuel</th>
-                                               <th>Driving Time</th>
-                                               <th>Driving Fuel</th>
-                                            </tr>
-                                         </thead>
-                                         <tbody>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 1</td>
-                                               <td>80%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 26</td>
-                                               <td>Vehicle 2</td>
-                                               <td>70.89%</td>
-                                               <td>2 hrs 45 mins </td>
-                                               <td>8 gal</td>
-                                               <td>20 hrs 30 mins</td>
-                                               <td>180 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 3</td>
-                                               <td>78.98%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>19 hrs 50 mins</td>
-                                               <td>450 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 23</td>
-                                               <td>Vehicle 4</td>
-                                               <td>67.9%</td>
-                                               <td>2 hrs 15 mins </td>
-                                               <td>5 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 1</td>
-                                               <td>80%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 26</td>
-                                               <td>Vehicle 2</td>
-                                               <td>70.89%</td>
-                                               <td>2 hrs 45 mins </td>
-                                               <td>8 gal</td>
-                                               <td>20 hrs 30 mins</td>
-                                               <td>180 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 3</td>
-                                               <td>78.98%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>19 hrs 50 mins</td>
-                                               <td>450 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 23</td>
-                                               <td>Vehicle 4</td>
-                                               <td>67.9%</td>
-                                               <td>2 hrs 15 mins </td>
-                                               <td>5 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 1</td>
-                                               <td>80%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 26</td>
-                                               <td>Vehicle 2</td>
-                                               <td>70.89%</td>
-                                               <td>2 hrs 45 mins </td>
-                                               <td>8 gal</td>
-                                               <td>20 hrs 30 mins</td>
-                                               <td>180 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 23</td>
-                                               <td>Vehicle 3</td>
-                                               <td>78.98%</td>
-                                               <td>3 hrs 45 mins </td>
-                                               <td>10 gal</td>
-                                               <td>19 hrs 50 mins</td>
-                                               <td>450 gal</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 23</td>
-                                               <td>Vehicle 4</td>
-                                               <td>67.9%</td>
-                                               <td>2 hrs 15 mins </td>
-                                               <td>5 gal</td>
-                                               <td>10 hrs 30 mins</td>
-                                               <td>100 gal</td>
-                                            </tr>
-                                         </tbody>
-                                      </table>
-                                   </div>
-                                </div>
-                                <!-- ScoreCard start -->
-                                <div id="driverScorecardDriverProfile" class="tab-pane">
-                                   <div>
-                                      <table class="table table-striped table-bordered simple-table">
-                                         <thead>
-                                            <tr style="background-color:#ccc;">
-                                               <th>Date/Time</th>
-                                               <th>Vehicle</th>
-                                               <th>Event</th>
-                                               <th>Location</th>
-                                            </tr>
-                                         </thead>
-                                         <tbody>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Cornor</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 6</td>
-                                               <td style="color:red;">Harsh Brake</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 12:00</td>
-                                               <td>Vehcile 2</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Cornor</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 6</td>
-                                               <td style="color:red;">Harsh Brake</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 12:00</td>
-                                               <td>Vehcile 2</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Cornor</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 6</td>
-                                               <td style="color:red;">Harsh Brake</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 12:00</td>
-                                               <td>Vehcile 2</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Vehcile 3</td>
-                                               <td style="color:red;">Hard Cornor</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Vehcile 6</td>
-                                               <td style="color:red;">Harsh Brake</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 12:00</td>
-                                               <td>Vehcile 2</td>
-                                               <td style="color:red;">Hard Acceleration</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                            </tr>
-                                         </tbody>
-                                      </table>
-                                   </div>
-                                </div>
-                                <!-- ScoreCard end-->
-                                <!-- DRIVER DOCUMENTS START -->
-                                <div id="driverDocumentsDriverProfile" class="tab-pane">
-                                   <div>
-                                      <table class="table table-striped table-bordered simple-table">
-                                         <thead>
-                                            <tr style="background-color:#ccc;">
-                                               <th>Date/Time</th>
-                                               <th>Document</th>
-                                               <th>Reference</th>
-                                            </tr>
-                                         </thead>
-                                         <tbody>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Bill of lading</td>
-                                               <td>R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Receipt</td>
-                                               <td>5671T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 16:00</td>
-                                               <td>Bill of Lading</td>
-                                               <td>7891T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 10 12:00</td>
-                                               <td>Receipt</td>
-                                               <td>789T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Bill of lading</td>
-                                               <td>R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Receipt</td>
-                                               <td>5671T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 16:00</td>
-                                               <td>Bill of Lading</td>
-                                               <td>7891T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 10 12:00</td>
-                                               <td>Receipt</td>
-                                               <td>789T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Bill of lading</td>
-                                               <td>R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Receipt</td>
-                                               <td>5671T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 16:00</td>
-                                               <td>Bill of Lading</td>
-                                               <td>7891T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 10 12:00</td>
-                                               <td>Receipt</td>
-                                               <td>789T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 12 12:00</td>
-                                               <td>Bill of lading</td>
-                                               <td>R3K 1T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>Jun 1 11:00</td>
-                                               <td>Receipt</td>
-                                               <td>5671T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 12 16:00</td>
-                                               <td>Bill of Lading</td>
-                                               <td>7891T6</td>
-                                            </tr>
-                                            <tr>
-                                               <td>May 10 12:00</td>
-                                               <td>Receipt</td>
-                                               <td>789T6</td>
-                                            </tr>
-                                         </tbody>
-                                      </table>
-                                   </div>
-                                </div>
-                                <!-- DRIVER DOCUMENTS END -->
-                                <!-- DRIVER TRIPS START -->
-                                <div id="driverTripsDriverProfile" class="tab-pane">
-                                   <div>
-                                      <table class="table table-striped table-bordered simple-table">
-                                         <thead>
-                                            <tr style="background-color:#ccc;">
-                                               <th>Start</th>
-                                               <th>Vehicle</th>
-                                               <th>Status</th>
-                                               <th>Origin</th>
-                                               <th>Destination</th>
-                                               <th>Duration</th>
-                                               <th>Distance</th>
-                                               <th>Notes</th>
-                                            </tr>
-                                         </thead>
-                                         <tbody>
-                                            <tr>
-                                               <td>12 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>1 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 May</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>1 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 May</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>1 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 May</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>1 Jun</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                            <tr>
-                                               <td>12 May</td>
-                                               <td>Vehicle 3</td>
-                                               <td>Complete</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>Portage Ave, Headingley, MB R3K 1T6</td>
-                                               <td>40 hrs</td>
-                                               <td>400 km</td>
-                                               <td>these are notes for this trip</td>
-                                            </tr>
-                                         </tbody>
-                                      </table>
-                                   </div>
-                                </div>
-                                <!-- DRIVER TRIPS END -->
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-3 col-xl-3">
-                          <label class="control-label font-weight-bold text-5">Summary</label>
-                          <div class="col-lg-12 summary_box">
-                             <label class="control-label font-weight-bold ml-2">Compliance</label>
-                             <div class="progress progress-lg progress-half-rounded m-2 light">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                   60%
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-12 summary_box">
-                             <label class="control-label font-weight-bold ml-2">Vehicle Utilization</label>
-                             <div class="progress progress-lg progress-half-rounded m-2 light">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%;">
-                                   35%
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-12 summary_box">
-                             <label class="control-label font-weight-bold ml-2">Safety Score</label>
-                             <div class="progress progress-lg progress-half-rounded m-2 light">
-                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                                   20%
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-9 col-xl-9">
-                          <label class="font-weight-bold text-5">Driver Location</label>
-                          <div id="map" style="height:400px;"></div>
-                       </div>
-                    </div>
-                 </div>
-              </section>
-           </div>
+          <div class="col-md-10 col-lg-10 text-right">
+            <a class="text-uppercase btn btn-sm btn-dark mr-1" data-toggle="modal"
+              data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+            <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
+              List</a>
+          </div>
         </div>
-        <!-- end: page -->
-     </section>
-    </div>
+      </header>
+      <div class="routing-overview__wrapper m-3">
+        <div class="row">
+          <div class="col-lg-12 pr-1 pl-2">
+            <div class="bg-white">
+              <div class="row pl-4 pr-4">
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4 cerbor">
+                    <i class="fa fa-user text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{driverName}}</p>
+                    <p class="mb-0">DRIVER NAME</p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4 cerbor">
+                    <i class="far fa-dot-circle text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{cycle ? cycleObjects[cycle] : '-'}}</p>
+                    <p class="mb-0">CYCLE</p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4 cerbor">
+                    <i class="fas fa-map-marker-alt text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{homeTerminal}}</p>
+                    <p class="mb-0">HOME TERMINAL</p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4 cerbor">
+                    <i class="fas fa-mobile text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{phone}}</p>
+                    <p class="mb-0">PHONE</p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4 cerbor">
+                    <i class="far fa-envelope text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{email ? email : '-'}}</p>
+                    <p class="mb-0">EMAIL</p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <div class="text-center p-4">
+                    <i class="far fa-id-badge text-7"></i>
+                    <br>
+                    <p class="mb-0 text-4 font-weight-bold text-dark">{{CDL}}</p>
+                    <p class="mb-0">CDL#</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 pr-1 pl-2 mt-3">
+            <div class="bg-white ssdriver p-2">
+              <h2 class="font-weight-bold text-dark text-5 mt-0 mb-2">Safety Summary</h2>
+              <div class="row text-center">
+                <div class="col-lg-6 mb-2">
+                  <div class="circle-wrap">
+                    <div class="circle">
+                      <div class="mask full">
+                        <div class="fillgreen"></div>
+                      </div>
+
+                      <div class="mask half">
+                        <div class="fillgreen"></div>
+                      </div>
+
+                      <div class="inside-circle">
+                        60%
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-5 font-weight-bold text-center text-dark">Compliance</p>
+                </div>
+                <div class="col-lg-6 mb-2">
+                  <div class="circle-wrap">
+                    <div class="circle">
+                      <div class="mask full">
+                        <div class="fillgreen"></div>
+                      </div>
+                      <div class="mask half">
+                        <div class="fillgreen"></div>
+                      </div>
+                      <div class="inside-circle">
+                        85%
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-5 font-weight-bold text-center text-dark">Vehicle Utilization</p>
+                </div>
+                <div class="col-lg-6">
+                  <div class="circle-wrap">
+                    <div class="circle">
+                      <div class="mask full">
+                        <div class="fillgreen"></div>
+                      </div>
+                      <div class="mask half">
+                        <div class="fillgreen"></div>
+                      </div>
+                      <div class="inside-circle">
+                        75%
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-5 mb-0 font-weight-bold text-center text-dark">Safety Score</p>
+                </div>
+                <div class="col-lg-6">
+                  <div class="circle-wrap">
+                    <div class="circle">
+                      <div class="mask full">
+                        <div class="fillgreen"></div>
+                      </div>
+
+                      <div class="mask half">
+                        <div class="fillgreen"></div>
+                      </div>
+
+                      <div class="inside-circle">
+                        80%
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-5 mb-0 font-weight-bold text-center text-dark">Overall Score Card</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 pr-1 pl-2 mt-3">
+            <div class="bg-white p-2">
+              <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Trips</h2>
+              <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th>Trip Date</th>
+                    <th>Trip#</th>
+                    <th>Driver(s)</th>
+                    <th>Vehicle</th>
+                    <th>Asset(s)</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="trips.length == 0" class="text-center">
+                    <td colspan="6">{{dataMessage}}</td>
+                </tr>
+                  <tr *ngFor="let trip of trips;">
+                    <td>{{trip.dateCreated | date: 'yyyy/MM/dd'}}</td>
+                    <td>{{trip.tripNo}}</td>
+                    <td><span *ngFor="let driver of trip.driverIDs">{{driverList[driver]}}</span></td>
+                    <td><span *ngFor="let vehicle of trip.vehicleIDs">{{vehicleList[vehicle]}}</span></td>
+                    <td><span *ngFor="let asset of trip.assetIDs">{{assetList[asset]}}</span></td>
+                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
 
-<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="driverOtherDetailsModal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Driver Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="m-2">
-                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                        <li class="nav-item active"> <a class="nav-link active" id="basicDriverDetails-tab" data-toggle="tab" href="#basicDriverDetails" role="tab" aria-controls="basicDriverDetails" aria-selected="false">Basic Details</a> </li>
-                        <li class="nav-item"> <a class="nav-link" id="addressDriverDetails-tab" data-toggle="tab" href="#addressDriverDetails" role="tab" aria-controls="addressDriverDetails" aria-selected="false">Address</a> </li>
-                        <li class="nav-item"> <a class="nav-link" id="documentDriverDetails-tab" data-toggle="tab" href="#documentDriverDetails" role="tab" aria-controls="documentDriverDetails" aria-selected="false">Document Details</a> </li>
-                        <li class="nav-item"> <a class="nav-link" id="licenceDriverDetails-tab" data-toggle="tab" href="#licenceDriverDetails" role="tab" aria-controls="licenceDriverDetails" aria-selected="false">Licence Details</a></li>
-                        <li class="nav-item"> <a class="nav-link" id="paymentDriverDetails-tab" data-toggle="tab" href="#paymentDriverDetails" role="tab" aria-controls="paymentDriverDetails" aria-selected="false">Payment</a> </li>
-                        <li class="nav-item"> <a class="nav-link" id="DriverhosDriverDetails-tab" data-toggle="tab" href="#DriverhosDriverDetails" role="tab" aria-controls="DriverhosDriverDetails" aria-selected="false">HOS Compliance</a> </li>
-                        <li class="nav-item"> <a class="nav-link" id="emergencyDriverDetails-tab" data-toggle="tab" href="#emergencyDriverDetails" role="tab" aria-controls="emergencyDriverDetails" aria-selected="false">Emergency Contact</a> </li>
-                    </ul>
-                </div>
-                <form>
-                    <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <!-- Basic -->
-                        <div class="tab-pane fade show active" id="basicDriverDetails" role="tabpanel" aria-labelledby="basicDriverDetails-tab">
-                            <div class="row">
-                                <div class="col-lg-12 font-weight-bold text-4 text-dark">Basic Details</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="row m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}}</div>
-                                    </div>
-                                    <div class="row m-0" *ngIf="driverType == 'employee'">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
-                                    </div>
-                                    <div class="row m-0" *ngIf="driverType != 'employee'">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contractor ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{contractorId}}</div>
-                                    </div>
-                                    <div class="row m-0" *ngIf="driverType != 'employee'">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{ownerOperatorsObjects[ownerOperator]}}</div>
-                                   </div>
-                                    <!-- <div class="row m-0" *ngIf="driverType != 'employee'">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company Name:</div>
-                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{companyName}}</div>
-                                   </div> -->
-                                    
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverName}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Gender:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{gender}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Birth:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{DOB | date: 'dd/MM/yyyy'}}</div>
-                                   </div>
-                                   <div class="row  m-0" *ngIf="driverType == 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{startDate | date: 'dd/MM/yyyy'}}</div>
-                                 </div>
-                                 <div class="row  m-0" *ngIf="driverType == 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{terminationDate ? (terminationDate | date: 'dd/MM/yyyy')  : '-' }}</div>
-                                 </div>
-                                 <div class="row  m-0" *ngIf="driverType != 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractStart ? (contractStart | date: 'dd/MM/yyyy') : '-'}}</div>
-                                 </div>
-                                 <div class="row  m-0" *ngIf="driverType != 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractEnd ? (contractEnd | date: 'dd/MM/yyyy') : '-'}}</div>
-                                 </div>
-                                   <div class="row" *ngIf="absDocs.length > 0">
-                                    <div class="col-lg-12 mt-2">
-                                       <div class="vehicle-common-box p-3">
-                                          <div class="row">
-                                             <div class="col-lg-6"><label
-                                                   class="control-label font-weight-bold text-3">Abstract History Document(s)</label></div>
-                                             <div class="col-lg-6 text-right">
-                                             </div>
-                                          </div>
-                                          <hr class="solid mt-2">
-                                          <div class="row mb-1" *ngFor="let item of absDocs;let d= index">
-                                             <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div> 
-                                             <div class="col-lg-3 text-right">
-                                                <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                <a href="javascript:;" (click)="delete('abs',item.name, d)" class="modal-with-form">
-                                                   <i class="fas fa-times text-danger"></i></a>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                   </div>
-                                    
-                                </div>
-                                <div class="col-6">
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? ( fastExpiry | date: 'dd/MM/yyyy' ) : '-'}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[citizenship]}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{csa ? csa : false}}</div>
-                                    </div>
-                                    <div class="row m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Phone:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{workPhone}}</div>
-                                    </div>
-                                    <div class="row m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Email:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{group ? groupsObjects[group] : '-'}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
-                                   </div>
-                                   <div class="row  m-0">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
-                                   </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ADDRESS -->
-                        <div class="tab-pane fade" id="addressDriverDetails" role="tabpanel" aria-labelledby="addressDriverDetails-tab">
-                           <div class="row">
-                                 <div class="col-lg-12 font-weight-bold text-4 text-dark">Address Details</div>
-                           </div>
-                            <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
-                                <div class="row m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual == undefined || item.manual == false">
-                                       {{item.userLocation}}
-                                    </div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual">
-                                       {{item.address1 ? item.address1 : '-'}} {{item.address2}}
-                                    </div>
-                                </div>
-                                <div class="row m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.addressType ? item.addressType : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">City:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.cityName ? item.cityName : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.zipCode ? item.zipCode : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">State:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.stateName ? item.stateName : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.countryName ? item.countryName : '-'}}</div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <!-- Document -->
-                        <div class="tab-pane fade" id="documentDriverDetails" role="tabpanel" aria-labelledby="documentDriverDetails-tab">
-                           <div class="row">
-                              <div class="col-lg-12 font-weight-bold text-4 text-dark">Document Details</div>
-                          </div>
-                            <div class="row m-0">
-                              <div [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;let i = index;">
-                                        
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{documentsTypesObects[item.documentType]}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Number:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.document}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingAuthority ? item.issuingAuthority : '-'}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[item.issuingCountry]}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing State:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[item.issuingState]}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issueDate | date: 'dd/MM/yyyy'}}</div>
-                                        </div>
-                                        <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.expiryDate ? (item.expiryDate | date: 'dd/MM/yyyy') : '-'}}</div>
-                                        </div>
-                                       <div class="row m-0" *ngIf="assetsDocs[i]">
-                                          <div class="col-lg-12 p-0 mt-2" >
-                                             <div class="vehicle-common-box p-3">
-                                                <div class="row">
-                                                   <div class="col-lg-6"><label
-                                                         class="control-label font-weight-bold text-3">Document(s)</label></div>
-                                                   <div class="col-lg-6 text-right">
-                                                   </div>
-                                                </div>
-                                                <hr class="solid mt-2">
-                                                <div class="row mb-1" *ngFor="let doc of assetsDocs[i];let d= index">
-                                                   <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-dismiss="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div> 
-                                                   <div class="col-lg-3 text-right">
-                                                         <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-dismiss="modal" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                      <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form"><i
-                                                            class="fas fa-times text-danger"></i></a>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="licenceDriverDetails" role="tabpanel" aria-labelledby="licenceDriverDetails-tab">
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <div id="license_div">
-                                     <div class="row">
-                                         <div class="col-lg-12 font-weight-bold text-4 text-dark">Licence Details</div>
-                                     </div>
-                                     <div class="row  m-0">
-                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Region:</div>
-                                         <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[liceIssueSate]}}, {{countriesObject[liceIssueCountry]}}</div>
-                                     </div>
-                                     <div class="row  m-0">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB:</div>
-                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceWCB ? liceWCB : '-'}}</div>
-                                   </div>
-                                   <div class="row  m-0">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Health Care:</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceHealthCare ? liceHealthCare : '-'}}</div>
-                                    </div>
-                                    <div class="row  m-0">
-                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
-                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceVehicleType ? liceVehicleType : '-'}}</div>
-                                 </div>
-                                     <div class="row  m-0">
-                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{licenceExpiry | date: 'dd/MM/yyyy'}}</div>
-                                     </div>
-                                     <!-- <div class="row  m-0">
-                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{liceContractStart}}</div>
-                                     </div>
-                                     <div class="row  m-0">
-                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{liceContractEnd ? liceContractEnd : '-'}}</div>
-                                     </div> -->
-                                     <div class="row  m-0">
-                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal ? liceMedicalCardRenewal : '-'}}</div>
-                                     </div>
-                                 </div>
-                             </div>
-                           </div>
-                        </div>
-                        
-                        <!-- Payment -->
-                        <div class="tab-pane fade" id="paymentDriverDetails" role="tabpanel" aria-labelledby="paymentDriverDetails-tab">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div id="payment_div">
-                                        <div class="row">
-                                            <div class="col-lg-12 font-weight-bold text-4 text-dark">Payment Details</div>
-                                        </div>
-                                        <div class="row m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Default Payment Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{paymentType}}</div>
-                                        </div>
-                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMiles}} {{loadedMilesUnit}}</div>
-                                        </div>
-                                        <div class="row  m-0"*ngIf="paymentType === 'Pay Per Mile'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles (Team):</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMilesTeam}} {{loadedMilesTeamUnit}}</div>
-                                      </div>
-                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMiles}} {{emptyMilesUnit}}</div>
-                                        </div>
-                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles (Team):</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMilesTeam}} {{emptyMilesTeamUnit}}</div>
-                                      </div>
-                                        <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage:</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentage}}</div>
-                                      </div>
-                                      <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage Of:</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentageOf}}</div>
-                                    </div>
-                                       <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Rate:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{rate}}</div>
-                                       </div>
-                                       <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting period Pay ($):</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingPay}}</div>
-                                       </div>
-                                       <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting hour start after:</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingHourAfter}}</div>
-                                       </div>
-                                       <div class="row  m-0" *ngIf="paymentType === 'Pay Per Delivery'">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Delivery Rate:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}</div>
-                                       </div>
-                                       
-                                        <div class="row  m-0">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN Number:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{sinNumber}}</div>
-                                      </div>
-                                      <!-- <div class="row  m-0">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Local Tax:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{localTax ? localTax : '-'}}</div>
-                                       </div>
-                                       <div class="row  m-0">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Federal Tax:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{federalTax ? federalTax : '-'}}</div>
-                                       </div> -->
-                                       <div class="row  m-0">
-                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
-                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{payPeriod}}</div>
-                                       </div>
-                                       
-                                       
-                                       
-                                        <!-- <div class="row  m-0">
-                                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Calculate Empty Miles for a Dispatch After:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{calculateMiles}}</div>
-                                        </div> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="DriverhosDriverDetails" role="tabpanel" aria-labelledby="DriverhosDriverDetails-tab">
-                            <div id="compliance_div">
-                                <div class="row">
-                                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Compliance Details</div>
-                                </div>
-                                <div class="row m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosStatus}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosRemarks ? hosRemarks : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosPcAllowed ? hosPcAllowed : 'False'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosYmAllowed ? hosYmAllowed : 'False'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosType}}</div>
-                                </div>
-                                
-                             <div class="row  m-0">
-                              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Hos Cycle:</div>
-                              <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosCycle ? cycleObjects[hosCycle] : '-'}}</div>
-                          </div>
-                          <div class="row  m-0">
-                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                           <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal}}</div>
-                       </div>
-                                
-                                
-                                
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="emergencyDriverDetails" role="tabpanel" aria-labelledby="emergencyDriverDetails-tab">
-                            <div id="emergency_div">
-                                <div class="row">
-                                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Emergency Contact Details</div>
-                                </div>
-                                <div class="row m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerName ? emerName : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Relationship:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerRelationship ? emerRelationship : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerPhone ? emerPhone : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Email:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerEmail ? emerEmail : '-'}}</div>
-                                </div>
-                                <div class="row  m-0">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emergencyAddress ? emergencyAddress : '-'}} </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverOtherDetailsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+        <div class="row">
+          <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
+          <div class="col-lg-6 text-right"><button type="button" data-toggle="modal"
+            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button></div>
         </div>
-        
+        <div class="row">
+          <div class="col-6">
+            <div class="row m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
+              <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contractor ID:</div>
+              <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
+              <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
+            </div>
+
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
+              <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverName}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Gender:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">
+                <span *ngIf="gender == 'M'">Male</span>
+                <span *ngIf="gender != 'M'">Female</span>
+              </div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Birth Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{DOB | date : 'yyyy/MM/dd'}}</div>
+            </div>
+            <div class="row" *ngIf="absDocs.length > 0">
+              <div class="col-lg-12 mt-2">
+                <div class="vehicle-common-box p-3">
+                  <div class="row">
+                    <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Abstract History
+                        Document(s)</label></div>
+                    <div class="col-lg-6 text-right">
+                    </div>
+                  </div>
+                  <hr class="solid mt-2">
+                  <div class="row mb-1" *ngFor="let item of absDocs;let d= index">
+                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                        (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
+                    <div class="col-lg-3 text-right">
+                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                        data-target="#viewDocModal"></i>
+                      <!-- <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form">
+                        <i class="fas fa-times text-danger"></i></a> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{citizenship}}</div>
+            </div>
+            <div class="row m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Phone:</div>
+              <div class="col-lg-6 p-2 bor_half">{{phone}}</div>
+            </div>
+            <div class="row m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Email:</div>
+              <div class="col-lg-6 p-2 bor_half">{{email ? email : '-'}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{group ? groupsObjects[group] : '-'}}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{startDate | date : 'yyyy/MM/dd'}}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{terminationDate ? (terminationDate | date : 'yyyy/MM/dd')  : '-' }}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:
+              </div>
+              <div class="col-lg-6 p-2 bor_half">{{contractStart ? contractStart : '-'}}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
+            </div>
+            <div class="row m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Assigned Vehicle:</div>
+              <div class="col-lg-6 p-2 bor_half">{{vehicleList[assignedVehicle] ? vehicleList[assignedVehicle] : '-'}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-12 font-weight-bold text-4 text-dark">Address Details</div>
+        </div>
+        <div id="address_div" *ngFor="let item of address;let i= index;" class="mt-2">
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold">
+                Address {{i+1}}
+              </label>
+            </div>
+          </div>
+          <div class="row m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual == undefined || item.manual == false">
+              {{item.userLocation}}
+            </div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual">
+              {{item.address1 ? item.address1 : '-'}} <span *ngIf="item.address2 != undefined || item.address2 != ''">{{item.address2}}</span>
+            </div>
+          </div>
+          <div class="row m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.addressType ? item.addressType : '-'}}</div>
+          </div>
+          <div class="row  m-0" *ngIf="item.manual">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">City:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.cityName ? item.cityName : '-'}}</div>
+          </div>
+          <div class="row  m-0" *ngIf="item.manual">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.zipCode ? item.zipCode : '-'}}</div>
+          </div>
+
+          <div class="row  m-0" *ngIf="item.manual">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Province/State:</div>
+
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.stateName ? item.stateName : '-'}}</div>
+          </div>
+          <div class="row  m-0" *ngIf="item.manual">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.countryName ? item.countryName : '-'}}</div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-12 font-weight-bold text-4 text-dark">Document Details</div>
+        </div>
+        <div class="row">
+          <div [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;let i = index;">
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{documentsTypesObects[item.documentType]}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document#:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.document}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">
+                {{item.issuingAuthority ? item.issuingAuthority : '-'}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingCountry}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Province/State:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingState}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issueDate | date : 'yyyy/MM/dd'}}</div>
+            </div>
+            <div class="row  m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.expiryDate ? (item.expiryDate | date : 'yyyy/MM/dd') : '-'}}</div>
+            </div>
+            <div class="row m-0" *ngIf="assetsDocs[i]">
+              <div class="col-lg-12 p-0 mt-2">
+                <div class="vehicle-common-box p-3">
+                  <div class="row">
+                    <div class="col-lg-12"><label class="control-label font-weight-bold text-3">Document(s)</label>
+                    </div>
+                  </div>
+                  <hr class="solid mt-2">
+                  <div class="row mb-1" >
+                    <div class="col-lg-6" *ngFor="let doc of assetsDocs[i];let d= index">
+                      <div class="row">
+                        <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-dismiss="modal"
+                          data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
+                      <div class="col-lg-3 text-right">
+                        <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-dismiss="modal"
+                          data-toggle="modal" data-target="#viewDocModal"></i>
+                        <a href="javascript:;" (click)="delete('doc',doc.name, i,d)" class="modal-with-form"><i
+                            class="fas fa-times text-danger"></i></a>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div id="crossborder_div" class="mt-3">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold text-4 text-dark">Cross Border Details</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
+                <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
+                <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
+                <div class="col-lg-6 p-2 bor_half"><span *ngIf="csa == true">YES</span>
+                  <span *ngIf="csa == false">NO</span></div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Card#:</div>
+                <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
+                <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? (fastExpiry | date : 'yyyy/MM/dd') : '-'}}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div id="license_div">
+                  <div class="row">
+                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Licence Details</div>
+                  </div>
+                  <div class="row  m-0">
+
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CDL#:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{CDL}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Province/State:</div>
+
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceIssueSate}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Country:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceIssueCountry}}</div>
+                  </div>
+
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB#:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceWCB ? liceWCB : '-'}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Health Care#:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceHealthCare ? liceHealthCare : '-'}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceVehicleType ? liceVehicleType : '-'}}
+                    </div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half">{{licenceExpiry | date : 'yyyy/MM/dd'}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal ? (liceMedicalCardRenewal | date : 'yyyy/MM/dd') : '-'}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div id="payment_div">
+                  <div class="row">
+                    <div class="col-lg-12 font-weight-bold text-4 text-dark">Payment Details</div>
+                  </div>
+                  <div class="row m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Default Payment Type:
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{paymentType}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMiles}} {{loadedMilesUnit}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles (Team):
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMilesTeam}} {{loadedMilesTeamUnit}}
+                    </div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMiles}} {{emptyMilesUnit}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles (Team):
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMilesTeam}} {{emptyMilesTeamUnit}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage:
+                    </div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentage}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage
+                      Of:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentageOf}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Rate:</div>
+                    <div class="col-lg-6 p-2 bor_half">{{rate}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting period Pay
+                      ($):</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingPay}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting hour start
+                      after:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingHourAfter}}</div>
+                  </div>
+                  <div class="row  m-0" *ngIf="paymentType === 'Pay Per Delivery'">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Delivery Rate:</div>
+                    <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}</div>
+                  </div>
+
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN:</div>
+                    <div class="col-lg-6 p-2 bor_half">{{SIN}}</div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{payPeriod}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="compliance_div" class="mt-3">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold text-4 text-dark">Compliance Details</div>
+          </div>
+          <div class="row m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosStatus}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosRemarks ? hosRemarks : '-'}}</div>
+          </div>
+          <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance
+              (PC):</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosPcAllowed == true">YES</span>
+              <span *ngIf="hosPcAllowed == false">NO</span></div>
+          </div>
+          <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):
+            </div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosYmAllowed == true">YES</span>
+              <span *ngIf="hosYmAllowed == false">NO</span></div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosType}}</div>
+          </div>
+
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosCycle ? cycleObjects[hosCycle] : '-'}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Operating Zone:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{optzone ? optzone : '-'}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal Timezone:
+            </div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{timezone}}</div>
+          </div>
+        </div>
+        <div id="emergency_div" class="mt-3">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold text-4 text-dark">Emergency Contact Details</div>
+          </div>
+          <div class="row m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerName ? emerName : '-'}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Relationship:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerRelationship ? emerRelationship : '-'}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
+            <div class="col-lg-6 p-2 bor_half ">{{emerPhone ? emerPhone : '-'}}</div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
+
+<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverProfileModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Profile Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <img [src]="profile" class="img-fluid rounded" height="200px" width="100%">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
 	aria-hidden="true">
 	<div class="modal-dialog" role="document">

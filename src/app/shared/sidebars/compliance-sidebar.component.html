@@ -90,18 +90,19 @@
 </ul> -->
 
 <!--NEW SIDE BAR-->
-<ul class="nav nav-main">
+<ul class="nav nav-main mr-0 bg-white">
   <li class="pl-4">
     <h5 class="font-weight-bold text-dark text-4 mb-1">HOS</h5>
   </li>
 
-  <li class="nav-active">
+
+  <!-- <li class="nav-active">
     <a class="nav-link" [routerLink]="['/compliance', 'hos', 'summary']">
       <img src="assets/img/icon-hos.png" /> &nbsp;
       <span>HOS Summary</span>
     </a>
     
-  </li>
+  </li> -->
 
   <li class="">
     <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']">
@@ -116,11 +117,23 @@
     </a>
   </li>
 
+  <li class="">
+    <a class="nav-link" [routerLink]="['/compliance', 'hos', 'uncertified']">
+      <i class="fas fa-road" aria-hidden="true"></i>
+      <span>Uncertified Logs</span>
+    </a>
+  </li>
+
   <li><hr class="solid mt-2 mb-2" /></li>
   <li class="pl-4">
     <h5 class="font-weight-bold text-dark text-4 mb-1">DVIR</h5>
   </li>
-
+  <li class="">
+    <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'inspections']">
+      <i class="far fa-list-alt" aria-hidden="true"></i>
+      <span>Inspection Forms</span>
+    </a>
+  </li>
   <li class="">
     <a class="nav-link" [routerLink]="['/compliance', 'dvir', 'inspection-summary']">
       <i class="far fa-list-alt" aria-hidden="true"></i>

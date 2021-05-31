@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {forkJoin} from 'rxjs';
+import  Constants  from '../../../fleet/constants';
 declare var $: any;
 import * as moment from 'moment';
+import { textChangeRangeIsUnchanged } from 'typescript';
 
 @Component({
   selector: 'app-dispatch-overview',
@@ -12,6 +14,7 @@ import * as moment from 'moment';
 })
 export class DispatchOverviewComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   activeTripsCount = 0;
   totalTripsCount = 0;
   permanentRoutesCount = 0;
@@ -28,7 +31,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   response: any = '';
   hasError = false;
-  hasSuccess = false; 
+  hasSuccess = false;
   Error = '';
   Success = '';
   activityData = {
@@ -99,14 +102,30 @@ export class DispatchOverviewComponent implements OnInit {
   tripGraphData = [];
   aceGraphData = [];
   aciGraphData = [];
+  allActivities = [];
+
+  totalRecords = 0;
+  pageLength = 10;
+  lastEvaluatedKey:any = '';
+  dispatchLength = 0;
+  dispatchNext = false;
+  dispatchPrev = true;
+  dispatchDraw = 0;
+  dispatchPrevEvauatedKeys = [''];
+  dispatchStartPoint = 1;
+  dispatchEndPoint = this.pageLength;
+  pageload = true;
+  activitiesCount = 0;
+  prevKeyExist = true;
 
   constructor(private apiService: ApiService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.fetchActivitiesCount();
+    this.initDataTable();
     this.initManifestGraph();
     this.initTripsGraph();
-    this.dispatchData();
 
     this.fetchAllTrips();
     this.fetchAllRoutes();
@@ -117,97 +136,74 @@ export class DispatchOverviewComponent implements OnInit {
     this.fetchAciManifest();
   }
 
-  async dispatchData(){ 
-    const current = this;
-    current.spinner.show()
-    let latestEventActivities = new Promise(function(resolve, reject){
-      current.apiService.getData('activities').
-      subscribe(async (result: any) => {
-          let activityGetUrl = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-
-            if(element.tableName === 'serviceroutes') {
-              element.type = 'Route No.';
-              element.typeValue = '';
-
-              let url = current.apiService.getData('routes/'+element.eventID);
-              activityGetUrl.push(url);
-            }
-
-            if(i === result.Items.length-1) {
-              forkJoin(activityGetUrl)
-              .subscribe(serviceResp=> {
-                for (let j = 0; j < serviceResp.length; j++) {
-                  const element2 = serviceResp[j];
-                  if(element.tableName === 'serviceroutes') { 
-                    result.Items[j].typeValue = element2.Items[0].routeNo;
-                  }
-                }
-                resolve(result.Items);
-                current.spinner.hide();
-              });
-            }
-          }
-      })
-    })
-
-    let todayPickupCount = new Promise(function(resolve, reject){
-      let pickupObj = {
-        todPickupCount: 0,
-        tomPickupCount: 0
-      };
-      var todayDate = new Date(); 
-      var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-      current.apiService.getData('trips').
-      subscribe((result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
-          const element = result.Items[i];
-          if(element.isDeleted === 0 && element.tripStatus === 'confirmed'){
-              if(element.dateCreated != '' && element.dateCreated != undefined) {
-                let pickDate = element.dateCreated.split("-");
-                var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
-                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)) { 
-                    pickupObj.todPickupCount = pickupObj.todPickupCount+1;
-                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)){
-                    pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
-                }
-              }
-            resolve(pickupObj);
-          }
-        }
-      })
-    })
-
-    await latestEventActivities.then(function(result){
-      this.activities = result;
-      current.spinner.hide()
-    }.bind(this))
-
-    await todayPickupCount.then(function(result){
-      this.todaysPickCount = result.todPickupCount;
-      this.tomorrowsPickCount = result.tomPickupCount;
-      
-    }.bind(this));
-    
-  }
-
-  fetchActiveTrips() {
+  initDataTable() {
     this.spinner.show();
-    this.apiService.getData('trips/status/enroute').
-      subscribe((result: any) => {
-        this.activeTripsCount = result.Count;
+    // if(this.lastEvaluatedKey != '') {
+    //   this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
+    // }
+
+    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal();
+        result.Items.map((k)=> {
+          k.eventParams.message = k.eventParams.message.replace('shippers','consigner');
+          k.eventParams.message = k.eventParams.message.replace('receivers','consignee');
+        })
+        if(this.pageload){
+          result.Items.map((v)=> {
+            v.rest = v.eventParams.message.substring(0, v.eventParams.message.lastIndexOf(" ") + 1);
+            v.last = v.eventParams.message.substring(v.eventParams.message.lastIndexOf(" ") + 1, v.eventParams.message.length);
+          })
+          this.activities = result['Items'];
+          this.pageload = false;
+        }
+        this.allActivities = result['Items'];
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
+          this.dispatchNext = false;
+          this.checkPrevEvaluatedKey(lastEvalKey);
+          // for prev button
+          if(this.prevKeyExist) {
+            this.dispatchPrevEvauatedKeys.push(lastEvalKey);
+          }
+          this.lastEvaluatedKey = lastEvalKey;
+
+        } else {
+          this.dispatchNext = true;
+          this.lastEvaluatedKey = '';
+          this.dispatchEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.dispatchDraw > 0) {
+          this.dispatchPrev = false;
+        } else {
+          this.dispatchPrev = true;
+        }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  fetchActivitiesCount() {
+    this.apiService.getData('auditLogs/get/count').
+      subscribe((result: any) => {
+        this.totalRecords = result.Count;
       })
   }
 
-  fetchAllTrips() { 
+  fetchAllTrips() {
     this.spinner.show();
     this.apiService.getData('trips').
       subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.dateCreated !== '' && element.dateCreated !== undefined) {
+          if(element.dateCreated !== '' && element.dateCreated !== undefined && element.isDeleted === 0) {
             let tripDate = element.dateCreated.split('-');
             let tripMonth = tripDate[1];
             if(tripMonth == '1' || tripMonth == '01') {
@@ -234,6 +230,22 @@ export class DispatchOverviewComponent implements OnInit {
               this.tripsMonths.nov += 1;
             } else if(tripMonth == '12') {
               this.tripsMonths.dec += 1;
+            }
+
+            if (element.tripStatus === 'confirmed') {
+              var todayDate = new Date();
+              var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+              let pickDate = element.dateCreated.split("-");
+              var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
+              if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                this.todaysPickCount = this.todaysPickCount + 1;
+              } else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                this.tomorrowsPickCount = this.tomorrowsPickCount + 1;
+              }
+            }
+
+            if(element.tripStatus === 'enroute') {
+              this.activeTripsCount += 1;
             }
           }
         }
@@ -271,7 +283,7 @@ export class DispatchOverviewComponent implements OnInit {
       subscribe(async (result: any) => {
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             if(element.tableName === 'serviceroutes') {
               element.type = 'Route No.';
               this.fetchRouteDetail(element.eventID, i, function(data){
@@ -315,7 +327,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAceManifest() {
     this.spinner.show();
-    this.apiService.getData('ACIeManifest').
+    this.apiService.getData('eManifests/get/ACErecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aceManifestCount = result.Count;
@@ -363,7 +375,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAciManifest() {
     this.spinner.show();
-    this.apiService.getData('ACEeManifest').
+    this.apiService.getData('eManifests/get/ACIrecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aciManifestCount = result.Count;
@@ -507,5 +519,40 @@ export class DispatchOverviewComponent implements OnInit {
         data: this.tripGraphData,
      }
     ];
+  }
+
+  getStartandEndVal() {
+    this.dispatchStartPoint = this.dispatchDraw * this.pageLength + 1;
+    this.dispatchEndPoint = this.dispatchStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.dispatchNext = true;
+    this.dispatchPrev = true;
+    this.dispatchDraw += 1;
+    this.initDataTable();
+  }
+
+  // prev button func
+  prevResults() {
+    this.dispatchNext = true;
+    this.dispatchPrev = true;
+    this.dispatchDraw -= 1;
+    this.lastEvaluatedKey = this.dispatchPrevEvauatedKeys[this.dispatchDraw];
+    this.initDataTable();
+  }
+
+  checkPrevEvaluatedKey(newKeys:any = {}) {
+    //if primary key matches then it will not added into the prev keys array
+    for (let v = 0; v < this.dispatchPrevEvauatedKeys.length; v++) {
+      const element = this.dispatchPrevEvauatedKeys[v];
+      if(Object.values(element)[0] == Object.values(newKeys)[0]) {
+        this.prevKeyExist = false;
+        break;
+      } else {
+        this.prevKeyExist = true;
+      }
+    }
   }
 }

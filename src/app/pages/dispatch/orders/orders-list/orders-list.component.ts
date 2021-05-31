@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -9,6 +11,9 @@ declare var $: any;
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
+  noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
   confirmOrders = [];
   dispatchOrders = [];
@@ -22,7 +27,7 @@ export class OrdersListComponent implements OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: '',
+    category: null,
     start: '',
     end: ''
   };
@@ -32,13 +37,6 @@ export class OrdersListComponent implements OnInit {
   activeTab = 'all';
 
   allordersCount = 0;
-  confirmedOrdersCount = 0;
-  dispatchedOrdersCount = 0;
-  deliveredOrdersCount = 0;
-  cancelledOrdersCount = 0;
-  quotedOrdersCount = 0;
-  invoicedOrdersCount = 0;
-  partiallyPaidOrdersCount = 0;
   customersObjects: any = {};
 
   ordersNext = false;
@@ -48,102 +46,98 @@ export class OrdersListComponent implements OnInit {
   ordersStartPoint = 1;
   ordersEndPoint = this.pageLength;
 
-  confirmOrdersNext = false;
-  confirmOrdersPrev = true;
-  confirmOrdersDraw = 0;
-  confirmOrdersPrevEvauatedKeys = [''];
-  confirmOrdersStartPoint = 1;
-  confirmOrdersEndPoint = this.pageLength;
-  confirmLastEvaluatedKey = '';
+  categoryFilter = [
+    {
+      'name': 'Order Number',
+      'value': 'orderNumber'
+    },
+    {
+      'name': 'Customer',
+      'value': 'customer'
+    },
+    {
+      'name': 'Order Type',
+      'value': 'orderType'
+    },
+    {
+      'name': 'Location',
+      'value': 'location'
+    },
+    {
+      'name': 'Order Status',
+      'value': 'orderStatus'
+    },
+  ];
 
-  dispatchOrdersNext = false;
-  dispatchOrdersPrev = true;
-  dispatchOrdersDraw = 0;
-  dispatchOrdersPrevEvauatedKeys = [''];
-  dispatchOrdersStartPoint = 1;
-  dispatchOrdersEndPoint = this.pageLength;
-  dispatchLastEvaluatedKey = '';
-
-  deliverOrdersNext = false;
-  deliverOrdersPrev = true;
-  deliverOrdersDraw = 0;
-  deliverOrdersPrevEvauatedKeys = [''];
-  deliverOrdersStartPoint = 1;
-  deliverOrdersEndPoint = this.pageLength;
-  deliverLastEvaluatedKey = '';
-
-  cancelOrdersNext = false;
-  cancelOrdersPrev = true;
-  cancelOrdersDraw = 0;
-  cancelOrdersPrevEvauatedKeys = [''];
-  cancelOrdersStartPoint = 1;
-  cancelOrdersEndPoint = this.pageLength;
-  cancelLastEvaluatedKey = '';
-
-  invoiceOrdersNext = false;
-  invoiceOrdersPrev = true;
-  invoiceOrdersDraw = 0;
-  invoiceOrdersPrevEvauatedKeys = [''];
-  invoiceOrdersStartPoint = 1;
-  invoiceOrdersEndPoint = this.pageLength;
-  invoiceLastEvaluatedKey = '';
-
-  partialPaidOrdersNext = false;
-  partialPaidOrdersPrev = true;
-  partialPaidOrdersDraw = 0;
-  partialPaidOrdersPrevEvauatedKeys = [''];
-  partialPaidOrdersStartPoint = 1;
-  partialPaidOrdersEndPoint = this.pageLength;
-  partialPaidLastEvaluatedKey = '';
+  statusData = [
+    {
+      name: "Confirmed",
+      value: 'confirmed'
+    },
+    {
+      name: "Dispatched",
+      value: 'dispatched'
+    },
+    {
+      name: "Cancelled Dispatch",
+      value: 'cancelled'
+    },
+    {
+      name: "Invoiced",
+      value: 'invoiced'
+    },
+    {
+      name: "Partially Paid",
+      value: 'partiallyPaid'
+    },
+    {
+      name: "Delivered",
+      value: 'delivered'
+    },
+  ]
+  records = false;
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
-    this.fetchOrders();
-    this.initDataTable();
+    this.fetchAllTypeOrderCount();
     this.fetchCustomersByIDs();
-    this.initDataTableConfirmed();
-    this.initDataTableDispatched();
-    this.initDataTableDelivered();
   }
 
-  fetchOrders = () => {
-    this.apiService.getData('orders').subscribe({
+  fetchAllTypeOrderCount = () => {
+    this.allordersCount = 0;
+    
+    this.apiService.getData('orders/get/allTypes/count').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.totalRecords = result.Count; 
-        for (let i = 0; i < result.Items.length; i++) {
-          const element = result.Items[i];
-          this.allordersCount = this.allordersCount + 1;
-          this.totalRecords = this.allordersCount;
-          if (element.orderStatus == 'confirmed') {
-            this.confirmedOrdersCount = this.confirmedOrdersCount + 1;
-          } else if (element.orderStatus == 'dispatched') {
-            this.dispatchedOrdersCount = this.dispatchedOrdersCount + 1;
-          } else if (element.orderStatus == 'delivered') {
-            this.deliveredOrdersCount = this.deliveredOrdersCount + 1;
-          } else if (element.orderStatus == 'cancelled') {
-            this.cancelledOrdersCount = this.cancelledOrdersCount + 1;
-          } else if (element.orderStatus == 'quoted') {
-            this.quotedOrdersCount = this.quotedOrdersCount + 1;
-          } else if (element.orderStatus == 'invoiced') {
-            this.invoicedOrdersCount = this.invoicedOrdersCount + 1;
-          } else if (element.orderStatus == 'partiallyPaid') {
-            this.partiallyPaidOrdersCount = this.partiallyPaidOrdersCount + 1;
-          }
-        }
+        this.allordersCount = result.allCount;
+        this.totalRecords = result.allCount;
+
+        this.initDataTable();
       }
     });
   };
+
+  fetchOrdersCount() {
+    this.apiService.getData('orders/get/filter/count?searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+
+        this.initDataTable();
+      },
+    });
+  }
 
   /*
    * Get all customers's IDs of names from api
    */
   fetchCustomersByIDs() {
-    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.customersObjects = result;
     });
   }
@@ -152,29 +146,80 @@ export class OrdersListComponent implements OnInit {
     this.activeTab = tabType;
   }
 
+  allignOrders(orders) {
+    
+    for (let i = 0; i < orders.length; i++) {
+      const element = orders[i];
+
+      for (let k = 0; k < element.shippersReceiversInfo.length; k++) {
+        const element2 = element.shippersReceiversInfo[k];
+
+        for (let m = 0; m < element2.shippers.length; m++) {
+          const element3 = element2.shippers[m];
+          let dateTime = element3.dateAndTime.split(' ');
+          element3.date = (dateTime[0] != undefined) ? dateTime[0] : '';
+          element3.time = (dateTime[1] != undefined) ? dateTime[1] : '';
+        }
+
+        for (let m = 0; m < element2.receivers.length; m++) {
+          const element3 = element2.receivers[m];
+          let dateTime = element3.dateAndTime.split(' ');
+          element3.date = (dateTime[0] != undefined) ? dateTime[0] : '';
+          element3.time = (dateTime[1] != undefined) ? dateTime[1] : '';
+        }
+      }
+
+      if(element.orderStatus == 'confirmed') {
+        this.confirmOrders.push(element);
+      } else if(element.orderStatus == 'dispatched') {
+        this.dispatchOrders.push(element);
+      } else if(element.orderStatus == 'invoiced') {
+        this.deliveredOrders.push(element);
+      } else if(element.orderStatus == 'partiallyPaid') {
+        this.cancelledOrders.push(element);
+      } else if(element.orderStatus == 'cancelled') {
+        this.invoicedOrders.push(element);
+      } else if(element.orderStatus == 'delivered') {
+        this.partiallyOrders.push(element);
+      }
+    }
+
+    this.orders.push(orders);
+  }
+
   initDataTable() {
     this.spinner.show();
-    this.orders = [];
-    this.apiService.getData('orders/fetch/records/all?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
+    // this.orders = [];
+    this.apiService.getData('orders/fetch/records/all?searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.orders = result['Items'];
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.records = false;
+        } else {
+          this.records = true;
+        }
+        this.getStartandEndVal('all');
+        // this.orders.push(result['Items']);
+        this.allignOrders(result['Items']);
         if (this.orderFiltr.searchValue !== '' || this.orderFiltr.start !== '' ) {
           this.ordersStartPoint = 1;
           this.ordersEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].orderSK.replace(/#/g,'--');
           this.ordersNext = false;
           // for prev button
-          if (!this.ordersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.ordersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          if (!this.ordersPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.ordersPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+          this.lastEvaluatedKey = lastEvalKey;
         } else {
           this.ordersNext = true;
           this.lastEvaluatedKey = '';
           this.ordersEndPoint = this.totalRecords;
         }
+
 
         // disable prev btn
         if (this.ordersDraw > 0) {
@@ -188,259 +233,96 @@ export class OrdersListComponent implements OnInit {
       });
   }
 
-  initDataTableConfirmed() {
-    this.spinner.show();
-    this.confirmOrders = [];
-    this.apiService.getData('orders/fetch/records/confirmed?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.confirmLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.confirmOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.confirmOrdersNext = false;
-          // for prev button
-          if (!this.confirmOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.confirmOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.confirmLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.confirmOrdersNext = true;
-          this.confirmLastEvaluatedKey = '';
-          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
+  filterOrders() {
+    if (this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== ''
+      || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== null) {
+      if (this.orderFiltr.startDate != '' && this.orderFiltr.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.orderFiltr.startDate == '' && this.orderFiltr.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.orderFiltr.category !== null && this.orderFiltr.searchValue == '') {
+        this.toastr.error('Please enter search value.');
+        return false;
+      } else {
+        if (this.orderFiltr.category == 'location') {
+          this.orderFiltr.searchValue = this.orderFiltr.searchValue.toLowerCase();
         }
-
-        // disable prev btn
-        if (this.confirmOrdersDraw > 0) {
-          this.confirmOrdersPrev = false;
-        } else {
-          this.confirmOrdersPrev = true;
+        this.records = false;
+        if (this.orderFiltr.startDate !== '') {
+          this.orderFiltr.start = this.orderFiltr.startDate;
         }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDataTableDispatched() {
-    this.spinner.show();
-    this.dispatchOrders = [];
-    this.apiService.getData('orders/fetch/records/dispatched?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.dispatchLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.dispatchOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.dispatchOrdersNext = false;
-          // for prev button
-          if (!this.dispatchOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.dispatchOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.dispatchLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.dispatchOrdersNext = true;
-          this.dispatchLastEvaluatedKey = '';
-          this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
+        if (this.orderFiltr.endDate !== '') {
+          this.orderFiltr.end = this.orderFiltr.endDate;
         }
-
-        // disable prev btn
-        if (this.dispatchOrdersDraw > 0) {
-          this.dispatchOrdersPrev = false;
-        } else {
-          this.dispatchOrdersPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDataTableDelivered() {
-    this.spinner.show();
-    this.deliveredOrders = [];
-    this.apiService.getData('orders/fetch/records/delivered?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.deliverLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.deliveredOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.deliverOrdersNext = false;
-          // for prev button
-          if (!this.deliverOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.deliverOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.deliverLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.deliverOrdersNext = true;
-          this.deliverLastEvaluatedKey = '';
-          this.deliverOrdersEndPoint = this.deliveredOrdersCount;
-        }
-
-        // disable prev btn
-        if (this.deliverOrdersDraw > 0) {
-          this.deliverOrdersPrev = false;
-        } else {
-          this.deliverOrdersPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDataTableCancelled() {
-    this.spinner.show();
-    this.cancelledOrders = [];
-    this.apiService.getData('orders/fetch/records/cancelled?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.cancelLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.cancelledOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.cancelOrdersNext = false;
-          // for prev button
-          if (!this.cancelOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.cancelOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.cancelLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.cancelOrdersNext = true;
-          this.cancelLastEvaluatedKey = '';
-          this.cancelOrdersEndPoint = this.cancelledOrdersCount;
-        }
-
-        // disable prev btn
-        if (this.cancelOrdersDraw > 0) {
-          this.cancelOrdersPrev = false;
-        } else {
-          this.cancelOrdersPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDataTableInvoiced() {
-    this.spinner.show();
-    this.invoicedOrders = [];
-    this.apiService.getData('orders/fetch/records/invoiced?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.invoiceLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.invoicedOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.invoiceOrdersNext = false;
-          // for prev button
-          if (!this.invoiceOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.invoiceOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.invoiceLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.invoiceOrdersNext = true;
-          this.invoiceLastEvaluatedKey = '';
-          this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
-        }
-
-        // disable prev btn
-        if (this.invoiceOrdersDraw > 0) {
-          this.invoiceOrdersPrev = false;
-        } else {
-          this.invoiceOrdersPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDataTablePartlyPaid() {
-    this.spinner.show();
-    this.partiallyOrders = [];
-    this.apiService.getData('orders/fetch/records/partiallyPaid?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.partialPaidLastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.partiallyOrders = result['Items'];
-       
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.partialPaidOrdersNext = false;
-          // for prev button
-          if (!this.partialPaidOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
-            this.partialPaidOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
-          }
-          this.partialPaidLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
-        } else {
-          this.partialPaidOrdersNext = true;
-          this.partialPaidLastEvaluatedKey = '';
-          this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
-        }
-
-        // disable prev btn
-        if (this.partialPaidOrdersDraw > 0) {
-          this.partialPaidOrdersPrev = false;
-        } else {
-          this.partialPaidOrdersPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  selectCategory(type) {
-    this.orderFiltr.category = type;
-    $("#categorySelect").text(type);
-  }
-
-  filterOrders() { 
-    if(this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== '' 
-    || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== '') {
-      let sdate;
-      let edate;
-      if(this.orderFiltr.startDate !== ''){
-        sdate = this.orderFiltr.startDate.split('-');
-        if(sdate[0] < 10) {
-          sdate[0] = '0'+sdate[0]
-        }
-        this.orderFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+        this.orders = [];
+        this.confirmOrders = [];
+        this.dispatchOrders = [];
+        this.deliveredOrders = [];
+        this.cancelledOrders = [];
+        this.invoicedOrders = [];
+        this.partiallyOrders = [];
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.activeTab = 'all';
+        this.fetchOrdersCount();
+        // this.initDataTable();
       }
-      if(this.orderFiltr.endDate !== ''){
-        edate = this.orderFiltr.endDate.split('-');
-        if(edate[0] < 10) {
-          edate[0] = '0'+edate[0]
-        }
-        this.orderFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
-      }
-      this.pageLength = this.allordersCount;
-      this.totalRecords = this.allordersCount;
-      this.orderFiltr.category = 'orderNumber';
-
-      this.activeTab = 'all';
-      this.initDataTable();
     }
   }
 
   resetFilter() {
-    if(this.orderFiltr.startDate !== '' || this.orderFiltr.endDate !== '' || this.orderFiltr.searchValue !== '') {
+    if (this.orderFiltr.startDate !== '' || this.orderFiltr.endDate !== '' || this.orderFiltr.searchValue !== '') {
       this.spinner.show();
       this.orderFiltr = {
         searchValue: '',
         startDate: '',
         endDate: '',
-        category: '',
+        category: null,
         start: '',
         end: ''
       };
       $("#categorySelect").text('Search by category');
-      this.pageLength = 10;
-      this.initDataTable();
+      this.records = false;
+      this.orders = [];
+      this.confirmOrders = [];
+      this.dispatchOrders = [];
+      this.deliveredOrders = [];
+      this.cancelledOrders = [];
+      this.invoicedOrders = [];
+      this.partiallyOrders = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      // this.fetchAllTypeOrderCount();
+      this.fetchOrdersCount();
+      // this.initDataTable();
       this.spinner.hide();
     } else {
       return false;
     }
   }
 
-  deactivateOrder(status: number, orderID: string) {
+  deactivateOrder(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`orders/isDeleted/${orderID}/${status}`)
-        .subscribe((result: any) => {
-          this.initDataTable();
+      let record = { 
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.orderID,
+        status: eventData.orderStatus
+      }
+      this.apiService.postData(`orders/delete`, record).subscribe((result: any) => {
+          this.orders = [];
+          this.confirmOrders = [];
+          this.dispatchOrders = [];
+          this.deliveredOrders = [];
+          this.cancelledOrders = [];
+          this.invoicedOrders = [];
+          this.partiallyOrders = [];
+
+          this.records = false;
+          this.ordersDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.fetchAllTypeOrderCount();
           this.toastr.success('Order deleted successfully!');
-          
         });
     }
   }
@@ -450,121 +332,52 @@ export class OrdersListComponent implements OnInit {
       this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
       this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
 
-    } else if(type == 'confirmed') {
-      this.confirmOrdersStartPoint = this.confirmOrdersDraw * this.pageLength + 1;
-      this.confirmOrdersEndPoint = this.confirmOrdersStartPoint + this.pageLength - 1;
-
-    } else if(type == 'dispatched') {
-      this.dispatchOrdersStartPoint = this.dispatchOrdersDraw * this.pageLength + 1;
-      this.dispatchOrdersEndPoint = this.dispatchOrdersStartPoint + this.pageLength - 1;
-
-    } else if(type == 'delivered') {
-      this.deliverOrdersStartPoint = this.deliverOrdersDraw * this.pageLength + 1;
-      this.deliverOrdersEndPoint = this.deliverOrdersStartPoint + this.pageLength - 1;
-
-    } else if(type == 'cancelled') {
-      this.cancelOrdersStartPoint = this.cancelOrdersDraw * this.pageLength + 1;
-      this.cancelOrdersEndPoint = this.cancelOrdersStartPoint + this.pageLength - 1;
-
-    } else if(type == 'invoiced') {
-      this.invoiceOrdersStartPoint = this.invoiceOrdersDraw * this.pageLength + 1;
-      this.invoiceOrdersEndPoint = this.invoiceOrdersStartPoint + this.pageLength - 1;
-
-    } else if(type == 'partiallyPaid') {
-      this.partialPaidOrdersStartPoint = this.partialPaidOrdersDraw * this.pageLength + 1;
-      this.partialPaidOrdersEndPoint = this.partialPaidOrdersStartPoint + this.pageLength - 1;
-
     } 
   }
 
   // next button func
   nextResults(type) {
     if(type == 'all') {
+      this.ordersNext = true;
+      this.ordersPrev = true;
       this.ordersDraw += 1;
-      this.initDataTable();
-      this.getStartandEndVal(type);
 
-    } else if(type == 'confirmed') {
-      this.confirmOrdersDraw += 1;
-      this.initDataTableConfirmed();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'dispatched') {
-      this.dispatchOrdersDraw += 1;
-      this.initDataTableDispatched();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'delivered') {
-      this.deliverOrdersDraw += 1;
-      this.initDataTableDelivered();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'cancelled') {
-      this.cancelOrdersDraw += 1;
-      this.initDataTableCancelled();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'invoiced') {
-      this.invoiceOrdersDraw += 1;
-      this.initDataTableInvoiced();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'partiallyPaid') {
-      this.partialPaidOrdersDraw += 1;
-      this.initDataTablePartlyPaid();
-      this.getStartandEndVal(type);
-
+      if(this.orders[this.ordersDraw] == undefined) {
+        this.records = false;
+        this.initDataTable();
+      } else {
+        this.getStartandEndVal('all');
+        this.ordersEndPoint = this.ordersStartPoint+this.orders[this.ordersDraw].length-1;
+      }
     }
   }
 
   // prev button func
   prevResults(type) {
     if(type == 'all') {
+      this.ordersNext = true;
+      this.ordersPrev = true;
       this.ordersDraw -= 1;
       this.lastEvaluatedKey = this.ordersPrevEvauatedKeys[this.ordersDraw];
-      this.initDataTable();
-      this.getStartandEndVal(type);
 
-    } else if(type == 'confirmed') {
-      this.confirmOrdersDraw -= 1;
-      this.confirmLastEvaluatedKey = this.confirmOrdersPrevEvauatedKeys[this.confirmOrdersDraw];
-      this.initDataTableConfirmed();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'dispatched') {
-      this.dispatchOrdersDraw -= 1;
-      this.dispatchLastEvaluatedKey = this.dispatchOrdersPrevEvauatedKeys[this.dispatchOrdersDraw];
-      this.initDataTableDispatched();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'delivered') {
-      this.deliverOrdersDraw -= 1;
-      this.deliverLastEvaluatedKey = this.deliverOrdersPrevEvauatedKeys[this.deliverOrdersDraw];
-      this.initDataTableDispatched();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'cancelled') {
-      this.cancelOrdersDraw -= 1;
-      this.cancelLastEvaluatedKey = this.cancelOrdersPrevEvauatedKeys[this.cancelOrdersDraw];
-      this.initDataTableCancelled();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'invoiced') {
-      this.invoiceOrdersDraw -= 1;
-      this.invoiceLastEvaluatedKey = this.invoiceOrdersPrevEvauatedKeys[this.invoiceOrdersDraw];
-      this.initDataTableInvoiced();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'partiallyPaid') {
-      this.partialPaidOrdersDraw -= 1;
-      this.partialPaidLastEvaluatedKey = this.partialPaidOrdersPrevEvauatedKeys[this.partialPaidOrdersDraw];
-      this.initDataTablePartlyPaid();
-      this.getStartandEndVal(type);
-
-    }
+      if(this.orders[this.ordersDraw] == undefined) {
+        this.initDataTable();
+      } else {
+        this.ordersNext = false;
+        this.getStartandEndVal('all');
+      }
+    }   
   }
 
   setActiveDiv(type){
     this.activeTab = type;
+  }
+
+  categoryChange(event) {
+    if(event == 'customer' || event == 'orderType' || event == 'orderStatus') {
+      this.orderFiltr.searchValue = null;
+    } else {
+      this.orderFiltr.searchValue = '';
+    }
   }
 }

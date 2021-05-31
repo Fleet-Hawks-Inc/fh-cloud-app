@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import {ListInspectionComponent} from '../compliance/dvir/inspection/list-inspection/list-inspection.component'
+import {EditInspectionComponent} from '../compliance/dvir/inspection/edit-inspection/edit-inspection.component'
+import {ViewInspectionComponent} from '../compliance/dvir/inspection/view-inspection/view-inspection.component'
+import {AddInspectionComponent} from '../compliance/dvir/inspection/add-inspection/add-inspection.component'
 import { SafetyOverviewComponent } from './home/safety-overview/safety-overview.component';
 import { EventListComponent } from './critical-events/event-list/event-list.component';
 import { AddEventComponent } from './critical-events/add-event/add-event.component';
@@ -53,7 +56,8 @@ const routes: Routes = [
       { path: '', component: ScorecardListComponent},
       { path: 'details/:driverID/:rank', component: ScorecardDetailComponent},
     ]
-  }
+  },
+  
 ];
 
 @NgModule({

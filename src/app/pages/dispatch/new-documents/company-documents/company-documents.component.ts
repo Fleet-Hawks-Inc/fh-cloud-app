@@ -8,6 +8,8 @@ import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-company-documents',
@@ -15,6 +17,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements OnInit {
+  dataMessage: string = Constants.FETCHING_DATA;
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;
@@ -44,7 +48,8 @@ export class CompanyDocumentsComponent implements OnInit {
     docType: '',
     documentName: '',
     description: '',
-    uploadedDocs: []
+    uploadedDocs: [],
+    dateCreated: moment().format('YYYY-MM-DD')
   };
   totalRecords = 20;
   pageLength = 10;
@@ -71,6 +76,7 @@ export class CompanyDocumentsComponent implements OnInit {
   docPrevEvauatedKeys = [''];
   docStartPoint = 1;
   docEndPoint = this.pageLength;
+  descriptionData = '';
 
   constructor(
     private apiService: ApiService,
@@ -81,29 +87,62 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchDocuments();
+    this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
-    this.initDataTable();
+    
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
     });
   }
 
-  selectDoc(event) {
-    console.log('edd', event);
+  fetchDocumentsCount() {
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+
+        if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
+          this.docEndPoint = this.totalRecords;
+        }
+        this.initDataTable();
+      },
+    });
+  }
+
+  selectDoc(event) { 
     let files = [...event.target.files];
-    this.uploadeddoc = [];
-    this.uploadeddoc.push(files[0])
+    let condition = true;
+
+    for (let i = 0; i < files.length; i++) {
+      const element = files[i];
+      let name = element.name.split('.');
+      let ext = name[name.length - 1];
+      
+
+      if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
+      && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+        $('#uploadedDocs').val('');
+        condition = false;
+        this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
+        return false;
+      }
+    }
+
+    if(condition) {
+      this.uploadeddoc = []; 
+      this.uploadeddoc.push(files[0])
+    }
   }
 
   fetchDocuments = () => {
     this.totalRecords = 0;
-    this.apiService.getData('documents?categoryType=company').subscribe({
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log('doc result', result)
+        
         this.totalRecords = result.Count;
       }
     });
@@ -137,13 +176,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -209,14 +248,14 @@ export class CompanyDocumentsComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-    console.log('currentID', this.currentID);
+    
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        console.log(result);
+        
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
@@ -224,6 +263,8 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
+        this.documentData['timeCreated'] = result.timeCreated;
+        this.documentData.dateCreated = result.dateCreated;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
@@ -251,13 +292,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -282,18 +323,29 @@ export class CompanyDocumentsComponent implements OnInit {
       this.apiService
         .getData(`documents/isDeleted/${docID}/${value}`)
         .subscribe((result: any) => {
+          this.documents = [];
+          this.docDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+
+          this.toastr.success('Document deleted successfully.'); 
           this.fetchDocuments();
-          this.initDataTable();
+          this.initDataTable(); 
         });
     }
   }
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestions = [];
+        this.getStartandEndVal();
         this.documents = result['Items'];
-        if (this.filterValues.docID !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
+        if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
           this.docEndPoint = this.totalRecords;
         }
@@ -309,6 +361,10 @@ export class CompanyDocumentsComponent implements OnInit {
         } else {
           this.docNext = true;
           this.lastEvaluatedKey = '';
+          this.docEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.docEndPoint) {
           this.docEndPoint = this.totalRecords;
         }
 
@@ -331,18 +387,26 @@ export class CompanyDocumentsComponent implements OnInit {
 
   searchFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
-      if (this.filterValues.startDate !== '') {
-        let start = this.filterValues.startDate;
-        this.filterValues.start = moment(start + ' 00:00:01').format("X");
-        this.filterValues.start = this.filterValues.start * 1000;
+      if(this.filterValues.startDate != '' && this.filterValues.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.documents = [];
+        this.suggestions = [];
+        this.filterValues.searchValue = this.filterValues.searchValue.toLowerCase();
+        if (this.filterValues.startDate !== '') {
+          this.filterValues.start = this.filterValues.startDate;
+        }
+        if (this.filterValues.endDate !== '') {
+          this.filterValues.end = this.filterValues.endDate;
+        }
+        // this.pageLength = this.totalRecords;
+        this.fetchDocumentsCount();
       }
-      if (this.filterValues.endDate !== '') {
-        let end = this.filterValues.endDate;
-        this.filterValues.end = moment(end + ' 23:59:59').format("X");
-        this.filterValues.end = this.filterValues.end * 1000;
-      }
-      this.pageLength = this.totalRecords;
-      this.initDataTable();
     } else {
       return false;
     }
@@ -350,6 +414,9 @@ export class CompanyDocumentsComponent implements OnInit {
 
   resetFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       this.filterValues = {
         docID: '',
         searchValue: '',
@@ -358,8 +425,9 @@ export class CompanyDocumentsComponent implements OnInit {
         start: <any>'',
         end: <any>''
       };
-      this.pageLength = 10;
-      this.initDataTable();
+      this.resetCountResult();
+      this.fetchDocumentsCount();
+      
     } else {
       return false;
     }
@@ -402,7 +470,6 @@ export class CompanyDocumentsComponent implements OnInit {
   nextResults() {
     this.docDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
@@ -410,12 +477,33 @@ export class CompanyDocumentsComponent implements OnInit {
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
+    this.lastEvaluatedKey = '';
     this.docStartPoint = 1;
     this.docEndPoint = this.pageLength;
     this.docDraw = 0;
+  }
+
+  openDocumentModal() {
+    this.documentData = {
+      categoryType: 'company',
+      tripID: '',
+      documentNumber: '',
+      docType: '',
+      documentName: '',
+      description: '',
+      uploadedDocs: [],
+      dateCreated: moment().format('YYYY-MM-DD')
+    };
+    this.newDoc = '';
+
+    $("#addDocumentModal").modal('show');
+  }
+
+  showDescModal(description) {
+    this.descriptionData = description;
+    $("#routeNotes").modal('show');
   }
 }

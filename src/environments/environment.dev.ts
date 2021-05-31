@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  isFeatureEnabled: true,
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
   temp: 'search',

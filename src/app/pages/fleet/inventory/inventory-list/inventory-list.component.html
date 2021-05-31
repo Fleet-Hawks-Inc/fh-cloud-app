@@ -15,7 +15,7 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
-            <header class="page-header pr-5">
+            <header class="page-header">
                 <div class="row px-2" *ngIf="currentTab == 'inv'" style="padding-top: 9px">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
@@ -23,31 +23,25 @@
                                 class="form-control" (input)="getItemSuggestions($event.target.value,'inv')"
                                 placeholder="Search items by name" />
                         </div>
-                        <div *ngFor="let suggestedItem of suggestedItems" class="suggestionClass"
-                            (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')">
-                            {{ suggestedItem.itemName }}
+                        <div *ngIf="suggestedItems?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedItem of suggestedItems" style="cursor: pointer;"
+                                    (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')"> {{ suggestedItem.itemName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="companyName" [(ngModel)]="companyName"
-                                class="form-control" (input)="getVendorSuggestions($event.target.value,'inv')"
-                                placeholder="Search items by vendor" />
-                        </div>
-                        <div *ngFor="let suggestedVendor of suggestedVendors" class="suggestionClass"
-                            (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'inv')">
-                            {{ suggestedVendor.companyName }}
+                            <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="groupName" [(ngModel)]="groupName"
-                                class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
-                                placeholder="Search items by category" />
-                        </div>
-                        <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
-                            (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)">
-                            {{ suggestedItemGroup.groupName }}
+                            <ng-select [(ngModel)]="itemGroupID" name="itemGroupID" style="width: 100%;" placeholder="Search items by category">
+                                <ng-option *ngFor="let data of allCompanies" [value]="data.groupID">{{data.groupName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -57,7 +51,6 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-
                         <div class="btn-group flex-wrap" style="min-width:190px;">
                             <button type="button"
                                 class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
@@ -109,7 +102,7 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
                                 </a>
                             </div>
                         </div>
@@ -124,30 +117,28 @@
                 <div class="row px-2" *ngIf="currentTab == 'rinv'" style="padding-top: 9px">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="requiredItemName" [(ngModel)]="requiredItemName"
-                                class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
-                                placeholder="Search items by name" />
-                        </div>
-                        <div *ngFor="let data of requiredSuggestedItems" class="suggestionClass"
-                            (click)="setItem(data.itemID, data.partNumber,'req')">
-                            {{ data.partNumber }}
+                            <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
+                                <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="requiredCompanyName" [(ngModel)]="requiredCompanyName"
-                                class="form-control" (input)="getVendorSuggestions($event.target.value,'req')"
-                                placeholder="Search items by vendor" />
-                        </div>
-                        <div *ngFor="let suggestedVendor of requiredSuggestedVendors" class="suggestionClass"
-                            (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'req')">
-                            {{ suggestedVendor.companyName }}
+                            <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="requiredPartNumber" [(ngModel)]="requiredPartNumber"
-                                class="form-control" placeholder="Search by part#"/>
+                                class="form-control" (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#"/>
+                        </div>
+                        <div *ngIf="requiredSuggestedPartNo?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let data of requiredSuggestedPartNo" style="cursor: pointer;"
+                                    (click)="setPartNo(data.partNumber)"> {{ data.partNumber }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -156,7 +147,6 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-
                         <div class="btn-group flex-wrap" style="min-width:190px;">
                             <button type="button"
                                 class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
@@ -208,7 +198,7 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
                                 </a>
                             </div>
                         </div>
@@ -228,11 +218,13 @@
                             <div class="card-body">
                                 <div class="pb-3">
                                     <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="cursor:pointer;
+                                        ">
                                             <a class="nav-link" [ngClass]="{'active': currentTab == 'inv'}" (click)="tabChange('inv')" id="all-tab" role="tab" aria-controls="allassets" aria-selected="true">Existing
                                                 Inventory</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="cursor:pointer;
+                                        ">
                                             <a class="nav-link"  [ngClass]="{'active show': currentTab == 'rinv'}" (click)="tabChange('rinv')" role="tab" aria-controls="reefer" aria-selected="false">Required
                                                 Inventory</a>
                                         </li>
@@ -246,7 +238,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="col1">Part#</th>
-                                                        <th class="col2">Name</th>
+                                                        <th class="col2">Item Name</th>
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
                                                         <th class="col5">Quantity</th>
@@ -255,14 +247,14 @@
                                                         <th class="col8">Warehouse Details</th>
                                                         <th class="col9 extra">Warranty Days and Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
-                                                        <th class="col11 extra">Reorder Quality</th>
+                                                        <th class="col11 extra">Reorder Quantity</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
                                                     <tr *ngIf="items.length == 0" class="text-center">
-                                                        <td colspan="12">No records found</td>
+                                                        <td colspan="12">{{dataMessage}}</td>
                                                     </tr>
                                                     <tr class="cursorpoint" *ngFor="let item of items; let i = index">
                                                         <td *ngIf="hideShow.part"
@@ -352,15 +344,15 @@
                                             <thead>
                                                 <tr>
                                                     <th>Part#</th>
-                                                    <th>Name</th>
+                                                    <th>Item Name</th>
                                                     <th>Vendor</th>
                                                     <th>Quantity</th>
-                                                    <th>Action</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngIf="requiredItems.length == 0" class="text-center">
-                                                    <td colspan="5">No records found</td>
+                                                    <td colspan="5">{{dataMessageReq}}</td>
                                                 </tr>
                                                 <tr *ngFor="let item of requiredItems; let i = index">
                                                     <td>{{ item.partNumber }}</td>
@@ -387,7 +379,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="row mt-3 dtPaginate" *ngIf="requiredItems.length > 0">
+                                    <div class="row mt-3 dtPaginate" *ngIf="requiredItems.length > 0 && currentTab == 'rinv'">
                                         <div class="col-6">
                                             Showing {{ requiredInventoryStartPoint }} to {{ requiredInventoryEndPoint }} of {{ totalRecordsRequired }} entries
                                         </div>
@@ -425,14 +417,14 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part
-                                        Number</label>
-                                    <input type="text" class="form-control" name="partNumber" [(ngModel)]="partNumber">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#
+                                        </label>
+                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="partNumber">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part
                                         Details</label>
-                                    <input type="text" class="form-control" name="partDetails"
+                                    <input type="text" class="form-control" placeholder="Enter part details"name="partDetails"
                                         [(ngModel)]="partDetails">
                                 </div>
                             </div>
@@ -441,7 +433,7 @@
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                                    <input type="text" class="form-control" name="quantity" [(ngModel)]="quantity">
+                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="quantity">
                                 </div>
                                 <div class="col-lg-6">
                                     <label
@@ -456,8 +448,10 @@
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">From
                                         Warehouse</label>
-                                    <select data-plugin-selectTwo class="form-control populate" name="warehouseID1"
-                                        [(ngModel)]="warehouseID1">
+                                    <select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
+                                   
+                                        [(ngModel)] ="warehouseID1">
+                                        
                                         <optgroup label="Select Warehouse">
                                             <option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
@@ -488,10 +482,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Close
+                    Cancel
                 </button>
                 <button type="button" class="btn btn-success" [routerLink]="">
-                    Submit
+                    Save
                 </button>
             </div>
         </div>

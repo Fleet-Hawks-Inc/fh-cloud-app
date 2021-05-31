@@ -31,7 +31,7 @@ export class UnsavedChangesComponent implements OnInit {
     this.modalService.triggerRedirect.next(true);
     // this.router.navigate([this.modalService.urlToRedirect.getValue()]);
    // this.modalService.urlToRedirect$.subscribe((v) => {
-   //   console.log(v);
+   
    //   this.activeModal.dismiss();
    //   if (v !== '') {
    //     this.router.navigate([v]);

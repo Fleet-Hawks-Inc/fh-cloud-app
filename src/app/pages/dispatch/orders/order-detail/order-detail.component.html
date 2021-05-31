@@ -1,16 +1,16 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top: 10px">
+      <header class="page-header">
+        <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Order Detail
+            Order Details
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a href="all-orders.php" class="btn btn-default btn-sm"
+          <div class="col-md-8 col-lg-8 text-right">
+            <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> All Orders</a
             >
-            <div class="btn-group flex-wrap">
+            <div class="btn-group flex-wrap" *ngIf="!environment">
               <button
                 type="button"
                 class="btn btn-success btn-sm dropdown-toggle"
@@ -50,13 +50,13 @@
               class="bg-white p-3 d-flex justify-content-between align-items-center text-dark"
             >
               <div>
-                <h4 class="m-0 font-weight-bold">James - LTL - 24556FH5</h4>
+                <h4 class="m-0 font-weight-bold">{{orderMode}} - ORD{{orderNumber}}</h4>
               </div>
-              <div class="pull-right">
+              <!-- <div class="pull-right">
                 <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"
                   ><i class="fas fa-plus"></i> Add Order</a
                 >
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
                       <div
                         class="col-lg-3 p-2 font-weight-bold text-3 text-left"
                       >
-                        City, State:
+                        City, Province:
                       </div>
                       <div class="col-lg-9 p-2">
                         {{ customerCityName }}, {{ customerStateName }}
@@ -158,7 +158,7 @@
                       >
                         Fax:
                       </div>
-                      <div class="col-lg-9 p-2">(103) 069-1465</div>
+                      <div class="col-lg-9 p-2">{{ customerfax }}</div>
                     </div>
                   </div>
                 </div>
@@ -181,7 +181,7 @@
                       >
                         Reference:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">HG2525</div>
+                      <div class="col-lg-8 p-2 border-box">{{ reference }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -189,7 +189,7 @@
                       >
                         Order Creation Date/Time:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ creation }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ createdDate | date : 'yyyy/MM/dd' }} {{ createdTime }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -291,10 +291,10 @@
 
                             <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
                               <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
-                               
+
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickShipper(i,j) id="shipperArea-{{i}}-{{j}}">
-                                      <span class="pull-left">Consignor {{j+1}}</span>  
+                                      <span class="pull-left">Consignor {{j+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                   </a>
@@ -311,7 +311,7 @@
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Pickup Date/Time:</strong>
-                                            {{shipperReceiversInfo.shippers[j].dateAndTime}}
+                                            {{shipperReceiversInfo.shippers[j].date | date:'yyyy/MM/dd' }} {{shipperReceiversInfo.shippers[j].time}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Pickup Instruction:</strong>
@@ -319,20 +319,21 @@
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong
-                                              >Contact Person at PickUp:</strong
+                                              >Contact Person at Pickup:</strong
                                             >
                                             {{shipperReceiversInfo.shippers[j].contactPerson}}
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong> 
+                                            <strong>Phone:</strong>
                                             {{shipperReceiversInfo.shippers[j].phone}}
                                           </p>
                                           <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
                                             <thead>
                                              <tr>
-                                              
+
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
+                                              <th>PU#</th>
                                               <th>Quantity</th>
                                               <th>Weight</th>
                                              </tr>
@@ -341,14 +342,15 @@
                                              <tr *ngFor="let commodity of shipperReceiversInfo.shippers[j].commodity;let l = index">
                                               <td>{{l+1}}</td>
                                               <td>{{commodity.name}}</td>
+                                              <td>{{commodity.pu}}</td>
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
-                                             
+
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
-                                           {{shipperReceiversInfo.shippers[j].driverLoad}}
+                                           {{shipperReceiversInfo.shippers[j].driverLoad ? 'Yes' : 'No'}}
                                           </p>
                                         </div>
                                       </div>
@@ -360,15 +362,15 @@
 
                             <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
                               <div class="pl-0 pr-5" *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
-                              
+
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}"> 
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}">
                                       <span class="pull-left">Consignee {{k+1}}</span>
-                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>  
+                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
-                                  
+
                                   <section>
                                     <div id="collapseReceiverArea-{{i}}-{{k}}" class="collapse">
                                       <div class="row">
@@ -381,7 +383,7 @@
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Delivery Date/Time:</strong>
-                                            {{shipperReceiversInfo.receivers[k].dateAndTime}}
+                                            {{shipperReceiversInfo.receivers[k].date | date:'yyyy/MM/dd'}} {{shipperReceiversInfo.receivers[k].time}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong
@@ -399,15 +401,16 @@
 
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong> 
+                                            <strong>Phone:</strong>
                                             {{shipperReceiversInfo.receivers[k].phone}}
                                           </p>
                                           <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
                                             <thead>
                                              <tr>
-                                              
+
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
+                                              <th>DEL#</th>
                                               <th>Quantity</th>
                                               <th>Weight</th>
                                              </tr>
@@ -416,14 +419,15 @@
                                              <tr *ngFor="let commodity of shipperReceiversInfo.receivers[k].commodity;let m = index">
                                               <td>{{m+1}}</td>
                                               <td>{{commodity.name}}</td>
+                                              <td>{{commodity.del}}</td>
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
-                                             
+
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
-                                            {{shipperReceiversInfo.receivers[k].driverUnload}}
+                                            {{shipperReceiversInfo.receivers[k].driverUnload ? 'Yes': 'No'}}
                                           </p>
                                         </div>
                                       </div>
@@ -462,17 +466,17 @@
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
-                        Drop Trailer:
+                        Drop Asset:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes' : 'No'}}</div>
                     </div>
                     <div class="row m-0">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
-                        Trailer Type:
+                        Asset Type:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.trailerType}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType != undefined ? assetTypes[additionalDetails.trailerType] : ''}}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -495,7 +499,7 @@
                         Temperature Required:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                        From 
+                        From
                         {{additionalDetails.refeerTemp.minTemprature}}
                         {{additionalDetails.refeerTemp.minTempratureUnit }}
                         To
@@ -521,27 +525,36 @@
                         </div>
 
                         <div class="widgetlinfo">
-                          <table
-                            class="table table-responsive-lg table-bordered table-striped table-sm mb-0"
-                          >
+                          <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
                             <thead>
                               <tr class="bgcol2">
                                 <th>From</th>
                                 <th>To</th>
-                                <th class="">Distance</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>Regina, SK</td>
-                                <td>Winnipeg, MB</td>
-                                <td>578 KM</td>
+                              <tr *ngIf="milesArr?.length == 0">
+                                <td>No data found</td>
+                              </tr>
+                              <tr *ngFor="let data of milesArr">
+                                <td>
+                                  <span *ngFor="let shipp of data.shippers; let s=index">
+                                    {{s+1}}. {{ shipp.pickupLocation }}
+                                    <br>
+                                  </span>
+                                </td>
+                                <td>
+                                  <span *ngFor="let rec of data.receivers; let r=index">
+                                    {{r+1}}. {{ rec.dropOffLocation }}
+                                    <br>
+                                  </span>
+                                </td>
                               </tr>
                             </tbody>
                           </table>
 
                           <p class="mb-0 mt-3 text-dark text-right">
-                            <strong>Total Miles:</strong>
+                            <strong>Total Miles: </strong>
                             <span class="">{{milesInfo.totalMiles}} Miles</span>
                           </p>
                         </div>
@@ -549,7 +562,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xl-12 col-12 mb-3">
+                  <!-- <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
                         <div class="widgettbload">
@@ -573,7 +586,6 @@
                                 <th class="">Payment Mode</th>
                                 <th class="">Reference</th>
                                 <th class="">Amount</th>
-                                <!-- <th class="">Action</th> -->
                               </tr>
                             </thead>
                             <tbody>
@@ -591,7 +603,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -627,40 +639,41 @@
                           <div class="col-lg-10 pull-left">
                             <p class="mb-0 text-dark">
                               Freight Fee
-                              <span class="pull-right">${{charges.freightFee.amount}}</span>
+                              <span class="pull-right">{{charges.freightFee.amount}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Fuel Surcharge
-                              <span class="pull-right">${{charges.fuelSurcharge.amount}}</span>
+                              <span class="pull-right">{{charges.fuelSurcharge.amount}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Amount
-                              <span class="pull-right">${{charges.accessorialFeeInfo.total}}</span>
+                              <span class="pull-right">{{charges.accessorialFeeInfo.total}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Deduction Amount
-                              <span class="pull-right">${{charges.accessorialDeductionInfo.total}}</span>
+                              <span class="pull-right">{{charges.accessorialDeductionInfo.total}} {{charges.freightFee.currency}}</span>
                             </p>
-                            <!-- <p class="mb-0 text-dark">
-                              Discount Amount
-                              <span class="pull-right">${{discount.amount}}</span>
-                            </p> -->
-                            <p class="mb-0 text-dark">
-                              Tax Amount <span class="pull-right">${{taxesTotal}}</span>
+
+                            <!-- <p class="mb-0 text-dark" *ngIf="stateCode == ''"> Tax Amount <span class="pull-right">${{taxesTotal}}</span> </p> -->
+                            <p class="mb-0 text-dark" *ngIf="!zeroRated">
+                              Tax Amount
+                              <span *ngIf="stateCode != ''">
+                                ( <span class="font-weight-semibold">{{ stateCode }}</span> )
+                              </span>
+                              <span class="pull-right">{{taxesTotal}} {{charges.freightFee.currency}}</span>
                             </p>
+
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Total Charges</strong>
-                              <span class="pull-right">$ {{ 
-                                totalCharges
-                              }}</span>
+                              <span class="pull-right">{{totalCharges}} {{charges.freightFee.currency}}</span>
                             </p>
-                            <p class="mb-0 text-dark bordtopdas">
+                            <!-- <p class="mb-0 text-dark bordtopdas">
                               <strong>Advance Received</strong>
                               <span class="pull-right">${{advances}}</span>
-                            </p>
+                            </p> -->
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Balance</strong>
-                              <span class="pull-right">${{ balance }}</span>
+                              <span class="pull-right">{{ balance }} {{charges.freightFee.currency}}</span>
                             </p>
                           </div>
                         </div>
@@ -687,6 +700,7 @@
                                   (change)="selectDocuments($event)"
                                   multiple
                                   class="p-0 form-control mb-2"
+                                  id="bolUpload"
                                 />
                               </div>
                             </div>
@@ -699,23 +713,18 @@
                           </h2>
                         </div>
 
-                        <div class="widgetlinfo">
-                          <ul class="d-flex p-0 m-0 order-attachment__preview">
-                            <li *ngFor="let doc of docs">
-                              <img
-                                src="{{doc}}"
-                                class="img-fluid"
-                                height="150"
-                              />
-                            </li>
-                            <li *ngFor="let localPhoto of localPhotos">
-                              <img
-                                src="{{localPhoto}}"
-                                class="img-fluid"
-                                height="150"
-                              />
-                            </li>
-                          </ul>
+                        <div class="row">
+                          <div class="col-md-3 mb-3 mt-3" *ngFor="let doc of docs">
+                            <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
+                              <img class="img-fluid" src="{{doc.imgPath}}" width="75">
+                            </a>
+                          </div>
+
+                          <div class="col-md-3 mb-3" *ngFor="let localPhoto of localPhotos">
+                            <a class="image-popup-no-margins" href="{{localPhoto}}" target="_blank">
+                              <img class="img-fluid" src="{{localPhoto}}" width="75">
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>

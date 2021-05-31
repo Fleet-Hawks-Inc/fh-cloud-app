@@ -7,6 +7,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+
+import {environment} from '../../../../../environments/environment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 declare var $: any;
 
 @Component({
@@ -16,6 +19,7 @@ declare var $: any;
 })
 export class AssetDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  environment = environment.isFeatureEnabled;
   platform: any;
   image;
   docs: SafeResourceUrl;
@@ -30,12 +34,15 @@ export class AssetDetailComponent implements OnInit {
   VIN: string;
   assetType: string;
   licencePlateNumber: string;
-  licenceStateID: string;
+  licenceStateName: string;
+  licenceCountryName: string;
+  groupID: string;
   year: string;
   manufacturer: string;
   model: string;
   length: string;
   lengthUnit: string;
+  height: string;
   axle: string;
   GAWR: string;
   GAWR_Unit: string;
@@ -43,6 +50,9 @@ export class AssetDetailComponent implements OnInit {
   GVWR_Unit: string;
   ownerShip: string;
   remarks: string;
+  startDate: string;
+  currentStatus: string;
+  annualSafetyDate: string;
 
   dateOfIssue: string;
   dateOfExpiry: string;
@@ -51,18 +61,28 @@ export class AssetDetailComponent implements OnInit {
   reminderBefore: string;
   reminderBeforeUnit: string;
   vendor: string;
-  
+  public assetDataDetail: any  = [];
   devices: any;
   allDevices = [];
 
+  ACEID: string;
+  ACIID: string;
   errors = {};
-
-  statesObject: any = {};
+  assetObjects: any = {};
+  groupsObjects: any = {};
+  contactsObjects: any = {};
   uploadedDocs = [];
   uploadedPhotos = [];
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustUrl('');
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
-  messageStatus: boolean = true;
+  messageStatus = true;
+  ownerOperatorName = '';
+  inspectionFormName = '';
+  inspectionForms = {
+    inspectionFormName : '',
+    parameters: [],
+    inspectionType: ''
+  };
   // Charts
   public chartOptions = {
     scaleShowVerticalLines: false,
@@ -123,12 +143,13 @@ export class AssetDetailComponent implements OnInit {
   ngOnInit() {
     this.hereMap.mapSetAPI();
     this.hereMap.mapInit(); // Initialize map
-    this.assetID = this.route.snapshot.params['assetID']; // get asset Id from URL
+    this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
-    this.fetchAllStatesIDs();
     this.fetchManufacturesByIDs();
     this.fetchModalsByIDs();
+    this.fetchGroups();
+    this.fetchContactsByIDs();
   }
 
   fetchManufacturesByIDs() {
@@ -142,7 +163,11 @@ export class AssetDetailComponent implements OnInit {
       this.modelsObjects = result;
     });
   }
-
+  fetchContactsByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactsObjects = result;
+    });
+  }
   /**
    * fetch Asset data
    */
@@ -150,77 +175,65 @@ export class AssetDetailComponent implements OnInit {
     this.spinner.show(); // loader init
     this.apiService
       .getData(`assets/${this.assetID}`)
-      .subscribe((result: any) => {
-        if (result) {
-          this.assetData = result.Items[0];
-          if (!this.assetData.hasOwnProperty('devices')) {
-            this.assetData['devices'] = [];
+      .subscribe((res: any) => {
+        if (res) {
+          let result = res.Items[0];
+          this.assetDataDetail = res.Items[0];
+          // if (!result.hasOwnProperty('devices')) {
+          //   result['devices'] = [];
+          // }
+          if(result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
+            this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
+              let res = result.Items[0];
+              this.inspectionForms = res;
+              this.inspectionFormName = res.inspectionFormName;
+            });
           }
-          
-          this.fetchDevicesByID();
-          this.assetIdentification = this.assetData.assetIdentification;
-          this.VIN = this.assetData.VIN;
-          this.assetType =  this.assetData.assetDetails.assetType;
-          this.licencePlateNumber =  this.assetData.assetDetails.licencePlateNumber;
-          this.licenceStateID =  this.assetData.assetDetails.licenceStateID;
-          this.year =  this.assetData.assetDetails.year;
-          this.manufacturer =  this.assetData.assetDetails.manufacturer;
-          this.model =  this.assetData.assetDetails.model;
-          if (this.assetData.assetDetails.length != undefined || this.assetData.assetDetails.length != null) {
-            this.length =  this.assetData.assetDetails.length + ' ' + this.assetData.assetDetails.lengthUnit;
-          }
-          if (this.assetData.assetDetails.lengthUnit != undefined || this.assetData.assetDetails.lengthUnit != null) {
-            this.lengthUnit =   this.assetData.assetDetails.lengthUnit;
-          }
-          if (this.assetData.assetDetails.axle != undefined || this.assetData.assetDetails.axle != null) {
-            this.axle =  this.assetData.assetDetails.axle;
-          }
-          if (this.assetData.assetDetails.GAWR != undefined || this.assetData.assetDetails.GAWR != null) {
-            this.GAWR =  this.assetData.assetDetails.GAWR;
-          }
-          if (this.assetData.assetDetails.GAWR_Unit != undefined || this.assetData.assetDetails.GAWR_Unit != null) {
-            this.GAWR_Unit =  this.assetData.assetDetails.GAWR_Unit;
-          }
-          if (this.assetData.assetDetails.GVWR != undefined || this.assetData.assetDetails.GVWR != null) {
-            this.GVWR =  this.assetData.assetDetails.GVWR
-          }
-          if (this.assetData.assetDetails.GVWR_Unit != undefined || this.assetData.assetDetails.GVWR_Unit != null) {
-            this.GVWR_Unit =  this.assetData.assetDetails.GVWR_Unit
-          }
-          this.ownerShip =  this.assetData.assetDetails.ownerShip;
-          this.remarks =  this.assetData.assetDetails.remarks;
+          this.ownerOperatorName = result.assetDetails.ownerOperator;
+          // this.fetchDevicesByID();
+          this.assetIdentification = result.assetIdentification;
+          this.VIN = result.VIN;
+          this.assetType =  result.assetType;
+          this.groupID =  result.groupID;
+          this.startDate =  result.startDate;
+          this.currentStatus =  result.currentStatus;
+          this.annualSafetyDate =  result.assetDetails.annualSafetyDate;
+          this.licencePlateNumber =  result.assetDetails.licencePlateNumber;
+          this.licenceCountryName = CountryStateCity.GetSpecificCountryNameByCode(result.assetDetails.licenceCountryCode);
+          this.licenceStateName =  CountryStateCity.GetStateNameFromCode(result.assetDetails.licenceStateCode,result.assetDetails.licenceCountryCode);
+          this.year =  result.assetDetails.year;
+          this.manufacturer =  result.assetDetails.manufacturer;
+          this.model =  result.assetDetails.model;
+          this.length = result.assetDetails.length + ' ' + result.assetDetails.lengthUnit;
+          this.height = result.assetDetails.height + ' ' + result.assetDetails.heightUnit;
+          this.lengthUnit = result.assetDetails.lengthUnit;
+          this.axle = result.assetDetails.axle;
+          this.GAWR = result.assetDetails.GAWR;
+          this.GAWR_Unit = result.assetDetails.GAWR_Unit;
+          this.GVWR = result.assetDetails.GVWR;
+          this.GVWR_Unit = result.assetDetails.GVWR_Unit;
+          this.ownerShip = result.assetDetails.ownerShip;
+          this.remarks = result.assetDetails.remarks;
+          this.dateOfIssue = result.insuranceDetails.dateOfIssue;
+          this.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
+          this.premiumAmount = result.insuranceDetails.premiumAmount;
+          this.premiumCurrency = result.insuranceDetails.premiumCurrency;
+          this.reminderBefore = result.insuranceDetails.reminderBefore;
+          this.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
+          this.vendor = result.insuranceDetails.vendor;
 
-          if (this.assetData.insuranceDetails.dateOfIssue != undefined || this.assetData.insuranceDetails.dateOfIssue != null) {
-            this.dateOfIssue =  this.assetData.insuranceDetails.dateOfIssue;
-          }
-          if (this.assetData.insuranceDetails.dateOfExpiry != undefined || this.assetData.insuranceDetails.dateOfExpiry != null) {
-            this.dateOfExpiry =  this.assetData.insuranceDetails.dateOfExpiry;
-          }
-          if (this.assetData.insuranceDetails.premiumAmount != undefined || this.assetData.insuranceDetails.premiumAmount != null) {
-            this.premiumAmount =  this.assetData.insuranceDetails.premiumAmount;
-          }
-          if (this.assetData.insuranceDetails.premiumCurrency != undefined || this.assetData.insuranceDetails.premiumCurrency != null) {
-            this.premiumCurrency =  this.assetData.insuranceDetails.premiumCurrency;
-          }
-          if (this.assetData.insuranceDetails.reminderBefore != undefined || this.assetData.insuranceDetails.reminderBefore != null) {
-            this.reminderBefore =  this.assetData.insuranceDetails.reminderBefore;
-          }
-          if (this.assetData.insuranceDetails.reminderBeforeUnit != undefined || this.assetData.insuranceDetails.reminderBeforeUnit != null) {
-            this.reminderBeforeUnit =  this.assetData.insuranceDetails.reminderBeforeUnit;
-          }
-          if (this.assetData.insuranceDetails.vendor != undefined || this.assetData.insuranceDetails.vendor != null) {
-            this.vendor = this.assetData.insuranceDetails.vendor;
-          }                           
-          
-          if(this.assetData.uploadedPhotos != undefined && this.assetData.uploadedPhotos.length > 0){
-            this.assetsImages = this.assetData.uploadedPhotos.map(x => ({
-              path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, 
+          this.ACEID = result.crossBorderDetails.ACE_ID;
+          this.ACIID = result.crossBorderDetails.ACI_ID;
+
+          if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+            this.assetsImages = result.uploadedPhotos.map(x => ({
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
               name: x,
             }));
           }
-          
-          if(this.assetData.uploadedDocs != undefined && this.assetData.uploadedDocs.length > 0){
-            this.assetsDocs = this.assetData.uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, name: x}));
+
+          if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+            this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
           this.spinner.hide(); // loader hide
         }
@@ -232,17 +245,17 @@ export class AssetDetailComponent implements OnInit {
       .getData('devices')
       .subscribe((result: any) => {
         if (result) {
-          this.deviceData = result['Items'];
+          this.deviceData = result[`Items`];
         }
       }, (err) => {});
   }
-
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
+  fetchGroups() {
+    this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {
-        this.statesObject = result;
+        this.groupsObjects = result;
       });
   }
+
 
   fetchDevicesByID() {
     this.allDevices = [];
@@ -262,13 +275,13 @@ export class AssetDetailComponent implements OnInit {
       this.addDevice();
       // this.fetchAsset();
     }
-    
+
   }
   addDevicesIDs() {
     if (!this.assetData.devices.includes(this.devices)) {
       this.assetData.devices.push(this.devices);
     } else {
-      this.toastr.error("Device already selected");
+      this.toastr.error(`Device already selected`);
     }
     this.fetchDevicesByID();
   }
@@ -327,19 +340,52 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
-  // delete uploaded images and documents 
-  delete(type: string,name: string){
-    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchAsset();
-    });
-  }
+// delete uploaded images and documents
+delete(type: string, name: string, index: any) {
 
+  delete this.assetDataDetail.carrierID;
+  delete this.assetDataDetail.timeModified;
+  delete this.assetDataDetail.isDelActiveSK;
+  delete this.assetDataDetail.assetSK;
+  delete this.assetDataDetail.carrierID;
+  delete this.assetDataDetail.timeModified;
+  if (type === 'doc') {
+    this.assetsDocs.splice(index, 1);
+    this.assetDataDetail.uploadedDocs.splice(index, 1);
+    this.deleteUploadedFile(type, name);
+    try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(this.assetDataDetail));
+      this.apiService.putData('assets', formData, true).subscribe({
+        complete: () => { this.fetchAsset(); }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    this.assetsImages.splice(index, 1);
+    this.assetDataDetail.uploadedPhotos.splice(index, 1);
+    this.deleteUploadedFile(type, name);
+    try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(this.assetDataDetail));
+      this.apiService.putData('assets', formData, true).subscribe({
+        complete: () => { this.fetchAsset(); }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+deleteUploadedFile(type: string, name: string) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+}
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = this.domSanitizer.bypassSecurityTrustUrl('');
     if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }

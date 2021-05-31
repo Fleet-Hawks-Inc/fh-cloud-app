@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../services';
+import {GoogleMapsService} from '../../../../services/google-maps.service'
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 declare var $: any;
@@ -17,21 +18,23 @@ declare var $: any;
 })
 export class AddRouteComponent implements OnInit {
 
+  public trips;
+  public actualMiles;
   pageTitle: string;
   public searchResults: any;
   public searchResults1: any;
   public searchTerm = new Subject<string>();
   public searchTerm1 = new Subject<string>();
-  mapVisible = false;
+  mapVisible = true;
   errors = {};
   routeData = {
     routeNo: '',
     routeName: '',
     notes: '',
-    VehicleID: '',
-    AssetID: '',
-    driverUserName: '',
-    coDriverUserName: '',
+    VehicleID: null,
+    AssetID: null,
+    driverID: null,
+    coDriverID: null,
     miles: 0,
     sourceInformation: {
       sourceAddress: '',
@@ -78,16 +81,17 @@ export class AddRouteComponent implements OnInit {
 
   new_length = 0;
   routeID = '';
-  destinationStop = false;
+  destinationStop = true;
   dailyClass = '';
   weekClass = '';
   biClass = '';
   isDaily = false;
+  routeBtnStatus = false;
 
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService, private pcMiler: GoogleMapsService) {
   }
 
   get today() {
@@ -102,6 +106,7 @@ export class AddRouteComponent implements OnInit {
     if(this.routeID != undefined) {
       this.pageTitle = 'Edit Route';
     } else {
+      this.mapShow();
       this.pageTitle = 'Add Route';
     } 
     
@@ -116,7 +121,8 @@ export class AddRouteComponent implements OnInit {
     }
 
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
+
     });
 
     $('#recurringBtn').on('click', function () {
@@ -173,17 +179,36 @@ export class AddRouteComponent implements OnInit {
       let result = await this.hereMap.geoCode(item.stopName);
       this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
     }));
+    
+    this.getMiles();
     this.hereMap.calculateRoute(this.newCoords);
     this.newCoords = [];
   }
 
+  async getMiles(){
+    let switchCoordinates=[];
+    this.newCoords.forEach(coordinates=>{
+      let latLong=coordinates.split(',')
+      let temp=latLong[0];
+      latLong[0]=latLong[1];
+      latLong[1]=temp;
+      switchCoordinates.push(latLong.join(','))
+    })
+    let stops=switchCoordinates.join(";");
+this.pcMiler.pcMiles.next(true);
+this.routeData.miles = await this.pcMiler.pcMilesDistance(stops).toPromise()
+}
+calculateActualMiles(miles){
+  this.actualMiles+=miles;
+}
   resetCodrivers() {
-    this.routeData.coDriverUserName = '';
+    this.routeData.coDriverID = null;
   }
 
   mapShow() {
     this.mapView = true;
     setTimeout(() => {
+      this.hereMap.mapSetAPI();
       this.hereMap.mapInit();
     }, 100);
   }
@@ -198,6 +223,7 @@ export class AddRouteComponent implements OnInit {
     }
     
     // this.spinner.show();
+    this.routeBtnStatus = true;
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -214,9 +240,11 @@ export class AddRouteComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
+              this.routeBtnStatus = false;
             },
             error: () => {
+              this.routeBtnStatus = false;
             },
             next: () => {
             },
@@ -224,6 +252,7 @@ export class AddRouteComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
+        this.routeBtnStatus = false;
         this.toastr.success('Route added successfully.');
         this.router.navigateByUrl('/dispatch/routes/list');
       },
@@ -250,76 +279,118 @@ export class AddRouteComponent implements OnInit {
     this.errors = {};
   }
 
-  async assignLocation(elem, label, index='') {
+  async assignLocation(elem, label, index:any='') {
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
     const item = {
       stopName: label,
-      stopNotes: ''
+      stopNotes: '',
+      state: '',
+      country: ''
     };
+    if(labelResult.address.countryName !== undefined) {
+      item.country = `${labelResult.address.countryName}`;
+    }
+
+    if(labelResult.address.state !== undefined) {
+      item.state = `${labelResult.address.state}`;
+    }
     if (elem === 'source') {
-      this.routeData.sourceInformation['sourceAddress'] = '';
-      this.routeData.sourceInformation['sourceCountry'] = '';
-      this.routeData.sourceInformation['sourceState'] = '';
-      this.routeData.sourceInformation['sourceCity'] = '';
-      this.routeData.sourceInformation['sourceZipCode'] = '';
+      this.setSourceValue(labelResult)
+      this.routeData.stops[0] = item;
 
-      this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}` ;
-      
-      if(labelResult.address.countryName !== undefined) {
-        this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
-      }
-
-      if(labelResult.address.state !== undefined) {
-        this.routeData.sourceInformation['sourceState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
-      }
-
-      if(labelResult.address.city !== undefined) {
-        this.routeData.sourceInformation['sourceCity'] = `${labelResult.address.city}`;
-      }
-      
-      if(labelResult.address.postalCode !== undefined) {
-        this.routeData.sourceInformation['sourceZipCode'] = `${labelResult.address.postalCode}`;
-      }
-      
-      this.routeData.stops.splice(1, 0, item);
     } else if(elem === 'destination') {
-      this.routeData.destinationInformation['destinationAddress'] = '';
-      this.routeData.destinationInformation['destinationCountry'] = '';
-      this.routeData.destinationInformation['destinationState'] = '';
-      this.routeData.destinationInformation['destinationCity'] = '';
-      this.routeData.destinationInformation['destinationZipCode'] = '';
-
-      this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
-      
-      if(labelResult.address.countryName !== undefined) {
-        this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
-      }
-
-      if(labelResult.address.state !== undefined) {
-        this.routeData.destinationInformation['destinationState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
-      }
-      
-      if(labelResult.address.city !== undefined) {
-        this.routeData.destinationInformation['destinationCity'] = `${labelResult.address.city}`;
+      this.setDestinationValue(labelResult);
+      let stopLen = this.routeData.stops.length; 
+      if(stopLen == 0) {
+        this.routeData.stops[0] = {
+          stopName: '',
+          stopNotes: '',
+          country: '',
+          state: ''
+        };
+        this.routeData.stops[1] = item;
+      } else if(stopLen == 1 || stopLen == 2) {
+        this.routeData.stops[1] = item;
+      } else if(stopLen > 2) {
+        this.routeData.stops[stopLen-1] = item;
       }
       
-      if(labelResult.address.postalCode !== undefined) {
-        this.routeData.destinationInformation['destinationZipCode'] = `${labelResult.address.postalCode}`;
-      }
-      
-      this.routeData.stops.splice(1, 1);
-      this.routeData.stops.splice(1, 0, item);
     } else {
-      
+      if(labelResult.address.countryName !== undefined) {
+        this.routeData.stops[index]['country'] = `${labelResult.address.countryName}`;
+      }
+  
+      if(labelResult.address.state !== undefined) {
+        this.routeData.stops[index]['state'] = `${labelResult.address.state}`;
+      }
       this.routeData.stops[index]['stopName'] = label;
+
+      if(index == 0 || index == this.routeData.stops.length-1) {
+        if(index === 0) {
+          this.setSourceValue(labelResult)
+        } else {
+          this.setDestinationValue(labelResult);
+        }
+      }
     }
     this.searchResults = false;
     this.reinitMap();
     $('div').removeClass('show-search__result');
-
+    
   }
 
+  setSourceValue(labelResult) {
+    this.routeData.sourceInformation['sourceAddress'] = '';
+    this.routeData.sourceInformation['sourceCountry'] = '';
+    this.routeData.sourceInformation['sourceState'] = '';
+    this.routeData.sourceInformation['sourceCity'] = '';
+    this.routeData.sourceInformation['sourceZipCode'] = '';
+    this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}`;
+
+    if (labelResult.address.countryName !== undefined) {
+      this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
+    }
+
+    if (labelResult.address.state !== undefined) {
+      this.routeData.sourceInformation['sourceState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    }
+
+    if (labelResult.address.city !== undefined) {
+      this.routeData.sourceInformation['sourceCity'] = `${labelResult.address.city}`;
+    }
+
+    if (labelResult.address.postalCode !== undefined) {
+      this.routeData.sourceInformation['sourceZipCode'] = `${labelResult.address.postalCode}`;
+    }
+  }
+
+  setDestinationValue(labelResult) {
+    this.routeData.destinationInformation['destinationAddress'] = '';
+    this.routeData.destinationInformation['destinationCountry'] = '';
+    this.routeData.destinationInformation['destinationState'] = '';
+    this.routeData.destinationInformation['destinationCity'] = '';
+    this.routeData.destinationInformation['destinationZipCode'] = '';
+
+    this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
+
+    if (labelResult.address.countryName !== undefined) {
+      this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
+    }
+
+    if (labelResult.address.state !== undefined) {
+      this.routeData.destinationInformation['destinationState'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    }
+
+    if (labelResult.address.city !== undefined) {
+      this.routeData.destinationInformation['destinationCity'] = `${labelResult.address.city}`;
+    }
+
+    if (labelResult.address.postalCode !== undefined) {
+      this.routeData.destinationInformation['destinationZipCode'] = `${labelResult.address.postalCode}`;
+    }
+  }
+  
   addStops() {
     const item = {
       stopName: '',
@@ -338,6 +409,8 @@ export class AddRouteComponent implements OnInit {
     setTimeout(function(){
       thiss.routeData.stops = allStops;
     },0.5)
+
+   
   }
 
   removeStops(i) {
@@ -359,8 +432,8 @@ export class AddRouteComponent implements OnInit {
         this.routeData['notes']     = result.notes;
         this.routeData['VehicleID'] = result.VehicleID;
         this.routeData['AssetID']   = result.AssetID;
-        this.routeData['driverUserName'] = result.driverUserName;
-        this.routeData['coDriverUserName'] = result.coDriverUserName;
+        this.routeData['driverID'] = result.driverID;
+        this.routeData['coDriverID'] = result.coDriverID;
         this.routeData['miles'] = result.miles;
         
         this.routeData['sourceInformation'] = {
@@ -418,6 +491,7 @@ export class AddRouteComponent implements OnInit {
   updateRoute() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.routeBtnStatus = true;
     if (this.routeData.recurring.recurringRoute === true) {
       if(this.routeData.recurring.recurringType == '') {
         this.toastr.error('Please select recurring type.');
@@ -441,15 +515,19 @@ export class AddRouteComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
+              this.routeBtnStatus = false;
             },
-            error: () => {},
+            error: () => {
+              this.routeBtnStatus = false;
+            },
             next: () => {},
           });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.routeBtnStatus = false;
         this.router.navigateByUrl('/dispatch/routes/list');
         this.toastr.success('Route updated successfully.');
       },

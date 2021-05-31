@@ -1,0 +1,101 @@
+<section class="body">
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+        <header class="page-header pr-5">
+          <div class="row pr-1 mr-1" style="padding-top:10px;">
+            
+            <div class="col-md-2 col-lg-2">
+              <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Uncertified Logs</h4>
+            </div>
+            
+            <div class="col-lg-3 col-md-3">
+              <div class="input-daterange input-group" data-plugin-datepicker="">
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  data-plugin-datepicker=""
+                  placeholder="start date"
+                  name="fromDate"
+                  (click)="d1.toggle()" 
+                  ngbDatepicker 
+                  #d1="ngbDatepicker"
+                  [(ngModel)]="fromDate"
+                  autocomplete="off"
+                />
+                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  data-plugin-datepicker=""
+                  placeholder="to date"
+                  name="toDate"
+                  (click)="d2.toggle()" 
+                  ngbDatepicker 
+                  #d2="ngbDatepicker"
+                  [(ngModel)]="toDate"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-2 col-lg-2 pr-0">
+                <div class="btn-group flex-wrap" style="width:100%;">
+                   <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">All Log <span class="caret"></span></button>
+                   <div class="dropdown-menu" role="menu">
+                      <a class="dropdown-item text-1" href="#">All Log</a>
+                      <!-- <a class="dropdown-item text-1" href="#">Complaint Log</a>
+                      <a class="dropdown-item text-1" href="#">Logs with HOS Violations</a>
+                      <a class="dropdown-item text-1" href="#">Logs with Form & Manner Error</a> -->
+                   </div>
+                </div>
+             </div>
+
+  
+            <div class="col-lg-1 col-md-1">
+              <button class="btn btn-success btn-sm" (click)="fetchUncertifiedLogs()">Search</button>
+            </div>
+  
+            <div class="col-md-6 col-lg-6 text-right pr-1"></div>
+          </div>
+          
+        </header>
+  
+        <div class="row">
+          <div class="col pr-0">
+            <section class="card">
+              <div class="card-body">
+                <table class="table table-bordered table-striped mb-0 simple-table">
+                    <thead>
+                       <tr>
+                          <th>Date</th>
+                          <th>Driver</th>
+                          <th>Events</th>
+                          <th>Location</th>
+                          <th>Action</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                       <tr *ngFor="let log of logs">
+                          <td >{{log.date}} {{log.time}}</td>
+                          <td>{{log.driverName}}</td>
+                          <td >{{log.eventType}}</td>
+                          <td >{{log.location}}</td>
+                          <td ><button class="btn btn-danger btn-sm mt-0">Reminder</button> </td>
+                       </tr>
+                    </tbody>
+                 </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+  

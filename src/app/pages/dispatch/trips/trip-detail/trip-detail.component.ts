@@ -4,16 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-trip-detail',
   templateUrl: './trip-detail.component.html',
   styleUrls: ['./trip-detail.component.css']
 })
 export class TripDetailComponent implements OnInit {
-
+  Asseturl = this.apiService.AssetUrl;
+  environment = environment.isFeatureEnabled;
   constructor(private apiService: ApiService, private route: ActivatedRoute,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
       this.selectedFileNames = new Map<any, any>();
@@ -21,7 +24,20 @@ export class TripDetailComponent implements OnInit {
 
   tripData = {
     tripNo: '',
-    tripStatus: ''
+    tripStatus: '',
+    documents: [],
+    carrierID: '',
+    reeferTemperature:'',
+    reeferTemperatureUnit: '',
+    notifications: {
+      changeRoute: false,
+      pickUp: false,
+      dropOff: false,
+      tripToDriver: false,
+      tripToDispatcher: false
+    }, 
+    bol: '',
+    dateCreated: ''
   };
   tripID = '';
   allAssetName = '';
@@ -46,18 +62,43 @@ export class TripDetailComponent implements OnInit {
   carrierID = '';
   selectedFileNames: Map<any, any>;
   documentID = [];
+  allFetchedOrders = [];
+  customersObjects = [];
+  orderNumbers = '-';
+  routeName = '-';
+  plannedMiles = 0;
+  uploadedDocs = [];
+  uploadedDocSrc = [];
+  vehiclesObject: any = {};
+  assetsObject: any = {};
+  carriersObject: any = {};
+  driversObject: any = {};
+  lastDelivery = '';
+  stops = 0;
 
   ngOnInit() {
+    this.fetchAllVehiclesIDs();
+    this.fetchAllAssetIDs();
+    this.fetchAllCarrierIDs();
+    this.fetchAllDriverIDs();
+    this.fetchCustomersByIDs();
     this.tripID = this.route.snapshot.params['tripID'];
     this.fetchTripDetail();
     this.mapShow();
 
-    this.initSpeedChart();
-    this.initTemperatureChart();
+    // this.initSpeedChart();
+    // this.initTemperatureChart();
   }
 
   mapShow() {
+    this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
+  }
+
+  fetchCustomersByIDs() {
+    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
   }
 
   fetchTripDetail() {
@@ -67,20 +108,64 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
+        
+        if(result.documents == undefined) {
+          result.documents = [];
+        }
         this.tripData = result;
         let tripPlanning = result.tripPlanning;
+        if(result.orderId.length > 0){
+          this.fetchOrderDetails(result.orderId);
+        }
+
+        if(result.routeID != '' && result.routeID != undefined) {
+          this.apiService.getData('routes/' + result.routeID).
+            subscribe((result: any) => { 
+              this.routeName = result.Items[0].routeName;
+            })
+        }
+
+        if(result.documents.length > 0) {
+          for (let k = 0; k < result.documents.length; k++) {
+            const element = result.documents[k];
+
+            let name = element.split('.');
+            let ext = name[name.length - 1];
+            let obj = {
+              imgPath: '',
+              docPath: ''
+            }
+            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+              obj = {
+                imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+              }
+            } else {
+              obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+              }
+            }
+            this.uploadedDocSrc.push(obj);
+          }
+        }
+
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
+          
           let obj = {
+            assetID: element.assetID,
             carrierID: element.carrierID,
             carrierName: "",
             coDriverName: "",
             coDriverUsername: element.codriverUsername,
             date: element.date,
             driverName: "",
+            driverID: element.driverID,
+            coDriverID: element.coDriverID,
             driverUsername: element.driverUsername,
             locationName: element.location,
-            mileType: element.mileType,
+            mileType: element.mileType, 
             miles: element.miles,
             name: element.name,
             trailer: '',
@@ -95,54 +180,21 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime
           };
 
-          if(element.location != undefined && element.location != '') {
-            locations.push(element.location)
+          if(element.type == 'Delivery') {
+            this.lastDelivery = element.dropTime;
           }
 
-          this.trips.push(obj);
-          let assetName = '';
-
-          let assetArr = [];
-          for (let j = 0; j < element.assetID.length; j++) {
-            const assetID = element.assetID[j];
-
-            this.apiService.getData('assets/' + assetID)
-              .subscribe((result: any) => {
-                if (result.Items[0].assetIdentification != undefined) {
-                  assetName = result.Items[0].assetIdentification;
-                  let assObj = {
-                    id: assetID,
-                    name: assetName
-                  }
-
-                  this.allAssetName += assetName + ', ';
-                  assetArr.push(assObj);
-                  this.trips[i].trailerName = this.allAssetName;
-                }
-              })
-
-            this.trips[i].trailer = assetArr;
+          if(element.type == 'Stop'){
+            this.stops += 1;
           }
 
-          if(element.vehicleID != '' && element.vehicleID != undefined) {
-            this.fetchVehicleDetail(element.vehicleID, i);
-          }
-          
-          if(element.driverUsername != '' && element.driverUsername != undefined) {
-            this.fetchDriverDetail(element.driverUsername, 'driver', i);
-          }
-          
-          if(element.codriverUsername != '' && element.codriverUsername != undefined) {
-            this.fetchDriverDetail(element.codriverUsername, 'codriver', i);
-          }
-          
-          if(element.carrierID != '' && element.carrierID != undefined) {
-            this.fetchCarrierName(element.carrierID, i)
-          }          
+          this.plannedMiles += parseFloat(element.miles); 
+          this.newCoords.push(`${element.lat},${element.lng}`);
+          this.trips.push(obj);     
         }
 
-        if(locations.length > 0) {
-          this.getCoords(locations);
+        if(this.newCoords.length > 0) {
+          this.getCoords();
         }
         this.spinner.hide();
       })
@@ -152,85 +204,8 @@ export class TripDetailComponent implements OnInit {
    * pass trips coords to show on the map
    * @param data
    */
-  async getCoords(data) {
-    this.spinner.show();
-    await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
+  async getCoords() {
     this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
-  }
-
-  fetchAssetDetail(assetID, index) {
-    this.apiService.getData('assets/' + assetID)
-      .subscribe((result: any) => {
-        if (result.Items[0].assetIdentification != undefined) {
-          return result.Items[0].assetIdentification;
-        }
-      })
-  }
-
-  fetchVehicleDetail(vehicleID, index) {
-    this.apiService.getData('vehicles/' + vehicleID)
-      .subscribe((result: any) => {
-        if (result.Items[0].vehicleIdentification != undefined) {
-          this.trips[index].vehicleName = result.Items[0].vehicleIdentification
-        }
-      })
-  }
-
-  fetchDriverDetail(driverUserName, type, index) {
-    this.apiService.getData('drivers/userName/' + driverUserName)
-      .subscribe((result: any) => {
-        if (result.Items[0].firstName != undefined) {
-          if (type === 'driver') {
-            this.trips[index].driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-          } else {
-            this.trips[index].coDriverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
-          }
-        }
-      })
-  }
-
-  fetchCountryName(countryID, index) {
-    this.apiService.getData('countries/' + countryID)
-      .subscribe((result: any) => {
-        if (result.Items[0].countryName != undefined) {
-          this.trips[index].location.countryName = result.Items[0].countryName;
-        }
-      })
-  }
-
-  fetchCarrierName(carrierID, index) {
-    this.apiService.getData('carriers/' + carrierID)
-      .subscribe((result: any) => {
-        if (result.Items[0].carrierName != undefined) {
-          this.trips[index].carrierName = result.Items[0].carrierName;
-        }
-      })
-  }
-
-  fetchStateDetail(stateID, index) {
-    this.apiService.getData('states/' + stateID)
-      .subscribe((result: any) => {
-        if (result.Items[0].stateName != undefined) {
-          this.trips[index].location.stateName = result.Items[0].stateName;
-        }
-      })
-  }
-
-  fetchCityDetail(cityID, index) {
-    this.apiService.getData('cities/' + cityID)
-      .subscribe((result: any) => {
-        if (result.Items[0].cityName != undefined) {
-          this.trips[index].location.cityName = result.Items[0].cityName;
-          this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
-          if (this.trips[index] === this.trips[this.trips.length - 1]) {
-            this.getCoords(this.trips);
-          }
-        }
-      })
   }
 
   initSpeedChart() {
@@ -358,13 +333,140 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
-  selectDocuments(event) {
-    this.selectedFiles = event.target.files;
-    for (let i = 0; i < this.selectedFiles.item.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      this.documentID.push(fileName);
+  fetchOrderDetails(orderIds) {
+    orderIds = JSON.stringify(orderIds);
+    this.apiService.getData('orders/fetch/selectedOrders?orderIds='+orderIds).subscribe((result: any) => {
+      for (let i = 0; i < result.length; i++) {
+          const element = result[i];
+
+          this.orderNumbers = element.orderNumber;
+          if(i>0 && i<result.length-1) {
+            this.orderNumbers = this.orderNumbers+', ';
+          }
+      }
+    })
+  }
+
+   /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event: any) {
+    this.uploadedDocs = [];
+    let files = [...event.target.files];
+    let totalCount = this.tripData.documents.length+files.length;
+
+    if(totalCount > 4) {
+      $('#bolUpload').val('');
+      this.toastr.error('Only 4 documents can be uploaded');
+      return false;
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        let name = element.name.split('.');
+        let ext = name[name.length - 1];
+
+        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
+          $('#bolUpload').val('');
+          this.toastr.error('Only image and pdf files are allowed');
+          return false;
+        }
+      }
+
+      // create form data instance
+      const formData = new FormData();
+
+      for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        this.uploadedDocs.push(element);
+      }
+
+      //append docs if any
+      for(let j = 0; j < this.uploadedDocs.length; j++){
+        let file = this.uploadedDocs[j];
+        formData.append(`uploadedDocs-${j}`, file);
+      }
+      
+      formData.append('data', JSON.stringify(this.tripData.documents));
+
+      this.apiService.postData('trips/update/bol/'+this.tripID,formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+                this.spinner.hide();
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res:any) => {
+          this.tripData.documents = res; 
+          
+          this.uploadedDocSrc = [];
+          if (res.length > 0) {
+            for (let k = 0; k < res.length; k++) {
+              const element = res[k];
+              // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
+
+              let name = element.split('.');
+              let ext = name[name.length - 1];
+              let obj = {
+                imgPath: '',
+                docPath: ''
+              }
+              if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                obj = {
+                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`,
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                }
+              } else {
+                obj = {
+                  imgPath: 'assets/img/icon-pdf.png',
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                }
+              }
+              this.uploadedDocSrc.push(obj);
+            }
+          }
+          this.toastr.success('BOL/POD uploaded successfully');
+        },
+      })
     }
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllAssetIDs() {
+    this.apiService.getData('assets/get/list')
+      .subscribe((result: any) => {
+        this.assetsObject = result;
+      });
+  }
+
+  fetchAllCarrierIDs() {
+    this.apiService.getData('externalCarriers/get/list')
+      .subscribe((result: any) => {
+        this.carriersObject = result;
+      });
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
   }
 }

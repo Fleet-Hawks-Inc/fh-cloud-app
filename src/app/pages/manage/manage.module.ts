@@ -4,18 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct,NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
   AddUserComponent,
   UserDetailsComponent,
-  UsersListComponent
+  UsersListComponent,
+  CompanyProfileComponent,
+  EditProfileComponent
 } from './index';
+import { SettingsComponent } from './settings/settings.component';
 
 const COMPONENTS = [
   AddUserComponent,
   UserDetailsComponent,
   UsersListComponent,
+  CompanyProfileComponent,
+  EditProfileComponent,
+  SettingsComponent
 ];
 
 
@@ -31,8 +37,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     if (!value)
       return null
     let parts = value.split(this.DELIMITER);
-    return { 
-      year: + parseInt(parts[0]), 
+    return {
+      year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
       day: + parseInt(parts[2]) }
   }
@@ -71,6 +77,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    SettingsComponent,
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],

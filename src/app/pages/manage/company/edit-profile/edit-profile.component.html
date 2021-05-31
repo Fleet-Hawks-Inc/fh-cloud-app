@@ -1,0 +1,617 @@
+
+<!-- NEW FORM -->
+<section class="content-body" style="background:#dddddd;">
+  <div class="pt-5">
+    <section role="main" class="account-body">
+      <div class="row text-dark">
+        <div class="col">
+          <section class="card" style="align-items: center;">
+            <div class="card-body pr-5 pl-5" style="width: 100%;">
+       <form id="companyForm" class="form-horizontal form-bordered bg-white" name="companyForm"   #cForm="ngForm" novalidate #companyF="ngForm">
+                <div class="row text-center">
+                  <div class="col-lg-12">
+                    <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
+                    <h2 class="mt-1">Edit Your Fleet Hawks Account</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Basic
+                      Detail</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class=" row">
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
+                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                        <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
+                          <div *ngIf="fName.errors.required">
+                            First name is required.
+                          </div>
+                          <div *ngIf="fName.errors.pattern">
+                            First name must be between 2 to 30 characters and must contain letters.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName"
+                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                        <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
+                          <div *ngIf="lName.errors.required">
+                            Last name is required.
+                          </div>
+                          <div *ngIf="lName.errors.pattern">
+                            Last name must be between 2 to 30 characters and must contain letters.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class=" row">
+                      <div class="col-lg-10">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Username</label>
+                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]=true
+                          placeholder="johnsmith" #uName="ngModel" minlength="6"  pattern="^[^\.][a-z0-9\.]+[^\.]$">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
+                        <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
+                          placeholder="eg. +19897899879"  required pattern="^(\+1)[0-9]{10}$">
+                      </div>
+                      <div class="col-lg-10 offset-lg-2">
+                        <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                          <div *ngIf="ph.errors.required">
+                          Phone number is required.
+                          </div>
+                          <div *ngIf="ph.errors.pattern">
+                            Enter valid phone number eg. +12032342345.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class=" row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Email</label>
+                        <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"  [disabled]=true
+                          placeholder="eg. johnsmith@gmail.com">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
+                        <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
+                          name="findingWay">
+                          <ng-option value="Google">Google</ng-option>
+                          <ng-option value="Bing">Bing</ng-option>
+                          <ng-option value="Referal">Referal</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 mt-2">
+                    <hr class="solid mt-4">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Business
+                      Detail</label>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Registered Company Name<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName"
+                          placeholder="eg.  Westjet" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                          <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
+                            <div *ngIf="cName.errors.required">
+                              Carrier name is required.
+                            </div>
+                            <div *ngIf="cName.errors.pattern">
+                              Carrier can only contain alphanumeric characters with length between 4-120.
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Number of Fleets<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets" #tFleet="ngModel" required min="1">
+                        <div *ngIf="tFleet.invalid && (tFleet.dirty || tFleet.touched)" class="text-danger">
+                          <div *ngIf="tFleet.errors.required">
+                            Number of fleet is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.trucks" name="trucks">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Asset(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.trailers" name="trailers">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Reefer(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.reefers" name="reefers">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Dry Van(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.dryVans" name="dryVans">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Flatbed(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.flatbed" name="flatbed">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">CurtainSide(s)</label>
+                            <input type="number" class="form-control" [(ngModel)]="fleets.curtainSide"
+                              name="curtainSide">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo</label>
+                        <input (change)="selectPhoto($event)"  type="file"
+                          class="form-control p-0">
+                      </div>
+                    </div>
+                    <div class="row mt-2" *ngIf = "uploadedLogo !== ''">
+                      <div class="col-lg-5">
+                         <div class="vehicle-photo-box">
+                            <img src="{{logoSrc}}" width="100%" class="img-fluid"
+                               style="height: 180px; object-fit: cover;">
+                            <hr class="m-3">
+                            <div class="row">
+                               <div class="col-lg-8">Company Logo</div>
+                               <div class="col-lg-4 text-right" (click)="deleteLogo()"><i
+                                class="fas fa-times text-danger"></i>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name &nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Doing Business As"></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" placeholder="eg. Bookstore" [(ngModel)]="DBAName"
+                          name="DBAName" #dba="ngModel" >
+                          <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
+                            <div *ngIf="dba.errors.pattern">
+                              DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                            </div>
+                          </div> -->
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Employer Identification Number (EIN) is a unique 9 digit identification number that is assigned to a business
+                                        entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
+                                        for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="number" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN">
+
+                        <!-- <div *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
+                          <div *ngIf="ein.errors.pattern">
+                            EIN must contain 9 digits.
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
+                          Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required
+                          placeholder="Select business operating country">
+                          <ng-option value="CA">Canada</ng-option>
+                          <ng-option value="US">United States of America</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row pt-2" *ngIf="bizCountry==='US'">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">MC# <span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="MC number (Motor Carrier number) is 6 digit number, an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>
+                        </label>
+                        <input type="number" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC"
+                        #mc="ngModel" [required]="bizCountry==='US'" pattern="^[0-9]{6}$" name="MC">
+                          <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
+                            <div *ngIf="mc.errors.required">
+                              MC number is required.
+                            </div>
+                            <div *ngIf="mc.errors.pattern">
+                              MC number must contain 6 numbers.
+                            </div>
+                          </div>
+
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">DOT# <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i class="fas fa-exclamation-circle"
+                            data-toggle="tooltip" data-placement="top"
+                            title="A Department of Transportation (DOT) number is a 8 digit number the Federal Motor Carrier Safety Administration, or FMCSA, assigns to registered commercial vehicles. All carrier vehicles that weigh more than a certain amount, carry specific amounts of paying passengers or operate between state lines require DOT numbers."></i></label>
+                        <input type="number" class="form-control" placeholder="Enter 8 digit  DOT number" [required]="bizCountry==='US'"
+                        [(ngModel)]="DOT" name="DOT" #dot="ngModel" pattern="^[0-9]{8}$">
+                          <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
+                            <div *ngIf="dot.errors.pattern">
+                              DOT number must contain 8 numbers.
+                            </div>
+                          </div>
+
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">CCC&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" >
+                          <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
+                            <div *ngIf="ccc.errors.pattern">
+                              CCC must be of length 4 and contains  capital letters or numbers.
+                            </div>
+                          </div> -->
+
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JK12"
+                        #scac="ngModel" >
+                          <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
+                            <div *ngIf="scac.errors.pattern">
+                              SCAC must be of length 4 and contains  capital letters or numbers.
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Liability Insurance#&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance" placeholder="Enter liability insurance number"
+                          name="liabilityInsurance">
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance" placeholder="Enter cargo insurance number">
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10 d-flex justify-content-between mt-2">
+                        <div class="checkbox-custom pt-2">
+                          <input type="checkbox" [(ngModel)]="CSA" name="CSA">
+                          <label for="csa">CSA&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                              data-placement="top"
+                              title="The Customs Self Assessment ( CSA ) program is designed for low-risk,
+                                           pre-approved importers, carriers and registered drivers. To take advantage of the program, CSA -approved importers and carriers must use a registered driver to carry CSA -eligible goods into Canada in the highway mode."></i></label>
+                        </div>
+                        <div class="checkbox-custom pt-2">
+                          <input type="checkbox" [(ngModel)]="CTPAT" name="CTPAT">
+                          <label for="ctpat">CTPAT&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                              data-placement="top"
+                              title="Customs Trade Partnership Against Terrorism (CTPAT)
+                                           is but one layer in U.S. Customs and Border Protection’s (CBP)
+                                           multi-layered cargo enforcement strategy.CBP works with the trade community
+                                           to strengthen international supply chains and improve United States border security."></i></label>
+                        </div>
+                        <div class="checkbox-custom pt-2">
+                          <input type="checkbox" [(ngModel)]="PIP" name="PIP">
+                          <label>PIP&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                              data-placement="top" title="PIP stands for Partners in Protection,it’s in partnership with the Canada
+                                           Border Service Agency (CBSA).The goal of the PIP program is to strengthen security
+                                           of both the Canadian-American border and the trade chain."></i></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 mt-2">
+                    <hr class="solid mt-4">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                  </div>
+                  <div class="col-lg-12">
+                    <div *ngFor="let item of addressDetails; let i = index;" class="address-item">
+                      <div class="form-group row">
+                        <div class="col-lg-12 text-right">
+                          <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)" class="btn btn-danger"
+                          href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
+                        </div>
+                        <div class="col-lg-5 pt-2">
+                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address
+                            Type</label>
+                          <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
+                            placeholder="Select address type">
+                            <ng-option value="mailing">Mailing</ng-option>
+                            <ng-option value="yard">Yard</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-4 offset-lg-2 pt-2 pr-0">
+                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Start
+                            typing your location <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top"
+                              title="we'll pull address automatically from Map"></i></label>
+                          <input type="text" class="form-control" placeholder="Type address"
+                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual"
+                            (keyup)="searchTerm.next($event);">
+                          <div class="checkbox-custom pt-2">
+                            <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
+                              type="checkbox">
+                            <label>Type Manually</label>
+                          </div>
+                          <div class="map-search__results bg-white boxshadow0">
+                            <ul class="p-0 m-0 text-left">
+                              <li *ngFor="let item of searchResults;">
+                                <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-lg-1 mar-top-37 text-right pt-2">
+                          <button class="btn btn-dark mr-2" type="button"
+                            (click)="clearUserLocation(i);">Clear</button>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="item.manual">
+                        <div class="col-lg-6 pt-2">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
+                                Country</label>
+                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
+                                (change)="getStates($event, i)" class="form-control populate"
+                                placeholder="Select country">
+                                <ng-option value="CA">Canada</ng-option>
+                                  <ng-option value="US">United States of America</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
+                                Province/State</label>
+                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
+                                name="stateCode{{i}}" placeholder="Select province" >
+                                <ng-option class="text-capitalize" *ngFor="let state of item.states"
+                                  value="{{state.stateCode}}">{{state.stateName}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-lg-2  mar-top-37">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
+                                City</label>
+                              <ng-select  [(ngModel)]="item.cityName"
+                                name="cityName{{i}}" placeholder="Select city" >
+
+                                <ng-option class="text-capitalize" *ngFor="let city of item.cities"
+                                  value="{{city.cityName}}">
+                                  {{city.cityName}}</ng-option>
+
+                              </ng-select>
+                            </div>
+                            <div class="col-lg-2  mar-top-37">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 pt-2">
+                          <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                              <label
+                                class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
+                              <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
+                                placeholder="Enter street level address" #adLine="ngModel" >
+                                <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
+                                  <div *ngIf="adLine.errors.pattern">
+                                    Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
+                                  </div>
+                                </div> -->
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Zip
+                                Code</label>
+                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
+                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
+                                <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+                                  <div *ngIf="zip.errors.pattern">
+                                    Zip code can contain capital letters or numbers and no special characters.
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12 mt-2">
+                    <hr class="solid mt-4">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 text-right">
+                    <button (click)="addAddress();" class="btn btn-success"><i
+                      class="fa fa-plus fa-fw"></i> Add Another Address</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
+                      Detail</label>
+                  </div>
+                </div>
+                <div class="row" *ngFor="let bank of banks;let b = index;">
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel"
+                          placeholder="eg. Bank of Nova Scotia">
+                          <!-- <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
+                            <div *ngIf="bName.errors.pattern">
+                              Branch name must be between 2 to 30 characters and must not contain special characters.
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
+                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" >
+                          <!-- <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
+                            <div *ngIf="ac.errors.pattern">
+                              Account number must be between 7-12 numbers.
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
+                        #route="ngModel"  placeholder="eg. 023456789">
+                          <!-- <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
+                            <div *ngIf="route.errors.pattern">
+                              Routing number must be of 9 digits.
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Transit#&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry.
+                              This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
+                            The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
+                        #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
+                          maxlength="9">
+                          <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
+                            <div *ngIf="trans.errors.pattern">
+                              Transit number must be of 9 numbers.
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
+                            class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
+                        #ins="ngModel"  placeholder="eg. 219"
+                        [attr.name]="'banks['+b+'].institutionNumber'">
+                          <!-- <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
+                            <div *ngIf="ins.errors.pattern">
+                              Institution number must be of 3 digits.
+                            </div>
+                          </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-lg-12 text-right">
+                    <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                    <button type="button" (click)="UpdateCarrier()"     [disabled]="!companyF.form.valid" class="btn btn-success" >Update</button>
+                    <!-- <button type="button" (click)="UpdateCarrier()" *ngIf="!companyF.form.valid"   [disabled]="companyF.form.valid" class="btn btn-success" >Update</button> -->
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-lg-4 offset-lg-4 text-center">
+                    <h4 class="font-weight-bold">Need Help?</h4>
+                  </div>
+                  <div class="col-lg-4 offset-lg-4 text-center">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <h5 class="font-weight-semibold text-underline m-0">Email Us</h5>
+                        <p class="m-0 text-dark">support@fleethawks.com,sales@fleethawks.com</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+

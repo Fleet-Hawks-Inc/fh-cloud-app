@@ -69,11 +69,11 @@ export class HereMapService {
       }
     );
 
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
+  //   let provider = this.map.getBaseLayer().getProvider();
+  //   var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+  //   'https://js.api.here.com/v3/3.1/styles/omv/');
+  // // set the style on the existing layer
+  // provider.setStyle(style)
     // const mapTileService = this.platform.getMapTileService({
     //   type: 'base'
     // });
@@ -105,23 +105,24 @@ export class HereMapService {
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.ui.getControl('mapsettings').setDisabled(true);
-    this.ui.getControl('mapsettings').setVisibility(false);
+   this.ui.getControl('mapsettings').setDisabled(false);
+   this.ui.getControl('mapsettings').setAlignment('bottom-left');
+   this.ui.getControl('zoom').setAlignment('bottom-left');
+   this.ui.getControl('scalebar').setAlignment('bottom-left');
+    this.ui.getControl('mapsettings').setVisibility(true);
 
 
-    // let mapSettings = this.ui.getControl('mapsettings');
-    // let zoom = this.ui.getControl('zoom');
-    // let scalebar = this.ui.getControl('scalebar');
+  //   let mapSettings = this.ui.getControl('mapsettings');
+  //   let zoom = this.ui.getControl('zoom');
+  //   let scalebar = this.ui.getControl('scalebar');
 
-    // mapSettings.setAlignment('bottom-left');
-    // zoom.setAlignment('bottom-left');
-    // scalebar.setAlignment('bottom-left');
+  //   mapSettings
+  //   zoom.setAlignment('bottom-left');
+  //   scalebar.setAlignment('bottom-left');
     
      return this.map;
   }
-  setStyle(map){
 
-  }
 
   /**
    * This method get current location of user. Currently it is using browsser navigater to get location
@@ -241,7 +242,7 @@ export class HereMapService {
     });
 
     const service = this.platform.getSearchService();
-    return service.geocode({ q: value });
+    return service.geocode({ q: value, show: 'tz'});
   }
 
   /**
@@ -259,7 +260,24 @@ export class HereMapService {
     });
   }
 
-  calculateRoute(coordinates) {
+  // public async getImageMap(value:any){
+  //   let coords=await this.geoCode(value)
+  //   try{
+  //   if(coords){
+  //   const result=`https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${this.apiKey}&c=${coords}`
+  //   return result
+  //   }
+  //   else{
+  //     return "Coords not found."
+  //   }
+  // }
+  // catch(error){
+  //   
+  // }
+
+  // }
+
+  calculateRoute(coordinates,additionalSpec?) {
     try {
       this.viaPoints = [];
       if (coordinates.length > 2) {
@@ -271,31 +289,40 @@ export class HereMapService {
       }
       // ['51.044978,-114.063311', '51.081848,-113.925807', '51.205534,-114.001558', '51.127017,-114.008666']
       const alternatives = 3;
-      const params = {
+      let params = {
         transportMode: `truck`,
         routingMode: 'fast',
         origin: coordinates[0],
         via: new H.service.Url.MultiValueQueryParameter(this.viaPoints),
         destination: coordinates[coordinates.length - 1],
+        truckRestrictionPenalty: 'soft', // if truck restriction is soft route and maneuvera attribute should be notes
+        grossWeight:"",
+        weightPerAxle:"",
+        width:"", // Should be in centimeter
+        length:"",//should be in centimeter
+        height: (additionalSpec!=undefined)? additionalSpec["height"] : 400, // Should be in Centimeter
+        "avoid[features]":"tollRoad",
+        traffic: 'disabled',
         representation: 'display',
         units: 'imperial',
         alternatives,
         return: 'polyline,actions,instructions,summary,travelSummary,turnByTurnActions,elevation,routeHandle,passthrough,incidents',
         spans: 'truckAttributes,duration,speedLimit',
       };
+      
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 
       const routeColors = ['#2980b9','#2980b9','#2980b9','#2980b9','#2980b9'];
 
       this.router.calculateRoute(params, route => {
-        // console.log("route", route);
+        
         if (route.routes) {
           // route.routes.forEach((section, i) => {
-          //   // console.log("section", section);
+          //   
           //   // decode LineString from the flexible polyline
             route.routes[0].sections.forEach(item => {
-              // console.log("item", item);
+              
 
               const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
               // Create a polyline to display the route:
@@ -309,14 +336,14 @@ export class HereMapService {
 
             //   polyline.addEventListener('tap', function(evt) {
             //     // Log 'tap' and 'mouse' events:
-            //     console.log(evt.type, evt.currentPointer.type);
+            //     
             // });
 
               // Total Distance in KM
               this.totalDistance = item.travelSummary.length / 1000;
               const factor = 0.621371;
               this.totalDistance = this.totalDistance.toFixed(2) * factor + ' Miles';
-              // console.log(this.totalDistance)
+              // 
 
             //   var bubble = new H.ui.InfoBubble(item.departure.place.location, {
             //     content: `<b>${this.totalDistance}</b>`
@@ -351,7 +378,6 @@ export class HereMapService {
         }
       })
   } catch (erro) {
-    console.log('calculateroute', erro);
   }
   }
 

@@ -3,11 +3,11 @@
     <div class="inner-wrapper">
        
         <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5 service-log-header">
+            <header class="page-header service-log-header">
             
                 <form class="form-horizontal" method="get">
-                    <div class="row pr-1 mr-1" style="padding-top:9px;">
-                        <div class="col-md-2 col-lg-2">
+                    <div class="row px-2" style="padding-top:9px;">
+                        <!-- <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
                                 <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
                                 class="form-control" (input)="getSuggestions($event.target.value)"
@@ -20,11 +20,25 @@
                                    > {{ suggestedUnit.vehicleIdentification }}</li>
                                 </ul>
                              </div>
-                            
-                        </div>
+                        </div> -->
+
+                        <div class="col-md-2 col-lg-2 pr-0 pl-0">
+							<div class="input-group input-group-sm mb-3"> 
+                                <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
+                                    <ng-option *ngFor="let data of vehiclesObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                                </ng-select>
+							</div> 
+						</div>
+						<div class="col-md-2 col-lg-2 pr-0 pl-2">
+							<div class="input-group input-group-sm mb-3">
+                                <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search by asset">
+                                    <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                                </ng-select>
+							</div>
+						</div>
 
                         <div class="col-md-2  col-lg-2">
-                            <ng-select placeholder="Select Task" class="form-control populate">
+                            <ng-select placeholder="Select Task" class="form-control populate" name="taskID" [(ngModel)]="taskID">
                                 <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
                                     <div title="{{item.taskName}}">{{item.taskName}}</div>
                                 </ng-option>
@@ -37,8 +51,9 @@
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
-                        <div class="col-md-6 col-lg-6 text-right pr-1 text-right">
-                            <div class="btn-group flex-wrap mr-2">
+                        <div class="col-md-4 col-lg-4 text-right text-right">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -63,7 +78,7 @@
                                         <a class="nav-link active" routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" routerLink="/fleet/maintenance/service-program/list" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Programs</a>
+                                        <a class="nav-link" routerLink="/fleet/maintenance/service-program/list" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Program</a>
                                     </li>
                                 </ul>
                             </div>
@@ -77,9 +92,10 @@
                                                         <table class="row-border hover table table-bordered table-striped mb-0">
                                                             <thead>
                                                                 <tr>
-                                                                    <th width="20%">Vehicle</th>
-                                                                    <th width="15%">Completion Date/Meter</th>
-                                                                    <th width="50%">Details</th>
+                                                                    <th width="10%">Unit Type</th>
+                                                                    <th width="20%">Vehicle/Asset</th>
+                                                                    <th width="15%">Completion Date/Odometer</th>
+                                                                    <th width="40%">Details</th>
                                                                     <th width="15%">Total</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -87,17 +103,22 @@
                                         
                                                             <tbody>
                                                                 <tr *ngIf="logs.length == 0" class="text-center">
-                                                                    <td colspan="5">No records found</td>
+                                                                    <td colspan="6">{{dataMessage}}</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
-                                        
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
-                                                                        <span *ngIf="!item?.vehicleID"
-                                                                            class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
-                                                                        <span class="text-success text-capitalize">{{item.unitStatus}}</span>
+                                                                        {{item.unitType}}
                                                                     </td>
-                                                                    <td>{{item.completionDate | date : 'dd-MM-yyyy'}}<br><span *ngIf="item?.vehicleID"
+                                                                    <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
+                                                                        {{ item.unitName}} <br>
+
+                                                                        <span class="text-success text-capitalize" 
+                                                                            [ngClass]="{'text-danger': item.currentStatus == 'sold', 
+                                                                            'text-muted' : item.currentStatus === 'outOfService'}">
+                                                                            {{item.currentStatus}}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>{{item.completionDate | date: 'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID"
                                                                             class="font-size-12">{{item.odometer}} miles</span></td>
                                                                     <td>
                                                                         <div>
@@ -107,16 +128,24 @@
                                                                                 *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last"
                                                                                 >{{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">, </span>
                                                                             </span>
+                                                                            <span 
+                                                                                *ngIf="item.allServiceTasks.serviceTaskList == 0;"
+                                                                                >-
+                                                                            </span>
                                                                         </div>
-                                                                        <div *ngIf="item?.selectedIssues.length > 0">
+                                                                        <div>
                                                                             <span class="font-weight-bold">Issue(s): </span>
                                                                                 <a  title="Issue"
                                                                                     class="text-info font-size-12"
                                                                                     *ngFor="let issue of item.selectedIssues;let $last = last"
                                                                                 >
-                                                                                <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
-                                                                                <span *ngIf="!$last" class="list-format">, </span>
-                                                                            </a>
+                                                                                    <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
+                                                                                    <span *ngIf="!$last" class="list-format">, </span>
+                                                                                </a>
+                                                                                <span 
+                                                                                    *ngIf="item.selectedIssues.length == 0;"
+                                                                                    >-
+                                                                                </span>
                                                                         </div>
                                                                        <div>
                                                                             <span class="font-weight-bold">Vendor: </span> 
@@ -125,8 +154,8 @@
                                                                             </a>
                                                                        </div>
                                                                     </td>
-                                                                    <td>{{item.allServiceParts.currency}} {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 +
-                                                                        item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>
+                                                                    <td> 
+                                                                        {{ (item.allServiceParts.total + item.allServiceTasks.total).toFixed(2) }} {{item.allServiceParts.currency}}</td>
                                                                     <td>
                                         
                                                                         <div class="dropdown dropright">
@@ -137,7 +166,7 @@
                                                                             <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                                 <a class="dropdown-item"
                                                                                     routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                                <a class="dropdown-item" (click)="deleteProgram(item.logID)"
+                                                                                <a class="dropdown-item" (click)="deleteProgram(item)"
                                                                                     href="javascript:;">Delete</a>
                                                                             </div>
                                                                         </div>
@@ -184,94 +213,100 @@
                 <div class="card-body text-dark">
                     <ul class="nav top-tabs nav-tabs wizard-steps" *ngIf="vendorsData">
                         <li class="nav-item active"> <a href="#vndrBasicDetails" data-toggle="tab"
-                                class="nav-link text-center active">
+                                class="nav-link text-center {{basicActive}}">
                                 Basic Details
                             </a>
                         </li>
-                        <li class="nav-item"> <a href="#vndrAddressDetails" data-toggle="tab" class="nav-link text-center">
+                        <li class="nav-item {{ addressActive }}"> <a href="#vndrAddressDetails" data-toggle="tab" class="nav-link text-center">
                                 Address
                             </a>
                         </li>
                     </ul>
+                    
                     <div class="tab-content" *ngIf="vendorsData">
-                        <div id="vndrBasicDetails" class="tab-pane active">
+                        <div *ngIf="vendorTextStatus">
+                            {{dataMessageVendorDtl}}
+                        </div>
+                        <div id="vndrBasicDetails" class="tab-pane active" *ngIf="!vendorTextStatus">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="thumb-info text-center mb-3"> 
                                         <img alt="" class="rounded img-fluid"
                                              style="max-width: 200px;"> </div>
                                 </div>
-                                <div class="col-12" *ngFor="let item of vendorsData;">
+                                <div class="col-12">
                                     <table class="table table-bordered m-0">
                                         <tbody>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Company Name:</th>
-                                                <td>{{item.companyName}}</td>
+                                                <td>{{vendorsData.companyName}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Account Number:</th>
-                                                <td>{{item.accountNumber}}</td>
+                                                <td>{{vendorsData.accountNumber ? vendorsData.accountNumber : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Vendor Name:</th>
-                                                <td>{{item.firstName}} {{item.lastName}}</td>
+                                                <td>{{vendorsData.firstName}} {{vendorsData.lastName}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Work Phone:</th>
-                                                <td>{{item.workPhone}}</td>
+                                                <td>{{vendorsData.workPhone}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Work Email:</th>
-                                                <td>{{item.workEmail}}</td>
+                                                <td>{{vendorsData.workEmail}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Prefered Vendor:</th>
-                                                <td>{{item.preferedVendor ? item.preferedVendor : false}}</td>
+                                                <td>{{vendorsData.preferedVendor ? 'Yes' : 'No'}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                        <div id="vndrAddressDetails" class="tab-pane ">
+                        <div id="vndrAddressDetails" class="tab-pane" *ngIf="!vendorTextStatus">
                             <table style="float: left;" class="table table-bordered mb-2">
-                                <tbody>
+                                <tbody *ngFor="let item of vendorAddress;">
                                     <tr>
                                         <th width="40%" class="back-color-gray">Address Type:</th>
-                                        <td>{{vendorsData[0].address}}</td>
+                                        <td>{{item.addressType}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray"> Country:</th>
-                                        <td></td>
+                                        <td>{{item.countryName}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">State:</th>
-                                        <td></td>
+                                        <td>{{item.stateName}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray"> City:</th>
-                                        <td></td>
+                                        <td>{{item.cityName}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Zip Code:</th>
-                                        <td></td>
+                                        <td>{{item.zipCode}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Address:</th>
-                                        <td> </td>
+                                        <td>{{item.address1}} {{item.address2}}</td>
+                                    </tr>
+                                    <tr *ngIf="item.manual == false">
+                                        <th width="40%" class="back-color-gray">Address:</th>
+                                        <td>{{item.userLocation}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right">
-                                <button type="button" class="btn btn-default">Close</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!vendorsData">
-                        No Data Found
-                    </div>
+                    
                 </div>
             </div>
         </div>

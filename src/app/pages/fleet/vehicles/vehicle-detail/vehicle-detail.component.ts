@@ -3,6 +3,12 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import {environment} from '../../../../../environments/environment';
+import { rest } from "lodash";
+import { HttpClient } from "@angular/common/http";
+import { DomSanitizer } from '@angular/platform-browser';
+import  Constants  from '../../constants';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 
 @Component({
   selector: "app-vehicle-detail",
@@ -10,10 +16,12 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./vehicle-detail.component.css"],
 })
 export class VehicleDetailComponent implements OnInit {
+
+  noRecordMsg = Constants.NO_RECORDS_FOUND;
   slides = [];
   docs = [];
   Asseturl = this.apiService.AssetUrl;
-
+  public environment = environment;
   /**
    * Vehicle Prop
    */
@@ -22,8 +30,11 @@ export class VehicleDetailComponent implements OnInit {
   vehicleManufacturersList: any = {};
   groupsList: any = {};
   statesList: any = {};
+  countriesList: any = {};
   vendors = {};
 
+  iftaReporting = "";
+  annualSafetyDate = "";
   vehicleID = "";
   vehicleIdentification = "";
   vehicleType = "";
@@ -33,9 +44,10 @@ export class VehicleDetailComponent implements OnInit {
   modelID = "";
   plateNumber = "";
   stateID = "";
+  countryID = "";
   driverID = "";
   teamDriverID = "";
-  serviceProgramID = "";
+  serviceProgramID:any = [];
   primaryMeter = "";
   repeatByTime = "";
   repeatByTimeUnit = "";
@@ -77,7 +89,6 @@ export class VehicleDetailComponent implements OnInit {
     cargoVolume: "",
     curbWeight: "",
     grossVehicleWeightRating: "",
-    iftaReporting: false,
     towingCapacity: "",
     maxPayload: "",
     EPACity: 0,
@@ -95,6 +106,7 @@ export class VehicleDetailComponent implements OnInit {
     policyNumber: "",
     amount: 0,
     amountCurrency: "",
+    reminder: ''
   };
   fluid = {
     fuelType: "",
@@ -102,6 +114,11 @@ export class VehicleDetailComponent implements OnInit {
     fuelQuality: "",
     fuelTankTwoCapacity: 0,
     oilCapacity: 0,
+    fuelTankOneType: '',
+    fuelTankTwoType: '',
+    oilCapacityType: '',
+    defType: '',
+    def: ''
   };
   wheelsAndTyres = {
     numberOfTyres: 0,
@@ -153,11 +170,14 @@ export class VehicleDetailComponent implements OnInit {
   loan = {
     loanVendorID: "",
     amountOfLoan: "",
+    amountOfLoanCurrency: "",
     aspiration: "",
     annualPercentageRate: "",
     downPayment: "",
+    downPaymentCurrency: "",
     dateOfLoan: "",
     monthlyPayment: "",
+    monthlyPaymentCurrency: "",
     firstPaymentDate: "",
     numberOfPayments: "",
     loadEndDate: "",
@@ -176,12 +196,19 @@ export class VehicleDetailComponent implements OnInit {
 
   issues = [];
   reminders = [];
-  inspectionForms = [];
+  serviceReminders = [];
+  renewalReminders = [];
+  inspectionForms = {
+    inspectionFormName : '',
+    parameters: [],
+    inspectionType: ''
+  };
   fuelEntries = [];
   documents = [];
   servicePrograms = [];
   serviceHistory = [];
   devices = [];
+  fuelTypes = {};
 
   slideConfig = {
     slidesToShow: 1,
@@ -191,13 +218,22 @@ export class VehicleDetailComponent implements OnInit {
     autoplay: true,
     autoplaySpeed: 5000,
   };
+  contactsObjects: any = {};
+  vehicleTypeObects: any = {};
+  ownerOperatorName = '';
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  tasksList = [];
+  usersList = [];
+  countryName = '';
+  stateName = '';
 
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-
-    private toastr: ToastrService
+    private httpClient: HttpClient,
+    private toastr: ToastrService,
+    private domSanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -205,29 +241,41 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchInspectionForms();
-    this.fetchFuel();
-    this.fetchServiceProgams();
-    this.fetchServiceHistory();
+    this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
+    this.fetchCountriesList();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
-    this.fetchVendorsList();
-  }
-
-  fetchVendorsList() {
-    this.apiService.getData("vendors/get/list").subscribe((result: any) => {
-      this.vendors = result;
+    // this.fetchVendorsList();
+    this.fetchTasksList();
+    this.fetchUsersList();
+    this.fetchContactsByIDs();
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+    }, {});
     });
   }
 
+  fetchContactsByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactsObjects = result;
+    });
+  }
   fetchGroupsList() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupsList = result;
     });
   }
+
+  fetchTasksList() {
+    this.apiService.getData("tasks/get/list").subscribe((result: any) => {
+      this.tasksList = result;
+    });
+  }
+
   fetchDriversList() {
     this.apiService.getData("drivers/get/list").subscribe((result: any) => {
       this.driversList = result;
@@ -238,6 +286,18 @@ export class VehicleDetailComponent implements OnInit {
       this.statesList = result;
     });
   }
+  fetchCountriesList() {
+    this.apiService.getData("countries/get/list").subscribe((result: any) => {
+      this.countriesList = result;
+    });
+  }
+
+  fetchUsersList() {
+    this.apiService.getData("users/get/list").subscribe((result: any) => {
+      this.usersList = result;
+    });
+  }
+
   fetchVehicleModelList() {
     this.apiService
       .getData("vehicleModels/get/list")
@@ -250,37 +310,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData("manufacturers/get/list")
       .subscribe((result: any) => {
         this.vehicleManufacturersList = result;
-      });
-  }
-  fetchServiceProgams() {
-    this.apiService
-      .getData(`serviceLogs/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.serviceHistory = result.Items;
-      });
-  }
-
-  fetchServiceHistory() {
-    this.apiService
-      .getData(`servicePrograms/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.servicePrograms = result.Items;
-      });
-  }
-
-  fetchInspectionForms() {
-    this.apiService
-      .getData(`inspectionForms/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.inspectionForms = result.Items;
-      });
-  }
-
-  fetchFuel() {
-    this.apiService
-      .getData(`fuelEntries/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.fuelEntries = result.Items;
       });
   }
 
@@ -297,6 +326,14 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`reminders/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.reminders = result.Items;
+        for (let i = 0; i < this.reminders.length; i++) {
+          const element = this.reminders[i];
+          if(element.type == 'service') {
+            this.serviceReminders.push(element);
+          } else {
+            this.renewalReminders.push(element);
+          }
+        }
       });
   }
 
@@ -304,9 +341,18 @@ export class VehicleDetailComponent implements OnInit {
     this.apiService
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
-        this.issues = result.Items;
-        console.log('this.issues', this.issues);
+        result.Items.map(elem => {
+          if(elem.currentStatus == 'OPEN') {
+            this.issues.push(elem);
+          }
+        })
       });
+  }
+
+  fetchFuelTypes(){
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypes = result;
+    });
   }
 
   getVehicle() {
@@ -314,6 +360,14 @@ export class VehicleDetailComponent implements OnInit {
       .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
+
+        this.ownerOperatorName = result.ownerOperatorID;
+        if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
+          this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
+            this.inspectionForms = result1.Items[0];
+          });
+        }
+        this.annualSafetyDate = result.annualSafetyDate;
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;
@@ -321,10 +375,12 @@ export class VehicleDetailComponent implements OnInit {
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
-        this.stateID = result.stateID;
+        this.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryID);
+        this.stateName = CountryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
-        this.serviceProgramID = result.serviceProgramID;
+        this.serviceProgramID = result.servicePrograms;
+        this.fetchProgramDetails();
         this.primaryMeter = result.primaryMeter;
         this.repeatByTime = result.repeatByTime;
         this.repeatByTimeUnit = result.repeatByTimeUnit;
@@ -339,6 +395,7 @@ export class VehicleDetailComponent implements OnInit {
         this.bodySubType = result.bodySubType;
         this.msrp = result.msrp;
         this.inspectionFormID = result.inspectionFormID;
+        this.iftaReporting= result.iftaReporting;
         this.lifeCycle = {
           inServiceDate: result.lifeCycle.inServiceDate,
           inServiceOdometer: result.lifeCycle.inServiceOdometer,
@@ -348,7 +405,7 @@ export class VehicleDetailComponent implements OnInit {
           outOfServiceDate: result.lifeCycle.outOfServiceDate,
           outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
           startDate: result.lifeCycle.startDate,
-          estimatedServiceYear: result.lifeCycle.estimatedServiceYear,
+          estimatedServiceYear: result.lifeCycle.estimatedServiceYears,
         };
         this.specifications = {
           height: result.specifications.height,
@@ -365,9 +422,7 @@ export class VehicleDetailComponent implements OnInit {
           bedLengthUnit: result.specifications.bedLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
-          grossVehicleWeightRating:
-            result.specifications.grossVehicleWeightRating,
-          iftaReporting: result.specifications.iftaReporting,
+          grossVehicleWeightRating:result.specifications.grossVehicleWeightRating,
           towingCapacity: result.specifications.towingCapacity,
           maxPayload: result.specifications.maxPayload,
           EPACity: result.specifications.EPACity,
@@ -381,7 +436,8 @@ export class VehicleDetailComponent implements OnInit {
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
-          remiderEvery: result.insurance.remiderEvery,
+          reminder: `${result.insurance.reminder}`,
+          remiderEvery: `${result.insurance.remiderEvery}`,
           policyNumber: result.insurance.policyNumber,
           amount: result.insurance.amount,
           amountCurrency: result.insurance.amountCurrency,
@@ -389,9 +445,14 @@ export class VehicleDetailComponent implements OnInit {
         this.fluid = {
           fuelType: result.fluid.fuelType,
           fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
+          fuelTankOneType: result.fluid.fuelTankOneType,
           fuelQuality: result.fluid.fuelQuality,
+          fuelTankTwoType: result.fluid.fuelTankTwoType,
           fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
           oilCapacity: result.fluid.oilCapacity,
+          oilCapacityType: result.fluid.oilCapacityType,
+          defType: result.fluid.defType,
+          def: result.fluid.def
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
@@ -443,9 +504,12 @@ export class VehicleDetailComponent implements OnInit {
         this.loan = {
           loanVendorID: result.loan.loanVendorID,
           amountOfLoan: result.loan.amountOfLoan,
+          amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
           aspiration: result.loan.aspiration,
           annualPercentageRate: result.loan.annualPercentageRate,
           downPayment: result.loan.downPayment,
+          downPaymentCurrency: result.loan.downPaymentCurrency,
+          monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
           dateOfLoan: result.loan.dateOfLoan,
           monthlyPayment: result.loan.monthlyPayment,
           firstPaymentDate: result.loan.firstPaymentDate,
@@ -477,9 +541,14 @@ export class VehicleDetailComponent implements OnInit {
           result.uploadedDocs != undefined &&
           result.uploadedDocs.length > 0
         ) {
-          this.docs = result.uploadedDocs.map(
-            (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-          );
+          this.docs = [];
+          result.uploadedDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.docs.push(obj);
+          });
         }
 
         $("#hardBreakingParametersValue").html(
@@ -499,5 +568,32 @@ export class VehicleDetailComponent implements OnInit {
         this.toastr.success("Vehicle Deleted Successfully!");
         this.router.navigateByUrl("/fleet/vehicles/list");
       });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = '';
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  deleteDocument(name: string, index: string) {
+    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
+      this.docs.splice(parseInt(index), 1);
+    });
+  }
+
+  fetchProgramDetails() {
+    if(this.serviceProgramID.length > 0) {
+      let serviceProgramID = JSON.stringify(this.serviceProgramID);
+      this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+        this.servicePrograms = result;
+
+      })
+    }
   }
 }

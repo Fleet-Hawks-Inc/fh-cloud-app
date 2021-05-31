@@ -42,7 +42,6 @@ export class EventActivitiesService {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -64,7 +63,6 @@ export class EventActivitiesService {
   }
 
   throwErrors() {
-    console.log(this.errors);
     this.form.showErrors(this.errors);
   }
 }

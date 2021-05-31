@@ -1,13 +1,13 @@
 <section class="body">
     <div class="inner-wrapper">
-       <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4">
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
 
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                    <div class="col-md-8 col-lg-8 text-right">
                         <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i> All Trips</a>
                     </div>
@@ -17,7 +17,7 @@
                 <div class="col pr-0">
                     <section class="card">
                         <div class="card-body">
-                            <form class="form-horizontal form-bordered" method="get" id="form_">
+                            <form class="form-horizontal form-bordered" method="get" id="form_" #tripForm="ngForm">
                                 <div class="row">
                                     <div class="col-lg-5 offset-lg-1 my-2">
                                         <div class="row">
@@ -26,19 +26,35 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <p class="font-weight-bold text-5 text-dark mb-0 pt-1">{{ currentUser }}</p>
+                                                <p class="font-weight-bold text-5 text-dark mb-0 pt-1">{{ currentUser }}
+                                                </p>
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip# 
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
 
                                                 <input type="text" class="form-control" name="tripNo"
-                                                    [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
+                                                    [(ngModel)]="tripData.tripNo" placeholder="eg. Trip 1234"
+                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9\-\/]+$" [disabled]="tripNoDisabled">
+                                                <div *ngIf="tripNumber.invalid && (tripNumber.dirty || tripNumber.touched)"
+                                                    class="text-danger">
+                                                    <div>
+
+                                                        <div *ngIf="tripNumber.errors.required">
+                                                            Trip is required.
+                                                        </div>
+
+                                                        <div *ngIf="tripNumber.errors.pattern">
+                                                            Trip must contains alphanumeric numbers. eg. trip001-209
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
@@ -46,10 +62,26 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                                    Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    Order# <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
-                                                    [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number" autocomplete="off">
+                                                    [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234"
+                                                    autocomplete="off" #order="ngModel" required>
+                                                <div *ngIf="order.invalid && (order.dirty || order.touched)"
+                                                    class="text-danger">
+                                                    <div>
+
+                                                        <div *ngIf="order.errors.required">
+                                                             Order is required .
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+
+
                                             </div>
                                         </div>
 
@@ -59,13 +91,36 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
                                                     Permanent Route
                                                 </label>
-                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID"
-                                                    placeholder="Select Route">
-                                                    <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID" (change)="makeRoutePlan()"
+                                                    placeholder="eg. Calgary to Edmonton" #pRoute="ngModel">
+                                                    <ng-option *ngFor="let route of permanentRoutes"
+                                                        value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
-                                              </div>
+
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Create
+                                                    this trip using
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
+                                                <div class="btn-group-toggle">
+                                                    <label
+                                                        class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
+                                                        <input id="googleMiles" name="mapFrom"
+                                                            [(ngModel)]="tripData.mapFrom" type="radio"
+                                                            (change)="changeMapRoute('order')"> Order Number</label>
+                                                    <label
+                                                        class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
+                                                        <input id="pcmiles" name="mapFrom" type="radio"
+                                                            [(ngModel)]="tripData.mapFrom"
+                                                            (change)="changeMapRoute('route')"> Permanent Route</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
@@ -79,25 +134,53 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
-                                                    [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
+                                                    [(ngModel)]="tripData.bol" placeholder="eg. 13253578"
+                                                    >
+                                                <!-- <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
+                                                    class="text-danger">
+                                                    <div>
+                                                        <div *ngIf="BOL.errors.pattern">
+                                                            BOL/POD must contains uppercase , lowercase, number and
+                                                            special characters period(-,/) only. eg BOL-123
+                                                        </div>
+                                                    </div>
+
+                                                </div> -->
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Trip Date
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
-                                                    placeholder="Select Trip Date" (click)="from.toggle()" ngbDatepicker
-                                                    #from="ngbDatepicker" class="form-control" autocomplete="off">
+
+                                                <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
+                                                    #from="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    #tDate="ngModel" required>
+                                                <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
+                                                    class="text-danger">
+                                                    <div>
+
+                                                        <div *ngIf="tDate.errors.required">
+                                                             Trip date is required.
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer Temperature</label>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
+                                                    Temperature</label>
                                             </div>
                                             <div class="col-lg-10 col-md-12">
                                                 <div class="row">
@@ -105,15 +188,29 @@
                                                         <input type="number" class="form-control"
                                                             name="reeferTemperature"
                                                             [(ngModel)]="tripData.reeferTemperature"
-                                                            placeholder="Enter reefer temperature">
+                                                            placeholder="eg. 10 °C or °F "
+                                                            >
+                                                        <!-- <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
+                                                            class="text-danger">
+                                                            <div>
+
+                                                                <div *ngIf="reeferTemp.errors.required">
+                                                                    Reefer temperature must contains numbers only.
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
                                                         <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
                                                             name="reeferTemperatureUnit"
-                                                            placeholder="Select Temperature Unit">
+                                                            placeholder="Select Temperature Unit"
+                                                            #sltReeferTemp="ngModel">
                                                             <ng-option value="C">°C</ng-option>
                                                             <ng-option value="F">°F</ng-option>
                                                         </ng-select>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,23 +220,24 @@
                                 <div class="row my-2">
                                     <div class="col-lg-12">
                                         <h4 class="mt-0 text-dark font-weight-bold text-4">Plan Trip</h4>
-                                        <table class="table table-sm table-bordered table-striped table-hover"
+                                        <table
+                                            class="table table-sm table-bordered table-responsive table-striped table-hover"
                                             id="locationTable">
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
-                                                    <!-- <th>Date</th> -->
+                                                    <th>Date</th>
                                                     <!-- <th>Time</th> -->
                                                     <th>Pickup Time</th>
-                                                    <th>Drop Time</th>
+                                                    <th>Drop Off Time</th>
                                                     <th>Actual Pickup Time</th>
-                                                    <th>Actual Drop Time</th>
+                                                    <th>Actual Drop Off Time</th>
                                                     <th>Name</th>
                                                     <th>Location</th>
                                                     <th>Loaded/ Empty</th>
                                                     <th>Miles</th>
                                                     <th>Vehicle</th>
-                                                    <th>Trailer</th>
+                                                    <th>Asset</th>
                                                     <th>Driver</th>
                                                     <th>Co- Driver</th>
                                                     <th>Carrier</th>
@@ -151,8 +249,8 @@
                                                 <tr class="ui-sortable-handle" cdkDrag
                                                     *ngFor="let trip of trips; let i= index">
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
-                                                    <!-- <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
-                                                    <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
+                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date | date:"yyyy/MM/dd" }}</td>
+                                                     <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
                                                     <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime
                                                         }}</td>
                                                     <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}
@@ -165,9 +263,12 @@
                                                     <td id="labelCell3{{i}}" class="labelRow{{i}}">
                                                         <a class="modal-with-form">{{ trip.name }}</a>
                                                     </td>
+
                                                     <td id="labelCell4{{i}}" class="labelRow{{i}}">
                                                         {{ trip.locationName }}
                                                     </td>
+
+
                                                     <td id="labelCell5{{i}}" class="labelRow{{i}}">
                                                         <span class="badge badge-dark p-1 text-uppercase" title=""
                                                             data-original-title="Empty Miles" *ngIf="!!trip.mileType">{{
@@ -203,10 +304,13 @@
                                                                 {{ type }}</option>
                                                         </select>
                                                     </td>
-                                                    <!-- <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="date" class="form-control" id="editCell2{{i}}"
-                                                            value="{{ trip.date }}">
-                                                    </td>-->
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input id="cell2{{i}}" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                            ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off">
+
+                                                        <!-- <input type="date" class="form-control" id="editCell2{{i}}"
+                                                            value="{{ trip.date }}"> -->
+                                                    </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="time" class="form-control" id="editCell13{{i}}"
@@ -236,7 +340,7 @@
                                                             autocomplete="off" (keyup)="searchTerm.next($event);"
                                                             placeholder="Start typing to get location suggestions">
 
-                                                        <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                        <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
                                                             *ngIf="searchResults">
                                                             <li *ngFor="let item of searchResults;">
                                                                 <a href="javascript:;"
@@ -281,8 +385,8 @@
                                                             id="editCell11{{i}}">
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
-                                                                value="{{ carrier.carrierID }}">
-                                                                {{ carrier.carrierName }}
+                                                                value="{{ carrier.contactID }}">
+                                                                {{ carrier.companyName }}
                                                             </option>
                                                         </select>
                                                     </td>
@@ -299,6 +403,10 @@
                                                             <option *ngFor="let type of typeOptions" value="{{ type }}">
                                                                 {{ type }}</option>
                                                         </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="cell2" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                            ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off">
                                                     </td>
                                                     <td>
                                                         <input type="time" class="form-control newRow" id="cell13"
@@ -328,7 +436,7 @@
                                                             [(ngModel)]="textFieldValues.locationName"
                                                             placeholder="Start typing to get location suggestions">
 
-                                                        <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                        <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
                                                             *ngIf="searchResults">
                                                             <li *ngFor="let item of searchResults;">
                                                                 <a href="javascript:;"
@@ -379,9 +487,8 @@
                                                             (change)="getNewRowValues($event,'carrier')">
                                                             <option value="">Select Carrier </option>
                                                             <option *ngFor="let carrier of carriers"
-                                                                value="{{ carrier.carrierID }}">
-                                                                {{ carrier.carrierName }}
-                                                                <!-- {{ carrier.businessDetail.carrierName }} -->
+                                                                value="{{ carrier.contactID }}">
+                                                                {{ carrier.companyName }}
                                                             </option>
                                                         </select>
                                                     </td>
@@ -403,7 +510,7 @@
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
                                                 <p class="mb-0 text-4 font-weight-semibold text-dark">{{
                                                     trips[0].locationName }}</p>
-                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }}
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date | date:"yyyy/MM/dd" }}
                                                     {{ trips[0].time }}</p>
                                             </div>
 
@@ -417,30 +524,38 @@
                                             <ng-template [ngIf]="trips.length > 1" [ngIfElse]="destinationElseBlock">
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}: {{orderMiles.totalMiles}}
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                        *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined">
+                                                        {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
+                                                        '1.0-3'}}
                                                     </p>
-                                                    
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
-                                                    <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles}}
-                                                    </span></p>
+
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Actual
+                                                        Miles(Pc Miler):
+                                                        <span
+                                                            class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles
+                                                            | number: '1.0-3' }}
+                                                        </span>
+                                                    </p>
                                                 </div>
                                                 <div class="col-lg-4 text-center">
-                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
-                                                </p>
-                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{
-                                                    trips[trips.length-1].locationName }}</p>
-                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{
-                                                    trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                    </p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                        trips[trips.length-1].locationName }}</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{
+                                                        trips[trips.length-1].date | date:"yyyy/MM/dd" }} {{ trips[trips.length-1].time }}
+                                                    </p>
                                                 </div>
                                             </ng-template>
 
                                             <ng-template #destinationElseBlock>
-                                                
-                                            <div class="col-lg-4 text-center pt-3">
-                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                <p class="mb-0 text-4 font-weight-semibold text-dark">-
-                                                </p>
-                                            </div>
+
+                                                <div class="col-lg-4 text-center pt-3">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">-
+                                                    </p>
+                                                </div>
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
                                                     </p>
@@ -448,7 +563,7 @@
                                                 </div>
                                             </ng-template>
                                         </div>
-                                        <div class="wizard-progress">
+                                        <!-- <div class="wizard-progress">
                                             <div class="steps-progress">
                                                 <div class="progress-indicator" style="width: 0%;"></div>
                                             </div>
@@ -460,13 +575,37 @@
                                                     </a>
                                                 </li>
                                             </ul>
+                                        </div> -->
+
+                                        <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                            <div class="w100 pl-3">
+                                                <div class="tripbarn"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tripinfoscroll">
+                                            <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                                <div class="text-center" *ngFor="let trip of trips">
+                                                    <div class="tripcirclen" data-toggle="tooltip" title="{{ trip.locationName }}"></div>
+                                                    <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
+                                                        <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
+                                                            <br>{{ trip.date | date: "yyyy/MM/dd" }} - {{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12 mb-2">
+                                        <ng-template [ngIf]="selectedVehicleSpecs.length==0 && trips.length>1">
+                                            <p class="text-4 font-weight-normal">*Vehicle is missing. To get specific
+                                                Vehicle route please select the truck</p>
+                                        </ng-template>
                                         <div class="mapclass" id="map_view">
                                             <div id="map" class=""></div>
                                         </div>
+
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="bggreyn p-3">
@@ -502,7 +641,8 @@
 
                                                 <div class="col-lg-6 col-md-6">
                                                     <label
-                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Trip Details</label>
+                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Trip
+                                                        Details</label>
 
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat4" name="tripToDriver"
@@ -530,10 +670,21 @@
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
                                             routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" *ngIf="!tripID"
-                                            class="btn btn-success mt-1">Create Trip</a>
-                                        <a href="javascript:;" (click)="updateTrip()" *ngIf="tripID"
-                                            class="btn btn-success mt-1">Update Trip</a>
+
+                                        <!-- if there is some error in validation  -->
+                                        <!-- <button *ngIf="!tripID && !tripForm.form.valid" class="btn btn-success mt-1"
+                                            [disabled]="!tripForm.form.valid">Create Trip</button> -->
+
+                                        <!-- if validations are ok and now the button will disable on submit click  -->
+                                        <button (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1"
+                                            [disabled]="submitDisabled">Create Trip</button>
+
+                                        <!-- update case -->
+                                        <!-- <button *ngIf="tripID && !tripForm.form.valid" class="btn btn-success mt-1" [disabled]="!tripForm.form.valid">
+                                            Update Trip</button> -->
+
+                                        <button (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1"
+                                            [disabled]="submitDisabled">Update Trip</button>
                                     </div>
                                 </div>
                             </form>
@@ -587,10 +738,9 @@
                                                                 <th></th>
                                                                 <th class="text-2">Order#</th>
                                                                 <th class="text-2">Customer</th>
-                                                                <th class="text-2">P/L</th>
-                                                                <th class="text-2">D/L</th>
+                                                                <th class="text-2">Pickup Location</th>
+                                                                <th class="text-2">Drop Off Location</th>
                                                                 <th class="text-2">Total Amount</th>
-                                                                <th class="text-2">Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="ui-sortable">
@@ -604,7 +754,7 @@
                                                                         value="{{ order.orderNumber }}"
                                                                         [checked]="order.selected"
                                                                         id="{{ order.orderID }}"
-                                                                        (change)="selectOrderIDS('ftl')"> 
+                                                                        (change)="selectOrderIDS('ftl')">
                                                                 </td>
 
                                                                 <td class="loadid"><a href="javascript:;">{{
@@ -617,8 +767,7 @@
                                                                 <td>
                                                                     <div [innerHTML]="order.deliveryLocations"></div>
                                                                 </td>
-                                                                <td>CAD {{ order.totalAmount }}</td>
-                                                                <td>{{ order.orderStatus }}</td>
+                                                                <td> {{ order.totalAmount }} CAD</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -630,14 +779,12 @@
                                             <table class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                 <thead>
                                                     <tr class="">
-                                                        <th><input type="checkbox" name="checkUncheckltl"
-                                                                (change)="checkUncheckAll('ltl')"></th>
+                                                        <th></th>
                                                         <th class="text-2">Order#</th>
                                                         <th class="text-2">Customer</th>
-                                                        <th class="text-2">P/L</th>
-                                                        <th class="text-2">D/L</th>
+                                                        <th class="text-2">Pickup Location</th>
+                                                        <th class="text-2">Drop Off Location</th>
                                                         <th class="text-2">Total Amount</th>
-                                                        <th class="text-2">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="ui-sortable">
@@ -663,8 +810,7 @@
                                                         <td>
                                                             <div [innerHTML]="order.deliveryLocations"></div>
                                                         </td>
-                                                        <td>CAD {{ order.totalAmount }}</td>
-                                                        <td>{{ order.orderStatus }}</td>
+                                                        <td> {{ order.totalAmount }} CAD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -704,7 +850,7 @@
                         <thead>
                             <tr>
                                 <th width="25%">Vehicle</th>
-                                <th width="25%">Trailer</th>
+                                <th width="25%">Asset</th>
                                 <th width="25%">Driver</th>
                                 <th>Co-Driver</th>
                             </tr>
@@ -790,7 +936,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.userName }}"
+                                                <td class="driverClass" id="drivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
@@ -818,7 +964,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}"
+                                                <td class="codriverClass" id="codrivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'codriver','click')">
                                                     {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
@@ -842,8 +988,9 @@
             <div class="modal-footer card-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()">Save</a>
-                        <button class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</button>
+
+                        <button class="btn btn-default modal-dismiss" data-dismiss="modal"> Cancel</button>
+                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()"> Save</a>
                     </div>
                 </div>
             </div>

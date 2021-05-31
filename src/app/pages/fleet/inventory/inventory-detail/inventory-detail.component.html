@@ -1,26 +1,16 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-
-  <!-- end: header -->
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
     <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Inventory Details</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
+          <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default mr-2" ><i class="fas fa-list"></i> Inventory List</a >
 
-            <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm"  ><i class="fas fa-plus"></i> Add Inventory</a
-            >
-            <div class="btn-group flex-wrap">
+            
+            <div class="btn-group flex-wrap" *ngIf="!environment">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                  aria-expanded="false">Actions<span class="caret"></span></button>
               <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -47,13 +37,13 @@
                               width="40%"
                               class="back-color-gray font-weight-bold"
                             >
-                              Part Number
+                              Part#
                             </td>
                             <td width="60%">{{partNumber}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
-                              Part Name
+                              Item  Name
                             </td>
                             <td>{{itemName}}</td>
                           </tr>
@@ -89,7 +79,7 @@
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
-                              Purchase Order Number
+                              Purchase Order#
                             </td>
                             <td>54560</td>
                           </tr>
@@ -269,7 +259,7 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-3"
-                              >Documents(s)</label
+                              >Document(s)</label
                             >
                           </div>
                           <!-- <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_issue_document_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Documents</button></div> -->
@@ -320,68 +310,6 @@
                 </div>
               </div>
             </form>
-          </div>
-          <!--  close MODAL -->
-          <div
-            id="issueCloseModal"
-            class="modal-block modal-block-primary mfp-hide"
-          >
-            <section class="card">
-              <header class="card-header">
-                <h2 class="card-title">Corfirm Action</h2>
-              </header>
-              <div class="card-body text-dark">
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-12">
-                      <label for="inputEmail4"
-                        >Are you sure you want to close issue?</label
-                      >
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <footer class="card-footer">
-                <div class="row">
-                  <div class="col-md-12 text-right">
-                    <button class="btn btn-danger modal-confirm">OK</button>
-                    <button class="btn btn-default modal-dismiss">
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </footer>
-            </section>
-          </div>
-          <!-- Delete MODAL -->
-          <div
-            id="deleteModal"
-            class="modal-block modal-block-primary mfp-hide"
-          >
-            <section class="card">
-              <header class="card-header">
-                <h2 class="card-title">Corfirm Action</h2>
-              </header>
-              <div class="card-body text-dark">
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-12">
-                      <label for="inputEmail4">Are you sure?</label>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <footer class="card-footer">
-                <div class="row">
-                  <div class="col-md-12 text-right">
-                    <button class="btn btn-danger modal-confirm">OK</button>
-                    <button class="btn btn-default modal-dismiss">
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </footer>
-            </section>
           </div>
         </div>
       </div>
