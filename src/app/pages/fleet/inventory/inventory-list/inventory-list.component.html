@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <ng-select [(ngModel)]="itemGroupID" name="itemGroupID" style="width: 100%;" placeholder="Search items by category">
+                            <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
                                 <ng-option [value]="hardware">Hardware</ng-option>
                             </ng-select>
                         </div>
@@ -268,7 +268,7 @@
                                                         </td>
                                                         <td *ngIf="hideShow.category"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{itemGroups[item.categoryID]}}
+                                                            {{item.category}}
                                                         </td>
                                                         <td *ngIf="hideShow.vendor"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">

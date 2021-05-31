@@ -52,7 +52,7 @@ export class InventoryListComponent implements OnInit {
    */
   itemID = '';
   itemName = '';
-  itemGroupID = null;
+  category = null;
   groupName = '';
   vendorID = null
   companyName = '';
@@ -98,9 +98,9 @@ export class InventoryListComponent implements OnInit {
   requiredLastEvaluatedKey = '';
   currentTab = 'inv';
   requiredSuggestedVendors = [];
-  allVendors:any = [];
-  allCompanies:any = [];
-  searchItems:any = [];
+  allVendors: any = [];
+  allCompanies: any = [];
+  searchItems: any = [];
   requiredSuggestedPartNo = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
@@ -111,8 +111,8 @@ export class InventoryListComponent implements OnInit {
     this.fetchWarehouses();
     this.fetchAllItemsList();
     this.initDataTable();
-    this.fetchRequiredItemsCount();
-    this.initDataTableRequired();
+  //  this.fetchRequiredItemsCount();
+ //   this.initDataTableRequired();
     this.fetchAllVendors();
     this.fetchAllItems();
   }
@@ -170,10 +170,10 @@ export class InventoryListComponent implements OnInit {
   }
 
   resetFilter(){
-    if (this.itemName !== '' || this.vendorID !== null || this.itemGroupID !== null) {
+    if (this.itemName !== '' || this.vendorID !== null || this.category !== null) {
       this.itemID = this.itemName = this.groupName = this.companyName = '';
       this.vendorID = null;
-      this.itemGroupID = null;
+      this.category = null;
       this.fetchItemsCount();
       this.items = [];
       this.suggestedItems = [];
@@ -201,8 +201,8 @@ export class InventoryListComponent implements OnInit {
     }
   }
 
-  fetchVendors(){
-    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+  fetchVendors() {
+    this.apiService.getData(`contacts/get/list`).subscribe((result) => {
       this.vendors = result;
     });
   }
@@ -214,13 +214,13 @@ export class InventoryListComponent implements OnInit {
   }
 
   fetchItemsCount() {
-    this.apiService.getData('items/get/count?item=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.itemGroupID).subscribe({
+    this.apiService.getData('items/get/count?item=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.category).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.itemID != '' || this.vendorID != null || this.itemGroupID != null) {
+        if(this.itemID !== '' || this.vendorID !== null || this.category !== null) {
           this.inventoryEndPoint = this.totalRecords;
         }
       },
@@ -242,7 +242,7 @@ export class InventoryListComponent implements OnInit {
   }
 
   fetchWarehouses(){
-    this.apiService.getData('warehouses/get/list').subscribe((result: any) => {
+    this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
       this.warehouses = result;
     });
   }
@@ -271,7 +271,7 @@ export class InventoryListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('items/fetch/records?item='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('items/fetch/records?item='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.category+'&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -282,7 +282,7 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('inv');
 
         this.items = result[`Items`];
-        if (this.vendorID != null || this.itemGroupID != null || this.itemID != null) {
+        if (this.vendorID != null || this.category != null || this.itemID != null) {
           this.inventoryStartPoint = 1;
           this.inventoryEndPoint = this.totalRecords;
         }
@@ -445,7 +445,7 @@ export class InventoryListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.itemName !== '' || this.vendorID !== null || this.itemGroupID !== null) {
+    if (this.itemName !== '' || this.vendorID !== null || this.category !== null) {
       this.itemName = this.itemName.toLowerCase();
       if(this.itemID == '') {
         this.itemID = this.itemName;
