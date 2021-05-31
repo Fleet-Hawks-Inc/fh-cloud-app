@@ -59,10 +59,10 @@ export class AddAssetsComponent implements OnInit {
       remarks: '',
     },
     insuranceDetails: {
-      dateOfIssue: '',
+      dateOfIssue: null,
       premiumAmount: '',
       premiumCurrency: null,
-      dateOfExpiry: '',
+      dateOfExpiry: null,
       reminderBefore: '',
       reminderBeforeUnit: '',
       vendor: null
@@ -571,5 +571,14 @@ delete(type: string, name: string, index: any) {
 }
 deleteUploadedFile(type: string, name: string) { // delete from aws
   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+}
+
+clearAssetGroup() {
+  this.groupData = {
+    groupName: '',
+    groupType : 'assets',
+    description: '',
+    groupMembers: []
+  };
 }
 }

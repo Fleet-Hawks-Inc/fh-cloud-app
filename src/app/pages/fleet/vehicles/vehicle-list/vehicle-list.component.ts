@@ -81,7 +81,11 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     // this.initDataTable();
+<<<<<<< HEAD
     //this.fetchFuelTypesbyIDs();
+=======
+    // this.fetchFuelTypesbyIDs();
+>>>>>>> 1044d85dace9cbca0684ddb762040a2fc146e675
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');

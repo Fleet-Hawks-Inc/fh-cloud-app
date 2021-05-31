@@ -112,12 +112,12 @@
                                                         class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
                                                         <input id="googleMiles" name="mapFrom"
                                                             [(ngModel)]="tripData.mapFrom" type="radio"
-                                                            (change)="changeMapRoute('order')"> Order Number</label>
+                                                            (change)="changeMapRoute('order')" [disabled]="mapOrderActiveDisabled"> Order Number</label>
                                                     <label
                                                         class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
                                                         <input id="pcmiles" name="mapFrom" type="radio"
                                                             [(ngModel)]="tripData.mapFrom"
-                                                            (change)="changeMapRoute('route')"> Permanent Route</label>
+                                                            (change)="changeMapRoute('route')" [disabled]="mapRouteActiveDisabled"> Permanent Route</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -525,7 +525,7 @@
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark"
-                                                        *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined">
+                                                        *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && tripData.mapFrom == 'order'">
                                                         {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
                                                         '1.0-3'}}
                                                     </p>

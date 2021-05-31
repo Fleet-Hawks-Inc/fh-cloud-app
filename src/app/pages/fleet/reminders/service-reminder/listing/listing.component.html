@@ -97,12 +97,18 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span *ngIf="item.tasks.remainingDays > 0">{{item.tasks.remainingDays}} Days from now</span>
-                                                <span *ngIf= "0 > item.tasks.remainingDays">{{item.tasks.remainingDays | absoluteValue}} Days ago</span>
+                                                <span *ngIf="item.tasks.remindByUnit == 'time'">
+                                                    <span *ngIf="item.nextDueDays > 0">{{item.nextDueDays}} Day(s) from now</span>
+                                                    <span *ngIf="item.nextDueDays === 0">Today</span>
+                                                    <span *ngIf="item.nextDueDays < 0">{{item.nextDueDays | absoluteValue}} Days ago</span>
+                                                </span>
+                                                
                                                 <br>
-                                                {{item.tasks.remainingMiles}} miles from now
+                                                <span *ngIf="item.tasks.remindByUnit == 'odometer'">
+                                                    {{item.nextDueMiles}} miles from now
+                                                </span>
                                             </td>
-                                            <td>{{item.lastCompleted | date:'yyyy/MM/dd'}}</td>
+                                            <td>{{item.lastServiceDate | date:'yyyy/MM/dd'}}</td>
                                             <td> {{item.subscribers}}</td>
                                             <td>
                                                 <div class="btn-group flex-wrap">

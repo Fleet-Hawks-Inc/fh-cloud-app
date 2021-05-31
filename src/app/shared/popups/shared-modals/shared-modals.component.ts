@@ -42,9 +42,9 @@ export class SharedModalsComponent implements OnInit {
     ) {
       const date = new Date();
       this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
-      this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
-      this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
-      this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+      this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 12, day: date.getDate()};
+      this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 12, day: date.getDate() };
+      this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 12, day: date.getDate()};
 
       this.listService.fetchAppendIssues().subscribe(res => {
        this.issuesData.unitID = res.name;
@@ -355,12 +355,11 @@ driverData = {
   },
   emergencyDetails: {},
 };
-
+nullVar = null;
 abstractValid = false;
 prefixOutput: string;
 finalPrefix = '';
 currentUser: any;
-currentTab = 1;
 abstractDocs = [];
 uploadedDocs = [];
 isSubmitted = false;
@@ -1464,10 +1463,12 @@ getVehicleStates(event: any) {
     }
 
     // append docs if any
-    for(let j = 0; j < this.uploadedDocs.length; j++){
-      for (let k = 0; k < this.uploadedDocs[j].length; k++) {
-        let file = this.uploadedDocs[j][k];
-        formData.append(`uploadedDocs-${j}`, file);
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
+      if(this.uploadedDocs[j] !== undefined){
+        for (let k = 0; k < this.uploadedDocs[j].length; k++) {
+          let file = this.uploadedDocs[j][k];
+          formData.append(`uploadedDocs-${j}`, file);
+        }
       }
     }
 
@@ -2139,5 +2140,43 @@ getVehicleStates(event: any) {
     };
   }
 
+  clearVehicleMake() {
+    this.vehicleMakeData.manufacturerName = '';
+  }
 
+  clearVehicleModal(){
+    this.vehicleModelData.manufacturerID = '';
+    this.vehicleModelData.modelName = '';
+  }
+
+  clearAssetMake() {
+    this.assetMakeData.manufacturerName = '';
+  }
+  clearAssetModal() {
+    this.assetModelData = {
+      manufacturerID: '',
+      modelName:''
+    }
+  }
+
+  clearServiceProg() {
+    this.serviceData.programName = '';
+    this.serviceData.description = ''
+    this.serviceData.serviceScheduleDetails = [{
+      serviceTask: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: '',
+    }];
+    this.serviceData.vehicles = [];
+  }
+
+  clearServiceTask() {
+    this.taskData = {
+      taskType: 'service',
+      taskName: '',
+      description: ''
+    };
+  }
+  
 }

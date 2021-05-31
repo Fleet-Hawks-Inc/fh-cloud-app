@@ -20,6 +20,7 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
               private httpLoadingService: HttpLoadingService) {
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName( 'html' )[0];
+    
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentURL = event.url;
@@ -72,16 +73,13 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
   });
   }
 
-  updateSidebar() {
-
-  }
-
   ngOnInit() {
     this.listenToLoading();
 
     window.addEventListener('storage', (event) => {
       if (event.storageArea == localStorage) {
            let token = localStorage.getItem('accessToken');
+           console.log('app')
            if(token == undefined) { 
              //Navigate to login
               this.router.navigate(['/Login']); 
@@ -91,6 +89,13 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
   }, false);
 
   
+  }
+
+  getToken(){
+    if(localStorage.getItem('accessToken') != undefined) {
+      return true
+    }
+    return false;
   }
 
   /**

@@ -937,12 +937,12 @@
 </div>
 
 <!-- Add modals start -->
-<div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" aria-hidden="true">
+<div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ modalTitle }} Vendor</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
             <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
           </button>
         </div>
@@ -1142,10 +1142,10 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or state</label>
+                                                        Province/State</label>
                                                     <ng-select (change)= "getCities($event, 'vendor', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select Province or state">
+                                                        placeholder="Select province/state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -1239,12 +1239,12 @@
 
     
 <!-- Add CUSTOMER Modal -->
-<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModal"  aria-hidden="true">
+<div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModal" data-backdrop="static" data-keyboard="false"  aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1544,10 +1544,10 @@
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or state</label>
+                                                                Province/State</label>
                                                             <ng-select (change)= "getCities($event, 'customer', i)" [(ngModel)]="item.stateCode"
                                                             name="stateCode{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select province or state">
+                                                                placeholder="Select province/state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -1733,12 +1733,12 @@
 
 <!-- Add Broker MODAL -->
 <div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Broker</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2003,10 +2003,10 @@
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or state</label>
+                                                                Province/State</label>
                                                             <ng-select (change)= "getCities($event, 'broker', i)" [(ngModel)]="item.stateCode"
                                                             name="stateID{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select province or state">
+                                                                placeholder="Select province/state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2188,12 +2188,12 @@
 
 <!-- ADD CARRIER MODAL -->
 <div class="modal fade" id="addCarrierModal" tabindex="-1" role="dialog" aria-labelledby="addCarrierModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Carrier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2499,7 +2499,7 @@
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">
                                                         Payroll Type <span class="text-1 optional-label-color">(optional)</span></label>
-                                                    <ng-select [(ngModel)]="carrierData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type" >
+                                                    <ng-select [(ngModel)]="carrierData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select payroll type" >
                                                         <ng-option value="Pay Per Mile" selected=true>Pay Per Mile</ng-option>
                                                         <ng-option value="Percentage">Percentage</ng-option>
                                                         <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
@@ -2756,10 +2756,10 @@
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or state</label>
+                                                                Province/State</label>
                                                             <ng-select (change)= "getCities($event, 'carrier', i)" [(ngModel)]="item.stateCode"
                                                             [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
-                                                                placeholder="Select province or state">
+                                                                placeholder="Select province/state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -2931,12 +2931,12 @@
 
 <!-- ADD owner operator MODAL -->
 <div class="modal fade" id="addOwnerOperatorModal" tabindex="-1" role="dialog" aria-labelledby="addOwnerOperatorModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Owner Operator</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -3106,7 +3106,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             Payroll Type <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select Payroll Type" >
+                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.payrollType" class="form-control" name="paymentDetails.payrollType" placeholder="Select payroll type" >
                                                             <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                                                             <ng-option value="Percentage">Percentage</ng-option>
                                                             <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
@@ -3305,10 +3305,10 @@
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Province or state</label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Province/State</label>
                                                             <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateCode"
                                                             [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
-                                                                placeholder="Select province or state">
+                                                                placeholder="Select province/state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -3482,12 +3482,12 @@
 
 <!-- ADD SHIPPER MODAL -->
 <div class="modal fade" id="addShipperModal" tabindex="-1" role="dialog" aria-labelledby="addShipperModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Consignor </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -3694,10 +3694,10 @@
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or state</label>
+                                                        Province/State</label>
                                                     <ng-select (change)= "getCities($event, 'shipper', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select province or state">
+                                                        placeholder="Select province/state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -3868,12 +3868,12 @@
 
 <!-- ADD CONSIGNEE MODAL -->
 <div class="modal fade" id="addConsigneeModal" tabindex="-1" role="dialog" aria-labelledby="addConsigneeModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Consignee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -4074,10 +4074,10 @@
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                        Province or state</label>
+                                                        Province/State</label>
                                                     <ng-select (change)= "getCities($event, 'consignee', i)" [(ngModel)]="item.stateCode"
                                                     name="stateCode{{i}}" class="form-control populate address_state"
-                                                        placeholder="Select province or state">
+                                                        placeholder="Select province/state">
                                                         <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
@@ -4250,12 +4250,12 @@
 
 <!-- ADD Factoring Company MODAL -->
 <div class="modal fade" id="addFCModal" tabindex="-1" role="dialog" aria-labelledby="addFCModal"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Factoring Company</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -4458,10 +4458,10 @@
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province or state</label>
+                                                                Province/State</label>
                                                             <ng-select (change)= "getCities($event, 'company', i)" [(ngModel)]="item.stateCode"
                                                             name="stateCode{{i}}" class="form-control populate address_state"
-                                                                placeholder="Select province or state">
+                                                                placeholder="Select province/state">
                                                                 <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
@@ -5151,7 +5151,7 @@
                                 <td>{{item.countryName}}</td>
                             </tr>
                             <tr *ngIf="item.manual == true">
-                                <th width="40%" class="back-color-gray">Province or state:</th>
+                                <th width="40%" class="back-color-gray">Province/State:</th>
                                 <td>{{item.stateName}}</td>
                             </tr>
                             <tr *ngIf="item.manual == true">

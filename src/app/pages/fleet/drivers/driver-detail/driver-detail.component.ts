@@ -160,28 +160,28 @@ export class DriverDetailComponent implements OnInit {
     });
   }
   fetchHomeTerminal(homeTerminal) {
-    if (homeTerminal && homeTerminal.length > 0) {
-      if (homeTerminal[0].manual) {
+    if (homeTerminal !== undefined) {
+      if (homeTerminal.manual) {
         let combineAddress: any;
-        if (homeTerminal[0].address != '') {
-          combineAddress = `${homeTerminal[0].address}`;
+        if (homeTerminal.address != '') {
+          combineAddress = `${homeTerminal.address}`;
         }
-        if (homeTerminal[0].cityName != '') {
-          combineAddress += `,` + `${homeTerminal[0].cityName}`;
+        if (homeTerminal.cityName != '') {
+          combineAddress += `,` + `${homeTerminal.cityName}`;
         }
-        if (homeTerminal[0].stateCode != '') {
-          combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal[0].stateCode, homeTerminal[0].countryCode);
+        if (homeTerminal.stateCode != '') {
+          combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal.stateCode, homeTerminal.countryCode);
         }
-        if (homeTerminal[0].countryCode != '') {
-          combineAddress += `,` + CountryStateCity.GetSpecificCountryNameByCode(homeTerminal[0].countryCode);
+        if (homeTerminal.countryCode != '') {
+          combineAddress += `,` + CountryStateCity.GetSpecificCountryNameByCode(homeTerminal.countryCode);
         }
-        if (homeTerminal[0].zipCode != '') {
-          combineAddress += ` - ${homeTerminal[0].zipCode}`;
+        if (homeTerminal.zipCode != '') {
+          combineAddress += ` - ${homeTerminal.zipCode}`;
         }
         this.homeTerminal = combineAddress;
       }
       else {
-        this.homeTerminal = homeTerminal[0].userLocation;
+        this.homeTerminal = homeTerminal.userLocation;
       }
     }
   }
@@ -369,16 +369,16 @@ export class DriverDetailComponent implements OnInit {
 
   // delete uploaded images and documents
   delete(type: string, name: string, index: any, docIndex: any) {
-    this.driverDataUpdate.hosDetails.homeTerminal = this.driverDataUpdate.hosDetails.homeTerminal[0].addressID;
+    this.driverDataUpdate.hosDetails.homeTerminal = this.driverDataUpdate.hosDetails.homeTerminal.addressID;
     delete this.driverDataUpdate.isDelActiveSK;
     delete this.driverDataUpdate.driverSK;
     delete this.driverDataUpdate.hosDetails.cycleInfo;
     delete this.driverDataUpdate.carrierID;
     delete this.driverDataUpdate.timeModified;
     if (type === 'doc') {
-      this.assetsDocs.splice(index, 1);
+      this.assetsDocs[index].splice(docIndex, 1);
       this.driverDataUpdate.documentDetails[index].uploadedDocs.splice(docIndex, 1);
-      this.deleteUploadedFile(type, name, index);
+      this.deleteUploadedFile(name);
       try {
         const formData = new FormData();
         formData.append('data', JSON.stringify(this.driverDataUpdate));
@@ -391,7 +391,7 @@ export class DriverDetailComponent implements OnInit {
     } else {
       this.absDocs.splice(index, 1);
       this.driverDataUpdate.abstractDocs.splice(index, 1);
-      this.deleteUploadedFile(type, name, index);
+      this.deleteUploadedFile(name);
       try {
         const formData = new FormData();
         formData.append('data', JSON.stringify(this.driverDataUpdate));
@@ -403,8 +403,8 @@ export class DriverDetailComponent implements OnInit {
       }
     }
   }
-  deleteUploadedFile(type: string, name: string, index: any) { // delete from aws
-    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => { });
+  deleteUploadedFile(name: string) { // delete from aws
+    this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
   }
   fetchDriverTrips() {
     this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
