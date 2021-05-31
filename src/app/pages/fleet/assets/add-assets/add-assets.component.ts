@@ -59,10 +59,10 @@ export class AddAssetsComponent implements OnInit {
       remarks: '',
     },
     insuranceDetails: {
-      dateOfIssue: '',
+      dateOfIssue: null,
       premiumAmount: '',
       premiumCurrency: null,
-      dateOfExpiry: '',
+      dateOfExpiry: null,
       reminderBefore: '',
       reminderBeforeUnit: '',
       vendor: null

@@ -24,7 +24,7 @@
          <div class="row">
             <div class="col">
                <div class="card-body text-dark">
-                  <form class="form-horizontal form-bordered" name="contactRenewalForm" method="get" id="contactRenewalForm">
+                  <form class="form-horizontal form-bordered" name="contactRenewalForm" method="get" id="contactRenewalForm" #contactF="ngForm">
                      <div class="row pt-2">
                         <div class="col-lg-12">
                            <label
@@ -44,7 +44,7 @@
                                  </ng-select>
                                  <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                     <div *ngIf="cnt.errors.required">
-                                     Select Contact is required.
+                                      Contact is required.
                                        </div>
                                        
                                     </div>
@@ -73,7 +73,7 @@
                                  </ng-select>
                                  <div *ngIf="rtSlt.invalid && (rtSlt.dirty || rtSlt.touched)" class="text-danger">
                                     <div *ngIf="rtSlt.errors.required">
-                                       Select Renewal Type is required.
+                                        Renewal type is required.
                                     </div>
                               
                                  </div>
@@ -91,7 +91,7 @@
                                     #d="ngbDatepicker" />
                                     <div *ngIf="exp.invalid && (exp.dirty || exp.touched)" class="text-danger">
                                        <div *ngIf="exp.errors.required">
-                                        Expiration Date is required.
+                                        Expiration date is required.
                                           </div>
                                           
                                        </div>
@@ -135,14 +135,18 @@
                               <div class="col-5 offset-1">
                                  <div class="row">
                                     <div class="col-10">
-                                       <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
-                                       <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()"
-                                          class="btn btn-success">Save</a>
-                                       <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()"
-                                          class="btn btn-success">Update</a>
+
+                                    <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
+                                       <button  *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid" (click)="addRenewal()" class="btn btn-success">Save</button>
+                                       <button  *ngIf="!reminderID && contactF.form.valid" [disabled]="submitDisabled" (click)="addRenewal()" class="btn btn-success">Save</button>
+                                          
+                                       <button  *ngIf="reminderID && !contactF.form.valid " [disabled]="!contactF.form.valid"  (click)="updateRenewal()" class="btn btn-success">Update</button>
+                                       <button  *ngIf="reminderID &&  contactF.form.valid" [disabled]="submitDisabled" (click)="updateRenewal()" class="btn btn-success">Update</button>
+                                          
+
                                     </div>
                                  </div>
-                              </div>
+                              </div> 
                            </div>
                         </div>
                      </div>
@@ -154,7 +158,7 @@
    </div>
 </section>
 
-<!---- ADD TASK MODAL --->
+<!----- ADD TASK MODAL --->
 <div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
@@ -177,10 +181,10 @@
                   name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type" #nameR="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="nameR.invalid && (nameR.dirty || nameR.touched)" class="text-danger">
                      <div *ngIf="nameR.errors.required">
-                       Renewal Name is required.
+                       Renewal name is required.
                      </div>     
                      <div *ngIf="nameR.errors.pattern">
-                            Renewal Name must contains uppercase, lowercase and special characters for period(space) only.
+                            Renewal name must contain alphanumeric characters.
                      </div>
                    </div>
                 </div>

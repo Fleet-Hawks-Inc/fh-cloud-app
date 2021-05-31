@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   signUpCode = '';
   error  = '';
   fieldTextType: boolean;
+  submitDisabled = false;
 
   constructor(private apiService: ApiService,
               private router: Router,
@@ -90,6 +91,7 @@ export class LoginComponent implements OnInit {
   }
    /** Cognito user action */
   loginAction1 = async () => {
+    this.submitDisabled = true;
     let token = localStorage.getItem('accessToken');
     if(token != null) {
       this.router.navigate(['/Map-Dashboard']);
@@ -111,12 +113,14 @@ export class LoginComponent implements OnInit {
       var decodedToken = jwt_decode(jwt);
  
       if(decodedToken.userType == 'driver') {
+        this.submitDisabled = false;
         Auth.signOut();
         localStorage.clear();
         this.hasError = true;
         this.Error = 'You are not authorized to perform this action';
 
       } else {
+        this.submitDisabled = false;
         localStorage.setItem('currentLoggedUserName', this.userName);
       
         if (!isActivatedUser.carrierID) {

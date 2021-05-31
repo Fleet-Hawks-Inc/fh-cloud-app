@@ -16,7 +16,7 @@
          <div class="row">
             <div class="col">
                <div class="card-body text-dark">
-                  <form class="form-horizontal form-bordered" method="get" id="vehicleRenewalForm"
+                  <form class="form-horizontal form-bordered" method="get" id="vehicleRenewalForm" #vehicleRF="ngForm"
                      name="vehicleRenewalForm">
                      <div class="row pt-2">
                         <div class="col-lg-12">
@@ -39,7 +39,7 @@
 
                                  <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
                                     <div *ngIf="vec.errors.required">
-                                       Select Vehicle is required.
+                                      Vehicle is required.
                                     </div>
 
                                  </div>
@@ -71,7 +71,7 @@
                                  </ng-select>
                                  <div *ngIf="rt.invalid && (rt.dirty || rt.touched)" class="text-danger">
                                     <div *ngIf="rt.errors.required">
-                                       Select Renewal Type is required.
+                                       Renewal type is required.
                                     </div>
 
                                  </div>
@@ -91,7 +91,7 @@
                                     #d="ngbDatepicker" #date="ngModel" required />
                                  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                     <div *ngIf="date.errors.required">
-                                       Due Date is required.
+                                       Due date is required.
                                     </div>
 
                                  </div>
@@ -135,11 +135,20 @@
                               <div class="col-5 offset-1">
                                  <div class="row">
                                     <div class="col-10">
-                                       <a href="javascript:;" routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default mr-2">Cancel</a>
-                                       <button *ngIf="!reminderID" (click)="addRenewal()"
-                                          class="btn btn-success" [disabled]="submitDisabled">Save</button>
-                                       <button *ngIf="reminderID" (click)="updateRenewal()"
-                                          class="btn btn-success" [disabled]="submitDisabled">Update</button>
+
+                                       <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
+                                       
+                                      
+                                      <!--- if there is some error in validation  -->
+
+                  <button *ngIf="!reminderID && !vehicleRF.form.valid" (click)="addRenewal()" class="btn btn-success" [disabled]="!vehicleRF.form.valid">Save</button>
+                  <!-- if validations are ok and now the button will disable on submit click  --> 
+                  <button *ngIf="!reminderID && vehicleRF.form.valid" (click)="addRenewal()" class="btn btn-success" [disabled]="submitDisabled">Save</button>
+                   <!-- update case -->                        
+                  <button *ngIf="reminderID && !vehicleRF.form.valid" (click)="updateRenewal()" class="btn btn-success" [disabled]="!vehicleRF.form.valid">Update</button>
+                  <button *ngIf="reminderID && vehicleRF.form.valid" (click)="updateRenewal()" class="btn btn-success" [disabled]="submitDisabled">Update</button>
+                                          
+
                                     </div>
                                  </div>
                               </div>
@@ -175,10 +184,10 @@
                         placeholder="Enter renewal type name" #Rname="ngModel" required pattern="^[a-zA-Z\s]+$">
                         <div *ngIf="Rname.invalid && (Rname.dirty || Rname.touched)" class="text-danger">
                            <div *ngIf="Rname.errors.required">
-                             Renewal Name is required.
+                             Renewal name is required.
                            </div>     
                            <div *ngIf="Rname.errors.pattern">
-                                  Renewal Name must contains uppercase, lowercase and special characters for period(space) only.
+                                  Renewal name must contain letters.
                            </div>
                          </div>
                   </div>
