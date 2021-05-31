@@ -222,7 +222,7 @@
                                                     {{vehicle.plateNumber}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.fuelType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{fuelTypesObjects[vehicle.fluid.fuelType]}}
+                                                    {{vehicle.fluid.fuelType}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.currentStatus}}
