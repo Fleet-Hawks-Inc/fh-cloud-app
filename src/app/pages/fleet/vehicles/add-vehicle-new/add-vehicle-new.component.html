@@ -80,7 +80,7 @@
                                        Plate number is required.
                                     </div>
                                     <div *ngIf="pNum.errors.pattern">
-                                       Plate number must be between 7-8 alphanumeric characters only.
+                                       Plate number must be between 7-8 alphanumeric characters.
                                     </div>
                                  </div>
                               </div>
@@ -1466,7 +1466,7 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Notes <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <textarea class="form-control" rows="3" name="loan.notes" [(ngModel)]="loan.notes"
-                                    placeholder="Enter notes about the loan of vehicle" #notes3= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                                    placeholder="Enter notes about the loan of vehicle" #notes3= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                     <div *ngIf="notes3.invalid && (notes3.dirty || notes3.touched)" class="text-danger">
                                        <div *ngIf="notes3.errors.pattern">
                                         Only 500 characters are allowed.
@@ -1587,7 +1587,13 @@
                         <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
                               class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
-                           id="comment" placeholder="Enter description of the group"></textarea>
+                           id="comment" placeholder="Enter description of the group" #aNotes226="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                           <div *ngIf="aNotes226.invalid && (aNotes226.dirty || aNotes226.touched)" class="text-danger">
+                              <div *ngIf="aNotes226.errors.pattern">
+                               Only 500 characters are allowed.
+                              </div>
+      
+                           </div>
                      </div>
                   </div>
 

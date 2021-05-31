@@ -57,7 +57,15 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
                                     Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
-                                    placeholder="e.g james@email.com, maria@email.com">
+                                    placeholder="e.g james@email.com, maria@email.com" #sMail12="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                                    <div *ngIf="sMail12.invalid && (sMail12.dirty || sMail12.touched)" class="text-danger">
+                                       <div *ngIf="sMail12.errors.required">
+                                         Email is required.
+                                       </div>
+                                       <div *ngIf="sMail12.errors.pattern">
+                                         Enter valid email eg. johnsmith@gmail.com 
+                                       </div>
+                                     </div>
                               </div>
                            </div>
                         </div>

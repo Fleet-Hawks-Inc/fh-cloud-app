@@ -83,7 +83,7 @@
                                 Contractor ID is required.
                               </div>
                               <div *ngIf="cName.errors.pattern">
-                                Contractor ID can only contains alphanumeric characters with length between 4-120.
+                                Contractor ID can only contain alphanumeric characters with length between 4-120.
                               </div>
                             </div>
                           </div>
@@ -408,12 +408,12 @@
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
-                              #endDate="ngModel" required>
-                            <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
+                              #endDate="ngModel">
+                            <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
                                 End date is required.
                               </div>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                       </div>
@@ -629,48 +629,46 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type <span class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <ng-select [(ngModel)]="document.documentType"
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                           placeholder="Select document type"
 
-                          (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc1="ngModel" required>
+                          (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc1="ngModel" >
                           <ng-container *ngFor="let documentType of documentTypeList">
                             <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
                               {{documentType.description}}</ng-option>
                           </ng-container>
 
                         </ng-select>
-                        <div *ngIf="doc1.invalid && (doc1.dirty || doc1.touched)" class="text-danger">
+                        <!-- <div *ngIf="doc1.invalid && (doc1.dirty || doc1.touched)" class="text-danger">
                           <div *ngIf="doc1.errors.required">
                             Document type is required.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span class="text-1 optional-label-color">(optional)</span>
                           </label>
                           <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                             placeholder="eg. Certificate number 201717ABC"
-                            (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel" required
-                            pattern="^[a-zA-Z0-9\s]+$">
+                            (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel" 
+                            >
 
-                          <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
+                          <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
                             <div *ngIf="docNum.errors.required">
                               Document# is required.
                             </div>
                             <div *ngIf="docNum.errors.pattern">
                               Document# must contain alphanumeric characters.
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority <span
@@ -679,21 +677,20 @@
                           <input [(ngModel)]="document.issuingAuthority"
                             [attr.name]="'documentDetails['+i+'].issuingAuthority'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                            placeholder="eg. Ontario,canada" #authority="ngModel" pattern="^[a-zA-Z\s\,]+$">
-                          <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
+                            placeholder="eg. Ontario,canada" #authority="ngModel" >
+                          <!-- <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
 
                             <div *ngIf="authority.errors.pattern">
                               Issuing authority must contain letters and allowed characters(,).
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country <span class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
@@ -705,7 +702,7 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State </label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State <span class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -719,34 +716,33 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date <span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date <span class="text-1 optional-label-color">(optional)</span>
+                        </label>
                         <input [(ngModel)]="document.issueDate"
                           (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
                           #d="ngbDatepicker" type="text" class="form-control" [maxDate]="getcurrentDate"
                           [minDate]="birthDateMinLimit" placeholder="yyyy/mm/dd"
                           [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
-                          #idSlt="ngModel" required>
-                        <div *ngIf="idSlt.invalid && (idSlt.dirty || idSlt.touched)" class="text-danger">
+                          #idSlt="ngModel">
+                        <!-- <div *ngIf="idSlt.invalid && (idSlt.dirty || idSlt.touched)" class="text-danger">
                           <div *ngIf="idSlt.errors.required">
                             Issue date is required.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-5" *ngIf="document.documentType != 'BCN'">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Expiry Date <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date <span class="text-1 optional-label-color"> (optional)</span>
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
                           [ngModelOptions]="{standalone: true}"
                           (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
-                          [minDate]="getcurrentDate" type="text" class="form-control" #expSlt="ngModel" required>
-                        <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
+                          [minDate]="getcurrentDate" type="text" class="form-control" #expSlt="ngModel" >
+                        <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
                           <div *ngIf="expSlt.errors.required">
                             Expiry date is required.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -894,7 +890,7 @@
                         <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number"
                           type="text" class="form-control" placeholder="9 digits eg. 0005-04440"
                           (change)="onChangeHideErrors('CDL_Number')" #cdl="ngModel" required maxlength="9"
-                          pattern="^[0-9\-]{2,9}$">
+                          pattern="^[0-9]{9}$">
                         <div *ngIf="cdl.invalid && (cdl.dirty || cdl.touched)" class="text-danger">
                           <div *ngIf="cdl.errors.required">
                             CDL# is required.
@@ -1459,15 +1455,15 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
                           (change)="onChangeHideErrors('hosDetails.optZone')" class="form-control populate"
-                          placeholder="Select the Operating Zone" #oz="ngModel" required> 
+                          placeholder="Select the Operating Zone" #oz1="ngModel" required> 
                           <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                           </ng-option>
                           <ng-option class="text-capitalize" value="North (Canada)">North (Canada)
                           </ng-option>
                           <ng-option class="text-capitalize" value="USA">USA</ng-option>
                         </ng-select>
-                        <div *ngIf="oz.invalid && (oz.dirty || oz.touched)" class="text-danger">
-                          <div *ngIf="oz.errors.required">
+                        <div *ngIf="oz1.invalid && (oz1.dirty || oz1.touched)" class="text-danger">
+                          <div *ngIf="oz1.errors.required">
                             Operating zone is required.
                           </div>
                         </div>
@@ -1681,7 +1677,13 @@
                     <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
                         class="text-1 optional-label-color">(optional)</span></label>
                     <textarea [(ngModel)]="groupData.description" name="description" class="form-control h-auto"
-                      rows="4" placeholder="Enter group description"></textarea>
+                      rows="4" placeholder="Enter group description"#dNotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                      <div *ngIf="dNotes.invalid && (dNotes.dirty || dNotes.touched)" class="text-danger">
+                        <div *ngIf="dNotes.errors.pattern">
+                         Only 500 characters are allowed.
+                        </div>
+
+                     </div>
                   </div>
                 </div>
               </div>

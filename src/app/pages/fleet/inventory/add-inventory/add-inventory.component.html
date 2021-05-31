@@ -152,7 +152,7 @@
                           class="text-1 optional-label-color">(optional)</span></label>
                       <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
                         placeholder="Enter description of the inventory part" #desName2="ngModel"
-                        pattern="^[\s\S]{2,500}$"></textarea>
+                        pattern="^[\s\S]{1,500}$"></textarea>
                       <div *ngIf="desName2.invalid && (desName2.dirty || desName2.touched)" class="text-danger">
                         <div *ngIf="desName2.errors.pattern">
                           Only 500 characters are allowed.
@@ -403,7 +403,7 @@
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <textarea class="form-control" rows="3" name="notes" [(ngModel)]="notes"
                             placeholder="Enter notes about warranty of inventory part" #notes1="ngModel"
-                            pattern="^[\s\S]{2,500}$"></textarea>
+                            pattern="^[\s\S]{1,500}$"></textarea>
                           <div *ngIf="notes1.invalid && (notes1.dirty || notes1.touched)" class="text-danger">
                             <div *ngIf="notes1.errors.pattern">
                               Only 500 characters are allowed.
@@ -561,7 +561,14 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
                       class="text-1 optional-label-color">(optional)</span></label>
                   <textarea class="form-control heighta" rows="2" id="comment" [(ngModel)]="groupDescription"
-                    name="groupDescription" placeholder="Enter item category description"></textarea>
+                    name="groupDescription" placeholder="Enter item category description" #desName24="ngModel"
+                    pattern="^[\s\S]{1,500}$"></textarea>
+                    <div *ngIf="desName24.invalid && (desName24.dirty || desName24.touched)" class="text-danger">
+                      <div *ngIf="desName24.errors.pattern">
+                        Only 500 characters are allowed.
+                      </div>
+
+                    </div>
                 </div>
               </div>
 

@@ -689,7 +689,7 @@
                         <span class="text-1 optional-label-color">(optional)</span></label>
                       <textarea class="form-control h-auto" rows="3" name="description"
                         [(ngModel)]="fuelData.description" placeholder="Add description" #desName4="ngModel"
-                        pattern="^[\s\S]{2,500}$"></textarea>
+                        pattern="^[\s\S]{1,500}$"></textarea>
                       <div *ngIf="desName4.invalid && (desName4.dirty || desName4.touched)" class="text-danger">
                         <div *ngIf="desName4.errors.pattern">
                           Only 500 characters are allowed.

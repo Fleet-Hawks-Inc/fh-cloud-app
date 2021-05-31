@@ -38,10 +38,10 @@
                       class="form-control" placeholder="eg. Box asset" #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                       <div *ngIf="aName.invalid && (aName.dirty || aName.touched)" class="text-danger">
                         <div *ngIf="aName.errors.required">
-                          Asset name is required.
+                          Asset name/number is required.
                         </div>
                         <div *ngIf="aName.errors.pattern">
-                          Asset name must contain alphanumeric characters.
+                          Asset name/number must contain alphanumeric characters.
                         </div>
                       </div>
                   </div>
@@ -206,11 +206,11 @@
 
                     </ng-select>
                     <div *ngIf="sSlt.invalid && (sSlt.dirty || sSlt.touched)" class="text-danger">
-                      <div>
+                      
                         <div *ngIf="sSlt.errors.required">
                           Status is required.
                         </div>
-                      </div>
+                      
 
                     </div>
                   </div>
@@ -563,7 +563,7 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes&nbsp; <span
                         class="text-1 optional-label-color">(optional)</span></label>
                     <textarea [(ngModel)]="assetsData.assetDetails.remarks" name="assetDetails.remarks"
-                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset" #aNotes="ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset" #aNotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                       <div *ngIf="aNotes.invalid && (aNotes.dirty || aNotes.touched)" class="text-danger">
                         <div *ngIf="aNotes.errors.pattern">
                          Only 500 characters are allowed.
@@ -929,7 +929,14 @@
                 <label class="control-label font-weight-bold text-lg-right">Description&nbsp; <span
                     class="text-1 optional-label-color">(optional)</span></label>
                 <textarea [(ngModel)]="groupData.description" name="description" class="form-control heighta" rows="4"
-                  id="comment" placeholder="Enter group description"></textarea>
+                  id="comment" placeholder="Enter group description" #desName246="ngModel"
+                  pattern="^[\s\S]{1,500}$"></textarea>
+                  <div *ngIf="desName246.invalid && (desName246.dirty || desName246.touched)" class="text-danger">
+                    <div *ngIf="desName246.errors.pattern">
+                      Only 500 characters are allowed.
+                    </div>
+
+                  </div>
               </div>
             </div>
 
