@@ -77,6 +77,7 @@ export class CompanyDocumentsComponent implements OnInit {
   docStartPoint = 1;
   docEndPoint = this.pageLength;
   descriptionData = '';
+  documentNumberDisabled = false;
 
   constructor(
     private apiService: ApiService,
@@ -90,6 +91,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
+    // this.fetchLastDocumentNumber();
     
     $(document).ready(() => {
       // this.form = $('#form_').validate();
@@ -393,7 +395,7 @@ export class CompanyDocumentsComponent implements OnInit {
       } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else {
+      } else { 
         this.dataMessage = Constants.FETCHING_DATA;
         this.documents = [];
         this.suggestions = [];
@@ -487,6 +489,7 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   openDocumentModal() {
+    this.fetchLastDocumentNumber();
     this.documentData = {
       categoryType: 'company',
       tripID: '',
@@ -505,5 +508,13 @@ export class CompanyDocumentsComponent implements OnInit {
   showDescModal(description) {
     this.descriptionData = description;
     $("#routeNotes").modal('show');
+  }
+
+  fetchLastDocumentNumber(){
+    this.apiService.getData('documents/get/last/number').subscribe((result) => {
+        // console.log('result', result);
+        this.documentNumberDisabled = true;
+        this.documentData.documentNumber = result.toString();
+    });
   }
 }

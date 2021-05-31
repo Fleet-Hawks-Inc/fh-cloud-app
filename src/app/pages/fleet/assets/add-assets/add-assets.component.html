@@ -481,7 +481,7 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province/State<span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode" name="assetDetails.licenceStateCode"
-                      class="form-control populate" placeholder="Select Province" #lpName="ngModel" required>
+                      class="form-control populate" placeholder="Select Province/State" #lpName="ngModel" required>
                       <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
                         {{state.stateName}}
                       </ng-option>
