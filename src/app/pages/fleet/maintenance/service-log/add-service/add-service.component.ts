@@ -110,7 +110,7 @@ export class AddServiceComponent implements OnInit {
     itemID: ''
   };
   itemData = {
-    categoryID :undefined,
+    category :undefined,
     itemName: '',
     cost: '',
     costUnit: undefined,
@@ -227,9 +227,9 @@ export class AddServiceComponent implements OnInit {
     this.hideErrors();
     this.spinner.show();
 
-    this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
-      delete elem.existQuantity;
-    });
+    // this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
+    //   delete elem.existQuantity;
+    // });
 
     let taskIds = [];
     this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
@@ -415,9 +415,9 @@ export class AddServiceComponent implements OnInit {
    * Get all stocks from api
    */
   fetchInventory() {
-    this.apiService.getData('items').subscribe((result: any) => {
-      result = result.Items;
+    this.apiService.getData('items/serviceLog/list').subscribe((result: any) => {
       this.inventory = result;
+      console.log('this.inventory', this.inventory);
     });
   }
 
@@ -428,7 +428,7 @@ export class AddServiceComponent implements OnInit {
         const element = result[i];
         element.selected = true;
         this.issues.push(element)
-        
+
       }
     });
   }
@@ -562,7 +562,7 @@ export class AddServiceComponent implements OnInit {
 
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    
+
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
     this.selectedTasks.push(result.Items[0]);
@@ -649,7 +649,6 @@ export class AddServiceComponent implements OnInit {
     let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
     // let total = Number(this.serviceData.allServiceTasks.total);
     let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
-
     let sum = 0;
     let tasksArr = this.serviceData.allServiceTasks.serviceTaskList;
     tasksArr.forEach(element => {
@@ -657,7 +656,6 @@ export class AddServiceComponent implements OnInit {
         sum = sum + (parseFloat(element.laborCost) || 0);
       }
     });
-
     this.totalLabors = sum;
     this.serviceData.allServiceTasks.subTotal = sum;
 
@@ -799,7 +797,7 @@ export class AddServiceComponent implements OnInit {
         if(result.selectedIssues.length > 0) {
           this.getResolvedIssues(result.selectedIssues)
         }
-        
+
 
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -872,7 +870,7 @@ export class AddServiceComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
-    
+
     //append other fields
     formData.append('data', JSON.stringify(data));
     this.apiService.putData('serviceLogs/', formData, true).subscribe({
@@ -963,10 +961,10 @@ export class AddServiceComponent implements OnInit {
       type: this.serviceData.unitType,
       name: this.serviceData.unitID,
     }
-    if(this.serviceData.unitType == 'vehicle'){
-      selectedUnit.odometer = this.serviceData.odometer
+    if(this.serviceData.unitType === 'vehicle'){
+      selectedUnit.odometer = this.serviceData.odometer;
     } else {
-      delete selectedUnit.odometer
+      delete selectedUnit.odometer;
     }
     localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
     this.listService.appendIssues(selectedUnit);
@@ -978,7 +976,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async changePartTab(type) {
-    if(type == 'new') {
+    if(type === 'new') {
       this.partType = 'new';
     } else {
       this.partType = 'existing';
@@ -997,7 +995,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   fetchPartNumber() {
-    if (this.partData.partNumber != undefined && this.partData.partNumber != '') {
+    if (this.partData.partNumber !== undefined && this.partData.partNumber !== '') {
       this.apiService.getData('requiredItems/check/requestedItem/' + this.partData.partNumber).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1071,7 +1069,7 @@ export class AddServiceComponent implements OnInit {
           itemID: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category :undefined,
           itemName: '',
           cost: '',
           costUnit: undefined,
@@ -1084,7 +1082,8 @@ export class AddServiceComponent implements OnInit {
 
   addExistingPartNumber () {
     delete this.partData.itemID;
-    this.apiService.postData('requiredItems', this.partData).subscribe({
+    console.log('this.partdata', this.partData);
+    this.apiService.postData('items/requireditems/addExistingItem', this.partData).subscribe({
       complete: () => { },
         error: (err: any) => {
           from(err.error)
@@ -1116,7 +1115,7 @@ export class AddServiceComponent implements OnInit {
           itemID: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category :undefined,
           itemName: '',
           cost: '',
           costUnit: undefined,
@@ -1129,7 +1128,7 @@ export class AddServiceComponent implements OnInit {
 
   getPartDetail(event) {
     let curr = this;
-    this.inventoryItems.map(function(v){
+    this.inventoryItems.map(function(v) {
       if(v.partNumber == event){
         curr.partData.quantity = v.quantity;
         curr.partData.preferredVendorID = v.preferredVendorID;
@@ -1144,9 +1143,9 @@ export class AddServiceComponent implements OnInit {
   }
 
   showCategoryModal() {
-    this.categoryData.name = "";
-    this.categoryData.description = "";
-    $("#categoryModal").modal("show");
+    this.categoryData.name = '';
+    this.categoryData.description = '';
+    $('#categoryModal').modal('show');
   }
 
   addGroup() {
@@ -1157,7 +1156,7 @@ export class AddServiceComponent implements OnInit {
       groupDescription: this.categoryData.description,
     };
 
-    this.apiService.postData("itemGroups", data).subscribe({
+    this.apiService.postData('itemGroups', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -1177,10 +1176,10 @@ export class AddServiceComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.categoryData.name = "";
-        this.categoryData.description = "";
+        this.categoryData.name = '';
+        this.categoryData.description = '';
         this.fetchItemGroups();
-        $("#categoryModal").modal("hide");
+        $('#categoryModal').modal('hide');
         this.toastr.success('Category Added successfully');
       },
     });
@@ -1193,23 +1192,23 @@ export class AddServiceComponent implements OnInit {
 
     const data = {
       partNumber: this.partData.partNumber,
-      quantity: 0,
+      quantity: this.partData.quantity,
       itemName: this.itemData.itemName,
-      categoryID: this.itemData.categoryID,
+      category: this.itemData.category,
       preferredVendorID: this.partData.preferredVendorID,
       cost: this.itemData.cost,
       costUnit: this.itemData.costUnit,
       warehouseID: this.itemData.warehouseID,
       warehouseVendorID: this.partData.preferredVendorID,
     };
-
+    console.log('data', data);
     // create form data instance
     const formData = new FormData();
 
     //append other fields
     formData.append('data', JSON.stringify(data));
 
-    this.apiService.postData("items", formData, true).subscribe({
+    this.apiService.postData('items', formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -1251,13 +1250,13 @@ export class AddServiceComponent implements OnInit {
       itemID: ''
     };
     this.itemData = {
-      categoryID: undefined,
+      category: undefined,
       itemName: '',
       cost: '',
       costUnit: undefined,
       warehouseID: undefined
-    }
-    $("#partModal").modal('show');
+    };
+    $('#partModal').modal('show');
   }
 
   setPDFSrc(val) {
@@ -1275,7 +1274,7 @@ export class AddServiceComponent implements OnInit {
   delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
       console.log('image result', result);
-      if(type == 'image') {
+      if(type === 'image') {
         this.logImages.splice(index, 1);
       } else {
         this.logDocs.splice(index,1);

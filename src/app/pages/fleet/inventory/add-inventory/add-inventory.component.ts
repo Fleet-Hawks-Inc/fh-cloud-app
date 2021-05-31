@@ -96,10 +96,10 @@ export class AddInventoryComponent implements OnInit {
     this.itemID = this.route.snapshot.params[`itemID`];
 
     if (this.itemID) {
-      this.pageTitle = `Edit Driver`;
+      this.pageTitle = `Edit Inventory Part`;
       this.getInventory();
     } else {
-      this.pageTitle = `Add Driver`;
+      this.pageTitle = `Add Inventory Part`;
     }
 
     $(document).ready(() => {
@@ -276,30 +276,34 @@ export class AddInventoryComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.partNumber = '';
-        this.cost = '';
-        this.costUnit = '';
-        this.quantity = '';
-        this.itemName = '';
-        this.description = '';
-        this.category = '';
-        this.warehouseID = '';
-        this.aisle = '';
-        this.row = '';
-        this.bin = '';
-        this.warehouseVendorID = '';
-        this.trackingQuantity = '';
-        this.reorderPoint = '';
-        this.reorderQuality = '';
-        this.leadTime = '';
-        this.preferredVendorID = '';
-        this.days = '';
-        this.time = '';
-        this.notes = '';
-        this.toastr.success('Inventory Added Successfully');
-        this.router.navigateByUrl('/fleet/inventory/list');
+        if (res === true) {
+          this.toastr.warning('Part number already exists,please edit the existing entry');
+        } else {
+          this.response = res;
+          this.hasSuccess = true;
+          this.partNumber = '';
+          this.cost = '';
+          this.costUnit = '';
+          this.quantity = '';
+          this.itemName = '';
+          this.description = '';
+          this.category = '';
+          this.warehouseID = '';
+          this.aisle = '';
+          this.row = '';
+          this.bin = '';
+          this.warehouseVendorID = '';
+          this.trackingQuantity = '';
+          this.reorderPoint = '';
+          this.reorderQuality = '';
+          this.leadTime = '';
+          this.preferredVendorID = '';
+          this.days = '';
+          this.time = '';
+          this.notes = '';
+          this.toastr.success('Inventory Added Successfully');
+          this.router.navigateByUrl('/fleet/inventory/list');
+        }
       },
     });
   }
@@ -311,7 +315,6 @@ export class AddInventoryComponent implements OnInit {
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -378,9 +381,13 @@ export class AddInventoryComponent implements OnInit {
         this.Error = err.error;
       },
       next: (res) => {
+        if (res === true) {
+          this.toastr.warning('Part number already exists,please edit the existing entry');
+        } else {
         this.response = res;
         this.toastr.success('Inventory Updated Successfully');
         this.router.navigateByUrl('/fleet/inventory/list');
+        }
       },
     });
   }

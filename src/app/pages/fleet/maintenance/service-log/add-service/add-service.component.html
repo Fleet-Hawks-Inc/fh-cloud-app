@@ -602,18 +602,11 @@
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Category</label>
-                           <div class="row">
-                              <div class="col-lg-10">
-                                 <ng-select [(ngModel)]="itemData.categoryID" name="categoryID" style="width: 100%;"
+                           <ng-select [(ngModel)]="itemData.category" name="category" style="width: 100%;"
                                     placeholder="Select category">
-                                    <ng-option *ngFor="let data of itemGroups;" value="{{data.groupID}}">{{data.groupName}}</ng-option>
+                                    <ng-option value="hardware">Hardware</ng-option>
+                                    <ng-option value="brakes">Brakes</ng-option>
                                  </ng-select>
-                              </div>
-                              <div class="col-lg-2 pl-0">
-                                 <a href="javascript:;" class="btn btn-sm btn-success modal-with-form text-light"><i
-                                       class="fas fa-plus" (click)="showCategoryModal()"></i></a>
-                              </div>
-                           </div>
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
@@ -665,7 +658,7 @@
                               Vendor</label>
                            <ng-select [(ngModel)]="partData.preferredVendorID"
                               name="preferredVendorID" style="width: 100%;" placeholder="Select preferred vendor">
-                              <ng-option *ngFor="let data of vendors | async;" value="{{data.vendorID}}">{{data.companyName}}</ng-option>
+                              <ng-option *ngFor="let data of vendors | async;" value="{{data.contactID}}">{{data.companyName}}</ng-option>
                            </ng-select>
                         </div>
                      </div>
@@ -675,8 +668,8 @@
             <div class="modal-footer">
                <div class="col-md-12 text-right">
                   <button class="btn btn-default modal-dismiss mr-3" data-dismiss="modal">Cancel</button>
-                  <a href="javascript:;" *ngIf="partType == 'existing'" (click)="fetchPartNumber()" class="btn btn-success" id="nextBtn">Save</a>
-                  <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success" id="nextBtn">Save</a>
+                  <a href="javascript:;" *ngIf="partType == 'existing'" (click)=" addExistingPartNumber()" class="btn btn-success" >Save</a>
+                  <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success" >Save</a>
                </div>
             </div>
          </form>

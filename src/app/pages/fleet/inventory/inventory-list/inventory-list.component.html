@@ -33,14 +33,14 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
-                                <ng-option [value]="hardware">Hardware</ng-option>
+                                <ng-option value="hardware">Hardware</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -118,14 +118,14 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
-                                <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
+                                <!-- <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option> -->
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.vendorID">{{data.companyName}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -316,7 +316,7 @@
                                                                     <a class="dropdown-item"
                                                                         routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
                                                                     <a href="javascript:;" class="dropdown-item"
-                                                                        (click)="deleteItem(item.itemID)">Delete</a>
+                                                                        (click)="deleteItem(item)">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </td>
