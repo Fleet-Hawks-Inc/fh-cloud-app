@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { ListService } from '../../../../services';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
-import { HttpClient} from '@angular/common/http'
 
 declare var $: any;
 
@@ -113,8 +112,7 @@ export class AddFuelEntryComponent implements OnInit {
   constructor(private apiService: ApiService,
               private route: ActivatedRoute,
               private location: Location, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService,
-              private httpClient: HttpClient) {
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
 
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
@@ -154,8 +152,8 @@ export class AddFuelEntryComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
- async fetchVehicles() {
-    await this.apiService.getData('vehicles').subscribe((result: any) => {
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
     });
   }
@@ -174,24 +172,22 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   fetchFuelTaxes() {
-    this.httpClient.get('assets/jsonFiles/fuel/fuelTaxes.json').subscribe((result: any) => { 
-     
+    this.apiService.getData('fuelTaxes').subscribe((result: any) => {
       this.fuelTaxes = result.Items;
     });
   }
   fetchFuelDiscounts() {
-    this.httpClient.get('assets/jsonFiles/fuel/fuelDiscounts.json').subscribe((result: any) => { 
-     
+    this.apiService.getData('fuelDiscounts').subscribe((result: any) => {
       this.fuelDiscounts = result.Items;
     });
   }
- async fetchDrivers() {
-    await this.apiService.getData('drivers').subscribe((result: any) => {
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
     });
   }
-  async fetchAssets() {
-    await this.apiService.getData('assets').subscribe((result: any) => {
+  fetchAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
       result.Items.forEach((e: any) => {
         if (e.assetType == 'reefer') {
           let obj = {
@@ -259,7 +255,6 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.billingCurrency = val;
   }
   addFuelEntry() {
-    if(this.uploadedPhotos.length>0){
     this.hideErrors();
     this.submitDisabled = true;
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
@@ -272,7 +267,6 @@ export class AddFuelEntryComponent implements OnInit {
     const formData = new FormData();
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
@@ -306,7 +300,6 @@ export class AddFuelEntryComponent implements OnInit {
       },
     });
   }
-  }
 
   throwErrors() {
     from(Object.keys(this.errors))
@@ -334,12 +327,10 @@ export class AddFuelEntryComponent implements OnInit {
   selectDocuments(event, obj) {
     let files = [...event.target.files];
 
-    if (obj == 'uploadedPhotos') {
+    if (obj === 'uploadedPhotos') {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-        
         this.uploadedPhotos.push(files[i])
-        
       }
     }
   }
@@ -408,20 +399,18 @@ export class AddFuelEntryComponent implements OnInit {
     this.hideErrors();
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     this.fuelData.uploadedPhotos = this.existingPhotos;
+    this.fuelData.lineItems = this.fuelData.lineItems;
     if(this.fuelData.paymentMode != 'Fuel_Card'){
       this.fuelData.fuelCardNumber = null;
     }
     // create form data instance
     const formData = new FormData();
     // append photos if any
-   
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-     
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
     formData.append('data', JSON.stringify(this.fuelData));
-    
     this.apiService.putData('fuelEntries', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -455,10 +444,7 @@ export class AddFuelEntryComponent implements OnInit {
   // delete uploaded images and documents
   delete(name: string) {
     this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
-      if(result){
-        
       this.fetchFuelEntry();
-      }
     });
   }
 

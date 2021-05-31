@@ -77,8 +77,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    
-   // this.fetchCountries();
+    //this.fetchFuelTypeList();
+    //this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
@@ -175,12 +175,16 @@ export class FuelEntryListComponent implements OnInit {
       this.tripList = result;
     });
   }
-  // fetchCountries() {
-  //   this.apiService.getData('countries').subscribe((result: any) => {
-  //     this.countries = result.Items;
-  //   });
-  // }
-
+  fetchCountries() {
+    this.apiService.getData('countries').subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
+  fetchFuelTypeList() {
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelCodeList = result;
+    });
+  }
   fetchWEXCode() {
     this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
       
