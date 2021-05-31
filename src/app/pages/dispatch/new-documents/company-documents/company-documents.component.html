@@ -209,7 +209,7 @@
                             </label>
                             <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
                                 name="documentNumber" type="text" placeholder=" eg. 123456" class="form-control"
-                                #dDocument="ngModel" required pattern="^[a-zA-Z0-9\s\-\_\.]+$">
+                                #dDocument="ngModel" required pattern="^[a-zA-Z0-9\s\-\_\.]+$" [disabled]="documentNumberDisabled">
                             <div *ngIf="dDocument.invalid && (dDocument.dirty || dDocument.touched)"
                                 class="text-danger">
                                 <div>
