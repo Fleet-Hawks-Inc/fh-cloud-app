@@ -73,7 +73,7 @@
                       <div class="col-lg-8 p-2 border-box">{{ countryName }}</div>
                     </div>
                     <div class="row  m-0">
-                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province:</div>
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province/State:</div>
                       <div class="col-lg-8 p-2 border-box">{{ stateName }}</div>
                     </div>
                     <div class="row  m-0">
@@ -214,18 +214,17 @@
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of serviceReminders">
-                                <td>-</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
+                                <td>{{ data.nextServiceDate | date:"yyyy/MM/dd" }}</td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                      <span *ngIf="users.type == 'user'">
-                                        {{ usersList[users.id] }}
-                                      </span>
-                                      <span *ngIf="users.type == 'group'">
-                                        {{ groupsList[users.id] }}
-                                      </span>
-                                      <span *ngIf="u<data.subscribers.length-1">,</span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'time'">
+                                    Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
                                   </span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'odometer'">
+                                    Every {{ data.tasks.odometer }} miles 
+                                  </span>
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
@@ -263,17 +262,11 @@
                               </tr>
                               <tr *ngFor="let data of renewalReminders">
                                 <td>{{ data.tasks.dueDate | date:"yyyy/MM/dd" }}</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                    <span *ngIf="users.type == 'user'">
-                                      {{ usersList[users.id] }}
-                                    </span>
-                                    <span *ngIf="users.type == 'group'">
-                                      {{ groupsList[users.id] }}
-                                    </span>
-                                    <span *ngIf="u<data.subscribers.length-1">,</span>
-                                </span>
+                                  Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
@@ -609,7 +602,7 @@
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Type:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ fuelTypes[fluid.fuelType] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ fluid.fuelType }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 1 Capacity:

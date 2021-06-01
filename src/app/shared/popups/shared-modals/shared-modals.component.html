@@ -779,7 +779,7 @@
                             [(ngModel)]="countryCode" placeholder="Select state" #mCountry="ngModel" required >
 
                             <ng-option value="CA">Canada</ng-option>
-                            <ng-option value="US">United States of America</ng-option>
+                            <ng-option value="US">United States</ng-option>
                           </ng-select>
                           <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
                             <div *ngIf="mCountry.errors.required">
@@ -1611,7 +1611,7 @@
                               {{country.countryName}}
                             </ng-option> -->
                             <ng-option value="CA">Canada</ng-option>
-                            <ng-option value="US">United States of America</ng-option>
+                            <ng-option value="US">United States</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-6">

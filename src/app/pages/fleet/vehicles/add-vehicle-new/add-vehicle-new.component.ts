@@ -94,7 +94,7 @@ export class AddVehicleNewComponent implements OnInit {
     estimatedServiceMonths: '',
     estimatedServiceMiles: '',
     estimatedResaleValue: '',
-    outOfServiceDate: '',
+    outOfServiceDate: null,
     outOfServiceOdometer: '',
   };
   specifications = {
@@ -120,11 +120,11 @@ export class AddVehicleNewComponent implements OnInit {
     EPAHighway: '',
   };
   insurance = {
-    dateOfIssue: '',
+    dateOfIssue: null,
     premiumAmount: '',
     premiumCurrency: null,
     vendorID: null,
-    dateOfExpiry: '',
+    dateOfExpiry: null,
     reminder: '',
     remiderEvery: null,
     policyNumber: '',
@@ -182,12 +182,12 @@ export class AddVehicleNewComponent implements OnInit {
   };
   purchase = {
     purchaseVendorID: null,
-    warrantyExpirationDate: '',
+    warrantyExpirationDate: null,
     warrantyExpirationDateReminder: false,
     purchasePrice: '',
     purchasePriceCurrency: null,
     warrantyExpirationMeter: '',
-    purchaseDate: '',
+    purchaseDate: null,
     purchaseComments: '',
     purchaseOdometer: '',
   };
@@ -199,12 +199,12 @@ export class AddVehicleNewComponent implements OnInit {
     annualPercentageRate: '',
     downPayment: '',
     downPaymentCurrency: null,
-    dateOfLoan: '',
+    dateOfLoan: null,
     monthlyPayment: '',
     monthlyPaymentCurrency: null,
     firstPaymentDate: '',
     numberOfPayments: '',
-    loadEndDate: '',
+    loadEndDate: null,
     accountNumber: '',
     generateExpenses: '',
     notes: '',
@@ -276,7 +276,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers();
     this.listService.fetchModels();

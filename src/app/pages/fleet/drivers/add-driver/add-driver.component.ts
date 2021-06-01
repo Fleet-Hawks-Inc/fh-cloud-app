@@ -82,7 +82,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     firstName: '',
     lastName: '',
     startDate: '',
-    terminationDate: '',
+    terminationDate: null,
     contractStart: '',
     contractEnd: '',
     password: '',
@@ -128,7 +128,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       ACI_ID: '',
       ACE_ID: '',
       fast_ID: '',
-      fastExpiry: '',
+      fastExpiry: null,
       csa: false,
     },
     paymentDetails: {
@@ -160,7 +160,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       licenceExpiry: '',
       licenceNotification: true,
       WCB: '',
-      medicalCardRenewal: '',
+      medicalCardRenewal: null,
       healthCare: '',
       vehicleType: '',
     },
@@ -237,6 +237,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  
   Error = '';
   Success = '';
   visibleIndex = 0;
@@ -1239,6 +1240,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     };
 
     $('#addDriverGroupModal').modal('hide');
+ 
   }
+  
 
 }

@@ -61,6 +61,7 @@ export class AddGeofenceComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
   search: any;
@@ -145,6 +146,7 @@ export class AddGeofenceComponent implements OnInit {
   addGeofenceType() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
     this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
       complete: () => { },
@@ -159,14 +161,18 @@ export class AddGeofenceComponent implements OnInit {
           .subscribe({
             complete: () => {
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.submitDisabled = false;
         this.toastr.success('Type Added successfully');
         $('#addGeofenceCategoryModal').modal('hide');
         this.fetchGeofenceTypes();
@@ -177,6 +183,7 @@ export class AddGeofenceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.spinner.show();
     this.apiService.postData('geofences', this.geofenceData).subscribe({
       complete: () => { },
@@ -193,8 +200,11 @@ export class AddGeofenceComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.spinner.hide();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
@@ -202,6 +212,7 @@ export class AddGeofenceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.submitDisabled = false;
         this.toastr.success('Geofence Added successfully');
         this.spinner.hide();
         this.router.navigateByUrl('/fleet/geofence/list');
@@ -295,6 +306,7 @@ export class AddGeofenceComponent implements OnInit {
   */
  updateGeofence() {
   this.hasError = false;
+  this.submitDisabled = true;
   this.hasSuccess = false;
   this.apiService.putData('geofences', this.geofenceData).subscribe({
     complete: () => { },
@@ -309,8 +321,11 @@ export class AddGeofenceComponent implements OnInit {
        .subscribe({
          complete: () => {
           //  this.throwErrors();
+          this.submitDisabled = false;
          },
-         error: () => { },
+         error: () => { 
+          this.submitDisabled = false;
+         },
          next: () => { },
        });
    },

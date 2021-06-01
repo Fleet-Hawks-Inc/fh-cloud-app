@@ -134,6 +134,7 @@ export class AddServiceComponent implements OnInit {
   existingDocs = [];
   vehicleDisabled = false;
 
+  resolvedIssues: any = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -423,7 +424,9 @@ export class AddServiceComponent implements OnInit {
 
   getResolvedIssues(id){
     id = JSON.stringify(id);
+    console.log('before', this.issues)
     this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
+      this.resolvedIssues = result;
       for (let i = 0; i < result.length; i++) {
         const element = result[i];
         element.selected = true;
@@ -431,27 +434,25 @@ export class AddServiceComponent implements OnInit {
 
       }
     });
+    console.log('after', this.issues)
   }
 
   async getIssuesByVehicle(vehicleID) {
+    for (let z = 0; z < this.savedIssues.length; z++) {
+      this.issues.map(elem => {
+        if (elem.issueID == this.savedIssues[z]) {
+          elem.selected = true;
+        }
+      })
+    }
+
     await this.listService.fetchVehicleIssues(vehicleID);
     this.listService.issuesList.subscribe(res => {
-      this.issues = res;
+      this.issues = [...this.resolvedIssues, ...res];
     });
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
+    
   }
   async getIssuesByAsset(assetID) {
-
-    await this.listService.fetchAssetsIssues(assetID);
-    this.listService.issuesList.subscribe(res => {
-      this.issues = res;
-    });
     for (let z = 0; z < this.savedIssues.length; z++) {
       this.issues.map(elem => {
         if (elem.issueID == this.savedIssues[z]) {
@@ -459,8 +460,15 @@ export class AddServiceComponent implements OnInit {
         }
       })
     }
+    await this.listService.fetchAssetsIssues(assetID);
+    this.listService.issuesList.subscribe(res => {
+      this.issues = [...this.resolvedIssues, ...res];
+
+    });
+    
   }
   async getVehicleIssues(id: any) {
+    console.log('vehicles issues')
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     this.spinner.show();
@@ -472,6 +480,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async getAssetIssues(id) {
+    console.log('asset issues')
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     const assetID = id;

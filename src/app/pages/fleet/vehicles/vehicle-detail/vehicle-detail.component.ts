@@ -241,7 +241,9 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchFuelTypes();
+
+    //this.fetchFuelTypes();
+
     this.fetchDriversList();
     this.fetchStatesList();
     this.fetchCountriesList();

@@ -58,6 +58,7 @@ export class AddInventoryComponent implements OnInit {
   groupDescription = '';
   groupForm = '';
   hasGroupSuccess = false;
+
   groupSuccess = '';
 
   /**
@@ -83,6 +84,7 @@ export class AddInventoryComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled = false;
   Error = '';
   Success = '';
 
@@ -228,6 +230,7 @@ export class AddInventoryComponent implements OnInit {
   addInventory() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
 
     const data = {
@@ -283,9 +286,12 @@ export class AddInventoryComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.hasError = true;
+              this.submitDisabled = false;
               this.Error = 'Please see the errors';
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
@@ -321,6 +327,7 @@ export class AddInventoryComponent implements OnInit {
             this.deleteRequiredItem(this.requiredItem);
           }
         }
+
       },
     });
   }
@@ -355,6 +362,7 @@ export class AddInventoryComponent implements OnInit {
 
   updateInventory() {
     this.hasError = false;
+    this.submitDisabled = true;
     this.hasSuccess = false;
     this.hideErrors();
 
@@ -403,11 +411,14 @@ export class AddInventoryComponent implements OnInit {
       error: (err) => {
         this.hasError = true;
         this.Error = err.error;
+        this.submitDisabled = false;
       },
       next: (res) => {
+
         if (res === true) {
           this.toastr.warning('Part number already exists,please edit the existing entry');
         } else {
+
         this.response = res;
         this.toastr.success('Inventory Updated Successfully');
         this.router.navigateByUrl('/fleet/inventory/list');
@@ -418,6 +429,7 @@ export class AddInventoryComponent implements OnInit {
 
   addWarehouse() {
     this.hasWarehouseSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
 
     const data = {
@@ -444,12 +456,16 @@ export class AddInventoryComponent implements OnInit {
           .subscribe({
             complete: () => {
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => {},
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => {},
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.hasWarehouseSuccess = true;
         this.warehouseSuccess = 'Warehouse Added successfully';

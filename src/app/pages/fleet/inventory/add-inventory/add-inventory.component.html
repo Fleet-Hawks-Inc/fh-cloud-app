@@ -16,66 +16,57 @@
             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm" ><i class="fas fa-list"></i> Inventory List</a>
+            <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Inventory
+              List</a>
           </div>
         </div>
       </header>
       <div class="row">
         <div class="col pr-0">
           <div class="card-body text-dark">
-            <form class="form-horizontal form-bordered" method="get" id="form">
+            <form class="form-horizontal form-bordered" method="get" id="form" #inventoryF="ngForm">
               <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Inventory Details</label>
+                  <label
+                    class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Inventory
+                    Details</label>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-10">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Part#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label >
-                      <input
-                        type="text"
-                        name="partNumber"
-                        [(ngModel)]="partNumber"
-                        class="form-control"
-                        placeholder=" eg. 123AZ"
-                        #iPart="ngModel" required pattern="^[a-zA-Z0-9]+$"
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Part#<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <input type="text" name="partNumber" [(ngModel)]="partNumber" class="form-control"
+                        placeholder=" eg. 123AZ" #iPart="ngModel" required pattern="^[a-zA-Z0-9\s]+$" />
                       <div *ngIf="iPart.invalid && (iPart.dirty || iPart.touched)" class="text-danger">
                         <div *ngIf="iPart.errors.required">
                           Part number is required.
                         </div>
                         <div *ngIf="iPart.errors.pattern">
-                          Part Number must contain digits and letters only.
+                          Part number must contain alphanumeric characters.
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Item Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-                      >
-                      <input
-                        name="itemName"
-                        [(ngModel)]="itemName"
-                        type="text"
-                        class="form-control"
-                        placeholder=" eg. tires"
-                        #iItem="ngModel" required pattern="^[a-zA-Z]{2,30}$"
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Item Name<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <input name="itemName" [(ngModel)]="itemName" type="text" class="form-control"
+                        placeholder=" eg. tires" #iItem="ngModel" required pattern="^[a-zA-Z\s]{2,30}$" />
                       <div *ngIf="iItem.invalid && (iItem.dirty || iItem.touched)" class="text-danger">
                         <div *ngIf="iItem.errors.required">
                           Item name is required.
                         </div>
                         <div *ngIf="iItem.errors.pattern">
-                          Item name must contain letters only.
+                          Item name must contain letters.
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
+
                       <label class="control-label font-weight-bold text-lg-right pt-2">Category</label>
                       <ng-select
                         class="form-control populate"
@@ -85,9 +76,11 @@
                         #Category="ngModel">
                           <ng-option value="hardware">Hardware</ng-option>
                           <ng-option value="brakes">Brakes</ng-option>
+
                       </ng-select>
 
                       <div *ngIf="Category.invalid && (Category.dirty || Category.touched)" class="text-danger">
+
 
 
                           <!-- <div *ngIf="Category.errors.required">
@@ -97,25 +90,18 @@
 
                       </div>
                     </div>
+
                   </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-5">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label >
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <div class="row">
                         <div class="col-lg-6">
-                          <input
-                            type="number"
-                            min="0"
-                            class="form-control"
-                            placeholder="eg. 1,2,3"
-                            name="cost"
-                            [(ngModel)]="cost"
-                            placeholder="Unit cost"
-                            #iUniC="ngModel" required
-                          />
+                          <input type="number" min="0" class="form-control" placeholder="eg. 100,200,300" name="cost"
+                            [(ngModel)]="cost" placeholder="Unit cost" #iUniC="ngModel" required />
                           <div *ngIf="iUniC.invalid && (iUniC.dirty || iUniC.touched)" class="text-danger">
                             <div *ngIf="iUniC.errors.required">
                               Unit cost is required.
@@ -124,14 +110,8 @@
                           </div>
                         </div>
                         <div class="col-lg-6 pl-0">
-                          <ng-select
-                            name="costUnit"
-                            [(ngModel)]="costUnit"
-                            data-plugin-selectTwo
-                            class="form-control populate"
-                            placeholder="Select unit"
-                            #UnitB="ngModel" required
-                          >
+                          <ng-select name="costUnit" [(ngModel)]="costUnit" data-plugin-selectTwo
+                            class="form-control populate" placeholder="Select unit" #UnitB="ngModel" required>
                             <optgroup label="Select Unit">
                               <ng-option value="Each">Each</ng-option>
                               <ng-option value="Gallon">Gallon</ng-option>
@@ -144,8 +124,8 @@
                             <div>
 
                               <div *ngIf="UnitB.errors.required">
-                               Select valid Cost unit from the list.
-                               </div>
+                                Select valid unit cost from the list is required.
+                              </div>
                             </div>
 
                           </div>
@@ -153,24 +133,13 @@
                       </div>
                     </div>
                     <div class="col-lg-5">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Quantity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-                      >
-                      <input
-                        type="number"
-                        min="0"
-                        class="form-control"
-                        placeholder="eg. 10,20,30"
-                        name="quantity"
-                        [(ngModel)]="quantity"
-                        placeholder="eg. 1,2,3"
-                        #iQuan="ngModel" required
-
-
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Quantity<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <input type="number" min="0" class="form-control" placeholder="eg. 10,20,30" name="quantity"
+                        [(ngModel)]="quantity" placeholder="eg. 1,2,3" #iQuan="ngModel" required />
                       <div *ngIf="iQuan.invalid && (iQuan.dirty || iQuan.touched)" class="text-danger">
                         <div *ngIf="iQuan.errors.required">
-                          Quantity must contains numbers only.
+                          Quantity must contain numbers.
                         </div>
 
                       </div>
@@ -179,13 +148,16 @@
                   <div class="row mt-2">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label
-                      >
-                      <textarea
-                        class="form-control heighta" rows="4" name="description"
-                        [(ngModel)]="description"
-                        placeholder="Enter description of the inventory part"
-                      ></textarea>
+                          class="text-1 optional-label-color">(optional)</span></label>
+                      <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
+                        placeholder="Enter description of the inventory part" #desName2="ngModel"
+                        pattern="^[\s\S]{2,500}$"></textarea>
+                      <div *ngIf="desName2.invalid && (desName2.dirty || desName2.touched)" class="text-danger">
+                        <div *ngIf="desName2.errors.pattern">
+                          Only 500 characters are allowed.
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -194,33 +166,22 @@
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-lg-6">
-                      <label
-                        class="control-label font-weight-bold text-dark text-4 pt-2">Warehouse Details</label>
+                      <label class="control-label font-weight-bold text-dark text-4 pt-2">Warehouse Details</label>
                     </div>
                     <div class="col-lg-5">
-                      <label
-                        class="control-label font-weight-bold text-dark text-4 pt-2" >Inventory Tracking</label>
+                      <label class="control-label font-weight-bold text-dark text-4 pt-2">Inventory Tracking</label>
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-10">
-                      <label class="control-label pt-2 font-weight-bold">Select Warehouse<span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-                      >
-                      <ng-select
-                        name="warehouseID"
-                        [(ngModel)]="warehouseID"
-                        data-plugin-selectTwo
-                        class="form-control populate"
-                      placeholder="Select warehouse"
-                      #WareH="ngModel" required
-                      >
+                      <label class="control-label pt-2 font-weight-bold">Select Warehouse<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select name="warehouseID" [(ngModel)]="warehouseID" data-plugin-selectTwo
+                        class="form-control populate" placeholder="Select warehouse" #WareH="ngModel" required>
                         <optgroup label="Select">
-                          <ng-option
-                            *ngFor="let warehouse of warehouses"
-                            value="{{ warehouse.warehouseID }}"
-                          >
+                          <ng-option *ngFor="let warehouse of warehouses" value="{{ warehouse.warehouseID }}">
                             {{ warehouse.warehouseName }}
                           </ng-option>
                         </optgroup>
@@ -229,25 +190,22 @@
                         <div>
 
                           <div *ngIf="WareH.errors.required">
-                           Select valid Warehouse from the list.
-                           </div>
+                            Warehouse is required.
+                          </div>
                         </div>
 
                       </div>
                     </div>
                     <div class="col-lg-2 mar-top-37 px-0">
-                      <a
-                        [routerLink]=""
-                        (click)="showWarehoseModal()"
-                        class="modal-with-form btn cus-btn-padd btn-success"
-                        ><i class="fas fa-plus"></i
-                      ></a>
+                      <a [routerLink]="" (click)="showWarehoseModal()"
+                        class="modal-with-form btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></a>
                     </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
                       <div class="row">
                         <div class="col-lg-4">
+
                           <label
                             class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
@@ -265,10 +223,12 @@
                             class="control-label font-weight-bold text-lg-right pt-2"
                             >Bin&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
+
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-4">
+
                           <input
                             type="text"
                             class="form-control"
@@ -277,12 +237,14 @@
                             placeholder="eg. 1,2,3 "
                             #iAisle="ngModel" pattern="^[0-9]+$"/>
                           <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
+
                             <div *ngIf="iAisle.errors.pattern">
                               Aisle must contain numbers only.
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                         <div class="col-lg-4">
+
                           <input
                             type="text"
                             class="form-control"
@@ -291,10 +253,11 @@
                             placeholder="eg. 1,2,3 "
                             #iRow="ngModel" pattern="^[0-9]+$"/>
                           <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
+
                             <div *ngIf="iRow.errors.pattern">
                               Row must contain numbers only.
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                         <div class="col-lg-4">
                           <input
@@ -309,27 +272,19 @@
                               Bin must contain numbers only.
                             </div>
                           </div>
+
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <ng-select
-                        data-plugin-selectTwo
-                        class="form-control populate"
-                        name="warehouseVendorID"
-                        [(ngModel)]="warehouseVendorID"
-                        placeholder="Select vendor"
-                        #Ven="ngModel" required
-                      >
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Vendor<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select data-plugin-selectTwo class="form-control populate" name="warehouseVendorID"
+                        [(ngModel)]="warehouseVendorID" placeholder="Select vendor" #Ven="ngModel" required>
                         <optgroup label="Select Vendor">
-                          <ng-option
-                            *ngFor="let vendor of vendors | async"
-                            value="{{ vendor.contactID }}"
-                          >
+                          <ng-option *ngFor="let vendor of vendors | async" value="{{ vendor.contactID }}">
                             {{ vendor.companyName }}
                           </ng-option>
                         </optgroup>
@@ -338,16 +293,15 @@
                         <div>
 
                           <div *ngIf="Ven.errors.required">
-                           Select valid Vendor from the list.
-                           </div>
+                            Vendor is required.
+                          </div>
                         </div>
 
                       </div>
                     </div>
                     <div class="col-lg-2 mar-top-37 px-0">
                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                       class="btn cus-btn-padd btn-success modal-with-form"><i
-                                          class="fas fa-plus"></i></a>
+                        class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                     </div>
                   </div>
                 </div>
@@ -355,21 +309,11 @@
                   <div>
                     <div class="row">
                       <div class="col-lg-3">
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Quantity&nbsp; <span
-                          class="text-1 optional-label-color">(optional)</span></label
-                        >
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          name="trackingQuantity"
-                          [(ngModel)]="trackingQuantity"
-                          placeholder="eg. 1,2,3 "
-
-                      />
-                      <!-- <div *ngIf="iQuani.invalid && (iQuani.dirty || iQuani.touched)" class="text-danger">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Quantity&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
+                        <input type="number" min="0" class="form-control" name="trackingQuantity"
+                          [(ngModel)]="trackingQuantity" placeholder="eg. 1,2,3 " />
+                        <!-- <div *ngIf="iQuani.invalid && (iQuani.dirty || iQuani.touched)" class="text-danger">
                         <div *ngIf="iQuani.errors.required">
                           Quantity must contains numbers only.
                         </div>
@@ -380,20 +324,10 @@
                     </div>
                     <div class="row mt-2">
                       <div class="col-lg-3">
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Reorder Point&nbsp;<span
-                          class="text-1 optional-label-color">(opt)</span></label
-                        >
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          name="reorderPoint"
-                          [(ngModel)]="reorderPoint"
-                          placeholder="eg. 1,2,3 "
-
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Reorder Point&nbsp;<span
+                            class="text-1 optional-label-color">(opt)</span></label>
+                        <input type="number" min="0" class="form-control" name="reorderPoint" [(ngModel)]="reorderPoint"
+                          placeholder="eg. 1,2,3 " />
                         <!-- <div *ngIf="iReco.invalid && (iReco.dirty || iReco.touched)" class="text-danger">
                           <div *ngIf="iReco.errors.required">
                             Recorder Point must contains numbers only.
@@ -402,20 +336,10 @@
                         </div> -->
                       </div>
                       <div class="col-lg-3 mx-4">
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Reorder Qty&nbsp; <span
-                          class="text-1 optional-label-color">(opt)</span></label
-                        >
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          name="reorderQuality"
-                          [(ngModel)]="reorderQuality"
-                          placeholder="eg. 1,2,3 "
-
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Reorder Qty&nbsp; <span
+                            class="text-1 optional-label-color">(opt)</span></label>
+                        <input type="number" min="0" class="form-control" name="reorderQuality"
+                          [(ngModel)]="reorderQuality" placeholder="eg. 1,2,3 " />
                         <!-- <div *ngIf="iRecq.invalid && (iRecq.dirty || iRecq.touched)" class="text-danger">
                           <div *ngIf="iRecq.errors.required">
                             Recorder quality must contains numbers only.
@@ -430,38 +354,23 @@
                     </div>
                     <div class="row mt-2">
                       <div class="col-lg-3">
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Lead Time&nbsp; <span
-                          class="text-1 optional-label-color">(opt)</span></label
-                        >
-                        <input
-                          min="0"
-                          type="time"
-                          class="form-control"
-                          name="leadTime"
-                          [(ngModel)]="leadTime"
-                          placeholder="Select Lead time"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Lead Time&nbsp; <span
+                            class="text-1 optional-label-color">(opt)</span></label>
+                        <input min="0" type="time" class="form-control" name="leadTime" [(ngModel)]="leadTime"
+                          placeholder="Select Lead time" />
                       </div>
                       <div class="col-lg-6 ml-4">
-                        <label class="font-weight-bold text-lg-right pt-2"
-                          >Preferred Vendor&nbsp; <span
-                          class="text-1 optional-label-color">(optional)</span></label
-                        >
-                        <ng-select
-                          data-plugin-selectTwo
-                          class="form-control populate"
-                          name="preferredVendorID"
-                          [(ngModel)]="preferredVendorID"
-                          placeholder="Select preferred vendor"
-
-                        >
+                        <label class="font-weight-bold text-lg-right pt-2">Preferred Vendor&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
+                        <ng-select data-plugin-selectTwo class="form-control populate" name="preferredVendorID"
+                          [(ngModel)]="preferredVendorID" placeholder="Select preferred vendor">
                           <optgroup label="Select">
+
                             <ng-option
                               *ngFor="let vendor of vendors | async"
                               value="{{ vendor.contactID }}"
                             >
+
                               {{ vendor.companyName }}
                             </ng-option>
                           </optgroup>
@@ -478,8 +387,7 @@
                       </div>
                       <div class="col-lg-2 mar-top-37 px-0 pl-0">
                         <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                        class="btn cus-btn-padd btn-success modal-with-form"><i
-                           class="fas fa-plus"></i></a>
+                          class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                       </div>
                     </div>
                   </div>
@@ -487,10 +395,8 @@
               </div>
               <div class="row mt-2">
                 <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                    >Additional Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Additional
+                    Details</label>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row mt-2">
@@ -498,27 +404,15 @@
                       <div class="row">
                         <div class="col-lg-12">
                           <label
-                            class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Warranty</label
-                          >
+                            class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Warranty</label>
                         </div>
                       </div>
                       <div class="row mt-2">
                         <div class="col-lg-4">
-                          <label
-                            class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Days&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label
-                          >
-                          <input
-                            type="number"
-                            min="0"
-                            class="form-control"
-                            name="days"
-                            [(ngModel)]="days"
-                            placeholder="eg. 1,2,3 "
-
-                          />
+                          <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Days&nbsp;
+                            <span class="text-1 optional-label-color">(optional)</span></label>
+                          <input type="number" min="0" class="form-control" name="days" [(ngModel)]="days"
+                            placeholder="eg. 1,2,3 " />
                           <!-- <div *ngIf="iDays.invalid && (iDays.dirty || iDays.touched)" class="text-danger">
                             <div *ngIf="iDays.errors.required">
                               Days number must contain numbers only.
@@ -526,38 +420,26 @@
                           </div> -->
                         </div>
                         <div class="col-lg-4">
-                          <label
-                            class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Time&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label
-                          >
-                          <input
-                            min="0"
-
-                            type="time"
-
-                            class="form-control"
-                            name="time"
-                            [(ngModel)]="time"
-                            placeholder="Select Warranty time"
-                          />
+                          <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Time&nbsp;
+                            <span class="text-1 optional-label-color">(optional)</span></label>
+                          <input min="0" type="time" class="form-control" name="time" [(ngModel)]="time"
+                            placeholder="Select Warranty time" />
                         </div>
                       </div>
 
                       <div class="row mt-2">
                         <div class="col-lg-12">
-                          <label
-                            class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
-                            >Notes&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label
-                          >
-                          <textarea
-                            class="form-control"
-                            rows="3"
-                            name="notes"
-                            [(ngModel)]="notes"
-                            placeholder="Enter notes about warranty of inventory part"
-                          ></textarea>
+                          <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notes&nbsp;
+                            <span class="text-1 optional-label-color">(optional)</span></label>
+                          <textarea class="form-control" rows="3" name="notes" [(ngModel)]="notes"
+                            placeholder="Enter notes about warranty of inventory part" #notes1="ngModel"
+                            pattern="^[\s\S]{2,500}$"></textarea>
+                          <div *ngIf="notes1.invalid && (notes1.dirty || notes1.touched)" class="text-danger">
+                            <div *ngIf="notes1.errors.pattern">
+                              Only 500 characters are allowed.
+                            </div>
+
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -566,45 +448,37 @@
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-10">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Attach Photo <span
-                        class="text-1 optional-label-color">(optional)</span> </label >
-                      <input
-                        (change)="selectDocuments($event, 'uploadedPhotos')"
-                        type="file" class="form-control p-0" multiple
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo <span
+                          class="text-1 optional-label-color">(optional)</span> </label>
+                      <input (change)="selectDocuments($event, 'uploadedPhotos')" type="file" class="form-control p-0"
+                        multiple />
                     </div>
                     <div class="col-lg-2 mar-top-37">
-                      <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
+                      <!--- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
                     </div>
                   </div>
-                  <div class="row mt-2" *ngIf = 'inventoryImages?.length'>
+                  <div class="row mt-2" *ngIf='inventoryImages?.length'>
                     <div class="col-lg-5" *ngFor="let photo of inventoryImages;let i= index">
-                       <div class="vehicle-photo-box">
-                          <img [src]="photo.path" width="100%" class="img-fluid"
-                             style="height: 180px; object-fit: cover;">
-                          <hr class="m-3">
-                          <div class="row">
-                             <div class="col-lg-8">Image {{i+1}}</div>
-                             <div class="col-lg-4 text-right">
-                              <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
+                      <div class="vehicle-photo-box">
+                        <img [src]="photo.path" width="100%" class="img-fluid"
+                          style="height: 180px; object-fit: cover;">
+                        <hr class="m-3">
+                        <div class="row">
+                          <div class="col-lg-8">Image {{i+1}}</div>
+                          <div class="col-lg-4 text-right">
+                            <i class="fas fa-times text-danger" (click)="delete('image',photo.name)"></i>
 
-                             </div>
                           </div>
-                       </div>
+                        </div>
+                      </div>
                     </div>
-                 </div>
+                  </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document <span
-                        class="text-1 optional-label-color">(optional)</span></label
-                      >
-                      <input
-                        (change)="selectDocuments($event, 'uploadedDocs')"
-                        type="file" class="form-control p-0"
-                        multiple
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Attach Document <span
+                          class="text-1 optional-label-color">(optional)</span></label>
+                      <input (change)="selectDocuments($event, 'uploadedDocs')" type="file" class="form-control p-0"
+                        multiple />
                     </div>
                     <div class="col-lg-2 mar-top-37">
                       <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
@@ -612,24 +486,24 @@
                   </div>
                   <div class="row mt-2" *ngIf="inventoryDocs?.length">
                     <div class="col-lg-10">
-                       <div class="vehicle-common-box p-3">
-                          <div class="row">
-                             <div class="col-lg-6"><label
-                                   class="control-label font-weight-bold text-3">Document(s)</label></div>
-                             <div class="col-lg-6 text-right">
-                             </div>
+                      <div class="vehicle-common-box p-3">
+                        <div class="row">
+                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label>
                           </div>
-                          <hr class="solid mt-2">
-                          <div class="row mb-1" *ngFor="let doc of inventoryDocs;let d= index">
-                             <div class="col-lg-9" > <a href="{{doc.path}}" target="_blank">Document No. {{d+1}}</a></div>
-                             <div class="col-lg-3 text-right">
-                              <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
-                                <i class="fas fa-times text-danger" (click)="delete('doc',doc.name)"></i>
-                             </div>
+                          <div class="col-lg-6 text-right">
                           </div>
-                       </div>
+                        </div>
+                        <hr class="solid mt-2">
+                        <div class="row mb-1" *ngFor="let doc of inventoryDocs;let d= index">
+                          <div class="col-lg-9"> <a href="{{doc.path}}" target="_blank">Document No. {{d+1}}</a></div>
+                          <div class="col-lg-3 text-right">
+                            <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
+                            <i class="fas fa-times text-danger" (click)="delete('doc',doc.name)"></i>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                 </div>
+                  </div>
                 </div>
               </div>
 
@@ -641,16 +515,29 @@
                     <div class="col-5 offset-1">
                       <div class="row">
                         <div class="col-10">
-                          <button type="button" class="btn btn-default mr-2" routerLink="/fleet/inventory/list" >
+                          <button type="button" class="btn btn-default mr-2" routerLink="/fleet/inventory/list">
                             Cancel
                           </button>
-                          <button  *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Save</button>
-                          <a href="javascript:;" *ngIf="itemID" (click)="updateInventory()" class="btn btn-success">Update</a>
+
+                          <!-- if there is some error in validation  -->
+                          <button *ngIf="!itemID && !inventoryF.form.valid" (click)="addInventory()"
+                            class="btn btn-success" [disabled]="!inventoryF.form.valid">Save</button>
+
+                          <!-- if validations are ok and now the button will disable on submit click  -->
+                          <button *ngIf="!itemID && inventoryF.form.valid" (click)="addInventory()"
+                            class="btn btn-success" [disabled]="submitDisabled">Save</button>
+
+                          <!--- update case -->
+                          <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
+                            [disabled]="!inventoryF.form.valid" class="btn btn-success">Update</button>
+
+                          <button *ngIf="itemID  && inventoryF.form.valid" (click)="updateInventory()"
+                            [disabled]="submitDisabled" class="btn btn-success">Update</button>
                         </div>
                       </div>
                     </div>
                   </div>
-               </div>
+                </div>
               </div>
               <div class="form-group row border-0">
                 <div class="col-lg-12">
@@ -668,6 +555,7 @@
   </div>
 </section>
 
+
 <div
   class="modal fade"
   id="warehouseModal"
@@ -676,47 +564,41 @@
   aria-labelledby="addInventorywarehouseModal"
   aria-hidden="true"
 >
+
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form id="warehoseForm" #warehouseForm="ngForm">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Warehouse</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
-          </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Warehouse</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+            </i>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
 
           <div class="form-row">
             <div class="form-group col-lg-12">
-              <label class="control-label font-weight-bold"
-                >Warehouse Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-              >
-              <input type="text" class="form-control"  name="warehouseName" placeholder="Enter warehouse name"
-              [(ngModel)]="warehouseName" #aWarehouse="ngModel" required pattern="^[a-zA-Z\s]+$"/>
+              <label class="control-label font-weight-bold">Warehouse Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+              <input type="text" class="form-control" name="warehouseName" placeholder="Enter warehouse name"
+                [(ngModel)]="warehouseName" #aWarehouse="ngModel" required pattern="^[a-zA-Z\s]+$" />
               <div *ngIf="aWarehouse.invalid && (aWarehouse.dirty || aWarehouse.touched)" class="text-danger">
                 <div *ngIf="aWarehouse.errors.required">
-                  Warehouse Name is required.
+                  Warehouse name is required.
                 </div>
                 <div *ngIf="aWarehouse.errors.pattern">
-                       Warehouse Name must contains uppercase, lowercase and special characters for period(space) only.
+                  Warehouse name must contain letters.
                 </div>
               </div>
             </div>
           </div>
           <div class="form-row pt-3">
             <div class="form-group col-lg-12">
-              <label class="control-label text-4 font-weight-bold"
-                >Address</label
-              >
+              <label class="control-label text-4 font-weight-bold">Address</label>
               <div class="row">
                 <div class="col-lg-6">
+
                   <label
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Select Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
@@ -738,9 +620,11 @@
                     Select valid country from the list is required.
                   </div>
 
-                </div>
+
+                  </div>
                 </div>
                 <div class="col-lg-6">
+
                   <label
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Select Province <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
@@ -764,7 +648,8 @@
                     Select valid province from the list is required.
                   </div>
 
-                </div>
+
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -790,39 +675,37 @@
                    Select valid city from the list is required.
                   </div>
 
-                </div>
+
+                  </div>
                 </div>
                 <div class="col-lg-6">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-                  >
-                  <input type="text" class="form-control"  name="zipCode"
-                  [(ngModel)]="zipCode" placeholder="Enter zip code" #cCode="ngModel" required pattern="^[a-zA-Z0-9\s]+$"/>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code <span
+                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                  <input type="text" class="form-control" name="zipCode" [(ngModel)]="zipCode"
+                    placeholder="Enter zip code" #cCode="ngModel" required pattern="^[a-zA-Z0-9\s]+$" />
                   <div *ngIf="cCode.invalid && (cCode.dirty || cCode.touched)" class="text-danger">
                     <div *ngIf="cCode.errors.required">
-                      Zip Code is required.
+                      Zip code is required.
                     </div>
                     <div *ngIf="cCode.errors.pattern">
-                           Zip Code must contains uppercase, lowercase, numbers and special characters for period(space) only.
+                      Zip code must contain alphanumeric characters.
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Street Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input type="text" class="form-control"  name="address"
-                  [(ngModel)]="address" placeholder="eg. 01, Business Hub Center " #sAddress="ngModel" required pattern="^[a-zA-Z0-9\s\-\,\&\/]+$"/>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Street Address <span
+                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                  <input type="text" class="form-control" name="address" [(ngModel)]="address"
+                    placeholder="eg. 01, Business Hub Center " #sAddress="ngModel" required />
                   <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)" class="text-danger">
                     <div *ngIf="sAddress.errors.required">
-                      Street Address  is required.
+                      Street Address is required.
                     </div>
-                    <div *ngIf="sAddress.errors.pattern">
+                    <!-- <div *ngIf="sAddress.errors.pattern">
                            Street Address must contains uppercase, lowercase, numbers and special characters for period(space,&,-,',') only.
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -837,20 +720,21 @@
             </div>
           </div>
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Cancel
-        </button>
-        <button type="button" class="btn btn-success" [routerLink]=""
-        (click)="addWarehouse()" [disabled]="!warehouseForm.form.valid">Save</button>
-      </div>
-    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-success" [routerLink]="" (click)="addWarehouse()"
+            [disabled]="!warehouseForm.form.valid">Save</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
- <!-- VIEW DOCUMENT MODAL -->
- <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -860,15 +744,14 @@
         </button>
       </div>
       <div class="modal-body">
-           <div class="form-row">
-              <div class="form-group col-md-12">
-                 <div>
-                    <iframe [src]='pdfSrc'
-                    frameborder="0" width="100%" height="400px"> </iframe>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <div>
+              <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
 
-                 </div>
-              </div>
-           </div>
+            </div>
+          </div>
+        </div>
 
       </div>
       <div class="modal-footer">
