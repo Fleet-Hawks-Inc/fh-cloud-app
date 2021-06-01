@@ -722,7 +722,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.submitDisabled = true;
     try {
-      return await new Promise((resolve, reject) => {
+      
         this.apiService.postData('drivers', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -739,8 +739,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                   this.throwErrors();
                   this.hasError = true;
                   this.submitDisabled = false;
-                  if (err) return reject(err);
-                  this.spinner.hide();
+                 
                 },
                 error: () => {
                   this.submitDisabled = false;
@@ -761,7 +760,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.router.navigateByUrl('/fleet/drivers/list');
           },
         });
-      });
     } catch (error) {
       this.submitDisabled = false;
       return 'error found';
@@ -1031,7 +1029,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     formData.append('data', JSON.stringify(this.driverData));
 
     try {
-      return await new Promise((resolve, reject) => {
+      
         this.apiService.putData('drivers', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -1047,7 +1045,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                   this.throwErrors();
                   this.hasError = false;
                   this.submitDisabled = false;
-                  if (err) return reject(err);
+                
                   // this.toastr.error('Please see the errors');
                 },
                 error: () => { 
@@ -1068,8 +1066,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           //  this.cancel();
 
           },
-        })
-      })
+        });
+     
     } catch (error) {
       this.submitDisabled = false;
     }
