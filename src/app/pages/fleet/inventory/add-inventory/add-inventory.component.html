@@ -13,7 +13,7 @@
       <header class="page-header">
         <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">New Inventory Part</h4>
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Inventory
@@ -66,32 +66,31 @@
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-10">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Category<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <ng-select data-plugin-selectTwo class="form-control populate" name="categoryID"
-                        [(ngModel)]="categoryID" placeholder="Enter inventory category of inventory part"
-                        #Category="ngModel" required>
-                        <optgroup label="Select Category">
-                          <ng-option *ngFor="let group of itemGroups" value="{{ group.groupID }}">
-                            {{ group.groupName }}
-                          </ng-option>
-                        </optgroup>
+
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Category</label>
+                      <ng-select
+                        class="form-control populate"
+                        name="category"
+                        [(ngModel)]="category"
+                        placeholder="Select inventory category of inventory part"
+                        #Category="ngModel">
+                          <ng-option value="hardware">Hardware</ng-option>
+                          <ng-option value="brakes">Brakes</ng-option>
+
                       </ng-select>
 
                       <div *ngIf="Category.invalid && (Category.dirty || Category.touched)" class="text-danger">
-                        <div>
 
-                          <div *ngIf="Category.errors.required">
-                            Category is required.
-                          </div>
-                        </div>
+
+
+                          <!-- <div *ngIf="Category.errors.required">
+                           Select valid Category from the list.
+                           </div> -->
+
 
                       </div>
                     </div>
-                    <div class="col-lg-2 mar-top-37 px-0">
-                      <a (click)="showCategoryModal()" [routerLink]=""
-                        class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                    </div>
+
                   </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">
@@ -152,7 +151,7 @@
                           class="text-1 optional-label-color">(optional)</span></label>
                       <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
                         placeholder="Enter description of the inventory part" #desName2="ngModel"
-                        pattern="^[\s\S]{2,500}$"></textarea>
+                        pattern="^[\s\S]{1,500}$"></textarea>
                       <div *ngIf="desName2.invalid && (desName2.dirty || desName2.touched)" class="text-danger">
                         <div *ngIf="desName2.errors.pattern">
                           Only 500 characters are allowed.
@@ -206,47 +205,73 @@
                     <div class="col-lg-10">
                       <div class="row">
                         <div class="col-lg-4">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+
+                          <label
+                            class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
 
                         </div>
                         <div class="col-lg-4">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Row&nbsp; <span
-                              class="text-1 optional-label-color">(optional)</span>
-                          </label>
+                          <label
+                            class="control-label font-weight-bold text-lg-right pt-2"
+                            >Row&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span>
+                            </label>
                         </div>
                         <div class="col-lg-4">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Bin&nbsp; <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                          <label
+                            class="control-label font-weight-bold text-lg-right pt-2"
+                            >Bin&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
+
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-4">
-                          <input type="text" class="form-control" name="aisle" [(ngModel)]="aisle"
-                            placeholder="eg. 1,2,3 " #iAisle="ngModel" />
-                          <!-- <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="aisle"
+                            [(ngModel)]="aisle"
+                            placeholder="eg. 1,2,3 "
+                            #iAisle="ngModel" pattern="^[0-9]+$"/>
+                          <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
+
                             <div *ngIf="iAisle.errors.pattern">
                               Aisle must contain numbers only.
                             </div>
                           </div> -->
                         </div>
                         <div class="col-lg-4">
-                          <input type="text" class="form-control" name="row" [(ngModel)]="row" placeholder="eg. 1,2,3 "
-                            #iRow="ngModel" />
-                          <!-- <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="row"
+                            [(ngModel)]="row"
+                            placeholder="eg. 1,2,3 "
+                            #iRow="ngModel" pattern="^[0-9]+$"/>
+                          <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
+
                             <div *ngIf="iRow.errors.pattern">
                               Row must contain numbers only.
                             </div>
                           </div> -->
                         </div>
                         <div class="col-lg-4">
-                          <input type="text" class="form-control" name="bin" [(ngModel)]="bin" placeholder="eg. 1,2,3"
-                            #iBin="ngModel" />
-                          <!-- <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="bin"
+                            [(ngModel)]="bin"
+                            placeholder="eg. 1,2,3"
+                            #iBin="ngModel" pattern="^[0-9]+$"/>
+                          <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
                             <div *ngIf="iBin.errors.pattern">
                               Bin must contain numbers only.
                             </div>
-                          </div> -->
+                          </div>
 
                         </div>
                       </div>
@@ -340,7 +365,12 @@
                         <ng-select data-plugin-selectTwo class="form-control populate" name="preferredVendorID"
                           [(ngModel)]="preferredVendorID" placeholder="Select preferred vendor">
                           <optgroup label="Select">
-                            <ng-option *ngFor="let vendor of vendors | async" value="{{ vendor.vendorID }}">
+
+                            <ng-option
+                              *ngFor="let vendor of vendors | async"
+                              value="{{ vendor.contactID }}"
+                            >
+
                               {{ vendor.companyName }}
                             </ng-option>
                           </optgroup>
@@ -403,7 +433,7 @@
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <textarea class="form-control" rows="3" name="notes" [(ngModel)]="notes"
                             placeholder="Enter notes about warranty of inventory part" #notes1="ngModel"
-                            pattern="^[\s\S]{2,500}$"></textarea>
+                            pattern="^[\s\S]{1,500}$"></textarea>
                           <div *ngIf="notes1.invalid && (notes1.dirty || notes1.touched)" class="text-danger">
                             <div *ngIf="notes1.errors.pattern">
                               Only 500 characters are allowed.
@@ -525,74 +555,18 @@
   </div>
 </section>
 
-<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <form form #cInventory="ngForm">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Inventory Category</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="far fa-window-close modal-dismiss" style="font-size: 25px"></i>
-          </button>
-        </div>
-        <div class="modal-body text-dark" id="groupForm">
 
-          <div class="form-row">
-            <div class="form-group col-lg-12">
-              <label class="control-label font-weight-bold">Category Name <span
-                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input type="text" class="form-control" [(ngModel)]="groupName" name="groupName"
-                placeholder="eg. Raw Materials" #inventory="ngModel" required pattern="^[a-zA-Z\s]+$" />
-              <div *ngIf="inventory.invalid && (inventory.dirty || inventory.touched)" class="text-danger">
-                <div *ngIf="inventory.errors.required">
-                  Category name is required.
-                </div>
-                <div *ngIf="inventory.errors.pattern">
-                  Category name must contain letters.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-lg-12">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
-                      class="text-1 optional-label-color">(optional)</span></label>
-                  <textarea class="form-control heighta" rows="2" id="comment" [(ngModel)]="groupDescription"
-                    name="groupDescription" placeholder="Enter item category description"></textarea>
-                </div>
-              </div>
 
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-lg-12">
-              <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
-              <p class="text text-success" *ngIf="hasGroupSuccess">
-                {{ groupSuccess }}
-              </p>
-            </div>
-          </div>
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Cancel
-          </button>
-          <button type="button" class="btn btn-success" [routerLink]="" (click)="addGroup()"
-            [disabled]="!cInventory.form.valid">
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<div
+  class="modal fade"
+  id="warehouseModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addInventorywarehouseModal"
+  aria-hidden="true"
+>
 
-<div class="modal fade" id="warehouseModal" tabindex="-1" role="dialog" aria-labelledby="addInventorywarehouseModal"
-  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <form id="warehoseForm" #warehouseForm="ngForm">
@@ -626,58 +600,84 @@
               <label class="control-label text-4 font-weight-bold">Address</label>
               <div class="row">
                 <div class="col-lg-6">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country <span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select data-plugin-selectTwo class="form-control populate" name="countryID"
-                    [(ngModel)]="countryID" (change)="getStates()" placeholder="Select country" #sltI="ngModel"
-                    required>
-                    <optgroup label="Select Country">
-                      <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}
-                      </ng-option>
 
-                    </optgroup>
-                  </ng-select>
-                  <div *ngIf="sltI.invalid && (sltI.dirty || sltI.touched)" class="text-danger">
-                    <div *ngIf="sltI.errors.required">
-                      Country is required.
-                    </div>
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
+                  >
+                  <ng-select
+                  data-plugin-selectTwo
+                  class="form-control populate"
+                  name="countryCode"
+                  [(ngModel)]="countryCode"
+                  (change)="getStates(countryCode)"
+                  placeholder="Select country" #sltI="ngModel" required>
+                  <optgroup label="Select Country">
+                    <ng-option value="CA">Canada</ng-option>
+                    <ng-option value="US">United States</ng-option>
+                  </optgroup>
+                </ng-select>
+                <div *ngIf="sltI.invalid && (sltI.dirty || sltI.touched)" class="text-danger">
+                  <div *ngIf="sltI.errors.required">
+                    Select valid country from the list is required.
+                  </div>
+
 
                   </div>
                 </div>
                 <div class="col-lg-6">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Province/State <span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select data-plugin-selectTwo class="form-control populate" name="stateID" [(ngModel)]="stateID"
-                    (change)="getCities()" placeholder="Select Province" #sltP="ngModel" required>
-                    <optgroup label="Select State">
 
-                      <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
 
-                    </optgroup>
-                  </ng-select>
-                  <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
-                    <div *ngIf="sltP.errors.required">
-                      Province/State is required.
-                    </div>
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select Province/State <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
+                  >
+                  <ng-select
+                  data-plugin-selectTwo
+                  class="form-control populate"
+                  name="stateCode"
+                  [(ngModel)]="stateCode"
+                  (change)="getCities(countryCode,stateCode)"
+                  placeholder="Select Province" #sltP="ngModel" required
+                >
+                  <optgroup label="Select State">
+
+                         <ng-option *ngFor="let state of states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
+
+                  </optgroup>
+                </ng-select>
+                <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
+                  <div *ngIf="sltP.errors.required">
+                    Select valid province from the list is required.
+                  </div>
+
 
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-6">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select City <span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select data-plugin-selectTwo class="form-control populate" name="cityID" [(ngModel)]="cityID"
-                    placeholder="Select city" #sltC="ngModel" required>
-                    <optgroup label="Select City">
-                      <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select City <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
+                  >
+                  <ng-select
+                  data-plugin-selectTwo
+                  class="form-control populate"
+                  name="cityName"
+                  [(ngModel)]="cityName"
+                  placeholder="Select city" #sltC="ngModel" required
+                >
+                  <optgroup label="Select City">
+                    <ng-option *ngFor="let city of cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
 
-                    </optgroup>
-                  </ng-select>
-                  <div *ngIf="sltC.invalid && (sltC.dirty || sltC.touched)" class="text-danger">
-                    <div *ngIf="sltC.errors.required">
-                      City is required.
-                    </div>
+                  </optgroup>
+                </ng-select>
+                <div *ngIf="sltC.invalid && (sltC.dirty || sltC.touched)" class="text-danger">
+                  <div *ngIf="sltC.errors.required">
+                   Select valid city from the list is required.
+                  </div>
+
 
                   </div>
                 </div>

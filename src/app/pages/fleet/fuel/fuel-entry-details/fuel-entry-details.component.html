@@ -52,7 +52,10 @@
                                        <td class="back-color-gray font-weight-bold">Unit Name</td>
                                        <td>
                                           <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.unitNumber}}</span>
-                                          <span *ngIf="fuelData.fuelProvider=='Manual'"> {{vehicleList[fuelData.unitNumber]}}</span>
+                                          <span *ngIf="fuelData.fuelProvider=='Manual'">
+                                             <span *ngIf="fuelData.unitType=='vehicle'">{{vehicleList[fuelData.unitNumber]}}</span>
+                                             <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitNumber]}}</span>
+                                             </span>
                                            </td>
                                     </tr>
                                     

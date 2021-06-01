@@ -779,24 +779,24 @@ export class AddressBookComponent implements OnInit {
   //   return '';
   // }
 
-  async fetchStatesByName(name: string) {
-    let result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID);
-      return result.Items[0].stateID;
-    }
-    return '';
-  }
+  // async fetchStatesByName(name: string) {
+  //   let result = await this.apiService.getData(`states/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     this.getCities(result.Items[0].stateID);
+  //     return result.Items[0].stateID;
+  //   }
+  //   return '';
+  // }
 
-  async fetchCitiesByName(name: string) {
-    let result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
+  // async fetchCitiesByName(name: string) {
+  //   let result = await this.apiService.getData(`cities/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     return result.Items[0].cityID;
+  //   }
+  //   return '';
+  // }
 
   addAddress(data) {
     this.searchResults = [];
@@ -2306,7 +2306,7 @@ export class AddressBookComponent implements OnInit {
 
   getStates(countryCode, type='', index='') {
     let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    
+
     let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     if(type == 'vendor') {
       this.vendorData.address[index].countryName = countryName;
