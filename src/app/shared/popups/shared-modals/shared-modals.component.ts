@@ -1578,13 +1578,16 @@ getVehicleStates(event: any) {
       }
     }
     this.apiService.getData(`carriers/${currentUserCarrier}`).subscribe(result => {
-      if(result.Items[0].addressDetails !== undefined) {
-        result.Items[0].addressDetails.map(e => {
-          if (e.addressType === 'yard') {
-            this.carrierYards.push(e);
-          }
-        });
+      if(result.Items.length > 0) {
+        if(result.Items[0].addressDetails !== undefined) {
+          result.Items[0].addressDetails.map(e => {
+            if (e.addressType === 'yard') {
+              this.carrierYards.push(e);
+            }
+          });
+        }
       }
+      
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {

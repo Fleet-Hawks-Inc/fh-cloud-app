@@ -769,15 +769,15 @@ export class AddressBookComponent implements OnInit {
     $('div').removeClass('show-search__result');
   }
 
-  async fetchCountriesByName(name: string) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID);
-      return result.Items[0].countryID;
-    }
-    return '';
-  }
+  // async fetchCountriesByName(name: string) {
+  //   let result = await this.apiService.getData(`countries/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     this.getStates(result.Items[0].countryID);
+  //     return result.Items[0].countryID;
+  //   }
+  //   return '';
+  // }
 
   async fetchStatesByName(name: string) {
     let result = await this.apiService.getData(`states/get/${name}`)
