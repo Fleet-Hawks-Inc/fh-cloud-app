@@ -311,7 +311,6 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetType = result.assetType;
         this.assetsData.assetDetails.year = result.assetDetails.year;
         this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
-        // this.getModels(result.assetDetails.manufacturer);
         this.assetsData.assetDetails.model = result.assetDetails.model;
         this.assetsData.assetDetails.length = result.assetDetails.length;
         this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
