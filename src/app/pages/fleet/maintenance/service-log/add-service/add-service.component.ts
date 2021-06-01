@@ -422,7 +422,7 @@ export class AddServiceComponent implements OnInit {
   /*
    * Get all stocks from api
    */
-  fetchInventory() {
+  fetchInventory() { 
     this.apiService.getData('items/serviceLog/list').subscribe((result: any) => {
       this.inventory = result;
       console.log('this.inventory', this.inventory);
