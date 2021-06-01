@@ -503,7 +503,7 @@ users = [];
     this.fetchAssets();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
@@ -1392,11 +1392,11 @@ getVehicleStates(event: any) {
         }
       });
   }
-  fetchFuelTypes(){
-    this.apiService.getData('fuelTypes').subscribe((result: any) => {
-      this.fuelTypes = result.Items;
-    });
-  }
+  // fetchFuelTypes(){
+  //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
+  //     this.fuelTypes = result.Items;
+  //   });
+  // }
 
    /*
    * Selecting files before uploading

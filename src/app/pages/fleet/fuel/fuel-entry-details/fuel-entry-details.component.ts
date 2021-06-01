@@ -259,11 +259,11 @@ export class FuelEntryDetailsComponent implements OnInit {
     $('#showBtn' + i).show();
     $('#hideBtn' + i).hide();
   }
- async fetchFuelEntry() {
-  //  console.log(this.fuelID)
-   await this.apiService
+  fetchFuelEntry() {
+    //console.log(this.fuelID)
+    this.apiService
       .getData('fuelEntries/' + this.fuelID)
-      .subscribe(async (result: any) => {
+      .subscribe( (result: any) => {
 
       //  console.log(result)
        //console.log(result)
@@ -356,7 +356,7 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.unitType = result.unitType;
          this.fuelData.unitNumber = result.unitID;
         this.fuelData.unitOfMeasure=result.fuelUnit;
-        this.fuelData.discountType = await this.discountList[result.discType];
+        this.fuelData.discountType = this.discountList[result.discType];
         this.fuelData.discountAmount = result.discAmount;
         this.fuelData.DEFFuelQty=result.DEFFuelQty;
         this.fuelData.DEFFuelQtyAmt=result.DEFFuelQtyAmt
@@ -370,7 +370,7 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.fuelProvider=result.fuelProvider;
          this.fuelData.amountPaid=result.amountPaid;
          this.fuelData.fuelDateTime =  date.format('MMM Do YYYY')+" "+ result.fuelTime
-         this.fuelData.paidBy = await this.driverList[result.paidBy];
+         this.fuelData.paidBy = this.driverList[result.paidBy];
          this.fuelData.fuelCardNumber = result.fuelCardNumber;
          this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
          this.fuelData.deductFromPay=result.deductFromPay || false;
@@ -411,10 +411,11 @@ export class FuelEntryDetailsComponent implements OnInit {
       });
   }
    // delete uploaded images and documents
- delete(name: string){
-  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
-    this.toastr.success("Image is Successfully delete")
-    this.fetchFuelEntry();
+  delete(name: string){
+ this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe(() => {
+           window.location.reload();
+    this.toastr.success("Image is Successfully deleted")
   });
+  
 }
 }
