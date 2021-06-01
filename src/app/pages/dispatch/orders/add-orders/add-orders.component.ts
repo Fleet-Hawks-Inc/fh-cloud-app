@@ -275,7 +275,6 @@ export class AddOrdersComponent implements OnInit {
 
   shippersObjects: any = {};
   receiversObjects: any = {};
-  countriesObjects: any = {};
   singleDatePickerOptions;
 
   stateShipperIndex: any;
@@ -386,10 +385,7 @@ export class AddOrdersComponent implements OnInit {
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
-    this.fetchAssetTypes();
-
 
     $(document).ready(() => {
       // this.form = $("#form_").validate();
@@ -415,12 +411,6 @@ export class AddOrdersComponent implements OnInit {
     this.receivers = this.listService.receiverList;
   }
 
-  fetchAssetTypes(){
-    this.apiService.getData('assetTypes').subscribe((result) => {
-      this.assetTypes = result.Items;
-    });
-  }
-  
   timpickerInit() {}
 
   fetchStateTaxes() {
@@ -806,12 +796,6 @@ export class AddOrdersComponent implements OnInit {
   fetchReceivers() {
     this.apiService.getData("receivers").subscribe((result: any) => {
       this.receivers = result.Items;
-    });
-  }
-
-  fetchCountriesByIDs() {
-    this.apiService.getData("countries/get/list").subscribe((result: any) => {
-      this.countriesObjects = result;
     });
   }
 
