@@ -80,7 +80,7 @@ export class AddTripComponent implements OnInit {
     OrderIDs = [];
     temporaryOrderIDs = [];
     temporaryOrderNumber = [];
-    typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
+    typeOptions = ['Pickup', 'Delivery', 'Stop', 'Enroute', 'Relay', 'Switch', 'Yard'];
     ftlOptions: any = {};
     ltlOptions: any = {};
     assetModalData: any = {};
@@ -537,7 +537,7 @@ export class AddTripComponent implements OnInit {
     }
 
     async saveSelectOrderIDS() {
-        this.typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
+        // this.typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
         this.OrderIDs = this.temporaryOrderIDs;
         $("#orderModal").modal('hide');
         this.orderNo = this.temporaryOrderNumber.toString();
