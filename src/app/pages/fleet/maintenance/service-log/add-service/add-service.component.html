@@ -3,128 +3,155 @@
    <div class="inner-wrapper">
 
 
-       <section role="main" class="content-body pt-0 pl-0">
-           <header class="page-header">
-              <div class="row" style="padding-top:10px;">
-                 <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    {{pageTitle}}
-                 </div>
-                 <div class="col-md-8  col-lg-8 text-right">
-                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i>  Service Logs List</a>
-                 </div>
-              </div>
-           </header>
-           <div class="row" data-select2-id="19">
-              <div class="col" data-select2-id="18">
-                 <div class="card-body text-dark" data-select2-id="17">
-                    <form class="form-horizontal form-bordered" method="get" data-select2-id="16">
-                       <div class="form-group row">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Details</label>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1">
+      <section role="main" class="content-body pt-0 pl-0">
+         <header class="page-header">
+            <div class="row" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  {{pageTitle}}
+               </div>
+               <div class="col-md-8  col-lg-8 text-right">
+                  <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2"
+                     style="color:black;"><i class="fas fa-list"></i> Service Logs List</a>
+               </div>
+            </div>
+         </header>
+         <div class="row" data-select2-id="19">
+            <div class="col" data-select2-id="18">
+               <div class="card-body text-dark" data-select2-id="17">
+                  <form class="form-horizontal form-bordered" method="get" data-select2-id="16" #serviceaddF="ngForm">
+                     <div class="form-group row">
+                        <div class="col-lg-12">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                              Details</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
                            <div class="row">
                               <div class="col-lg-12">
                                  <div class="row">
                                     <div class="col-lg-3">
-                                       <label class="control-label font-weight-bold text-lg-right"
-                                          >Unit Type:</label>
+                                       <label class="control-label font-weight-bold text-lg-right">Unit Type:</label>
                                     </div>
                                     <div class="col-lg-6">
-                                      <div class="btn-group-toggle" data-toggle="buttons" *ngIf="!logID">
-                                        <label class="btn btn-outline btn-fleet mr-2" [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
-                                          <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType" checked hidden value="vehicle" > Vehicle </label>
-                                        <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="serviceData.unitType === 'asset'" (click) = "onChangeUnitType('asset')">
-                                          <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType"
-                                               hidden value="asset" > Asset </label>
-                                      </div>
+                                       <div class="btn-group-toggle" data-toggle="buttons" *ngIf="!logID">
+                                          <label class="btn btn-outline btn-fleet mr-2"
+                                             [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;"
+                                             (click)="onChangeUnitType('vehicle')">
+                                             <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType"
+                                                checked hidden value="vehicle"> Vehicle </label>
+                                          <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                             [class.active]="serviceData.unitType === 'asset'"
+                                             (click)="onChangeUnitType('asset')">
+                                             <input type="radio" [(ngModel)]="serviceData.unitType" name="unitType"
+                                                hidden value="asset"> Asset </label>
+                                       </div>
 
-                                      <div class="btn-group-toggle" *ngIf="logID">
-                                       <label class="btn btn-outline btn-fleet mr-2" [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;">
-                                         <input type="radio" name="unitType" checked hidden value="vehicle" > Vehicle </label>
-                                       <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="serviceData.unitType === 'asset'">
-                                         <input type="radio" name="unitType" hidden value="asset" > Asset </label>
-                                     </div>
+                                       <div class="btn-group-toggle" *ngIf="logID">
+                                          <label class="btn btn-outline btn-fleet mr-2"
+                                             [class.active]="serviceData.unitType === 'vehicle'" style="width:110px;">
+                                             <input type="radio" name="unitType" checked hidden value="vehicle"> Vehicle
+                                          </label>
+                                          <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                             [class.active]="serviceData.unitType === 'asset'">
+                                             <input type="radio" name="unitType" hidden value="asset"> Asset </label>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
 
-                             <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required [disabled]="vehicleDisabled">
-                                       <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
-                                   </ng-select>
-                                   <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
+                           <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.unitID"
+                                    name="unitID" style="width: 100%;" placeholder="Select vehicle for service"
+                                    #Vehi="ngModel" required [disabled]="vehicleDisabled">
+                                    <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">
+                                       {{vehicle.vehicleIdentification}}</ng-option>
+                                 </ng-select>
+                                 <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
                                     <div>
 
-                                      <div *ngIf="Vehi.errors.required">
-                                       Select valid Vehicle from the list.
+                                       <div *ngIf="Vehi.errors.required">
+                                          Vehicle is required.
                                        </div>
                                     </div>
 
-                                  </div>
-
-                                </div>
-                             </div>
-                             <div class="row" *ngIf="serviceData.unitType === 'asset'">
-                              <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" > Select Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.unitID" name="unitID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required [disabled]="vehicleDisabled">
-                                     <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
-                                 </ng-select>
-                                 <div *ngIf="Asse.invalid && (Asse.dirty || Asse.touched)" class="text-danger">
-                                  <div>
-
-                                    <div *ngIf="Asse.errors.required">
-                                     Select valid Asset from the list.
-                                     </div>
-                                  </div>
-
-                                </div>
+                                 </div>
 
                               </div>
                            </div>
-                             <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
-                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="number" class="form-control" placeholder="eg. 5000 , 10000 , 15000 " #Odo12="ngModel" required >
-                                   <div *ngIf="Odo12.invalid && (Odo12.dirty || Odo12.touched)" class="text-danger">
-                                    <div *ngIf="Odo12.errors.required">
-
-                                    Odometer number is required.
-                                    </div>
-
-                                  </div>
-                                </div>
-                             </div>
-                             <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input type="text" placeholder="yyyy/mm/dd" #Date="ngModel" required
-                                   (click)="d1.toggle()" (keydown)="$event.preventDefault()" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate" class="form-control">
-                                   <div *ngIf="Date.invalid && (Date.dirty || Date.touched)" class="text-danger">
+                           <div class="row" *ngIf="serviceData.unitType === 'asset'">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select
+                                    Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.unitID"
+                                    name="unitID" style="width: 100%;" placeholder="Select asset for service"
+                                    #Asse="ngModel" required [disabled]="vehicleDisabled">
+                                    <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">
+                                       {{asset.assetIdentification}}</ng-option>
+                                 </ng-select>
+                                 <div *ngIf="Asse.invalid && (Asse.dirty || Asse.touched)" class="text-danger">
                                     <div>
 
-                                      <div *ngIf="Date.errors.required">
-                                       Select valid Date.
+                                       <div *ngIf="Asse.errors.required">
+                                          Asset is required.
                                        </div>
                                     </div>
 
-                                  </div>
-                                </div>
-                             </div>
+                                 </div>
 
-                          </div>
-                          <div class="col-lg-5 offset-lg-1">
-                             <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bill#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input disabled [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control"  placeholder="Enter reference number">
-                                </div>
-                             </div>
+                              </div>
+                           </div>
+                           <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
+                              <div class="col-lg-10">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span
+                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
+                                 <input [(ngModel)]="serviceData.odometer" name="odometer" type="number"
+                                    class="form-control" placeholder="eg. 5000 , 10000 , 15000 " #Odo12="ngModel"
+                                    required>
+                                 <div *ngIf="Odo12.invalid && (Odo12.dirty || Odo12.touched)" class="text-danger">
+                                    <div *ngIf="Odo12.errors.required">
+
+                                       Odometer is required.
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion
+                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input type="text" placeholder="yyyy/mm/dd" #Date="ngModel" required
+                                    (click)="d1.toggle()" (keydown)="$event.preventDefault()" ngbDatepicker
+                                    #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate"
+                                    class="form-control">
+                                 <div *ngIf="Date.invalid && (Date.dirty || Date.touched)" class="text-danger">
+                                    <div>
+
+                                       <div *ngIf="Date.errors.required">
+                                          Completeion date is required.
+                                       </div>
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bill#<span
+                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input disabled [(ngModel)]="serviceData.reference" name="reference" type="text"
+                                    class="form-control" placeholder="Enter reference number">
+                              </div>
+                           </div>
                            <!-- <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Location&nbsp; <span
@@ -144,158 +171,183 @@
                            </div> -->
                            <div class="row">
                               <div class="col-lg-10" data-select2-id="118">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor" #Ven="ngModel" required>
-                                     <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.contactID}}">{{vendor.companyName}}</ng-option>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span
+                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;"
+                                    placeholder="Select vendor" #Ven="ngModel" required>
+                                    <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.contactID}}">
+                                       {{vendor.companyName}}</ng-option>
                                  </ng-select>
-                                 <!-- <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
-                                  <div>
+                                 <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
+
 
                                     <div *ngIf="Ven.errors.required">
-                                     Select valid Vendor from the list.
-                                     </div>
-                                  </div>
+                                       Vendor is required.
 
-                                </div> -->
+                                    </div>
+
+                                 </div>
                               </div>
                               <div class="col-lg-2  mar-top-37 pl-0">
-                                  <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                               </div>
+                                 <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                    class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
                            </div>
-                             <div class="row">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label>
-                                   <textarea
-                                       [(ngModel)]="serviceData.description"
-                                       name="description"
-                                       class="form-control"
-                                       rows="3"
-                                       style="height: auto !important;"
-                                       placeholder="Enter description about the service"></textarea>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <!-- -ISSUE DETAILS AREA -->
-                       <div class=" form-group row" *ngIf="issues">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Issue Details</label>
-                          </div>
-                          <div class="col-lg-10 offset-lg-1">
-                             <div class="row">
-                                <div class="col-lg-12 mb-2 text-right p-0">
-                                   <a (click)="gotoIssuePage()" href="javascript:;" class="btn cus-btn-padd btn-success"><em class="fas fa-plus"></em>Add Issue</a>
-                                </div>
-                                <table class="table table-bordered table-responsive-lg table-striped mb-0" id="openIssueTable">
-                                   <thead>
-                                      <tr>
-                                         <th id=""></th>
-                                         <th id="">Issue Name</th>
-                                         <th id="">Assigned To</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr *ngFor="let issue of issues; let i=index;">
-                                         <td><input [(ngModel)]="issue.selected" name="selected{{i}}" (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
-                                         <td>{{issue.issueName}}</td>
-                                         <td>{{issue.assignedTo}}</td>
-                                      </tr>
-                                      <tr *ngIf="issues.length == 0">
-                                          <td colspan="3">No Issue Found</td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="form-group row" *ngIf="issues">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service Tasks</label>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1 pl-0">
-                             <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
-                                    <ng-select [items]="tasks | async" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
-                                         (add)="addTasks()" [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
-                                    >
+                           <div class="row">
+                              <div class="col-lg-10">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
+                                    <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <textarea [(ngModel)]="serviceData.description" name="description" class="form-control"
+                                    rows="3" style="height: auto !important;"
+                                    placeholder="Enter description about the service" #notesService="ngModel"
+                                    pattern="^[\s\S]{1,500}$"></textarea>
+                                 <div *ngIf="notesService.invalid && (notesService.dirty || notesService.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="notesService.errors.pattern">
+                                       Only 500 characters are allowed.
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- -ISSUE DETAILS AREA -->
+                     <div class=" form-group row" *ngIf="issues">
+                        <div class="col-lg-12">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Issue
+                              Details</label>
+                        </div>
+                        <div class="col-lg-10 offset-lg-1">
+                           <div class="row">
+                              <div class="col-lg-12 mb-2 text-right p-0">
+                                 <a (click)="gotoIssuePage()" href="javascript:;"
+                                    class="btn cus-btn-padd btn-success"><em class="fas fa-plus"></em>Add Issue</a>
+                              </div>
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0"
+                                 id="openIssueTable">
+                                 <thead>
+                                    <tr>
+                                       <th id=""></th>
+                                       <th id="">Issue Name</th>
+                                       <th id="">Assigned To</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let issue of issues; let i=index;">
+                                       <td><input [(ngModel)]="issue.selected" name="selected{{i}}"
+                                             (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
+                                       <td>{{issue.issueName}}</td>
+                                       <td>{{issue.assignedTo}}</td>
+                                    </tr>
+                                    <tr *ngIf="issues.length == 0">
+                                       <td colspan="3">No Issue Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group row" *ngIf="issues">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service
+                              Tasks</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1 pl-0">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Service Task</label>
+                                 <ng-select [items]="tasks | async" bindLabel="taskName" [(ngModel)]="selectedTasks"
+                                    name="selectedTasks" placeholder="Select service task" (add)="addTasks()"
+                                    [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')"
+                                    (remove)="removeTasks($event)">
                                  </ng-select>
                                  <!-- <ng-container *ngFor="let task of tasks | async;">
                                        <ng-option *ngIf="task.taskType == 'service'" value="{{task.taskID}}">
                                           {{task.taskName}}
                                        </ng-option>
                                     </ng-container> -->
-                                 </div>
-                                 <div class="col-lg-2  mar-top-37 pl-0">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                                 </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'">
-                             <div class="row pt-2 mt-2">
-                                <div class="col-lg-10 text-right mt-4">
-                                   <a href="javascript:;" (click)="openReminders()"><label class="btn btn-dark text-3 pt-2 mt-1">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-10 offset-lg-1">
-                             <div class="row pt-4">
-                                <table class="table table-bordered table-striped">
-                                   <thead>
-                                      <tr>
-                                         <th id="" width="65%">Task</th>
-                                         <th id="" width="25%">Labor</th>
-                                         <th id="" width="10%">Action</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
-                                         <td>{{item.taskName}}</td>
-                                         <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control" #lab1="ngModel" pattern="^[0-9]+$"></td>
-                                         <div *ngIf="lab1.invalid && (lab1.dirty || lab1.touched)" class="text-danger">
+                              </div>
+                              <div class="col-lg-2  mar-top-37 pl-0">
+                                 <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal"
+                                    class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'">
+                           <div class="row pt-2 mt-2">
+                              <div class="col-lg-10 text-right mt-4">
+                                 <a href="javascript:;" (click)="openReminders()"><label
+                                       class="btn btn-dark text-3 pt-2 mt-1">Service Reminders<span
+                                          class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-10 offset-lg-1">
+                           <div class="row pt-4">
+                              <table class="table table-bordered table-striped">
+                                 <thead>
+                                    <tr>
+                                       <th id="" width="65%">Task</th>
+                                       <th id="" width="25%">Labor</th>
+                                       <th id="" width="10%">Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr
+                                       *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
+                                       <td>{{item.taskName}}</td>
+                                       <td><input type="text" value="0.00" name="laborCost{{i}}}"
+                                             [(ngModel)]="item.laborCost" (blur)="calculateTasks()"
+                                             class="form-control"></td>
+                                       <!-- <div *ngIf="lab1.invalid && (lab1.dirty || lab1.touched)" class="text-danger">
                                           <div *ngIf="lab1.errors.pattern">
                                             Labor must contain numbers only.
                                           </div>
-                                        </div>
-                                         <td>
-                                             <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
-                                                <i class="fas fa-times"></i>
-                                             </button>
-                                          </td>
-                                      </tr>
-                                       <tr *ngIf="serviceData.allServiceTasks.serviceTaskList.length == 0">
-                                          <td colspan="4">No Task Found</td>
-                                       </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                             <div class="row pt-2">
-                                <table class="table">
-                                   <thead>
-                                      <th class="border-0 p-0" id="" colspan="5"></th>
-                                   </thead>
-                                   <tbody>
-                                      <tr>
-                                          <td id="" width="65%" class="text-right"></td>
-                                          <td id="" width="25%" ><label class="control-label font-weight-bold text-5"></label>
-                                             <label class="control-label font-weight-bold text-5 m-0"><span [innerHtml]="totalLabors">0.00</span></label>
-                                          </td>
-                                         <td id="" width="15%" colspan="2">
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <ng-select [(ngModel)]="serviceData.allServiceTasks.currency"
-                                                   [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)"
-                                                >
-                                                   <ng-option value="CAD">CAD</ng-option>
-                                                   <ng-option value="USD">USD</ng-option>
-                                                </ng-select>
-                                            </div>
-                                          </td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                             <!-- <div class="row">
+                                        </div> -->
+                                       <td>
+                                          <button class="btn btn-sm btn-danger" type="button"
+                                             (click)="remove('tasks', item, i)">
+                                             <i class="fas fa-times"></i>
+                                          </button>
+                                       </td>
+                                    </tr>
+                                    <tr *ngIf="serviceData.allServiceTasks.serviceTaskList.length == 0">
+                                       <td colspan="4">No Task Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="row pt-2">
+                              <table class="table">
+                                 <thead>
+                                    <th class="border-0 p-0" id="" colspan="5"></th>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td id="" width="65%" class="text-right"></td>
+                                       <td id="" width="25%"><label
+                                             class="control-label font-weight-bold text-5"></label>
+                                          <label class="control-label font-weight-bold text-5 m-0"><span
+                                                [innerHtml]="totalLabors">0.00</span></label>
+                                       </td>
+                                       <td id="" width="15%" colspan="2">
+                                          <div class="d-flex justify-content-end align-items-center">
+                                             <ng-select [(ngModel)]="serviceData.allServiceTasks.currency"
+                                                [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
+                                             </ng-select>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
                                 </div>
@@ -311,106 +363,125 @@
                                    <input [disabled]="selectedTasks.length == 0" (blur)="calculateTasks()" [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" class="form-control">
                                 </div>
                              </div> -->
-                             <div class="row">
-                                <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>
-                                </div>
-                                <div class="col-lg-1">
-                                   <input readonly [(ngModel)]="serviceData.allServiceTasks.total" name="total" type="text" class="form-control" >
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="form-group row" *ngIf="issues">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service Parts</label>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1 pl-0">
-                             <div class="row pt-2">
-                                <div class="col-lg-10" data-select2-id="14">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
-                                   <ng-select [items]="inventory" bindLabel="itemName" [(ngModel)]="selectedParts" name="selectedParts" placeholder="Select service part"
-                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;"></ng-select>
+                           <div class="row">
+                              <div class="col-lg-1 offset-lg-10">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Total</label>
+                              </div>
+                              <div class="col-lg-1">
+                                 <input readonly [(ngModel)]="serviceData.allServiceTasks.total" name="total"
+                                    type="text" class="form-control">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group row" *ngIf="issues">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Service
+                              Parts</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1 pl-0">
+                           <div class="row pt-2">
+                              <div class="col-lg-10" data-select2-id="14">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Service Parts</label>
+                                 <ng-select [items]="inventory" bindLabel="itemName" [(ngModel)]="selectedParts"
+                                    name="selectedParts" placeholder="Select service part" (add)="addParts()"
+                                    [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)"
+                                    style="width: 100%;"></ng-select>
 
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1">
-                             <div class="row pt-2 mt-2">
-                                <div class="col-lg-10 text-right mt-4">
-                                   <a href="javascript:;" (click)="showPartModal()" class="modal-with-form"><label class="btn btn-dark text-3 pt-2 mt-1">Part Missing, Click Here To Request</label></a>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-10 offset-lg-1">
-                             <div class="row pt-4">
-                                <table class="table table-bordered table-striped">
-                                   <thead>
-                                      <tr>
-                                         <th width="25%" id="">Item</th>
-                                         <th width="15%" id="">Existing Quantity</th>
-                                         <th width="25%" id="">Description</th>
-                                         <th width="10%" id="">Quantity</th>
-                                         <th width="10%" id="">Rate</th>
-                                         <th width="10%" id="">Amount</th>
-                                         <th width="10%" id="">Action</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr *ngFor="let part of serviceData.allServiceParts.servicePartsList; let j = index;">
-                                         <td>
-                                            <strong>Name: </strong><span class="text-capitalize">{{part.partName}}</span><br>
-                                            <strong>Part#:</strong> <span class="text-capitalize">{{part.partNumber}}</span>
-                                          </td>
-                                         <th>{{inventoryQuantity[part.partNumber]}}</th>
-                                         <td>{{part.description ? part.description : '-'}}</td>
-                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (keyup)="checkQuantity(j)" (blur)="calculateParts()" value="0.00" class="form-control" #quan12="ngModel" pattern="^[0-9]+$"></td>
-                                         <div *ngIf="quan12.invalid && (quan12.dirty || quan12.touched)" class="text-danger">
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2 mt-2">
+                              <div class="col-lg-10 text-right mt-4">
+                                 <a href="javascript:;" (click)="showPartModal()" class="modal-with-form"><label
+                                       class="btn btn-dark text-3 pt-2 mt-1">Part Missing, Click Here To
+                                       Request</label></a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-10 offset-lg-1">
+                           <div class="row pt-4">
+                              <table class="table table-bordered table-striped">
+                                 <thead>
+                                    <tr>
+                                       <th width="25%" id="">Item</th>
+                                       <th width="15%" id="">Existing Quantity</th>
+                                       <th width="25%" id="">Description</th>
+                                       <th width="10%" id="">Quantity</th>
+                                       <th width="10%" id="">Rate</th>
+                                       <th width="10%" id="">Amount</th>
+                                       <th width="10%" id="">Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr
+                                       *ngFor="let part of serviceData.allServiceParts.servicePartsList; let j = index;">
+                                       <td>
+                                          <strong>Name: </strong><span
+                                             class="text-capitalize">{{part.partName}}</span><br>
+                                          <strong>Part#:</strong> <span
+                                             class="text-capitalize">{{part.partNumber}}</span>
+                                       </td>
+                                       <th>{{inventoryQuantity[part.partNumber]}}</th>
+                                       <td>{{part.description ? part.description : '-'}}</td>
+                                       <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}"
+                                             (keyup)="checkQuantity(j)" (blur)="calculateParts()" value="0.00"
+                                             class="form-control"></td>
+                                       <!-- <div *ngIf="quan12.invalid && (quan12.dirty || quan12.touched)" class="text-danger">
                                           <div *ngIf="quan12.errors.pattern">
                                             Quantity must contain numbers only.
                                           </div>
-                                        </div>
-                                         <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control" #rate12="ngModel" pattern="^[0-9]+$"></td>
-                                         <div *ngIf="rate12.invalid && (rate12.dirty || rate12.touched)" class="text-danger">
+                                        </div> -->
+                                       <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00"
+                                             (blur)="calculateParts()" class="form-control"></td>
+                                       <!-- <div *ngIf="rate12.invalid && (rate12.dirty || rate12.touched)" class="text-danger">
                                           <div *ngIf="rate12.errors.pattern">
                                             Rate must contain numbers only.
                                           </div>
-                                        </div>
-                                         <td><input readonly type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
-                                         <td>
-                                             <button class="btn btn-sm btn-danger" type="button" (click)="remove('parts', part, j)">
-                                                <i class="fas fa-times"></i></button>
-                                          </td>
-                                      </tr>
-                                      <tr *ngIf="serviceData.allServiceParts.servicePartsList.length == 0">
-                                          <td colspan="7">No Parts Found</td>
-                                       </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                             <div class="row pt-2">
-                                <table class="table">
-                                   <tbody>
-                                      <tr>
-                                         <td width="27%"></td>
-                                         <td width="17%"></td>
-                                         <td width="28%"></td>
-                                         <td width="10%"><label [innerHtml]="totalQuantity" class="control-label font-weight-bold text-5">0</label></td>
-                                         <td width="12%"></td>
-                                         <td width="10%"><label [innerHtml]="totalPartsPrice"  class="control-label font-weight-bold text-5 m-0">0.00</label></td>
-                                         <td width="10%">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <ng-select [(ngModel)]="serviceData.allServiceParts.currency" [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
-                                                   <ng-option value="CAD">CAD</ng-option>
-                                                   <ng-option value="USD">USD</ng-option>
-                                                </ng-select>
-                                            </div>
-                                          </td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                             <!-- <div class="row">
+                                        </div> -->
+                                       <td><input readonly type="text" [(ngModel)]="part.partCost" name="partCost{{j}}"
+                                             value="0.00" class="form-control"></td>
+                                       <td>
+                                          <button class="btn btn-sm btn-danger" type="button"
+                                             (click)="remove('parts', part, j)">
+                                             <i class="fas fa-times"></i></button>
+                                       </td>
+                                    </tr>
+                                    <tr *ngIf="serviceData.allServiceParts.servicePartsList.length == 0">
+                                       <td colspan="7">No Parts Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="row pt-2">
+                              <table class="table">
+                                 <tbody>
+                                    <tr>
+                                       <td width="27%"></td>
+                                       <td width="17%"></td>
+                                       <td width="28%"></td>
+                                       <td width="10%"><label [innerHtml]="totalQuantity"
+                                             class="control-label font-weight-bold text-5">0</label></td>
+                                       <td width="12%"></td>
+                                       <td width="10%"><label [innerHtml]="totalPartsPrice"
+                                             class="control-label font-weight-bold text-5 m-0">0.00</label></td>
+                                       <td width="10%">
+                                          <div class="d-flex justify-content-between align-items-center">
+                                             <ng-select [(ngModel)]="serviceData.allServiceParts.currency"
+                                                [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
+                                             </ng-select>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
                                 </div>
@@ -426,122 +497,154 @@
                                    <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
                                 </div>
                              </div> -->
-                             <div class="row">
-                                <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>
-                                </div>
-                                <div class="col-lg-1">
-                                   <input readonly [(ngModel)]="serviceData.allServiceParts.total" name="parts-total" type="text" class="form-control" >
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="form-group row">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1">
-                             <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                   <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple  type="file" class="form-control p-0" >
-                                </div>
-                             </div>
-                             <div class="row mt-2" *ngIf='logImages?.length'>
-                              <div class="col-lg-5 mb-2" *ngFor="let photo of logImages;let i= index">
-                                <div class="vehicle-photo-box">
-                                  <img src="{{photo.path}}" width="100%" class="img-fluid"
-                                    style="height: 180px; object-fit: cover;">
-                                  <hr class="m-3">
-                                  <div class="row">
-                                    <div class="col-lg-8">Image {{i+1}}</div>
-                                    <div class="col-lg-4 text-right">
-                                      <a href="javascript:;" (click)="delete('image',photo.name, i)" class="modal-with-form">
-                                        <i class="fas fa-times text-danger" (click)="delete('image',photo.name, i)"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </div>
+                           <div class="row">
+                              <div class="col-lg-1 offset-lg-10">
+                                 <label
+                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Total</label>
                               </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-5 offset-lg-1">
-                             <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                   <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocuments" multiple type="file" class="form-control p-0" >
-                                </div>
-                             </div>
-                             <div class="row mt-2" *ngIf="logDocs?.length">
+                              <div class="col-lg-1">
+                                 <input readonly [(ngModel)]="serviceData.allServiceParts.total" name="parts-total"
+                                    type="text" class="form-control">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <div class="col-lg-12">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
+                              Details</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
                               <div class="col-lg-10">
-                                <div class="vehicle-common-box p-3">
-                                  <div class="row">
-                                    <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label>
-                                    </div>
-                                    <div class="col-lg-6 text-right">
-                                    </div>
-                                  </div>
-                                  <hr class="solid mt-2">
-                                  <div class="row mb-1" *ngFor="let doc of logDocs;let d= index">
-                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                        (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
-                                    <div class="col-lg-3 text-right">
-                                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                        data-target="#viewDocModal"></i>
-                                      <a href="javascript:;" (click)="delete('doc',doc.name, d)" class="modal-with-form"><i
-                                          class="fas fa-times text-danger"></i></a>
-                                    </div>
-                                  </div>
-                                </div>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo
+                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos"
+                                    multiple type="file" class="form-control p-0">
                               </div>
-                            </div>
-                          </div>
-                       </div>
+                           </div>
+                           <div class="row mt-2" *ngIf='logImages?.length'>
+                              <div class="col-lg-5 mb-2" *ngFor="let photo of logImages;let i= index">
+                                 <div class="vehicle-photo-box">
+                                    <img src="{{photo.path}}" width="100%" class="img-fluid"
+                                       style="height: 180px; object-fit: cover;">
+                                    <hr class="m-3">
+                                    <div class="row">
+                                       <div class="col-lg-8">Image {{i+1}}</div>
+                                       <div class="col-lg-4 text-right">
+                                          <a href="javascript:;" (click)="delete('image',photo.name, i)"
+                                             class="modal-with-form">
+                                             <i class="fas fa-times text-danger"
+                                                (click)="delete('image',photo.name, i)"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
+                                    Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocuments"
+                                    multiple type="file" class="form-control p-0">
+                              </div>
+                           </div>
+                           <div class="row mt-2" *ngIf="logDocs?.length">
+                              <div class="col-lg-10">
+                                 <div class="vehicle-common-box p-3">
+                                    <div class="row">
+                                       <div class="col-lg-6"><label
+                                             class="control-label font-weight-bold text-3">Document(s)</label>
+                                       </div>
+                                       <div class="col-lg-6 text-right">
+                                       </div>
+                                    </div>
+                                    <hr class="solid mt-2">
+                                    <div class="row mb-1" *ngFor="let doc of logDocs;let d= index">
+                                       <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                             data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document
+                                             {{d+1}}</a> </div>
+                                       <div class="col-lg-3 text-right">
+                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)"
+                                             data-toggle="modal" data-target="#viewDocModal"></i>
+                                          <a href="javascript:;" (click)="delete('doc',doc.name, d)"
+                                             class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
 
-                       <div class="form-group row">
+                     <div class="form-group row">
                         <div class="col-lg-12 text-right">
                            <div class="row">
-                             <div class="col-5 offset-1">&nbsp;</div>
-                             <div class="col-5 offset-1">
-                               <div class="row">
-                                 <div class="col-10">
-                                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2" id="">Cancel</a>
-                                    <a *ngIf="!logID" href="javascript:;" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
-                                    <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
+                              <div class="col-5 offset-1">&nbsp;</div>
+                              <div class="col-5 offset-1">
+                                 <div class="row">
+                                    <div class="col-10">
+                                       <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2"
+                                          id="">Cancel</a>
+                                       <!-- if there is some error in validation  -->
+                                       <button *ngIf="!logID && !serviceaddF.form.valid"
+                                          [disabled]="!serviceaddF.form.valid" (click)="addService()"
+                                          class="btn btn-success" id="nextBtn">Save</button>
+                                       <!-- if validations are ok and now the button will disable on submit click  -->
+                                       <button *ngIf="!logID && serviceaddF.form.valid" [disabled]="submitDisabled"
+                                          (click)="addService()" class="btn btn-success" id="nextBtn">Save</button>
+                                       <!--- update case -->
+                                       <button *ngIf="logID && !serviceaddF.form.valid"
+                                          [disabled]="!serviceaddF.form.valid" (click)="updateService()"
+                                          class="btn btn-success">Update</button>
+
+
+                                       <button *ngIf="logID && serviceaddF.form.valid" [disabled]="submitDisabled"
+                                          (click)="updateService()" class="btn btn-success">Update</button>
+                                    </div>
                                  </div>
-                               </div>
-                             </div>
+                              </div>
                            </div>
-                         </div>
-                       </div>
-                    </form>
-                 </div>
-              </div>
-           </div>
-        </section>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </section>
    </div>
 </section>
 
 <!-- Delete MODAL -->
-<div class="modal fade" id="serviceReminderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="max-width: 600px;">
-    <div class="modal-content">
-        <div class="modal-header">
-           <h5 class="modal-title">Service Reminders</h5>
-           <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
-        </div>
-        <div class="modal-body">
+<div class="modal fade" id="serviceReminderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document" style="max-width: 600px;">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Service Reminders</h5>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+                  class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
+         </div>
+         <div class="modal-body">
 
             <table class="table">
                <tbody>
                   <tr *ngFor="let reminder of reminders;let i = index;">
                      <td width="80%">
-                        <span class="text-dark text-4 font-weight-bold">{{tasksObject[reminder.reminderTasks.task]}}</span><br>
-                        <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
+                        <span
+                           class="text-dark text-4 font-weight-bold">{{tasksObject[reminder.reminderTasks.task]}}</span><br>
+                        <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or
+                           {{reminder.reminderTasks.odometer}} miles</span><br>
                      </td>
                      <td width="20%" class="text-right">
-                        <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks(reminder)" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
-                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
+                        <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks(reminder)"
+                           class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
+                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)"
+                           class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
                      </td>
                   </tr>
                   <tr *ngIf="!(reminders.length > 0)">
@@ -550,20 +653,21 @@
                </tbody>
             </table>
 
-        </div>
-        <div class="modal-footer">
-           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-     </div>
-  </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
 </div>
 
 <div class="modal fade" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
    <div class="modal-dialog" role="document" style="max-width: 600px;">
-     <div class="modal-content">
+      <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title">Request Missing Part</h5>
-            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i
+                  class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
          </div>
          <form class="form-horizontal form-bordered" method="get" data-select2-id="17">
             <div class="modal-body">
@@ -575,8 +679,10 @@
                               <div class="col-lg-3">
                                  <div class="radio">
                                     <label class="btn btn-outline btn-fleet csbtn"
-                                       [ngClass]="(partType == 'existing')? 'active' : '' " (click)="changePartTab('existing')">
-                                       <input type="radio" name="fuelUnitType" id="existingPart" checked hidden value="vehicle">
+                                       [ngClass]="(partType == 'existing')? 'active' : '' "
+                                       (click)="changePartTab('existing')">
+                                       <input type="radio" name="fuelUnitType" id="existingPart" checked hidden
+                                          value="vehicle">
                                        Existing Part </label>
                                  </div>
                               </div>
@@ -584,7 +690,8 @@
                                  <div class="radio">
                                     <label class="btn btn-outline btn-fleet csbtn"
                                        [ngClass]="(partType == 'new')? 'active' : '' " (click)="changePartTab('new')">
-                                       <input type="radio" name="fuelUnitType" id="newPart" hidden value="reefer"> New Part
+                                       <input type="radio" name="fuelUnitType" id="newPart" hidden value="reefer"> New
+                                       Part
                                     </label>
                                  </div>
                               </div>
@@ -594,11 +701,13 @@
                      <div class="row" id="newPartDiv" *ngIf="partType == 'new'">
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
-                           <input type="text" class="form-control" placeholder="eg. ACR301 etc" [(ngModel)]="partData.partNumber" name="partNumber">
+                           <input type="text" class="form-control" placeholder="eg. ACR301 etc"
+                              [(ngModel)]="partData.partNumber" name="partNumber">
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Item Name</label>
-                           <input type="text" class="form-control" placeholder="eg. tires" [(ngModel)]="itemData.itemName" name="itemName">
+                           <input type="text" class="form-control" placeholder="eg. tires"
+                              [(ngModel)]="itemData.itemName" name="itemName">
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Category</label>
@@ -606,26 +715,29 @@
                                     placeholder="Select category">
                                     <ng-option value="hardware">Hardware</ng-option>
                                     <ng-option value="brakes">Brakes</ng-option>
+
                                  </ng-select>
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                           <input type="text" class="form-control" placeholder="eg. 1,2,3" [(ngModel)]="partData.quantity" name="quantity">
+                           <input type="text" class="form-control" placeholder="eg. 1,2,3"
+                              [(ngModel)]="partData.quantity" name="quantity">
                         </div>
 
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)</label>
-                           <input type="number" min="0" class="form-control" name="cost" [(ngModel)]="itemData.cost" placeholder="eg. 1,2,3 " />
+                           <input type="number" min="0" class="form-control" name="cost" [(ngModel)]="itemData.cost"
+                              placeholder="eg. 1,2,3 " />
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Cost Unit</label>
-                           <ng-select name="costUnit" [(ngModel)]="itemData.costUnit" data-plugin-selectTwo class="form-control populate"
-                              placeholder="Select unit">
-                                 <ng-option value="Each">Each</ng-option>
-                                 <ng-option value="Gallon">Gallon</ng-option>
-                                 <ng-option value="Quart">Quart</ng-option>
-                                 <ng-option value="Set">Set</ng-option>
-                                 <ng-option value="Tube">Tube</ng-option>
+                           <ng-select name="costUnit" [(ngModel)]="itemData.costUnit" data-plugin-selectTwo
+                              class="form-control populate" placeholder="Select unit">
+                              <ng-option value="Each">Each</ng-option>
+                              <ng-option value="Gallon">Gallon</ng-option>
+                              <ng-option value="Quart">Quart</ng-option>
+                              <ng-option value="Set">Set</ng-option>
+                              <ng-option value="Tube">Tube</ng-option>
                            </ng-select>
                         </div>
 
@@ -642,14 +754,16 @@
                      <div class="row" id="existingPartDiv" *ngIf="partType == 'existing'">
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
-                           <ng-select (change)="getPartDetail($event)" [(ngModel)]="partData.partNumber" name="partNumber" style="width: 100%;"
-                              placeholder="Select part#">
-                              <ng-option *ngFor="let data of inventoryItems;" value="{{data.partNumber}}">{{data.partNumber}}</ng-option>
+                           <ng-select (change)="getPartDetail($event)" [(ngModel)]="partData.partNumber"
+                              name="partNumber" style="width: 100%;" placeholder="Select part#">
+                              <ng-option *ngFor="let data of inventoryItems;" value="{{data.partNumber}}">
+                                 {{data.partNumber}}</ng-option>
                            </ng-select>
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                           <input type="text" [(ngModel)]="partData.quantity" name="quantity" class="form-control" placeholder="Enter Quantity">
+                           <input type="text" [(ngModel)]="partData.quantity" name="quantity" class="form-control"
+                              placeholder="Enter Quantity">
                         </div>
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Item Name</label>
@@ -663,6 +777,7 @@
                            <ng-select [(ngModel)]="partData.preferredVendorID"
                               name="preferredVendorID" style="width: 100%;" placeholder="Select preferred vendor">
                               <ng-option *ngFor="let data of vendors | async;" value="{{data.contactID}}">{{data.companyName}}</ng-option>
+
                            </ng-select>
                         </div>
                      </div>
@@ -672,14 +787,17 @@
             <div class="modal-footer">
                <div class="col-md-12 text-right">
                   <button class="btn btn-default modal-dismiss mr-3" data-dismiss="modal">Cancel</button>
+
                   <a href="javascript:;" *ngIf="partType == 'existing'" (click)="addExistingPartNumber()" class="btn btn-success" >Save</a>
                   <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success" >Save</a>
+
                </div>
             </div>
          </form>
       </div>
    </div>
 </div>
+
 
 
 <div class="modal fade" id="existingInvModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
@@ -723,29 +841,29 @@
 
 <!-- VIEW DOCUMENT MODAL -->
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <div>
-              <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="form-row">
+               <div class="form-group col-md-12">
+                  <div>
+                     <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
 
+                  </div>
+               </div>
             </div>
-          </div>
-        </div>
 
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
+   </div>
 </div>

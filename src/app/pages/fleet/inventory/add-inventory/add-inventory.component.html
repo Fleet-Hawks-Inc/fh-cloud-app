@@ -151,7 +151,7 @@
                           class="text-1 optional-label-color">(optional)</span></label>
                       <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
                         placeholder="Enter description of the inventory part" #desName2="ngModel"
-                        pattern="^[\s\S]{2,500}$"></textarea>
+                        pattern="^[\s\S]{1,500}$"></textarea>
                       <div *ngIf="desName2.invalid && (desName2.dirty || desName2.touched)" class="text-danger">
                         <div *ngIf="desName2.errors.pattern">
                           Only 500 characters are allowed.
@@ -433,7 +433,7 @@
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <textarea class="form-control" rows="3" name="notes" [(ngModel)]="notes"
                             placeholder="Enter notes about warranty of inventory part" #notes1="ngModel"
-                            pattern="^[\s\S]{2,500}$"></textarea>
+                            pattern="^[\s\S]{1,500}$"></textarea>
                           <div *ngIf="notes1.invalid && (notes1.dirty || notes1.touched)" class="text-danger">
                             <div *ngIf="notes1.errors.pattern">
                               Only 500 characters are allowed.
@@ -556,6 +556,8 @@
 </section>
 
 
+
+
 <div
   class="modal fade"
   id="warehouseModal"
@@ -625,9 +627,10 @@
                 </div>
                 <div class="col-lg-6">
 
+
                   <label
                     class="control-label font-weight-bold text-lg-right pt-2"
-                    >Select Province <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
+                    >Select Province/State <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
                   >
                   <ng-select
                   data-plugin-selectTwo
