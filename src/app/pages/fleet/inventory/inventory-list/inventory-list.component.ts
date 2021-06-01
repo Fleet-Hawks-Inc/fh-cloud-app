@@ -55,7 +55,7 @@ export class InventoryListComponent implements OnInit {
   itemName = '';
   category = null;
   groupName = '';
-  vendorID = null
+  vendorID = null;
   companyName = '';
   suggestedVendors = [];
   suggestedItems = [];
@@ -73,10 +73,17 @@ export class InventoryListComponent implements OnInit {
   itemPrevData = {
     quantity: ''
   };
-
+  transfer = {
+    partNumber: '',
+    partDetails: '',
+    quantity: '',
+    warehouseID1: '',
+    warehouseID2: '',
+    date: ''
+  };
   requiredItemName = '';
   requiredCompanyName = '';
-  requiredPartNumber = '';
+  requiredPartNumber = null;
   requiredItemID = null;
   requiredVendorID = null;
   requiredSuggestedItems = [];
@@ -114,15 +121,13 @@ export class InventoryListComponent implements OnInit {
     this.fetchRequiredItemsCount();
     this.initDataTableRequired();
     this.listService.fetchVendors();
-
-    // this.fetchAllItems();
     this.allVendors = this.listService.vendorList;
   }
 
   getItemSuggestions(value, type) {
     if (value != '') {
       value = value.toLowerCase();
-      if (type == 'inv') {
+      if (type === 'inv') {
         this.apiService
           .getData(`items/suggestion/${value}`)
           .subscribe((result) => {
@@ -236,7 +241,7 @@ export class InventoryListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecordsRequired = result.Count;
-
+        console.log('this.totalRecordsRequired',this.totalRecordsRequired);
         if (this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
           this.requiredInventoryEndPoint = this.totalRecords;
         }
@@ -251,11 +256,6 @@ export class InventoryListComponent implements OnInit {
     });
   }
 
-  fetchRequiredItems() {
-    this.apiService.getData('requiredItems').subscribe((result: any) => {
-      this.requiredItems = result.Items;
-    });
-  }
   deleteItem(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       let record = {
@@ -487,19 +487,23 @@ export class InventoryListComponent implements OnInit {
     })
   }
 
-  deleteRequiredItem(entryID) {
+  deleteRequiredItem(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .deleteData(`requiredItems/${entryID}`)
-        .subscribe((result: any) => {
-          this.requiredItems = [];
-          this.requiredInventoryDraw = 0;
-          this.requiredLastEvaluatedKey = '';
-          this.dataMessageReq = Constants.FETCHING_DATA;
-          this.fetchRequiredItemsCount();
-          this.initDataTableRequired();
-          this.toastr.success('Required Item Deleted Successfully!');
-        });
+      let record = {
+        // date: eventData.createdDate,
+        // time: eventData.createdTime,
+        eventID: eventData.itemID
+      }
+      this.apiService.postData('items/delete/required/item', record).subscribe((result: any) => {
+
+        this.requiredItems = [];
+        this.requiredInventoryDraw = 0;
+        this.requiredLastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchRequiredItemsCount();
+        this.initDataTableRequired();
+        this.toastr.success('Required Inventory Item Deleted Successfully!');
+      });
     }
   }
 
@@ -532,7 +536,7 @@ export class InventoryListComponent implements OnInit {
         $('#existingInvModal').modal('hide');
         this.apiService.deleteData(`requiredItems/${reqItemID}`).subscribe((result: any) => {
           this.requiredItems = [];
-          this.fetchRequiredItems();
+         // this.fetchRequiredItems();
           this.toastr.success('Inventory Updated Successfully');
         });
       },
@@ -597,17 +601,18 @@ export class InventoryListComponent implements OnInit {
     this.currentTab = type;
   }
 
-
-
-  fetchAllCompanies() {
-    this.apiService.getData('itemGroups').subscribe((result: any) => {
-      this.allCompanies = result.Items;
-    });
-  }
-
-  fetchAllItems() {
-    this.apiService.getData(`items`).subscribe((result) => {
-      this.searchItems = result.Items;
-    })
+  transferInventory() {
+  console.log('this.transfer', this.transfer);
+  this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
+    this.toastr.success('Inventory Tranfered Successfully.');
+     this.transfer = {
+      partNumber: '',
+      partDetails: '',
+      quantity: '',
+      warehouseID1: '',
+      warehouseID2: '',
+      date: ''
+    };
+  });
   }
 }

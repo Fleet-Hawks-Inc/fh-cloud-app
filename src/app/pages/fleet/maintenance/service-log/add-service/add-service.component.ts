@@ -107,7 +107,8 @@ export class AddServiceComponent implements OnInit {
     partNumber:undefined,
     preferredVendorID:undefined,
     quantity: null,
-    itemID: ''
+    itemID: '',
+    itemName: ''
   };
   itemData = {
     category :undefined,
@@ -115,7 +116,7 @@ export class AddServiceComponent implements OnInit {
     cost: '',
     costUnit: undefined,
     warehouseID: undefined
-  }
+  };
   itemGroups = [];
   categoryData = {
     name: '',
@@ -180,7 +181,6 @@ export class AddServiceComponent implements OnInit {
     this.fetchAllTasksIDs();
     // this.searchLocation();
     this.fetchInventoryItems();
-    this.fetchItemGroups();
     this.fetchInventoryQuanitity();
 
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
@@ -1034,7 +1034,7 @@ export class AddServiceComponent implements OnInit {
     }
   }
 
-  updateExistingPartNumber () {
+  updateExistingPartNumber() {
     // let currQuan:any = parseInt(this.partData.quantity);
     this.partData.quantity = parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
     this.apiService.putData('requiredItems', this.partData).subscribe({
@@ -1066,7 +1066,8 @@ export class AddServiceComponent implements OnInit {
           partNumber:undefined,
           preferredVendorID:undefined,
           quantity:null,
-          itemID: ''
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
           category :undefined,
@@ -1080,7 +1081,7 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  addExistingPartNumber () {
+  addExistingPartNumber() {
     delete this.partData.itemID;
     console.log('this.partdata', this.partData);
     this.apiService.postData('items/requireditems/addExistingItem', this.partData).subscribe({
@@ -1109,19 +1110,20 @@ export class AddServiceComponent implements OnInit {
         $('#existingInvModal').modal('hide');
         this.existingItemQuantity = null;
         this.partData = {
-          partNumber:undefined,
-          preferredVendorID:undefined,
-          quantity:null,
-          itemID: ''
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
-          category :undefined,
+          category : '',
           itemName: '',
           cost: '',
-          costUnit: undefined,
-          warehouseID: undefined
-        }
-        this.toastr.success('Part Requested Successfully');
+          costUnit: '',
+          warehouseID: '',
+        };
+        this.toastr.success('Requested Item Added Successfully.');
       },
     });
   }
@@ -1132,15 +1134,11 @@ export class AddServiceComponent implements OnInit {
       if(v.partNumber == event){
         curr.partData.quantity = v.quantity;
         curr.partData.preferredVendorID = v.preferredVendorID;
+        curr.partData.itemName = v.itemName;
       }
-    })
-  }
-
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
     });
   }
+
 
   showCategoryModal() {
     this.categoryData.name = '';
@@ -1148,42 +1146,7 @@ export class AddServiceComponent implements OnInit {
     $('#categoryModal').modal('show');
   }
 
-  addGroup() {
-    this.hideErrors();
 
-    const data = {
-      groupName: this.categoryData.name,
-      groupDescription: this.categoryData.description,
-    };
-
-    this.apiService.postData('itemGroups', data).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => {},
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.categoryData.name = '';
-        this.categoryData.description = '';
-        this.fetchItemGroups();
-        $('#categoryModal').modal('hide');
-        this.toastr.success('Category Added successfully');
-      },
-    });
-  }
 
   addInventory() {
     this.hasError = false;
@@ -1202,13 +1165,8 @@ export class AddServiceComponent implements OnInit {
       warehouseVendorID: this.partData.preferredVendorID,
     };
     console.log('data', data);
-    // create form data instance
-    const formData = new FormData();
 
-    //append other fields
-    formData.append('data', JSON.stringify(data));
-
-    this.apiService.postData('items', formData, true).subscribe({
+    this.apiService.postData('items/requireditems/addExistingItem', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -1222,7 +1180,6 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.hasError = true;
-              this.Error = 'Please see the errors';
             },
             error: () => { },
             next: () => { },
@@ -1231,7 +1188,22 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.addExistingPartNumber();
+        $('#partModal').modal('hide');
+        this.toastr.success('Requested Item Added Successfully.');
+        this.partData = {
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
+        };
+        this.itemData = {
+          category : '',
+          itemName: '',
+          cost: '',
+          costUnit: '',
+          warehouseID: '',
+        };
       },
     });
   }
@@ -1247,7 +1219,8 @@ export class AddServiceComponent implements OnInit {
       partNumber: undefined,
       preferredVendorID: undefined,
       quantity: null,
-      itemID: ''
+      itemID: '',
+      itemName: ''
     };
     this.itemData = {
       category: undefined,

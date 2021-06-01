@@ -20,6 +20,7 @@ export class AddInventoryComponent implements OnInit {
    */
   pageTitle = '';
   itemID = '';
+  requiredItem: '';
   partNumber = '';
   cost = '';
   costUnit = '';
@@ -94,14 +95,17 @@ export class AddInventoryComponent implements OnInit {
     private listService: ListService
   ) {
     this.itemID = this.route.snapshot.params[`itemID`];
-
+    this.requiredItem = this.route.snapshot.params[`item`];
     if (this.itemID) {
       this.pageTitle = `Edit Inventory Part`;
       this.getInventory();
     } else {
       this.pageTitle = `Add Inventory Part`;
     }
-
+ if(this.requiredItem){
+  this.pageTitle = `Add Inventory Part`;
+  this.getRequiredInventory();
+ }
     $(document).ready(() => {
      // this.form = $('#form').validate();
       //this.groupForm = $('#groupForm').validate();
@@ -125,7 +129,17 @@ export class AddInventoryComponent implements OnInit {
       }
     }
   }
+  getRequiredInventory() {
+    this.apiService.getData('items/required/' + this.requiredItem).subscribe((result: any) => {
+      result = result.Items[0];
+      this.partNumber = result.partNumber;
+      this.quantity = result.quantity;
+      this.itemName = result.itemName;
+      this.description = result.description;
+      this.preferredVendorID = result.preferredVendorID;
 
+    });
+  }
   getInventory() {
     this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
@@ -303,11 +317,21 @@ export class AddInventoryComponent implements OnInit {
           this.notes = '';
           this.toastr.success('Inventory Added Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
+          if (this.requiredItem) {
+            this.deleteRequiredItem(this.requiredItem);
+          }
         }
       },
     });
   }
-
+ deleteRequiredItem(requiredItem : any) {
+      let record = {
+        eventID: requiredItem
+      }
+      this.apiService.postData('items/delete/required/item', record).subscribe((result: any) => {
+        this.toastr.success('Required Inventory Item Deleted Successfully!');
+      });
+ }
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {

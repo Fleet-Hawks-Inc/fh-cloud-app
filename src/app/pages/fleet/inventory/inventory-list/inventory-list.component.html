@@ -41,6 +41,7 @@
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
                                 <ng-option value="hardware">Hardware</ng-option>
+                                <ng-option value="brakes">Brakes</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -116,16 +117,27 @@
 
                 <div class="row px-2" *ngIf="currentTab == 'rinv'" style="padding-top: 9px">
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
+                        <!-- <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
-                                <!-- <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option> -->
+                                <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
                             </ng-select>
-                        </div>
+                        </div> -->
+                        <div class="input-group input-group-sm mb-3">
+                          <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                              class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
+                              placeholder="Search items by name" />
+                      </div>
+                      <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
+                          <ul>
+                              <li *ngFor="let suggestedItem of requiredSuggestedItems" style="cursor: pointer;"
+                                  (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'req')"> {{ suggestedItem.itemName }}</li>
+                          </ul>
+                      </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors | async" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -368,10 +380,10 @@
                                                             </button>
                                                             <div class="dropdown-menu"
                                                                 attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item" href="javascript:;"
-                                                                    (click)="addInventory(item)">Add Inventory</a>
+                                                                <a class="dropdown-item" routerLink="/fleet/inventory/add/required/{{item.itemID}}"
+                                                                    >Add Inventory</a>
                                                                 <a href="javascript:;" class="dropdown-item"
-                                                                    (click)="deleteRequiredItem(item.itemID)">Delete</a>
+                                                                    (click)="deleteRequiredItem(item)">Delete</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -419,13 +431,13 @@
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#
                                         </label>
-                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="partNumber">
+                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="transfer.partNumber">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part
                                         Details</label>
                                     <input type="text" class="form-control" placeholder="Enter part details"name="partDetails"
-                                        [(ngModel)]="partDetails">
+                                        [(ngModel)]="transfer.partDetails">
                                 </div>
                             </div>
 
@@ -433,13 +445,13 @@
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="quantity">
+                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="transfer.quantity">
                                 </div>
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
                                     <input type="date" data-plugin-datepicker="" class="form-control" name="date"
-                                        [(ngModel)]="date">
+                                        [(ngModel)]="transfer.date">
                                 </div>
                             </div>
 
@@ -448,31 +460,27 @@
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">From
                                         Warehouse</label>
-                                    <select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
+                                    <ng-select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
 
-                                        [(ngModel)] ="warehouseID1">
-
-                                        <optgroup label="Select Warehouse">
-                                            <option *ngFor="let warehouse of warehouses | keyvalue"
+                                        [(ngModel)] ="transfer.warehouseID1">
+                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
-                                                {{warehouse.value}}</option>
+                                                {{warehouse.value}}</ng-option>
 
-                                        </optgroup>
-                                    </select>
+
+                                    </ng-select>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">To
                                         Warehouse</label>
-                                    <select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
-                                        [(ngModel)]="warehouseID2">
-                                        <optgroup label="Select Warehouse">
-                                            <option *ngFor="let warehouse of warehouses | keyvalue"
+                                    <ng-select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
+                                        [(ngModel)]="transfer.warehouseID2">
+                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
-                                                {{warehouse.value}}</option>
+                                                {{warehouse.value}}</ng-option>
 
-                                        </optgroup>
-                                    </select>
+                                    </ng-select>
                                 </div>
                             </div>
 
@@ -484,7 +492,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-success" [routerLink]="">
+                <button type="button" class="btn btn-success" (click)="transferInventory()">
                     Save
                 </button>
             </div>
