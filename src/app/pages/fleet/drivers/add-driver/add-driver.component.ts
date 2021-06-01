@@ -1046,11 +1046,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                 complete: () => {
                   this.throwErrors();
                   this.hasError = false;
-                  this.submitDisabled = true;
+                  this.submitDisabled = false;
                   if (err) return reject(err);
                   // this.toastr.error('Please see the errors');
                 },
-                error: () => { },
+                error: () => { 
+                  this.submitDisabled = false;
+                },
                 next: () => {
                   this.submitDisabled = false;
                 },
