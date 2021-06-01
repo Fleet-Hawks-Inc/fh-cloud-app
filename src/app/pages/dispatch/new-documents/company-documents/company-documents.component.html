@@ -215,11 +215,10 @@
                                 <div>
 
                                     <div *ngIf="dDocument.errors.required">
-                                        Document Number is required.
+                                        Document number is required.
                                     </div>
                                     <div *ngIf="dDocument.errors.pattern">
-                                        Document Number must contains uppercase, lowercase, numbers and special
-                                        characters for period(space,_,-,.) only.
+                                      Document number must be alphanumeric and allowed characters(space,-,_,.).
                                     </div>
 
 
@@ -288,11 +287,12 @@
                                 <div>
 
                                     <div *ngIf="documentName.errors.required">
-                                        Document Name is required.
+                                        Document name is required.
                                     </div>
                                     <div *ngIf="documentName.errors.pattern">
-                                        Document Name must contains alphanumeric and special characters for
-                                        period(space,-,_,.) only.
+
+                                      Document name must be alphanumeric and allowed characters(space,-,_,.) only.
+
                                     </div>
 
 
@@ -332,8 +332,15 @@
                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Description&nbsp; <span
                                 class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="documentData.description" name="description"
-                            placeholder="Enter Description" class="form-control heighta" rows="3"
+                            placeholder="Enter Description" class="form-control heighta" rows="3" #Descrip1= "ngModel" pattern ="^[\s\S]{500}$"
                             ></textarea>
+                            <div *ngIf="Descrip1.invalid && (Descrip1.dirty || Descrip1.touched)" class="text-danger">
+                              <div>
+                                <div *ngIf="Descrip1.errors.pattern">
+                                  Only 500 characters are allowed.
+                                 </div>
+                              </div>
+                            </div>
                     </div>
 
                 </div>
