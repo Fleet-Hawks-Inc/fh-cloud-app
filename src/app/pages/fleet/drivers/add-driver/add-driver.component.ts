@@ -351,7 +351,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    this.fetchYards(); // fetch yards
+    
     this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -500,12 +500,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.docCountries = CountryStateCity.GetAllCountries();
   }
 
-  fetchYards() {
-    this.apiService.getData('yards')
-      .subscribe((result: any) => {
-        this.yards = result.Items;
-      });
-  }
+  
 
    getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = '';
@@ -1051,7 +1046,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                 complete: () => {
                   this.throwErrors();
                   this.hasError = false;
-                  this.submitDisabled = false;
+                  this.submitDisabled = true;
                   if (err) return reject(err);
                   // this.toastr.error('Please see the errors');
                 },

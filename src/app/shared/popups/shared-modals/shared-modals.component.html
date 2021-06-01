@@ -236,7 +236,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Select Province/State </label>
-                  <ng-select placeholder="Select Province" [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">
+                  <ng-select placeholder="Select Province/State" [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">
                     <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
 
                   </ng-select>
@@ -1029,7 +1029,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Province/State<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode"
-                            placeholder="Select Province" id="stateSelect" #mProvince="ngModel" required>
+                            placeholder="Select Province/State" id="stateSelect" #mProvince="ngModel" required>
                             <ng-option *ngFor="let state of vehicleStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
@@ -1817,7 +1817,7 @@
                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
                             name="assetDetails.licenceStateCode" class="form-control populate"
-                            placeholder="Select Province">
+                            placeholder="Select Province/State">
                             <ng-option *ngFor="let state of assetStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
@@ -2504,7 +2504,7 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
-                                  placeholder="Select Province"
+                                  placeholder="Select Province/State"
                                   (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlta="ngModel"
                                   required>
                                   <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
@@ -2729,7 +2729,7 @@
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
-                                    type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paym1entDetails.paym1entType == 'Pay Per Mile'">
+                                    type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
                                     <div *ngIf="payM1.invalid && (payM1.dirty || payM1.touched)" class="text-danger">
                                       <div *ngIf="payM1.errors.required">
                                        Loaded miles is required.

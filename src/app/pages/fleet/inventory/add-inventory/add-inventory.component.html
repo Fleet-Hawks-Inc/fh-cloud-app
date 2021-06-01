@@ -655,7 +655,7 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Select Province/State <span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select data-plugin-selectTwo class="form-control populate" name="stateID" [(ngModel)]="stateID"
-                    (change)="getCities()" placeholder="Select Province" #sltP="ngModel" required>
+                    (change)="getCities()" placeholder="Select Province/State" #sltP="ngModel" required>
                     <optgroup label="Select State">
 
                       <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>

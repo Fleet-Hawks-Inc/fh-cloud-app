@@ -345,8 +345,8 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <input  placeholder="eg. 6350 Kg or 14000 Pounds"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
-                          class="form-control" #gvwr="ngModel"  pattern="^[0-9\.]+$">
-                          <div *ngIf="gvwr.invalid && (gvwr.dirty || gvwr.touched)" class="text-danger">
+                          class="form-control" >
+                          <!-- <div *ngIf="gvwr.invalid && (gvwr.dirty || gvwr.touched)" class="text-danger">
 
 
                               <div *ngIf="gvwr.errors.pattern">
@@ -354,7 +354,7 @@
                               </div>
 
 
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-6 pl-0">
                         <ng-select [(ngModel)]="assetsData.assetDetails.GVWR_Unit" name="assetDetails.GVWR_Unit"
@@ -384,19 +384,19 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <input  placeholder="eg. 5669 kg or 1250 Pounds " [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
-                          class="form-control" #gawr="ngModel"  pattern="^[0-9\.]+$">
-                          <div *ngIf="gawr.invalid && (gawr.dirty || gawr.touched)" class="text-danger">
+                          class="form-control" >
+                          <!-- <div *ngIf="gawr.invalid && (gawr.dirty || gawr.touched)" class="text-danger">
 
-                              <!-- <div *ngIf="gawr.errors.required">
+                              <div *ngIf="gawr.errors.required">
                                 GAWR must contain numbers only.
-                               </div> -->
+                               </div>
                                <div *ngIf="gawr.errors.pattern">
                                 GAWR must contain numbers.
                                </div>
 
 
 
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-6 pl-0">
                         <ng-select [(ngModel)]="assetsData.assetDetails.GAWR_Unit" name="assetDetails.GAWR_Unit"
@@ -727,8 +727,8 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
                       ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
-                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aciIdName="ngModel" pattern="^[0-9]{10}$">
-                      <div *ngIf="aciIdName.invalid && (aciIdName.dirty || aciIdName.touched)" class="text-danger">
+                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" >
+                      <!-- <div *ngIf="aciIdName.invalid && (aciIdName.dirty || aciIdName.touched)" class="text-danger">
                         <div>
 
                           <div *ngIf="aciIdName.errors.pattern">
@@ -736,7 +736,7 @@
                            </div>
                         </div>
 
-                      </div>
+                      </div> -->
                   </div>
 
                 </div>
@@ -747,8 +747,8 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
                       ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
-                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aceIdName="ngModel" pattern="^[0-9]{10}$">
-                      <div *ngIf="aceIdName.invalid && (aceIdName.dirty || aceIdName.touched)" class="text-danger">
+                      placeholder="10 digits , eg. 4567895676" type="text" class="form-control">
+                      <!-- <div *ngIf="aceIdName.invalid && (aceIdName.dirty || aceIdName.touched)" class="text-danger">
                         <div>
 
                           <div *ngIf="aceIdName.errors.pattern">
@@ -756,7 +756,7 @@
                            </div>
                         </div>
 
-                      </div>
+                      </div> -->
                   </div>
 
                 </div>

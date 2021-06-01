@@ -563,7 +563,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               Province/State</label>
                             <ng-select (change)="getCities($event,i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
-                              placeholder="Select Province">
+                              placeholder="Select Province/State">
                               <ng-option class="text-capitalize" *ngFor="let state of item.states" value="{{state.stateCode}}">
                                 {{state.stateName}}</ng-option>
                             </ng-select>
@@ -804,28 +804,28 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" #aci="ngModel"
-                          pattern="^[0-9]{2,10}$" maxlength="10">
-                        <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" 
+                        >
+                        <!-- <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
                             ACI ID must contain 10 numbers.
                           </div>
 
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID <span
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" #ace="ngModel"
-                          pattern="^[0-9]{10}$" maxlength="10">
-                        <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" 
+                          >
+                        <!-- <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
                             ACE ID must contain 10 numbers.
                           </div>
 
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -847,14 +847,14 @@
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
                             type="text" class="form-control"
                             placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
-                            #fastCard="ngModel" pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$" maxlength="14">
-                          <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
+                            #fastCard="ngModel" >
+                          <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
                             <div *ngIf="fastCard.errors.pattern">
                               Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
                              
                             </div>
 
-                          </div>
+                          </div> -->
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry <span
@@ -937,7 +937,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
-                          placeholder="Select Province"
+                          placeholder="Select Province/State"
                           (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
                           required>
                           <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
@@ -1395,7 +1395,7 @@
                         </label>
                         <textarea style="height: unset !important;" [(ngModel)]="driverData.hosDetails.hosRemarks"
                           name="hosDetails.hosRemarks" class="form-control" rows="4"
-                          placeholder=" Enter remarks for the exempted driver" #remarks1= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                          placeholder=" Enter remarks for the exempted driver" #remarks1= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                           <div *ngIf="remarks1.invalid && (remarks1.dirty || remarks1.touched)" class="text-danger">
                             <div *ngIf="remarks1.errors.pattern">
                              Only 500 characters are allowed.
@@ -1539,25 +1539,25 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.name" name="name" type="text"
-                          class="form-control" placeholder="eg. John Smith" #eName="ngModel" pattern="^[a-zA-Z\s]+$">
-                        <div *ngIf="eName.invalid && (eName.dirty || eName.touched)" class="text-danger">
+                          class="form-control" placeholder="eg. John Smith" >
+                        <!-- <div *ngIf="eName.invalid && (eName.dirty || eName.touched)" class="text-danger">
                           <div *ngIf="eName.errors.pattern">
                             Name must contain letters.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone<span
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.phone" name="emergencyDetails.phone" type="text"
-                          class="form-control" placeholder="eg. +12234567891" #phone="ngModel" pattern="^(\+1)[0-9]{10}$"
+                          class="form-control" placeholder="eg. +12234567891" 
                           >
-                        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
+                        <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                           <div *ngIf="phone.errors.pattern">
                             Phone must contain 10 numbers eg. +12234567891
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-3">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Relationship <span
@@ -1565,12 +1565,12 @@
                         </label>
                         <input type="text" class="form-control" placeholder="eg. Manager"
                           [(ngModel)]="driverData.emergencyDetails.relationship" name="emergencyDetails.relationship"
-                          #rel="ngModel" pattern="^[a-zA-Z\s]+$">
-                        <div *ngIf="rel.invalid && (rel.dirty || rel.touched)" class="text-danger">
+                          #rel="ngModel">
+                        <!-- <div *ngIf="rel.invalid && (rel.dirty || rel.touched)" class="text-danger">
                           <div *ngIf="rel.errors.pattern">
                             Relationship must contain letters.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
