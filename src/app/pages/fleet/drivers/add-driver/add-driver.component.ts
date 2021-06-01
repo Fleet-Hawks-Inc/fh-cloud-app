@@ -800,7 +800,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number'){
+        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number' || v==='SIN'){
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
@@ -1036,7 +1036,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                  // val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
@@ -1048,7 +1048,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                 
                   // this.toastr.error('Please see the errors');
                 },
-                error: () => { },
+                error: () => { 
+                  this.submitDisabled = false;
+                },
                 next: () => {
                   this.submitDisabled = false;
                 },
