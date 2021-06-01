@@ -62,7 +62,7 @@
                                  name="geofenceName" #gName = "ngModel" required pattern="^[A-Za-z0-9\s\.\#]+$">
                                  <div *ngIf="gName.invalid && (gName.dirty || gName.touched)" class="text-danger">
                                     <div *ngIf="gName.errors.required">
-                                     Geofence Name  is required.
+                                     Geofence name  is required.
     
                                     </div>
                                     <div *ngIf="gName.errors.pattern">
@@ -118,7 +118,7 @@
                                     >Description&nbsp; <span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <textarea class="form-control h-auto" placeholder="Enter Description" [(ngModel)]="geofenceData.description"
-                                 name="description" rows="3" #desName= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                                 name="description" rows="3" #desName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                  <div *ngIf="desName.invalid && (desName.dirty || desName.touched)" class="text-danger">
                                     <div *ngIf="desName.errors.pattern">
                                      Only 500 characters are allowed.
@@ -195,7 +195,7 @@
                      <label class="font-weight-bold control-label">Description&nbsp; <span
                         class="text-1 optional-label-color">(optional)</span></label>
                      <textarea [(ngModel)]="geofenceTypeData.description"
-                     name="description" class="form-control heighta" row="3" placeholder="Enter description of the geofence type" #descName= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                     name="description" class="form-control heighta" row="3" placeholder="Enter description of the geofence type" #descName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                      <div *ngIf="descName.invalid && (descName.dirty || descName.touched)" class="text-danger">
                         <div *ngIf="descName.errors.pattern">
                          Only 500 characters are allowed.
