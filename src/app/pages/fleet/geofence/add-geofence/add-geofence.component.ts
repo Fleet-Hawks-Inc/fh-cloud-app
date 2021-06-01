@@ -223,7 +223,7 @@ export class AddGeofenceComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-      if(v==='location' || v==='geofenceName'){
+      if(v==='location' || v==='geofenceName' || v === 'geofence.type'){ 
         $('[name="' + v + '"]')
         .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
         .addClass('error')
