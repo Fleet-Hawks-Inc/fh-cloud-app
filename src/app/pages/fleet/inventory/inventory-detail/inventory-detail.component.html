@@ -9,8 +9,8 @@
           <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default mr-2" ><i class="fas fa-list"></i> Inventory List</a >
 
-            
-            <div class="btn-group flex-wrap" *ngIf="!environment">
+
+            <!-- <div class="btn-group flex-wrap" *ngIf="!environment">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                  aria-expanded="false">Actions<span class="caret"></span></button>
               <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -18,7 +18,7 @@
                  <a class="dropdown-item text-1" routerLink="/fleet/inventory/edit/{{itemID }}" href="javascript:;">Edit</a>
                  <a class="modal-with-form dropdown-item text-1"(click)="deleteItem()" href="javascript:;">Delete</a>
               </div>
-           </div>
+           </div> -->
           </div>
         </div>
       </header>
@@ -51,13 +51,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Category
                             </td>
-                            <td>{{itemGroups[categoryID]}}</td>
+                            <td>{{category}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Vendor
                             </td>
-                            <td><a href="#">{{vendors[preferredVendorID]}}</a></td>
+                            <td><a href="#">{{vendors[warehouseVendorID]}}</a></td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -69,13 +69,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Unit Cost
                             </td>
-                            <td>$ {{costUnit}}</td>
+                            <td>$ {{cost}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Unit Measure
                             </td>
-                            <td>Gallon</td>
+                            <td>{{costUnit}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -114,9 +114,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor = "let warehosue of warehouses">
-                            <td>TATA's Warehouse</td>
-                            <td>90</td>
+                          <tr *ngFor = "let warehouse of warehouses">
+                            <td>{{warehouse.warehouseID ? warehousesList[warehouse.warehouseID] : '-'}}</td>
+                            <td>{{warehouse.quantity ? warehouse.quantity : '-'}}</td>
                             <td>100 street 34Ave King Town,City,Country</td>
                           </tr>
                         </tbody>
@@ -271,7 +271,7 @@
                           </div>
                           <div class="col-lg-3 text-right">
                               <i class="fas fa-times text-danger"  (click)="delete('doc',document.name)"></i>
-                          
+
                           </div>
                         </div>
                       </div>

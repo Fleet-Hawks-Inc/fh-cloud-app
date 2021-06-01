@@ -80,7 +80,7 @@
                                        Plate number is required.
                                     </div>
                                     <div *ngIf="pNum.errors.pattern">
-                                       Plate number must be between 7-8 alphanumeric characters only.
+                                       Plate number must be between 7-8 alphanumeric characters.
                                     </div>
                                  </div>
                               </div>
@@ -201,7 +201,7 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province/State <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode" placeholder="Select Province"
+                                 <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode" placeholder="Select Province/State"
                                     id="stateSelect" #province="ngModel" required>
                                     <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
                                       {{state.stateName}}
@@ -452,13 +452,13 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right">Vehicle Color <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
-                                 <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="eg. Red etc" #vColor="ngModel" pattern="^[a-zA-Z]+$">
-                                 <div *ngIf="vColor.invalid && (vColor.dirty || vColor.touched)" class="text-danger w100">
+                                 <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="eg. Red">
+                                 <!-- <div *ngIf="vColor.invalid && (vColor.dirty || vColor.touched)" class="text-danger w100">
                                     <div *ngIf="vColor.errors.pattern" >
                                       Vehicle color must contain letters.
 
                                     </div>
-                                 </div>
+                                 </div> -->
                               </div>
 
                               <div class="col-lg-5">
@@ -1334,7 +1334,7 @@
                               <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Comments <span
                                     class="text-1 optional-label-color">(optional)</span> </label>
                               <textarea type="text" rows="3" class="form-control" name="purchase.purchaseComments"
-                                 [(ngModel)]="purchase.purchaseComments" placeholder="Add comments about vehicle purchase" #pComments= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                                 [(ngModel)]="purchase.purchaseComments" placeholder="Add comments about vehicle purchase" #pComments= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                  <div *ngIf="pComments.invalid && (pComments.dirty || pComments.touched)" class="text-danger">
                                     <div *ngIf="pComments.errors.pattern">
                                      Only 500 characters are allowed.
@@ -1466,7 +1466,7 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Notes <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <textarea class="form-control" rows="3" name="loan.notes" [(ngModel)]="loan.notes"
-                                    placeholder="Enter notes about the loan of vehicle" #notes3= "ngModel" pattern ="^[\s\S]{2,500}$"></textarea>
+                                    placeholder="Enter notes about the loan of vehicle" #notes3= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                     <div *ngIf="notes3.invalid && (notes3.dirty || notes3.touched)" class="text-danger">
                                        <div *ngIf="notes3.errors.pattern">
                                         Only 500 characters are allowed.
@@ -1587,7 +1587,13 @@
                         <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
                               class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
-                           id="comment" placeholder="Enter description of the group"></textarea>
+                           id="comment" placeholder="Enter description of the group" #aNotes226="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                           <div *ngIf="aNotes226.invalid && (aNotes226.dirty || aNotes226.touched)" class="text-danger">
+                              <div *ngIf="aNotes226.errors.pattern">
+                               Only 500 characters are allowed.
+                              </div>
+      
+                           </div>
                      </div>
                   </div>
 
