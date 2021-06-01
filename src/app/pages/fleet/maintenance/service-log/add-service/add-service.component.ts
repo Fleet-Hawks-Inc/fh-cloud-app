@@ -424,7 +424,7 @@ export class AddServiceComponent implements OnInit {
 
   getResolvedIssues(id){
     id = JSON.stringify(id);
-    console.log('before', this.issues)
+    
     this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
       this.resolvedIssues = result;
       for (let i = 0; i < result.length; i++) {
@@ -434,7 +434,7 @@ export class AddServiceComponent implements OnInit {
         
       }
     });
-    console.log('after', this.issues)
+    
   }
 
   async getIssuesByVehicle(vehicleID) {
@@ -468,7 +468,7 @@ export class AddServiceComponent implements OnInit {
     
   }
   async getVehicleIssues(id: any) {
-    console.log('vehicles issues')
+    
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     this.spinner.show();
@@ -480,7 +480,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async getAssetIssues(id) {
-    console.log('asset issues')
+    
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     const assetID = id;
@@ -1283,7 +1283,7 @@ export class AddServiceComponent implements OnInit {
   // delete uploaded images and documents
   delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      console.log('image result', result);
+      
       if(type == 'image') {
         this.logImages.splice(index, 1);
       } else {

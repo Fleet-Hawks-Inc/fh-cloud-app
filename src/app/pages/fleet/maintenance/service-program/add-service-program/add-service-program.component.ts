@@ -25,6 +25,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     programName: '',
     description: '',
     vehicles: [],
+    unselectedVehicles: [],
     serviceScheduleDetails: [{
       serviceTask: '',
       repeatByTime: '',
@@ -227,5 +228,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.serviceData.serviceScheduleDetails.splice(i, 1);
   }
 
-
+  vehicleChange(vehicle) {
+    
+    if(!this.serviceData.unselectedVehicles.includes(vehicle.value)) {
+      
+      this.serviceData.unselectedVehicles.push(vehicle.value)
+    } 
+    
+  }
 }

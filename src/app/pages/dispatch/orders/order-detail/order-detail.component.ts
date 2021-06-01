@@ -170,6 +170,7 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
+          console.log('order data', result)
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
               this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
