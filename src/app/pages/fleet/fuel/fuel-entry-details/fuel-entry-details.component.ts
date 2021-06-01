@@ -370,7 +370,7 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.fuelProvider=result.fuelProvider;
          this.fuelData.amountPaid=result.amountPaid;
          this.fuelData.fuelDateTime =  date.format('MMM Do YYYY')+" "+ result.fuelTime
-         this.fuelData.paidBy = this.driverList[result.paidBy];
+         this.fuelData.paidBy = result.paidBy;
          this.fuelData.fuelCardNumber = result.fuelCardNumber;
          this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
          this.fuelData.deductFromPay=result.deductFromPay || false;
