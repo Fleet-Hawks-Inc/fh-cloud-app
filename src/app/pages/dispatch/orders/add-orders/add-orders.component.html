@@ -1368,7 +1368,24 @@
                              <ng-select placeholder="eg. Reefer" [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                 class="form-control populate" >
 
-                                <ng-option *ngFor="let type of assetTypes" value="{{type.assetTypeID}}" data-select2-id="51">{{type.assetTypeName}}</ng-option>
+                                 <ng-option value="container">Container</ng-option>
+                                 <ng-option value="double_drop">Double Drop</ng-option>
+                                 <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                                 <ng-option value="flat_bed">Flat bed</ng-option>
+                                 <ng-option value="lowboy">Lowboy</ng-option>
+                                 <ng-option value="stepDeck">StepDeck</ng-option>
+                                 <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                                 <ng-option value="dry_van">Dry Van</ng-option>
+                                 <ng-option value="reefer">Reefer</ng-option>
+                                 <ng-option value="power_only">Power Only</ng-option>
+                                 <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                                 <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                                 <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                                 <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                                 <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                                 <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                                 <ng-option value="chassis">Chassis</ng-option>
+                                 <ng-option value="tank_trailer">Tank Trailer</ng-option>
 
                              </ng-select>
                              <!-- <div *ngIf="sltAssetType.invalid && (sltAssetType.dirty || sltAssetType.touched)" class="text-danger">

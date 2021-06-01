@@ -516,9 +516,9 @@ export class TripListComponent implements OnInit {
   }
 
   fetchAllCarrierIDs() {
-    this.apiService.getData('externalCarriers/get/list')
+    this.apiService.getData('contacts/get/list/carrier')
       .subscribe((result: any) => {
-        this.carriersObject = result;
+        this.carriersObject = result; 
       });
   }
 

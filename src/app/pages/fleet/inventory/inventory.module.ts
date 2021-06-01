@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'edit/:itemID', component: AddInventoryComponent },
   { path: 'list', component: InventoryListComponent },
   { path: 'detail/:itemID', component: InventoryDetailComponent },
+  { path: 'add/required/:item', component: AddInventoryComponent },
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.

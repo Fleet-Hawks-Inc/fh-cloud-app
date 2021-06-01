@@ -169,7 +169,8 @@
 
                             </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
-                            {{vehicleList[fuelEntry.unitID]}}
+                            <span *ngIf="fuelEntry.unitType=='vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
+                            <span *ngIf="fuelEntry.unitType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>
                           </td>
                           <td routerLink="/fleet/fuel/detail/{{ fuelEntry.fuelID }}">
                             {{fuelEntry.unitType}}
