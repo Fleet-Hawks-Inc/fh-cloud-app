@@ -81,7 +81,12 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     // this.initDataTable();
-    this.fetchFuelTypesbyIDs();
+
+    //this.fetchFuelTypesbyIDs();
+
+    // this.fetchFuelTypesbyIDs();
+
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -141,7 +146,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
     });
   }
@@ -277,7 +282,7 @@ export class VehicleListComponent implements OnInit {
       let record = {
         date: eventData.createdDate,
         time: eventData.createdTime,
-        eventID: eventData.vehcileID,
+        eventID: eventData.vehicleID,
         status: eventData.currentStatus
       }
       this.apiService.postData('vehicles/delete', record).subscribe((result: any) => {
@@ -469,5 +474,11 @@ export class VehicleListComponent implements OnInit {
     this.vehicleStartPoint = 1;
     this.vehicleEndPoint = this.pageLength;
     this.vehicleDraw = 0;
+  }
+
+  createNewSK() {
+    this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
+      
+    });
   }
 }

@@ -1,0 +1,53 @@
+{
+    "Items": [{
+        "timeCreated": 1614937574903,
+        "timeModified": 1614937574903,
+        "fuelDiscountName": "No deal",
+        "WEXFuelDiscountCode": "78",
+        "fuelDiscountID": "a05ec070-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937575423,
+        "timeModified": 1614937575423,
+        "fuelDiscountName": "Better of fixed price and cents off retail",
+        "WEXFuelDiscountCode": "80",
+        "fuelDiscountID": "a0ae18f0-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937577002,
+        "timeModified": 1614937577002,
+        "fuelDiscountName": "Straight cost-plus",
+        "WEXFuelDiscountCode": "99",
+        "fuelDiscountID": "a19f08a0-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937573804,
+        "timeModified": 1614937573804,
+        "fuelDiscountName": "Better of cost-plus or retail",
+        "WEXFuelDiscountCode": "67",
+        "fuelDiscountID": "9fb70ec0-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937575945,
+        "timeModified": 1614937575945,
+        "fuelDiscountName": "Better of retail or weekly fixed price",
+        "WEXFuelDiscountCode": "87",
+        "fuelDiscountID": "a0fdbf90-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937577522,
+        "timeModified": 1614937577522,
+        "fuelDiscountName": "Straight weekly fixed price",
+        "WEXFuelDiscountCode": "119",
+        "fuelDiscountID": "a1ee6120-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937576465,
+        "timeModified": 1614937576465,
+        "fuelDiscountName": "Better of cost plus and retail minus",
+        "WEXFuelDiscountCode": "98",
+        "fuelDiscountID": "a14d1810-7d97-11eb-95c4-0d8261d4c02b"
+    }, {
+        "timeCreated": 1614937574389,
+        "timeModified": 1614937574389,
+        "fuelDiscountName": "Cents off retail (discount) retail minus",
+        "WEXFuelDiscountCode": "68",
+        "fuelDiscountID": "a0105250-7d97-11eb-95c4-0d8261d4c02b"
+    }],
+    "Count": 8,
+    "ScannedCount": 8
+}

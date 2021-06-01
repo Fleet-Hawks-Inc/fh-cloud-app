@@ -39,18 +39,17 @@ export class RouteDetailComponent implements OnInit {
   destinationCityName = '';
   destinationZipcode = '';
   newCoords = [];
+  stopNumber = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, 
     private spinner: NgxSpinnerService,private route: ActivatedRoute, private hereMap: HereMapService) {}
 
   ngOnInit() {
     this.routeID    = this.route.snapshot.params['routeID']; 
-    // this.mapShow();
     this.fetchRoute();
   }
 
   fetchRoute(){
-    this.spinner.show();
     this.apiService.getData('routes/' + this.routeID).
       subscribe(async (result: any) => {
         result = result.Items[0];
@@ -61,6 +60,10 @@ export class RouteDetailComponent implements OnInit {
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;
+
+          for (let k = 0; k < result.stops.length; k++) {
+            this.stopNumber.push(k);
+          }
 
           if (result.stops.length > 1) {
             this.getCoords(result.stops);
@@ -96,19 +99,13 @@ export class RouteDetailComponent implements OnInit {
           this.fetchVehicle(result.VehicleID);
         }
 
-        if(result.driverUserName != '' && result.driverUserName != undefined){
-          this.fetchDriver(result.driverUserName,'driver');
+        if(result.driverID != '' && result.driverID != undefined){
+          this.fetchDriver(result.driverID,'driver');
         }
         
-        if(result.coDriverUserName != '' && result.coDriverUserName != undefined){
-          this.fetchDriver(result.coDriverUserName,'codriver');
+        if(result.coDriverID != '' && result.coDriverID != undefined){
+          this.fetchDriver(result.coDriverID,'codriver');
         }
-
-        var ths = this;
-        setTimeout(function(){
-          ths.spinner.hide();
-        },800)
-        
       })
   }
 
@@ -124,22 +121,20 @@ export class RouteDetailComponent implements OnInit {
   fetchVehicle(vehicleID){
     this.apiService.getData('vehicles/'+vehicleID)
       .subscribe((result: any)=>{
-        // console.log(result.Items[0]);
         if(result.Items[0].vehicleIdentification != undefined){
           this.VehicleName = result.Items[0].vehicleIdentification;
         }
       })
   }
 
-  fetchDriver(driverUserName, type){
-    this.apiService.getData('drivers/userName/'+driverUserName)
+  fetchDriver(driverID, type){
+    this.apiService.getData('drivers/'+driverID)
       .subscribe((result: any)=>{
-        // console.log(result.Items[0]);
         if(result.Items[0].firstName != undefined){
           if(type == 'driver'){
-            this.driverName = result.Items[0].firstName+' '+result.Items[0].lastName;
+            this.driverName = result.Items[0].firstName +' ' +result.Items[0].lastName;
           } else{
-            this.coDriverName = result.Items[0].firstName+' '+result.Items[0].lastName;
+            this.coDriverName = result.Items[0].firstName +' ' +result.Items[0].lastName;
           }
         }
       })

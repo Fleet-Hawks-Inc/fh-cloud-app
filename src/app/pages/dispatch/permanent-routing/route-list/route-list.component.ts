@@ -41,7 +41,7 @@ export class RouteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchRoutes();
-    this.initDataTable();
+    
   }
 
   fetchRoutes() {
@@ -54,6 +54,7 @@ export class RouteListComponent implements OnInit {
         if(this.searchedRouteId != '') {
           this.routeEndPoint = result.Count;
         }
+        this.initDataTable();
       },
     });
   }
@@ -70,7 +71,6 @@ export class RouteListComponent implements OnInit {
           this.routeDraw = 0;
           this.lastEvaluatedKey = '';
           this.fetchRoutes();
-          this.initDataTable();
           this.spinner.hide();
           this.hasSuccess = true;
           this.toastr.success('Route deleted successfully.');
@@ -156,7 +156,6 @@ export class RouteListComponent implements OnInit {
       this.suggestedRoutes = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchRoutes();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -170,7 +169,6 @@ export class RouteListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedRoutes = [];
       this.fetchRoutes();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;

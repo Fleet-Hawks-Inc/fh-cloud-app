@@ -7,6 +7,8 @@ import { from, Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 
 declare var $: any;
 @Component({
@@ -56,28 +58,28 @@ export class EditProfileComponent implements OnInit {
   };
   addressDetails = [{
     addressType: 'yard',
-    countryID: '',
     countryName: '',
-    stateID: '',
+    countryCode: '',
+    stateCode: '',
     stateName: '',
-    cityID: '',
     cityName: '',
     zipCode: '',
-    address1: '',
-    address2: '',
+    address: '',
     geoCords: {
       lat: '',
       lng: ''
     },
-    manual: false
+    manual: false,
+    states: [],
+    cities: []
   }];
-  bank: any = {
+  banks: any = [{
     branchName: '',
     accountNumber: '',
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
-  };
+  }];
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -103,6 +105,7 @@ export class EditProfileComponent implements OnInit {
   Success = '';
   existingPhotos = [];
   yardAddress: boolean;
+  submitDisabled = false;
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
     private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
@@ -110,7 +113,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchCountries();
     this.searchLocation(); // search location on keyup
     this.companyID = this.route.snapshot.params[`carrierID`];
     if (this.companyID) {
@@ -126,7 +128,7 @@ export class EditProfileComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
-        this.carriers = result.Items[0];
+        this.carriers = result.Items[0];;
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
         this.DBAName = this.carriers.DBAName;
@@ -142,7 +144,6 @@ export class EditProfileComponent implements OnInit {
         this.userName = this.carriers.userName;
         this.carrierName = this.carriers.carrierName;
         this.password = this.carriers.password,
-          this.confirmPassword = this.carriers.password,
           // carrierBusinessName = '';
           this.findingWay = this.carriers.findingWay;
         this.firstName = this.carriers.firstName;
@@ -160,58 +161,16 @@ export class EditProfileComponent implements OnInit {
           trailers: this.carriers.fleets.trailers,
           trucks: this.carriers.fleets.trucks,
         };
-        for (let i = 0; i < this.carriers.address.length; i++) {
-          await this.getStates(this.carriers.address[i].countryID);
-          await this.getCities(this.carriers.address[i].stateID);
-          if (this.carriers.address[i].manual) {
-            this.newAddress.push({
-              addressID: this.carriers.address[i].addressID,
-              addressType: this.carriers.address[i].addressType,
-              countryID: this.carriers.address[i].countryID,
-              countryName: this.carriers.address[i].countryName,
-              stateID: this.carriers.address[i].stateID,
-              stateName: this.carriers.address[i].stateName,
-              cityID: this.carriers.address[i].cityID,
-              cityName: this.carriers.address[i].cityName,
-              zipCode: this.carriers.address[i].zipCode,
-              address1: this.carriers.address[i].address1,
-              address2: this.carriers.address[i].address2,
-              geoCords: {
-                lat: this.carriers.address[i].geoCords.lat,
-                lng: this.carriers.address[i].geoCords.lng
-              },
-              manual: this.carriers.address[i].manual
-            })
-          } else {
-            this.newAddress.push({
-              addressID: this.carriers.address[i].addressID,
-              addressType: this.carriers.address[i].addressType,
-              countryID: this.carriers.address[i].countryID,
-              countryName: this.carriers.address[i].countryName,
-              stateID: this.carriers.address[i].stateID,
-              stateName: this.carriers.address[i].stateName,
-              cityID: this.carriers.address[i].cityID,
-              cityName: this.carriers.address[i].cityName,
-              zipCode: this.carriers.address[i].zipCode,
-              address1: this.carriers.address[i].address1,
-              address2: this.carriers.address[i].address2,
-              geoCords: {
-                lat: this.carriers.address[i].geoCords.lat,
-                lng: this.carriers.address[i].geoCords.lng
-              },
-              userLocation: this.carriers.address[i].userLocation
-            });
+        this.addressDetails = this.carriers.addressDetails;
+        if (this.carriers.addressDetails !== undefined) {
+          for (let a = 0; a < this.carriers.addressDetails.length; a++) {
+            const countryCode = this.carriers.addressDetails[a].countryCode;
+            const stateCode = this.carriers.addressDetails[a].stateCode;
+            this.fetchStates(countryCode, a);
+            this.fetchCities(countryCode, stateCode, a);
           }
         }
-        this.addressDetails = this.newAddress;
-        this.bank = {
-          branchName: this.carriers.bank.branchName,
-          accountNumber: this.carriers.bank.accountNumber,
-          transitNumber: this.carriers.bank.transitNumber,
-          routingNumber: this.carriers.bank.routingNumber,
-          institutionNumber: this.carriers.bank.institutionNumber,
-        };
-        this.bankID = this.carriers.bank.bankID;
+        this.banks = this.carriers.banks;
         this.uploadedLogo = this.carriers.uploadedLogo;
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
       });
@@ -220,6 +179,12 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
+  fetchStates(countryCode: any, index: any) {
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
@@ -228,51 +193,25 @@ export class EditProfileComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  async getStates(id: any, oid = null) {
-    if (oid != null) {
-      this.addressDetails[oid].countryName = this.countriesObject[id];
-    }
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+  getStates(countryCode: any, index: any) {
+    this.addressDetails[index].stateCode = '';
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
-  async getCities(id: any, oid = null) {
-    if (oid != null) {
-      this.addressDetails[oid].stateName = this.statesObject[id];
-    }
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
-  getCityName(i, id: any) {
-    const result = this.citiesObject[id];
-    this.addressDetails[i].cityName = result;
+  getCities(stateCode: any, index: any, countryCode: any) {
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
@@ -281,67 +220,29 @@ export class EditProfileComponent implements OnInit {
     else {
       this.addressDetails.push({
         addressType: '',
-        countryID: '',
         countryName: '',
-        stateID: '',
+        countryCode: '',
+        stateCode: '',
         stateName: '',
-        cityID: '',
         cityName: '',
         zipCode: '',
-        address1: '',
-        address2: '',
+        address: '',
         geoCords: {
           lat: '',
           lng: ''
         },
-        manual: false
+        manual: false,
+        states: [],
+        cities: []
       });
     }
   }
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-        this.countries.map(elem => {
-          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
-            this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID });
-          }
-        });
-      });
-  }
-  async fetchCountriesByName(name: string, i) {
-    const result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;
-    }
-    return '';
-  }
 
-  async fetchStatesByName(name: string, i) {
-    const result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID, i);
-      return result.Items[0].stateID;
-    }
-    return '';
-  }
 
-  async fetchCitiesByName(name: string) {
-    const result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
+
+
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID)
-      }
       this.addressDetails.splice(i, 1);
     }
   }
@@ -372,14 +273,14 @@ export class EditProfileComponent implements OnInit {
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
-    $('div').removeClass('show-search__result');
+    this.addressDetails[i].countryCode = result.address.countryCode;
+    this.addressDetails[i].stateCode = result.address.stateCode;
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
-    this.addressDetails[i].stateID = '';
-    this.addressDetails[i].cityID = '';
     this.addressDetails[i].zipCode = result.address.postalCode;
-
+    $('div').removeClass('show-search__result');
+    this.addressDetails[i].countryCode = ''; // empty the fields if manual is false (if manual was true IDs were stored)
+    this.addressDetails[i].zipCode = result.address.postalCode;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
@@ -393,12 +294,15 @@ export class EditProfileComponent implements OnInit {
   async UpdateCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
-      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-    ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
+        let fullAddress = `${element.address} ${element.cityName}
+    ${element.stateCode} ${element.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
@@ -438,7 +342,6 @@ export class EditProfileComponent implements OnInit {
         liabilityInsurance: this.liabilityInsurance,
         password: this.password,
         bizCountry: this.bizCountry,
-        confirmPassword: this.confirmPassword,
         addressDetails: this.addressDetails,
         phone: this.phone,
         fleets: {
@@ -450,17 +353,14 @@ export class EditProfileComponent implements OnInit {
           trailers: this.fleets.trailers,
           trucks: this.fleets.trucks
         },
-        bank: {
-          branchName: this.bank.branchName,
-          accountNumber: this.bank.accountNumber,
-          transitNumber: this.bank.transitNumber,
-          routingNumber: this.bank.routingNumber,
-          institutionNumber: this.bank.institutionNumber,
-          bankID: this.bankID
-        },
+        banks: this.banks,
         uploadedLogo: this.uploadedLogo
 
       };
+      if (data.bizCountry === 'CA') {
+        data.MC = null;
+        data.DOT = null;
+      }
       // create form data instance
       const formData = new FormData();
 
@@ -484,16 +384,17 @@ export class EditProfileComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.submitDisabled = false;
               },
-              error: () => { },
+              error: () => { this.submitDisabled = false; },
               next: () => { },
             });
         },
         next: (res) => {
           this.response = res;
+          this.submitDisabled = false;
           this.toaster.success('Carrier updated successfully.');
           this.cancel();
-
           this.updateUser();
         },
       });
@@ -502,12 +403,15 @@ export class EditProfileComponent implements OnInit {
     }
   }
   updateUser() {
+    let currentLoggedUserName = localStorage.getItem('currentLoggedUserName');
+    //  if(currentLoggedUserName == this.userName){
     let currentUser = `${this.firstName} ${this.lastName}`;
     const outputName = currentUser.match(/\b(\w)/g);
     let smallName = outputName.join('');
     localStorage.setItem('currentUserName', currentUser);
     localStorage.setItem('nickName', smallName);
     this.headerComponentFunction();
+    //  }
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -539,5 +443,6 @@ export class EditProfileComponent implements OnInit {
       this.fetchCarrier();
     });
   }
+
 
 }

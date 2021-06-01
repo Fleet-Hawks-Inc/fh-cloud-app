@@ -260,6 +260,23 @@ export class HereMapService {
     });
   }
 
+  // public async getImageMap(value:any){
+  //   let coords=await this.geoCode(value)
+  //   try{
+  //   if(coords){
+  //   const result=`https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${this.apiKey}&c=${coords}`
+  //   return result
+  //   }
+  //   else{
+  //     return "Coords not found."
+  //   }
+  // }
+  // catch(error){
+  //   
+  // }
+
+  // }
+
   calculateRoute(coordinates,additionalSpec?) {
     try {
       this.viaPoints = [];
@@ -299,13 +316,13 @@ export class HereMapService {
       const routeColors = ['#2980b9','#2980b9','#2980b9','#2980b9','#2980b9'];
 
       this.router.calculateRoute(params, route => {
-        // console.log("route", route);
+        
         if (route.routes) {
           // route.routes.forEach((section, i) => {
-          //   // console.log("section", section);
+          //   
           //   // decode LineString from the flexible polyline
             route.routes[0].sections.forEach(item => {
-              // console.log("item", item);
+              
 
               const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
               // Create a polyline to display the route:
@@ -319,14 +336,14 @@ export class HereMapService {
 
             //   polyline.addEventListener('tap', function(evt) {
             //     // Log 'tap' and 'mouse' events:
-            //     console.log(evt.type, evt.currentPointer.type);
+            //     
             // });
 
               // Total Distance in KM
               this.totalDistance = item.travelSummary.length / 1000;
               const factor = 0.621371;
               this.totalDistance = this.totalDistance.toFixed(2) * factor + ' Miles';
-              // console.log(this.totalDistance)
+              // 
 
             //   var bubble = new H.ui.InfoBubble(item.departure.place.location, {
             //     content: `<b>${this.totalDistance}</b>`
@@ -361,7 +378,6 @@ export class HereMapService {
         }
       })
   } catch (erro) {
-    console.log('calculateroute', erro);
   }
   }
 

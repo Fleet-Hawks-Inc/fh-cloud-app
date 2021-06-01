@@ -8,6 +8,7 @@ import { rest } from "lodash";
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import  Constants  from '../../constants';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 
 @Component({
   selector: "app-vehicle-detail",
@@ -198,7 +199,9 @@ export class VehicleDetailComponent implements OnInit {
   serviceReminders = [];
   renewalReminders = [];
   inspectionForms = {
-    inspectionFormName : ''
+    inspectionFormName : '',
+    parameters: [],
+    inspectionType: ''
   };
   fuelEntries = [];
   documents = [];
@@ -215,7 +218,7 @@ export class VehicleDetailComponent implements OnInit {
     autoplay: true,
     autoplaySpeed: 5000,
   };
-
+  contactsObjects: any = {};
   vehicleTypeObects: any = {};
   ownerOperatorName = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
@@ -238,17 +241,19 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchFuelTypes();
+
+    //this.fetchFuelTypes();
+
     this.fetchDriversList();
     this.fetchStatesList();
     this.fetchCountriesList();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
-    this.fetchVendorsList();
+    // this.fetchVendorsList();
     this.fetchTasksList();
     this.fetchUsersList();
-
+    this.fetchContactsByIDs();
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
@@ -256,12 +261,11 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
-  fetchVendorsList() {
-    this.apiService.getData("vendors/get/list").subscribe((result: any) => {
-      this.vendors = result;
+  fetchContactsByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.contactsObjects = result;
     });
   }
-
   fetchGroupsList() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupsList = result;
@@ -339,7 +343,11 @@ export class VehicleDetailComponent implements OnInit {
     this.apiService
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
-        this.issues = result.Items;
+        result.Items.map(elem => {
+          if(elem.currentStatus == 'OPEN') {
+            this.issues.push(elem);
+          }
+        })
       });
   }
 
@@ -355,13 +363,7 @@ export class VehicleDetailComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
 
-        if(result.ownerOperatorID != '' && result.ownerOperatorID != undefined) {
-          this.apiService.getData(`ownerOperators/${result.ownerOperatorID}`).subscribe((result2: any) => {
-            let data = result2.Items[0];
-            this.ownerOperatorName = data.firstName+' '+data.lastName;
-          });
-        }
-
+        this.ownerOperatorName = result.ownerOperatorID;
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
             this.inspectionForms = result1.Items[0];
@@ -375,10 +377,8 @@ export class VehicleDetailComponent implements OnInit {
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
-        this.stateID = result.stateID;
-        this.countryID = result.countryID;
-        this.countryName = result.countryName;
-        this.stateName = result.stateName;
+        this.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryID);
+        this.stateName = CountryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;
@@ -590,10 +590,12 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   fetchProgramDetails() {
-    let serviceProgramID = JSON.stringify(this.serviceProgramID);
-    this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
-      this.servicePrograms = result;
+    if(this.serviceProgramID.length > 0) {
+      let serviceProgramID = JSON.stringify(this.serviceProgramID);
+      this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+        this.servicePrograms = result;
 
-    })
+      })
+    }
   }
 }

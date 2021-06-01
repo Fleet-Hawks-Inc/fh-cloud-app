@@ -73,7 +73,7 @@
                       <div class="col-lg-8 p-2 border-box">{{ countryName }}</div>
                     </div>
                     <div class="row  m-0">
-                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province:</div>
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province/State:</div>
                       <div class="col-lg-8 p-2 border-box">{{ stateName }}</div>
                     </div>
                     <div class="row  m-0">
@@ -110,7 +110,7 @@
 
                     <div class="row  m-0" *ngIf="ownership == 'ownerOperator'">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ ownerOperatorName }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ contactsObjects[ownerOperatorName] }}</div>
                     </div>
 
                     <div class="row  m-0">
@@ -126,14 +126,17 @@
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Inspection Form:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ inspectionForms.inspectionFormName }}</div>
+                      <div class="col-lg-8 p-2 border-box">
+                        <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal"
+                          class="modal-with-form font-weight-bold">{{ inspectionForms.inspectionFormName }}</a>
+                      </div>
                     </div>
                   </div>
 
 
                   <div class="vehicle-common-box mt-4" *ngIf="slides.length >0">
                     <div class="row m-0">
-                      <div class="col-lg-12 p-2 font-weight-bold text-4 border-box">Photos
+                      <div class="col-lg-12 p-2 font-weight-bold text-4 border-box">Photo(s)
                       </div>
                     </div>
                     <div class="row m-0 justify-content-center">
@@ -211,18 +214,17 @@
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of serviceReminders">
-                                <td>-</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
+                                <td>{{ data.nextServiceDate | date:"yyyy/MM/dd" }}</td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                      <span *ngIf="users.type == 'user'">
-                                        {{ usersList[users.id] }}
-                                      </span>
-                                      <span *ngIf="users.type == 'group'">
-                                        {{ groupsList[users.id] }}
-                                      </span>
-                                      <span *ngIf="u<data.subscribers.length-1">,</span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'time'">
+                                    Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
                                   </span>
+                                  <span *ngIf="data.tasks.remindByUnit == 'odometer'">
+                                    Every {{ data.tasks.odometer }} miles 
+                                  </span>
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
@@ -260,17 +262,11 @@
                               </tr>
                               <tr *ngFor="let data of renewalReminders">
                                 <td>{{ data.tasks.dueDate | date:"yyyy/MM/dd" }}</td>
-                                <td>Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s) or {{ data.tasks.odometer }} miles </td>
                                 <td>
-                                  <span *ngFor="let users of data.subscribers; let u=index">
-                                    <span *ngIf="users.type == 'user'">
-                                      {{ usersList[users.id] }}
-                                    </span>
-                                    <span *ngIf="users.type == 'group'">
-                                      {{ groupsList[users.id] }}
-                                    </span>
-                                    <span *ngIf="u<data.subscribers.length-1">,</span>
-                                </span>
+                                  Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
+                                </td>
+                                <td>
+                                  {{ data.subscribers }}
                                 </td>
                                 <td>{{ tasksList[data.tasks.taskID] }}</td>
                               </tr>
@@ -291,7 +287,7 @@
                       <div class="col-lg-4 text-right">
                       </div>
                     </div>
-                  
+
                     <div class="vdtableinfoheight vdtableheight">
                       <table class="table table-responsive-lg">
                         <thead>
@@ -315,7 +311,7 @@
 
                   <div class="vehicle-common-box mt-4">
                     <div class="row m-0">
-                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Documents</div>
+                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Document(s)</div>
                     </div>
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
@@ -326,7 +322,7 @@
                           <td width="80%">Document {{ i+1}} </td>
                           <td width="20%">
                             <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument(data.name, i)" ><i class="fas fa-trash-alt"></i></a>
-                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a> 
+                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
                             <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
                           </td>
                         </tr>
@@ -465,7 +461,7 @@
                 <div class="col-lg-6">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Insurance Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[insurance.vendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[insurance.vendorID] }}</div>
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Issue:</div>
@@ -606,7 +602,7 @@
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Type:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ fuelTypes[fluid.fuelType] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ fluid.fuelType }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 1 Capacity:
@@ -658,7 +654,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[purchase.purchaseVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[purchase.purchaseVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Price :</div>
@@ -713,7 +709,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Loan Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ vendors[loan.loanVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[loan.loanVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount of Loan:</div>
@@ -794,4 +790,71 @@
          </div>
       </div>
    </div>
+</div>
+
+<!-- view inspection form -->
+<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inspectionFormModalLabel">Vehicle Inspection Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row text-dark">
+                <div class="col-lg-3 font-weight-bold">
+                  Form Name:
+                </div>
+                <div class="col-lg-9">
+                  {{ inspectionForms.inspectionFormName }}
+                </div>
+              </div>
+              <div class="row text-dark mt-3">
+                <div class="col-lg-3 font-weight-bold">
+                  Form Type:
+                </div>
+                <div class="col-lg-9">
+                  {{ inspectionForms.inspectionType }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-lg-12">
+              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Parameter</h4>
+              <table class="table table-bordered table-responsive-lg">
+                <thead>
+                  <tr>
+                    <th width="20%" class="back-color-gray font-weight-bold">Sr. No.</th>
+                    <th width="60%" class="back-color-gray">Parameters Name</th>
+                    <th width="20%" class="back-color-gray">Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of inspectionForms.parameters; let i=index;">
+                    <td>{{ i+1 }}</td>
+                    <td class="font-weight-bold">{{ data.name }}</td>
+                    <td class="font-weight-bold">{{ (data.remarks != '') ? data.remarks : '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

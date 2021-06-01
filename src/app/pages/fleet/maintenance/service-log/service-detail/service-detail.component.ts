@@ -11,7 +11,7 @@ import Constants from '../../../constants';
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
-  Asseturl = this.apiService.AssetUrl;
+  logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
   programs;
@@ -53,6 +53,9 @@ export class ServiceDetailComponent implements OnInit {
   docs: any = [];
   users: any = [];
 
+  logImages = []
+  logDocs = [];
+
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -79,13 +82,13 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
-        console.log('this.logsData', this.logsData);
+        
 
         this.fetchSelectedIssues(this.logsData.selectedIssues);
        
         result = result.Items[0];
-        this.vehicle = result.vehicleID;
-        this.assetID = result.assetID;
+        this.vehicle = result.unitID;
+        this.assetID = result.unitID;
         this.vendorID = result.vendorID;
         this.completionDate = result.completionDate;
         this.odometer = result.odometer;
@@ -112,18 +115,15 @@ export class ServiceDetailComponent implements OnInit {
 
         this.currency = result.allServiceParts.currency;
         
-        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.photos = result.uploadedPhotos.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+       if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.logImages = result.uploadedPhotos.map(x => ({
+            path: `${this.logurl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-          this.docs = result.uploadedDocs.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
-            name: x,
-          }));
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+          this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
         this.spinner.hide(); // loader init
       },
@@ -139,9 +139,10 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchAllVendorsIDs() {
-    this.apiService.getData('vendors/get/list')
+    this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result;
+        console.log('result vendor', result)
+        this.vendorsObject = result; 
       });
   }
 
@@ -158,7 +159,7 @@ export class ServiceDetailComponent implements OnInit {
   fetchUsers(){
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.users = result;
-      console.log('this.users', this.users)
+      
     });
   }
 

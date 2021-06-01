@@ -91,21 +91,13 @@
                                                 <span class="text-danger font-weight-bold font-size-12 text-uppercase"
                                                     *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
                                                 <span class="font-weight-bold"
-                                                    title="Task">{{tasksList[item.tasks.task]}}</span>
+                                                    title="Task">{{tasksList[item.tasks.taskID]}}</span>
                                             </td>
                                             <td><span class="font-size-12">{{item.tasks.time}} {{item.tasks.timeUnit}}(s)
                                                     Before</span></td>
                                             <td><span class="font-size-12">{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</span></td>
                                             <td>
-                                                <span *ngFor="let s of item.subscribers; let g=index">
-                                                    <span *ngIf="s.type === 'user'">
-                                                        {{users[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="s.type === 'group'">
-                                                        {{groups[s.id]}}
-                                                    </span>
-                                                    <span *ngIf="g<item.subscribers.length-1">,</span>
-                                                </span>
+                                                {{item.subscribers}}
                                             </td>
                                             <td>
                                                 <div class="btn-group flex-wrap">

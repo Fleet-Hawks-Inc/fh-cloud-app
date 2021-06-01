@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { ApiService } from '../../../../services';
 
 @Component({
@@ -27,14 +28,12 @@ export class CompanyProfileComponent implements OnInit {
   ngOnInit() {
     this.companyID = this.route.snapshot.params[`companyID`];
     this.fetchCarrier();
-    this.fetchCountriesList();
-    this.fetchCitiesList();
-    this.fetchStatesList();
   }
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
         .subscribe((result: any) => {
           this.carriers = result.Items[0];
+          this.fetchAddress(this.carriers.addressDetails);
           if (this.carriers.uploadedLogo !== '') {
             this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
           } else {
@@ -42,19 +41,15 @@ export class CompanyProfileComponent implements OnInit {
           }
         });
   }
-  fetchCountriesList() {
-    this.apiService.getData('countries/get/list').subscribe((result: any) => {
-      this.countryList = result;
-    });
-  }
-  fetchStatesList() {
-    this.apiService.getData('states/get/list').subscribe((result: any) => {
-      this.stateList = result;
-    });
-  }
-  fetchCitiesList() {
-    this.apiService.getData('cities/get/list').subscribe((result: any) => {
-      this.cityList = result;
-    });
+
+  fetchAddress(address: any) {
+   for(let a=0; a < address.length; a++){
+     address.map((e: any) => {
+       if(e.manual) {
+          e.countryName =  CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
+          e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+       }
+     });
+   }
   }
 }

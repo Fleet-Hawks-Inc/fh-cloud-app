@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
 import { environment } from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment'
 declare var $: any;
 
 @Component({
@@ -20,7 +22,7 @@ export class FuelEntryListComponent implements OnInit {
   title = 'Fuel Entries List';
   fromDate: any = '';
   toDate: any = '';
-  entryId = '';
+  fuelID = '';
   vehicles = [];
   vehicleList: any = {};
   tripList: any = {};
@@ -33,7 +35,7 @@ export class FuelEntryListComponent implements OnInit {
   checked = false;
   isChecked = false;
   headCheckbox = false;
-  selectedEntryID: any;
+  selectedfuelID: any;
   fuelCheckCount = null;
   countryName: any = '';
   formattedFromDate: any = '';
@@ -61,25 +63,29 @@ export class FuelEntryListComponent implements OnInit {
   fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
+  wexCategories:any={};
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private httpClient: HttpClient) {
   }
   ngOnInit() {
+    this.fetchVendorList();
     this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    this.fetchFuelTypeList();
-    this.fetchCountries();
+    //this.fetchFuelTypeList();
+    //this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
-    this.initDataTable();
     this.fetchAllAssets();
     this.fetchAllVehicles();
-    this.fetchVendorList();
+    
+    this.fetchWexCategories();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -92,6 +98,12 @@ export class FuelEntryListComponent implements OnInit {
     this.suggestedUnits = [];
   }
 
+  fetchWexCategories(){
+    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {  
+      
+      this.wexCategories = result;
+    })
+  }
   getSuggestions(value) {
     value = value.toLowerCase();
     if(value != '') {
@@ -133,15 +145,21 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
-      this.vendorList = result;
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      
+       result.forEach(element=>{
+         this.vendorList[element.contactID]=element.companyName
+      
+      });
     });
+  
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
   }
+
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
@@ -168,8 +186,11 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
   fetchWEXCode() {
-    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
-      this.WEXCodeList = result;
+    this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
+      
+      result.forEach(element => {
+        this.WEXCodeList[element.code]=element.type
+      });
     });
   }
   fuelEntriesCount() {
@@ -195,22 +216,40 @@ export class FuelEntryListComponent implements OnInit {
     return;
   }
 
-  deleteFuelEntry(entryID) {
+  // deleteFuelEntry(fuelID) {
+  //   if (confirm('Are you sure you want to delete?') === true) {
+  //     this.apiService
+  //     .getData(`fuelEntries/isDeleted/${fuelID}/` + 1)
+  //     .subscribe((result: any) => {
+  //       this.fuelList = [];
+  //       this.fuelEntriesCount();
+  //       this.initDataTable();
+  //       this.fuelDraw = 0;
+  //       this.dataMessage = Constants.FETCHING_DATA;
+  //       this.lastEvaluatedKey = '';
+  //       this.toastr.success('Fuel Entry Deleted Successfully!');
+  //     });
+  //   }
+  // }
+  deleteFuelEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`fuelEntries/isDeleted/${entryID}/` + 1)
-      .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.fuelID
+      }
+      this.apiService.postData('fuelEntries/delete', record).subscribe((result: any) => {
+
         this.fuelList = [];
-        this.fuelEntriesCount();
-        this.initDataTable();
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
+        this.fuelEntriesCount();
+        this.initDataTable();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
-
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
@@ -219,18 +258,48 @@ export class FuelEntryListComponent implements OnInit {
       }
       this.suggestedUnits = [];
       this.getStartandEndVal();
+      result[`Items`].forEach(element => {
+        if(element.fuelProvider=="WEX"){
+        element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
+        }
+        else{
+          let date:any = moment(element.fuelDate)
+         if(element.fuelTime){
+         let time=moment(element.fuelTime,'h mm a')
+         date.set({
+           hour: time.get('hour'),
+           minute: time.get('minute')
+         })
+         date = date.format('MMM Do YYYY, h:mm a')
+        }
+        else{
+          date=date.format('MMM Do YYYY')
+        }
+        element.dateTime=date
+        
+         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+          
+        }
+
+        
+      });
       this.fuelList = result[`Items`];
+
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
       if (result[`LastEvaluatedKey`] !== undefined) {
+        
+        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
-        if (!this.fuelPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
-          this.fuelPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
+        //console.log(this.fuelPrevEvauatedKeys)
+        if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
+          this.fuelPrevEvauatedKeys.push(lastEvalKey);
+        
         }
-        this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
+        this.lastEvaluatedKey = lastEvalKey;
 
       } else {
         this.fuelNext = true;
@@ -300,7 +369,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelPrev = true;
     this.fuelDraw += 1;
     this.initDataTable();
-    // this.getStartandEndVal();
+    //this.getStartandEndVal();
   }
 
   // prev button func
@@ -310,7 +379,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelDraw -= 1;
     this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
     this.initDataTable();
-    // this.getStartandEndVal();
+    //this.getStartandEndVal();
   }
 
   resetCountResult() {
@@ -326,8 +395,8 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      result.forEach((e: any) => {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      result.Items.forEach((e: any) => {
         if(e.assetType == 'reefer') {
           let obj = {
             assetID: e.assetID,

@@ -1,13 +1,5 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr-5">
         <div class="row pr-1 mr-1" style="padding-top: 10px">
@@ -102,7 +94,7 @@
                     <td>477 mi</td>
                     <td>
                       <a
-                        routerLink="/compliance/hos/detailed/{{ log.driver }}/{{
+                        routerLink="/compliance/hos/detailed/{{ log.userName }}/{{
                           log.date
                         }}"
                         class="btn btn-dark btn-sm mt-0"

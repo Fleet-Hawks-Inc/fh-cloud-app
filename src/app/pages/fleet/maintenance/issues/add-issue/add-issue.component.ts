@@ -53,6 +53,7 @@ export class AddIssueComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled=false;
   Error = '';
   errors = {};
   Success  = '';
@@ -90,7 +91,7 @@ export class AddIssueComponent implements OnInit {
       this.title = 'Add Issue';
     }
     $(document).ready(() => {
-      this.issueForm = $('#issueForm').validate();
+      // this.issueForm = $('#issueForm').validate();
     });
   }
   cancel() {
@@ -137,6 +138,7 @@ export class AddIssueComponent implements OnInit {
     }
   addIssue() {
     this.hideErrors();
+    this.submitDisabled=true;
     const data = {
       issueName: this.issueName.trim(),
       unitType: this.unitType,
@@ -179,14 +181,18 @@ export class AddIssueComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+                // this.throwErrors();
+                this.submitDisabled=false;
               },
-              error: () => { },
+              error: () => { 
+                this.submitDisabled=false;
+              },
               next: () => { },
             });
         },
         next: (res) => {
           this.response = res;
+          this.submitDisabled=false;
           this.toaster.success('Issue Added successfully');
           this.cancel();
         }
@@ -285,6 +291,7 @@ setSrcValue(){
   */
   updateIssue() {
     this.errors = {};
+    this.submitDisabled=true;
     this.hasError = false;
     this.hasSuccess = false;
     const data = {
@@ -330,14 +337,18 @@ setSrcValue(){
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
+              this.submitDisabled=false;
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled=false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled=false;
         this.toaster.success('Issue Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/issues/list');
       }

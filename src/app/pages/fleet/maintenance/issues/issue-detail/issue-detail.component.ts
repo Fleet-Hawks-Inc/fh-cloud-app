@@ -27,7 +27,7 @@ export class IssueDetailComponent implements OnInit {
   assignedTo: string;
   carrierID;
   contactName: string;
-  usersList: any;
+  usersList: any = {};
   image;
   vehicles = [];
   assets = [];
@@ -54,11 +54,11 @@ export class IssueDetailComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchUsersList();
     this.fetchAssetList();
-    if(localStorage.getItem('issueID') != null) {
-      this.route.paramMap.subscribe(res=> {
-        console.log('res', res);
-      })
-    }
+    // if(localStorage.getItem('issueID') != null) {
+    //   this.route.paramMap.subscribe(res=> {
+    
+    //   })
+    // }
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -69,7 +69,6 @@ export class IssueDetailComponent implements OnInit {
   fetchUsersList() {
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.usersList = result;
-      console.log('this.usersList', this.usersList);
     });
   }
   fetchAssetList() {
@@ -96,7 +95,6 @@ export class IssueDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reportedBy = result.reportedBy;
         this.assignedTo = result.assignedTo;
-
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.issueImages = result.uploadedPhotos.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }

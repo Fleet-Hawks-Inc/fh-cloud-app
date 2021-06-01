@@ -65,7 +65,7 @@ export class AssetListComponent implements OnInit {
     make: true,
     model: false,
     ownership: false,
-    status: true,
+    currentStatus: true,
     group: false,
     aceID: false,
     aciID: false,
@@ -105,12 +105,10 @@ export class AssetListComponent implements OnInit {
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
-      this.fetchAllAssetTypes();
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
       this.fetchModalsByIDs();
-      this.fetchAllAssetTypesList();
   }
 
   getSuggestions(value) {
@@ -133,12 +131,7 @@ export class AssetListComponent implements OnInit {
 
     this.suggestedAssets = [];
   }
-  fetchAllAssetTypesList() {
-    this.apiService.getData('assetTypes/get/list')
-    .subscribe((result: any) => {
-      this.assetTypeList = result;
-    });
-  }
+
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
@@ -170,41 +163,20 @@ export class AssetListComponent implements OnInit {
         if (this.assetID !== '' || this.assetType != null) {
           this.assetEndPoint = this.totalRecords;
         }
+        this.initDataTable();
       },
     });
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
 
-  fetchAllAssetTypes() {
-    this.apiService.getData('assetTypes')
-    .subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-  }
-
-  deleteAsset(eventData) {
-    // if (confirm('Are you sure you want to delete?') === true) {
-    //   this.apiService
-    //   .post(`assets/delete`)
-    //   .subscribe((result: any) => {
-    //     this.allData = [];
-    //     this.assetDraw = 0;
-    //     this.lastEvaluatedKey = '';
-    //     this.dataMessage = Constants.FETCHING_DATA;
-    //     this.fetchAssetsCount();
-    //     this.initDataTable();
-    //     this.toastr.success('Asset deleted successfully');
-    //   });
+  deleteAsset(eventData) {;
     // }
       if (confirm('Are you sure you want to delete?') === true) {
         let record = {
           date: eventData.createdDate,
           time: eventData.createdTime,
-          eventID: eventData.reminderID,
-          status: eventData.status
+          eventID: eventData.assetID,
+          status: eventData.currentStatus
         }
         this.apiService.postData('assets/delete', record).subscribe((result: any) => {
             this.allData = [];
@@ -212,7 +184,6 @@ export class AssetListComponent implements OnInit {
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
             this.fetchAssetsCount();
-            this.initDataTable();
             this.toastr.success('Asset Deleted Successfully!');
           });
       }
@@ -248,7 +219,7 @@ export class AssetListComponent implements OnInit {
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+          const lastEvalKey = result[`LastEvaluatedKey`].assetSK.replace(/#/g, '--');
           this.assetNext = false;
           // for prev button
           if (!this.assetPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -288,7 +259,6 @@ export class AssetListComponent implements OnInit {
       this.allData = [];
       this.suggestedAssets = [];
       this.fetchAssetsCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -303,7 +273,6 @@ export class AssetListComponent implements OnInit {
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -371,7 +340,7 @@ export class AssetListComponent implements OnInit {
       $('.col8').css('min-width','200px');
     }
 
-    if(this.hideShow.status == false) {
+    if(this.hideShow.currentStatus == false) {
       $('.col9').css('display','none');
     } else {
       $('.col9').css('display','');

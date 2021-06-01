@@ -50,15 +50,10 @@ export class ListContactRenewComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.fetchAllVehicles();
     this.getRemindersCount();
     this.fetchServiceTaks();
-    // this.fetchRenewals();
-    this.fetchGroups();
     this.fetchUsersList();
     this.fetchTasksList();
-    this.initDataTable();
-    this.fetchUsers();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -77,42 +72,28 @@ export class ListContactRenewComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });
   }
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groups = result;
-    });
-  }
+
   fetchUsersList() {
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/employee').subscribe((result: any) => {
       this.usersList = result;
     });
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  fetchAllVehicles() {
-    this.apiService.getData('users').subscribe((result: any) => {
-      this.allUsers = result.Items;
-    });
-  }
-
+  
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=contact').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-
         if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewEndPoint = this.totalRecords;
         }
-      },
-    });
-  }
 
-  fetchUsers() {
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
-      this.users = result;
+        this.initDataTable();
+      },
     });
   }
 
@@ -125,7 +106,6 @@ export class ListContactRenewComponent implements OnInit {
         }
         this.getStartandEndVal();
         this.remindersData = result[`Items`];
-        // this.fetchRenewals();
         if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;
@@ -167,7 +147,6 @@ export class ListContactRenewComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -178,11 +157,10 @@ export class ListContactRenewComponent implements OnInit {
       this.contactID = null;
       this.firstName = '';
       this.searchServiceTask = null;
-      this.filterStatus = '';
+      this.filterStatus = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
       this.getRemindersCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -203,7 +181,6 @@ export class ListContactRenewComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.getRemindersCount();
-        this.initDataTable();
         this.toastr.success('Contact Renewal Deleted Successfully!');
       });
     }
@@ -247,6 +224,4 @@ export class ListContactRenewComponent implements OnInit {
     this.contactRenewEndPoint = this.pageLength;
     this.contactRenewDraw = 0;
   }
-
-
 }

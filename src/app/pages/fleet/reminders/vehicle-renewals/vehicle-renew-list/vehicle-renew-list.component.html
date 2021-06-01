@@ -5,10 +5,8 @@
                 <div class="row px-2" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;"
-                            placeholder="Search by vehicle">
-                            <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">
-                                {{data.vehicleIdentification}}</ng-option>
+                        <ng-select [(ngModel)]="vehicleID" name="vehicleID" placeholder="Search By vehicle">
+                            <ng-option *ngFor="let data of vehicleList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
                     </div>
 
@@ -98,15 +96,9 @@
                                             </td>
                                             <td>{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</td>
                                             <td>{{item.tasks.time}} {{item.tasks.timeUnit}}(s) Before</td>
-                                            <td><span *ngFor="let s of item.subscribers; let g=index">
-                                                <span *ngIf="s.type === 'user'">
-                                                    {{users[s.id]}}
-                                                </span>
-                                                <span *ngIf="s.type === 'group'">
-                                                    {{groups[s.id]}}
-                                                </span>
-                                                <span *ngIf="g<item.subscribers.length-1">,</span>
-                                            </span></td>
+                                            <td>
+                                                {{ item.subscribers }}
+                                            </td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="btn p-0" data-toggle="dropdown"><i

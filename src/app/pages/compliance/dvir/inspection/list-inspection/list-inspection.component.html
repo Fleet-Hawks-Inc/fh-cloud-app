@@ -1,13 +1,5 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
     <section role="main" class="content-body p-3">
       <header class="page-header pr-1">
         <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -44,10 +36,10 @@
             </div>
             <div class="table-responsive">
               <table
-                class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer"
+                class="row-border hover table table-bordered table-striped mb-0"
                 id="DataTables_Table_16" role="grid">
                 <thead>
-                  <tr role="row">
+                  <tr>
                     <th width="10%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
                       colspan="1" data-column-index="0" aria-sort="ascending"
                       aria-label="Sr. No.: activate to sort column descending" style="width: 148px;">Sr. No.</th>
@@ -115,24 +107,17 @@
               <div class="col-lg-6"></div>
             </div>
             <div class="table-responsive">
-              <table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer"
+              <table class="row-border hover table table-bordered table-striped mb-0"
                 id="simple-table1" role="grid">
                 <thead>
-                  <tr role="row">
-                    <th class="sorting_asc" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
-                      data-column-index="0" aria-sort="ascending"
-                      aria-label="Sr. No.: activate to sort column descending" style="width: 0px;">Sr. No.</th>
-                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
-                      data-column-index="1" aria-label="Vehicle/Asset: activate to sort column ascending"
-                      style="width: 0px;">Vehicle/Asset</th>
-                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
-                      data-column-index="2" aria-label="Defects: activate to sort column ascending" style="width: 0px;">
+                  <tr >
+                    <th class="col1" rowspan="1" colspan="1" style="width: 0px;">Sr. No.</th>
+                    <th class="col2" style="width: 0px;">Vehicle/Asset</th>
+                    <th class="col3" style="width: 0px;">
                       Defects</th>
-                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
-                      data-column-index="3" aria-label="Form Name: activate to sort column ascending"
+                    <th class="col4" 
                       style="width: 0px;">Form Name</th>
-                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
-                      data-column-index="4" aria-label="Date/Time: activate to sort column ascending"
+                    <th class="col5" 
                       style="width: 0px;">Date/Time</th>
                   </tr>
                 </thead>
@@ -142,7 +127,7 @@
 
 
 
-                  <tr class="cursorpoint odd" role="row">
+                  <!-- <tr class="cursorpoint odd" role="row">
                     <td onclick="window.location='divr-detail.php'" class="sorting_1">01</td>
                     <td onclick="window.location='divr-detail.php'">Volve-32559</td>
                     <td onclick="window.location='divr-detail.php'">Transmission</td>
@@ -162,7 +147,7 @@
                     <td onclick="window.location='divr-detail.php'">Fuel Tanks</td>
                     <td onclick="window.location='divr-detail.php'">N2258 Post inspection</td>
                     <td onclick="window.location='divr-detail.php'">11/03/2021, 03:00 PM</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>

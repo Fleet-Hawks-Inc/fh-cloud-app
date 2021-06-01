@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from "moment";
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -35,7 +36,10 @@ export class CalendarViewComponent implements OnInit {
     tripPlanning: [],
     tripStatus: '',
     tripID: '',
-    driverIDs: []
+    driverIDs: [],
+    vehicleIDs :[],
+    assetIDs: [],
+    loc: ''
   };
   response: any = '';
   form;
@@ -60,6 +64,8 @@ export class CalendarViewComponent implements OnInit {
   viewType = 'map';
   allCustomers = [];
   tempIndex:any = '';
+  allTrips = [];
+  oldTrips = [];
 
   ngOnInit() {
     this.fetchAllTrips();
@@ -113,10 +119,11 @@ export class CalendarViewComponent implements OnInit {
       })
   }
 
+  
   fetchAllTrips() {
     let backgroundColor = '';
     let borderColor = '';
-    this.apiService.getData('trips')
+    this.apiService.getData('trips/get/calendarActive')
       .subscribe((result: any) => {
         result.Items.map((i) => { 
           if(i.tripStatus == 'confirmed') {
@@ -254,13 +261,21 @@ export class CalendarViewComponent implements OnInit {
  
   async saveAssetModalData() {
     let selectedDriverids = [];
+    let selectedVehicles = [];
+    let selectedAssets = [];
     if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
       this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.trailer.length != 0) {
       let planData = this.tripData.tripPlanning;
 
       selectedDriverids.push(this.tempTextFieldValues.coDriverID);
       selectedDriverids.push(this.tempTextFieldValues.driverID);
-      
+
+      if(this.tempTextFieldValues.vehicleID != '' && this.tempTextFieldValues.vehicleID != undefined) {
+        if(!selectedVehicles.includes(this.tempTextFieldValues.vehicleID)) {
+            selectedVehicles.push(this.tempTextFieldValues.vehicleID);
+          }
+      }
+
       for (let i = 0; i < planData.length; i++) {
         this.tripData.tripPlanning[i].coDriverID = this.tempTextFieldValues.coDriverID;
         this.tripData.tripPlanning[i].driverID = this.tempTextFieldValues.driverID;
@@ -272,11 +287,19 @@ export class CalendarViewComponent implements OnInit {
         for (let j = 0; j < this.tempTextFieldValues.trailer.length; j++) {
           const element2 = this.tempTextFieldValues.trailer[j];
           this.tripData.tripPlanning[i].assetID.push(element2.id)
+
+          if(element2.id != '' && element2.id != undefined) {
+            if(!selectedAssets.includes(element2.id)) {
+              selectedAssets.push(element2.id);
+            }
+          }
         }
       }
       this.tripData.driverIDs = await selectedDriverids;
+      this.tripData.vehicleIDs = await selectedVehicles;
+      this.tripData.assetIDs = await selectedAssets;
       this.tripData.tripStatus = 'dispatched';
-      this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
+      
       this.apiService.putData('trips', this.tripData).subscribe({
         complete: () => {
         },
@@ -304,9 +327,12 @@ export class CalendarViewComponent implements OnInit {
         next: (res) => {
           this.spinner.hide();
           this.response = res;
-          this.tempIndex = '';
+          this.tempTrips[this.tempIndex].btnHeading = 'Dispatched';
+          this.tempTrips[this.tempIndex].showModal = false;
+          this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
           $('#assetModal').modal('hide');
-          this.toastr.success('Assignment done successfully');
+          this.toastr.success('Dispatch done successfully');
+          this.tempIndex = '';
         },
       });
     } else {
@@ -329,6 +355,8 @@ export class CalendarViewComponent implements OnInit {
         if(result.documents == undefined) {
           result.documents = [];
         }
+        delete result.tripSK;
+        delete result.isDelActiveSK;
         this.tripData = result;
         this.OrderIDs = this.tripData['orderId'];
 
@@ -342,7 +370,7 @@ export class CalendarViewComponent implements OnInit {
           $("#assetModal").modal('show');
           this.spinner.hide();
         } else {
-          this.toastr.error('Assignment is already done. Please refer edit trip to change the previous assignment');
+          this.toastr.error('Dispatch is already done. Please refer edit trip to make other changes');
           this.spinner.hide();
         }
       })
@@ -411,6 +439,7 @@ export class CalendarViewComponent implements OnInit {
   }
 
   async orderTripValues(val) {
+    this.allTrips = (val[0].Items.length > 0) ? val[0].Items : [];
     let fetchedTrip = val[0];
     let fetchedOrder = val[1];
 
@@ -421,6 +450,21 @@ export class CalendarViewComponent implements OnInit {
         if(tripDate != '' && tripDate != undefined) {
           tripDate = moment(tripDate,'YYYY-MM-DD').format('DD-MM-YYYY')
         }
+        let btnHeading = '';
+        let showModal = false;
+        if(element.tripStatus === 'confirmed') {
+          if(element.driverIDs.length > 0 || element.assetIDs.length> 0 || element.vehicleIDs.length > 0 ) {
+            btnHeading = 'Dispatch';
+            showModal = false;
+          } else {
+            btnHeading = 'Assign and dispatch';
+            showModal = true;
+          }
+        } else {
+          showModal = false;
+          btnHeading = 'Dispatched';
+        }
+
         let tripObj = {
           pickupLocation: '',
           deliveryLocation: '',
@@ -432,7 +476,9 @@ export class CalendarViewComponent implements OnInit {
           tripPlan: element.tripPlanning,
           orders: element.orderId,
           customersArr: [],
-          documents: element.documents
+          documents: element.documents,
+          btnHeading: btnHeading,
+          showModal: showModal
         }
 
         for (let k = 0; k < element.orderId.length; k++) {
@@ -448,14 +494,14 @@ export class CalendarViewComponent implements OnInit {
               tripObj.customersArr.push(cusObj);
 
               //for unique customer-id in array 
-              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
+              tripObj.customersArr = _.uniq(tripObj.customersArr);
             }
           });
         }
         this.tempTrips.push(tripObj);
-        // console.log('this.tempTrip', this.tempTrips);
       }
     }
+    
     await this.fetchCustomers();
     await this.getTripsData(this.tempTrips);
     
@@ -465,8 +511,8 @@ export class CalendarViewComponent implements OnInit {
     * Get all customers
    */
   fetchCustomers() {
-    this.apiService.getData('customers/get/all').subscribe((result: any) => {
-      this.allCustomers = result.Items;
+    this.apiService.getData('contacts/get/calendar/customers').subscribe((result: any) => {
+      this.allCustomers = result;
       this.assignCompanyName();
     });
   }
@@ -479,22 +525,51 @@ export class CalendarViewComponent implements OnInit {
           const elementp = element.customersArr[w];
 
           this.allCustomers.map(function (obj) {
-            if (obj.customerID == elementp.customerId) {
-              console.log('obj.companyName', obj.companyName)
+            if (obj.id == elementp.customerId) {
               elementp.name = obj.companyName;
-
-              let custName = obj.companyName.split(' ');
-              if(custName[0] != undefined) {
-                elementp.icon = custName[0].charAt(0).toUpperCase();
-              }
-
-              if(custName[1] != undefined) {
-                elementp.icon += custName[1].charAt(0).toUpperCase();
-              }
+              elementp.icon = obj.companyLogo;
             }
           });
         }
       }
     }
+
+    this.oldTrips = this.tempTrips;
+  }
+
+  filterTrip(tripID) {
+    if(tripID == undefined) {
+      this.tempTrips = this.oldTrips;
+    } else {
+      this.tempTrips = this.tempTrips.filter((v) =>{
+        if(v.tripID == tripID) {
+          return v;
+        }
+      })
+    }
+    
+  }
+
+  updateTripStatus(tripID, index, tripStatus) {
+    if(tripStatus == 'dispatched') {
+      return false;
+    } else {
+      let tripObj = {
+        entryID : tripID,
+        status: 'dispatched'
+      }
+      this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => { 
+        if(result) {
+          this.tempTrips[index].btnHeading = 'Dispatched';
+          this.tempTrips[index].showModal = false;
+          this.tempTrips[index].tripStatus = 'dispatched';
+          this.toastr.success('Trip status updated successfully');
+        } else {
+          this.toastr.error('Something went wrong. Please try again later after sometime');
+        }
+      })
+    }
+
+    
   }
 }

@@ -217,7 +217,7 @@
                                     <a href="javascript:;" class="text-5 text-capitalize">{{ (data.driverData.main) ? data.driverData.main.fullName : '' }} </a><span
                                        class="badge badge-dark p-1">D</span>
                                      <a href="javascript:;" class="text-3 text-capitalize" *ngIf="data.driverData.other"> | {{ (data.driverData.other) ? data.driverData.other.fullName : '' }} </a><span
-                                       class="badge badge-dark p-1">SB</span>
+                                       class="badge badge-dark p-1">{{ (data.driverData.other) ? 'SB' : ''  }}</span>
                                  </p>
                     
                               </div>
@@ -238,16 +238,12 @@
                            <div class="row">
                               <div class="col-lg-6">
                                  <p class="mb-1 text-3 font-weight-semibold text-dark">Vehicle: {{ data.vehicleData[0].vehicleIdentification }} <a
-                                       href="#sharevlocation" data-toggle="tooltip" title=""
-                                       class="mb-0 mt-0 btn btn-xs modal-with-form btn-dark"
-                                       data-original-title="Shared Live Location"><i class="fas fa-share-alt"></i></a></p>
+                                       href="javascript:;" data-toggle="tooltip" title="Share Live Location"><i class="fas fa-share-alt"></i></a></p>
                               </div>
    
                               <div class="col-lg-6 text-right">
                                  <p class="mb-1 text-3 font-weight-semibold text-dark">Assets: <span *ngFor="let asst of data.assetData"> {{ asst.assetIdentification }} </span>
-                                    <a href="#sharetlocation" data-toggle="tooltip" title=""
-                                       class="mb-0 mt-0 btn btn-xs modal-with-form btn-dark"
-                                       data-original-title="Shared Live Location"><i class="fas fa-share-alt"></i></a></p>
+                                    <a href="javascript:;" data-toggle="tooltip" title="Share Live Location"><i class="fas fa-share-alt"></i></a></p>
                               </div>
                            </div>
    
@@ -260,7 +256,7 @@
                            <p class="mb-1 text-4 font-weight-semibold text-dark">Trip <span
                                  class="badge badge-dark p-1">{{ data.tripStatus }}</span>
    
-                              <a class="pull-right mx-1" href="">{{ data.tripNo }}</a>
+                              <a class="pull-right mx-1" href="javascript:;">{{ data.tripNo }}</a>
                               <span class="pull-right LTLload">{{ data.tripType }}</span>
                            </p>
    
