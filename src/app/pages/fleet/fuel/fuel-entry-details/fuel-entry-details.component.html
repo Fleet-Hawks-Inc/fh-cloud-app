@@ -51,30 +51,34 @@
                                  <td>{{fuelData.unitType}} </td>
                               </tr>
 
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Unit Name</td>
-                                 <td>
-                                    <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.unitNumber}}</span>
-                                    <span *ngIf="fuelData.fuelProvider=='Manual'"> {{vehicleList[fuelData.unitNumber]}}</span>
-                                     </td>
-                              </tr>
-                              
-                              <tr *ngIf="fuelData.category">
-                                 <td class="back-color-gray font-weight-bold">Item Type</td>
-                                 <td>{{fuelData.category}} </td>
-                              </tr>
-                              <tr *ngIf="fuelData.groupCategory">
-                                 <td class="back-color-gray font-weight-bold">Category</td>
-                                 <td>{{fuelData.groupCategory}} </td>
-                              </tr>
-                              <tr *ngIf="fuelData.carrierFee">
-                                 <td class="back-color-gray font-weight-bold">Carrier Fee</td>
-                                 <td>{{fuelData.carrierFee}} </td>
-                              </tr>
-                              <tr *ngIf="fuelData.conversionRate">
-                                 <td class="back-color-gray font-weight-bold">Conversion Rate</td>
-                                 <td>{{fuelData.conversionRate}} </td>
-                              </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Unit Name</td>
+                                       <td>
+                                          <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.unitNumber}}</span>
+                                          <span *ngIf="fuelData.fuelProvider=='Manual'">
+                                             <span *ngIf="fuelData.unitType=='vehicle'">{{vehicleList[fuelData.unitNumber]}}</span>
+                                             <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitNumber]}}</span>
+                                             </span>
+                                           </td>
+                                    </tr>
+                                    
+                                    <tr *ngIf="fuelData.category">
+                                       <td class="back-color-gray font-weight-bold">Item Type</td>
+                                       <td>{{fuelData.category}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.groupCategory">
+                                       <td class="back-color-gray font-weight-bold">Category</td>
+                                       <td>{{fuelData.groupCategory}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.carrierFee">
+                                       <td class="back-color-gray font-weight-bold">Carrier Fee</td>
+                                       <td>{{fuelData.carrierFee}} </td>
+                                    </tr>
+                                    <tr *ngIf="fuelData.conversionRate">
+                                       <td class="back-color-gray font-weight-bold">Conversion Rate</td>
+                                       <td>{{fuelData.conversionRate}} </td>
+                                    </tr>
+
 
                               <tr>
                                  <td class="back-color-gray font-weight-bold">Odometer</td>

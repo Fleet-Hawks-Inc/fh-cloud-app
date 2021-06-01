@@ -349,7 +349,18 @@ export class FuelEntryDetailsComponent implements OnInit {
          })
         }
 
-         let date = moment(result.fuelDate)
+         let date:any = moment(result.fuelDate)
+         if(result.fuelTime){
+         let time=moment(result.fuelTime,'h mm a')
+         date.set({
+           hour: time.get('hour'),
+           minute: time.get('minute')
+         })
+         date = date.format('MMM Do YYYY, h:mm a')
+        }
+        else{
+          date=date.format('MMM Do YYYY')
+        }
          this.carrierID = result.carrierID;
          this.fuelData.fuelID = this.fuelID;
          this.fuelData.billingCurrency = result.billingCurrency,
@@ -369,8 +380,8 @@ export class FuelEntryDetailsComponent implements OnInit {
          this.fuelData.transactionID=result.reference;
          this.fuelData.fuelProvider=result.fuelProvider;
          this.fuelData.amountPaid=result.amountPaid;
-         this.fuelData.fuelDateTime =  date.format('MMM Do YYYY')+" "+ result.fuelTime
-         this.fuelData.paidBy = this.driverList[result.paidBy];
+         this.fuelData.fuelDateTime =  date;
+         this.fuelData.paidBy = result.paidBy;
          this.fuelData.fuelCardNumber = result.fuelCardNumber;
          this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
          this.fuelData.deductFromPay=result.deductFromPay || false;

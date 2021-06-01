@@ -546,24 +546,27 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
-                <div class="row pt-2">
-                  <div class="col-lg-10">
-                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Province/State<span
-                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                    <ng-select placeholder="Select Province" name="stateCode" [(ngModel)]="fuelData.stateCode"
-                      #province="ngModel" required
-                      (change)="onChangeHideErrors('fuelData.stateCode');getCities($event,fuelData.countryCode)">
-                      <!-- <ng-container *ngFor="let state of states | async">
-                          <ng-option *ngIf="state.countryID == fuelData.countryID" value="{{state.stateID}}">
-                            {{state.stateName}}</ng-option>
-                        </ng-container> -->
-                      <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
-                        {{state.stateName}}</ng-option>
-                    </ng-select>
-                    <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
-                      <div *ngIf="province.errors.required">
-                        Province/State is required.
+                  <div class="row pt-2">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Province/State<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select placeholder="Select Province/State" name="stateCode" [(ngModel)]="fuelData.stateCode"
+                        #province="ngModel" required
+                        (change)="onChangeHideErrors('fuelData.stateCode');getCities($event,fuelData.countryCode)">
+                        <!-- <ng-container *ngFor="let state of states | async">
+                            <ng-option *ngIf="state.countryID == fuelData.countryID" value="{{state.stateID}}">
+                              {{state.stateName}}</ng-option>
+                          </ng-container> -->
+                        <ng-option *ngFor="let state of states" value="{{state.stateCode}}">
+                          {{state.stateName}}</ng-option>
+                      </ng-select>
+                      <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
+                        <div *ngIf="province.errors.required">
+                          Province/State is required.
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -711,17 +714,22 @@
                     </div>
                     <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                   </div>
+
                 </div>
-                <div class="row pt-2">
-                  <div class="col-lg-10">
-                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
-                      <span class="text-1 optional-label-color">(optional)</span></label>
-                    <textarea class="form-control h-auto" rows="3" name="description"
-                      [(ngModel)]="fuelData.description" placeholder="Add description" #desName4="ngModel"
-                      pattern="^[\s\S]{2,500}$"></textarea>
-                    <div *ngIf="desName4.invalid && (desName4.dirty || desName4.touched)" class="text-danger">
-                      <div *ngIf="desName4.errors.pattern">
-                        Only 500 characters are allowed.
+              
+                  <div class="row pt-2">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
+                        <span class="text-1 optional-label-color">(optional)</span></label>
+                      <textarea class="form-control h-auto" rows="3" name="description"
+                        [(ngModel)]="fuelData.description" placeholder="Add description" #desName4="ngModel"
+                        pattern="^[\s\S]{1,500}$"></textarea>
+                      <div *ngIf="desName4.invalid && (desName4.dirty || desName4.touched)" class="text-danger">
+                        <div *ngIf="desName4.errors.pattern">
+                          Only 500 characters are allowed.
+                        </div>
+
+
                       </div>
 
                     </div>

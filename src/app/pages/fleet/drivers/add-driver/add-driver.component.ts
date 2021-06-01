@@ -37,7 +37,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   hasDocs = false;
   hasLic = false;
   hasPay = false;
-  hasHos = false;v
+  hasHos = false;
   hasCrossBrdr = false;
 
   addressField = -1;
@@ -84,7 +84,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     startDate: '',
     terminationDate: null,
     contractStart: '',
-    contractEnd: '',
+    contractEnd: null,
     password: '',
     confirmPassword: '',
     citizenship: '',
@@ -307,8 +307,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
-    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 12, day: date.getDate() };
-    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 12, day: date.getDate() };
+    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate() };
+    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
     this.futureDatesLimit = { year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate() };
   }
 
@@ -351,7 +351,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    this.fetchYards(); // fetch yards
+    
     this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -500,12 +500,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.docCountries = CountryStateCity.GetAllCountries();
   }
 
-  fetchYards() {
-    this.apiService.getData('yards')
-      .subscribe((result: any) => {
-        this.yards = result.Items;
-      });
-  }
+  
 
    getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = '';
@@ -581,20 +576,20 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   selectPhoto(event, name: any) {
-   if(name === null || this.driverProfileSrc === '') {
-    this.uploadedPhotos = [];
-    const files = [...event.target.files];
-    this.uploadedPhotos.push(files[0]);
-   } else {
-    this.uploadedPhotos = [];
-    const files = [...event.target.files];
-    this.uploadedPhotos.push(files[0]);
-    this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
-
+    if(name === null || this.driverProfileSrc === '') {
+     this.uploadedPhotos = [];
+     const files = [...event.target.files];
+     this.uploadedPhotos.push(files[0]);
+    } else {
+     this.uploadedPhotos = [];
+     const files = [...event.target.files];
+     this.uploadedPhotos.push(files[0]);
+     this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
+ 
+    }
+ 
+ 
    }
-
-
-  }
 
   removeProfile() {
     this.driverProfileSrc = 'assets/img/driver/driver.png';
@@ -638,14 +633,18 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.submitDisabled = false;
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addDriverGroupModal').modal('hide');
@@ -696,7 +695,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -731,7 +729,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             from(err.error)
               .pipe(
                 map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                  // val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                   this.spinner.hide();
                 })
@@ -804,10 +802,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number'){
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
+      
+        }
       });
+       
   }
 
   hideErrors() {
@@ -857,6 +859,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.fetchCities(countryCode, stateCode, a);
           }
         }
+
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         this.driverData.ownerOperator = result.ownerOperator;
@@ -1043,7 +1046,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                 complete: () => {
                   this.throwErrors();
                   this.hasError = false;
-                  this.submitDisabled = false;
+                  this.submitDisabled = true;
                   if (err) return reject(err);
                   // this.toastr.error('Please see the errors');
                 },
