@@ -1279,11 +1279,13 @@
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].hazmatDetails.emergencyContactName'"
                               maxlength="24" [(ngModel)]="commodity.hazmatDetails.emergencyContactName"
-                              placeholder="+12234567891" #Contact2="ngModel"  pattern="^[0-9]{7,10}$">
+                              placeholder="eg.John Smith" #Contact2="ngModel"  pattern="^[a-zA-Z\s]+$">
                               <div *ngIf="Contact2.invalid && (Contact2.dirty || Contact2.touched)" class="text-danger">
 
                                 <div *ngIf="Contact2.errors.pattern">
-                                  Enter valid emergency contact number eg. +12234567891.
+
+                                  Emergency contact name must contain letters only.
+
                                 </div>
                               </div>
                           </div>

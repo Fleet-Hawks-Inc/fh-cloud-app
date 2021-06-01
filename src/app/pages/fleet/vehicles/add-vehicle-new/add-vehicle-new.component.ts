@@ -277,7 +277,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchFuelTypes();
+    //this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchCountries();

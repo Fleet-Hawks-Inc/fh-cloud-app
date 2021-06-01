@@ -77,8 +77,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    this.fetchFuelTypeList();
-    this.fetchCountries();
+    //this.fetchFuelTypeList();
+    //this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
