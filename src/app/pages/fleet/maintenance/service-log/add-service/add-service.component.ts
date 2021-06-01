@@ -45,6 +45,7 @@ export class AddServiceComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
   serviceData = {
@@ -224,7 +225,7 @@ export class AddServiceComponent implements OnInit {
    * Add new asset
    */
   addService() {
-
+   this.submitDisabled = true;
     this.hideErrors();
     this.spinner.show();
 
@@ -270,13 +271,19 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.spinner.hide();
+              this.submitDisabled = false;
             },
-            error: () => { },
-            next: () => { },
+            error: () => { 
+              this.submitDisabled = false;
+            },
+            next: () => { 
+            
+            },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled = false;
         this.toastr.success('Service log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
         this.spinner.hide();
@@ -839,6 +846,7 @@ export class AddServiceComponent implements OnInit {
   */
   updateService() {
     this.hideErrors();
+    this.submitDisabled = true;
 
     let taskIds = [];
     this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
@@ -898,13 +906,17 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               this.spinner.hide(); // loader hide
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => { 
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled = false;
         this.hasSuccess = true;
         this.toastr.success('Service log Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
