@@ -1,26 +1,26 @@
 <section class="body">
    <div class="inner-wrapper">
 
-      <section role="main" class="content-body pt-0 pr-0 pl-0">
-
-         <header class="page-header">
-            <div class="row" style="padding-top:10px;">
+      <section role="main" class="content-body pl-1 pr-0 pt-0">
+         <header class="page-header pr8 pl11">
+             <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
                <div class="col-md-8 col-lg-8 text-right"> <a routerLink="/fleet/vehicles/list"
                      class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
             </div>
          </header>
+         
          <form  class="form-horizontal form-bordered" method="get" name="form" id="form_" #vehicleF="ngForm">
          <section class="m-2">
             <div class="row mb-3">
                <div class="col-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="form-group row pt-2 adddriverpl">
+                     <div class="row pt-2 adddriverpl">
                         <div class="col-lg-10">
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Identification</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name <span
@@ -182,7 +182,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 mb-3 offset-lg-1">
+                        <div class="col-lg-5 mb-2 pb-1 offset-lg-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Country <span
@@ -296,19 +296,18 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
-                     <div class="form-group row adddriverpl mb-2 pt-2">
+                     <div class=" row adddriverpl mb-2 pt-2">
                         <div class="col-lg-10 pt-1">
-                           <label
-                              class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Preventative
+                           <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Preventative
                               Maintenance</label>
                         </div>
-                        <div class="col-lg-5 mb-2">
+                        <div class="col-lg-5">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Service Program <span
@@ -327,7 +326,7 @@
                            </div>
                         </div>
 
-                        <div class="col-lg-5 mb-2 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date
@@ -353,18 +352,18 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
-                     <div class="form-group row mb-2 adddriverpl pt-2">
-                        <div class="col-lg-10 pt-1">
+                     <div class="row mb-2 adddriverpl pt-2">
+                        <div class="col-lg-10">
                            <label
-                              class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Classification</label>
+                              class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Classification</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Status <span
@@ -398,7 +397,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 mb-3 offset-lg-1">
+                        <div class="col-lg-5 mb-1 offset-lg-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Ownership <span
@@ -429,14 +428,14 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
                      <div class="form-group adddriverpl row adddriverpl pt-2">
-                        <div class="col-lg-10 pt-1">
+                        <div class="col-lg-10">
                            <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Additional Details</label>
                         </div>
                         <div class="col-lg-5 mb-3 pb-1">
@@ -534,12 +533,12 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="form-group row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-2">
                         <div class="col-lg-10">
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">In-Service</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Start Date <span
@@ -556,7 +555,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer
@@ -580,19 +579,18 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
-                     <div class="form-group row adddriverpl pt-1">
+                     <div class="row adddriverpl pt-1">
                         <div class="col-lg-10">
-                           <label
-                              class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Vehicle
+                           <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Vehicle
                               Life Estimates</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb10">
                            <div class="row">
 
                               <div class="col-lg-5">
@@ -613,7 +611,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb6">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Miles
@@ -636,7 +634,7 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
@@ -649,7 +647,7 @@
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Out-of-Service
                            </label>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-2 pb12">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Date
@@ -661,7 +659,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb12">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service
@@ -681,11 +679,11 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="form-group row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-1 mt-1">
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Dimensions</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Height <span
@@ -718,7 +716,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance <span
@@ -741,18 +739,18 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
-                     <div class="row pt-1 adddriverpl">
+                     <div class="row adddriverpl">
                         <div class="col-lg-10">
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Weight</label>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 pb-3 mb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Tare Weight <span
@@ -774,7 +772,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 pb-3 mb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight
@@ -806,9 +804,7 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="row adddriverpl pt-3">
-
-
+                     <div class="row adddriverpl pt-2">
                         <div class="col-lg-10">
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"> Insurance Details</label>
@@ -864,13 +860,13 @@
                      <div class="row adddriverpl pt-3">
                         <div class="col-lg-5">
                            <div class="row">
-                              <div class="col-lg-5">
+                              <div class="col-lg-5 pb-3 mb-1">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control" Placeholder="yyyy/mm/dd"
                                     name="insurance.dateOfExpiry" [(ngModel)]="insurance.dateOfExpiry">
                               </div>
-                              <div class="col-lg-5">
+                              <div class="col-lg-5 pb-3 mb-1">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Every <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <div class="row">
@@ -927,12 +923,12 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="form-group adddriverpl row pt-3">
+                     <div class="adddriverpl row pt-2">
                         <div class="col-lg-10">
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span
@@ -955,7 +951,7 @@
                            </div>
                         </div>
 
-                        <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1 Capacity
@@ -1011,7 +1007,7 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
@@ -1022,7 +1018,7 @@
                            <label
                               class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Oil</label>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span
@@ -1055,7 +1051,7 @@
                            </div>
                         </div>
 
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust
@@ -1097,15 +1093,14 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-2">
 
                         <div class="col-lg-10">
-                           <label
-                              class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Features</label>
+                           <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Features</label>
                         </div>
 
 
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Number of Tires <span
@@ -1117,7 +1112,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type <span
@@ -1145,11 +1140,11 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="form-group row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-2">
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Engine</label>
                         </div>
-                        <div class="col-lg-5 mb-3">
+                        <div class="col-lg-5 mb-2 pb6">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Engine Summary <span
@@ -1170,7 +1165,7 @@
 
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="col-lg-5 offset-lg-1 mb-2 pb6">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders <span
@@ -1200,17 +1195,17 @@
                         </div>
                      </div>
 
-                     <div class="form-group row">
+                     <div class="row">
                         <div class="col-lg-12">
                            <hr class="solid">
                         </div>
                      </div>
 
-                     <div class="row adddriverpl pt-1">
+                     <div class="row adddriverpl">
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Transmission </label>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Summary
@@ -1222,7 +1217,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Type
@@ -1248,16 +1243,16 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-2">
 
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Purchase
                               Detail</label>
                         </div>
 
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-3 pb-1">
                            <div class="d-flex">
-                              <div class="col-lg-10">
+                              <div class="col-lg-10 pl-0">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Vendor <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID" [(ngModel)]="purchase.purchaseVendorID"
@@ -1273,7 +1268,7 @@
                               </div>
                            </div>
 
-                           <div class="row pr-3 pl-3">
+                           <div class="row pr-3">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Price <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
@@ -1291,13 +1286,13 @@
                               </div>
                            </div>
 
-                           <div class="col-lg-10">
+                           <div class="col-lg-10 pl-0">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Date <span
                                     class="text-1 optional-label-color">(optional)</span> </label>
                               <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" Placeholder="yyyy/mm/dd"
                                  name="purchase.purchaseDate" [(ngModel)]="purchase.purchaseDate">
                            </div>
-                           <div class="col-lg-10">
+                           <div class="col-lg-10 pl-0">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer <span
                                     class="text-1 optional-label-color">(optional)</span> </label>
                               <input type="text" class="form-control" name="purchase.purchaseOdometer"
@@ -1305,9 +1300,9 @@
                            </div>
                         </div>
 
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                            <div class="d-flex">
-                              <div class="col-lg-7">
+                              <div class="col-lg-7 pl-0">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration
                                     Date <span class="text-1 optional-label-color">(optional)</span> </label>
                                  <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control" Placeholder="yyyy/mm/dd"
@@ -1324,16 +1319,16 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-lg-10">
+                           <div class="col-lg-10 pl-0 pr-1">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration Meter
                                  <span class="text-1 optional-label-color">(optional)</span> </label>
                               <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="0"
                                  [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="eg. 100 , 200">
                            </div>
-                           <div class="col-lg-10">
+                           <div class="col-lg-10 pl-0 pr-1">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Comments <span
                                     class="text-1 optional-label-color">(optional)</span> </label>
-                              <textarea type="text" rows="3" class="form-control" name="purchase.purchaseComments"
+                              <textarea type="text" rows="3" class="form-control heighta" name="purchase.purchaseComments"
                                  [(ngModel)]="purchase.purchaseComments" placeholder="Add comments about vehicle purchase" #pComments= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                  <div *ngIf="pComments.invalid && (pComments.dirty || pComments.touched)" class="text-danger">
                                     <div *ngIf="pComments.errors.pattern">
@@ -1351,13 +1346,13 @@
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
-                     <div class="row adddriverpl pt-3">
+                     <div class="row adddriverpl pt-2">
 
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Loan Detail</label>
                         </div>
 
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor <span
@@ -1434,7 +1429,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments
@@ -1465,7 +1460,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Notes <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
-                                 <textarea class="form-control" rows="3" name="loan.notes" [(ngModel)]="loan.notes"
+                                 <textarea class="form-control heighta" rows="3" name="loan.notes" [(ngModel)]="loan.notes"
                                     placeholder="Enter notes about the loan of vehicle" #notes3= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                     <div *ngIf="notes3.invalid && (notes3.dirty || notes3.touched)" class="text-danger">
                                        <div *ngIf="notes3.errors.pattern">
@@ -1487,8 +1482,8 @@
                         </div>
                     </div>
 
-                     <div class="form-group border-0 row">
-                        <div class="col-lg-12 pr-5 text-right pb-4">
+                     <div class="form-group adddriverpl border-0 row">
+                        <div class="col-lg-11 pr123 text-right pb-3">
                            <button type="button" class="btn btn-default mr-2 mt-4" (click)="cancel()">Cancel</button>
                             <!-- if there is some error in validation  -->
                            <button *ngIf="!vehicleID && !vehicleF.form.valid" [routerLink]="" [disabled]="!vehicleF.form.valid" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
