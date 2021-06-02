@@ -214,8 +214,9 @@ export class ListingComponent implements OnInit {
   }
 
   sendEmailNotification(value) {
-    if (value.reminderTasks.reminderStatus !== undefined && value.reminderTasks.reminderStatus !== '') {
-      this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?status=${value.reminderTasks.reminderStatus}`).subscribe((result) => {
+    console.log('value', value);
+    if (value.status !== undefined && value.status !== '') {
+      this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?status=${value.status}`).subscribe((result) => {
         this.toastr.success('Email sent successfully');
       });
     } else {

@@ -31,7 +31,7 @@
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must be between 2 to 30 characters and must contain letters.
+                            First name must contain letters.
                           </div>
                         </div>
                       </div>
@@ -45,7 +45,7 @@
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must be between 2 to 30 characters and must contain letters.
+                            Last name must contain letters.
                           </div>
                         </div>
                       </div>
@@ -480,7 +480,7 @@
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Province/State</label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
-                                placeholder="Select province">
+                                placeholder="Select province/state">
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>

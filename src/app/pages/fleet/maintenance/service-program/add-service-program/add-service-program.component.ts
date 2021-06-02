@@ -56,6 +56,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
 
@@ -104,7 +105,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   }
   addServiceProgram() {
-
+  this.submitDisabled = true;
     this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
       complete: () => { },
@@ -119,12 +120,18 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           .subscribe({
             complete: () => {
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
-            next: () => { },
+            error: () => { 
+              this.submitDisabled = true;
+            },
+            next: () => {
+             
+            },
           });
       },
         next: (res) => {
+          this.submitDisabled = false;
           this.response = res;
           this.toastr.success('Service added successfully');
           this.router.navigateByUrl('/fleet/maintenance/service-program/list');
@@ -195,6 +202,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
  updateServiceProgram() {
   this.hasError = false;
   this.hasSuccess = false;
+  this.submitDisabled = true;
 
   this.apiService.putData('servicePrograms', this.serviceData).subscribe({
     complete: () => { },
@@ -212,14 +220,18 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         .subscribe({
           complete: () => {
             // this.throwErrors();
+            this.submitDisabled = false;
           },
-          error: () => { },
+          error: () => {
+            this.submitDisabled = false;
+           },
           next: () => { },
         });
     },
     next: (res) => {
       this.response = res;
       this.hasSuccess = true;
+      this.submitDisabled = false;
       this.toastr.success('Service Updated Successfully');
       this.router.navigateByUrl('/fleet/maintenance/service-program/list');
     },

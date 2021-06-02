@@ -152,7 +152,6 @@ export class AceDetailsComponent implements OnInit {
   ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
     this.fetchACEEntry();
-    this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
     this.fetchDocuments();
     this.fetchPackagingUnits();
@@ -180,11 +179,7 @@ export class AceDetailsComponent implements OnInit {
     });
   }
 
-  fetchCountriesCodeName() {
-    this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
-    this.countryCodeName = result;
-    });
-  }
+
   fetchAssetsCodeName() {
       this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
       this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
@@ -252,7 +247,7 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        
+
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;

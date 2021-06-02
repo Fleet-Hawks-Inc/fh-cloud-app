@@ -20,7 +20,7 @@
         <div class="row">
            <div class="col pr-0">
               <div class="card-body text-dark">
-                 <form class="form-horizontal form-bordered" id="form_" method="get">
+                 <form class="form-horizontal form-bordered" id="form_" method="get" #serviceProgramF="ngForm">
                     <div class="form-group row">
                        <div class="col-lg-12">
                           <label
@@ -31,13 +31,13 @@
                              <div class="col-lg-10">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Program Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="serviceData.programName" name="programName"
-                                   type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z\s]{2,30}$">
+                                   type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
                                    <div *ngIf="Spn.invalid && (Spn.dirty || Spn.touched)" class="text-danger">
                                      <div *ngIf="Spn.errors.required">
-                                       Service Program Name is required.
+                                       Service program Name is required.
                                      </div>
                                      <div *ngIf="Spn.errors.pattern">
-                                       Service Program Name must contain letters only.
+                                       Service program name must contain letters.
                                      </div>
                                    </div>
                              </div>
@@ -82,7 +82,7 @@
 
 
                                          <div *ngIf="Sst.errors.required">
-                                          Select valid Service Tasks from the list.
+                                         Service tasks is required.
                                           </div>
 
 
@@ -105,31 +105,31 @@
                                             <div class="row">
                                                <div class="col-lg-5 pr-0">
                                                   <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime"
-                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" #Rtime="ngModel" required pattern="^[0-9]+$" >
-                                                  <div *ngIf="Rtime.invalid && (Rtime.dirty || Rtime.touched)" class="text-danger">
-                                                   <div *ngIf="Rtime.errors.required">
-                                                     Repeat By Time is required.
+                                                  [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" #Rtime24="ngModel" required pattern="^[0-9]+$" >
+                                                  <div *ngIf="Rtime24.invalid && (Rtime24.dirty || Rtime24.touched)" class="text-danger">
+                                                   <div *ngIf="Rtime24.errors.required">
+                                                     Repeat by time is required.
                                                    </div>
-                                                   <div *ngIf="Rtime.errors.pattern">
-                                                    Repeat By Time must contain numbers only.
+                                                   <div *ngIf="Rtime24.errors.pattern">
+                                                    Repeat by time must contain numbers.
                                                   </div>
                                                  </div>
                                                </div>
                                                <div class="col-lg-7 pr-0">
                                                   <ng-select placeholder="eg. days" [(ngModel)]="task.repeatByTimeUnit"
                                                   [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'" [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
-                                                     class="form-control populate" #Uni="ngModel" required>
+                                                     class="form-control populate" #Uni785="ngModel" required>
 
                                                         <ng-option value="Days">Days</ng-option>
                                                         <ng-option value="Weeks">Weeks</ng-option>
                                                         <ng-option value="Months">Months</ng-option>
 
                                                   </ng-select>
-                                                  <div *ngIf="Uni.invalid && (Uni.dirty || Uni.touched)" class="text-danger">
+                                                  <div *ngIf="Uni785.invalid && (Uni785.dirty || Uni785.touched)" class="text-danger">
 
 
-                                                   <div *ngIf="Uni.errors.required">
-                                                     Select valid Schedule details from the list..
+                                                   <div *ngIf="Uni785.errors.required">
+                                                     Select valid time period from the list.
                                                     </div>
 
 
@@ -143,10 +143,10 @@
                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="task.repeatByOdometer"
 
-                                            [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="eg. 1000,2000" #Odomiles="ngModel" required>
-                                            <div *ngIf="Odomiles.invalid && (Odomiles.dirty || Odomiles.touched)" class="text-danger">
-                                              <div *ngIf="Odomiles.errors.required">
-                                                Repeat By Odometer is required.
+                                            [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="eg. 1000,2000" #Odomiles786="ngModel" required>
+                                            <div *ngIf="Odomiles786.invalid && (Odomiles786.dirty || Odomiles786.touched)" class="text-danger">
+                                              <div *ngIf="Odomiles786.errors.required">
+                                                Repeat by odometer is required.
                                               </div>
 
                                             </div>
@@ -191,7 +191,7 @@
 
 
                                  <div *ngIf="Svsp.errors.required">
-                                  Select valid Vehicle for Service Program from the list.
+                                  Vehicle service program is required.
                                   </div>
 
 
@@ -216,8 +216,12 @@
                               <div class="row">
                                 <div class="col-10">
                                    <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list" class="btn btn-default mr-2" id="">Cancel</a>
-                                   <a *ngIf="!programID" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</a>
-                                   <a *ngIf="programID" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</a>
+                                   
+                                   <button *ngIf="!programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
+                                   <button *ngIf="!programID && serviceProgramF.form.valid"  [disabled]="submitDisabled" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
+                                    
+                                   <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
+                                   <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="submitDisabled" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
                                 </div>
                               </div>
                             </div>
