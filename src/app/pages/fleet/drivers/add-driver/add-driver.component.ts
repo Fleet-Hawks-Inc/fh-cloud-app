@@ -237,7 +237,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  
+
   Error = '';
   Success = '';
   visibleIndex = 0;
@@ -351,7 +351,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    
+
     this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -500,7 +500,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.docCountries = CountryStateCity.GetAllCountries();
   }
 
-  
+
 
    getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = '';
@@ -585,10 +585,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
      const files = [...event.target.files];
      this.uploadedPhotos.push(files[0]);
      this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
- 
+
     }
- 
- 
    }
 
   removeProfile() {
@@ -635,7 +633,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               this.throwErrors();
               this.submitDisabled = false;
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled = false;
             },
             next: () => { },
@@ -804,10 +802,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
-      
+
         }
       });
-       
+
   }
 
   hideErrors() {
@@ -964,6 +962,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.relationship = result.emergencyDetails.relationship;
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
         this.driverData[`timeCreated`] = result.timeCreated;
+
       });
   }
   async updateDriver() {
@@ -1067,7 +1066,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
           },
         });
-     
     } catch (error) {
       this.submitDisabled = false;
     }
@@ -1215,7 +1213,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
 
     this.apiService.getData(`carriers/${this.currentUserCarrier}`).subscribe(result => {
-      if(result.Items[0].addressDetails != undefined) {
+      if(result.Items[0].addressDetails !== undefined) {
         result.Items[0].addressDetails.map(e => {
           if (e.addressType === 'yard') {
             this.carrierYards.push(e);
@@ -1243,8 +1241,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     };
 
     $('#addDriverGroupModal').modal('hide');
- 
+
   }
-  
+
 
 }

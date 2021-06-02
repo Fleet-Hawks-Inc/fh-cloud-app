@@ -258,7 +258,6 @@ export class NewAciManifestComponent implements OnInit {
       this.modalTitle = 'Add';
     }
     this.searchLocation();
-    this.listService.fetchStates();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.shippers = this.listService.shipperList;

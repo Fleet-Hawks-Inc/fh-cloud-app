@@ -65,7 +65,7 @@
                                 Employee ID is required.
                               </div>
                               <div *ngIf="dName.errors.pattern">
-                                Employee ID can only contain alphanumeric characters with length between 4-120.                              
+                                Employee ID can only contain alphanumeric characters with length between 4-120.
                               </div>
                             </div>
                           </div>
@@ -145,7 +145,7 @@
                           </div>
                           <div *ngIf="uName.errors.pattern">
                             Username must contain letters, numbers and allowed characters(.).
-                           
+
                           </div>
                         </div>
                       </div>
@@ -154,7 +154,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
-                          [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB"
+                         [(ngModel)]="driverData.DOB"
                           name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
                           #dob="ngModel" required>
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
@@ -279,7 +279,7 @@
                             </div>
                           </div>
                           <div class="col-lg-5">
-                                <button type="button" data-toggle="modal" *ngIf="driverID"
+                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != ''"
                                 data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
                                 <div *ngIf="!driverID" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
                                   <input [disabled]="driverID" class="hidden_input1 w-100" (change)="selectPhoto($event,nullVar)" type="file">
@@ -318,7 +318,7 @@
                             Email is required.
                           </div>
                           <div *ngIf="em.errors.pattern">
-                            Enter valid email eg. johnsmith@gmail.com 
+                            Enter valid email eg. johnsmith@gmail.com
                           </div>
                         </div>
                       </div>
@@ -374,7 +374,7 @@
                             <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
-                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
                               >
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
 
@@ -407,7 +407,7 @@
                             <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
-                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
                               #endDate="ngModel">
                             <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
@@ -658,7 +658,7 @@
                           <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                             placeholder="eg. Certificate number 201717ABC"
-                            (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel" 
+                            (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel"
                             >
 
                           <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
@@ -804,7 +804,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" 
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676"
                         >
                         <!-- <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
@@ -818,7 +818,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" 
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676"
                           >
                         <!-- <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
@@ -851,7 +851,7 @@
                           <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
                             <div *ngIf="fastCard.errors.pattern">
                               Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
-                             
+
                             </div>
 
                           </div> -->
@@ -1086,7 +1086,7 @@
                           <div *ngIf="payS.errors.required">
                             Currency is required.
                           </div>
-                          
+
                         </div>
 
                       </div>
@@ -1117,7 +1117,7 @@
                           <div *ngIf="curr1.errors.required">
                             Currency is required.
                           </div>
-                          
+
                         </div>
 
                       </div>
@@ -1170,7 +1170,7 @@
                           <div *ngIf="curr2.errors.required">
                             Currency is required.
                           </div>
-                          
+
                         </div>
 
                       </div>
@@ -1216,7 +1216,7 @@
                               <div *ngIf="ff.errors.required">
                               Load pay percent type is required.
                               </div>
-                              
+
                             </div>
 
                           </div>
@@ -1256,7 +1256,7 @@
                             <div *ngIf="curr4.errors.required">
                             Currency type is required.
                             </div>
-                            
+
                           </div>
 
                         </div>
@@ -1288,7 +1288,7 @@
                             <div *ngIf="curr5.errors.required">
                             Currency type is required.
                             </div>
-                            
+
                           </div>
 
                         </div>
@@ -1400,7 +1400,7 @@
                             <div *ngIf="remarks1.errors.pattern">
                              Only 500 characters are allowed.
                             </div>
-    
+
                          </div>
                       </div>
                     </div>
@@ -1455,7 +1455,7 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
                           (change)="onChangeHideErrors('hosDetails.optZone')" class="form-control populate"
-                          placeholder="Select the Operating Zone" #oz1="ngModel" required> 
+                          placeholder="Select the Operating Zone" #oz1="ngModel" required>
                           <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                           </ng-option>
                           <ng-option class="text-capitalize" value="North (Canada)">North (Canada)
@@ -1551,7 +1551,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.phone" name="emergencyDetails.phone" type="text"
-                          class="form-control" placeholder="eg. +12234567891" 
+                          class="form-control" placeholder="eg. +12234567891"
                           >
                         <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                           <div *ngIf="phone.errors.pattern">
@@ -1578,18 +1578,18 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 text-right pb-4 pr-5">
                     <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
-                                             
+
                     <!-- if there is some error in validation  -->
                     <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID && !driverF.form.valid" [disabled]="!driverF.form.valid" >Save</button>
-                    
-                    <!-- if validations are ok and now the button will disable on submit click  --> 
+
+                    <!-- if validations are ok and now the button will disable on submit click  -->
                     <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID && driverF.form.valid" [disabled]="submitDisabled" >Save</button>
-                    
-                       <!---- update case --> 
+
+                       <!---- update case -->
                     <button type="button" (click)="updateDriver()" *ngIf="driverID && !driverF.form.valid" [disabled]="!driverF.form.valid" class="btn cus-btn-padd btn-success" >Update</button>
 
                     <button type="button" (click)="updateDriver()" *ngIf="driverID && driverF.form.valid" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
-                      
+
                   </div>
                 </div>
               </div>
@@ -1605,7 +1605,7 @@
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content"> 
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

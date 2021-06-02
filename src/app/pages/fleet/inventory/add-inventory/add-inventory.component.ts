@@ -195,7 +195,6 @@ export class AddInventoryComponent implements OnInit {
   fetchWarehouses() {
     this.apiService.getData('items/get/warehouses').subscribe((result: any) => {
       this.warehouses = result.Items;
-      console.log('this.warehouses', this.warehouses);
     });
   }
 
@@ -289,7 +288,7 @@ export class AddInventoryComponent implements OnInit {
               this.submitDisabled = false;
               this.Error = 'Please see the errors';
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled = false;
             },
             next: () => { },

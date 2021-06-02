@@ -273,11 +273,11 @@ export class AddServiceComponent implements OnInit {
               this.spinner.hide();
               this.submitDisabled = false;
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled = false;
             },
-            next: () => { 
-            
+            next: () => {
+
             },
           });
       },
@@ -422,16 +422,14 @@ export class AddServiceComponent implements OnInit {
   /*
    * Get all stocks from api
    */
-  fetchInventory() { 
+  fetchInventory() {
     this.apiService.getData('items/serviceLog/list').subscribe((result: any) => {
       this.inventory = result;
-      console.log('this.inventory', this.inventory);
     });
   }
 
   getResolvedIssues(id){
     id = JSON.stringify(id);
-    console.log('before', this.issues)
     this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
       this.resolvedIssues = result;
       for (let i = 0; i < result.length; i++) {
@@ -441,7 +439,6 @@ export class AddServiceComponent implements OnInit {
 
       }
     });
-    console.log('after', this.issues)
   }
 
   async getIssuesByVehicle(vehicleID) {
@@ -457,7 +454,7 @@ export class AddServiceComponent implements OnInit {
     this.listService.issuesList.subscribe(res => {
       this.issues = [...this.resolvedIssues, ...res];
     });
-    
+
   }
   async getIssuesByAsset(assetID) {
     for (let z = 0; z < this.savedIssues.length; z++) {
@@ -472,10 +469,9 @@ export class AddServiceComponent implements OnInit {
       this.issues = [...this.resolvedIssues, ...res];
 
     });
-    
+
   }
   async getVehicleIssues(id: any) {
-    console.log('vehicles issues')
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     this.spinner.show();
@@ -487,7 +483,6 @@ export class AddServiceComponent implements OnInit {
   }
 
   async getAssetIssues(id) {
-    console.log('asset issues')
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     const assetID = id;
@@ -906,7 +901,7 @@ export class AddServiceComponent implements OnInit {
               // this.throwErrors();
               this.submitDisabled = false;
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled = false;
             },
             next: () => { },
@@ -1104,7 +1099,6 @@ export class AddServiceComponent implements OnInit {
 
   addExistingPartNumber() {
     delete this.partData.itemID;
-    console.log('this.partdata', this.partData);
     this.apiService.postData('items/requireditems/addExistingItem', this.partData).subscribe({
       complete: () => { },
         error: (err: any) => {
@@ -1185,7 +1179,6 @@ export class AddServiceComponent implements OnInit {
       warehouseID: this.itemData.warehouseID,
       warehouseVendorID: this.partData.preferredVendorID,
     };
-    console.log('data', data);
 
     this.apiService.postData('items/requireditems/addExistingItem', data).subscribe({
       complete: () => {},
@@ -1267,7 +1260,6 @@ export class AddServiceComponent implements OnInit {
   // delete uploaded images and documents
   delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      console.log('image result', result);
       if(type === 'image') {
         this.logImages.splice(index, 1);
       } else {
