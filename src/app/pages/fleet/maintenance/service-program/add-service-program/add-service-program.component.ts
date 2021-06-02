@@ -59,6 +59,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   Error: string = '';
   Success: string = '';
 
+  selectedVehicles = [];
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -173,6 +174,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         this.serviceData.programName = result.programName;
         this.serviceData.description = result.description;
         this.serviceData.vehicles = result.vehicles;
+        this.selectedVehicles = result.vehicles;
         let newTasks = [];
         for (var i = 0; i < result.serviceScheduleDetails.length; i++) {
           newTasks.push({
@@ -229,11 +231,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   }
 
   vehicleChange(vehicle) {
-    
-    if(!this.serviceData.unselectedVehicles.includes(vehicle.value)) {
-      
+    console.log('this.se', this.serviceData.vehicles)
+    if (this.selectedVehicles.includes(vehicle.value) ){
       this.serviceData.unselectedVehicles.push(vehicle.value)
-    } 
-    
+    }
+    console.log('this.se', this.serviceData.unselectedVehicles)
   }
 }

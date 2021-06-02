@@ -45,6 +45,7 @@ export class AddServiceComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
   serviceData = {
@@ -107,15 +108,16 @@ export class AddServiceComponent implements OnInit {
     partNumber:undefined,
     preferredVendorID:undefined,
     quantity: null,
-    itemID: ''
+    itemID: '',
+    itemName: ''
   };
   itemData = {
-    categoryID :undefined,
+    category :undefined,
     itemName: '',
     cost: '',
     costUnit: undefined,
     warehouseID: undefined
-  }
+  };
   itemGroups = [];
   categoryData = {
     name: '',
@@ -181,7 +183,6 @@ export class AddServiceComponent implements OnInit {
     this.fetchAllTasksIDs();
     // this.searchLocation();
     this.fetchInventoryItems();
-    this.fetchItemGroups();
     this.fetchInventoryQuanitity();
 
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
@@ -224,13 +225,13 @@ export class AddServiceComponent implements OnInit {
    * Add new asset
    */
   addService() {
-
+   this.submitDisabled = true;
     this.hideErrors();
     this.spinner.show();
 
-    this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
-      delete elem.existQuantity;
-    });
+    // this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
+    //   delete elem.existQuantity;
+    // });
 
     let taskIds = [];
     this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
@@ -270,13 +271,19 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.spinner.hide();
+              this.submitDisabled = false;
             },
-            error: () => { },
-            next: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+
+            },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled = false;
         this.toastr.success('Service log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
         this.spinner.hide();
@@ -416,25 +423,22 @@ export class AddServiceComponent implements OnInit {
    * Get all stocks from api
    */
   fetchInventory() {
-    this.apiService.getData('items').subscribe((result: any) => {
-      result = result.Items;
+    this.apiService.getData('items/serviceLog/list').subscribe((result: any) => {
       this.inventory = result;
     });
   }
 
   getResolvedIssues(id){
     id = JSON.stringify(id);
-    
     this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
       this.resolvedIssues = result;
       for (let i = 0; i < result.length; i++) {
         const element = result[i];
         element.selected = true;
         this.issues.push(element)
-        
+
       }
     });
-    
   }
 
   async getIssuesByVehicle(vehicleID) {
@@ -450,7 +454,7 @@ export class AddServiceComponent implements OnInit {
     this.listService.issuesList.subscribe(res => {
       this.issues = [...this.resolvedIssues, ...res];
     });
-    
+
   }
   async getIssuesByAsset(assetID) {
     for (let z = 0; z < this.savedIssues.length; z++) {
@@ -465,10 +469,9 @@ export class AddServiceComponent implements OnInit {
       this.issues = [...this.resolvedIssues, ...res];
 
     });
-    
+
   }
   async getVehicleIssues(id: any) {
-    
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     this.spinner.show();
@@ -480,7 +483,6 @@ export class AddServiceComponent implements OnInit {
   }
 
   async getAssetIssues(id) {
-    
     this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     const assetID = id;
@@ -571,7 +573,7 @@ export class AddServiceComponent implements OnInit {
 
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    
+
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
     this.selectedTasks.push(result.Items[0]);
@@ -658,7 +660,6 @@ export class AddServiceComponent implements OnInit {
     let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
     // let total = Number(this.serviceData.allServiceTasks.total);
     let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
-
     let sum = 0;
     let tasksArr = this.serviceData.allServiceTasks.serviceTaskList;
     tasksArr.forEach(element => {
@@ -666,7 +667,6 @@ export class AddServiceComponent implements OnInit {
         sum = sum + (parseFloat(element.laborCost) || 0);
       }
     });
-
     this.totalLabors = sum;
     this.serviceData.allServiceTasks.subTotal = sum;
 
@@ -808,7 +808,7 @@ export class AddServiceComponent implements OnInit {
         if(result.selectedIssues.length > 0) {
           this.getResolvedIssues(result.selectedIssues)
         }
-        
+
 
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -839,6 +839,7 @@ export class AddServiceComponent implements OnInit {
   */
   updateService() {
     this.hideErrors();
+    this.submitDisabled = true;
 
     let taskIds = [];
     this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
@@ -881,7 +882,7 @@ export class AddServiceComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
-    
+
     //append other fields
     formData.append('data', JSON.stringify(data));
     this.apiService.putData('serviceLogs/', formData, true).subscribe({
@@ -898,13 +899,17 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               this.spinner.hide(); // loader hide
               // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled = false;
         this.hasSuccess = true;
         this.toastr.success('Service log Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
@@ -972,10 +977,10 @@ export class AddServiceComponent implements OnInit {
       type: this.serviceData.unitType,
       name: this.serviceData.unitID,
     }
-    if(this.serviceData.unitType == 'vehicle'){
-      selectedUnit.odometer = this.serviceData.odometer
+    if(this.serviceData.unitType === 'vehicle'){
+      selectedUnit.odometer = this.serviceData.odometer;
     } else {
-      delete selectedUnit.odometer
+      delete selectedUnit.odometer;
     }
     localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
     this.listService.appendIssues(selectedUnit);
@@ -987,7 +992,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async changePartTab(type) {
-    if(type == 'new') {
+    if(type === 'new') {
       this.partType = 'new';
     } else {
       this.partType = 'existing';
@@ -1006,7 +1011,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   fetchPartNumber() {
-    if (this.partData.partNumber != undefined && this.partData.partNumber != '') {
+    if (this.partData.partNumber !== undefined && this.partData.partNumber !== '') {
       this.apiService.getData('requiredItems/check/requestedItem/' + this.partData.partNumber).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1045,7 +1050,7 @@ export class AddServiceComponent implements OnInit {
     }
   }
 
-  updateExistingPartNumber () {
+  updateExistingPartNumber() {
     // let currQuan:any = parseInt(this.partData.quantity);
     this.partData.quantity = parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
     this.apiService.putData('requiredItems', this.partData).subscribe({
@@ -1077,10 +1082,11 @@ export class AddServiceComponent implements OnInit {
           partNumber:undefined,
           preferredVendorID:undefined,
           quantity:null,
-          itemID: ''
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category :undefined,
           itemName: '',
           cost: '',
           costUnit: undefined,
@@ -1091,9 +1097,9 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  addExistingPartNumber () {
+  addExistingPartNumber() {
     delete this.partData.itemID;
-    this.apiService.postData('requiredItems', this.partData).subscribe({
+    this.apiService.postData('items/requireditems/addExistingItem', this.partData).subscribe({
       complete: () => { },
         error: (err: any) => {
           from(err.error)
@@ -1119,81 +1125,43 @@ export class AddServiceComponent implements OnInit {
         $('#existingInvModal').modal('hide');
         this.existingItemQuantity = null;
         this.partData = {
-          partNumber:undefined,
-          preferredVendorID:undefined,
-          quantity:null,
-          itemID: ''
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category : '',
           itemName: '',
           cost: '',
-          costUnit: undefined,
-          warehouseID: undefined
-        }
-        this.toastr.success('Part Requested Successfully');
+          costUnit: '',
+          warehouseID: '',
+        };
+        this.toastr.success('Requested Item Added Successfully.');
       },
     });
   }
 
   getPartDetail(event) {
     let curr = this;
-    this.inventoryItems.map(function(v){
+    this.inventoryItems.map(function(v) {
       if(v.partNumber == event){
         curr.partData.quantity = v.quantity;
         curr.partData.preferredVendorID = v.preferredVendorID;
+        curr.partData.itemName = v.itemName;
       }
-    })
-  }
-
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
     });
   }
+
 
   showCategoryModal() {
-    this.categoryData.name = "";
-    this.categoryData.description = "";
-    $("#categoryModal").modal("show");
+    this.categoryData.name = '';
+    this.categoryData.description = '';
+    $('#categoryModal').modal('show');
   }
 
-  addGroup() {
-    this.hideErrors();
 
-    const data = {
-      groupName: this.categoryData.name,
-      groupDescription: this.categoryData.description,
-    };
-
-    this.apiService.postData("itemGroups", data).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => {},
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.categoryData.name = "";
-        this.categoryData.description = "";
-        this.fetchItemGroups();
-        $("#categoryModal").modal("hide");
-        this.toastr.success('Category Added successfully');
-      },
-    });
-  }
 
   addInventory() {
     this.hasError = false;
@@ -1202,9 +1170,9 @@ export class AddServiceComponent implements OnInit {
 
     const data = {
       partNumber: this.partData.partNumber,
-      quantity: 0,
+      quantity: this.partData.quantity,
       itemName: this.itemData.itemName,
-      categoryID: this.itemData.categoryID,
+      category: this.itemData.category,
       preferredVendorID: this.partData.preferredVendorID,
       cost: this.itemData.cost,
       costUnit: this.itemData.costUnit,
@@ -1212,13 +1180,7 @@ export class AddServiceComponent implements OnInit {
       warehouseVendorID: this.partData.preferredVendorID,
     };
 
-    // create form data instance
-    const formData = new FormData();
-
-    //append other fields
-    formData.append('data', JSON.stringify(data));
-
-    this.apiService.postData("items", formData, true).subscribe({
+    this.apiService.postData('items/requireditems/addExistingItem', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -1232,7 +1194,6 @@ export class AddServiceComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.hasError = true;
-              this.Error = 'Please see the errors';
             },
             error: () => { },
             next: () => { },
@@ -1241,7 +1202,22 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.addExistingPartNumber();
+        $('#partModal').modal('hide');
+        this.toastr.success('Requested Item Added Successfully.');
+        this.partData = {
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
+        };
+        this.itemData = {
+          category : '',
+          itemName: '',
+          cost: '',
+          costUnit: '',
+          warehouseID: '',
+        };
       },
     });
   }
@@ -1257,16 +1233,17 @@ export class AddServiceComponent implements OnInit {
       partNumber: undefined,
       preferredVendorID: undefined,
       quantity: null,
-      itemID: ''
+      itemID: '',
+      itemName: ''
     };
     this.itemData = {
-      categoryID: undefined,
+      category: undefined,
       itemName: '',
       cost: '',
       costUnit: undefined,
       warehouseID: undefined
-    }
-    $("#partModal").modal('show');
+    };
+    $('#partModal').modal('show');
   }
 
   setPDFSrc(val) {
@@ -1283,8 +1260,7 @@ export class AddServiceComponent implements OnInit {
   // delete uploaded images and documents
   delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      
-      if(type == 'image') {
+      if(type === 'image') {
         this.logImages.splice(index, 1);
       } else {
         this.logDocs.splice(index,1);
