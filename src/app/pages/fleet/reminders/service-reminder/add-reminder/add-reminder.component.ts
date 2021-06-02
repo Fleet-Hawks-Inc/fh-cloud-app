@@ -138,7 +138,7 @@ export class AddReminderComponent implements OnInit {
         this.reminderData.subscribers = result.subscribers;
       });
 
-  }
+  } 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -217,7 +217,7 @@ export class AddReminderComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Service Reminder Added Successfully!');
-        this.router.navigateByUrl('/fleet/reminders/service-reminder/list');
+        this.cancel();
       },
     });
 
