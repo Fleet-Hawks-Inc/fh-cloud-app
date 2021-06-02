@@ -243,10 +243,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   }
 
   vehicleChange(vehicle) {
-    console.log('this.se', this.serviceData.vehicles)
     if (this.selectedVehicles.includes(vehicle.value) ){
       this.serviceData.unselectedVehicles.push(vehicle.value)
     }
-    console.log('this.se', this.serviceData.unselectedVehicles)
   }
 }
