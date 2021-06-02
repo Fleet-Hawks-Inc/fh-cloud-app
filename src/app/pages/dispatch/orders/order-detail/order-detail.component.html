@@ -343,8 +343,8 @@
                                               <td>{{l+1}}</td>
                                               <td>{{commodity.name}}</td>
                                               <td>{{commodity.pu}}</td>
-                                              <td>{{commodity.quantity}}</td>
-                                              <td>{{commodity.weight}}</td>
+                                              <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                              <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
                                              </tr>
 
                                          </table>
@@ -420,8 +420,8 @@
                                               <td>{{m+1}}</td>
                                               <td>{{commodity.name}}</td>
                                               <td>{{commodity.del}}</td>
-                                              <td>{{commodity.quantity}}</td>
-                                              <td>{{commodity.weight}}</td>
+                                              <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                              <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
                                              </tr>
 
                                          </table>
@@ -470,7 +470,7 @@
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes' : 'No'}}</div>
                     </div>
-                    <div class="row m-0">
+                    <div class="row m-0" *ngIf="additionalDetails.dropTrailer">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -485,14 +485,14 @@
                         Load Type:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                         {{additionalDetails.loadType.hazMat ? 'Hazmat' : ''}}
-                         {{additionalDetails.loadType.oversize ? 'Over Size' : ''}}
-                         {{additionalDetails.loadType.reefer ? 'Reefer' : ''}}
+                         {{additionalDetails.loadType.hazMat ? 'Hazmat' : ''}}{{additionalDetails.loadType.oversize ? ',' : ''}}
+                         {{additionalDetails.loadType.oversize ? 'Over Size' : ''}}{{additionalDetails.loadType.reefer ? ',' : ''}}
+                         {{additionalDetails.loadType.reefer ? 'Reefer' : ''}}{{additionalDetails.loadType.tanker ? ',' : ''}}
                          {{additionalDetails.loadType.tanker ? 'Tanker' : ''}}
 
                       </div>
                     </div>
-                    <div class="row m-0">
+                    <div class="row m-0" *ngIf="additionalDetails.loadType.reefer">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -1233,3 +1233,6 @@
     </div>
   </div>
 </div>
+
+
+
