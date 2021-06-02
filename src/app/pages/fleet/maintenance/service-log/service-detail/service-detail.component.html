@@ -24,18 +24,18 @@
                      </div>
 
                      <div class="col-md-2 col-lg-2">
-                        <div class="text-center p-4 cerbor" *ngIf="vehicle">
+                        <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
                            <p class="mb-0">VEHICLE</p>
                            <p class="mb-0 text-5 font-weight-bold text-dark">{{vehiclesObject[vehicle]}}</p>
                         </div>
 
-                        <div class="text-center p-4 cerbor" *ngIf="!vehicle">
+                        <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
                            <p class="mb-0">ASSET</p>
                            <p class="mb-0 text-5 font-weight-bold text-dark">{{assetsObject[assetID]}}</p> 
                         </div>
                      </div>
 
-                     <div class="col-md-2 col-lg-2" *ngIf="vehicle">
+                     <div class="col-md-2 col-lg-2"  *ngIf="logsData.unitType != 'asset'">
                         <div class="text-center p-4 cerbor">
                            <p class="mb-0">ODOMETER</p>
                            <p class="mb-0 text-5 font-weight-bold text-dark">{{odometer ? odometer : '-'}}</p>
@@ -189,7 +189,7 @@
                                     <div class="col-lg-8"> Image {{i+1}}</div>
                                     <div class="col-lg-4 text-right">
                                        <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
-                                          <i class="fas fa-times text-danger" (click)="delete('image',item.name)"></i>
+                                          <i class="fas fa-times text-danger" (click)="delete('image',item.name, i)"></i>
                                        </a>
                                     </div>
                                  </div>
@@ -206,7 +206,7 @@
                               <div class="col-lg-3 text-right">
                                  <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                                     data-target="#viewDocModal"></em>
-                                 <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form">
+                                 <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form">
                                     <em class="fas fa-times text-danger"></em></a>
                               </div>
                            </div>
@@ -218,3 +218,33 @@
       </section>
    </div>
 </section>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <div class="form-row">
+             <div class="form-group col-md-12">
+                <div>
+                   <iframe [src]="pdfSrc" title="" width="100%" height="400px"> </iframe>
+
+                </div>
+             </div>
+          </div>
+
+       </div>
+       <div class="modal-footer">
+          <button type="button" class="btn btn-default"
+             data-dismiss="modal">Cancel</button>
+       </div>
+    </div>
+ </div>
+</div>
