@@ -39,7 +39,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   hasPay = false;
   hasHos = false;
   hasCrossBrdr = false;
-
+  deletedUploads = [];
   addressField = -1;
   userLocation: any;
   public driverID;
@@ -237,7 +237,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   response: any = '';
   hasError = false;
   hasSuccess = false;
-
+  imageTitle = 'Change';
   Error = '';
   Success = '';
   visibleIndex = 0;
@@ -351,7 +351,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-
+    if (this.driverID && this.driverProfileSrc !== '') {
+      this.imageTitle = 'Change';
+    } else {
+      this.imageTitle = 'Add';
+    }
     this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -664,7 +668,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hideErrors();
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
-
+    this.driverData[`deletedUploads`] = this.deletedUploads;
     if (this.driverData.hosDetails.hosCycle !== '') {
       let cycleName = '';
       this.cycles.map((v: any) => {
@@ -720,7 +724,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.submitDisabled = true;
     try {
-      
+
         this.apiService.postData('drivers', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -737,7 +741,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                   this.throwErrors();
                   this.hasError = true;
                   this.submitDisabled = false;
-                 
+
                 },
                 error: () => {
                   this.submitDisabled = false;
@@ -804,6 +808,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           .addClass('error')
 
         }
+        if(v==='abstractDocs'){
+          $('[name="' + v + '"]')
+          .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
+        }
       });
 
   }
@@ -845,8 +853,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        console.log('result', result);
         this.fetchLicStates(result.licenceDetails.issuedCountry);
-       this.driverData.address = result.address;
+        this.driverData.address = result.address;
         if(result.address !== undefined) {
           for (let a = 0; a < this.driverData.address.length; a++) {
             const countryCode = this.driverData.address[a].countryCode;
@@ -973,6 +982,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData[`driverID`] = this.driverID;
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
+    this.driverData[`deletedUploads`] = this.deletedUploads;
     for(let d = 0; d < this.driverData.documentDetails.length; d++){
       const element = this.driverData.documentDetails[d];
       delete element.docStates;
@@ -1004,7 +1014,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     // create form data instance
     const formData = new FormData();
-
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
@@ -1024,11 +1033,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       formData.append('abstractDocs', this.abstractDocs[k]);
     }
 
+
     // append other fields
     formData.append('data', JSON.stringify(this.driverData));
 
     try {
-      
+
         this.apiService.putData('drivers', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -1044,10 +1054,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
                   this.throwErrors();
                   this.hasError = false;
                   this.submitDisabled = false;
-                
+
                   // this.toastr.error('Please see the errors');
                 },
-                error: () => { 
+                error: () => {
                   this.submitDisabled = false;
                 },
                 next: () => {
@@ -1176,11 +1186,19 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (type === 'doc') {
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(dIndex, 1);
+      this.deletedUploads.push(name);
+    } else if (type === 'profile') {
+  this.driverProfileSrc = '';
+  this.uploadedPhotos = [];
+  this.driverData.driverImage = '';
+  this.deletedUploads.push(name);
+  $('#driverProfileModal').modal('hide');
     } else {
       this.absDocs.splice(index, 1);
       this.driverData.abstractDocs.splice(index, 1);
+      this.deletedUploads.push(name);
     }
-    this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
+   // this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
   }
   localDelete(type: string, name: string, index: any, dIndex: any) {
     if(type === 'doc') {
