@@ -447,8 +447,7 @@ export class AddFuelEntryComponent implements OnInit {
   // delete uploaded images and documents
   delete(name: string) {
     this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
-      window.location.reload();
-      this.fetchFuelEntry();
+      this.toaster.success("Successfully deleted")  
     });
   }
 
