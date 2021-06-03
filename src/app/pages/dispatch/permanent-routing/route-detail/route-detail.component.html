@@ -50,7 +50,9 @@
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
                                 <h4 class="m-0">Recurring</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ recurringType }}</h3>
+                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ recurringType }}
+                                    <span class="text-1" *ngIf="recurringDate != ''">{{ recurringDate | date:'yyyy/MM/dd'}}</span>
+                                </h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-clock text-dark fa-fw" style="font-size:20px;"></i>
@@ -62,7 +64,7 @@
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                            <div>
                               <h4 class="m-0">Notes</h4> 
-                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 100" data-toggle="modal" data-target="#routeNotes" class="modal-with-form">See All</a></p>
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 100" (click)="openDetailModal(notes)" class="modal-with-form">See All</a></p>
                               <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes == ''"> - </p>
                            </div>
                            <div class="grey-bg p-4" style="color: #979797;">
@@ -128,6 +130,8 @@
                                 <h4 class="m-0">Source Details</h4>
                                 <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
                                     '+sourceStateName+' '+sourceCountryName+' '+sourceZipcode }}</h3>
+
+                                <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="sourceNotes != ''">{{ sourceNotes | slice:0:100}} <a href="javascript:;" *ngIf="sourceNotes.length > 100" (click)="openDetailModal(sourceNotes)" class="modal-with-form">See All</a></p>
                             </div>
 
                         </div>
@@ -144,6 +148,8 @@
                                 <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ destinationAddress+'
                                     '+destinationCityName+' '+destinationStateName+' '+destinationCountryName+'
                                     '+destinationZipcode }}</h3>
+
+                                <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="destinationNotes != ''">{{ destinationNotes | slice:0:100}} <a href="javascript:;" *ngIf="destinationNotes.length > 100" (click)="openDetailModal(destinationNotes)" class="modal-with-form">See All</a></p>
                             </div>
 
                         </div>
@@ -204,7 +210,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <p class="mb-0">
-                                        {{ notes }}
+                                        {{ modalData }}
                                     </p>
                                 </div>
                             </div>

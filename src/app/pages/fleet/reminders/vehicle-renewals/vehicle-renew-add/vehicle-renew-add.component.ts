@@ -144,7 +144,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Vehicle Renewal Reminder Added Successfully');
-        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
+        this.cancel();
         this.reminderData = {
           entityID: '',
           type: constants.REMINDER_VEHICLE,
@@ -199,6 +199,10 @@ export class VehicleRenewAddComponent implements OnInit {
           .remove('label');
       });
     this.errors = {};
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 
   // UPDATING REMINDER

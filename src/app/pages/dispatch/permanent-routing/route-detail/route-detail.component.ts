@@ -40,6 +40,10 @@ export class RouteDetailComponent implements OnInit {
   destinationZipcode = '';
   newCoords = [];
   stopNumber = [];
+  recurringDate = '';
+  modalData = '';
+  sourceNotes = '';
+  destinationNotes = '';
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, 
     private spinner: NgxSpinnerService,private route: ActivatedRoute, private hereMap: HereMapService) {}
@@ -60,19 +64,26 @@ export class RouteDetailComponent implements OnInit {
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;
-
+          this.sourceNotes = result.stops[0].stopNotes;
           for (let k = 0; k < result.stops.length; k++) {
             this.stopNumber.push(k);
           }
 
           if (result.stops.length > 1) {
+            this.destinationNotes = result.stops[result.stops.length-1].stopNotes;
             this.getCoords(result.stops);
           }
           this.mapShow();
         }
 
-        if(result.recurring.recurringType != undefined && result.recurring.recurringType !== ''){
-          this.recurringType = result.recurring.recurringType;
+        if(result.recurring.recurringRoute) {
+          if(result.recurring.recurringType != undefined && result.recurring.recurringType !== ''){
+            this.recurringType = result.recurring.recurringType;
+          }
+  
+          if(result.recurring.recurringDate != undefined && result.recurring.recurringDate !== ''){
+            this.recurringDate = result.recurring.recurringDate;
+          }
         }
 
         if(result.sourceInformation.sourceAddress != '' && result.sourceInformation.sourceAddress != undefined){
@@ -112,7 +123,7 @@ export class RouteDetailComponent implements OnInit {
   fetchAssets(assetID){
     this.apiService.getData('assets/'+assetID)
       .subscribe((result: any)=>{
-        if(result.Items[0].assetIdentification != undefined){
+        if(result.Items> 0){
           this.assetName = result.Items[0].assetIdentification;
         }
       })
@@ -121,7 +132,7 @@ export class RouteDetailComponent implements OnInit {
   fetchVehicle(vehicleID){
     this.apiService.getData('vehicles/'+vehicleID)
       .subscribe((result: any)=>{
-        if(result.Items[0].vehicleIdentification != undefined){
+        if(result.Items > 0){
           this.VehicleName = result.Items[0].vehicleIdentification;
         }
       })
@@ -130,7 +141,7 @@ export class RouteDetailComponent implements OnInit {
   fetchDriver(driverID, type){
     this.apiService.getData('drivers/'+driverID)
       .subscribe((result: any)=>{
-        if(result.Items[0].firstName != undefined){
+        if(result.Items > 0){
           if(type == 'driver'){
             this.driverName = result.Items[0].firstName +' ' +result.Items[0].lastName;
           } else{
@@ -158,6 +169,11 @@ export class RouteDetailComponent implements OnInit {
     this.hereMap.calculateRoute(this.newCoords);
     this.spinner.hide();
     this.newCoords = [];
+  }
+
+  openDetailModal(data){
+    this.modalData = data;
+    $('#routeNotes').modal('show');
   }
   
 }
