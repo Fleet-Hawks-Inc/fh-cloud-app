@@ -17,7 +17,7 @@ export const environment = {
   congitoConfig: {
     USER_POOL_ID: 'us-east-1_EtYcKjB24',
     REGION: 'us-east-1',
-    APP_CLIENT_ID: '4tq993ckrr489rihejjc6tkvjn'
+    APP_CLIENT_ID: '5kklsg245i4m7ap8q7k3q3fku3'
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads-ue1',
