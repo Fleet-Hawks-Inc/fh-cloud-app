@@ -77,8 +77,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    this.fetchFuelTypeList();
-    this.fetchCountries();
+    //this.fetchFuelTypeList();
+    //this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
@@ -263,8 +263,20 @@ export class FuelEntryListComponent implements OnInit {
         element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
         }
         else{
-          let dateTime=element.fuelDate
-          element.dateTime=moment(dateTime).format('MMM Do YYYY')+" "+element.fuelTime
+          let date:any = moment(element.fuelDate)
+         if(element.fuelTime){
+         let time=moment(element.fuelTime,'h mm a')
+         date.set({
+           hour: time.get('hour'),
+           minute: time.get('minute')
+         })
+         date = date.format('MMM Do YYYY, h:mm a')
+        }
+        else{
+          date=date.format('MMM Do YYYY')
+        }
+        element.dateTime=date
+        
          // element.fuelTime=moment(element.fuelTime).format('h:mm a')
           
         }

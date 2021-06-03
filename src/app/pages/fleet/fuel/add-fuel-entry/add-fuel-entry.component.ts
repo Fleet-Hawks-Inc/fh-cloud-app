@@ -9,6 +9,8 @@ import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { ListService } from '../../../../services';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { HttpClient} from '@angular/common/http'
+
 
 declare var $: any;
 
@@ -112,7 +114,8 @@ export class AddFuelEntryComponent implements OnInit {
   constructor(private apiService: ApiService,
               private route: ActivatedRoute,
               private location: Location, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService,
+              private httpClient: HttpClient) {
 
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
@@ -171,13 +174,13 @@ export class AddFuelEntryComponent implements OnInit {
   //     this.fuelTypes = result.Items;
   //   });
   // }
-  fetchFuelTaxes() {
-    this.apiService.getData('fuelTaxes').subscribe((result: any) => {
+  async fetchFuelTaxes() {
+    await this.httpClient.get('assets/jsonFiles/fuel/fuelTaxes.json').subscribe((result: any) => { 
       this.fuelTaxes = result.Items;
     });
   }
-  fetchFuelDiscounts() {
-    this.apiService.getData('fuelDiscounts').subscribe((result: any) => {
+  async fetchFuelDiscounts() {
+    await this.httpClient.get('assets/jsonFiles/fuel/fuelDiscounts.json').subscribe((result: any) => { 
       this.fuelDiscounts = result.Items;
     });
   }
@@ -444,6 +447,7 @@ export class AddFuelEntryComponent implements OnInit {
   // delete uploaded images and documents
   delete(name: string) {
     this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
+      window.location.reload();
       this.fetchFuelEntry();
     });
   }

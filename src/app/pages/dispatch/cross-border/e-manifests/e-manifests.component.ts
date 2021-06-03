@@ -98,8 +98,6 @@ export class EManifestsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.ACEEntries();
-    this.ACIEntries();
     this.fetchVehiclesList();
     this.fetchAssetsList();
     this.fetchDriversList();
@@ -184,17 +182,6 @@ export class EManifestsComponent implements OnInit {
       this.contactList = result;
     });
   }
-  ACEEntries() {
-    this.spinner.show(); // loader init
-    this.apiService.getData('eManifests/getACEemanifest').subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        this.spinner.hide(); // loader hide
-      },
-    });
-  }
   fetchCanadianPorts() {
     this.httpClient.get('assets/canadianPorts.json').subscribe((data: any) => {
       this.canadianPortsObjects = data.reduce((a: any, b: any) => {
@@ -210,7 +197,7 @@ export class EManifestsComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.ACEList = result[`Items`];
-        
+
         if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
           this.aceStartPoint = 1;
           this.aceEndPoint = this.totalRecords;
@@ -311,19 +298,6 @@ export class EManifestsComponent implements OnInit {
       }
   }
   // ACI operations
-  ACIEntries() {
-    // this.activeDiv = 'aci';
-    this.spinner.show(); // loader init
-    this.apiService.getData('ACIeManifest').subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        // this.ACIList = result.Items;
-        this.totalACIRecords = result.Count;
-        this.spinner.hide(); // loader hide
-      },
-    });
-  }
 
   initDataTableACI() {
     this.spinner.show();

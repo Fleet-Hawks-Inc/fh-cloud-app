@@ -160,7 +160,7 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.throwErrors();
+              this.throwErrors();
               this.submitDisabled = false;
             },
             error: () => {
@@ -198,7 +198,7 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.throwErrors();
+              this.throwErrors();
               this.spinner.hide();
               this.submitDisabled = false;
             },
@@ -223,9 +223,13 @@ export class AddGeofenceComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
+      if(v==='location' || v==='geofenceName' || v === 'geofence.type'){ 
         $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+        .addClass('error')
+      }
+
+       
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -320,7 +324,7 @@ export class AddGeofenceComponent implements OnInit {
        )
        .subscribe({
          complete: () => {
-          //  this.throwErrors();
+           this.throwErrors();
           this.submitDisabled = false;
          },
          error: () => { 

@@ -16,7 +16,7 @@ import * as _ from 'lodash';
 })
 export class VehicleListComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-  
+
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Vehicle List';
   vehicles = [];
@@ -67,7 +67,6 @@ export class VehicleListComponent implements OnInit {
   vehicleStartPoint = 1;
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
-  fuelTypesObjects: any = {};
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService, private onboard:OnboardDefaultService) {}
 
@@ -80,8 +79,6 @@ export class VehicleListComponent implements OnInit {
     this.fetchDriversList();
     this.fetchServiceProgramsList();
     this.fetchVendorList();
-    // this.initDataTable();
-    this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -127,7 +124,7 @@ export class VehicleListComponent implements OnInit {
       this.vehicleManufacturersList = result;
     });
   }
-  
+
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
@@ -145,7 +142,7 @@ export class VehicleListComponent implements OnInit {
       this.vendorsList = result;
     });
   }
-  
+
   fetchVehiclesCount() {
     this.apiService.getData('vehicles/get/count?vehicle='+this.vehicleID+'&status='+this.currentStatus).subscribe({
       complete: () => {},
@@ -189,11 +186,6 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
-  fetchFuelTypesbyIDs(){
-    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
-      this.fuelTypesObjects = result;
-    });
-  }
 
   initDataTable() {
     this.spinner.show();
@@ -211,7 +203,7 @@ export class VehicleListComponent implements OnInit {
           this.vehicleEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) { 
+        if (result['LastEvaluatedKey'] !== undefined) {
           let lastEvalKey = result[`LastEvaluatedKey`].vehicleSK.replace(/#/g,'--');
           this.vehicleNext = false;
           // for prev button
@@ -219,7 +211,7 @@ export class VehicleListComponent implements OnInit {
             this.vehiclePrevEvauatedKeys.push(lastEvalKey);
           }
           this.lastEvaluatedKey = lastEvalKey;
-          
+
         } else {
           this.vehicleNext = true;
           this.lastEvaluatedKey = '';
@@ -378,7 +370,7 @@ export class VehicleListComponent implements OnInit {
     //extra columns
     if(this.hideShow.driver == false) {
       $('.col13').css('display','none');
-    } else { 
+    } else {
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
       $('.col13').css('min-width','200px');
@@ -386,7 +378,7 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.serviceProgram == false) {
       $('.col14').css('display','none');
-    } else { 
+    } else {
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
       $('.col14').css('min-width','200px');
@@ -394,15 +386,15 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.serviceDate == false) {
       $('.col15').css('display','none');
-    } else { 
+    } else {
       $('.col15').removeClass('extra');
       $('.col15').css('display','');
       $('.col15').css('min-width','200px');
     }
-    
+
     if(this.hideShow.insuranceVendor == false) {
       $('.col16').css('display','none');
-    } else { 
+    } else {
       $('.col16').removeClass('extra');
       $('.col16').css('display','');
       $('.col16').css('min-width','200px');
@@ -410,7 +402,7 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.insuranceAmount == false) {
       $('.col17').css('display','none');
-    } else { 
+    } else {
       $('.col17').removeClass('extra');
       $('.col17').css('display','');
       $('.col17').css('min-width','200px');
@@ -418,7 +410,7 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.engineSummary == false) {
       $('.col18').css('display','none');
-    } else { 
+    } else {
       $('.col18').removeClass('extra');
       $('.col18').css('display','');
       $('.col18').css('min-width','200px');
@@ -426,7 +418,7 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.primaryMeter == false) {
       $('.col19').css('display','none');
-    } else { 
+    } else {
       $('.col19').removeClass('extra');
       $('.col19').css('display','');
       $('.col19').css('min-width','200px');
@@ -434,7 +426,7 @@ export class VehicleListComponent implements OnInit {
 
     if(this.hideShow.fuelUnit == false) {
       $('.col20').css('display','none');
-    } else { 
+    } else {
       $('.col20').removeClass('extra');
       $('.col20').css('display','');
       $('.col20').css('min-width','200px');
@@ -473,7 +465,7 @@ export class VehicleListComponent implements OnInit {
 
   createNewSK() {
     this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
-      
+
     });
   }
 }

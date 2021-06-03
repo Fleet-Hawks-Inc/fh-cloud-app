@@ -489,7 +489,7 @@ inspectionFormsAsset = [];
 users = [];
 
   async ngOnInit() {
-    this.fetchCountries();
+   // this.fetchCountries();
     // this.fetchAssetManufacturers();
     this.fetchAssetModels();
     this.newManufacturers();
@@ -501,9 +501,10 @@ users = [];
     this.fetchInspectionFormsAssets();
     this.fetchGroups();
     this.fetchAssets();
-    this.fetchAllCountriesIDs();
-    this.fetchAllStatesIDs();
-    this.fetchFuelTypes();
+    // this.fetchAllCountriesIDs();
+    // this.fetchAllStatesIDs();
+   // this.fetchFuelTypes();
+
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
@@ -663,49 +664,19 @@ fetchDrivers(){
  /*
    * Get all countries from api
    */
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-        this.countries.map(elem => {
-          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
-            this.licCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
-          }
-        });
-      });
-  }
+  // fetchCountries() {
+  //   this.apiService.getData('countries')
+  //     .subscribe((result: any) => {
+  //       this.countries = result.Items;
+  //       this.countries.map(elem => {
+  //         if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+  //           this.licCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
+  //         }
+  //       });
+  //     });
+  // }
 
-  // Add state
-  addState() {
-    this.hideErrors();
-    this.apiService.postData('states', this.stateData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
-          $('#addStateModal').modal('hide');
-          this.toastr.success('State Added Successfully.');
-          this.listService.fetchStates();
-        }
-      });
-  }
+
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -725,38 +696,6 @@ fetchDrivers(){
           .remove('label')
       });
     this.errors = {};
-  }
-  // add city
-  addCity() {
-    this.hideErrors();
-    this.apiService.postData('cities', this.cityData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
-          this.listService.fetchCities();
-          $('#addCityModal').modal('hide');
-          this.toastr.success('City Added Successfully.');
-          this.listService.fetchCities();
-        }
-      });
   }
   // add vehicle make
   addVehicleMake() {
@@ -1392,11 +1331,11 @@ getVehicleStates(event: any) {
         }
       });
   }
-  fetchFuelTypes(){
-    this.apiService.getData('fuelTypes').subscribe((result: any) => {
-      this.fuelTypes = result.Items;
-    });
-  }
+  // fetchFuelTypes(){
+  //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
+  //     this.fuelTypes = result.Items;
+  //   });
+  // }
 
    /*
    * Selecting files before uploading
@@ -1578,13 +1517,16 @@ getVehicleStates(event: any) {
       }
     }
     this.apiService.getData(`carriers/${currentUserCarrier}`).subscribe(result => {
-      if(result.Items[0].addressDetails !== undefined) {
-        result.Items[0].addressDetails.map(e => {
-          if (e.addressType === 'yard') {
-            this.carrierYards.push(e);
-          }
-        });
+      if(result.Items.length > 0) {
+        if(result.Items[0].addressDetails !== undefined) {
+          result.Items[0].addressDetails.map(e => {
+            if (e.addressType === 'yard') {
+              this.carrierYards.push(e);
+            }
+          });
+        }
       }
+      
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {
@@ -1664,26 +1606,26 @@ getVehicleStates(event: any) {
     }
   }
 
-  async getStates(id: any, oid = null) {
-    if(oid != null) {
-      this.driverData.address[oid].countryName = this.countriesObject[id];
-    }
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
+  // async getStates(id: any, oid = null) {
+  //   if(oid != null) {
+  //     this.driverData.address[oid].countryName = this.countriesObject[id];
+  //   }
+  //   this.apiService.getData('states/country/' + id)
+  //     .subscribe((result: any) => {
+  //       this.states = result.Items;
+  //     });
+  // }
 
-  async getCities(id: any, oid = null) {
-    if(oid != null) {
-      this.driverData.address[oid].stateName = this.statesObject[id];
-    }
+  // async getCities(id: any, oid = null) {
+  //   if(oid != null) {
+  //     this.driverData.address[oid].stateName = this.statesObject[id];
+  //   }
 
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
+  //   this.apiService.getData('cities/state/' + id)
+  //     .subscribe((result: any) => {
+  //       this.cities = result.Items;
+  //     });
+  // }
   clearDriverData() {
     this.driverData = {
       createdDate: '',
@@ -1832,19 +1774,19 @@ getVehicleStates(event: any) {
     this.issuesData.unitType = value;
   }
 
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
+  // fetchAllStatesIDs() {
+  //   this.apiService.getData('states/get/list')
+  //     .subscribe((result: any) => {
+  //       this.statesObject = result;
+  //     });
+  // }
 
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
+  // fetchAllCountriesIDs() {
+  //   this.apiService.getData('')
+  //     .subscribe((result: any) => {
+  //       this.countriesObject = result;
+  //     });
+  // }
 
   getYears() {
     var max = new Date().getFullYear(),
@@ -1975,7 +1917,7 @@ getVehicleStates(event: any) {
     }
   }
 
-  fetchUsers(){
+  fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
@@ -2178,5 +2120,5 @@ getVehicleStates(event: any) {
       description: ''
     };
   }
-  
+
 }

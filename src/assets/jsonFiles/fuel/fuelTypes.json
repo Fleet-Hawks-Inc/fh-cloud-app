@@ -1,0 +1,113 @@
+{
+    "Items": [{
+        "timeCreated": 1614771797247,
+        "timeModified": 1614771797247,
+        "fuelTypeName": "Furnace Oil",
+        "WEXFuelTypeCode": "2097152",
+        "fuelTypeID": "a52fe8f0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771794079,
+        "timeModified": 1614771794079,
+        "fuelTypeName": "Agricultural Fuel",
+        "WEXFuelTypeCode": "1024",
+        "fuelTypeID": "a34c82f0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771796683,
+        "timeModified": 1614771796683,
+        "fuelTypeName": "Unleaded Card Lock Gasoline",
+        "WEXFuelTypeCode": "65536",
+        "fuelTypeID": "a4d9d9b0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771790367,
+        "timeModified": 1614771790367,
+        "fuelTypeName": "Unleaded Regular Gasoline",
+        "WEXFuelTypeCode": "4",
+        "fuelTypeID": "a1161af0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771795650,
+        "timeModified": 1614771795650,
+        "fuelTypeName": "Ultra Low Sulfur Diesel ULSD",
+        "WEXFuelTypeCode": "8192",
+        "fuelTypeID": "a43c3a20-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771792459,
+        "timeModified": 1614771792459,
+        "fuelTypeName": "Marked/Dyed Diesel",
+        "WEXFuelTypeCode": "128",
+        "fuelTypeID": "a25551b0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771791934,
+        "timeModified": 1614771791934,
+        "fuelTypeName": "Propane",
+        "WEXFuelTypeCode": "32",
+        "fuelTypeID": "a20535e0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771793544,
+        "timeModified": 1614771793544,
+        "fuelTypeName": "Car Diesel",
+        "WEXFuelTypeCode": "512",
+        "fuelTypeID": "a2fae080-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771789204,
+        "timeModified": 1614771789204,
+        "fuelTypeName": "Diesel #1",
+        "WEXFuelTypeCode": "1",
+        "fuelTypeID": "a064a540-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771794601,
+        "timeModified": 1614771794601,
+        "fuelTypeName": "Gasohol",
+        "WEXFuelTypeCode": "2048",
+        "fuelTypeID": "a39c2990-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771793019,
+        "timeModified": 1614771793019,
+        "fuelTypeName": "Bio Diesel",
+        "WEXFuelTypeCode": "256",
+        "fuelTypeID": "a2aac4b0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771796160,
+        "timeModified": 1614771796160,
+        "fuelTypeName": "Aviation Fuel",
+        "WEXFuelTypeCode": "16384",
+        "fuelTypeID": "a48a0c00-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771798286,
+        "timeModified": 1614771798286,
+        "fuelTypeName": "Liquid Natural Gas(LNG)",
+        "WEXFuelTypeCode": "16777216",
+        "fuelTypeID": "a5ce72e0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771797772,
+        "timeModified": 1614771797772,
+        "fuelTypeName": "Compressed Natural Gas(CNG)",
+        "WEXFuelTypeCode": "8388608",
+        "fuelTypeID": "a58004c0-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771789833,
+        "timeModified": 1614771789833,
+        "fuelTypeName": "Diesel #2",
+        "WEXFuelTypeCode": "2",
+        "fuelTypeID": "a0c49f90-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771790889,
+        "timeModified": 1614771790889,
+        "fuelTypeName": "Unleaded Midgrade Gasoline",
+        "WEXFuelTypeCode": "8",
+        "fuelTypeID": "a165c190-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771791408,
+        "timeModified": 1614771791408,
+        "fuelTypeName": "Unleaded Premium Gasoline",
+        "WEXFuelTypeCode": "16",
+        "fuelTypeID": "a1b4f300-7c15-11eb-97d1-d36ce11f0ce1"
+    }, {
+        "timeCreated": 1614771795138,
+        "timeModified": 1614771795138,
+        "fuelTypeName": "Natural Gas",
+        "WEXFuelTypeCode": "4096",
+        "fuelTypeID": "a3ee1a20-7c15-11eb-97d1-d36ce11f0ce1"
+    }],
+    "Count": 18,
+    "ScannedCount": 18
+}

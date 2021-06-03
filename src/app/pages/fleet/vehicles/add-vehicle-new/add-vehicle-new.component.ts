@@ -223,10 +223,8 @@ export class AddVehicleNewComponent implements OnInit {
   inspectionForms = [];
   manufacturers: any = [];
   models: any = [];
-  countries: any = [];
   states: any = [];
   groups = [];
-  fuelTypes = [];
   drivers: any;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -277,10 +275,8 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchFuelTypes();
     this.listService.fetchVendors();
-    this.listService.fetchManufacturers()
-    this.listService.fetchCountries();
+    this.listService.fetchManufacturers();
     this.listService.fetchModels();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
@@ -310,7 +306,6 @@ export class AddVehicleNewComponent implements OnInit {
 
     this.vendors = this.listService.vendorList;
     this.manufacturers = this.listService.manufacturerList;
-    this.countries = this.listService.countryList;
     this.models = this.listService.modelList;
     this.ownerOperators = this.listService.ownerOperatorList;
     this.serviceProgramss = this.listService.serviceProgramList;
@@ -340,11 +335,7 @@ export class AddVehicleNewComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  fetchFuelTypes() {
-    this.apiService.getData('fuelTypes').subscribe((result: any) => {
-      this.fuelTypes = result.Items;
-    });
-  }
+
   gotoVehiclePage() {
     $('#addDriverModelVehicle').modal('show');
   }
@@ -534,7 +525,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
-    
+
     // create form data instance
     const formData = new FormData();
 

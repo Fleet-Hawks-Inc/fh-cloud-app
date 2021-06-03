@@ -268,12 +268,9 @@ export class DispatchOverviewComponent implements OnInit {
   }
 
   fetchAllCustomers() {
-    this.spinner.show();
-    this.apiService.getData('customers/get/active').
+    this.apiService.getData('contacts/get/active/customers').
       subscribe((result: any) => {
-        // result = result.Items[0];
-        this.customerCount = result.Count;
-        this.spinner.hide();
+        this.customerCount = result;
       })
   }
 

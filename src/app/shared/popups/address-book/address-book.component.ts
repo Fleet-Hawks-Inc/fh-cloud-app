@@ -769,35 +769,6 @@ export class AddressBookComponent implements OnInit {
     $('div').removeClass('show-search__result');
   }
 
-  async fetchCountriesByName(name: string) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID);
-      return result.Items[0].countryID;
-    }
-    return '';
-  }
-
-  async fetchStatesByName(name: string) {
-    let result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID);
-      return result.Items[0].stateID;
-    }
-    return '';
-  }
-
-  async fetchCitiesByName(name: string) {
-    let result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
-
   addAddress(data) {
     this.searchResults = [];
     data.address.push({
@@ -2306,7 +2277,7 @@ export class AddressBookComponent implements OnInit {
 
   getStates(countryCode, type='', index='') {
     let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    
+
     let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     if(type == 'vendor') {
       this.vendorData.address[index].countryName = countryName;
