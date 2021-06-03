@@ -220,7 +220,7 @@
                                    <button *ngIf="!programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
                                    <button *ngIf="!programID && serviceProgramF.form.valid"  [disabled]="submitDisabled" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
                                     
-                                   <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
+                                   <button *ngIf="programID && serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
                                    <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="submitDisabled" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
                                 </div>
                               </div>
