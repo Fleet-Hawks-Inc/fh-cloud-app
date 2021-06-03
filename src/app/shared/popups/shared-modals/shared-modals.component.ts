@@ -661,20 +661,6 @@ fetchDrivers(){
         this.assets = result.Items;
       })
   }
- /*
-   * Get all countries from api
-   */
-  // fetchCountries() {
-  //   this.apiService.getData('countries')
-  //     .subscribe((result: any) => {
-  //       this.countries = result.Items;
-  //       this.countries.map(elem => {
-  //         if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
-  //           this.licCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
-  //         }
-  //       });
-  //     });
-  // }
 
 
   throwErrors() {
@@ -1324,18 +1310,13 @@ getVehicleStates(event: any) {
   throwVehicleErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v == 'vehicleIdentification' || v == 'VIN') {
+        if(v === 'vehicleIdentification' || v === 'VIN') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
         }
       });
   }
-  // fetchFuelTypes(){
-  //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
-  //     this.fuelTypes = result.Items;
-  //   });
-  // }
 
    /*
    * Selecting files before uploading
@@ -1425,14 +1406,14 @@ getVehicleStates(event: any) {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+             // val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
               this.spinner.hide();
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              this.throwErrorsDrivers();
               this.hasError = true;
               // if(err) return reject(err);
               this.spinner.hide();
@@ -1455,7 +1436,22 @@ getVehicleStates(event: any) {
   } catch (error) {
     return 'error found';
   }}
+  throwErrorsDrivers() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number' || v==='SIN'){
+          $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
 
+        }
+        if(v==='abstractDocs'){
+          $('[name="' + v + '"]')
+          .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
+        }
+      });
+
+  }
   fetchDocuments() {
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
       this.documentTypeList = data;
@@ -1526,7 +1522,7 @@ getVehicleStates(event: any) {
           });
         }
       }
-      
+
       for (let a = 0; a < this.carrierYards.length; a++) {
         this.carrierYards.map((e: any) => {
           if (e.manual) {

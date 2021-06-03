@@ -132,7 +132,6 @@ export class InventoryListComponent implements OnInit {
           .getData(`items/suggestion/${value}`)
           .subscribe((result) => {
             this.suggestedItems = result.Items;
-            console.log('this.suggestedItems', this.suggestedItems);
           });
       } else {
         this.apiService
@@ -241,7 +240,6 @@ export class InventoryListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecordsRequired = result.Count;
-        console.log('this.totalRecordsRequired',this.totalRecordsRequired);
         if (this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
           this.requiredInventoryEndPoint = this.totalRecords;
         }
@@ -252,7 +250,6 @@ export class InventoryListComponent implements OnInit {
   fetchWarehouses() {
     this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
       this.warehouses = result;
-      console.log('this.warehouses', this.warehouses);
     });
   }
 
@@ -334,7 +331,6 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('req');
 
         this.requiredItems = result[`Items`];
-        console.log('this.requiredItems',this.requiredItems);
         if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
           this.requiredInventoryStartPoint = 1;
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
@@ -451,7 +447,6 @@ export class InventoryListComponent implements OnInit {
   }
 
   searchFilter() {
-    console.log('this.category',this.category);
     if (this.itemName !== '' || this.vendorID !== null || this.category !== null) {
       this.itemName = this.itemName.toLowerCase();
       if (this.itemID == '') {
@@ -602,7 +597,6 @@ export class InventoryListComponent implements OnInit {
   }
 
   transferInventory() {
-  console.log('this.transfer', this.transfer);
   this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
     this.toastr.success('Inventory Tranfered Successfully.');
      this.transfer = {

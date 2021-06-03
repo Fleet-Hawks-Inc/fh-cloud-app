@@ -215,9 +215,9 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchCarriers() {
-        this.apiService.getData('externalCarriers')
+        this.apiService.getData('contacts/get/type/carrier')
             .subscribe((result: any) => {
-                this.carriers = result;
+                this.carriers = result; 
             })
     }
 
@@ -1316,7 +1316,7 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchAllCarrierIDs() {
-        this.apiService.getData('externalCarriers/get/list')
+        this.apiService.getData('contacts/get/list/carrier')
             .subscribe((result: any) => {
                 this.carriersObject = result;
             });

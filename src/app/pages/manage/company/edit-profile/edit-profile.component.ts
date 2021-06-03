@@ -279,8 +279,6 @@ export class EditProfileComponent implements OnInit {
     this.addressDetails[i].cityName = result.address.city;
     this.addressDetails[i].zipCode = result.address.postalCode;
     $('div').removeClass('show-search__result');
-    this.addressDetails[i].countryCode = ''; // empty the fields if manual is false (if manual was true IDs were stored)
-    this.addressDetails[i].zipCode = result.address.postalCode;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
@@ -313,9 +311,21 @@ export class EditProfileComponent implements OnInit {
     }
     for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
-        this.yardAddress = true;
-        break;
-      } else {
+        if (this.addressDetails[i].manual) {
+         if (this.addressDetails[i].countryCode !== '' &&
+         this.addressDetails[i].stateCode !== '' &&
+         this.addressDetails[i].cityName !== '' &&
+         this.addressDetails[i].zipCode !== '' &&
+         this.addressDetails[i].address !== '') {
+           this.yardAddress = true;
+         }
+        } else if (!this.addressDetails[i].manual) {
+         if (this.addressDetails[i][`userLocation`] !== '' ) {
+           this.yardAddress = true;
+         }
+        }
+     break;
+    } else {
         this.yardAddress = false;
       }
     }
