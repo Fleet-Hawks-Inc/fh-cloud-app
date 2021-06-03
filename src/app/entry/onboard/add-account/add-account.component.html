@@ -71,7 +71,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
+                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -89,7 +89,7 @@
                               Password is required.
                             </div>
                             <div *ngIf="pwd.errors.pattern">
-                              Password must be 8 digits long and a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                              Password must be 8 digits long and a combination of small letters,capital letters,numbers and atleast one special characters(#,@,$,&).
                             </div>
                           </div>
                       </div>
@@ -156,7 +156,7 @@
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? <span class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo</label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo <span class="text-1 optional-label-color">(optional)</span></label>
                         <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo" type="file"
                           class="form-control p-0">
                       </div>
@@ -534,12 +534,12 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
-                                <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+                                placeholder="eg. 7V2 3R4"  >
+                                <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
                                   </div>
-                                </div>
+                                </div> -->
                             </div>
                           </div>
                         </div>
@@ -623,13 +623,13 @@
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
-                        #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
-                          maxlength="9">
-                          <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
+                         placeholder="eg. 12345789"
+                          >
+                          <!-- <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
                               Transit number must contain 9 numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                     <div class="row">
