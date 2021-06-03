@@ -188,7 +188,7 @@
                                  <div class="row">
                                     <div class="col-lg-8"> Image {{i+1}}</div>
                                     <div class="col-lg-4 text-right">
-                                       <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
+                                       <a href="javascript:;" (click)="delete('image',item.name, i)" class="modal-with-form">
                                           <i class="fas fa-times text-danger" (click)="delete('image',item.name, i)"></i>
                                        </a>
                                     </div>
@@ -206,7 +206,7 @@
                               <div class="col-lg-3 text-right">
                                  <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                                     data-target="#viewDocModal"></em>
-                                 <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form">
+                                 <a href="javascript:;" (click)="delete('doc',doc.name, d)" class="modal-with-form">
                                     <em class="fas fa-times text-danger"></em></a>
                               </div>
                            </div>
