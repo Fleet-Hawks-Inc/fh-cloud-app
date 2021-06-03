@@ -1484,13 +1484,12 @@
                         <div class="col-lg-11 pr123 text-right pb-3">
                            <button type="button" class="btn btn-default mr-2 mt-4" (click)="cancel()">Cancel</button>
                             <!-- if there is some error in validation  -->
-                           <button *ngIf="!vehicleID && !vehicleF.form.valid" [routerLink]="" [disabled]="!vehicleF.form.valid" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
+                           <button *ngIf="!vehicleID && !vehicleF.form.valid" [disabled]="!vehicleF.form.valid" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
                            <!-- if validations are ok and now the button will disable on submit click  -->
-                           <button *ngIf="!vehicleID && vehicleF.form.valid" [routerLink]="" [disabled]="submitDisabled" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
-                                <!-- update case -->
-                           <button *ngIf="vehicleID && !vehicleF.form.valid" [routerLink]="" [disabled]=" !vehicleF.form.valid" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
-                           <button *ngIf="vehicleID && vehicleF.form.valid" [routerLink]="" [disabled]="submitDisabled" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
-
+                           <button *ngIf="!vehicleID && vehicleF.form.valid" [disabled]="submitDisabled" (click)="addVehicle()" class="btn btn-success mt-4">Save</button>
+                           <!-- update case -->
+                           <button *ngIf="vehicleID && !vehicleF.form.valid" [disabled]=" !vehicleF.form.valid" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
+                           <button *ngIf="vehicleID && vehicleF.form.valid" [disabled]="submitDisabled" (click)="updateVehicle()" class="btn btn-success mt-4">Update</button>
                         </div>
                      </div>
                   </div>
