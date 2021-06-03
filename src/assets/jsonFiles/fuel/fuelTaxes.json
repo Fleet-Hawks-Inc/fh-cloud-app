@@ -1,0 +1,101 @@
+{
+    "Items": [{
+        "WEXFuelTaxCode": "FET",
+        "timeCreated": 1614936913995,
+        "timeModified": 1614936913995,
+        "fuelTaxID": "167031b0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Federal Excise Tax"
+    }, {
+        "WEXFuelTaxCode": "QST",
+        "timeCreated": 1614936919858,
+        "timeModified": 1614936919858,
+        "fuelTaxID": "19eed120-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Quebec Sales Tax"
+    }, {
+        "WEXFuelTaxCode": "GST",
+        "timeCreated": 1614936915054,
+        "timeModified": 1614936915054,
+        "fuelTaxID": "1711c8e0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Goods & Services Tax"
+    }, {
+        "WEXFuelTaxCode": "FED",
+        "timeCreated": 1614936913480,
+        "timeModified": 1614936913480,
+        "fuelTaxID": "16219c80-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Federal Fuel Tax"
+    }, {
+        "WEXFuelTaxCode": "SFTAX",
+        "timeCreated": 1614936920412,
+        "timeModified": 1614936920412,
+        "fuelTaxID": "1a4359c0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "State Fuel Tax"
+    }, {
+        "WEXFuelTaxCode": "PST",
+        "timeCreated": 1614936919328,
+        "timeModified": 1614936919328,
+        "fuelTaxID": "199df200-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Provincial Sales Tax"
+    }, {
+        "WEXFuelTaxCode": "CAP",
+        "timeCreated": 1614936912883,
+        "timeModified": 1614936912883,
+        "fuelTaxID": "15c68430-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Competitive Advantage Program (Saskatchewan)"
+    }, {
+        "WEXFuelTaxCode": "PFT",
+        "timeCreated": 1614936918794,
+        "timeModified": 1614936918794,
+        "fuelTaxID": "194c76a0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Provincial Fuel Tax"
+    }, {
+        "WEXFuelTaxCode": "HST",
+        "timeCreated": 1614936916148,
+        "timeModified": 1614936916148,
+        "fuelTaxID": "17b8b740-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Harmonized Sales Tax"
+    }, {
+        "WEXFuelTaxCode": "MEXC",
+        "timeCreated": 1614936917735,
+        "timeModified": 1614936917735,
+        "fuelTaxID": "18aadf70-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "IVA-Customer Fee Tax"
+    }, {
+        "WEXFuelTaxCode": "MEXS",
+        "timeCreated": 1614936918269,
+        "timeModified": 1614936918269,
+        "fuelTaxID": "18fc5ad0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "IVA-Supplier Fee Tax"
+    }, {
+        "WEXFuelTaxCode": "GWT",
+        "timeCreated": 1614936915576,
+        "timeModified": 1614936915576,
+        "fuelTaxID": "17616f80-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Ground Water Tax"
+    }, {
+        "WEXFuelTaxCode": "VTT",
+        "timeCreated": 1614936920973,
+        "timeModified": 1614936920973,
+        "fuelTaxID": "1a98f3d0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "Victoria and Vancouver Transit Tax,known as 'UTT'"
+    }, {
+        "WEXFuelTaxCode": "FNT",
+        "timeCreated": 1614936914530,
+        "timeModified": 1614936914530,
+        "fuelTaxID": "16c1d420-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "First Nations Tax"
+    }, {
+        "WEXFuelTaxCode": "MEX15",
+        "timeCreated": 1614936917195,
+        "timeModified": 1614936917195,
+        "fuelTaxID": "185879b0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "IVA-Fuel tax 15"
+    }, {
+        "WEXFuelTaxCode": "MEX10",
+        "timeCreated": 1614936916672,
+        "timeModified": 1614936916672,
+        "fuelTaxID": "180884f0-7d96-11eb-a602-bdc95a5f8a98",
+        "fuelTaxName": "IVA-Fuel tax 10"
+    }],
+    "Count": 16,
+    "ScannedCount": 16
+}

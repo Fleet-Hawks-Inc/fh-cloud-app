@@ -24,7 +24,7 @@ export class InventoryDetailComponent implements OnInit {
   quantity = "";
   itemName = "";
   description = "";
-  categoryID = "";
+  category = "";
   warehouseID = "";
   aisle = "";
   row = "";
@@ -44,7 +44,8 @@ export class InventoryDetailComponent implements OnInit {
   uploadedDocs = [];
   vendors = {};
   itemGroups = {};
-  warehouses = {};
+  warehouses = [];
+  warehousesList: any = {};
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -54,32 +55,31 @@ export class InventoryDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.itemID = this.route.snapshot.params["itemID"];
+    this.itemID = this.route.snapshot.params[`itemID`];
     this.getInventory();
     this.fetchVendors();
-    this.fetchItemGroups();
+    this.fetchWarehousesList();
   }
 
   fetchVendors() {
-    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+    this.apiService.getData(`contacts/get/list`).subscribe((result) => {
       this.vendors = result;
     });
   }
 
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
-      this.itemGroups = result;
-    });
-  }
 
   fetchWarehouses() {
-    this.apiService.getData("warehouses/get/list").subscribe((result: any) => {
-      this.warehouses = result;
+    this.apiService.getData(`items/get/itemqty/warehouses/` + this.partNumber).subscribe((result: any) => {
+      this.warehouses = result.Items;
     });
   }
-
+  fetchWarehousesList() {
+    this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
+      this.warehousesList = result;
+    });
+  }
   getInventory() {
-    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
+    this.apiService.getData(`items/` + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
       this.carrierID = result.carrierID;
       this.partNumber = result.partNumber;
@@ -88,7 +88,7 @@ export class InventoryDetailComponent implements OnInit {
       this.quantity = result.quantity;
       this.itemName = result.itemName;
       this.description = result.description;
-      this.categoryID = result.categoryID;
+      this.category = result.category;
       this.warehouseID = result.warehouseID;
       this.aisle = result.aisle;
       this.row = result.row;
@@ -120,6 +120,7 @@ export class InventoryDetailComponent implements OnInit {
           name: x,
         }));
       }
+      this.fetchWarehouses();
     });
   }
 
@@ -133,10 +134,10 @@ export class InventoryDetailComponent implements OnInit {
 
   deleteItem() {
     this.apiService
-      .deleteData("items/" + this.itemID)
+      .deleteData(`items/` + this.itemID)
       .subscribe((result: any) => {
-        this.toastr.success("Item Deleted Successfully!");
-        this.router.navigateByUrl("/fleet/items/list");
+        this.toastr.success(`Item Deleted Successfully!`);
+        this.router.navigateByUrl(`fleet/items/list`);
       });
   }
 }

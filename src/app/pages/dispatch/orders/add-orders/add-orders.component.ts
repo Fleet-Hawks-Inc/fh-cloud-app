@@ -275,7 +275,6 @@ export class AddOrdersComponent implements OnInit {
 
   shippersObjects: any = {};
   receiversObjects: any = {};
-  countriesObjects: any = {};
   singleDatePickerOptions;
 
   stateShipperIndex: any;
@@ -386,10 +385,7 @@ export class AddOrdersComponent implements OnInit {
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
-    this.fetchAssetTypes();
-
 
     $(document).ready(() => {
       // this.form = $("#form_").validate();
@@ -415,12 +411,6 @@ export class AddOrdersComponent implements OnInit {
     this.receivers = this.listService.receiverList;
   }
 
-  fetchAssetTypes(){
-    this.apiService.getData('assetTypes').subscribe((result) => {
-      this.assetTypes = result.Items;
-    });
-  }
-  
   timpickerInit() {}
 
   fetchStateTaxes() {
@@ -589,6 +579,7 @@ export class AddOrdersComponent implements OnInit {
     this.emptyShipper(i);
     this.shipperReceiverMerge();
 
+    console.log('finalShippersReceivers', this.finalShippersReceivers);
 
     this.toastr.success("Consignor Added.");
   }
@@ -806,12 +797,6 @@ export class AddOrdersComponent implements OnInit {
   fetchReceivers() {
     this.apiService.getData("receivers").subscribe((result: any) => {
       this.receivers = result.Items;
-    });
-  }
-
-  fetchCountriesByIDs() {
-    this.apiService.getData("countries/get/list").subscribe((result: any) => {
-      this.countriesObjects = result;
     });
   }
 
@@ -1152,7 +1137,7 @@ export class AddOrdersComponent implements OnInit {
       this.discount = discountAmount;
     }
     
-    this.totalAmount = (this.subTotal).toFixed(2);
+    this.totalAmount = (this.subTotal).toFixed(0);
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
     if(!this.orderData.zeroRated){
@@ -1219,7 +1204,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.dropOffDate = itemDateAndTime[0];
       this.shippersReceivers[j].receivers.dropOffTime = itemDateAndTime[1];
       this.shippersReceivers[j].receivers.dropOffInstruction =
-        data.pickupInstruction;
+        data.dropOffLocation;
       this.shippersReceivers[j].receivers.contactPerson = data.contactPerson;
       this.shippersReceivers[j].receivers.phone = data.phone;
       this.shippersReceivers[j].receivers.commodity = data.commodity;

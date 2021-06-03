@@ -14,9 +14,9 @@ import jwt_decode from "jwt-decode";
 })
 export class LoginComponent implements OnInit {
 
-  userName: string;
+  userName: string = null;
   email: string;
-  password: string;
+  password: string = null;
   response: any = '';
   hasError  = false;
   Error = '';
@@ -35,7 +35,10 @@ export class LoginComponent implements OnInit {
               }
 
   ngOnInit() {
-    
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/Map-Dashboard']);
+    }
+    console.log('in login')
   }
 
   toggleFieldTextType() {
@@ -162,12 +165,13 @@ export class LoginComponent implements OnInit {
       
     } catch (err) {
 
-
+      this.submitDisabled = false;
       this.hasError = true;
       this.Error = err.message || 'Error during login';
     }
   }
   else{
+    this.submitDisabled = false;
     this.hasError = true;
     this.Error='Username and password is required'
 

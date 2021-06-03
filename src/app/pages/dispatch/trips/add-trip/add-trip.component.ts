@@ -80,7 +80,7 @@ export class AddTripComponent implements OnInit {
     OrderIDs = [];
     temporaryOrderIDs = [];
     temporaryOrderNumber = [];
-    typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
+    typeOptions = ['Pickup', 'Delivery', 'Stop', 'Enroute', 'Relay', 'Switch', 'Yard'];
     ftlOptions: any = {};
     ltlOptions: any = {};
     assetModalData: any = {};
@@ -171,6 +171,8 @@ export class AddTripComponent implements OnInit {
     dateCreated = moment().format('YYYY-MM-DD');
     mapOrderActive = 'active';
     mapRouteActive = '';
+    mapOrderActiveDisabled = false;
+    mapRouteActiveDisabled = false;
     submitDisabled = false;
     orderStops = [];
     isEdit = false;
@@ -213,9 +215,9 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchCarriers() {
-        this.apiService.getData('externalCarriers')
+        this.apiService.getData('contacts/get/type/carrier')
             .subscribe((result: any) => {
-                this.carriers = result;
+                this.carriers = result; 
             })
     }
 
@@ -535,22 +537,23 @@ export class AddTripComponent implements OnInit {
     }
 
     async saveSelectOrderIDS() {
-        this.typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
+        // this.typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
         this.OrderIDs = this.temporaryOrderIDs;
         $("#orderModal").modal('hide');
         this.orderNo = this.temporaryOrderNumber.toString();
+        let tripPlans = [];
 
-        if(this.tripID) {
-            this.trips = this.trips.filter(function (obj) {
-                if(obj.type !== 'Pickup' && obj.type !== 'Delivery'){
-                    return obj;
-                }
-            });
-        } else {
-            this.trips = this.trips.filter(function (obj) {
-                return obj.fromOrder !== 'yes';
-            });
-        }
+        // if(this.tripID) {
+        //     this.trips = this.trips.filter(function (obj) {
+        //         if(obj.type !== 'Pickup' && obj.type !== 'Delivery'){
+        //             return obj;
+        //         }
+        //     });
+        // } else {
+        //     this.trips = this.trips.filter(function (obj) {
+        //         return obj.fromOrder !== 'yes';
+        //     });
+        // }
 
         let current = this;
         let totalMilesOrder = 0;
@@ -606,8 +609,8 @@ export class AddTripComponent implements OnInit {
                                 if(n.pickupLocation != '' && n.pickupLocation != undefined){
                                     locations.push(n.pickupLocation)
                                 }
-                                current.trips.push(obj);
-                                current.trips.sort((a, b) => b.type.localeCompare(a.type));
+                                tripPlans.push(obj);
+                                tripPlans.sort((a, b) => b.type.localeCompare(a.type));
                             })
                         })
 
@@ -647,8 +650,8 @@ export class AddTripComponent implements OnInit {
                                     locations.push(k.dropOffLocation)
                                 }
                                 
-                                current.trips.push(obj);
-                                current.trips.sort((a, b) => b.type.localeCompare(a.type));
+                                tripPlans.push(obj);
+                                tripPlans.sort((a, b) => b.type.localeCompare(a.type));
                             })
                         })
                     }
@@ -660,14 +663,27 @@ export class AddTripComponent implements OnInit {
                 this.resetMap();
             }
         }
-        this.orderStops = this.trips;
-        this.orderMiles =
-        {
-            calculateBy: calculateBy,
-            totalMiles: totalMilesOrder
+        if(this.tripData.mapFrom == 'order') {
+            this.trips = tripPlans;
+
+            this.orderMiles =
+            {
+                calculateBy: calculateBy,
+                totalMiles: totalMilesOrder
+            }
+            // this.actualMiles = 0;
+            // this.getMiles();
         }
-        this.actualMiles = 0;
-        this.getMiles();
+        this.orderStops = tripPlans;
+       
+        // this.orderStops = this.trips;
+        // this.orderMiles =
+        // {
+        //     calculateBy: calculateBy,
+        //     totalMiles: totalMilesOrder
+        // }
+        // this.actualMiles = 0;
+        // this.getMiles();
     }
 
     async getMiles(){
@@ -1300,7 +1316,7 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchAllCarrierIDs() {
-        this.apiService.getData('externalCarriers/get/list')
+        this.apiService.getData('contacts/get/list/carrier')
             .subscribe((result: any) => {
                 this.carriersObject = result;
             });
@@ -1362,7 +1378,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['createdDate'] = result.createdDate;
                 this.tripData['createdTime'] = result.createdTime;
                 this.dateCreated = result.dateCreated;
-                this.orderNo = '';
+                this.orderNo = ''; 
                 
                 if(result.mapFrom == 'order') {
                     this.mapOrderActive = 'active';
@@ -1791,6 +1807,8 @@ export class AddTripComponent implements OnInit {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
                 this.orderStops = this.trips;
                 this.trips = [];
+                this.mapOrderActiveDisabled = true;
+                this.actualMiles = 0;
                 //change route
                 this.apiService.getData('routes/' + this.tripData.routeID)
                 .subscribe(async (result: any) => {
@@ -1846,6 +1864,7 @@ export class AddTripComponent implements OnInit {
                         this.hereMap.calculateRoute(this.newCoords);
                     }
                     await this.getMiles();
+                    this.mapOrderActiveDisabled = false;
                 });
                 
                 this.mapOrderActive = '';
@@ -1856,21 +1875,23 @@ export class AddTripComponent implements OnInit {
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
                 $('input[name="mapFrom"]').attr('checked', false);
-
+                this.mapOrderActiveDisabled = false;
                 this.toastr.error('Please select permanent route');
             }
         } else {
             if(this.orderNo != '' && this.orderNo != undefined) {
+                this.mapRouteActiveDisabled = true;
                 this.trips = this.orderStops;
-                if(this.isEdit) {
-                    this.getMiles();
-                }
+                this.actualMiles = 0;
+                this.getMiles();
                 this.resetMap();
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
+                this.mapRouteActiveDisabled = false;
             } else {
                 $('input[name="mapFrom"]').attr('checked', false);
+                this.mapRouteActiveDisabled = false;
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';

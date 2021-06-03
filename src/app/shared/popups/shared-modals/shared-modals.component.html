@@ -69,7 +69,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
+        <a type="button" class="btn btn-success" href="javascript:;" >Save</a>
       </div>
     </div>
   </div>
@@ -146,7 +146,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
+        <a type="button" class="btn btn-success" href="javascript:;" >Save</a>
       </div>
     </div>
   </div>
@@ -154,113 +154,9 @@
 
 
 
-<!-- add state modal -->
-<div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-labelledby="addStateModal"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Province</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <section class="card form-wizard" id="w1">
-          <div class="card-body card-body-nopadding">
-            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="stateForm">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country </label>
-                  <ng-select [(ngModel)]="stateData.countryID" name="countryID" class="form-control populate">
 
-                    <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}
-                    </ng-option>
 
-                  </ng-select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Province Name</label>
-                  <input [(ngModel)]="stateData.stateName" placeholder="eg. Alberta" name="stateName" type="text"
-                    class="form-control">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Province Code</label>
-                  <input [(ngModel)]="stateData.stateCode" placeholder="eg. 20171" name="stateCode" type="text"
-                    class="form-control">
-                </div>
-              </div>
-            </form>
-          </div>
 
-        </section>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- add city modal -->
-<div class="modal fade" id="addCityModal" tabindex="-1" role="dialog" aria-labelledby="addCityModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add City</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <section class="card form-wizard" id="w1">
-          <div class="card-body card-body-nopadding">
-            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="cityForm">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
-                  <ng-select placeholder="Select Country" [(ngModel)]="cityData.countryID" (change)="getStates(cityData.countryID)" name="countryID"
-                    class="form-control populate">
-
-                    <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}
-                    </ng-option>
-
-                  </ng-select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Province </label>
-                  <ng-select placeholder="Select Province" [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">
-                    <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
-
-                  </ng-select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter City Name</label>
-                  <input [(ngModel)]="cityData.cityName" placeholder="eg. Calgary" name="cityName" type="text"
-                    class="form-control">
-                </div>
-              </div>
-            </form>
-          </div>
-
-        </section>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a type="button" class="btn btn-success" href="javascript:;" (click)="addCity()">Save</a>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -288,13 +184,13 @@
                   </label>
                   <input [(ngModel)]="vehicleMakeData.manufacturerName" name="manufacturerName" type="text"
 
-                    class="form-control" placeholder="eg. Honda " #nMake="ngModel" required pattern="^[a-zA-Z\s]+$">
+                    class="form-control" placeholder="eg. Freightliner" #nMake="ngModel" required pattern="^[a-zA-Z\s]+$">
                     <div *ngIf="nMake.invalid && (nMake.dirty || nMake.touched)" class="text-danger">
                       <div *ngIf="nMake.errors.required">
                       Vehicle make/manufacturer is required.
                       </div>
                       <div *ngIf="nMake.errors.pattern">
-                             Vehicle make/manufacturer must contains uppercase, lowercase and special characters for period(space) only.
+                      Vehicle make/manufacturer must contain letters.
                       </div>
                     </div>
 
@@ -344,7 +240,7 @@
                   </ng-select>
                   <div *ngIf="nManufacture.invalid && (nManufacture.dirty || nManufacture.touched)" class="text-danger">
                     <div *ngIf="nManufacture.errors.required">
-                     Select valid make/manufacture from the list is required
+                    Make/Manufacture is required.
                     </div>
 
                   </div>
@@ -354,13 +250,13 @@
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Model Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" placeholder="eg. Accord" class="form-control" #nModel="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" placeholder="eg. Cascadia" class="form-control" #nModel="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="nModel.invalid && (nModel.dirty || nModel.touched)" class="text-danger">
                     <div *ngIf="nModel.errors.required">
-                     Select valid make/manufacture from the list is required
+                     Vehicle model name is required
                     </div>
                     <div *ngIf="nModel.errors.pattern">
-                     Vehicle model name must contains uppercase, lowercase and special characters for period(space) only.
+                     Vehicle model name must contain letters.
                      </div>
 
                   </div>
@@ -400,13 +296,13 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Make Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input [(ngModel)]="assetMakeData.manufacturerName" name="manufacturerName" type="text"
-                    class="form-control" placeholder="Enter make of the asset" #mAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
+                    class="form-control" placeholder="eg. Freightliner" #mAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
                     <div *ngIf="mAsset.invalid && (mAsset.dirty || mAsset.touched)" class="text-danger">
                       <div *ngIf="mAsset.errors.required">
-                        Asset Make Name is required.
+                        Asset make name is required.
                       </div>
                       <div *ngIf="mAsset.errors.pattern">
-                             Asset Make  Name must contains uppercase, lowercase and special characters for period(space) only.
+                        Asset make name must contain letters.
                       </div>
                     </div>
                 </div>
@@ -452,7 +348,7 @@
                   </ng-select>
                   <div *ngIf="sltMake.invalid && (sltMake.dirty || sltMake.touched)" class="text-danger">
                     <div *ngIf="sltMake.errors.required">
-                      Select valid  Asset Make from the list is required.
+                       Asset make is required.
                     </div>
 
                   </div>
@@ -463,13 +359,13 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Model Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input [(ngModel)]="assetModelData.modelName" name="modelName" type="text" class="form-control"
-                    placeholder="Enter model of the asset" #txtModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                    placeholder="eg. Cascadia" #txtModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                     <div *ngIf="txtModel.invalid && (txtModel.dirty || txtModel.touched)" class="text-danger">
                       <div *ngIf="txtModel.errors.required">
-                        Asset Model Name is required.
+                        Asset model name is required.
                       </div>
                       <div *ngIf="txtModel.errors.pattern">
-                             Asset Model Name must contains uppercase, lowercase,numbers and special characters for period(space) only.
+                       Asset model name must contain alphanumeric characters.
                       </div>
                     </div>
                 </div>
@@ -541,7 +437,7 @@
                                Service program name is required.
                               </div>
                               <div *ngIf="sProgram1.errors.pattern">
-                                Service program Name must contains uppercase, lowercase and special characters for period(space) only.
+                                Service program name must contain letters.
                               </div>
                             </div>
                         </div>
@@ -554,7 +450,13 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <textarea [(ngModel)]="serviceData.description" name="description"
-                            placeholder="eg. Brakes are not working" class="form-control h-auto" rows="3"></textarea>
+                            placeholder="eg. Brakes are not working" class="form-control h-auto" rows="3" #dNotes44="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                            <div *ngIf="dNotes44.invalid && (dNotes44.dirty || dNotes44.touched)" class="text-danger">
+                              <div *ngIf="dNotes44.errors.pattern">
+                               Only 500 characters are allowed.
+                              </div>
+      
+                           </div>
                         </div>
                       </div>
 
@@ -583,7 +485,7 @@
                               </ng-select>
                               <div *ngIf="sTask.invalid && (sTask.dirty || sTask.touched)" class="text-danger">
                                 <div *ngIf="sTask.errors.required">
-                                  Select valid service task from the list is required.
+                                   Service task is required.
                                 </div>
 
                               </div>
@@ -613,7 +515,7 @@
                                            Repeat by time is required.
                                           </div>
                                           <div *ngIf="sTime.errors.pattern">
-                                                Repeat by time must contains numbers only.
+                                          Repeat by time must contains numbers.
                                           </div>
                                         </div>
                                     </div>
@@ -630,7 +532,7 @@
                                       </ng-select>
                                       <div *ngIf="sPeriod.invalid && (sPeriod.dirty || sPeriod.touched)" class="text-danger">
                                         <div *ngIf="sPeriod.errors.required">
-                                          Select valid time period from the list is required
+                                          Select valid time period from the list is required.
                                         </div>
 
                                       </div>
@@ -650,7 +552,7 @@
                                         Repeat by odometer miles is required.
                                       </div>
                                       <div *ngIf="sMiles.errors.pattern">
-                                        Repeat by odometer miles must contains numbers only.
+                                        Repeat by odometer miles must contain numbers.
                                       </div>
                                     </div>
                                 </div>
@@ -742,10 +644,10 @@
                 placeholder="Enter service task name" #mService="ngModel" required pattern="^[a-zA-Z\s]+$">
                 <div *ngIf="mService.invalid && (mService.dirty || mService.touched)" class="text-danger">
                   <div *ngIf="mService.errors.required">
-                    Service Task Name is required.
+                    Service task name is required.
                   </div>
                   <div *ngIf="mService.errors.pattern">
-                         Service Task Name must contains uppercase, lowercase and special characters for period(space) only.
+                   Service task name must contain letters.
                   </div>
                 </div>
 
@@ -759,7 +661,13 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
                       class="text-1 optional-label-color">(optional)</span></label>
                   <textarea [(ngModel)]="taskData.description" name="description" class="form-control h-auto" rows="2"
-                    placeholder="Enter the description of the service task"></textarea>
+                    placeholder="Enter the description of the service task" #remarksS= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                    <div *ngIf="remarksS.invalid && (remarksS.dirty || remarksS.touched)" class="text-danger">
+                      <div *ngIf="remarksS.errors.pattern">
+                       Only 500 characters are allowed.
+                      </div>
+
+                   </div>
 
                 </div>
               </div>
@@ -789,7 +697,7 @@
       <div class="modal-body">
         <div class="row text-dark">
           <div class="col">
-            <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post">
+            <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post" #sVehicle="ngForm">
 
               <div class="card-body pt-0 px-0">
                 <p class="m-0"><strong>Note:</strong> If you want to add vehicle with more detail then <strong><a
@@ -809,13 +717,13 @@
                               title="Name or Number for Vehicle."></i>
                           </label>
                           <input type="text" class="form-control" name="vehicleIdentification"
-                            [(ngModel)]="vehicleIdentification" placeholder="eg. 7600,XYZ " #mVehicle="ngModel" required pattern="^[a-zA-Z0-9\s\-\_]+$">
+                            [(ngModel)]="vehicleIdentification" placeholder="eg. 7600,XYZ " #mVehicle="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                             <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
                               <div *ngIf="mVehicle.errors.required">
-                                Vehicle Name is required.
+                                Vehicle name is required.
                               </div>
                               <div *ngIf="mVehicle.errors.pattern">
-                                     Vehcle Name must contains uppercase, lowercase, numbers and special characters for period(space,-,_) only.
+                                Vehicle name must contain alphanumeric characters.
                               </div>
                             </div>
                         </div>
@@ -827,13 +735,13 @@
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
-                            placeholder=" eg. 5YJSA1DG9DFP14705" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9\-]{17,18}$">
+                            placeholder="eg.2G1WH55K5Y9322458" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                             <div *ngIf="mVin.invalid && (mVin.dirty || mVin.touched)" class="text-danger">
                               <div *ngIf="mVin.errors.required">
                                  VIN is required.
                               </div>
                               <div *ngIf="mVin.errors.pattern">
-                                 VIN must be between 17-18 characters and must not contain any special characters eg. 5YJSA1DG9DFP14705.
+                                VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.
                               </div>
 
                            </div>
@@ -855,7 +763,7 @@
                           </ng-select>
                           <div *ngIf="mMake.invalid && (mMake.dirty || mMake.touched)" class="text-danger">
                             <div *ngIf="mMake.errors.required">
-                               Select valid make from the list is required.
+                              Make is required.
                             </div>
 
 
@@ -888,18 +796,12 @@
                           </ng-select>
                           <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
                             <div *ngIf="mCountry.errors.required">
-                               Select valid country from the list is reuired.
+                               Country is required.
                             </div>
 
 
                          </div>
                         </div>
-
-                        <!-- <div class="col-lg-2  mar-top-37">
-							   <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-							   class="btn btn-sm btn-success modal-with-form"><i
-								  class="fas fa-plus"></i></a>
-							</div> -->
                       </div>
                     </div>
                     <div class="col-lg-6">
@@ -914,7 +816,7 @@
                           </ng-select>
                           <div *ngIf="mVehicleType.invalid && (mVehicleType.dirty || mVehicleType.touched)" class="text-danger">
                             <div *ngIf="mVehicleType.errors.required">
-                              Select valid vehicle type from the list is required.
+                               Vehicle type is required.
                             </div>
 
 
@@ -972,7 +874,7 @@
                           </ng-select>
                           <div *ngIf="mYear.invalid && (mYear.dirty || mYear.touched)" class="text-danger">
                             <div *ngIf="mYear.errors.required">
-                             Select valid year from the list is required.
+                             Year is required.
                             </div>
 
 
@@ -982,13 +884,13 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber"
-                            placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
+                            placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
                             <div *ngIf="mPlate.invalid && (mPlate.dirty || mPlate.touched)" class="text-danger">
                               <div *ngIf="mPlate.errors.required">
-                                 Plate Number is required.
+                                 Plate number is required.
                               </div>
                               <div *ngIf="mPlate.errors.pattern">
-                                Plate number must contains uppercase.lowercase,numbers and special characters for period(space,-)only.
+                                Plate number must be between 7-8 alphanumeric characters.
                              </div>
 
                            </div>
@@ -1007,24 +909,24 @@
                           </ng-select>
                           <div *ngIf="mModal.invalid && (mModal.dirty || mModal.touched)" class="text-danger">
                             <div *ngIf="mModal.errors.required">
-                             Select valid Model from the list is required.
+                             Model is required.
                             </div>
 
 
                          </div>
                         </div>
                         <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Province<span
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Province/State<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode"
-                            placeholder="Select Province" id="stateSelect" #mProvince="ngModel" required>
+                            placeholder="Select Province/State" id="stateSelect" #mProvince="ngModel" required>
                             <ng-option *ngFor="let state of vehicleStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
                           </ng-select>
                           <div *ngIf="mProvince.invalid && (mProvince.dirty || mProvince.touched)" class="text-danger">
                             <div *ngIf="mProvince.errors.required">
-                             Select valid Province from the list is required.
+                            Province/State is required.
                             </div>
 
 
@@ -1051,7 +953,7 @@
                             [(ngModel)]="annualSafetyDate" class="form-control" #mAnnual="ngModel" required>
                             <div *ngIf="mAnnual.invalid && (mAnnual.dirty || mAnnual.touched)" class="text-danger">
                               <div *ngIf="mAnnual.errors.required">
-                               Select valid annual safety date from the list is required.
+                               Annual safety date is required.
                               </div>
 
 
@@ -1090,7 +992,7 @@
                           </ng-select>
                           <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
                             <div *ngIf="mStatus.errors.required">
-                             Select valid status from the list is required.
+                             Status is required.
                             </div>
 
 
@@ -1111,10 +1013,18 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select the Inspection Form<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select [(ngModel)]="inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                              <ng-select [(ngModel)]="inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iForm="ngModel" required>
                                 <ng-option *ngFor="let data of inspectionForms" value="{{ data.inspectionFormID }}"> {{
                                   data.inspectionFormName }}</ng-option>
                               </ng-select>
+                              <div *ngIf="iForm.invalid && (iForm.dirty || iForm.touched)" class="text-danger">
+                                <div *ngIf="iForm.errors.required">
+                               Inspection Form is required.
+                                </div>
+  
+  
+                             </div>
+
                         </div>
                       </div>
                     </div>
@@ -1137,7 +1047,7 @@
                             name="lifeCycle.startDate" [(ngModel)]="lifeCycle.startDate" #mDate="ngModel" required>
                             <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                               <div *ngIf="mDate.errors.required">
-                               Select valid date from the list is required.
+                               Start date is required.
                               </div>
 
 
@@ -1159,7 +1069,7 @@
                             [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500" #mOdometer="ngModel" required >
                             <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
                               <div *ngIf="mStatus.errors.required">
-                               In Service Odometer must contains numbers only.
+                               In-Service Odometer must contain numbers.
                               </div>
 
 
@@ -1185,7 +1095,7 @@
                                 [(ngModel)]="specifications.height" #mHeight="ngModel" required>
                                 <div *ngIf="mHeight.invalid && (mHeight.dirty || mHeight.touched)" class="text-danger">
                                   <div *ngIf="mHeight.errors.required">
-                                   Height must contains numbers only.
+                                   Height must contain numbers.
                                   </div>
 
 
@@ -1201,7 +1111,7 @@
                               </ng-select>
                               <div *ngIf="mhType.invalid && (mhType.dirty || mhType.touched)" class="text-danger">
                                 <div *ngIf="mhType.errors.required">
-                                 Select valid height from the list is required.
+                                 Height is required.
                                 </div>
 
 
@@ -1234,7 +1144,7 @@
                           </ng-select>
                           <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
                             <div *ngIf="mFuel.errors.required">
-                             Select valid status from the list is required.
+                          Status is required.
                             </div>
 
 
@@ -1254,7 +1164,7 @@
                                 [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 " #mTank1="ngModel" required>
                                 <div *ngIf="mTank1.invalid && (mTank1.dirty || mTank1.touched)" class="text-danger">
                                   <div *ngIf="mTank1.errors.required">
-                                   TFuel Tank 1 must contains numbers only.
+                                   Fuel tank must contain numbers.
                                   </div>
 
 
@@ -1270,7 +1180,7 @@
                               </ng-select>
                               <div *ngIf="fuelType1.invalid && (fuelType1.dirty || fuelType1.touched)" class="text-danger">
                                 <div *ngIf="fuelType1.errors.required">
-                                Select valid fuel type from the list is required.
+                                 Fuel type is required.
                                 </div>
 
 
@@ -1299,7 +1209,7 @@
                                 [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #mOil="ngModel" required>
                                 <div *ngIf="mOil.invalid && (mOil.dirty || mOil.touched)" class="text-danger">
                                   <div *ngIf="mOil.errors.required">
-                                  Oil Capacity must contains numbers only.
+                                  Oil capacity must contain numbers.
                                   </div>
 
 
@@ -1315,7 +1225,7 @@
                               </ng-select>
                               <div *ngIf="fuelType2.invalid && (fuelType2.dirty || fuelType2.touched)" class="text-danger">
                                 <div *ngIf="fuelType2.errors.required">
-                                 Select valid fuel type from the list is required.
+                                  Fuel type is required.
                                 </div>
 
 
@@ -1336,7 +1246,7 @@
                                 placeholder="eg. 100,200 " #mDef="ngModel" required>
                                 <div *ngIf="mDef.invalid && (mDef.dirty || mDef.touched)" class="text-danger">
                                   <div *ngIf="mDef.errors.required">
-                                   DEF must contains numbers only.
+                                   DEF must contain numbers.
                                   </div>
 
 
@@ -1352,7 +1262,7 @@
                               </ng-select>
                               <div *ngIf="mDefType.invalid && (mDefType.dirty || mDefType.touched)" class="text-danger">
                                 <div *ngIf="mDefType.errors.required">
-                                 Select valid def type from the list is required.
+                                DEF type is required.
                                 </div>
 
 
@@ -1381,7 +1291,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a [routerLink]="" (click)="addVehicle()" class="btn btn-success">Save</a>
+        <button [routerLink]="" (click)="addVehicle()" class="btn btn-success" [disabled]="!sVehicle.form.valid" >Save</button>
       </div>
     </div>
   </div>
@@ -1435,7 +1345,7 @@
                   </ng-select>
                   <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
                     <div *ngIf="mVehicle.errors.required">
-                      Select valid vehicle from the list is required.
+                       Vehicle is required.
                     </div>
 
                   </div>
@@ -1451,7 +1361,7 @@
                   </ng-select>
                   <div *ngIf="mAsset.invalid && (mAsset.dirty || mAsset.touched)" class="text-danger">
                     <div *ngIf="mAsset.errors.required">
-                     Select valid asset from the list is required.
+                   Asset is required.
                     </div>
 
                   </div>
@@ -1462,13 +1372,13 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" class="form-control" id="issueName" name="issueName"
-                    [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z\0-9\s]+$">
+                    [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z0-9\s]{4,30}$">
                     <div *ngIf="mIssue.invalid && (mIssue.dirty || mIssue.touched)" class="text-danger">
                       <div *ngIf="mIssue.errors.required">
-                       Issue Name is required.
+                       Issue name is required.
                       </div>
                       <div *ngIf="mIssue.errors.pattern">
-                       Issue Name must contains uppercase,lowercase, and special characters for period(space) only.
+                        Issue name must contain atleast 4 alphanumeric characters.
                       </div>
                     </div>
                 </div>
@@ -1482,7 +1392,7 @@
                     name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required>
                     <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                       <div *ngIf="mDate.errors.required">
-                      Select valid date from the list is required.
+                 Reported date is required.
                       </div>
 
                     </div>
@@ -1493,7 +1403,13 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
                     <span class="text-1 optional-label-color">(optional)</span></label>
                   <textarea [(ngModel)]="issuesData.description" name="description" class="form-control h-auto" rows="3"
-                    placeholder="Enter description of the issue"></textarea>
+                    placeholder="Enter description of the issue" #remarks2= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                    <div *ngIf="remarks2.invalid && (remarks2.dirty || remarks2.touched)" class="text-danger">
+                      <div *ngIf="remarks2.errors.pattern">
+                       Only 500 characters are allowed.
+                      </div>
+
+                   </div>
                 </div>
               </div>
 
@@ -1508,7 +1424,7 @@
                     >
                     <div *ngIf="mOdometer.invalid && (mOdometer.dirty || mOdometer.touched)" class="text-danger">
                       <div *ngIf="mOdometer.errors.required">
-                        Odometer miles must contains numbers only.
+                        Odometer miles must contain numbers.
                       </div>
 
                     </div>
@@ -1524,7 +1440,7 @@
                   </ng-select>
                   <div *ngIf="mReport.invalid && (mReport.dirty || mReport.touched)" class="text-danger">
                     <div *ngIf="mReport.errors.required">
-                   Select valid Reported Issue by from the list is required.
+                   Reported issue is required.
                     </div>
 
                   </div>
@@ -1540,7 +1456,7 @@
                   </ng-select>
                   <div *ngIf="mAssigned.invalid && (mAssigned.dirty || mAssigned.touched)" class="text-danger">
                     <div *ngIf="mAssigned.errors.required">
-                      Select valid Assigned Issue by from the list is required.
+                    Assigned to is required.
                     </div>
 
                   </div>
@@ -1577,7 +1493,7 @@
           <div class="col">
             <p class="m-0 px-3"><strong>Note:</strong> If you want to add asset with more detail then <strong><a
                   routerLink="/fleet/assets/add" data-dismiss="modal">click here</a></strong></p>
-            <form id="assetForm" class="form-horizontal form-bordered bg-white" method="post">
+            <form id="assetForm" class="form-horizontal form-bordered bg-white" method="post" #assetShared="ngForm">
               <div class="card-body pt-0">
                 <div class="">
                   <div class="row">
@@ -1590,9 +1506,17 @@
                       <div class="row">
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-                            Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification"
-                            class="form-control" placeholder="eg. XYZ,123 etc.">
+                            class="form-control" placeholder="eg. Box asset." #aName1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                        </div>
+                        <div *ngIf="aName1.invalid && (aName1.dirty || aName1.touched)" class="text-danger">
+                          <div *ngIf="aName1.errors.required">
+                            Asset name/number is required.
+                          </div>
+                          <div *ngIf="aName1.errors.pattern">
+                            Asset name/number must contain alphanumeric characters.
+                          </div>
                         </div>
 
 
@@ -1601,7 +1525,15 @@
                             Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                             [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                            class="form-control">
+                            class="form-control" #sd9="ngModel" required>
+                            <div *ngIf="sd9.invalid && (sd9.dirty || sd9.touched)" class="text-danger">
+
+                              <div *ngIf="sd9.errors.required">
+                              Start date is required.
+                              </div>
+      
+      
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1613,7 +1545,17 @@
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
                           <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                            placeholder="15 digits Alphanumeric , eg. 78678678678678689" class="form-control">
+                            placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName1="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                            <div *ngIf="vName1.invalid && (vName1.dirty || vName1.touched)" class="text-danger">
+
+                              <div *ngIf="vName1.errors.required">
+                                VIN is required.
+                              </div>
+                              <div *ngIf="vName1.errors.pattern">
+                                VIN contain 17-18 alphanumeric characters eg.2G1WH55K5Y9322458
+                                 </div>
+      
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1630,7 +1572,7 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetType" name="assetType"
-                            class="form-control populate" id="assetType" placeholder="Select asset type">
+                            class="form-control populate" id="assetType" placeholder="Select asset type"   #aSlt1="ngModel" required>
                             <!-- <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
                               {{type.assetTypeName}}</ng-option> -->
                               <ng-option value="container">Container</ng-option>
@@ -1652,6 +1594,11 @@
                               <ng-option value="chassis">Chassis</ng-option>
                               <ng-option value="tank_trailer">Tank Trailer</ng-option>
                           </ng-select>
+                          <div *ngIf="aSlt1.invalid && (aSlt1.dirty || aSlt1.touched)" class="text-danger">
+                            <div *ngIf="aSlt1.errors.required">
+                              Asset type is required.
+                            </div>
+                        </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Height<span
@@ -1659,16 +1606,26 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input [(ngModel)]="assetsData.assetDetails.height" name="assetDetails.height" min="0"
-                                type="number" class="form-control" placeholder="eg. 10,20 etc.">
+                                type="number" class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #hName1="ngModel" required>
+                                <div *ngIf="hName1.invalid && (hName1.dirty || hName1.touched)" class="text-danger">
+                                  <div *ngIf="hName1.errors.required">
+                                    Height must contain numbers.
+                                  </div>
+                                  </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select [(ngModel)]="assetsData.assetDetails.heightUnit" name="assetDetails.heightUnit"
-                                placeholder="Select unit">
+                                placeholder="Select unit"  #hName2="ngModel" required>
 
                                 <ng-option value="Feet">Feet</ng-option>
                                 <ng-option value="Meter">Meter</ng-option>
 
                               </ng-select>
+                              <div *ngIf="hName2.invalid && (hName2.dirty || hName2.touched)" class="text-danger">
+                                <div *ngIf="hName2.errors.required">
+                                  Height type is required.
+                                </div>
+                                </div>
                             </div>
                           </div>
                         </div>
@@ -1676,25 +1633,45 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetDetails.year" name="assetDetails.year"
-                            class="form-control populate" placeholder="Select year">
+                            class="form-control populate" placeholder="Select year" #ySlt3="ngModel" required>
                             <ng-option *ngFor="let year of years;" value="{{year}}">{{year}}</ng-option>
                           </ng-select>
+                          <div *ngIf="ySlt3.invalid && (ySlt3.dirty || ySlt3.touched)" class="text-danger">
+                            <div *ngIf="ySlt3.errors.required">
+                                  Year is required.
+                                </div>
+        
+        
+                            </div>
                         </div>
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set
                             Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                           <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                             name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                            placeholder="yyyy/mm/dd" class="form-control">
+                            placeholder="yyyy/mm/dd" class="form-control" #dSlt1="ngModel" required>
+                            <div *ngIf="dSlt1.invalid && (dSlt1.dirty || dSlt1.touched)" class="text-danger">
+                              <div *ngIf="dSlt1.errors.required">
+                                Annual safety date is required.
+                              </div>
+                                                    </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                             Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.currentStatus"
-                            name="currentStatus" placeholder="Select asset status">
+                            name="currentStatus" placeholder="Select asset status" #sSlt6="ngModel" required >
                             <ng-option value="active">Active</ng-option>
                             <ng-option value="inactive">InActive</ng-option>
                           </ng-select>
+                          <div *ngIf="sSlt6.invalid && (sSlt6.dirty || sSlt6.touched)" class="text-danger">
+                            
+                              <div *ngIf="sSlt6.errors.required">
+                                Status is required.
+                              </div>
+                            
+      
+                          </div>
                         </div>
                         <div class="col-lg-12">
                           <div class="checkbox mt-1">
@@ -1730,7 +1707,7 @@
                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
                             name="assetDetails.licenceStateCode" class="form-control populate"
-                            placeholder="Select Province">
+                            placeholder="Select Province/State">
                             <ng-option *ngFor="let state of assetStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
@@ -1741,16 +1718,32 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. 345678"
-                            name="assetDetails.licencePlateNumber" class="form-control" type="text">
+                            name="assetDetails.licencePlateNumber" class="form-control" type="text" #pName9="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
+                            <div *ngIf="pName9.invalid && (pName9.dirty || pName9.touched)"  class="text-danger">
+                              <div *ngIf="pName9.errors.required">
+                                Licence plate number is required.
+                              </div>
+                                <div *ngIf="pName9.errors.pattern">
+                                  Licence plate number must be between 7-8 alphanumeric characters.
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                             the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                          <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iSlt1="ngModel" required>
                             <ng-option *ngFor="let data of inspectionFormsAsset" value="{{ data.inspectionFormID }}"> {{
                               data.inspectionFormName }}</ng-option>
                           </ng-select>
+                          <div *ngIf="iSlt1.invalid && (iSlt1.dirty || iSlt1.touched)" class="text-danger">
+
+                            <div *ngIf="iSlt1.errors.required">
+                              Inspection form is required.
+                            </div>
+    
+    
+                        </div>
 
                         </div>
                       </div>
@@ -1759,7 +1752,7 @@
                   <div class="row mt-3">
                     <div class="col-lg-12 text-right">
                       <button type="button" class="btn btn-default mr-2 mt-4" data-dismiss="modal">Cancel</button>
-                      <a href="javascript:;" (click)="addAsset()" class="btn btn-success mt-4">Save</a>
+                      <button href="javascript:;" (click)="addAsset()" class="btn btn-success mt-4" [disabled]="!assetShared.form.valid">Save</button>
                     </div>
                   </div>
                 </div>
@@ -1839,7 +1832,7 @@
                                       <input (change)="onChangeHideErrors('employeeContractorId')"
                                         [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                         class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
-                                        pattern="^[a-zA-Z0-9\s\-]{2,30}$" maxlength="30">
+                                        pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
 
                                     </div>
                                     <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
@@ -1847,8 +1840,7 @@
                                         Employee ID is required.
                                       </div>
                                       <div *ngIf="dName.errors.pattern">
-                                        Employee ID must not contain special character. Employee ID must be
-                                        between 2 to 30 characters and contain letters and numbers only.
+                                        Employee ID can only contain alphanumeric characters with length between 4-120
                                       </div>
                                     </div>
                                   </div>
@@ -1866,8 +1858,7 @@
                                         Contractor ID is required.
                                       </div>
                                       <div *ngIf="cName.errors.pattern">
-                                        Contractor ID must not contain special character. Contractor ID must be
-                                        between 2 to 30 characters and contain letters and numbers only.
+                                        Contractor ID can only contain alphanumeric characters with length between 4-120.
                                       </div>
                                     </div>
                                   </div>
@@ -1899,7 +1890,7 @@
                                     </ng-select>
                                     <div *ngIf="oSlt.invalid && (oSlt.dirty || oSlt.touched)" class="text-danger">
                                       <div *ngIf="oSlt.errors.required">
-                                        Owner Operator is required.
+                                        Owner operator is required.
                                       </div>
                                     </div>
                                   </div>
@@ -1911,15 +1902,14 @@
                                 </label>
                                 <input (change)="onChangeHideErrors('userName')"
                                   [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^[a-z0-9\.]+$"
+                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="[^\.][a-z0-9\.]+[^\.]$"
                                   maxlength="30">
                                 <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                                   <div *ngIf="uName.errors.required">
-                                    UserName is required.
+                                    Username is required.
                                   </div>
                                   <div *ngIf="uName.errors.pattern">
-                                    Username must contain small letters,numbers and special
-                                    characters(period(.)) only.
+                                    Username must contain letters, numbers and allowed characters(.).
                                   </div>
                                 </div>
                               </div>
@@ -1948,10 +1938,10 @@
                                       required pattern="^[a-zA-Z]+$" maxlength="30">
                                     <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                                       <div *ngIf="fName.errors.required">
-                                        First Name is required.
+                                        First name is required.
                                       </div>
                                       <div *ngIf="fName.errors.pattern">
-                                        First Name must not contain any special character.
+                                        First name must contain letters.
                                       </div>
                                     </div>
                                   </div>
@@ -1960,14 +1950,14 @@
                                         class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     </label>
                                     <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
-                                      name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                                      required pattern="^[a-zA-Z0-9]+$" maxlength="30">
-                                    <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
-                                      <div *ngIf="lName.errors.required">
-                                        Last Name is required.
+                                      name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName04="ngModel"
+                                      required pattern="^[a-zA-Z]+$" maxlength="30">
+                                    <div *ngIf="lName04.invalid && (lName04.dirty || lName04.touched)" class="text-danger">
+                                      <div *ngIf="lName04.errors.required">
+                                        Last name is required.
                                       </div>
-                                      <div *ngIf="lName.errors.pattern">
-                                        Last Name must not contain any special characters.
+                                      <div *ngIf="lName04.errors.pattern">
+                                        Last name must contain letters.
                                       </div>
                                     </div>
                                   </div>
@@ -1980,7 +1970,7 @@
                                         class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     </label>
                                     <div class="input-group">
-                                      <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                                      <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
                                         />
                                         <div class="input-group-append">
                                           <span class="input-group-text eye">
@@ -1997,7 +1987,7 @@
                                           Password is required.
                                         </div>
                                         <div *ngIf="pwd.errors.pattern">
-                                          Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                                          Password must be 8 digits long and a combination of small letters,capital letters,numbers and atleast one special characters(#,@,$,&).
                                         </div>
                                       </div>
                                   </div>
@@ -2059,14 +2049,14 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                                  (change)="onChangeHideErrors('phone')" placeholder="eg. c" #mob="ngModel"
+                                  (change)="onChangeHideErrors('phone')" placeholder="eg. +12234567891" #mob="ngModel"
                                   required pattern="^(\+1)[0-9]{10}$">
                                 <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                                   <div *ngIf="mob.errors.required">
                                     Phone is required.
                                   </div>
                                   <div *ngIf="mob.errors.pattern">
-                                    Enter valid phone number eg. +16040571231.
+                                    Enter valid phone number eg. +12234567891
                                   </div>
                                 </div>
                               </div>
@@ -2075,14 +2065,14 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control"
-                                  (change)="onChangeHideErrors('email')" placeholder="eg. example@email.com" #em="ngModel"
+                                  (change)="onChangeHideErrors('email')" placeholder="johnsmith@gmail.com " #em="ngModel"
                                   required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                 <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
                                   <div *ngIf="em.errors.required">
                                     Email is required.
                                   </div>
                                   <div *ngIf="em.errors.pattern">
-                                    Enter valid email eg. johnsmith@test.com.
+                                    Enter valid email eg. johnsmith@gmail.com.
                                   </div>
                                 </div>
                               </div>
@@ -2097,7 +2087,7 @@
                                       class="form-control" placeholder="yyyy/mm/dd" #dSlt="ngModel" required>
                                     <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                                       <div *ngIf="dSlt.errors.required">
-                                        Start Date is required and must contain yyyy/mm/dd format..
+                                        Start date is required.
                                       </div>
                                     </div>
                                   </div>
@@ -2109,11 +2099,11 @@
                                       [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
                                        class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
                                       >
-                                    <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
+                                    <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                                       <div *ngIf="tDate.errors.required" class="text-danger">
                                         Termination Date must contain yyyy/mm/dd format.
                                       </div>
-                                    </div>
+                                    </div> -->
                                   </div>
                                   <!-- driver is owner operator -->
                                   <div class="col-lg-6" *ngIf="driverData.driverType === 'contractor'">
@@ -2126,7 +2116,7 @@
                                       #dSlt="ngModel" required>
                                     <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                                       <div *ngIf="dSlt.errors.required">
-                                        Start Date is required and must contain yyyy/mm/dd format.
+                                        Start date is required.
                                       </div>
                                     </div>
                                   </div>
@@ -2137,12 +2127,12 @@
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                                       [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
                                       data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
-                                      required>
-                                    <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
+                                      >
+                                    <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                                       <div *ngIf="endDate.errors.required">
-                                        End Date is required and must contain yyyy/mm/dd format.
+                                        End date is required and must contain yyyy/mm/dd format.
                                       </div>
-                                    </div>
+                                    </div> -->
                                   </div>
                                 </div>
                               </div>
@@ -2197,23 +2187,22 @@
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-lg-12">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Document Type <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Document Type <span class="text-1 optional-label-color">(optional)</span>
                                 </label>
                                 <ng-select [(ngModel)]="document.documentType"
                                   [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                                   placeholder="Select document type"
-                                  (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc="ngModel" required>
+                                  (change)="onChangeHideErrors('documentDetails['+i+'].documentType')">
                                   <ng-container *ngFor="let documentType of documentTypeList">
                                     <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
                                       {{documentType.description}}</ng-option>
                                   </ng-container>
                                 </ng-select>
-                                <div *ngIf="doc.invalid && (doc.dirty || doc.touched)" class="text-danger">
+                                <!-- <div *ngIf="doc.invalid && (doc.dirty || doc.touched)" class="text-danger">
                                   <div *ngIf="doc.errors.required">
-                                    Document Type is required.
+                                    Document type is required.
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                             </div>
                           </div>
@@ -2221,16 +2210,15 @@
                             <div>
                               <div class="row">
                                 <div class="col-lg-6">
-                                  <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span
-                                      class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                  <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span class="text-1 optional-label-color">(optional)</span>
                                   </label>
                                   <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                                     [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                                    placeholder="eg. Certificate number 2017-17-123456"
-                                    (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel" required
-                                    pattern="^[a-zA-Z0-9\s\#\.\-\_]+$">
+                                    placeholder="eg. Certificate number 201717ABC"
+                                    (change)="onChangeHideErrors('documentDetails['+i+'].document')" 
+                                  >
 
-                                  <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
+                                  <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
                                     <div *ngIf="docNum.errors.required">
                                       Document# is required.
                                     </div>
@@ -2238,7 +2226,7 @@
                                       Document# must contain combination of small letters,capital letters
                                       ,alphanumeric and atleast one special characters(#,/,-,_,.)
                                     </div>
-                                  </div>
+                                  </div> -->
                                 </div>
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority <span
@@ -2247,12 +2235,12 @@
                                   <input [(ngModel)]="document.issuingAuthority"
                                     [attr.name]="'documentDetails['+i+'].issuingAuthority'"
                                     [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                                    placeholder="eg. Ontario,canada" #authority="ngModel" pattern="^[a-zA-z\,]+$">
-                                  <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
+                                    placeholder="eg. Ontario,canada" >
+                                  <!-- <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
                                     <div *ngIf="authority.errors.pattern">
                                       Issuing Authority must contain letters and special characters(period(,)) only .
                                     </div>
-                                  </div>
+                                  </div> -->
                                 </div>
                               </div>
                             </div>
@@ -2260,8 +2248,7 @@
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-lg-6">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country <span class="text-1 optional-label-color">(optional)</span>
                                 </label>
                                 <ng-select
                                   (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
@@ -2273,7 +2260,7 @@
                                 </ng-select>
                               </div>
                               <div class="col-lg-6">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State/Province </label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State <span class="text-1 optional-label-color">(optional)</span> </label>
                                 <ng-select
                                   (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                                   [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -2287,34 +2274,32 @@
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-6">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date<span
-                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date <span class="text-1 optional-label-color">(optional)</span></label>
                                 <input [(ngModel)]="document.issueDate"
                                   (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
                                   #d="ngbDatepicker" type="text" class="form-control" [maxDate]="getcurrentDate"
                                   [minDate]="birthDateMinLimit" placeholder="yyyy/mm/dd"
                                   [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
-                                  #idSlt="ngModel" required>
-                                <div *ngIf="idSlt.invalid && (idSlt.dirty || idSlt.touched)" class="text-danger">
+                                  >
+                                <!-- <div *ngIf="idSlt.invalid && (idSlt.dirty || idSlt.touched)" class="text-danger">
                                   <div *ngIf="idSlt.errors.required">
-                                    Issue Date is required.
+                                    Issue date is required.
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                               <div class="col-6" *ngIf="document.documentType != 'BCN'">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Expiry Date <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Expiry Date <span class="text-1 optional-label-color">(optional)</span>
                                 </label>
                                 <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
                                   [ngModelOptions]="{standalone: true}"
                                   (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
                                   #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
-                                  [minDate]="getcurrentDate" type="text" class="form-control" #expSlt="ngModel" required>
-                                <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
+                                  [minDate]="getcurrentDate" type="text" class="form-control">
+                                <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
                                   <div *ngIf="expSlt.errors.required">
                                     Expiry Date is required.
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                             </div>
                           </div>
@@ -2354,13 +2339,13 @@
                                 <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number"
                                   type="text" class="form-control" placeholder="9 digits eg. 0005-04440"
                                   (change)="onChangeHideErrors('CDL_Number')" #cdl="ngModel" required maxlength="9"
-                                  pattern="^[0-9\-]{2,9}$">
+                                  pattern="^[0-9]{9}$">
                                 <div *ngIf="cdl.invalid && (cdl.dirty || cdl.touched)" class="text-danger">
                                   <div *ngIf="cdl.errors.required">
                                     CDL# is required.
                                   </div>
                                   <div *ngIf="cdl.errors.pattern">
-                                    CDL# must contain numbers only and special characters(period(-)) only.
+                                    CDL# must contain 9 numbers.
                                   </div>
                                 </div>
                               </div>
@@ -2371,10 +2356,10 @@
                                 <input (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()" ngbDatepicker
                                   #d3="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.licenceExpiry"
                                   name="licenceDetails.licenceExpiry" [maxDate]="futureDatesLimit" [minDate]="getcurrentDate"
-                                  type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required>
-                                <div *ngIf="leSlt.invalid && (leSlt.dirty || leSlt.touched)" class="text-danger">
-                                  <div *ngIf="leSlt.errors.required">
-                                    Licence Expiration is required.
+                                  type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt1="ngModel" required>
+                                <div *ngIf="leSlt1.invalid && (leSlt1.dirty || leSlt1.touched)" class="text-danger">
+                                  <div *ngIf="leSlt1.errors.required">
+                                    Licence expiration is required.
                                   </div>
                                 </div>
                               </div>
@@ -2405,19 +2390,19 @@
                                 </div>
                               </div>
                               <div class="col-lg-6">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Issued State <span
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State <span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
-                                  placeholder="Select Province"
-                                  (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
+                                  placeholder="Select Province/State"
+                                  (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlta="ngModel"
                                   required>
                                   <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                                     {{state.stateName}}</ng-option>
                                 </ng-select>
-                                <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
-                                  <div *ngIf="ipSlt.errors.required">
-                                    Issued Province is required.
+                                <div *ngIf="ipSlta.invalid && (ipSlta.dirty || ipSlta.touched)" class="text-danger">
+                                  <div *ngIf="ipSlta.errors.required">
+                                    Issued province/state is required.
                                   </div>
                                 </div>
                               </div>
@@ -2450,7 +2435,7 @@
                                 </ng-select>
                                 <div *ngIf="paySlt.invalid && (paySlt.dirty || paySlt.touched)" class="text-danger">
                                   <div *ngIf="paySlt.errors.required">
-                                    Default Payment Type is required.
+                                    Default payment type is required.
                                   </div>
                                 </div>
                               </div>
@@ -2460,13 +2445,13 @@
                                 <input (change)="onChangeHideErrors('SIN')"
                                   [(ngModel)]="driverData.SIN" name="SIN"
                                   type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin="ngModel" required
-                                  pattern="^[0-9]+$" maxlength="9">
+                                  pattern="^[0-9]{9}$" maxlength="9">
                                 <div *ngIf="sin.invalid && (sin.dirty || sin.touched)" class="text-danger">
                                   <div *ngIf="sin.errors.required">
-                                    Sin is required.
+                                    SIN is required.
                                   </div>
                                   <div *ngIf="sin.errors.pattern">
-                                    Sin must contains numbers only.
+                                    SIN must contain 9 numbers.
                                   </div>
                                 </div>
                               </div>
@@ -2479,38 +2464,74 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Rate<span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
-                                  class="form-control" placeholder="eg. 10,20">
+                                  class="form-control" placeholder="eg. 10,20"  #payHour1="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                                  <div *ngIf="payHour1.invalid && (payHour1.dirty || payHour1.touched)" class="text-danger">
+                                    <div *ngIf="payHour1.errors.required">
+                                      Rate is required.
+                                    </div>
+                                    <div *ngIf="payHour1.errors.pattern">
+                                     Rate must contain numbers.
+                                    </div>
+                                  </div>>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                 <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" (change)="changeCurrency($event)"
-                                  name="paymentDetails.rateUnit" placeholder="Select Currency">
+                                  name="paymentDetails.rateUnit" placeholder="Select Currency" #payS1="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
 
                                   <ng-option value="CAD">CAD</ng-option>
                                   <ng-option value="USD">USD</ng-option>
                                 </ng-select>
+                                <div *ngIf="payS1.invalid && (payS1.dirty || payS1.touched)" class="text-danger">
+                                  <div *ngIf="payS1.errors.required">
+                                    Currency is required.
+                                  </div>
+                                  
+                                </div>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
                                   period Pay<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay"
-                                  type="text" class="form-control" placeholder=" eg. 10,20">
+                                  type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait1="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                                  <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
+                                    <div *ngIf="payWait1.errors.required">
+                                      Waiting period pay is required.
+                                    </div>
+                                    <div *ngIf="payWait1.errors.pattern">
+                                     Waiting period pay must contain numbers.
+                                    </div>
+                                  </div>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                 <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" (change)="changeCurrency($event)"
-                                  name="paymentDetails.waitingPayUnit" placeholder="Select Currency">
+                                  name="paymentDetails.waitingPayUnit" placeholder="Select Currency" #curr11="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
 
                                   <ng-option value="CAD">CAD</ng-option>
                                   <ng-option value="USD">USD</ng-option>
                                 </ng-select>
+                                <div *ngIf="curr11.invalid && (curr11.dirty || curr11.touched)" class="text-danger">
+                                  <div *ngIf="curr11.errors.required">
+                                    Currency is required.
+                                  </div>
+                                  
+                                </div>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour
                                   start after<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
                                   name="paymentDetails.waitingHourAfter" type="text" class="form-control"
-                                  placeholder="eg. Min 3 hours">
+                                  placeholder="eg. Min 3 hours" #payWait12="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                                  <div *ngIf="payWait12.invalid && (payWait12.dirty || payWait12.touched)" class="text-danger">
+                                    <div *ngIf="payWait12.errors.required">
+                                      Waiting hour start is required.
+                                    </div>
+                                    <div *ngIf="payWait12.errors.pattern">
+                                     Waiting hour start must contain numbers.
+                                    </div>
+                                  </div>
                               </div>
 
                             </div>
@@ -2520,16 +2541,30 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Delivery
                                   Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
-                                  type="text" class="form-control" placeholder="eg. 30,35">
+                                  type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
+                                  <div *ngIf="dRate1.invalid && (dRate1.dirty || dRate1.touched)" class="text-danger">
+                                    <div *ngIf="dRate1.errors.required">
+                                      Delivery rate is required.
+                                    </div>
+                                    <div *ngIf="dRate1.errors.pattern">
+                                     Delivery rate must contain numbers.
+                                    </div>
+                                  </div>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                 <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit" (change)="changeCurrency($event)"
-                                  name="paymentDetails.deliveryRateUnit" placeholder="Select Currency">
+                                  name="paymentDetails.deliveryRateUnit" placeholder="Select Currency"  #curr34="ngModel"  [required]="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
 
                                   <ng-option value="CAD">CAD</ng-option>
                                   <ng-option value="USD">USD</ng-option>
                                 </ng-select>
+                                <div *ngIf="curr34.invalid && (curr34.dirty || curr34.touched)" class="text-danger">
+                                  <div *ngIf="curr34.errors.required">
+                                    Currency is required.
+                                  </div>
+                                  
+                                </div>
                               </div>
                             </div>
                             <div class="row" id="payPercentageForm"
@@ -2541,8 +2576,16 @@
                                   <div class="col-lg-3">
                                     <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                                       name="paymentDetails.loadPayPercentage" type="text" class="form-control"
-                                      placeholder="eg. 2%, 5%, 10%"
-                                      (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
+      
+                                      (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')" placeholder="eg. 2%, 5%, 10%" #lPay12="ngModel" pattern="^[0-9]+$" [required]="driverData.paymentDetails.paymentType == 'Percentage'">
+                                      <div *ngIf="lPay12.invalid && (lPay12.dirty || lPay12.touched)" class="text-danger">
+                                        <div *ngIf="lPay12.errors.required">
+                                         Load pay percent is required.
+                                        </div>
+                                        <div *ngIf="lPay12.errors.pattern">
+                                        Load pay percent must contain numbers.
+                                        </div>
+                                      </div>
                                   </div>
                                   <div class="col-lg-2 px-0">
                                     <label class="font-weight-bold">%</label>
@@ -2551,7 +2594,7 @@
                                   <div class="col-lg-7">
                                     <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf"
                                       name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of"
-                                      (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')">
+                                      (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')" #fff="ngModel"[required]="driverData.paymentDetails.paymentType == 'Percentage'">
 
                                       <ng-option value="Freight Fees">Freight Fees</ng-option>
                                       <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
@@ -2559,6 +2602,12 @@
                                       <ng-option value="Total Income">Total Income</ng-option>
 
                                     </ng-select>
+                                    <div *ngIf="fff.invalid && (fff.dirty || fff.touched)" class="text-danger">
+                                      <div *ngIf="fff.errors.required">
+                                      Load pay percent type is required.
+                                      </div>
+                                      
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -2570,39 +2619,67 @@
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
-                                    type="text" class="form-control" placeholder="eg. 10,20">
+                                    type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
+                                    <div *ngIf="payM1.invalid && (payM1.dirty || payM1.touched)" class="text-danger">
+                                      <div *ngIf="payM1.errors.required">
+                                       Loaded miles is required.
+                                      </div>
+                                      <div *ngIf="payM1.errors.pattern">
+                                      Loaded miles must contain numbers.
+                                      </div>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3 ">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                   <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit"
                                     name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                                    (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')">
+                                    (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')" #curr45="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
 
                                     <ng-option value="CAD">CAD</ng-option>
                                     <ng-option value="USD">USD</ng-option>
                                   </ng-select>
+                                  <div *ngIf="curr45.invalid && (curr45.dirty || curr45.touched)" class="text-danger">
+                                    <div *ngIf="curr45.errors.required">
+                                    Currency type is required.
+                                    </div>
+                                    
+                                  </div>
                                 </div>
                                 <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                                     Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
-                                    type="text" class="form-control" placeholder="eg. 10,20">
+                                    type="text" class="form-control"  placeholder="eg. $0.5, $1, $2" #eMiles12="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
+                                    <div *ngIf="eMiles12.invalid && (eMiles12.dirty || eMiles12.touched)" class="text-danger">
+                                      <div *ngIf="eMiles12.errors.required">
+                                       Empty miles is required.
+                                      </div>
+                                      <div *ngIf="eMiles12.errors.pattern">
+                                      Empty miles must contain numbers.
+                                      </div>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                                   <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" (change)="changeCurrency($event)"
                                     name="paymentDetails.emptyMilesUnit" placeholder="Currency"
-                                    (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')">
+                                    (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')" #curr56="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
                                     <ng-option value="CAD">CAD</ng-option>
                                     <ng-option value="USD">USD</ng-option>
                                   </ng-select>
+                                  <div *ngIf="curr56.invalid && (curr56.dirty || curr56.touched)" class="text-danger">
+                                    <div *ngIf="curr56.errors.required">
+                                    Currency type is required.
+                                    </div>
+                                    
+                                  </div>
                                 </div>
                                 <div class="col-lg-3 pr-0">
                                   <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                     Miles (Team) </label>
                                   <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                                     name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
-                                    placeholder="eg. 10,20">
+                                    placeholder="eg. $0.5, $1, $2">
                                 </div>
                                 <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -2618,7 +2695,7 @@
                                     Miles (Team)</label>
                                   <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                                     name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
-                                    placeholder="eg. 10,20">
+                                    placeholder="eg. $0.5, $1, $2">
                                 </div>
                                 <div class="col-lg-3">
                                   <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -2636,7 +2713,7 @@
                                     Period<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod"
                                     placeholder="Select pay period of the driver"
-                                    (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt="ngModel" required>
+                                    (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt1="ngModel" required>
 
                                     <ng-option value="Weekly">Weekly</ng-option>
                                     <ng-option value="Biweekly">Biweekly</ng-option>
@@ -2644,9 +2721,9 @@
                                     <ng-option value="Quaterly">Quaterly</ng-option>
                                     <ng-option value="Annually">Annually</ng-option>
                                   </ng-select>
-                                  <div *ngIf="ppSlt.invalid && (ppSlt.dirty || ppSlt.touched)" class="text-danger">
-                                    <div *ngIf="ppSlt.errors.required">
-                                      Pay Period Type is required.
+                                  <div *ngIf="ppSlt1.invalid && (ppSlt1.dirty || ppSlt1.touched)" class="text-danger">
+                                    <div *ngIf="ppSlt1.errors.required">
+                                      Pay period type is required.
                                     </div>
                                   </div>
 
@@ -2675,14 +2752,14 @@
                                 <ng-select [(ngModel)]="driverData.hosDetails.hosStatus"
                                   (change)="complianceChange($event);onChangeHideErrors('hosDetails.hosStatus')"
                                   name="hosDetails.hosStatus" class="form-control populate"
-                                  placeholder="Select exemption status of the driver" #sSlt="ngModel" required>
+                                  placeholder="Select exemption status of the driver" #sSlt98="ngModel" required>
 
                                   <ng-option value="non_Exempted">Non Exempted</ng-option>
                                   <ng-option value="exempted">Exempted</ng-option>
 
                                 </ng-select>
-                                <div *ngIf="sSlt.invalid && (sSlt.dirty || sSlt.touched)" class="text-danger">
-                                  <div *ngIf="sSlt.errors.required">
+                                <div *ngIf="sSlt98.invalid && (sSlt98.dirty || sSlt98.touched)" class="text-danger">
+                                  <div *ngIf="sSlt98.errors.required">
                                     Status is required.
                                   </div>
                                 </div>
@@ -2694,7 +2771,13 @@
                                 </label>
                                 <textarea style="height: unset !important;" [(ngModel)]="driverData.hosDetails.hosRemarks"
                                   name="hosDetails.hosRemarks" class="form-control" rows="4"
-                                  placeholder=" Enter remarks for the exempted driver"></textarea>
+                                  placeholder=" Enter remarks for the exempted driver" #remarks123= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                  <div *ngIf="remarks123.invalid && (remarks123.dirty || remarks123.touched)" class="text-danger">
+                                    <div *ngIf="remarks123.errors.pattern">
+                                     Only 500 characters are allowed.
+                                    </div>
+            
+                                 </div>
                               </div>
                             </div>
                           </div>
@@ -2706,14 +2789,14 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                                   (change)="onChangeHideErrors('hosDetails.type')" placeholder="Select the record keeping type"
-                                  #tSlt="ngModel" required>
+                                  #tSlt12="ngModel" required>
                                   <ng-option *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'" value="ELD">ELD
                                   </ng-option>
                                   <ng-option *ngIf="driverData.hosDetails.hosStatus == 'exempted'" value="Log Book">Log Book
                                   </ng-option>
                                 </ng-select>
-                                <div *ngIf="tSlt.invalid && (tSlt.dirty || tSlt.touched)" class="text-danger">
-                                  <div *ngIf="tSlt.errors.required">
+                                <div *ngIf="tSlt12.invalid && (tSlt12.dirty || tSlt12.touched)" class="text-danger">
+                                  <div *ngIf="tSlt12.errors.required">
                                     Type is required.
                                   </div>
                                 </div>
@@ -2739,7 +2822,7 @@
                                 </ng-select>
                                 <div *ngIf="home.invalid && (home.dirty || home.touched)" class="text-danger">
                                   <div *ngIf="home.errors.required">
-                                    Home Terminal is required.
+                                    Home terminal is required.
                                   </div>
                                 </div>
                               </div>
@@ -2749,13 +2832,18 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
                                   (change)="onChangeHideErrors('hosDetails.optZone')" class="form-control populate"
-                                  placeholder="Select the Operating Zone">
+                                  placeholder="Select the Operating Zone" #oz2="ngModel" required>
                                   <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                                   </ng-option>
                                   <ng-option class="text-capitalize" value="North (Canada)">North (Canada)
                                   </ng-option>
                                   <ng-option class="text-capitalize" value="USA">USA</ng-option>
                                 </ng-select>
+                                <div *ngIf="oz2.invalid && (oz2.dirty || oz2.touched)" class="text-danger">
+                                  <div *ngIf="oz2.errors.required">
+                                    Operating zone is required.
+                                  </div>
+                                </div>
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Home Terminal Timezone <span
@@ -2763,10 +2851,15 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.hosDetails.timezone" name="hosDetails.timezone"
                                   (change)="onChangeHideErrors('hosDetails.timezone')" class="form-control populate"
-                                  placeholder="Select the home terminal timezone">
+                                  placeholder="Select the home terminal timezone" #ht1="ngModel" required>
                                   <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones" [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
                                   </ng-option>
                                 </ng-select>
+                                <div *ngIf="ht1.invalid && (ht1.dirty || ht1.touched)" class="text-danger">
+                                  <div *ngIf="ht1.errors.required">
+                                    Home terminal timezone is required.
+                                  </div>
+                                </div>
                               </div>
                               <div class="col-lg-12" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
@@ -2774,10 +2867,15 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.hosDetails.hosCycle" name="hosDetails.hosCycle"
                                   (change)="onChangeHideErrors('hosDetails.hosCycle')" class="form-control populate"
-                                  placeholder="Select the cycle for the driver">
+                                  placeholder="Select the cycle for the driver" #cycle12="ngModel" [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
                                   <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
                                     {{cycle.cycleName}}</ng-option>
                                 </ng-select>
+                                <div *ngIf="cycle12.invalid && (cycle12.dirty || cycle12.touched)" class="text-danger">
+                                  <div *ngIf="cycle12.errors.required">
+                                    Cycle is required.
+                                  </div>
+                                </div>
                               </div>
 
                               <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
@@ -2806,8 +2904,8 @@
                         <div class="form-group row mt-3">
                           <div class="col-lg-12 text-right pb-4 pr-5">
                             <a type="button" data-dismiss="modal" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
-                            <button type="submit" class="cus-btn-padd btn btn-success"
-                             >Save</button>
+                            <button type="submit" class="cus-btn-padd btn btn-success" >Save</button>
+                             
                           </div>
                         </div>
                       </div>
