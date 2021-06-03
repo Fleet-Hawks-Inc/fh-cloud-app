@@ -297,7 +297,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
-                            title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
+                            title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JK12"
                         #scac="ngModel" >
@@ -363,6 +363,10 @@
                       class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Address</label>
                   </div>
                   <div class="col-lg-12">
+                    <label
+                      class="control-label text-3 pt-2">Yard address is mandatory</label>
+                  </div>
+                  <div class="col-lg-12">
                     <div *ngFor="let item of addressDetails; let i = index;" class="address-item">
                       <div class="form-group row">
                         <div class="col-lg-12 text-right">
@@ -383,7 +387,7 @@
                             typing your location <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top"
                               title="we'll pull address automatically from Map"></i></label>
                           <input type="text" class="form-control" placeholder="Type address"
-                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual"
+                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual" [required]="!item.manual && item.addressType==='yard'"
                             (keyup)="searchTerm.next($event);">
                           <div class="checkbox-custom pt-2">
                             <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
@@ -410,7 +414,7 @@
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Country</label>
                               <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
-                                (change)="getStates($event, i)" class="form-control populate"
+                                (change)="getStates($event, i)" class="form-control populate" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Select country">
                                 <ng-option value="CA">Canada</ng-option>
                                   <ng-option value="US">United States of America</ng-option>
@@ -421,7 +425,7 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Province/State</label>
-                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
+                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" [required]="item.manual && item.addressType==='yard'"
                                 name="stateCode{{i}}" placeholder="Select province/state" >
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
@@ -434,7 +438,7 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 City</label>
-                              <ng-select  [(ngModel)]="item.cityName"
+                              <ng-select  [(ngModel)]="item.cityName" [required]="item.manual && item.addressType==='yard'"
                                 name="cityName{{i}}" placeholder="Select city" >
 
                                 <ng-option class="text-capitalize" *ngFor="let city of item.cities"
@@ -453,7 +457,7 @@
                             <div class="col-lg-10">
                               <label
                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
-                              <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
+                              <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Enter street level address" #adLine="ngModel" >
                                 <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
@@ -467,9 +471,11 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Zip
                                 Code</label>
-                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="Enter zipcode eg. 7V2 3R4">
-                                <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+
+                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
+                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
+                                 <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
                                   </div>
