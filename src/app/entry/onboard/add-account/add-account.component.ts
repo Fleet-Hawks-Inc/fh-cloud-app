@@ -240,10 +240,22 @@ export class AddAccountComponent implements OnInit {
       }
     }
     for(let i=0; i < this.addressDetails.length;i++){
-      if(this.addressDetails[i].addressType === 'yard') {
-        this.yardAddress = true;
+      if (this.addressDetails[i].addressType === 'yard') {
+           if (this.addressDetails[i].manual) {
+            if (this.addressDetails[i].countryCode !== '' &&
+            this.addressDetails[i].stateCode !== '' &&
+            this.addressDetails[i].cityName !== '' &&
+            this.addressDetails[i].zipCode !== '' &&
+            this.addressDetails[i].address !== '') {
+              this.yardAddress = true;
+            }
+           } else if (!this.addressDetails[i].manual) {
+            if (this.addressDetails[i][`userLocation`] !== '' ) {
+              this.yardAddress = true;
+            }
+           }
         break;
-      }else{
+       } else {
         this.yardAddress = false;
       }
     }
@@ -306,7 +318,7 @@ export class AddAccountComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                
+
                 this.throwErrors();
                 this.submitDisabled = true;
               },
@@ -334,7 +346,7 @@ export class AddAccountComponent implements OnInit {
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
         }
-        
+
       });
   }
   hideErrors() {
