@@ -578,8 +578,6 @@ export class AddOrdersComponent implements OnInit {
     this.emptyShipper(i);
     this.shipperReceiverMerge();
 
-    console.log('finalShippersReceivers', this.finalShippersReceivers);
-
     this.toastr.success("Consignor Added.");
   }
 
@@ -1170,7 +1168,7 @@ export class AddOrdersComponent implements OnInit {
 
   editList(elem, parentIndex, i) {
     let j = parentIndex; 
-    console.log('shippersReceivers', this.shippersReceivers, j, i)
+    
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1222,7 +1220,7 @@ export class AddOrdersComponent implements OnInit {
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
-    console.log('shippersReceivers', this.shippersReceivers, j, i)
+    
   }
 
   updateShipperReceiver(obj, i) {
