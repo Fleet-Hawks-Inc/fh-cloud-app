@@ -2457,8 +2457,15 @@ table.dataTable thead th, table.dataTable thead td {
 /* modal cross 31.05.21 end */
 
 
-/* modal cross 01.06.21 start */
+/* header select input height */
 .input-daterange input{
+  height: calc(1.3em + 0.75rem + 0.1em) !important;
+}
+.input-group input{
+  height: calc(1.3em + 0.75rem + 0.1em) !important;
+}
+
+.input-height input{
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
 

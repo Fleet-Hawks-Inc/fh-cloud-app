@@ -1337,7 +1337,7 @@
               </div>
               <div class="row pt-2">
                 <div class="col-12" *ngIf="issuesData.unitType == 'vehicle'">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Vehicle<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="issuesData.unitID" #mVehicle="ngModel" required>
                     <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
@@ -1351,7 +1351,7 @@
                   </div>
                 </div>
                 <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Asset<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="issuesData.unitID" #mAsset="ngModel" required>
 
@@ -1415,9 +1415,13 @@
 
             </div>
             <div class="col-lg-6 mt-3">
+              <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
+                <label class="control-label font-weight-bold font-bold text-lg-right mb-0">&nbsp;</label>
+              </div>
+
               <div class="row pt-4" *ngIf="issuesData.unitType === 'vehicle'">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)<span
+                <div class="col-lg-12 input-height">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Odometer(miles)<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input [(ngModel)]="issuesData.odometer" name="odometer" min="0" type="number" class="form-control"
                     placeholder="Enter odometer miles at which issue is reported. eg. 10000" #mOdometer="ngModel" required
@@ -1430,9 +1434,15 @@
                     </div>
                 </div>
               </div>
-              <div class="row mt-4">
+
+              <div class="row pt-2 mt-1" *ngIf="issuesData.unitType === 'vehicle'">
+                <div class="col-lg-12 input-height">
+               </div>
+              </div>
+
+              <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Reported By<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact" #mReport="ngModel" required>
                     <ng-option *ngFor="let user of users" value="{{user.userName}}">
@@ -1446,6 +1456,12 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row mt-1" *ngIf="issuesData.unitType === 'vehicle'">
+                <div class="col-lg-12 input-height">
+               </div>
+              </div>
+
               <div class="row pt-2">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
@@ -1465,7 +1481,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <div class="col-lg-12 text-right">
+            <div class="col-lg-12 pr-0 text-right">
               <a type="button" data-dismiss="modal" class="btn btn-default btnPrevious mr-2">Cancel</a>
               <button type="button" (click)="addIssue()" class="btn btn-success" [disabled]="!maintenance.form.valid">Save</button>
             </div>
