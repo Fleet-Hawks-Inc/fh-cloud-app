@@ -18,6 +18,5 @@ ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.c
 
 ### Copy final build
 COPY --from=build /usr/src/app/dist/fleethawks-dashboard /usr/share/nginx/html
-RUN cp -r /usr/share/nginx/html/assets/nginx.conf /etc/nginx/
 
 EXPOSE 80
