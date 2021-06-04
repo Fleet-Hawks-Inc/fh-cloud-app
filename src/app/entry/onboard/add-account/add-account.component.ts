@@ -312,6 +312,7 @@ export class AddAccountComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
+
                 // val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[val.context.key] = val.message;
               })
@@ -334,19 +335,21 @@ export class AddAccountComponent implements OnInit {
         },
       });
     } else{
-      this.toaster.warning('Yard address is mandatory');
+      this.toaster.error('Yard address is mandatory');
     }
 
   }
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v=== 'userName' || v==='email'){
+        if (v === 'userName' || v === 'email' || v === 'carrierName') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
         }
-
+        if (v === 'cognito') {
+         this.toaster.error(this.errors[v]);
+        }
       });
   }
   hideErrors() {

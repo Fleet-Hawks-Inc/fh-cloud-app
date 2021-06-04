@@ -375,7 +375,8 @@
                         </div>
                         <div class="col-lg-5 pt-2">
                           <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address
-                            Type</label>
+                            Type<span *ngIf="item.addressType==='yard'"
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
                             placeholder="Select address type">
                             <ng-option value="mailing">Mailing</ng-option>
@@ -384,7 +385,8 @@
                         </div>
                         <div class="col-lg-4 offset-lg-2 pt-2 pr-0">
                           <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Start
-                            typing your location <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top"
+                            typing your location <span *ngIf="!item.manual && item.addressType==='yard'"
+                            class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="we'll pull address automatically from Map"></i></label>
                           <input type="text" class="form-control" placeholder="Type address"
                             [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual" [required]="!item.manual && item.addressType==='yard'"
@@ -412,7 +414,8 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                Country</label>
+                                Country<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
                                 (change)="getStates($event, i)" class="form-control populate" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Select country">
@@ -424,7 +427,8 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                Province/State</label>
+                                Province/State<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" [required]="item.manual && item.addressType==='yard'"
                                 name="stateCode{{i}}" placeholder="Select province/state" >
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
@@ -437,7 +441,8 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                City</label>
+                                City<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select  [(ngModel)]="item.cityName" [required]="item.manual && item.addressType==='yard'"
                                 name="cityName{{i}}" placeholder="Select city" >
 
@@ -456,7 +461,8 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
                               <label
-                                class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
+                                class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Enter street level address" #adLine="ngModel" >
                                 <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
@@ -470,12 +476,12 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Zip
-                                Code</label>
+                                Code<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
-                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
-                                 <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
-
+                                placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel">
+                                 <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched) && item.manual && item.addressType==='yard'" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
                                   </div>
