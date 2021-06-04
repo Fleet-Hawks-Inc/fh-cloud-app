@@ -409,7 +409,7 @@ export class EditProfileComponent implements OnInit {
         },
       });
     } else {
-      this.toaster.warning('Yard address is mandatory');
+      this.toaster.error('Yard address is mandatory');
     }
   }
   updateUser() {
@@ -426,9 +426,11 @@ export class EditProfileComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v === 'carrierName'){
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
       });
   }
   hideErrors() {

@@ -1695,7 +1695,7 @@
                                             </div>
 
                                             <div class="col-12 mt-3 mb-2 text-right">
-                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(customerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(customerData)"><i class="fa fa-plus"></i> Add More</button>
                                                 <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('customer', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
@@ -2153,7 +2153,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-3 mb-2 text-right">
-                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(brokerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(brokerData)"><i class="fa fa-plus"></i> Add More</button>
                                                 <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('broker', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
@@ -2897,7 +2897,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-3 mb-2 text-right">
-                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(carrierData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(carrierData)"><i class="fa fa-plus"></i> Add More</button>
                                                 <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('carrier', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
@@ -3448,7 +3448,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-3 mb-2 text-right">
-                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(ownerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(ownerData)"><i class="fa fa-plus"></i> Add More</button>
                                                 <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('ownerOperator', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
@@ -3836,7 +3836,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mt-3 mb-2 text-right">
-                                        <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(shipperData)"><i class="fa fa-plus"></i> Add More</a>
+                                        <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(shipperData)"><i class="fa fa-plus"></i> Add More</button>
                                         <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('consignor', ad)"><i class="fa fa-minus"></i> Delete</a>
                                     </div>
                                 </div>
@@ -4215,7 +4215,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mt-3 mb-2 text-right">
-                                        <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(consigneeData)"><i class="fa fa-plus"></i> Add More</a>
+                                        <button [disabled]="additionalDisabled" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(consigneeData)"><i class="fa fa-plus"></i> Add More</button>
                                         <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('consignee', ad)"><i class="fa fa-minus"></i> Delete</a>
                                     </div>
                                 </div>
@@ -5058,45 +5058,42 @@
                                         <th width="40%" class="back-color-gray">Broker Type:</th>
                                         <td>{{userDetailData.brokerType}}</td>
                                     </tr>
-
-                                    <tr *ngIf="userDetailData.dbaName">
-                                        <th width="40%" class="back-color-gray">DBA Name:</th>
-                                        <td>{{userDetailData.dbaName}}</td>
+                                    <tr *ngIf="userDetailData.companyName">
+                                        <th width="40%" class="back-color-gray">Company Name:</th>
+                                        <td>{{userDetailData.companyName}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.dateOfBirth">
-                                        <th width="40%" class="back-color-gray">Date of Birth:</th>
-                                        <td>{{userDetailData.dateOfBirth}}</td>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">DBA Name:</th>
+                                        <td>{{ (userDetailData.dbaName) ? userDetailData.dbaName : '-'}}</td>
                                     </tr>
 
                                     <tr *ngIf="detailTab == 'Broker' && userDetailData.firstName != ''">
                                         <th width="40%" class="back-color-gray">{{detailTab}} Name:</th>
                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.companyName">
-                                        <th width="40%" class="back-color-gray">Company Name:</th>
-                                        <td>{{userDetailData.companyName}}</td>
-                                    </tr>
-                                    <tr *ngIf="userDetailData.mc">
+                                    
+                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee'">
                                         <th width="40%" class="back-color-gray">MC#:</th>
-                                        <td>{{userDetailData.mc}}</td>
+                                        <td>{{(userDetailData.mc) ? userDetailData.mc : '-'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.dot">
+                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee'">
                                         <th width="40%" class="back-color-gray">DOT#:</th>
-                                        <td>{{userDetailData.dot}}</td>
+                                        <td>{{(userDetailData.dot) ? userDetailData.dot : '-'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.ein">
+                                    <tr *ngIf="detailTab == 'Customer' || detailTab == 'Broker'">
                                         <th width="40%" class="back-color-gray">EIN:</th>
-                                        <td>{{userDetailData.ein}}</td>
+                                        <td>{{(userDetailData.ein) ? userDetailData.ein : '-'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.fast">
+                                    <tr *ngIf="detailTab == 'Customer'">
                                         <th width="40%" class="back-color-gray">FAST Card#:</th>
-                                        <td>{{userDetailData.fast}}</td>
+                                        <td>{{(userDetailData.fast) ? userDetailData.fast : '-'}}</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.fastExpiry">
+                                    <tr *ngIf="detailTab == 'Customer'">
                                         <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                                        <td>{{userDetailData.fastExpiry | date:'yyyy/MM/dd'}}</td>
+                                        <td *ngIf="userDetailData.fastExpiry">{{ userDetailData.fastExpiry | date:'yyyy/MM/dd'}}</td>
+                                        <td *ngIf="!userDetailData.fastExpiry">-</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.preferedVendor != undefined">
+                                    <tr *ngIf="userDetailData.preferedVendor != undefined && detailTab == 'Vendor'">
                                         <th width="40%" class="back-color-gray">Preferred Vendor:</th>
                                         <td>{{ (userDetailData.preferedVendor) ? 'Yes' : 'No' }}</td>
                                     </tr>
@@ -5106,21 +5103,17 @@
                         <div class="col-lg-6">
                             <table class="table table-bordered m-0">
                                 <tbody>
-                                    <tr *ngIf="userDetailData.accountNumber">
+                                    <tr *ngIf="detailTab == 'Customer' || detailTab == 'Broker' || detailTab == 'Vendor'">
                                         <th width="40%" class="back-color-gray">Account#:</th>
-                                        <td>{{userDetailData.accountNumber}}</td>
-                                    </tr>
-                                    <tr *ngIf="userDetailData.trailerPreference">
-                                        <th width="40%" class="back-color-gray">Trailer Preference:</th>
-                                        <td>{{userDetailData.trailerPreference}}</td>
+                                        <td>{{(userDetailData.accountNumber) ? userDetailData.accountNumber : '-'}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Phone:</th>
-                                        <td>{{userDetailData.workPhone}}</td>
+                                        <td>{{(userDetailData.workPhone) ? userDetailData.workPhone : '-'}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Email:</th>
-                                        <td>{{userDetailData.workEmail}}</td>
+                                        <td>{{(userDetailData.workEmail) ? userDetailData.workEmail : '-'}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.csa != undefined">
                                         <th width="40%" class="back-color-gray">CSA:</th>
@@ -5139,40 +5132,40 @@
                         </div>
                     </div>
                 </div>
-                <div id="customerAddressDetails" class="tab-pane ">
+                <div id="customerAddressDetails" class="tab-pane">
                     <table style="float: left;" class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
                         <tbody>
                             <tr>
                                 <th width="40%" class="back-color-gray">Address Type:</th>
-                                <td>{{item.addressType}}</td>
+                                <td>{{(item.addressType) ? item.addressType : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray"> Country:</th>
-                                <td>{{item.countryName}}</td>
+                                <td>{{(item.countryName) ? item.countryName : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray">Province/State:</th>
-                                <td>{{item.stateName}}</td>
+                                <td>{{(item.stateName) ? item.stateName : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray"> City:</th>
-                                <td>{{item.cityName}}</td>
+                                <td>{{(item.cityName) ? item.cityName : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray">Zip Code:</th>
-                                <td>{{item.zipCode}}</td>
+                                <td>{{(item.zipCode) ? item.zipCode : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray">Address1:</th>
-                                <td>{{item.address1}}</td>
+                                <td>{{(item.address1) ? item.address1 : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == true">
+                            <tr *ngIf="item.manual">
                                 <th width="40%" class="back-color-gray">Address2:</th>
-                                <td>{{item.address2}}</td>
+                                <td>{{(item.address2) ? item.address2 : '-'}}</td>
                             </tr>
-                            <tr *ngIf="item.manual == false">
+                            <tr *ngIf="!item.manual">
                                 <th width="40%" class="back-color-gray">Address:</th>
-                                <td>{{item.userLocation}}</td>
+                                <td>{{(item.userLocation) ? item.userLocation : '-'}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -5208,119 +5201,115 @@
                 <div id="customPaymentDetails" class="tab-pane" *ngIf="userDetailData.paymentDetails">
                     <table class="table table-bordered m-0">
                         <tbody>
-                            <tr *ngIf="userDetailData.paymentDetails.inBonded">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
-                                <td>Yes</td>
+                                <td>{{ (userDetailData.paymentDetails.inBonded) ? 'Yes' : 'No' }}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.mc">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">MC#:</th>
-                                <td>{{userDetailData.paymentDetails.mc}}</td>
+                                <td>{{(userDetailData.paymentDetails.mc) ? userDetailData.paymentDetails.mc : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.dot">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">DOT#:</th>
-                                <td>{{userDetailData.paymentDetails.dot}}</td>
+                                <td>{{(userDetailData.paymentDetails.dot) ? userDetailData.paymentDetails.dot : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.fast">
+                            <tr>
                                 <th width="40%" class="back-color-gray">FAST Card#:</th>
-                                <td>{{userDetailData.paymentDetails.fast}}</td>
+                                <td>{{(userDetailData.paymentDetails.fast) ? userDetailData.paymentDetails.fast : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.fastExpiry">
+                            <tr>
                                 <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                                <td>{{userDetailData.paymentDetails.fastExpiry | date:'yyyy/MM/dd'}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.fastExpiry">{{userDetailData.paymentDetails.fastExpiry | date:'yyyy/MM/dd'}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.fastExpiry">-</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.ccc">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">CCC:</th>
-                                <td>{{userDetailData.paymentDetails.ccc}}</td>
+                                <td>{{(userDetailData.paymentDetails.ccc) ? userDetailData.paymentDetails.ccc : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.scac">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">SCAC:</th>
-                                <td>{{userDetailData.paymentDetails.scac}}</td>
+                                <td>{{(userDetailData.paymentDetails.scac) ? userDetailData.paymentDetails.scac : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.cvor">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">CVOR:</th>
-                                <td>{{userDetailData.paymentDetails.cvor}}</td>
+                                <td>{{(userDetailData.paymentDetails.cvor) ? userDetailData.paymentDetails.cvor : '-'}}</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.payrollType">
+                            <tr>
                                 <th width="40%" class="back-color-gray">Payroll Type:</th>
-                                <td>{{userDetailData.paymentDetails.payrollType}}</td>
+                                <td>{{(userDetailData.paymentDetails.payrollType) ? userDetailData.paymentDetails.payrollType : '-'}}</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.loadedMiles && userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
                                 <th width="40%" class="back-color-gray">Loaded Miles:</th>
-                                <td>{{userDetailData.paymentDetails.loadedMiles}} {{userDetailData.paymentDetails.loadedMilesCurrency}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.loadedMiles">{{userDetailData.paymentDetails.loadedMiles}} {{userDetailData.paymentDetails.loadedMilesCurrency}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.loadedMiles">-</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.emptyMiles && userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
                                 <th width="40%" class="back-color-gray">Empty Miles:</th>
-                                <td>{{userDetailData.paymentDetails.emptyMiles}} {{userDetailData.paymentDetails.emptyMilesCurrency}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.emptyMiles">{{userDetailData.paymentDetails.emptyMiles}} {{userDetailData.paymentDetails.emptyMilesCurrency}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.emptyMiles">-</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.payrollPercent && userDetailData.paymentDetails.payrollType == 'Percentage'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Percentage'">
                                 <th width="40%" class="back-color-gray">Payroll Load Pay Percent:</th>
-                                <td>{{userDetailData.paymentDetails.payrollPercent}}% of {{userDetailData.paymentDetails.percentType}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.payrollPercent">{{userDetailData.paymentDetails.payrollPercent}}% of {{userDetailData.paymentDetails.percentType}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.payrollPercent"></td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Pay Per Hour'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Pay Per Hour'">
                                 <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                                <td>{{userDetailData.paymentDetails.payrollRate}} {{userDetailData.paymentDetails.payrollRateCurrency}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.payrollRate">{{userDetailData.paymentDetails.payrollRate}} {{userDetailData.paymentDetails.payrollRateCurrency}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.payrollRate">-</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.deliveryRate && userDetailData.paymentDetails.payrollType == 'Pay Per Delivery'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Pay Per Delivery'">
                                 <th width="40%" class="back-color-gray">Payroll Delivery Rate:</th>
-                                <td>{{userDetailData.paymentDetails.deliveryRate}} {{userDetailData.paymentDetails.deliveryRateCurrency}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.deliveryRate">{{userDetailData.paymentDetails.deliveryRate}} {{userDetailData.paymentDetails.deliveryRateCurrency}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.deliveryRate">-</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Flat'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Flat'">
                                 <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                                <td>{{userDetailData.paymentDetails.payrollRate}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.payrollRate">{{userDetailData.paymentDetails.payrollRate}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Hours'">
+                            <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Hours'">
                                 <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                                <td>{{userDetailData.paymentDetails.payrollRate}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.payrollRate">{{userDetailData.paymentDetails.payrollRate}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.localTax">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">Local Tax (in Percentage):</th>
-                                <td>{{userDetailData.paymentDetails.localTax}}</td>
+                                <td>{{(userDetailData.paymentDetails.localTax) ? userDetailData.paymentDetails.localTax : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.federalTax">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">Federal Tax (in Percentage):</th>
-                                <td>{{userDetailData.paymentDetails.federalTax}}</td>
+                                <td>{{(userDetailData.paymentDetails.federalTax) ? userDetailData.paymentDetails.federalTax : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.applyTax">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">Apply Tax (on Settlement):</th>
-                                <td>Yes</td>
+                                <td>{{ (userDetailData.paymentDetails.applyTax) ? 'Yes' : 'No' }}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
+                            <tr *ngIf="detailTab == 'Carrier'">
                                 <th width="40%" class="back-color-gray">WSIB:</th>
-                                <td>Yes</td>
+                                <td>{{ (userDetailData.paymentDetails.wsib) ? 'Yes' : 'No' }}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
+                            <tr *ngIf="userDetailData.paymentDetails.wsib">
                                 <th width="40%" class="back-color-gray">WSIB Account#:</th>
-                                <td>{{userDetailData.paymentDetails.wsibAccountNumber}}</td>
+                                <td>{{(userDetailData.paymentDetails.wsibAccountNumber) ? userDetailData.paymentDetails.wsibAccountNumber : '-'}}</td>
                             </tr>
 
-                            <tr *ngIf="userDetailData.paymentDetails.wsibExpiry">
+                            <tr *ngIf="userDetailData.paymentDetails.wsib">
                                 <th width="40%" class="back-color-gray">WSIB Expiry:</th>
-                                <td>{{userDetailData.paymentDetails.wsibExpiry | date:'yyyy/MM/dd'}}</td>
+                                <td *ngIf="userDetailData.paymentDetails.wsibExpiry">{{userDetailData.paymentDetails.wsibExpiry | date:'yyyy/MM/dd'}}</td>
+                                <td *ngIf="!userDetailData.paymentDetails.wsibExpiry">-</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.sin">
+                            <tr *ngIf="detailTab == 'Owner operator'">
                                 <th width="40%" class="back-color-gray">SIN:</th>
-                                <td>{{userDetailData.paymentDetails.sin}}</td>
+                                <td>{{(userDetailData.paymentDetails.sin) ? userDetailData.paymentDetails.sin : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.WCB">
-                                <th width="40%" class="back-color-gray">WCB#:</th>
-                                <td>{{userDetailData.paymentDetails.WCB}}</td>
-                            </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.healthCare">
-                                <th width="40%" class="back-color-gray">Health Care:</th>
-                                <td>{{userDetailData.paymentDetails.healthCare}}</td>
-                            </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.payPeriod">
-                                <th width="40%" class="back-color-gray">Pay Period:</th>
-                                <td>{{userDetailData.paymentDetails.payPeriod}}</td>
-                            </tr>
-
                         </tbody>
                     </table>
 

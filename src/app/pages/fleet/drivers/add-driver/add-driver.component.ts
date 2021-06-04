@@ -230,7 +230,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   docStates = [];
   vehicles: any;
   states = [];
-
+  errorAbstract = false;
   cities = [];
   yards = [];
   cycles = [];
@@ -662,6 +662,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
+    if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     // this.spinner.show();
@@ -732,7 +733,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               .pipe(
                 map((val: any) => {
                   // val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
+                  this.errors[val.context.key] = val.message;
                   this.spinner.hide();
                 })
               )
@@ -766,6 +767,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.submitDisabled = false;
       return 'error found';
     }
+  } else {
+      this.errorAbstract = true;
+     }
   }
 
   async userAddress(i, item) {
@@ -812,6 +816,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           $('[name="' + v + '"]')
           .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
         }
+        if (v === 'cognito'){
+          this.toastr.error(this.errors[v]);
+         }
       });
 
   }
@@ -853,7 +860,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.fetchLicStates(result.licenceDetails.issuedCountry);
         this.driverData.address = result.address;
         if(result.address !== undefined) {
@@ -975,6 +981,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   async updateDriver() {
+    if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -1079,6 +1086,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } catch (error) {
       this.submitDisabled = false;
     }
+  } else {
+    this.errorAbstract = true;
+   }
   }
 
   changePaymentModeForm(value) {
