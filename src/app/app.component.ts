@@ -78,15 +78,17 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
 
     window.addEventListener('storage', (event) => {
       if (event.storageArea == localStorage) {
-           let token = localStorage.getItem('accessToken');
-           console.log('app')
-           if(token == undefined) { 
-             //Navigate to login
-              this.router.navigate(['/Login']); 
-           } 
-          
+        let token = localStorage.getItem('accessToken');
+        console.log('app')
+        if (token == undefined) {
+          //Navigate to login
+          this.router.navigate(['/Login']);
+        } else if (this.router.url == '/Login') {
+          this.router.navigate(['/Map-Dashboard']);
+        }
+
       }
-  }, false);
+    }, false);
 
   
   }

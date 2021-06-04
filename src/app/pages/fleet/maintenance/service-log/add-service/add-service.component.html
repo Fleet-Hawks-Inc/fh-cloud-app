@@ -237,7 +237,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor="let issue of issues; let i=index;">
-                                       <td><input [(ngModel)]="issue.selected" name="selected{{i}}"
+                                       <td><input [checked]="issue.currentStatus == 'RESOLVED'" name="selected{{i}}"
                                              (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
                                        <td>{{issue.issueName}}</td>
                                        <td>{{issue.assignedTo}}</td>
