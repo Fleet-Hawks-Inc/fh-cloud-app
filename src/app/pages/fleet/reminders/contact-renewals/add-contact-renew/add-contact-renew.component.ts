@@ -98,6 +98,10 @@ export class AddContactRenewComponent implements OnInit {
       this.users = result;
     });
   }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   
   addRenewal() {
     this.hideErrors();
@@ -145,7 +149,7 @@ export class AddContactRenewComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Contact Renewal Reminder Added Successfully!');
-        this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
+        this.cancel(); 
         this.reminderData = {
           entityID: '',
           type: constants.REMINDER_CONTACT,

@@ -240,10 +240,22 @@ export class AddAccountComponent implements OnInit {
       }
     }
     for(let i=0; i < this.addressDetails.length;i++){
-      if(this.addressDetails[i].addressType === 'yard') {
-        this.yardAddress = true;
+      if (this.addressDetails[i].addressType === 'yard') {
+           if (this.addressDetails[i].manual) {
+            if (this.addressDetails[i].countryCode !== '' &&
+            this.addressDetails[i].stateCode !== '' &&
+            this.addressDetails[i].cityName !== '' &&
+            this.addressDetails[i].zipCode !== '' &&
+            this.addressDetails[i].address !== '') {
+              this.yardAddress = true;
+            }
+           } else if (!this.addressDetails[i].manual) {
+            if (this.addressDetails[i][`userLocation`] !== '' ) {
+              this.yardAddress = true;
+            }
+           }
         break;
-      }else{
+       } else {
         this.yardAddress = false;
       }
     }
@@ -300,13 +312,14 @@ export class AddAccountComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
+
                 // val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[val.context.key] = val.message;
               })
             )
             .subscribe({
               complete: () => {
-                
+
                 this.throwErrors();
                 this.submitDisabled = true;
               },
@@ -322,19 +335,21 @@ export class AddAccountComponent implements OnInit {
         },
       });
     } else{
-      this.toaster.warning('Yard address is mandatory');
+      this.toaster.error('Yard address is mandatory');
     }
 
   }
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v=== 'userName' || v==='email'){
+        if (v === 'userName' || v === 'email' || v === 'carrierName') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
         }
-        
+        if (v === 'cognito') {
+         this.toaster.error(this.errors[v]);
+        }
       });
   }
   hideErrors() {
