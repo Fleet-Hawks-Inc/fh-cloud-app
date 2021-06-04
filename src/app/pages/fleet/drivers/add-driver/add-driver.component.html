@@ -956,8 +956,11 @@
                         </div>
                       </div>
                       <div class="col-lg-10 pt-2">
-                        <input name="licenceDetails.licenceNotification" type="checkbox"
-                          class="ng-untouched ng-pristine ng-valid">Send notification (Before 30 days of expiration)
+                        <div class="checkbox-custom">
+
+                            <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="driverData.licenceDetails.licenceNotification"  value="">
+                            <label class="control-label font-weight-bold">Send notification (Before 30 days of expiration)</label>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1511,17 +1514,19 @@
                       </div>
 
                       <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                        <div class="checkbox">
-                          <label class="control-label font-weight-bold">
+                        <div class="checkbox-custom">
+
                             <input type="checkbox" value="" [(ngModel)]="driverData.hosDetails.pcAllowed"
-                              name="hosDetails.pcAllowed">Allow Personal Conveyance (PC)</label>
+                              name="hosDetails.pcAllowed">
+                              <label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
                         </div>
                       </div>
                       <div class="col-lg-4" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                        <div class="checkbox">
-                          <label class="control-label font-weight-bold">
+                        <div class="checkbox-custom">
+
                             <input type="checkbox" [(ngModel)]="driverData.hosDetails.ymAllowed"
-                              name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">Allow Yard Move (YM)</label>
+                              name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">
+                               <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
                         </div>
                       </div>
                     </div>
