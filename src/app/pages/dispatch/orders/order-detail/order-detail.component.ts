@@ -151,16 +151,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchAssetTypes();
   }
-
-  fetchAssetTypes(){
-    this.apiService.getData('assetTypes/get/list').subscribe((result) => {
-      this.assetTypes = result;
-
-    });
-  }
-
 
   /**
    * fetch Asset data
