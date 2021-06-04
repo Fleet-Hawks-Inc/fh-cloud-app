@@ -1902,14 +1902,14 @@
                                 </label>
                                 <input (change)="onChangeHideErrors('userName')"
                                   [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="[^\.][a-z0-9\.]+[^\.]$"
+                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
                                   maxlength="30">
                                 <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                                   <div *ngIf="uName.errors.required">
                                     Username is required.
                                   </div>
                                   <div *ngIf="uName.errors.pattern">
-                                    Username must contain letters, numbers and allowed characters(.).
+                                    Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
                                   </div>
                                 </div>
                               </div>
@@ -2097,7 +2097,7 @@
                                     </label>
                                     <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                       [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
-                                       class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
+                                       class="form-control" placeholder="yyyy/mm/dd" 
                                       >
                                     <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                                       <div *ngIf="tDate.errors.required" class="text-danger">
@@ -2126,7 +2126,7 @@
                                     </label>
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                                       [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
-                                      data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
+                                      data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
                                       >
                                     <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                                       <div *ngIf="endDate.errors.required">
