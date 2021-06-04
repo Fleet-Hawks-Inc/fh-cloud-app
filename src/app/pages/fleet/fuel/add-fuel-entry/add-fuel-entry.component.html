@@ -1,5 +1,6 @@
 <section class="body">
   <div class="inner-wrapper">
+
      <section role="main" class="content-body pl-0">
         <header class="page-header">
            <div class="row" style="padding-top: 10px">
@@ -1201,11 +1202,11 @@
                                    <div class="row">
                                       <div class="col-lg-8">Image {{ i + 1 }}</div>
                                       <div class="col-lg-4 text-right">
-                                         <i
+                                         <!-- <i
                                             class="fas fa-times text-danger"
                                             (click)="delete(photo.name)"
-                                            ></i>
-                                         <!-- <i class="fas fa-times text-danger"  (click)=" deleteImage(i)"></i> -->
+                                            ></i> -->
+                                         <i class="fas fa-times text-danger"  (click)=" deleteImage(i)"></i>
                                       </div>
                                    </div>
                                 </div>
@@ -1352,11 +1353,14 @@
                              </div>
                           </div>
                        </div>
+
                     </div>
                  </form>
               </div>
+
            </div>
         </div>
      </section>
+
   </div>
 </section>

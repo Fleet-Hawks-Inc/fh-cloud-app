@@ -52,7 +52,7 @@ export class SharedModalsComponent implements OnInit {
        this.issuesData.odometer = res.odometer;
       })
      }
-
+     errorAbstract = false;
 stateData = {
   countryID : '',
   stateName: '',
@@ -278,6 +278,7 @@ driverData = {
   entityType: 'driver',
   gender: 'M',
   DOB: '',
+  abstractDocs: [],
   address: [{
     addressID: '',
     addressType: '',
@@ -1349,6 +1350,7 @@ getVehicleStates(event: any) {
 
   // for driver submittion
   async onSubmit() {
+    if(this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     // this.register();
@@ -1407,7 +1409,7 @@ getVehicleStates(event: any) {
           .pipe(
             map((val: any) => {
              // val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
+              this.errors[val.context.key] = val.message;
               this.spinner.hide();
             })
           )
@@ -1435,20 +1437,26 @@ getVehicleStates(event: any) {
   });
   } catch (error) {
     return 'error found';
-  }}
+  }
+ } else {
+   this.errorAbstract = true;
+  }
+}
   throwErrorsDrivers() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number' || v==='SIN'){
+        if(v === 'userName' || v === 'email' || v === 'employeeContractorId' || v === 'CDL_Number' || v === 'SIN'){
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
-
+          .addClass('error');
         }
         if(v==='abstractDocs'){
           $('[name="' + v + '"]')
           .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
         }
+        if (v === 'cognito') {
+          this.toastr.error(this.errors[v]);
+         }
       });
 
   }
@@ -1645,6 +1653,7 @@ getVehicleStates(event: any) {
       entityType: 'driver',
       gender: 'M',
       DOB: '',
+      abstractDocs: [],
       address: [{
         addressID: '',
         addressType: '',
