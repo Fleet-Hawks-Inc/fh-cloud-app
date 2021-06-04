@@ -46,7 +46,7 @@ export class CompanyDocumentsComponent implements OnInit {
     tripID: '',
     documentNumber: '',
     docType: '',
-    documentName: '',
+    // documentName: '',
     description: '',
     uploadedDocs: [],
     dateCreated: moment().format('YYYY-MM-DD')
@@ -120,7 +120,7 @@ export class CompanyDocumentsComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       const element = files[i];
       let name = element.name.split('.');
-      let ext = name[name.length - 1];
+      let ext = name[name.length - 1].toLowerCase();
       
 
       if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
@@ -199,7 +199,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
-          this.documentData.documentName = '';
+          // this.documentData.documentName = '';
           this.documentData.description = '';
         }
       });
@@ -262,7 +262,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
-        this.documentData.documentName = result.documentName;
+        // this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
         this.documentData['timeCreated'] = result.timeCreated;
@@ -313,7 +313,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
-          this.documentData.documentName = '';
+          // this.documentData.documentName = '';
           this.documentData.description = '';
           this.initDataTable();
         }
@@ -495,7 +495,7 @@ export class CompanyDocumentsComponent implements OnInit {
       tripID: '',
       documentNumber: '',
       docType: '',
-      documentName: '',
+      // documentName: '',
       description: '',
       uploadedDocs: [],
       dateCreated: moment().format('YYYY-MM-DD')
