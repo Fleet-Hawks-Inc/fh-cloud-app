@@ -11,6 +11,7 @@ import constants from '../../constants';
 import { ListService } from '../../../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 
 declare var $: any;
 
@@ -654,7 +655,7 @@ export class AddVehicleNewComponent implements OnInit {
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.servicePrograms = result.servicePrograms;
-        this.annualSafetyDate = result.annualSafetyDate,
+        this.annualSafetyDate = _.isEmpty(result.annualSafetyDate) ? null : result.annualSafetyDate,
           this.annualSafetyReminder = result.annualSafetyReminder,
           this.currentStatus = result.currentStatus;
         this.ownership = result.ownership;
@@ -671,14 +672,14 @@ export class AddVehicleNewComponent implements OnInit {
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
         this.lifeCycle = {
-          inServiceDate: result.lifeCycle.inServiceDate,
+          inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate) ? null : result.lifeCycle.inServiceDate,
           inServiceOdometer: result.lifeCycle.inServiceOdometer,
-          startDate: result.lifeCycle.startDate,
+          startDate: _.isEmpty(result.lifeCycle.startDate) ? null : result.lifeCycle.startDate,
           estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
           estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
           estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
           estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
-          outOfServiceDate: result.lifeCycle.outOfServiceDate,
+          outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate) ? null : result.lifeCycle.outOfServiceDate,
           outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer
         };
         this.specifications = {
@@ -704,11 +705,11 @@ export class AddVehicleNewComponent implements OnInit {
           EPAHighway: result.specifications.EPAHighway
         };
         this.insurance = {
-          dateOfIssue: result.insurance.dateOfIssue,
+          dateOfIssue: _.isEmpty(result.insurance.dateOfIssue) ? null : result.insurance.dateOfIssue,
           premiumAmount: result.insurance.premiumAmount,
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
-          dateOfExpiry: result.insurance.dateOfExpiry,
+          dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry) ? null : result.insurance.dateOfExpiry,
           reminder: result.insurance.reminder,
           remiderEvery: result.insurance.remiderEvery,
           policyNumber: result.insurance.policyNumber,
@@ -766,12 +767,12 @@ export class AddVehicleNewComponent implements OnInit {
         };
         this.purchase = {
           purchaseVendorID: result.purchase.purchaseVendorID,
-          warrantyExpirationDate: result.purchase.warrantyExpirationDate,
+          warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate) ? null : result.purchase.warrantyExpirationDate,
           warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
           purchasePrice: result.purchase.purchasePrice,
           purchasePriceCurrency: result.purchase.purchasePriceCurrency,
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
-          purchaseDate: result.purchase.purchaseDate,
+          purchaseDate: _.isEmpty(result.purchase.purchaseDate) ? null : result.purchase.purchaseDate,
           purchaseComments: result.purchase.purchaseComments,
           purchaseOdometer: result.purchase.purchaseOdometer
         };
@@ -783,12 +784,12 @@ export class AddVehicleNewComponent implements OnInit {
           annualPercentageRate: result.loan.annualPercentageRate,
           downPayment: result.loan.downPayment,
           downPaymentCurrency: result.loan.downPaymentCurrency,
-          dateOfLoan: result.loan.dateOfLoan,
+          dateOfLoan: _.isEmpty(result.loan.dateOfLoan) ? null : result.loan.dateOfLoan,
           monthlyPayment: result.loan.monthlyPayment,
           monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
-          firstPaymentDate: result.loan.firstPaymentDate,
+          firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate) ? null : result.loan.firstPaymentDate,
           numberOfPayments: result.loan.numberOfPayments,
-          loadEndDate: result.loan.loadEndDate,
+          loadEndDate: _.isEmpty(result.loan.loadEndDate) ? null : result.loan.loadEndDate,
           accountNumber: result.loan.accountNumber,
           generateExpenses: result.loan.generateExpenses,
           notes: result.loan.notes

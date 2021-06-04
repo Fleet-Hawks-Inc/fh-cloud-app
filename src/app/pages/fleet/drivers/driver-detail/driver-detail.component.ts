@@ -52,7 +52,7 @@ export class DriverDetailComponent implements OnInit {
   assignedVehicle: any;
   address: any;
   documents: any;
-
+  licNotification: any;
   liceIssueSate: any;
   liceIssueCountry: any;
   liceWCB: any;
@@ -260,6 +260,7 @@ export class DriverDetailComponent implements OnInit {
             this.liceIssueCountry = CountryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
           this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
+          this.licNotification = this.driverData.licenceDetails.licenceNotification;
           this.liceWCB = this.driverData.licenceDetails.WCB;
           this.liceHealthCare = this.driverData.licenceDetails.healthCare;
           this.liceVehicleType = this.driverData.licenceDetails.vehicleType;

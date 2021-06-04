@@ -1440,6 +1440,7 @@ getVehicleStates(event: any) {
   }
  } else {
    this.errorAbstract = true;
+   this.toastr.error('Abstract history document is required.');
   }
 }
   throwErrorsDrivers() {
