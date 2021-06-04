@@ -455,7 +455,7 @@
                               <div *ngIf="dNotes44.errors.pattern">
                                Only 500 characters are allowed.
                               </div>
-      
+
                            </div>
                         </div>
                       </div>
@@ -1021,8 +1021,8 @@
                                 <div *ngIf="iForm.errors.required">
                                Inspection Form is required.
                                 </div>
-  
-  
+
+
                              </div>
 
                         </div>
@@ -1531,8 +1531,8 @@
                               <div *ngIf="sd9.errors.required">
                               Start date is required.
                               </div>
-      
-      
+
+
                           </div>
                         </div>
                       </div>
@@ -1554,7 +1554,7 @@
                               <div *ngIf="vName1.errors.pattern">
                                 VIN contain 17-18 alphanumeric characters eg.2G1WH55K5Y9322458
                                  </div>
-      
+
                           </div>
                         </div>
                       </div>
@@ -1640,8 +1640,8 @@
                             <div *ngIf="ySlt3.errors.required">
                                   Year is required.
                                 </div>
-        
-        
+
+
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -1665,12 +1665,12 @@
                             <ng-option value="inactive">InActive</ng-option>
                           </ng-select>
                           <div *ngIf="sSlt6.invalid && (sSlt6.dirty || sSlt6.touched)" class="text-danger">
-                            
+
                               <div *ngIf="sSlt6.errors.required">
                                 Status is required.
                               </div>
-                            
-      
+
+
                           </div>
                         </div>
                         <div class="col-lg-12">
@@ -1741,8 +1741,8 @@
                             <div *ngIf="iSlt1.errors.required">
                               Inspection form is required.
                             </div>
-    
-    
+
+
                         </div>
 
                         </div>
@@ -1790,7 +1790,7 @@
         <div class="modal-body">
             <p class="m-0 px-3"><strong>Note:</strong> If you want to add driver with more detail then <strong><a routerLink="/fleet/drivers/add" data-dismiss="modal">click here</a></strong></p>
             <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
-                (ngSubmit)="onSubmit()" novalidate #driverShared="ngForm">
+                (ngSubmit)="onSubmit()" novalidate>
                 <section class="m-2">
                   <div class="row mb-3">
                     <div class="col-12">
@@ -1950,13 +1950,13 @@
                                         class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     </label>
                                     <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
-                                      name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                                      required pattern="^[a-zA-Z0-9]+$" maxlength="30">
-                                    <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
-                                      <div *ngIf="lName.errors.required">
+                                      name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName04="ngModel"
+                                      required pattern="^[a-zA-Z]+$" maxlength="30">
+                                    <div *ngIf="lName04.invalid && (lName04.dirty || lName04.touched)" class="text-danger">
+                                      <div *ngIf="lName04.errors.required">
                                         Last name is required.
                                       </div>
-                                      <div *ngIf="lName.errors.pattern">
+                                      <div *ngIf="lName04.errors.pattern">
                                         Last name must contain letters.
                                       </div>
                                     </div>
@@ -1970,7 +1970,7 @@
                                         class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     </label>
                                     <div class="input-group">
-                                      <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                                      <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
                                         />
                                         <div class="input-group-append">
                                           <span class="input-group-text eye">
@@ -1987,7 +1987,7 @@
                                           Password is required.
                                         </div>
                                         <div *ngIf="pwd.errors.pattern">
-                                          Password must be 8 digits long and a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                                          Password must be 8 digits long and a combination of numbers,small letters,capital letters and atleast one special characters(#,@,$,&).
                                         </div>
                                       </div>
                                   </div>
@@ -2153,11 +2153,17 @@
                                 </div>
                               </div>
                               <div class="col-lg-6 mar-top-37">
-                                <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                                  Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                  <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                     type="file">
-                               </div>
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Abstract History Document<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                      <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
+                                         type="file">
+                                   </div>
+                                  </div>
+                                  <div class="col-lg-12" *ngIf="errorAbstract">
+                                    <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -2215,7 +2221,7 @@
                                   <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                                     [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                                     placeholder="eg. Certificate number 201717ABC"
-                                    (change)="onChangeHideErrors('documentDetails['+i+'].document')" 
+                                    (change)="onChangeHideErrors('documentDetails['+i+'].document')"
                                   >
 
                                   <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
@@ -2486,7 +2492,7 @@
                                   <div *ngIf="payS1.errors.required">
                                     Currency is required.
                                   </div>
-                                  
+
                                 </div>
                               </div>
                               <div class="col-lg-6">
@@ -2515,7 +2521,7 @@
                                   <div *ngIf="curr11.errors.required">
                                     Currency is required.
                                   </div>
-                                  
+
                                 </div>
                               </div>
                               <div class="col-lg-6">
@@ -2563,7 +2569,7 @@
                                   <div *ngIf="curr34.errors.required">
                                     Currency is required.
                                   </div>
-                                  
+
                                 </div>
                               </div>
                             </div>
@@ -2576,7 +2582,7 @@
                                   <div class="col-lg-3">
                                     <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                                       name="paymentDetails.loadPayPercentage" type="text" class="form-control"
-      
+
                                       (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')" placeholder="eg. 2%, 5%, 10%" #lPay12="ngModel" pattern="^[0-9]+$" [required]="driverData.paymentDetails.paymentType == 'Percentage'">
                                       <div *ngIf="lPay12.invalid && (lPay12.dirty || lPay12.touched)" class="text-danger">
                                         <div *ngIf="lPay12.errors.required">
@@ -2606,7 +2612,7 @@
                                       <div *ngIf="fff.errors.required">
                                       Load pay percent type is required.
                                       </div>
-                                      
+
                                     </div>
                                   </div>
                                 </div>
@@ -2642,7 +2648,7 @@
                                     <div *ngIf="curr45.errors.required">
                                     Currency type is required.
                                     </div>
-                                    
+
                                   </div>
                                 </div>
                                 <div class="col-lg-3 pr-0">
@@ -2671,7 +2677,7 @@
                                     <div *ngIf="curr56.errors.required">
                                     Currency type is required.
                                     </div>
-                                    
+
                                   </div>
                                 </div>
                                 <div class="col-lg-3 pr-0">
@@ -2776,7 +2782,7 @@
                                     <div *ngIf="remarks123.errors.pattern">
                                      Only 500 characters are allowed.
                                     </div>
-            
+
                                  </div>
                               </div>
                             </div>
@@ -2904,8 +2910,8 @@
                         <div class="form-group row mt-3">
                           <div class="col-lg-12 text-right pb-4 pr-5">
                             <a type="button" data-dismiss="modal" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
-                            <button type="submit" class="cus-btn-padd btn btn-success"
-                             >Save</button>
+                            <button type="submit" class="cus-btn-padd btn btn-success" >Save</button>
+
                           </div>
                         </div>
                       </div>

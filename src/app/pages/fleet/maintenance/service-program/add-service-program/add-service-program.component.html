@@ -183,7 +183,7 @@
                              <div class="col-lg-10">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                    Vehicle for Service Program<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                <ng-select placeholder="Select vehicle for service program"[multiple]="true" [(ngModel)] ="serviceData.vehicles"
+                                <ng-select placeholder="Select vehicle for service program"[multiple]="true" (remove)="vehicleChange($event)"  [(ngModel)] ="serviceData.vehicles"
                                    name="vehicles" style="width: 100%;" #Svsp="ngModel" required >
                                    <ng-option *ngFor="let vehicle of vehicles | async" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                 </ng-select>
@@ -220,7 +220,7 @@
                                    <button *ngIf="!programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
                                    <button *ngIf="!programID && serviceProgramF.form.valid"  [disabled]="submitDisabled" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
                                     
-                                   <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
+                                   <button *ngIf="programID && serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
                                    <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="submitDisabled" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
                                 </div>
                               </div>

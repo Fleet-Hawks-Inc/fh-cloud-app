@@ -16,7 +16,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Basic
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic
                       Detail</label>
                   </div>
                   <div class="col-lg-6">
@@ -71,7 +71,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
+                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -89,7 +89,7 @@
                               Password is required.
                             </div>
                             <div *ngIf="pwd.errors.pattern">
-                              Password must be 8 digits long and a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                              Password must be 8 digits long and a combination of small letters,capital letters,numbers and atleast one special characters(#,@,$,&).
                             </div>
                           </div>
                       </div>
@@ -156,7 +156,7 @@
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? <span class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Business
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Business
                       Detail</label>
                   </div>
                   <div class="col-lg-6">
@@ -245,7 +245,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo</label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo <span class="text-1 optional-label-color">(optional)</span></label>
                         <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo" type="file"
                           class="form-control p-0">
                       </div>
@@ -286,7 +286,7 @@
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Business
                           Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="bizCountry" name="bizCountry" #bCountry="ngModel" required
                           placeholder="Select business operating country">
@@ -354,7 +354,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
-                            title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
+                            title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
                         #scac="ngModel"  >
@@ -393,10 +393,7 @@
                           <input type="checkbox" [(ngModel)]="CTPAT" name="CTPAT">
                           <label for="ctpat">CTPAT&nbsp;<i class="fas fa-exclamation-circle" data-toggle="tooltip"
                               data-placement="top"
-                              title="Customs Trade Partnership Against Terrorism (CTPAT)
-                                           is but one layer in U.S. Customs and Border Protection’s (CBP)
-                                           multi-layered cargo enforcement strategy.CBP works with the trade community
-                                           to strengthen international supply chains and improve United States border security."></i></label>
+                              title="Customs Trade Partnership Against Terrorism (CTPAT) is but one layer in U.S. Customs and Border Protection’s (CBP) multi-layered cargo enforcement strategy.CBP works with the trade community to strengthen international supply chains and improve United States border security."></i></label>
                         </div>
                         <div class="checkbox-custom pt-2">
                           <input type="checkbox" [(ngModel)]="PIP" name="PIP">
@@ -417,7 +414,11 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <label
-                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                      class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                  </div>
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label text-3 pt-2">Yard address is mandatory</label>
                   </div>
                   <div class="col-lg-12">
                     <div *ngFor="let item of addressDetails; let i = index;" class="address-item">
@@ -427,8 +428,9 @@
                             href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                         </div>
                         <div class="col-lg-5 pt-2">
-                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address
-                            Type</label>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                            Type<span *ngIf="item.addressType==='yard'"
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
                             placeholder="Select address type">
                             <ng-option value="mailing">Mailing</ng-option>
@@ -436,13 +438,14 @@
                           </ng-select>
                         </div>
                         <div class="col-lg-4 offset-lg-2 pt-2 pr-0">
-                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Start
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Start
                             typing
                             your
-                            location <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            location <span *ngIf="!item.manual && item.addressType==='yard'"
+                            class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="we'll pull address automatically from Map"></i></label>
                           <input type="text" class="form-control" placeholder="Type address"
-                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual"
+                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual" [required]="!item.manual && item.addressType==='yard'"
                             (keyup)="searchTerm.next($event);">
                           <div class="checkbox-custom pt-2">
                             <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
@@ -465,9 +468,10 @@
                         <div class="col-lg-6 pt-2">
                           <div class="row">
                             <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                Country</label>
-                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                Country<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}" [required]="item.manual && item.addressType==='yard'"
                                 (change)="getStates($event, i)" class="form-control populate"
                                 placeholder="Select country">
                                   <ng-option value="CA">Canada</ng-option>
@@ -477,9 +481,10 @@
                           </div>
                           <div class="row">
                             <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                Province/State</label>
-                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                Province/State<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Select province/state">
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
@@ -490,9 +495,10 @@
                           </div>
                           <div class="row">
                             <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                City</label>
-                              <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}"
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                City<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Select city">
 
                                 <ng-option class="text-capitalize" *ngFor="let city of item.cities" value="{{city.cityName}}">
@@ -509,9 +515,10 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
                               <label
-                                class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
+                                class="control-label font-weight-bold text-lg-right pt-2">Address<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
-                                placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel" >
+                                placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel" [required]="item.manual && item.addressType==='yard'" >
                                 <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
                                     Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
@@ -523,7 +530,7 @@
                             <!-- <div class="col-lg-2"></div>
                               <div class="col-lg-10">
                                 <label
-                                  class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address
+                                  class="control-label font-weight-bold text-lg-right pt-2">Address
                                   2&nbsp;
                                   <span class="text-1 optional-label-color">(optional)</span></label>
                                 <input type="text" class="form-control">
@@ -532,14 +539,17 @@
                           <div class="row">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
-                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
-                                placeholder="eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9\s]{6}$">
-                                <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Postal Code<span *ngIf="item.manual && item.addressType==='yard'"
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
+                                placeholder="eg. 7V2 3R4"  #zip="ngModel">
+                                <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
                                   </div>
-                                </div>
+                                </div> -->
                             </div>
                           </div>
                         </div>
@@ -563,7 +573,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Bank
                       Detail</label>
                   </div>
                 </div>
@@ -623,13 +633,13 @@
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
-                        #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
-                          maxlength="9">
-                          <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
+                         placeholder="eg. 12345789"
+                          >
+                          <!-- <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
                               Transit number must contain 9 numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                     </div>
                     <div class="row">
