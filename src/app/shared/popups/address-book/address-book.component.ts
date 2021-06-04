@@ -65,13 +65,10 @@ export class AddressBookComponent implements OnInit {
     pip: false,
     entityType: 'customer',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -81,8 +78,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -114,10 +111,10 @@ export class AddressBookComponent implements OnInit {
     entityType: 'broker',
     brokerType: 'company',
     address: [{
-      addressType: '',
+      addressType: null,
       countryName: '',
       stateName: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -127,8 +124,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -172,13 +169,10 @@ export class AddressBookComponent implements OnInit {
     },
     entityType: 'ownerOperator',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -188,8 +182,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -218,13 +212,10 @@ export class AddressBookComponent implements OnInit {
     preferedVendor: false,
     entityType: 'vendor',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -234,8 +225,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -283,13 +274,10 @@ export class AddressBookComponent implements OnInit {
       wsibExpiry: ''
     },
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -299,8 +287,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -329,13 +317,10 @@ export class AddressBookComponent implements OnInit {
     workEmail:'',
     entityType: 'consignor',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -345,8 +330,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -375,13 +360,10 @@ export class AddressBookComponent implements OnInit {
     workEmail: '',
     entityType: 'consignee',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -391,8 +373,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -420,13 +402,10 @@ export class AddressBookComponent implements OnInit {
     workEmail: '',
     entityType: 'factoringCompany',
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -436,8 +415,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -472,13 +451,10 @@ export class AddressBookComponent implements OnInit {
     },
     loginEnabled: false,
     address: [{
-      addressType: '',
-      countryID: '',
+      addressType: null,
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
-      cityName: '',
+      cityName: null,
       zipCode: '',
       address1: '',
       address2: '',
@@ -488,8 +464,8 @@ export class AddressBookComponent implements OnInit {
       },
       userLocation: '',
       manual: false,
-      countryCode: '',
-      stateCode: '',
+      countryCode: null,
+      stateCode: null,
       houseNumber: '',
       street: '',
       states: [],
@@ -698,6 +674,7 @@ export class AddressBookComponent implements OnInit {
   operatorDisabled = false;
   vendorDisabled = false;
   detailTab = '';
+  additionalDisabled = false;
 
   constructor(
             private apiService: ApiService,
@@ -772,7 +749,7 @@ export class AddressBookComponent implements OnInit {
   addAddress(data) {
     this.searchResults = [];
     data.address.push({
-      addressType: '',
+      addressType: null,
       countryName: '',
       stateName: '',
       cityName: '',
@@ -832,9 +809,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -925,9 +904,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -1000,11 +981,11 @@ export class AddressBookComponent implements OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
-
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -1080,9 +1061,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1160,9 +1143,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1238,9 +1223,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1319,9 +1306,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -1391,9 +1380,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1466,9 +1457,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1545,9 +1538,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1627,9 +1622,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -1705,9 +1702,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1787,9 +1786,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
 
@@ -1865,9 +1866,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -1946,9 +1949,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -2019,9 +2024,11 @@ export class AddressBookComponent implements OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
     // create form data instance
@@ -2094,9 +2101,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -2173,9 +2182,11 @@ export class AddressBookComponent implements OnInit {
         ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result.items.length > 0) {
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
 
       }
     }
@@ -2497,7 +2508,7 @@ export class AddressBookComponent implements OnInit {
   //   for (let i = 0; i < entityAddresses.length; i++) {
   //     this.newAddress.push({
   //       addressID: entityAddresses[i].addressID,
-  //       addressType: entityAddresses[i].addressType,
+  //       addressType: entityAddresses[i].addressTynull,
   //       countryID: entityAddresses[i].countryID,
   //       countryName: entityAddresses[i].countryName,
   //       stateID: entityAddresses[i].stateID,
@@ -2732,6 +2743,7 @@ export class AddressBookComponent implements OnInit {
 
   resetModal(type){
     this.modalTitle = 'Add ';
+    this.additionalDisabled = false;
     this.hasError = false;
     this.hasSuccess = false;
     this.loginDiv = false;
@@ -2751,20 +2763,59 @@ export class AddressBookComponent implements OnInit {
 
   setActiveDiv(type){
     if(type == 'broker') {
+      this.brokerDraw = 0;
+      this.lastEvaluatedKeyBroker = '';
+      this.dataMessageBroker = Constants.FETCHING_DATA;
+      this.brokers = [];
       this.fetchBrokersCount();
+
     } else if(type == 'carrier') {
+      this.carrierDraw = 0;
+      this.lastEvaluatedKeyCarrier = '';
+      this.dataMessageCarrier = Constants.FETCHING_DATA;
+      this.carriers = [];
       this.fetchCarriersCount();
+
     } else if(type == 'consignee') {
+      this.consigneeDraw = 0;
+      this.lastEvaluatedKeyConsignee = '';
+      this.dataMessageConsignee = Constants.FETCHING_DATA;
+      this.receivers = [];
       this.fetchConsigneeCount();
+
     } else if(type == 'customer') {
+      this.customerDraw = 0;
+      this.lastEvaluatedKeyCustomer = '';
+      this.dataMessageCustomer = Constants.FETCHING_DATA;
+      this.customers = [];
       this.fetchCustomersCount();
+
     } else if(type == 'company') {
+      this.companyDraw = 0;
+      this.lastEvaluatedKeyCompany = '';
+      this.dataMessageFactoring = Constants.FETCHING_DATA;
+      this.fcCompanies = [];
       this.fetchFcCompaniesCount();
+
     } else if(type == 'operator') {
+      this.ownerOperatorDraw = 0;
+      this.lastEvaluatedKeyOperator = '';
+      this.dataMessageOwner = Constants.FETCHING_DATA;
+      this.ownerOperatorss = [];
       this.fetchOwnerOperatorsCount();
+
     } else if(type == 'vendor') {
+      this.vendorDraw = 0;
+      this.lastEvaluatedKeyVendor = '';
+      this.dataMessageVendor = Constants.FETCHING_DATA;
+      this.vendors = [];
       this.fetchVendorsCount();
+
     } else if(type == 'shipper') {
+      this.shipperDraw = 0;
+      this.lastEvaluatedKeyShipper = '';
+      this.dataMessageConsignor = Constants.FETCHING_DATA;
+      this.shippers = [];
       this.fetchShippersCount();
     }
     this.activeDiv = type+'Table';
@@ -2802,13 +2853,10 @@ export class AddressBookComponent implements OnInit {
       pip: false,
       entityType: 'customer',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -2818,8 +2866,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -2851,10 +2899,10 @@ export class AddressBookComponent implements OnInit {
       entityType: 'broker',
       brokerType: 'company',
       address: [{
-        addressType: '',
+        addressType: null,
         countryName: '',
         stateName: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -2864,8 +2912,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -2909,13 +2957,10 @@ export class AddressBookComponent implements OnInit {
       },
       entityType: 'ownerOperator',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -2925,8 +2970,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -2955,13 +3000,10 @@ export class AddressBookComponent implements OnInit {
       preferedVendor: false,
       entityType: 'vendor',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -2971,8 +3013,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3020,13 +3062,10 @@ export class AddressBookComponent implements OnInit {
         wsibExpiry: ''
       },
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -3036,8 +3075,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3066,13 +3105,10 @@ export class AddressBookComponent implements OnInit {
       workEmail:'',
       entityType: 'consignor',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -3082,8 +3118,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3112,13 +3148,10 @@ export class AddressBookComponent implements OnInit {
       workEmail: '',
       entityType: 'consignee',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -3128,8 +3161,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3157,13 +3190,10 @@ export class AddressBookComponent implements OnInit {
       workEmail: '',
       entityType: 'factoringCompany',
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -3173,8 +3203,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3209,13 +3239,10 @@ export class AddressBookComponent implements OnInit {
         healthCare: ''
       },
       address: [{
-        addressType: '',
-        countryID: '',
+        addressType: null,
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
-        cityName: '',
+        cityName: null,
         zipCode: '',
         address1: '',
         address2: '',
@@ -3225,8 +3252,8 @@ export class AddressBookComponent implements OnInit {
         },
         userLocation: '',
         manual: false,
-        countryCode: '',
-        stateCode: '',
+        countryCode: null,
+        stateCode: null,
         houseNumber: '',
         street: '',
         states: [],
@@ -3728,7 +3755,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedVendorCompanies = [];
       }
       this.apiService
-        .getData(`contacts/nameSuggestions/${value}?type=${searchType}&tab=vendor`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=vendor`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedVendorCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -4448,110 +4475,138 @@ export class AddressBookComponent implements OnInit {
     if(type == 'vendor') {
       this.vendorData.address[index].address1 = '';
       this.vendorData.address[index].address2 = '';
-      this.vendorData.address[index].cityID = '';
-      this.vendorData.address[index].cityName = '';
-      this.vendorData.address[index].countryID = '';
+      this.vendorData.address[index].cityName = null;
       this.vendorData.address[index].countryName = '';
-      this.vendorData.address[index].stateID = '';
       this.vendorData.address[index].stateName = '';
       this.vendorData.address[index].userLocation = '';
       this.vendorData.address[index].zipCode = '';
+      this.vendorData.address[index].countryCode = null;
+      this.vendorData.address[index].stateCode = null;
+      this.vendorData.address[index].geoCords.lat = '';
+      this.vendorData.address[index].geoCords.lng = '';
+      this.vendorData.address[index].houseNumber = '';
+      this.vendorData.address[index].street = '';
 
     } else if(type == 'customer') {
-      this.customerData.address[index].addressType = '';
+      this.customerData.address[index].addressType = null;
       this.customerData.address[index].address1 = '';
       this.customerData.address[index].address2 = '';
-      this.customerData.address[index].cityID = '';
-      this.customerData.address[index].cityName = '';
-      this.customerData.address[index].countryID = '';
+      this.customerData.address[index].cityName = null;
       this.customerData.address[index].countryName = '';
-      this.customerData.address[index].stateID = '';
       this.customerData.address[index].stateName = '';
       this.customerData.address[index].userLocation = '';
       this.customerData.address[index].zipCode = '';
+      this.customerData.address[index].countryCode = null;
+      this.customerData.address[index].stateCode = null;
+      this.customerData.address[index].geoCords.lat = '';
+      this.customerData.address[index].geoCords.lng = '';
+      this.customerData.address[index].houseNumber = '';
+      this.customerData.address[index].street = '';
 
     } else if(type == 'broker') {
       this.brokerData.address[index].address1 = '';
       this.brokerData.address[index].address2 = '';
-      this.brokerData.address[index].cityName = '';
+      this.brokerData.address[index].cityName = null;
       this.brokerData.address[index].countryName = '';
       this.brokerData.address[index].stateName = '';
       this.brokerData.address[index].userLocation = '';
       this.brokerData.address[index].zipCode = '';
-      this.brokerData.address[index].countryCode = '';
-      this.brokerData.address[index].stateCode = '';
+      this.brokerData.address[index].countryCode = null;
+      this.brokerData.address[index].stateCode = null;
+      this.brokerData.address[index].geoCords.lat = '';
+      this.brokerData.address[index].geoCords.lng = '';
+      this.brokerData.address[index].houseNumber = '';
+      this.brokerData.address[index].street = '';
 
     } else if(type == 'carrier') {
       this.carrierData.address[index].address1 = '';
       this.carrierData.address[index].address2 = '';
-      this.carrierData.address[index].cityID = '';
-      this.carrierData.address[index].cityName = '';
-      this.carrierData.address[index].countryID = '';
+      this.carrierData.address[index].cityName = null;
       this.carrierData.address[index].countryName = '';
-      this.carrierData.address[index].stateID = '';
       this.carrierData.address[index].stateName = '';
       this.carrierData.address[index].userLocation = '';
       this.carrierData.address[index].zipCode = '';
+      this.carrierData.address[index].countryCode = null;
+      this.carrierData.address[index].stateCode = null;
+      this.carrierData.address[index].geoCords.lat = '';
+      this.carrierData.address[index].geoCords.lng = '';
+      this.carrierData.address[index].houseNumber = '';
+      this.carrierData.address[index].street = '';
 
     } else if(type == 'operator') {
       this.ownerData.address[index].address1 = '';
       this.ownerData.address[index].address2 = '';
-      this.ownerData.address[index].cityID = '';
-      this.ownerData.address[index].cityName = '';
-      this.ownerData.address[index].countryID = '';
+      this.ownerData.address[index].cityName = null;
       this.ownerData.address[index].countryName = '';
-      this.ownerData.address[index].stateID = '';
       this.ownerData.address[index].stateName = '';
       this.ownerData.address[index].userLocation = '';
       this.ownerData.address[index].zipCode = '';
+      this.ownerData.address[index].countryCode = null;
+      this.ownerData.address[index].stateCode = null;
+      this.ownerData.address[index].geoCords.lat = '';
+      this.ownerData.address[index].geoCords.lng = '';
+      this.ownerData.address[index].houseNumber = '';
+      this.ownerData.address[index].street = '';
 
     } else if(type == 'shipper') {
       this.shipperData.address[index].address1 = '';
       this.shipperData.address[index].address2 = '';
-      this.shipperData.address[index].cityID = '';
-      this.shipperData.address[index].cityName = '';
-      this.shipperData.address[index].countryID = '';
+      this.shipperData.address[index].cityName = null;
       this.shipperData.address[index].countryName = '';
-      this.shipperData.address[index].stateID = '';
       this.shipperData.address[index].stateName = '';
       this.shipperData.address[index].userLocation = '';
       this.shipperData.address[index].zipCode = '';
+      this.shipperData.address[index].countryCode = null;
+      this.shipperData.address[index].stateCode = null;
+      this.shipperData.address[index].geoCords.lat = '';
+      this.shipperData.address[index].geoCords.lng = '';
+      this.shipperData.address[index].houseNumber = '';
+      this.shipperData.address[index].street = '';
 
     } else if(type == 'consignee') {
       this.consigneeData.address[index].address1 = '';
       this.consigneeData.address[index].address2 = '';
-      this.consigneeData.address[index].cityID = '';
-      this.consigneeData.address[index].cityName = '';
-      this.consigneeData.address[index].countryID = '';
+      this.consigneeData.address[index].cityName = null;
       this.consigneeData.address[index].countryName = '';
-      this.consigneeData.address[index].stateID = '';
       this.consigneeData.address[index].stateName = '';
       this.consigneeData.address[index].userLocation = '';
       this.consigneeData.address[index].zipCode = '';
+      this.consigneeData.address[index].countryCode = null;
+      this.consigneeData.address[index].stateCode = null;
+      this.consigneeData.address[index].geoCords.lat = '';
+      this.consigneeData.address[index].geoCords.lng = '';
+      this.consigneeData.address[index].houseNumber = '';
+      this.consigneeData.address[index].street = '';
 
     } else if(type == 'staff') {
       this.staffData.address[index].address1 = '';
       this.staffData.address[index].address2 = '';
-      this.staffData.address[index].cityID = '';
-      this.staffData.address[index].cityName = '';
-      this.staffData.address[index].countryID = '';
+      this.staffData.address[index].cityName = null;
       this.staffData.address[index].countryName = '';
-      this.staffData.address[index].stateID = '';
       this.staffData.address[index].stateName = '';
       this.staffData.address[index].userLocation = '';
       this.staffData.address[index].zipCode = '';
+      this.staffData.address[index].countryCode = null;
+      this.staffData.address[index].stateCode = null;
+      this.staffData.address[index].geoCords.lat = '';
+      this.staffData.address[index].geoCords.lng = '';
+      this.staffData.address[index].houseNumber = '';
+      this.staffData.address[index].street = '';
 
     } else if(type == 'company') {
       this.fcCompanyData.address[index].address1 = '';
       this.fcCompanyData.address[index].address2 = '';
-      this.fcCompanyData.address[index].cityID = '';
-      this.fcCompanyData.address[index].cityName = '';
-      this.fcCompanyData.address[index].countryID = '';
+      this.fcCompanyData.address[index].cityName = null;
       this.fcCompanyData.address[index].countryName = '';
-      this.fcCompanyData.address[index].stateID = '';
       this.fcCompanyData.address[index].stateName = '';
       this.fcCompanyData.address[index].userLocation = '';
       this.fcCompanyData.address[index].zipCode = '';
+      this.fcCompanyData.address[index].countryCode = null;
+      this.fcCompanyData.address[index].stateCode = null;
+      this.fcCompanyData.address[index].geoCords.lat = '';
+      this.fcCompanyData.address[index].geoCords.lng = '';
+      this.fcCompanyData.address[index].houseNumber = '';
+      this.fcCompanyData.address[index].street = '';
     }
   }
 
@@ -4782,11 +4837,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.customerData.address[i]['userLocation'] = '';
-      this.customerData.address[i].countryCode = '';
+      this.customerData.address[i].countryCode = null;
       this.customerData.address[i].countryName = '';
-      this.customerData.address[i].stateCode = '';
+      this.customerData.address[i].stateCode = null;
       this.customerData.address[i].stateName = '';
-      this.customerData.address[i].cityName = '';
+      this.customerData.address[i].cityName = null;
       this.customerData.address[i].zipCode = '';
       this.customerData.address[i].address1 = '';
       this.customerData.address[i].address2 = '';
@@ -4801,11 +4856,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.brokerData.address[i]['userLocation'] = '';
-      this.brokerData.address[i].countryCode = '';
-      this.brokerData.address[i].stateCode = '';
+      this.brokerData.address[i].countryCode = null;
+      this.brokerData.address[i].stateCode = null;
       this.brokerData.address[i].countryName = '';
       this.brokerData.address[i].stateName = '';
-      this.brokerData.address[i].cityName = '';
+      this.brokerData.address[i].cityName = null;
       this.brokerData.address[i].zipCode = '';
       this.brokerData.address[i].address1 = '';
       this.brokerData.address[i].address2 = '';
@@ -4820,11 +4875,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.vendorData.address[i]['userLocation'] = '';
-      this.vendorData.address[i].countryCode = '';
+      this.vendorData.address[i].countryCode = null;
       this.vendorData.address[i].countryName = '';
-      this.vendorData.address[i].stateCode = '';
+      this.vendorData.address[i].stateCode = null;
       this.vendorData.address[i].stateName = '';
-      this.vendorData.address[i].cityName = '';
+      this.vendorData.address[i].cityName = null;
       this.vendorData.address[i].zipCode = '';
       this.vendorData.address[i].address1 = '';
       this.vendorData.address[i].address2 = '';
@@ -4839,11 +4894,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.carrierData.address[i]['userLocation'] = '';
-      this.carrierData.address[i].countryCode = '';
+      this.carrierData.address[i].countryCode = null;
       this.carrierData.address[i].countryName = '';
-      this.carrierData.address[i].stateCode = '';
+      this.carrierData.address[i].stateCode = null;
       this.carrierData.address[i].stateName = '';
-      this.carrierData.address[i].cityName = '';
+      this.carrierData.address[i].cityName = null;
       this.carrierData.address[i].zipCode = '';
       this.carrierData.address[i].address1 = '';
       this.carrierData.address[i].address2 = '';
@@ -4858,11 +4913,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.ownerData.address[i]['userLocation'] = '';
-      this.ownerData.address[i].countryCode = '';
+      this.ownerData.address[i].countryCode = null;
       this.ownerData.address[i].countryName = '';
-      this.ownerData.address[i].stateCode = '';
+      this.ownerData.address[i].stateCode = null;
       this.ownerData.address[i].stateName = '';
-      this.ownerData.address[i].cityName = '';
+      this.ownerData.address[i].cityName = null;
       this.ownerData.address[i].zipCode = '';
       this.ownerData.address[i].address1 = '';
       this.ownerData.address[i].address2 = '';
@@ -4877,11 +4932,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.shipperData.address[i]['userLocation'] = '';
-      this.shipperData.address[i].countryCode = '';
+      this.shipperData.address[i].countryCode = null;
       this.shipperData.address[i].countryName = '';
-      this.shipperData.address[i].stateCode = '';
+      this.shipperData.address[i].stateCode = null;
       this.shipperData.address[i].stateName = '';
-      this.shipperData.address[i].cityName = '';
+      this.shipperData.address[i].cityName = null;
       this.shipperData.address[i].zipCode = '';
       this.shipperData.address[i].address1 = '';
       this.shipperData.address[i].address2 = '';
@@ -4896,11 +4951,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.consigneeData.address[i]['userLocation'] = '';
-      this.consigneeData.address[i].countryCode = '';
+      this.consigneeData.address[i].countryCode = null;
       this.consigneeData.address[i].countryName = '';
-      this.consigneeData.address[i].stateCode = '';
+      this.consigneeData.address[i].stateCode = null;
       this.consigneeData.address[i].stateName = '';
-      this.consigneeData.address[i].cityName = '';
+      this.consigneeData.address[i].cityName = null;
       this.consigneeData.address[i].zipCode = '';
       this.consigneeData.address[i].address1 = '';
       this.consigneeData.address[i].address2 = '';
@@ -4915,11 +4970,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.staffData.address[i]['userLocation'] = '';
-      this.staffData.address[i].countryCode = '';
+      this.staffData.address[i].countryCode = null;
       this.staffData.address[i].countryName = '';
-      this.staffData.address[i].stateCode = '';
+      this.staffData.address[i].stateCode = null;
       this.staffData.address[i].stateName = '';
-      this.staffData.address[i].cityName = '';
+      this.staffData.address[i].cityName = null;
       this.staffData.address[i].zipCode = '';
       this.staffData.address[i].address1 = '';
       this.staffData.address[i].address2 = '';
@@ -4934,11 +4989,11 @@ export class AddressBookComponent implements OnInit {
         $(event.target).closest('.address-item').removeClass('open');
       }
       this.fcCompanyData.address[i]['userLocation'] = '';
-      this.fcCompanyData.address[i].countryCode = '';
+      this.fcCompanyData.address[i].countryCode = null;
       this.fcCompanyData.address[i].countryName = '';
-      this.fcCompanyData.address[i].stateCode = '';
+      this.fcCompanyData.address[i].stateCode = null;
       this.fcCompanyData.address[i].stateName = '';
-      this.fcCompanyData.address[i].cityName = '';
+      this.fcCompanyData.address[i].cityName = null;
       this.fcCompanyData.address[i].zipCode = '';
       this.fcCompanyData.address[i].address1 = '';
       this.fcCompanyData.address[i].address2 = '';
@@ -5183,31 +5238,70 @@ export class AddressBookComponent implements OnInit {
   }
 
   addAdditionalContact(data){
-    let newObj = {
-      fullName: '',
-      firstName: '',
-      lastName: '',
-      designation: '',
-      phone: '',
-      email: '',
-      fax: '',
-    };
-    data.additionalContact.push(newObj);
+    if(data.additionalContact.length < 3) {
+      this.additionalDisabled = false;
+      let newObj = {
+        fullName: '',
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: '',
+      };
+      data.additionalContact.push(newObj);
+      if(data.additionalContact.length == 3) {
+        this.additionalDisabled = true;
+      }
+    } else {
+      this.additionalDisabled = true;
+      return false
+    }
   }
 
   delAdditionalContact(type, index) {
     if(type == 'broker') {
       this.brokerData.additionalContact.splice(index, 1);
+      if(this.brokerData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     } else if(type == 'carrier') {
       this.carrierData.additionalContact.splice(index, 1);
+      if(this.carrierData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     } else if(type == 'consignee') {
       this.consigneeData.additionalContact.splice(index, 1);
+      if(this.consigneeData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     } else if(type == 'consignor') {
       this.shipperData.additionalContact.splice(index, 1);
+      if(this.shipperData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     } else if(type == 'customer') {
       this.customerData.additionalContact.splice(index, 1);
+      if(this.customerData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     } else if(type == 'ownerOperator') {
       this.ownerData.additionalContact.splice(index, 1);
+      if(this.ownerData.additionalContact.length < 3) {
+        this.additionalDisabled = false;
+      } else {
+        this.additionalDisabled = true;
+      }
     }
   }
 

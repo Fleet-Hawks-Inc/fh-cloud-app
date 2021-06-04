@@ -93,7 +93,9 @@
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
                           <ng-option value="Bing">Bing</ng-option>
-                          <ng-option value="Referal">Referral</ng-option>
+
+                          <ng-option value="Referral">Referral</ng-option>
+
                         </ng-select>
                       </div>
                     </div>
@@ -237,11 +239,16 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
                           Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required
+                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required #bCountry="ngModel"
                           placeholder="Select business operating country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States of America</ng-option>
                         </ng-select>
+                        <div *ngIf="bCountry.invalid && (bCountry.dirty || bCountry.touched)" class="text-danger">
+                          <div *ngIf="bCountry.errors.required">
+                            Business country is required.
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row pt-2" *ngIf="bizCountry==='US'">
