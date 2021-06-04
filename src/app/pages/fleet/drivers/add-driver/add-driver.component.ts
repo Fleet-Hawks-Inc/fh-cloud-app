@@ -230,7 +230,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   docStates = [];
   vehicles: any;
   states = [];
-
+  errorAbstract = false;
   cities = [];
   yards = [];
   cycles = [];
@@ -662,6 +662,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
+    if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     // this.spinner.show();
@@ -766,6 +767,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.submitDisabled = false;
       return 'error found';
     }
+  } else {
+      this.errorAbstract = true;
+     }
   }
 
   async userAddress(i, item) {
@@ -977,6 +981,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   async updateDriver() {
+    if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -1081,6 +1086,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } catch (error) {
       this.submitDisabled = false;
     }
+  } else {
+    this.errorAbstract = true;
+   }
   }
 
   changePaymentModeForm(value) {

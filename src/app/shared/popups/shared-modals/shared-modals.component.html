@@ -2160,8 +2160,8 @@
                                          type="file">
                                    </div>
                                   </div>
-                                  <div class="col-lg-12">
-                                    <label name="abstractDocs"></label>
+                                  <div class="col-lg-12" *ngIf="errorAbstract">
+                                    <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
                                   </div>
                                 </div>
                               </div>

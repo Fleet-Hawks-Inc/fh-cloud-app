@@ -52,7 +52,7 @@ export class SharedModalsComponent implements OnInit {
        this.issuesData.odometer = res.odometer;
       })
      }
-
+     errorAbstract = false;
 stateData = {
   countryID : '',
   stateName: '',
@@ -1350,6 +1350,7 @@ getVehicleStates(event: any) {
 
   // for driver submittion
   async onSubmit() {
+    if(this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     // this.register();
@@ -1436,7 +1437,11 @@ getVehicleStates(event: any) {
   });
   } catch (error) {
     return 'error found';
-  }}
+  }
+ } else {
+   this.errorAbstract = true;
+  }
+}
   throwErrorsDrivers() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
