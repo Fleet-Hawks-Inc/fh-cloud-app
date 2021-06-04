@@ -55,7 +55,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" minlength="6"
-                          placeholder="eg. john.smith" #uName="ngModel" required pattern="^[^\.][a-z0-9\.]+[^\.]$">
+                          placeholder="eg. john.smith" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
@@ -161,7 +161,7 @@
                           name="findingWay">
                           <ng-option value="Google">Google</ng-option>
                           <ng-option value="Bing">Bing</ng-option>
-                          <ng-option value="Referal">Referal</ng-option>
+                          <ng-option value="Referal">Referral</ng-option>
                         </ng-select>
                       </div>
                     </div>
