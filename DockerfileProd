@@ -6,6 +6,9 @@ COPY . .
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 RUN npm run buildProd
 
+### STAGE 2: Run ###
+FROM public.ecr.aws/i6d0h2n7/nginx:1.17.1-alpine
+
 ## Copy NGINX Settings
 COPY nginxConfig/nginx.conf /etc/nginx/nginx.conf
 COPY nginxConfig/site.conf /etc/nginx/sites-available/default.conf
@@ -14,8 +17,6 @@ ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.c
 
 
 ### Copy final build
-### STAGE 2: Run ###
-FROM public.ecr.aws/i6d0h2n7/nginx:1.17.1-alpine
 COPY --from=build /usr/src/app/dist/fleethawks-dashboard /usr/share/nginx/html
 
 EXPOSE 80
