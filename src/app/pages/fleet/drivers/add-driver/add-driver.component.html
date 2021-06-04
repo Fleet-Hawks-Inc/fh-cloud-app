@@ -136,7 +136,7 @@
                         </label>
                         <input [disabled]="isEdit" (change)="onChangeHideErrors('userName')"
                           [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="[^\.][a-z0-9\.]+[^\.]$"
+                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
 
                           maxlength="30">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
@@ -144,7 +144,7 @@
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must contain letters, numbers and allowed characters(.).
+                            Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
 
                           </div>
                         </div>
@@ -442,8 +442,11 @@
                                  type="file">
                            </div>
                           </div>
-                          <div class="col-lg-12" *ngIf="errorAbstract">
+                          <div class="col-lg-12" *ngIf="errorAbstract && abstractDocs.length == 0">
                             <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
+                          </div>
+                          <div class="col-lg-12" *ngIf="abstractDocs.length > 0">
+                            <label>File(s) attached</label>
                           </div>
                         </div>
                       </div>
