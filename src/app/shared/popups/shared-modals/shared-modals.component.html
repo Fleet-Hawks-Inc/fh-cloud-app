@@ -1918,14 +1918,14 @@
                                 </label>
                                 <input (change)="onChangeHideErrors('userName')"
                                   [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="[^\.][a-z0-9\.]+[^\.]$"
+                                  placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
                                   maxlength="30">
                                 <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                                   <div *ngIf="uName.errors.required">
                                     Username is required.
                                   </div>
                                   <div *ngIf="uName.errors.pattern">
-                                    Username must contain letters, numbers and allowed characters(.).
+                                    Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
                                   </div>
                                 </div>
                               </div>
@@ -2113,7 +2113,7 @@
                                     </label>
                                     <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                       [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
-                                       class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
+                                       class="form-control" placeholder="yyyy/mm/dd" 
                                       >
                                     <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                                       <div *ngIf="tDate.errors.required" class="text-danger">
@@ -2142,7 +2142,7 @@
                                     </label>
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                                       [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
-                                      data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
+                                      data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
                                       >
                                     <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                                       <div *ngIf="endDate.errors.required">
@@ -2169,12 +2169,20 @@
                                 </div>
                               </div>
                               <div class="col-lg-6 mar-top-37">
-                                <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                                  Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                  <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                     type="file">
-                               </div>
-                               <label name="abstractDocs"></label>
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Abstract History Document<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                      <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
+                                         type="file">
+                                   </div>
+                                  </div>
+                                  <div class="col-lg-12" *ngIf="errorAbstract && abstractDocs.length == 0">
+                                    <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
+                                  </div>
+                                  <div class="col-lg-12" *ngIf="abstractDocs.length > 0">
+                                    <label>File(s) attached</label>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -2922,7 +2930,7 @@
                           <div class="col-lg-12 text-right pb-4 pr-5">
                             <a type="button" data-dismiss="modal" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
                             <button type="submit" class="cus-btn-padd btn btn-success" >Save</button>
-                             
+
                           </div>
                         </div>
                       </div>

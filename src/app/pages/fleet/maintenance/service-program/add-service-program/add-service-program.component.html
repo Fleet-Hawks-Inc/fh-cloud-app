@@ -209,46 +209,45 @@
                              </div>
 
 
-                        </div>
-                        </div>
-                        <div class="col-lg-2  mar-top-37 px-0">
-                           <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelDriver"  class="btn cus-btn-padd btn-success modal-with-form">
-                              <em class="fas fa-plus"></em>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
-                  </div>
-                   
-                </div>
-
-                <div class="form-group row adddriverpl">
-                  <div class="col-lg-11 text-right pb-3">
-                     <div class="row">
-                       <div class="col-12">
-                         <div class="row">
-                           <div class="col-11 pr-0">
-                              <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list" class="btn btn-default mr-2" id="">Cancel</a>
-                              
-                              <button *ngIf="!programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
-                              <button *ngIf="!programID && serviceProgramF.form.valid"  [disabled]="submitDisabled" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
-                               
-                              <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
-                              <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="submitDisabled" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
-                           </div>
                          </div>
+                             </div>
+                             <div class="col-lg-2  mar-top-37 px-0">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelDriver"  class="btn cus-btn-padd btn-success modal-with-form">
+                                   <em class="fas fa-plus"></em>
+                                </a>
+                             </div>
+                          </div>
                        </div>
-                     </div>
-                  </div>
-               </div>
+                       <div class="col-lg-5 offset-lg-1">
+                       </div>
+                    </div>
+
+               <div class="form-group row adddriverpl">
+                       <div class="col-lg-11 text-right pb-3">
+                          <div class="row">
+                            
+                            <div class="col-12">
+                              <div class="row">
+                                <div class="col-11 pr-0">
+                                   <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list" class="btn btn-default mr-2" id="">Cancel</a>
+                                   
+                                   <button *ngIf="!programID && !serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
+                                   <button *ngIf="!programID && serviceProgramF.form.valid"  [disabled]="submitDisabled" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</button>
+                                    
+                                   <button *ngIf="programID && serviceProgramF.form.valid" [disabled]="!serviceProgramF.form.valid" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
+                                   <button *ngIf="programID && !serviceProgramF.form.valid" [disabled]="submitDisabled" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                       </div>
+                    </div>
 
               </div>
             </div>
           </div>
          </form>
       </section>
-
 
      </section>
   </div>

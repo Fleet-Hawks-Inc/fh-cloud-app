@@ -170,10 +170,14 @@ export class ServiceDetailComponent implements OnInit {
       });
   }
 
-  // delete uploaded images and documents 
-  delete(type: string,name: string){
+  // delete uploaded images and documents
+  delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchProgramByID();
+      if(type === 'image') {
+        this.logImages.splice(index, 1);
+      } else {
+        this.logDocs.splice(index,1);
+      }
     });
   }
 

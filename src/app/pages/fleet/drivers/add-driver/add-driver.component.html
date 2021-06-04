@@ -136,7 +136,7 @@
                         </label>
                         <input [disabled]="isEdit" (change)="onChangeHideErrors('userName')"
                           [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="[^\.][a-z0-9\.]+[^\.]$"
+                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
 
                           maxlength="30">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
@@ -144,7 +144,7 @@
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must contain letters, numbers and allowed characters(.).
+                            Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
 
                           </div>
                         </div>
@@ -434,12 +434,21 @@
                         </div>
                       </div>
                       <div class="col-lg-5 mar-top-37">
-                        <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
-                          Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                          <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                             type="file">
-                       </div>
-                       <label name="abstractDocs"></label>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
+                              Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                              <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
+                                 type="file">
+                           </div>
+                          </div>
+                          <div class="col-lg-12" *ngIf="errorAbstract && abstractDocs.length == 0">
+                            <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
+                          </div>
+                          <div class="col-lg-12" *ngIf="abstractDocs.length > 0">
+                            <label>File(s) attached</label>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -464,7 +473,7 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="col-lg-10 mt-2" *ngIf="localAbsDocs.length > 0">
+                      <!-- <div class="col-lg-10 mt-2" *ngIf="localAbsDocs.length > 0 && !driverID">
                         <div class="vehicle-common-box p-3">
                           <div class="row">
                             <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Abstract History
@@ -474,11 +483,8 @@
                           </div>
                           <hr class="solid mt-2">
                           <div class="row mb-1" *ngFor="let item of localAbsDocs;let d= index">
-                            <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
+                            <div class="col-lg-9">Document {{d+1}} </div>
                             <div class="col-lg-3 text-right">
-                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></i>
                               <a href="javascript:;" (click)="localDelete('abs',item.name, d,nullVar)" class="modal-with-form"><i
                                   class="fas fa-times text-danger"></i></a>
                             </div>
@@ -950,8 +956,11 @@
                         </div>
                       </div>
                       <div class="col-lg-10 pt-2">
-                        <input name="licenceDetails.licenceNotification" type="checkbox"
-                          class="ng-untouched ng-pristine ng-valid">Send notification (Before 30 days of expiration)
+                        <div class="checkbox-custom">
+
+                            <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="driverData.licenceDetails.licenceNotification"  value="">
+                            <label class="control-label font-weight-bold">Send notification (Before 30 days of expiration)</label>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1505,17 +1514,19 @@
                       </div>
 
                       <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                        <div class="checkbox">
-                          <label class="control-label font-weight-bold">
+                        <div class="checkbox-custom">
+
                             <input type="checkbox" value="" [(ngModel)]="driverData.hosDetails.pcAllowed"
-                              name="hosDetails.pcAllowed">Allow Personal Conveyance (PC)</label>
+                              name="hosDetails.pcAllowed">
+                              <label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
                         </div>
                       </div>
                       <div class="col-lg-4" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                        <div class="checkbox">
-                          <label class="control-label font-weight-bold">
+                        <div class="checkbox-custom">
+
                             <input type="checkbox" [(ngModel)]="driverData.hosDetails.ymAllowed"
-                              name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">Allow Yard Move (YM)</label>
+                              name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">
+                               <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
                         </div>
                       </div>
                     </div>

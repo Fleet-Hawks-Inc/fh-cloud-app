@@ -230,14 +230,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   docStates = [];
   vehicles: any;
   states = [];
-
+  errorAbstract = false;
   cities = [];
   yards = [];
   cycles = [];
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  imageTitle = 'Change';
+  imageTitle = 'Add';
   Error = '';
   Success = '';
   visibleIndex = 0;
@@ -351,11 +351,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    if (this.driverID && this.driverProfileSrc !== '') {
-      this.imageTitle = 'Change';
-    } else {
-      this.imageTitle = 'Add';
-    }
     this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -503,9 +498,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   fetchCountries() {
     this.docCountries = CountryStateCity.GetAllCountries();
   }
-
-
-
    getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = '';
     this.driverData.address[index].cityName = '';
@@ -662,6 +654,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
+    if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     // this.spinner.show();
@@ -732,7 +725,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               .pipe(
                 map((val: any) => {
                   // val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
+                  this.errors[val.context.key] = val.message;
                   this.spinner.hide();
                 })
               )
@@ -766,6 +759,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.submitDisabled = false;
       return 'error found';
     }
+  } else {
+      this.errorAbstract = true;
+      this.toastr.error('Abstract history document is required.');
+     }
   }
 
   async userAddress(i, item) {
@@ -812,6 +809,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           $('[name="' + v + '"]')
           .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
         }
+        if (v === 'cognito'){
+          this.toastr.error(this.errors[v]);
+         }
       });
 
   }
@@ -853,10 +853,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.fetchLicStates(result.licenceDetails.issuedCountry);
         this.driverData.address = result.address;
-        if(result.address !== undefined) {
+        if (result.address !== undefined) {
           for (let a = 0; a < this.driverData.address.length; a++) {
             const countryCode = this.driverData.address[a].countryCode;
             const stateCode = this.driverData.address[a].stateCode;
@@ -864,7 +863,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.fetchCities(countryCode, stateCode, a);
           }
         }
-
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         this.driverData.ownerOperator = result.ownerOperator;
@@ -872,10 +870,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        this.driverData.startDate = result.startDate;
-        this.driverData.terminationDate = result.terminationDate;
-        this.driverData.contractStart = result.contractStart;
-        this.driverData.contractEnd = result.contractEnd;
+        this.driverData.DOB = _.isEmpty(result.DOB) ?  null : result.DOB;
+        this.driverData.startDate = _.isEmpty(result.startDate) ?  null : result.startDate;
+        this.driverData.terminationDate = _.isEmpty(result.terminationDate) ?  null : result.terminationDate;
+        this.driverData.contractStart = _.isEmpty(result.contractStart) ?  null : result.contractStart;
+        this.driverData.contractEnd = _.isEmpty(result.contractEnd) ?  null : result.contractEnd;
+        this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(result.crossBorderDetails.fastExpiry) ? null : result.crossBorderDetails.fastExpiry;
+        this.driverData.licenceDetails.licenceExpiry = _.isEmpty(result.licenceDetails.licenceExpiry) ?  null : result.licenceDetails.licenceExpiry;
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
@@ -884,9 +885,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.driverImage = result.driverImage;
         if (result.driverImage !== '' && result.driverImage !== undefined) {
           this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
-          this.showIcons = true;
+          this.imageTitle = 'Change';
         } else {
           this.driverProfileSrc = '';
+          this.imageTitle = 'Add';
         }
         this.driverData[`abstractDocs`] = [];
         if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
@@ -975,6 +977,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   async updateDriver() {
+    if (this.abstractDocs.length > 0 || this.absDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -1079,6 +1082,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } catch (error) {
       this.submitDisabled = false;
     }
+  } else {
+    this.errorAbstract = true;
+    this.toastr.error('Abstract history document is required.');
+   }
   }
 
   changePaymentModeForm(value) {
