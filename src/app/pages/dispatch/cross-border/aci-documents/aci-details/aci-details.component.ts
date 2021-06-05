@@ -139,9 +139,7 @@ export class AciDetailsComponent implements OnInit {
   ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
     this.fetchACIEntry();
-    this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
-    this.fetchStatesCodeName();
     this.fetchDocuments();
     this.fetchVehicleType();
     this.fetchCargoExemptionType();
@@ -151,11 +149,7 @@ export class AciDetailsComponent implements OnInit {
     this.fetchSublocationList();
     this.fetchReleaseOfficeList();
   }
-  fetchCountriesCodeName() {
-    this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
-    this.countryCodeName = result;
-    });
-  }
+
   fetchAssetsCodeName() {
     this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
       this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
@@ -209,11 +203,7 @@ export class AciDetailsComponent implements OnInit {
       }, {});
     });
   }
-  fetchStatesCodeName() {
-    this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
-    this.stateCodeToName = result;
-    });
-  }
+
   fetchPackagingUnits() {
     this.httpClient.get('assets/jsonFiles/ACIpackagingUnit.json').subscribe((data: any) =>{
 
@@ -233,7 +223,6 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACIdetails/' + this.manifestID)
       .subscribe((result: any) => {
-        
         this.manifestID = this.manifestID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -261,8 +250,7 @@ export class AciDetailsComponent implements OnInit {
               number: result.truck.licensePlate.number,
               stateProvince: CountryStateCity.GetStateNameFromCode(result.truck.licensePlate.stateProvince, result.truck.licensePlate.country),
               country: CountryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlate.country)
-            }
-          ,
+            },
           sealNumbers: result.truck.sealNumbers,
           cargoExemptions: result.truck.cargoExemptions
           };

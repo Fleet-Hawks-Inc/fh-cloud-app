@@ -73,10 +73,9 @@
                                         <th width="10%">Document#</th>
                                         <th width="10%">Trip </th>
                                         <th width="10%">Document Type</th>
-                                        <th width="10%">Document Name</th>
                                         <th width="10%">Uploaded By</th>
                                         <th width="10%">Uploaded On</th>
-                                        <th width="20%">Description</th>
+                                        <th width="20%">Remarks</th>
                                         <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
@@ -89,7 +88,7 @@
                                         <td>{{tripsObjects[document.tripID]}}</td>
                                         <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?
                                             document.docType+'#' : document.docType }}</td>
-                                        <td>{{document.documentName}}</td>
+                                        <!-- <td>{{document.documentName}}</td> -->
                                         <td>{{document.uploadedBy}}</td>
                                         <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
                                             Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
@@ -99,7 +98,7 @@
                                                 {{ document.description | slice:0:100 }}
                                                 <a href="javascript:;" (click)="showDescModal(document.description)"
                                                     *ngIf="document.description.length > 100"
-                                                    class="btn btn-dark btn-xs modal-with-form">Full Description</a>
+                                                    class="btn btn-dark btn-xs modal-with-form">Full Remarks</a>
                                             </span>
                                             <span *ngIf="document.description == ''">
                                                 -
@@ -332,7 +331,9 @@
                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Remarks&nbsp; <span
                                 class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="documentData.description" name="description"
+
                             placeholder="Enter Remarks" class="form-control heighta" rows="3" #Descrip1= "ngModel" pattern ="^[\s\S]{1,500}$"
+
                             ></textarea>
                             <div *ngIf="Descrip1.invalid && (Descrip1.dirty || Descrip1.touched)" class="text-danger">
                               <div>

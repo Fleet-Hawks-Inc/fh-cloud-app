@@ -14,9 +14,9 @@ import jwt_decode from "jwt-decode";
 })
 export class LoginComponent implements OnInit {
 
-  userName: string;
+  userName: string = null;
   email: string;
-  password: string;
+  password: string = null;
   response: any = '';
   hasError  = false;
   Error = '';
@@ -95,6 +95,7 @@ export class LoginComponent implements OnInit {
     let token = localStorage.getItem('accessToken');
     if(token != null) {
       this.router.navigate(['/Map-Dashboard']);
+      return false;
     }
     if((this.userName)&&(this.password)){
     try {
@@ -165,12 +166,13 @@ export class LoginComponent implements OnInit {
       
     } catch (err) {
 
-
+      this.submitDisabled = false;
       this.hasError = true;
       this.Error = err.message || 'Error during login';
     }
   }
   else{
+    this.submitDisabled = false;
     this.hasError = true;
     this.Error='Username and password is required'
 

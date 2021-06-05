@@ -14,9 +14,9 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
 
-        <section role="main" class="content-body">
-            <header class="page-header">
-                <div class="row px-2" *ngIf="currentTab == 'inv'" style="padding-top: 9px">
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
@@ -30,30 +30,31 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 pl-0">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 pl-0 pr-0">
                         <div class="input-group input-group-sm mb-3">
-                            <ng-select [(ngModel)]="itemGroupID" name="itemGroupID" style="width: 100%;" placeholder="Search items by category">
-                                <ng-option *ngFor="let data of allCompanies" [value]="data.groupID">{{data.groupName}}</ng-option>
+                            <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
+                                <ng-option value="hardware">Hardware</ng-option>
+                                <ng-option value="brakes">Brakes</ng-option>
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-2">Search</button>
+                            class="btn btn-sm btn-success mr-3">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
 
-                    <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-                        <div class="btn-group flex-wrap" style="min-width:190px;">
+                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;">
                             <button type="button"
-                                class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
+                                class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
                                 data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                             <div class="dropdown-menu dutystatwd" role="menu">
                                 <a class="dropdown-item text-1" href="javascript:;">
@@ -107,29 +108,40 @@
                             </div>
                         </div>
                         <a [routerLink]="" (click)="openTransferModal()"
-                            class="modal-with-form btn btn-success btn-sm mr-2"><i class="fas fa-exchange-alt"></i>
+                            class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
                             Transfer</a>
                         <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
                                 class="fas fa-plus"></i> Add Inventory</a>
                     </div>
                 </div>
 
-                <div class="row px-2" *ngIf="currentTab == 'rinv'" style="padding-top: 9px">
+                <div class="row" *ngIf="currentTab == 'rinv'" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
+                        <!-- <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
                                 <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
                             </ng-select>
-                        </div>
+                        </div> -->
+                        <div class="input-group input-group-sm mb-3">
+                          <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                              class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
+                              placeholder="Search items by name" />
+                      </div>
+                      <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
+                          <ul>
+                              <li *ngFor="let suggestedItem of requiredSuggestedItems" style="cursor: pointer;"
+                                  (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'req')"> {{ suggestedItem.itemName }}</li>
+                          </ul>
+                      </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 pl-0">
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="requiredPartNumber" [(ngModel)]="requiredPartNumber"
                                 class="form-control" (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#"/>
@@ -142,14 +154,13 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                        <button type="submit" (click)="searchRequiredFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="submit" (click)="searchRequiredFilter()" class="btn btn-sm btn-success mr-3">Search</button>
                         <button type="button" (click)="resetRequiredFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
 
-                    <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-                        <div class="btn-group flex-wrap" style="min-width:190px;">
-                            <button type="button"
-                                class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
+                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;">
+                            <button type="button" class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
                                 data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                             <div class="dropdown-menu dutystatwd" role="menu">
                                 <a class="dropdown-item text-1" href="javascript:;">
@@ -203,7 +214,7 @@
                             </div>
                         </div>
                         <a [routerLink]="" (click)="openTransferModal()"
-                            class="modal-with-form btn btn-success btn-sm mr-2"><i class="fas fa-exchange-alt"></i>
+                            class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
                             Transfer</a>
                         <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
                                 class="fas fa-plus"></i> Add Inventory</a>
@@ -211,20 +222,19 @@
                 </div>
             </header>
 
-            <div class="routing-overview__wrapper">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <section class="card">
-                            <div class="card-body">
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row pt-1">
+                            <div class="col-lg-12">
                                 <div class="pb-3">
                                     <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
-                                        <li class="nav-item" style="cursor:pointer;
-                                        ">
+                                        <li class="nav-item" style="cursor:pointer; ">
                                             <a class="nav-link" [ngClass]="{'active': currentTab == 'inv'}" (click)="tabChange('inv')" id="all-tab" role="tab" aria-controls="allassets" aria-selected="true">Existing
                                                 Inventory</a>
                                         </li>
-                                        <li class="nav-item" style="cursor:pointer;
-                                        ">
+                                        <li class="nav-item" style="cursor:pointer;">
                                             <a class="nav-link"  [ngClass]="{'active show': currentTab == 'rinv'}" (click)="tabChange('rinv')" role="tab" aria-controls="reefer" aria-selected="false">Required
                                                 Inventory</a>
                                         </li>
@@ -268,7 +278,7 @@
                                                         </td>
                                                         <td *ngIf="hideShow.category"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{itemGroups[item.categoryID]}}
+                                                            {{item.category}}
                                                         </td>
                                                         <td *ngIf="hideShow.vendor"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -316,7 +326,7 @@
                                                                     <a class="dropdown-item"
                                                                         routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
                                                                     <a href="javascript:;" class="dropdown-item"
-                                                                        (click)="deleteItem(item.itemID)">Delete</a>
+                                                                        (click)="deleteItem(item)">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -368,10 +378,10 @@
                                                             </button>
                                                             <div class="dropdown-menu"
                                                                 attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item" href="javascript:;"
-                                                                    (click)="addInventory(item)">Add Inventory</a>
+                                                                <a class="dropdown-item" routerLink="/fleet/inventory/add/required/{{item.itemID}}"
+                                                                    >Add Inventory</a>
                                                                 <a href="javascript:;" class="dropdown-item"
-                                                                    (click)="deleteRequiredItem(item.itemID)">Delete</a>
+                                                                    (click)="deleteRequiredItem(item)">Delete</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -390,10 +400,16 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                    </div>
+                           
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+                
+             </section>
+
+
         </section>
     </div>
 </section>
@@ -410,22 +426,20 @@
                     </i>
                 </button>
             </div>
-            <div class="modal-body text-dark">
+            <div class="modal-body text-dark pt-2">
                 <form>
                     <div class="form-row">
                         <div class="form-group col-lg-12">
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#
-                                        </label>
-                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="partNumber">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part#</label>
+                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="transfer.partNumber">
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part
-                                        Details</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part Details</label>
                                     <input type="text" class="form-control" placeholder="Enter part details"name="partDetails"
-                                        [(ngModel)]="partDetails">
+                                        [(ngModel)]="transfer.partDetails">
                                 </div>
                             </div>
 
@@ -433,46 +447,40 @@
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="quantity">
+                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="transfer.quantity">
                                 </div>
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
                                     <input type="date" data-plugin-datepicker="" class="form-control" name="date"
-                                        [(ngModel)]="date">
+                                        [(ngModel)]="transfer.date">
                                 </div>
                             </div>
 
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">From
-                                        Warehouse</label>
-                                    <select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
-                                   
-                                        [(ngModel)] ="warehouseID1">
-                                        
-                                        <optgroup label="Select Warehouse">
-                                            <option *ngFor="let warehouse of warehouses | keyvalue"
-                                                value="{{warehouse.key}}">
-                                                {{warehouse.value}}</option>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
+                                    <ng-select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
 
-                                        </optgroup>
-                                    </select>
+                                        [(ngModel)] ="transfer.warehouseID1">
+                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
+                                                value="{{warehouse.key}}">
+                                                {{warehouse.value}}</ng-option>
+
+
+                                    </ng-select>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">To
-                                        Warehouse</label>
-                                    <select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
-                                        [(ngModel)]="warehouseID2">
-                                        <optgroup label="Select Warehouse">
-                                            <option *ngFor="let warehouse of warehouses | keyvalue"
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
+                                    <ng-select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
+                                        [(ngModel)]="transfer.warehouseID2">
+                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
-                                                {{warehouse.value}}</option>
+                                                {{warehouse.value}}</ng-option>
 
-                                        </optgroup>
-                                    </select>
+                                    </ng-select>
                                 </div>
                             </div>
 
@@ -484,7 +492,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-success" [routerLink]="">
+                <button type="button" class="btn btn-success" (click)="transferInventory()">
                     Save
                 </button>
             </div>

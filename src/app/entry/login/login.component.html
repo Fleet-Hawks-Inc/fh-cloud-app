@@ -8,16 +8,16 @@
 
     <div class="panel card-sign">
       <div class="card-title-sign text-center">
-        <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">Login</h2>
+        <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">Sign In</h2>
       </div>
       <div class="card-body">
-        <form action="select-vehicle.html" method="post">
+        <form action="select-vehicle.html" method="post" #loginForm="ngForm">
           <div class="form-group mb-3">
             <div class="input-group">
               <div class="logiconm mr-3">
                 <i class="fas fa-user logicon text-5"></i>
               </div>
-              <input name="username" type="text" placeholder="Email ID or Username"
+              <input name="username" type="text" placeholder="Username"
                 class="form-control login form-control-lg" [(ngModel)]="userName" #login="ngModel" required />
                 <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
                   <div class="pl-4 ml-2" *ngIf="login.errors.required" >
@@ -39,7 +39,7 @@
                 <i class="fa fa-lock logicon text-5"></i>
               </div>
               <input name="pwd"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg"
-                [(ngModel)]="password" #password1="ngModel" required />
+                [(ngModel)]="password" #password1="ngModel" required autocomplete="new-password"/>
 
                 <div class="input-group-append " >
                   <span class="input-group-text eye">
@@ -60,15 +60,20 @@
               </div>
             </div>
           </div>
+
           <div class="row">
-            <p *ngIf="hasError" class="text text-danger" >{{Error}}</p>
+            <p *ngIf="hasError" class="text text-danger ml-5" >{{Error}}</p>
           </div>
+          
           <div class="row">
             <div class="col-sm-12 pl-signin text-center">
-              <button id="btnsubmit" type="submit" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn" (click)="loginAction1()" [disabled]="submitDisabled">Sign In</button>
+              <button *ngIf="!loginForm.form.valid" type="button" [disabled]="!loginForm.form.valid" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">Sign In</button>
+              <button *ngIf="loginForm.form.valid" id="btnsubmit" type="submit" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn" (click)="loginAction1()" [disabled]="submitDisabled">Sign In</button>
             </div>
+
             <div class="col-sm-12 mt-2 pt-1 text-center">
               <a [routerLink]="['/onboard']" class="font-weight-semibold">Do not have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
+
             </div>
           </div>
 

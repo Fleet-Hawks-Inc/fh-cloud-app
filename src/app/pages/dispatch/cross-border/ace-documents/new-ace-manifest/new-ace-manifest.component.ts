@@ -258,8 +258,6 @@ export class NewAceManifestComponent implements OnInit {
       this.title = 'Add ACE e-Manifest';
       this.modalTitle = 'Add';
     }
-    this.listService.fetchStates();
-    this.listService.fetchCities();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -339,7 +337,7 @@ export class NewAceManifestComponent implements OnInit {
     // const assetID = e;
     // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
     // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
-    
+
   }
   getCAProvinces() {
     this.states = CountryStateCity.GetStatesByCountryCode(['CA']);

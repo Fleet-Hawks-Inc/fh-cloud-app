@@ -151,16 +151,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchAssetTypes();
   }
-
-  fetchAssetTypes(){
-    this.apiService.getData('assetTypes/get/list').subscribe((result) => {
-      this.assetTypes = result;
-
-    });
-  }
-
 
   /**
    * fetch Asset data
@@ -170,6 +161,7 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
+          console.log('order data', result)
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
               this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {

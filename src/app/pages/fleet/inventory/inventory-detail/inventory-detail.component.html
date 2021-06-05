@@ -1,16 +1,16 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr19 pl11">
         <div class="row" style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4">
+          <div class="col-md-4 col-lg-4 pl13">
             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Inventory Details</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default mr-2" ><i class="fas fa-list"></i> Inventory List</a >
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default" ><i class="fas fa-list"></i> Inventory List</a >
 
-            
-            <div class="btn-group flex-wrap" *ngIf="!environment">
+
+            <!-- <div class="btn-group flex-wrap" *ngIf="!environment">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                  aria-expanded="false">Actions<span class="caret"></span></button>
               <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -18,15 +18,17 @@
                  <a class="dropdown-item text-1" routerLink="/fleet/inventory/edit/{{itemID }}" href="javascript:;">Edit</a>
                  <a class="modal-with-form dropdown-item text-1"(click)="deleteItem()" href="javascript:;">Delete</a>
               </div>
-           </div>
+           </div> -->
           </div>
         </div>
       </header>
-      <div class="row">
-        <div class="col pr-0">
-          <div class="card-body text-dark">
+
+      <section class="m-2">
+        <div class="row mb-3">
+         <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
             <form class="form-horizontal form-bordered" method="get">
-              <div class="row">
+              <div class="row pt-1 mar-top-2">
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
@@ -51,13 +53,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Category
                             </td>
-                            <td>{{itemGroups[categoryID]}}</td>
+                            <td>{{category}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Vendor
                             </td>
-                            <td><a href="#">{{vendors[preferredVendorID]}}</a></td>
+                            <td><a href="#">{{vendors[warehouseVendorID]}}</a></td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -69,13 +71,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Unit Cost
                             </td>
-                            <td>$ {{costUnit}}</td>
+                            <td>$ {{cost}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Unit Measure
                             </td>
-                            <td>Gallon</td>
+                            <td>{{costUnit}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -96,7 +98,7 @@
                   <!-- Warehouse TABLE -->
                   <div class="row">
                     <div class="col-lg-12">
-                      <label class="control-label font-weight-bold text-3"
+                      <label class="control-label font-weight-bold text-3 mb-3"
                         >Warehouse Inventory Details</label
                       >
                     </div>
@@ -114,9 +116,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor = "let warehosue of warehouses">
-                            <td>TATA's Warehouse</td>
-                            <td>90</td>
+                          <tr *ngFor = "let warehouse of warehouses">
+                            <td>{{warehouse.warehouseID ? warehousesList[warehouse.warehouseID] : '-'}}</td>
+                            <td>{{warehouse.quantity ? warehouse.quantity : '-'}}</td>
                             <td>100 street 34Ave King Town,City,Country</td>
                           </tr>
                         </tbody>
@@ -126,7 +128,7 @@
                   <!-- Warrenty TABLE -->
                   <div class="row">
                     <div class="col-lg-12">
-                      <label class="control-label font-weight-bold text-3"
+                      <label class="control-label font-weight-bold text-3 mb-3"
                         >Warranty Details</label
                       >
                     </div>
@@ -167,14 +169,14 @@
                   <!-- inventory TABLE -->
                   <div class="row">
                     <div class="col-lg-12">
-                      <label class="control-label font-weight-bold text-3"
+                      <label class="control-label font-weight-bold text-3 mb-3"
                         >Inventory Tracking</label
                       >
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
+                      <table class="table table-bordered table-responsive-lg mb4">
                         <tbody>
                           <tr>
                             <td
@@ -224,7 +226,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6">
-                  <div class="row pb-2" *ngIf="photos?.length">
+                  <div class="row pb14" *ngIf="photos?.length">
                     <div class="col-lg-12">
                       <div class="vehicle-common-box p-3">
                         <div class="row">
@@ -271,7 +273,7 @@
                           </div>
                           <div class="col-lg-3 text-right">
                               <i class="fas fa-times text-danger"  (click)="delete('doc',document.name)"></i>
-                          
+
                           </div>
                         </div>
                       </div>
@@ -311,8 +313,12 @@
               </div>
             </form>
           </div>
+         </div>
         </div>
-      </div>
+        
+      
+     </section>
+
     </section>
   </div>
 </section>

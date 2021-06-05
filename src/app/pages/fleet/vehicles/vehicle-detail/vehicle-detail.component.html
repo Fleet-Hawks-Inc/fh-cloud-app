@@ -26,7 +26,7 @@
       <section class="m-2">
 
         <div class="row mb-3">
-          <div class="col-12 pr10">
+          <div class="col-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
 
@@ -42,7 +42,7 @@
                     </div>
                     <div class="row m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Name:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ vehicleIdentification }} </div>
+                      <div class="col-lg-8 p-2 border-box">{{ vehicleIdentification | uppercase}} </div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
@@ -97,7 +97,7 @@
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ currentStatus }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ currentStatus | titlecase}}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
@@ -116,7 +116,7 @@
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Enable IFTA Reporting:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ (iftaReporting) ? 'yes' : 'no' }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ (iftaReporting) ? 'YES' : 'NO' }}</div>
                     </div>
 
                     <div class="row  m-0">
@@ -220,7 +220,7 @@
                                     Every {{ data.tasks.time }} {{ data.tasks.timeUnit }}(s)
                                   </span>
                                   <span *ngIf="data.tasks.remindByUnit == 'odometer'">
-                                    Every {{ data.tasks.odometer }} miles 
+                                    Every {{ data.tasks.odometer }} miles
                                   </span>
                                 </td>
                                 <td>
@@ -257,7 +257,7 @@
                             </thead>
 
                             <tbody>
-                              <tr *ngIf="serviceReminders.length == 0" style="text-align: center;">
+                              <tr *ngIf="renewalReminders.length == 0" style="text-align: center;">
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of renewalReminders">
