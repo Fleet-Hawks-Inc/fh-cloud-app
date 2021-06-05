@@ -382,8 +382,8 @@
                        <div *ngFor="let item of shippersReceivers; let i = index;"
                        class="mb-2 order-accordian">
                           <div class="order-accordian__inner">
-                             <ngb-accordion (panelChange)="accordianChange()" [closeOthers]="true" activeIds="static-0">
-                                <ngb-panel id="static-{{i}}">
+                             <ngb-accordion (panelChange)="accordianChange($event)" [activeIds]="activeId" [closeOthers]="true" activeIds="activeId">
+                                <ngb-panel>
                                    <ng-template ngbPanelTitle>
                                       <h4 class="card-title m-0"><a class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
                                             Shipment-{{i + 1}} </a> </h4>
@@ -480,8 +480,7 @@
                                                               </label>
 
                                                               <ng-select [(ngModel)]="item.shippers.shipperID"
-                                                                 name="shipperID" #shipperID="ngModel" required
-                                                                 shipperID placeholder="Select Consignor" class="form-control" #conSlt1="ngModel" required>
+                                                                 name="shipperID_{{i}}"  placeholder="Select Consignor" class="form-control" #conSlt1="ngModel" required>
 
                                                                     <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
 
@@ -517,7 +516,7 @@
                                                               </label>
 
                                                               <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.shippers.pickupLocation"
-                                                                 name="pickupLocation" (keyup)="searchTerm.next($event);"
+                                                                 name="pickupLocation_{{i}}" (keyup)="searchTerm.next($event);"
                                                                  class="form-control " #pickupLocation="ngModel" required
                                                                  pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
                                                                  #location="ngModel" required>
@@ -563,7 +562,7 @@
 
                                                               <div class="input-group">
 
-                                                                    <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate" type="text"
+                                                                    <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate_{{i}}" type="text"
                                                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
                                                                     class="form-control" autocomplete="off" #orderDate1="ngModel" required>
 
@@ -605,7 +604,7 @@
                                                                  for="inputDefault">Pickup Instruction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
                                                               <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
-                                                                 name="pickupInstruction" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                 name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
                                                                  ></textarea>
                                                                  <div *ngIf="Pickup1.invalid && (Pickup1.dirty || Pickup1.touched)" class="text-danger">
                                                                   <div>
@@ -626,7 +625,7 @@
                                                               </label>
 
                                                               <input placeholder="eg. John Smith" [(ngModel)]="item.shippers.contactPerson"
-                                                                 name="shippers.contactPerson" type="text" class="form-control"
+                                                                 name="shippers.contactPerson_{{i}}" type="text" class="form-control"
                                                                  id="inputDefault" >
                                                                  <!-- <div *ngIf="person.invalid && (person.dirty || person.touched)" class="text-danger">
                                                                     <div *ngIf="person.errors.pattern">
@@ -649,7 +648,7 @@
                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                               </label>
 
-                                                              <input placeholder="eg. +12234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone"
+                                                              <input placeholder="eg. +12234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
                                                                  type="text" class="form-control" id="inputDefault" >
                                                                  <!-- <div *ngIf="orderP.invalid && (orderP.dirty || orderP.touched)" class="text-danger">
                                                                     <div *ngIf="orderP.errors.pattern">
@@ -1316,8 +1315,8 @@
                                 </ngb-panel>
                              </ngb-accordion>
                           </div>
-                          <div class="d-flex justify-content-end mt-3">
-                             <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger ml-2">Remove</button>
+                          <div class="d-flex justify-content-end">
+                             <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
                           </div>
                        </div>
 
@@ -1464,8 +1463,8 @@
                           <div class="col-lg-4">
                              <ng-select
 
-                             name="orderData.additionalDetails.refeerTemp.minTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTempratureUnit" data-plugin-selecttwo=""
-                               placeholder="select unit" class="form-control populate" data-select2-id="10"
+                             name="orderData.additionalDetails.refeerTemp.minTempratureUnit" (change)="tempChange($event)" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTempratureUnit" 
+                              placeholder="select unit" class="form-control populate" data-select2-id="10"
 
                                 tabindex="-1" aria-hidden="true">
 
@@ -1496,7 +1495,7 @@
                           <div class="col-lg-4">
                              <ng-select
                              name="orderData.additionalDetails.refeerTemp.maxTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTempratureUnit" type="text" class="form-control"
-                             data-plugin-selecttwo=""
+                             (change)="tempChange($event)"
                              placeholder="select unit" class="form-control populate" data-select2-id="13"
                                 tabindex="-1" aria-hidden="true">
                                    <ng-option value="°C">°C</ng-option>
