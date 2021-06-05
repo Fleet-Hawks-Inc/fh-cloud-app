@@ -232,35 +232,39 @@
                         <div class="col-lg-2 text-right pr-0">
                            <a (click)="gotoIssuePage()" href="javascript:;"
                                     class="btn cus-btn-padd btn-success"><em class="fas fa-plus"></em>Add Issue</a>
+
+                              </div>
+                              
+
                         </div>
 
                         <div class="col-lg-10 pr-0">
                            <div class="row">
                               <div class="col-lg-12 mb-2 pr-2">
                                  
-                                    <table class="table table-bordered table-responsive-lg table-striped mb-0 mt-3"
-                                    id="openIssueTable">
-                                    <thead>
-                                       <tr>
-                                          <th id=""></th>
-                                          <th id="">Issue Name</th>
-                                          <th id="">Assigned To</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr *ngFor="let issue of issues; let i=index;">
-                                          <td><input [(ngModel)]="issue.selected" name="selected{{i}}"
-                                                (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
-                                          <td>{{issue.issueName}}</td>
-                                          <td>{{issue.assignedTo}}</td>
-                                       </tr>
-                                       <tr *ngIf="issues.length == 0">
-                                          <td colspan="3">No Issue Found</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                                 </div>
-                             
+                                    <table class="table table-bordered table-responsive-lg table-striped mb-0"
+                                 id="openIssueTable">
+                                 <thead>
+                                    <tr>
+                                       <th id=""></th>
+                                       <th id="">Issue Name</th>
+                                       <th id="">Assigned To</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let issue of issues; let i=index;">
+                                       <td><input [checked]="issue.currentStatus == 'RESOLVED'" name="selected{{i}}"
+                                             (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
+                                       <td>{{issue.issueName}}</td>
+                                       <td>{{issue.assignedTo}}</td>
+                                    </tr>
+                                    <tr *ngIf="issues.length == 0">
+                                       <td colspan="3">No Issue Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                                
+
                            </div>
                         </div>
                      </div>

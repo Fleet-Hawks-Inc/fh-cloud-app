@@ -289,11 +289,7 @@ export class AddServiceComponent implements OnInit {
         this.spinner.hide();
       },
     });
-    if(this.serviceData.selectedIssues.length > 0){
-      for(let i=0; i < this.serviceData.selectedIssues.length; i++){
-        this.setIssueStatus(this.serviceData.selectedIssues[i]);
-       }
-    }
+    
   }
 
   throwErrors() {
@@ -320,20 +316,17 @@ export class AddServiceComponent implements OnInit {
   selectIssues(event, ids: any) {
 
     if(event.target.checked) {
-      this.selectedIssues.push(ids);
+      if(!this.selectedIssues.includes(ids)) {
+        this.selectedIssues.push(ids);
+      }
+      
     } else {
       let index = this.selectedIssues.indexOf(ids);
       this.selectedIssues.splice(index, 1);
     }
     this.serviceData.selectedIssues = this.selectedIssues;
   }
-  /**
-   * to set status of issue to resolved
-   */
-  setIssueStatus(issueID) {
-    const issueStatus = 'RESOLVED';
-    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {});
-  }
+  
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
       if(result != null){
@@ -432,38 +425,27 @@ export class AddServiceComponent implements OnInit {
     id = JSON.stringify(id);
     this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
       this.resolvedIssues = result;
+      
       for (let i = 0; i < result.length; i++) {
         const element = result[i];
         element.selected = true;
         this.issues.push(element)
-
+        
       }
     });
   }
 
   async getIssuesByVehicle(vehicleID) {
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
-
+    
     await this.listService.fetchVehicleIssues(vehicleID);
+    
     this.listService.issuesList.subscribe(res => {
       this.issues = [...this.resolvedIssues, ...res];
     });
 
   }
   async getIssuesByAsset(assetID) {
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
+    
     await this.listService.fetchAssetsIssues(assetID);
     this.listService.issuesList.subscribe(res => {
       this.issues = [...this.resolvedIssues, ...res];
@@ -735,7 +717,7 @@ export class AddServiceComponent implements OnInit {
       .getData('serviceLogs/' + this.logID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
+        
         this.serviceData['logID'] = this.logID;
         this.serviceData.unitType = result.unitType;
         if (result.unitType == 'vehicle') {
