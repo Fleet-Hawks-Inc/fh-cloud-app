@@ -96,7 +96,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   fetchCustomersByIDs() {
-    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+    this.apiService.getData('contacts/get/list/customer').subscribe((result: any) => {
       this.customersObjects = result;
     });
   }
@@ -457,7 +457,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   fetchAllCarrierIDs() {
-    this.apiService.getData('externalCarriers/get/list')
+    this.apiService.getData('contacts/get/list/carrier')
       .subscribe((result: any) => {
         this.carriersObject = result;
       });
