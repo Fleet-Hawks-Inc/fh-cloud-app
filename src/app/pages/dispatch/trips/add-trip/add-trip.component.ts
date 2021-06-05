@@ -671,19 +671,11 @@ export class AddTripComponent implements OnInit {
                 calculateBy: calculateBy,
                 totalMiles: totalMilesOrder
             }
-            // this.actualMiles = 0;
-            // this.getMiles();
+            this.actualMiles = 0;
+            this.getMiles();
         }
         this.orderStops = tripPlans;
        
-        // this.orderStops = this.trips;
-        // this.orderMiles =
-        // {
-        //     calculateBy: calculateBy,
-        //     totalMiles: totalMilesOrder
-        // }
-        // this.actualMiles = 0;
-        // this.getMiles();
     }
 
     async getMiles(){
