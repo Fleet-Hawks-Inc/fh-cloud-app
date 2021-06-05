@@ -507,7 +507,7 @@
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="d-flex">
                                     <ng-select class="form-control populate mr-2" name="inspectionFormID" [(ngModel)]="inspectionFormID"
-                                       placeHolder="Select Inspection Form" #iForm1="ngModel" required>
+                                       placeHolder="Select Inspection Form" #iForm1="ngModel" (ngModelChange)="getInspectionForms()" required>
                                        <ng-option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
                                           {{iForm.inspectionFormName}}
                                        </ng-option>
@@ -519,9 +519,11 @@
                               </div>
 
 
-                              <div class="col-lg-1 pl-0 mar-top-37">
+                              <div class="col-lg-2 pl-0 mar-top-37">
                                  <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
                                        class="fas fa-plus"></i></a>
+                                       <a (click)="getInspectionForms();"target="_blank" aria-hidden="true" class="ml-1 modal-with-form btn btn-success"><i style="color:#fff;"
+                                          class="fas fa-sync-alt"></i></a>
                               </div>
 
                               <div *ngIf="iForm1.invalid && (iForm1.dirty || iForm1.touched)" class="text-danger ">
