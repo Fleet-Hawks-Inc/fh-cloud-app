@@ -182,6 +182,8 @@ export class AddOrdersComponent implements OnInit {
     { name: "tanker" },
   ];
   loadTypeData = [];
+  
+  activeId: string = "";
 
   showShipperUpdate: boolean = false;
   showReceiverUpdate: boolean = false;
@@ -389,8 +391,6 @@ export class AddOrdersComponent implements OnInit {
 
     $(document).ready(() => {
       // this.form = $("#form_").validate();
-
-      this.timpickerInit();
     });
 
     this.getOrderID = this.route.snapshot.params["orderID"];
@@ -411,8 +411,7 @@ export class AddOrdersComponent implements OnInit {
     this.receivers = this.listService.receiverList;
   }
 
-  timpickerInit() {}
-
+  
   fetchStateTaxes() {
     this.apiService
       .getData("stateTaxes")
@@ -578,8 +577,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.emptyShipper(i);
     this.shipperReceiverMerge();
-
-    console.log('finalShippersReceivers', this.finalShippersReceivers);
 
     this.toastr.success("Consignor Added.");
   }
@@ -945,9 +942,7 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.visibleIndex = ind;
     }
-    setTimeout(() => {
-      this.timpickerInit();
-    }, 200);
+    
   }
 
   onChangeUnitType(type: string, value: any) {
@@ -1173,9 +1168,12 @@ export class AddOrdersComponent implements OnInit {
 
   editList(elem, parentIndex, i) {
     let j = parentIndex; 
+    
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
+      
+      
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
       this.shippersReceivers[j].shippers.pickupLocation = data.pickupLocation;
       this.shippersReceivers[j].shippers.pickupDate = itemDateAndTime[0];
@@ -1193,8 +1191,10 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.maxTempratureUnit =
         data.maxTempratureUnit;
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
+      
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
+      
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1204,7 +1204,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.dropOffDate = itemDateAndTime[0];
       this.shippersReceivers[j].receivers.dropOffTime = itemDateAndTime[1];
       this.shippersReceivers[j].receivers.dropOffInstruction =
-        data.dropOffLocation;
+        data.dropOffInstruction;
       this.shippersReceivers[j].receivers.contactPerson = data.contactPerson;
       this.shippersReceivers[j].receivers.phone = data.phone;
       this.shippersReceivers[j].receivers.commodity = data.commodity;
@@ -1218,8 +1218,9 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
       this.stateShipperIndex = i;
     }
-    // this.visibleIndex = i;
+    this.visibleIndex = i;
     this.showReceiverUpdate = true;
+    
   }
 
   updateShipperReceiver(obj, i) {
@@ -1665,10 +1666,64 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  accordianChange() {
-    setTimeout(() => {
-      this.timpickerInit();
-    }, 200);
+  accordianChange(event) {
+    this.activeId = this.activeId == event.panelId ? "" : event.panelId;
+   
+    for (let i = 0; i < this.shippersReceivers.length; i++) {
+      const element = this.shippersReceivers[i];
+      element.shippers.shipperID = '';
+      
+      element.shippers.pickupLocation ='';
+      element.shippers.pickupDate ='';
+      element.shippers.pickupTime ='';
+      element.shippers.pickupInstruction ='';
+      element.shippers.contactPerson ='';
+      element.shippers.phone ='';
+      element.shippers.commodity  = [{
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        pu: ''
+        
+      }],
+      element.shippers.reference ='';
+      element.shippers.notes ='';
+      element.shippers.minTempratureUnit ='';
+      element.shippers.maxTemprature ='';
+      element.shippers.maxTempratureUnit ='';
+      element.shippers.driverLoad = false;
+      
+      
+      element.receivers.receiverID = '';
+      element.receivers.dropOffLocation = '';
+      element.receivers.dropOffDate = '';
+      element.receivers.dropOffTime = '';
+      element.receivers.dropOffInstruction = '';
+      element.receivers.contactPerson = '';
+      element.receivers.phone = '';
+      element.receivers.commodity = [{
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        del: ''
+      }];
+      element.receivers.reference = '';
+      element.receivers.notes = '';
+      element.receivers.minTempratureUnit = '';
+      element.receivers.maxTemprature = '';
+      element.receivers.maxTempratureUnit = '';
+      element.receivers.driverUnload = false 
+    }
+    
+  }
+
+  tempChange(value) {
+    this.orderData.additionalDetails.refeerTemp.maxTempratureUnit = value;
+    this.orderData.additionalDetails.refeerTemp.minTempratureUnit = value;
   }
 
   changeCurrency(value) {

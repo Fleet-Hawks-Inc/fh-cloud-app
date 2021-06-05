@@ -1192,4 +1192,7 @@ export class AddVehicleNewComponent implements OnInit {
       description: '',
     };
   }
+  refreshDrivrData() {
+    this.listService.fetchDrivers();
+  }
 }

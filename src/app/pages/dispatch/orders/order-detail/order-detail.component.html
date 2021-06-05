@@ -229,7 +229,7 @@
         </div>
 
         <div
-          class="row mb-3"
+          class="row mb-3 shipment-wrap"
           *ngFor="
             let shipperReceiversInfo of shipperReceiversInfos;
             let i = index
@@ -237,7 +237,7 @@
         >
           <div class="col-lg-12">
             <div class="bg-white p-3">
-              <div class="row mb-3">
+              <div class="row mb-3 ">
                 <div class="col-lg-12 mb-4 mb-lg-0">
                   <div
                     class="accordion"
@@ -476,7 +476,7 @@
                       >
                         Asset Type:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType != undefined ? assetTypes[additionalDetails.trailerType] : ''}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType != undefined ? additionalDetails.trailerType : ''}}</div>
                     </div>
                     <div class="row m-0">
                       <div

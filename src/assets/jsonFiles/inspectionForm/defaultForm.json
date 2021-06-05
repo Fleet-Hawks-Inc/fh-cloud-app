@@ -1,0 +1,34 @@
+[
+    {
+        "inspectionFormName": "DEFAULT ASSET INSPECTION FORM",
+        "inspectionType": "asset",
+        "isDefaultInspectionType": 1,
+        "isDeleted" : 0,
+        "parameters": [
+            {
+                "isDefault": true,
+                "name": "Tube"
+            },
+            {
+                "isDefault": true,
+                "name": "brakes"
+            }
+        ]
+    },
+    {
+        "inspectionFormName": "DEFAULT VEHICLE INSPECTION FORM",
+        "inspectionType": "vehicle",
+        "isDefaultInspectionType": 1,
+        "isDeleted" : 0,
+        "parameters": [
+            {
+                "name": "Tube",
+                "remarks": ""
+            },
+            {
+                "name": "brakes",
+                "remarks": ""
+            }
+        ]
+    }
+]
