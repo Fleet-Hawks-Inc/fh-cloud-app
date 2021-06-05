@@ -74,13 +74,13 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber" placeholder="eg. CAL 890"
-                                    #pNum="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
+                                    #pNum="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                                  <div *ngIf="pNum.invalid && (pNum.dirty || pNum.touched)" class="text-danger">
                                     <div *ngIf="pNum.errors.required">
                                        Plate number is required.
                                     </div>
                                     <div *ngIf="pNum.errors.pattern">
-                                       Plate number must be between 7-8 alphanumeric characters.
+                                       Plate number must be between 6-8 alphanumeric characters.
                                     </div>
                                  </div>
                               </div>
