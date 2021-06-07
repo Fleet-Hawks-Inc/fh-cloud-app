@@ -36,6 +36,15 @@
                                     {{result.inspectionType}}
                                  </div>
                               </div>
+                              <div class="row text-dark mt-3">
+                                 <div class="col-lg-2 font-weight-bold">
+                                    Default Inspection Form
+                                 </div>
+                                 <div class="col-lg-9">
+                                    <span *ngIf="result.isDefaultInspectionType==1">Yes</span>
+                                    <span *ngIf="result.isDefaultInspectionType==0">No</span>
+                                 </div>
+                              </div>
                            </div>
                         </div>
 

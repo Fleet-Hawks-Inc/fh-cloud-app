@@ -162,6 +162,9 @@ export class AddAssetsComponent implements OnInit {
     $('#assetSelect').val('');
   }
 
+  async getInspectionForms(){
+    await this.fetchInspectionForms();
+  }
   fetchInspectionForms() {
     this.apiService
       .getData('inspectionForms/type/asset')

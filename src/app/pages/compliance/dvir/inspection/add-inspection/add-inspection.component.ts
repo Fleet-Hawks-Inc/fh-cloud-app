@@ -37,17 +37,46 @@ export class AddInspectionComponent implements OnInit {
   Error = '';
   Success = '';
 
+  selectedInspectionType:any;
+  defaultInspectionForms:any;
+  vehicleParameters:any
+  assetParameters:any
 
   ngOnInit() {
     this.formID=this.route.snapshot.params['formID']
     this.apiService.getData('inspectionForms/get/defaultInspecitonForm').subscribe((res)=>{
-      if(res.Items[0])
-       this.parameters=res.Items[0].parameters
-       this.defaultParameterCount=this.parameters.length;
+     if(res.Count>0){
+
+       let form=res.Items
+       form.forEach(element => {
+         if(element.inspectionType=="vehicle"){
+           this.vehicleParameters=element.parameters
+         }
+         else{
+           this.assetParameters=element.parameters
+         }
+         
+       });
+     }
     })
+
+    
+    
+    
+  }
+
+  getInspectionForms(event){
+    this.selectedInspectionType=event
+    if(event=="vehicle"){
+    this.parameters=this.vehicleParameters
+    }
+    else{
+      this.parameters=this.assetParameters
+    }
   }
 
   addInspectionForm(){
+    if(!this.hasError){
     if(this.isDefaultInspectionType==1){
       this.parameters.map((param)=>{
         param.isDefault=true
@@ -85,6 +114,10 @@ export class AddInspectionComponent implements OnInit {
       }
     });
   }
+  else{
+    this.toaster.error(this.Error)
+  }
+  }
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -99,13 +132,18 @@ export class AddInspectionComponent implements OnInit {
   }
   addFormParam(index){
     if(this.parameters[index].name !== '') {
+      this.hasError=false;
       this.parameters.push({
         name:'',
         isDefault:false
       })
     } else {
+      this.toaster.error("Parameter can not be empty")
+      this.Error="Parameter can not be empty";
+      this.hasError=true;
       return false;
     }
+
   }
 
   deleteFormParam(t){

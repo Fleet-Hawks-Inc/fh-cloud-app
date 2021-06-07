@@ -178,7 +178,7 @@ export class AddTripComponent implements OnInit {
     isEdit = false;
     tripNoDisabled = false;
 
-    ngOnInit() {
+    async ngOnInit() {
 
         this.tripID = this.route.snapshot.params['tripID'];
         if (this.tripID != undefined) {
@@ -193,20 +193,13 @@ export class AddTripComponent implements OnInit {
         this.fetchRoutes();
         this.mapShow();
         this.fetchVehicles();
-        this.fetchAssetsByIDs();
         this.fetchAssets();
         this.fetchDrivers();
-        
-        this.fetchShippersByIDs();
-        this.fetchReceiversByIDs();
         this.searchLocation();
-        this.fetchDriversByIDs();
-        this.fetchVehiclesByIDs();
         this.getCurrentuser();
-        this.fetchAllCarrierIDs();
         
         if (this.tripID != undefined) {
-            this.fetchTripDetail();
+           await this.fetchTripDetail();
         }
 
         $(document).ready(() => {
@@ -218,6 +211,11 @@ export class AddTripComponent implements OnInit {
         this.apiService.getData('contacts/get/type/carrier')
             .subscribe((result: any) => {
                 this.carriers = result; 
+
+
+                this.carriersObject = result.reduce((a: any, b: any) => {
+                    return a[b['contactID']] = (b['isDeleted'] == 1) ? b['companyName'] + '  - Deleted' : b['companyName'], a;
+                }, {});
             })
     }
 
@@ -377,16 +375,30 @@ export class AddTripComponent implements OnInit {
     }
 
     showEditRow(index) {
-        this.spinner.show();
         let editRowValues = this.trips[index];
+        if(this.trips[index].driverID == undefined) {
+            this.trips[index].driverID = '';
+        }
+        if(this.trips[index].coDriverID == undefined) {
+            this.trips[index].coDriverID = '';
+        }
+        if(this.trips[index].vehicleID == undefined) {
+            this.trips[index].vehicleID = '';
+        }
+        if(this.trips[index].assetID == undefined) {
+            this.trips[index].assetID = [];
+        }
+        if(this.trips[index].driverID === '' && this.trips[index].coDriverID === '' && this.trips[index].vehicleID === '' && this.trips[index].assetID.length === 0) {
+            $("#editCell11" + index).prop('disabled', false);
+        } else {
+            $("#editCell11" + index).prop('disabled', true);
+        }
         $("#editCell1" + index).val(editRowValues.type);
         $("#editCell5" + index).val(editRowValues.mileType);
         $("#editCell11" + index).val(editRowValues.carrierID);
         $("#editCell4" + index).val(editRowValues.locationName);
-        $(".labelRow" + index).css('display', 'none'); 0
+        $(".labelRow" + index).css('display', 'none');
         $('.editRow' + index).removeClass('rowStatus');
-        
-        this.spinner.hide();
     }
 
     editRow(index) {
@@ -471,45 +483,46 @@ export class AddTripComponent implements OnInit {
         } else {
             if ($('#editCell11'+index).val() !== '') {
                 return false;
-            } 
-            this.tempTextFieldValues.type = 'edit';
-            this.tempTextFieldValues.index = index;
-            let editRowValues = this.trips[index];
-            this.assetDataVehicleID = editRowValues.vehicleID;
-            this.informationAsset = [];
-            this.assetDataDriverUsername = editRowValues.driverUsername;
-            this.assetDataCoDriverUsername = editRowValues.coDriverUsername;
+            } else {
+                this.tempTextFieldValues.type = 'edit';
+                this.tempTextFieldValues.index = index;
+                let editRowValues = this.trips[index];
+                this.assetDataVehicleID = editRowValues.vehicleID;
+                this.informationAsset = [];
+                this.assetDataDriverUsername = editRowValues.driverUsername;
+                this.assetDataCoDriverUsername = editRowValues.coDriverUsername;
 
-            // set temp fields value
-            this.tempTextFieldValues.vehicleName = editRowValues.vehicleName;
-            this.tempTextFieldValues.vehicleID = editRowValues.vehicleID;
-            // this.tempTextFieldValues.trailer = [];
-            this.tempTextFieldValues.driverName = editRowValues.driverName;
-            this.tempTextFieldValues.driverUsername = editRowValues.driverUsername;
-            this.tempTextFieldValues.coDriverName = editRowValues.coDriverName;
-            this.tempTextFieldValues.coDriverUsername = editRowValues.coDriverUsername;
-            this.tempTextFieldValues.trailerName = editRowValues.trailerName;
+                // set temp fields value
+                this.tempTextFieldValues.vehicleName = editRowValues.vehicleName;
+                this.tempTextFieldValues.vehicleID = editRowValues.vehicleID;
+                // this.tempTextFieldValues.trailer = [];
+                this.tempTextFieldValues.driverName = editRowValues.driverName;
+                this.tempTextFieldValues.driverUsername = editRowValues.driverUsername;
+                this.tempTextFieldValues.coDriverName = editRowValues.coDriverName;
+                this.tempTextFieldValues.coDriverUsername = editRowValues.coDriverUsername;
+                this.tempTextFieldValues.trailerName = editRowValues.trailerName;
 
-            $("#veh_" + editRowValues.vehicleID).addClass('td_border');
-            $("#drivr_" + editRowValues.driverUsername).addClass('td_border');
-            $("#codrivr_" + editRowValues.coDriverUsername).addClass('td_border');
+                $("#veh_" + editRowValues.vehicleID).addClass('td_border');
+                $("#drivr_" + editRowValues.driverUsername).addClass('td_border');
+                $("#codrivr_" + editRowValues.coDriverUsername).addClass('td_border');
 
-            // set selected asset values
-            if (editRowValues.trailer != undefined) {
-                for (let i = 0; i < editRowValues.trailer.length; i++) {
-                    const element = editRowValues.trailer[i];
-                    this.informationAsset.push(element.id);
+                // set selected asset values
+                if (editRowValues.trailer != undefined) {
+                    for (let i = 0; i < editRowValues.trailer.length; i++) {
+                        const element = editRowValues.trailer[i];
+                        this.informationAsset.push(element.id);
 
-                    let objj = {
-                        id: element.id,
-                        name: element.name
+                        let objj = {
+                            id: element.id,
+                            name: element.name
+                        }
+                        this.tempTextFieldValues.trailer.push(objj);
+                        $("#asset_" + element.id).addClass('td_border');
                     }
-                    this.tempTextFieldValues.trailer.push(objj);
-                    $("#asset_" + element.id).addClass('td_border');
                 }
-            }
 
-            $('#assetModal').modal('show');
+                $('#assetModal').modal('show');
+            }
         }
     }
 
@@ -537,23 +550,10 @@ export class AddTripComponent implements OnInit {
     }
 
     async saveSelectOrderIDS() {
-        // this.typeOptions = ['Pickup', 'Delivery', 'Yard', 'Stop', 'Enroute'];
         this.OrderIDs = this.temporaryOrderIDs;
         $("#orderModal").modal('hide');
         this.orderNo = this.temporaryOrderNumber.toString();
         let tripPlans = [];
-
-        // if(this.tripID) {
-        //     this.trips = this.trips.filter(function (obj) {
-        //         if(obj.type !== 'Pickup' && obj.type !== 'Delivery'){
-        //             return obj;
-        //         }
-        //     });
-        // } else {
-        //     this.trips = this.trips.filter(function (obj) {
-        //         return obj.fromOrder !== 'yes';
-        //     });
-        // }
 
         let current = this;
         let totalMilesOrder = 0;
@@ -671,19 +671,11 @@ export class AddTripComponent implements OnInit {
                 calculateBy: calculateBy,
                 totalMiles: totalMilesOrder
             }
-            // this.actualMiles = 0;
-            // this.getMiles();
+            this.actualMiles = 0;
+            this.getMiles();
         }
         this.orderStops = tripPlans;
        
-        // this.orderStops = this.trips;
-        // this.orderMiles =
-        // {
-        //     calculateBy: calculateBy,
-        //     totalMiles: totalMilesOrder
-        // }
-        // this.actualMiles = 0;
-        // this.getMiles();
     }
 
     async getMiles(){
@@ -774,6 +766,10 @@ export class AddTripComponent implements OnInit {
         this.apiService.getData('vehicles')
             .subscribe((result: any) => {
                 this.vehicles = result.Items;
+
+                this.vehiclesObjects = result.Items.reduce((a: any, b: any) => {
+                    return a[b['vehicleID']] = (b['isDeleted'] == 1) ? b['vehicleIdentification'] + '  - Deleted' : b['vehicleIdentification'], a;
+                }, {});
             })
     }
 
@@ -781,6 +777,10 @@ export class AddTripComponent implements OnInit {
         this.apiService.getData('assets')
             .subscribe((result: any) => {
                 this.assets = result.Items;
+
+                this.assetsObjects = result.Items.reduce((a: any, b: any) => {
+                    return a[b['assetID']] = (b['isDeleted'] == 1) ? b['assetIdentification'] + '  - Deleted' : b['assetIdentification'], a;
+                }, {});
             })
     }
 
@@ -790,6 +790,10 @@ export class AddTripComponent implements OnInit {
                 result.Items.map((i) => { i.fullName = i.firstName; return i; });
                 this.drivers = result.Items;
                 this.codrivers = result.Items;
+
+                this.driversObjects = result.Items.reduce((a: any, b: any) => {
+                    return a[b['driverID']] = b['firstName'], a;
+                }, {});
             })
     }
 
@@ -1260,24 +1264,6 @@ export class AddTripComponent implements OnInit {
     }
 
     /*
-    * Get all shippers's IDs of names from api
-   */
-    fetchShippersByIDs() {
-        // this.apiService.getData('contacts/get/list/consignor').subscribe((result: any) => {
-        //     this.shippersObjects = result;
-        // });
-    }
-
-//     /*
-//    * Get all receivers's IDs of names from api
-//    */
-    fetchReceiversByIDs() {
-        // this.apiService.getData('contacts/get/list/consignee').subscribe((result: any) => {
-        //     this.receiversObjects = result;
-        // });
-    }
-
-    /*
     * Get all customer's IDs of names from api
    */
     fetchCustomerByIDs() {
@@ -1288,39 +1274,12 @@ export class AddTripComponent implements OnInit {
         });
     }
 
-    /*
-    * Get all vehicles's IDs of names from api
-   */
-    fetchVehiclesByIDs() { 
-        this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
-            this.vehiclesObjects = result;
-        });
-    }
-
-    /*
-    * Get all asset's IDs of names from api
-   */
-    fetchAssetsByIDs() {
-        this.apiService.getData('assets/get/list').subscribe((result: any) => {
-            this.assetsObjects = result;
-        });
-    }
-
-    /*
-    * Get all driver's IDs of names from api
-   */
-    fetchDriversByIDs() {
-        this.apiService.getData('drivers/get/username-list').subscribe((result: any) => {
-            this.driversObjects = result;
-        });
-    }
-
-    fetchAllCarrierIDs() {
-        this.apiService.getData('contacts/get/list/carrier')
-            .subscribe((result: any) => {
-                this.carriersObject = result;
-            });
-    }
+    // fetchAllCarrierIDs() {
+    //     this.apiService.getData('contacts/get/list/carrier')
+    //         .subscribe((result: any) => {
+    //             this.carriersObject = result;
+    //         });
+    // }
 
     public searchLocation() {
         let target;
@@ -1412,7 +1371,7 @@ export class AddTripComponent implements OnInit {
                     let obj = {
                         carrierID: element.carrierID,
                         carrierName: this.carriersObject[element.carrierID],
-                        coDriverName: this.driversObjects[element.codriverUsername],
+                        coDriverName: this.driversObjects[element.coDriverID],
                         coDriverUsername: element.codriverUsername,
                         date: element.date,
                         // time: element.time,
@@ -1420,7 +1379,7 @@ export class AddTripComponent implements OnInit {
                         dropTime: element.dropTime,
                         actualPickupTime: element.actualPickupTime,
                         actualDropTime: element.actualDropTime,
-                        driverName: this.driversObjects[element.driverUsername],
+                        driverName: this.driversObjects[element.driverID],
                         driverUsername: element.driverUsername,
                         // location: element.location,
                         driverID: element.driverID,
@@ -1430,7 +1389,7 @@ export class AddTripComponent implements OnInit {
                         miles: element.miles,
                         name: element.name,
                         trailer: '',
-                        trailerID: [],
+                        trailerID: element.assetID,
                         type: element.type,
                         vehicleID: element.vehicleID,
                         vehicleName: this.vehiclesObjects[element.vehicleID],
