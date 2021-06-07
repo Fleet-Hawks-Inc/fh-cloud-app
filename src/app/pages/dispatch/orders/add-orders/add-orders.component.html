@@ -206,7 +206,7 @@
                                                   {{address.cityName}}</label>
                                             </div>
                                             <div class="col-lg-6">
-                                               <label class="control-label"><span class=" font-weight-bold">Province:</span>
+                                               <label class="control-label"><span class=" font-weight-bold">Province/State:</span>
                                                   {{address.stateName}}</label>
                                             </div>
                                             <div class="col-lg-6">
@@ -240,10 +240,10 @@
                                    <div>
 
                                      <div *ngIf="orderNum.errors.required">
-                                      Customer PO is required.
+                                      Customer PO# is required.
                                       </div>
                                       <div *ngIf="orderNum.errors.pattern">
-                                        Customer PO must contains numbers only.
+                                        Customer PO# must contains numbers only.
                                          </div>
                                    </div>
 
@@ -494,11 +494,11 @@
 
 
                                                              </div>
-                                                              <span class="text-danger"
+                                                              <!-- <span class="text-danger"
                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.shipperID == ''"
                                                                  >
                                                                  This Field is required
-                                                              </span>
+                                                              </span> -->
                                                            </div>
                                                            <div class="col-lg-1 mar-top-37  pl-0">
                                                               <a data-toggle="modal" data-target="#addShipperModal" href="javascript:;"
@@ -542,11 +542,11 @@
                                                                  </ul>
                                                               </div>
 
-                                                              <span class="text-danger"
+                                                              <!-- <span class="text-danger"
                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupLocation == ''"
                                                                  >
                                                                  This Field is required
-                                                              </span>
+                                                              </span> -->
                                                            </div>
 
                                                         </div>
@@ -570,14 +570,14 @@
                                                               </div>
                                                               <div *ngIf="orderDate1.invalid && (orderDate1.dirty || orderDate1.touched)" class="text-danger">
                                                                  <div *ngIf="orderDate1.errors.required">
-                                                                  PickUp date and time is required.
+                                                                  Pick date and time is required.
                                                                      </div>
                                                              </div>
-                                                              <span class="text-danger"
+                                                              <!-- <span class="text-danger"
                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
                                                                  >
                                                                  This Field is required
-                                                              </span>
+                                                              </span> -->
                                                            </div>
                                                            <div class="col-lg-6">
                                                               <div class="input-group">
@@ -588,11 +588,11 @@
                                                                  <!-- <input [(ngModel)]="item.pickupTime"
                                                                  name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
                                                               </div>
-                                                              <span class="text-danger"
+                                                              <!-- <span class="text-danger"
                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.pickupTime == ''"
                                                                  >
                                                                  This Field is required
-                                                              </span>
+                                                              </span> -->
                                                            </div>
                                                            <!-- <div class="col-lg-3 mt-1">
                                                            </div> -->
@@ -604,7 +604,9 @@
                                                                  for="inputDefault">Pickup Instruction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
                                                               <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
-                                                                 name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+
+                                                                 name="pickupInstruction" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{1,500}$"
+
                                                                  ></textarea>
                                                                  <div *ngIf="Pickup1.invalid && (Pickup1.dirty || Pickup1.touched)" class="text-danger">
                                                                   <div>
@@ -1037,7 +1039,7 @@
                                                                  for="inputDefault">Delivery Instruction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
                                                               <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="item.receivers.dropOffInstruction"
-                                                                 name="dropOffInstruction" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                 name="dropOffInstruction" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{1,500}$"
 
                                                                  style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
                                                                  <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
@@ -2049,10 +2051,15 @@
 
                  <div class="form-group row">
                     <div class="col-lg-12 text-right">
+
                        <a href="javascript:;" routerLink="/dispatch/orders" 
+
                           class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                       <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="!aOrder1.form.valid" class="btn btn-success" >Save</button>
-                       <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="!aOrder1.form.valid" class="btn btn-success text-white" >Update</button>
+                                      <!-- if there is some error in validation  -->
+                       <button *ngIf="!getOrderID && !aOrder1.form.valid " type="button" (click)="onSubmit()" [disabled]="!aOrder1.form.valid" class="btn btn-success" >Save</button>
+                       <button *ngIf="!getOrderID && aOrder1.form.valid " type="button" (click)="onSubmit()" [disabled]="submitDisabled" class="btn btn-success" >Save</button>
+                       <button *ngIf="getOrderID && !aOrder1.form.valid" type="button" (click)="updateOrder()" [disabled]="!aOrder1.form.valid" class="btn btn-success text-white" >Update</button>
+                       <button *ngIf="getOrderID && aOrder1.form.valid" type="button" (click)="updateOrder()" [disabled]="submitDisabled" class="btn btn-success text-white" >Update</button>
                     </div>
                  </div>
               </form>
@@ -2152,4 +2159,6 @@
       </div>
     </div>
   </div>
+
 </div>
+

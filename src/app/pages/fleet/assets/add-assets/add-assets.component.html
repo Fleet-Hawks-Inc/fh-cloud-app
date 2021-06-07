@@ -499,13 +499,13 @@
                       Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
                       placeholder="eg. CAL 745" name="assetDetails.licencePlateNumber"
-                      class="form-control" type="text" maxlength="8" #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{7,8}$">
+                      class="form-control" type="text" maxlength="8" #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                       <div *ngIf="pName.invalid && (pName.dirty || pName.touched)"  class="text-danger">
                         <div *ngIf="pName.errors.required">
                           Licence plate number is required.
                         </div>
                           <div *ngIf="pName.errors.pattern">
-                            Licence plate number must be between 7-8 alphanumeric characters.
+                            Licence plate number must be between 6-8 alphanumeric characters.
                           </div>
                       </div>
                   </div>
@@ -555,6 +555,8 @@
                   <div class="col-lg-2  mar-top-37 pl-0">
                     <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form cus-btn-padd btn btn-success"><i
                         class="fas fa-plus"></i></a>
+                    <a (click)="getInspectionForms();"target="_blank" aria-hidden="true" class="ml-1 mmodal-with-form cus-btn-padd btn btn-success"><i style="color:#fff;"
+                          class="fas fa-sync-alt"></i></a>
                   </div>
                 </div>
 

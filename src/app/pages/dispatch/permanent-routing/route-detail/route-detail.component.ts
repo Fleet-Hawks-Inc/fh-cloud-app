@@ -123,7 +123,7 @@ export class RouteDetailComponent implements OnInit {
   fetchAssets(assetID){
     this.apiService.getData('assets/'+assetID)
       .subscribe((result: any)=>{
-        if(result.Items> 0){
+        if(result.Items.length> 0){
           this.assetName = result.Items[0].assetIdentification;
         }
       })
@@ -132,7 +132,7 @@ export class RouteDetailComponent implements OnInit {
   fetchVehicle(vehicleID){
     this.apiService.getData('vehicles/'+vehicleID)
       .subscribe((result: any)=>{
-        if(result.Items > 0){
+        if(result.Items.length > 0){
           this.VehicleName = result.Items[0].vehicleIdentification;
         }
       })
@@ -141,7 +141,7 @@ export class RouteDetailComponent implements OnInit {
   fetchDriver(driverID, type){
     this.apiService.getData('drivers/'+driverID)
       .subscribe((result: any)=>{
-        if(result.Items > 0){
+        if(result.Items.length > 0){
           if(type == 'driver'){
             this.driverName = result.Items[0].firstName +' ' +result.Items[0].lastName;
           } else{

@@ -73,7 +73,7 @@
                                                       class="text-1 optional-label-color">(optional)</span>
                                               </label>
                                               <textarea class="form-control h-auto" rows="3" name="notes"
-                                                  [(ngModel)]="routeData.notes" placeholder="Enter notes" #NoteR1= "ngModel" pattern ="^[\s\S]{500}$"></textarea>
+                                                  [(ngModel)]="routeData.notes" placeholder="Enter notes" #NoteR1= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                                   <div *ngIf="NoteR1.invalid && (NoteR1.dirty || NoteR1.touched)" class="text-danger">
                                                     <div>
                                                       <div *ngIf="NoteR1.errors.pattern">
@@ -596,7 +596,7 @@
                                                                   <td>
                                                                       <input type="text" class="form-control"
                                                                           placeholder="Notes" name="stopNotes_{{i}}"
-                                                                          [(ngModel)]="routeData.stops[i].stopNotes" #NoteR= "ngModel" pattern ="^[\s\S]{500}$" >
+                                                                          [(ngModel)]="routeData.stops[i].stopNotes" #NoteR= "ngModel" pattern ="^[\s\S]{1,500}$" >
                                                                           <div *ngIf="NoteR.invalid && (NoteR.dirty || NoteR.touched)" class="text-danger">
                                                                             <div>
                                                                               <div *ngIf="NoteR.errors.pattern">
