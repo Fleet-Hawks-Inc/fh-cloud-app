@@ -17,7 +17,7 @@ import {
 } from "rxjs/operators";
 import { HereMapService } from "../../../../services";
 import { environment } from "../../../../../environments/environment.prod";
-import { NgbTimeStruct, NgbDatepickerConfig } from "@ng-bootstrap/ng-bootstrap";
+import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
@@ -35,7 +35,7 @@ declare var H: any;
 export class AddOrdersComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   public getOrderID;
-  orderForm: NgForm;
+  aOrder1: NgForm;
   pageTitle = "Add Order";
   private readonly search: any;
   public searchTerm = new Subject<string>();
@@ -71,7 +71,9 @@ export class AddOrdersComponent implements OnInit {
   customerSelected = {
     additionalContact : [],
     address:[],
-    shippingAddr: false
+    officeAddr: false,
+    email: '',
+    phone: ''
   };
   orderMode: string = "FTL";
 
@@ -214,6 +216,8 @@ export class AddOrdersComponent implements OnInit {
         maxTemprature: "",
         maxTempratureUnit: "",
         driverLoad: false,
+        save: true,
+        update: false
       },
       receivers: {
         receiverID: "",
@@ -241,6 +245,8 @@ export class AddOrdersComponent implements OnInit {
         maxTemprature: "",
         maxTempratureUnit: "",
         driverUnload: false,
+        save: true,
+        update: false
       },
     },
   ];
@@ -300,19 +306,18 @@ export class AddOrdersComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private router: Router,
-    private config: NgbDatepickerConfig,
     private pdfService: PdfAutomationService,
     private httpClient: HttpClient,
     private listService: ListService,
     private domSanitizer: DomSanitizer
   ) {
     const current = new Date();
-    config.minDate = {
-      year: current.getFullYear(),
-      month: current.getMonth() + 1,
-      day: current.getDate(),
-    };
-    config.outsideDays = "hidden";
+    // config.minDate = {
+    //   year: current.getFullYear(),
+    //   month: current.getMonth() + 1,
+    //   day: current.getDate(),
+    // };
+    // config.outsideDays = "hidden";
 
     this.pdfService.dataSubscribe$
       .pipe(
@@ -484,21 +489,16 @@ export class AddOrdersComponent implements OnInit {
 
   async saveShipper(i) {
     // this.isShipperSubmit = true; 
+    
+    if(this.shippersReceivers[i].shippers.update == true) {
+      this.shippersReceivers[i].shippers.update == false;
+      this.shippersReceivers[i].shippers.save == true;
+    }
+
     let location = this.shippersReceivers[i].shippers.pickupLocation;
     let geoCodeResponse;
-    let platform = new H.service.Platform({
-      apikey: this.apiKey,
-    });
-    const service = platform.getSearchService();
-    if (location !== "") {
-      let result = await service.geocode({ q: location });
-      // 
-      result.items.forEach((res) => {
-        // 
-        geoCodeResponse = res;
-      });
-      // 
-    }
+    let result = await this.getCords(location);
+    geoCodeResponse = result;
 
     //check if all required fields are filled
     if (
@@ -579,24 +579,30 @@ export class AddOrdersComponent implements OnInit {
     this.shipperReceiverMerge();
 
     this.toastr.success("Consignor Added.");
+
   }
 
-  async saveReceiver(i) {
-    // this.isReceiverSubmit = true;
-
-    let location = this.shippersReceivers[i].receivers.dropOffLocation;
-    let geoCodeResponse;
+  async getCords(value){
     let platform = new H.service.Platform({
       apikey: this.apiKey,
     });
     const service = platform.getSearchService();
-    if (location !== "") {
-      let result = await service.geocode({ q: location });
-      result.items.forEach((res) => {
-        geoCodeResponse = res;
-      });
+    if (value !== "") {
+      let result = await service.geocode({ q: value });
+      return result.items[0]
+    }
+  }
+  async saveReceiver(i) {
+    // this.isReceiverSubmit = true;
+    if(this.shippersReceivers[i].receivers.update == true) {
+      this.shippersReceivers[i].receivers.update == false;
+      this.shippersReceivers[i].receivers.save == true;
     }
 
+    let location = this.shippersReceivers[i].receivers.dropOffLocation;
+    let geoCodeResponse;
+    let result = await this.getCords(location);
+    geoCodeResponse = result;
     //check if all required fields are filled
     if (
       !this.shippersReceivers[i].receivers.receiverID ||
@@ -676,6 +682,7 @@ export class AddOrdersComponent implements OnInit {
     this.emptyReceiver(i);
 
     this.toastr.success("Consignee Added.");
+    
   }
 
   shipperReceiverMerge() {
@@ -819,6 +826,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async getMiles(value) {
+    
     this.getAllCords = [];
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
@@ -851,7 +859,7 @@ export class AddOrdersComponent implements OnInit {
         let cords = `${element.position.lng},${element.position.lat}`;
         this.getAllCords.push(cords);
       });
-
+      
       if (value === "google") {
         // this.mergedArray.forEach((element) => {
         //   this.googleCords.push({
@@ -885,11 +893,12 @@ export class AddOrdersComponent implements OnInit {
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
         this.customerSelected = result.Items[0];
-
         for (let i = 0; i < this.customerSelected.address.length; i++) {
           const element = this.customerSelected.address[i];
-          if(element.addressType == 'Shipping Address') {
-            this.customerSelected.shippingAddr = true;
+          if(element.addressType == 'Office') {
+            this.customerSelected.officeAddr = true;
+            this.customerSelected.email = result.Items[0].workEmail;
+            this.customerSelected.phone = result.Items[0].workPhone;
           }
         }
       });
@@ -1152,9 +1161,16 @@ export class AddOrdersComponent implements OnInit {
   removeList(elem, parentIndex, i) {
     if (elem === "shipper") {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
+      this.shippersReceivers[parentIndex].shippers.update = false;
+      this.shippersReceivers[parentIndex].shippers.save = true;
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
+      this.shippersReceivers[parentIndex].receivers.update = false;
+    this.shippersReceivers[parentIndex].receivers.save = true;
     }
+    
+    this.showShipperUpdate = false;
+    this.showReceiverUpdate = false;
   }
 
   assignLocation(i, elem, label) {
@@ -1191,7 +1207,9 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.maxTempratureUnit =
         data.maxTempratureUnit;
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
-      
+      this.shippersReceivers[j].shippers.save = false;
+      this.shippersReceivers[j].shippers.update = true;
+
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
       
@@ -1216,6 +1234,9 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.maxTempratureUnit =
         data.maxTempratureUnit;
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
+
+      this.shippersReceivers[j].receivers.save = false;
+      this.shippersReceivers[j].receivers.update = true;
       this.stateShipperIndex = i;
     }
     this.visibleIndex = i;
@@ -1223,10 +1244,10 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
-  updateShipperReceiver(obj, i) {
+  async updateShipperReceiver(obj, i) {
     if (obj === "shipper") {
       let data = this.shippersReceivers[i].shippers;
-
+      
       delete this.finalShippersReceivers[i].shippers[this.stateShipperIndex]
         .pickupDate;
       delete this.finalShippersReceivers[i].shippers[this.stateShipperIndex]
@@ -1269,12 +1290,18 @@ export class AddOrdersComponent implements OnInit {
         this.stateShipperIndex
       ].driverLoad = data.driverLoad;
       this.showShipperUpdate = false;
+      let result = await this.getCords(data.pickupLocation)
+      this.finalShippersReceivers[i].shippers[
+        this.stateShipperIndex
+      ].position = result.position;
+      data.save = true;
+      data.update = false;
       this.emptyShipper(i);
-
+      
       this.toastr.success('Consignor Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
-
+      
       delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
         .dropOffDate;
       delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
@@ -1318,13 +1345,34 @@ export class AddOrdersComponent implements OnInit {
         this.stateShipperIndex
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
-      this.emptyReceiver(i);
-
+      
+      let result = await this.getCords(data.dropOffLocation)
+      
+      this.finalShippersReceivers[i].receivers[
+        this.stateShipperIndex
+      ].position = result.position;
+      data.save = true;
+      data.update = false;
       this.toastr.success('Consignee Updated');
+      this.emptyReceiver(i);
     }
-
+    
     this.visibleIndex = -1;
     this.stateShipperIndex = "";
+  }
+
+
+  disableButton() {
+    if(this.orderData.customerID == '' || this.orderData.customerPO == '' || this.orderData.customerPO == '' 
+      || this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
+      this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || 
+      this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.currency == ''
+      ){
+      return true
+    }
+    return false
+    
+    
   }
 
   /***************
@@ -1601,6 +1649,8 @@ export class AddOrdersComponent implements OnInit {
         maxTemprature: "",
         maxTempratureUnit: "",
         driverLoad: false,
+        save: true,
+        update: false
       },
       receivers: {
         receiverID: "",
@@ -1628,6 +1678,8 @@ export class AddOrdersComponent implements OnInit {
         maxTemprature: "",
         maxTempratureUnit: "",
         driverUnload: false,
+        save: true,
+        update: false
       },
     };
     this.shippersReceivers.push(allFields);
@@ -1666,9 +1718,12 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  accordianChange(event) {
+  accordianChange(event, i) {
     this.activeId = this.activeId == event.panelId ? "" : event.panelId;
-   
+    var offset = $('.accordian_0').offset();
+    $('.accordian_'+ i).css('top', offset);
+    $('html, body').animate({scrollTop:$('.accordian_'+ i).offset().top - 130}, 'slow');
+    
     for (let i = 0; i < this.shippersReceivers.length; i++) {
       const element = this.shippersReceivers[i];
       element.shippers.shipperID = '';
@@ -1694,6 +1749,8 @@ export class AddOrdersComponent implements OnInit {
       element.shippers.maxTemprature ='';
       element.shippers.maxTempratureUnit ='';
       element.shippers.driverLoad = false;
+      element.shippers.save = true;
+      element.shippers.update = false;
       
       
       element.receivers.receiverID = '';
@@ -1716,7 +1773,9 @@ export class AddOrdersComponent implements OnInit {
       element.receivers.minTempratureUnit = '';
       element.receivers.maxTemprature = '';
       element.receivers.maxTempratureUnit = '';
-      element.receivers.driverUnload = false 
+      element.receivers.driverUnload = false,
+      element.receivers.save = true;
+      element.receivers.update = false;
     }
     
   }

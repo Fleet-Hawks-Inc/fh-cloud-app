@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/Map-Dashboard']);
     }
-    console.log('in login')
+    
   }
 
   toggleFieldTextType() {
@@ -95,7 +95,6 @@ export class LoginComponent implements OnInit {
     let token = localStorage.getItem('accessToken');
     if(token != null) {
       this.router.navigate(['/Map-Dashboard']);
-      return false;
     }
     if((this.userName)&&(this.password)){
     try {
