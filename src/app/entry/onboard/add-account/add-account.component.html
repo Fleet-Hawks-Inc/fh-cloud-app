@@ -125,13 +125,13 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
-                          placeholder="eg. +12234567891" #ph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                          placeholder="eg. 2234567891" #ph="ngModel" required pattern="^[0-9]{10}$">
                           <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
                             <div *ngIf="ph.errors.required">
                             Phone number is required.
                             </div>
                             <div *ngIf="ph.errors.pattern">
-                              Enter valid phone number eg. +12032342345.
+                              Enter valid phone number eg. 2234567891
                             </div>
                           </div>
                       </div>
