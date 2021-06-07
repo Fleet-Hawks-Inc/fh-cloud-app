@@ -5,7 +5,7 @@
         <img src="./assets/img/logologin.png" alt="FH Admin" />
       </a>
     </div>
- 
+
     <div class="panel card-sign">
       <div class="card-title-sign text-center">
         <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">Sign In</h2>
@@ -70,8 +70,10 @@
               <button *ngIf="!loginForm.form.valid" type="button" [disabled]="!loginForm.form.valid" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">Sign In</button>
               <button *ngIf="loginForm.form.valid" id="btnsubmit" type="submit" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn" (click)="loginAction1()" [disabled]="submitDisabled">Sign In</button>
             </div>
-            <div class="col-sm-12 mt-2 pt-1 text-center"> 
-              <a [routerLink]="['/onboard']" class="font-weight-semibold">Does not have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
+
+            <div class="col-sm-12 mt-2 pt-1 text-center">
+              <a [routerLink]="['/onboard']" class="font-weight-semibold">Do not have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
+
             </div>
           </div>
 

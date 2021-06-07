@@ -313,6 +313,10 @@ export class AddVehicleNewComponent implements OnInit {
     this.drivers = this.listService.driversList;
   }
 
+  async getInspectionForms(){
+    await this.fetchInspectionForms();
+
+  }
 
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {

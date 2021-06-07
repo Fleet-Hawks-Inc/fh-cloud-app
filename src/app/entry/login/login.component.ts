@@ -91,6 +91,7 @@ export class LoginComponent implements OnInit {
     this.submitDisabled = true;
     if (!this.authService.isTokenExpired) {
       this.router.navigate(['/Map-Dashboard']);
+      return false;
     }
     if ((this.userName) && (this.password)) {
       try {

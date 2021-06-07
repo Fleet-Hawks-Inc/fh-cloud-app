@@ -76,7 +76,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
         if (token == undefined) {
           //Navigate to login
           this.router.navigate(['/Login']);
+        } else if (this.router.url == '/Login') {
+          this.router.navigate(['/Map-Dashboard']);
         }
+
       }
     }, false);
   }

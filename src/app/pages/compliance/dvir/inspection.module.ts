@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxSpinnerModule } from "ngx-spinner";
+import {NgSelectModule} from '@ng-select/ng-select'
 import { InspectionSummaryComponent } from './inspection-summary/inspection-summary.component';
 import {InspectionDetailComponent} from './inspection-detail/inspection-detail.component';
 
@@ -31,7 +32,8 @@ const routes: Routes = [
     NgbModule,
     ChartsModule,
     RouterModule.forChild(routes),
-    MatExpansionModule
+    MatExpansionModule,
+    NgSelectModule
   ],
   declarations: [
     ListInspectionComponent,
