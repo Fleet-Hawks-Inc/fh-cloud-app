@@ -2,11 +2,11 @@
     
     <div class="inner-wrapper">
        
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header service-log-header">
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
             
                 <form class="form-horizontal" method="get">
-                    <div class="row px-2" style="padding-top:9px;">
+                    <div class="row" style="padding-top:10px;">
                         <!-- <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
                                 <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
@@ -22,14 +22,14 @@
                              </div>
                         </div> -->
 
-                        <div class="col-md-2 col-lg-2 pr-0 pl-0">
+                        <div class="col-md-2 col-lg-2">
 							<div class="input-group input-group-sm mb-3"> 
                                 <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
                                     <ng-option *ngFor="let data of vehiclesObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                                 </ng-select>
 							</div> 
 						</div>
-						<div class="col-md-2 col-lg-2 pr-0 pl-2">
+						<div class="col-md-2 col-lg-2 pl-0">
 							<div class="input-group input-group-sm mb-3">
                                 <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search by asset">
                                     <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
@@ -37,21 +37,21 @@
 							</div>
 						</div>
 
-                        <div class="col-md-2  col-lg-2">
-                            <ng-select placeholder="Select Task" class="form-control populate" name="taskID" [(ngModel)]="taskID">
+                        <div class="col-md-2 col-lg-2 pl-0 pr-0">
+                            <ng-select placeholder="Select Task" class="form-control bgnone populate" name="taskID" [(ngModel)]="taskID">
                                 <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
                                     <div title="{{item.taskName}}">{{item.taskName}}</div>
                                 </ng-option>
                             </ng-select>
                         </div>
 
-                        <div class="col-md-2 col-lg-2 pl-2">
+                        <div class="col-md-2 col-lg-2">
                             <button type="submit" (click)="searchFilter()"
-                                class="btn btn-sm btn-success mr-2">Search</button>
+                                class="btn btn-sm btn-success mr-3">Search</button>
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
-                        <div class="col-md-4 col-lg-4 text-right text-right">
+                        <div class="col-md-4 col-lg-4 text-right pr-1 text-right">
                             <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
 
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -68,133 +68,143 @@
                     </div>
                 </form>
             </header>
-            <div class="row">
-                <div class="col">
-                    <section class="card">
-                        <div class="card-body">
-                            <div class="mb-3 pb-1">
-                                <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" routerLink="/fleet/maintenance/service-program/list" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Program</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-content p-0 border-0 shadow-none" id="myTabContent">
-                                <div class="tab-pane show active" id="service-log" role="tabpanel" aria-labelledby="service-log-tab">
-                                    <div class="row">
-                                        <div class="col pr-0">
-                                            <section class="card">
-                                                <div class="card-body p-0">
-                                                    <div class="table-responsive">
-                                                        <table class="row-border hover table table-bordered table-striped mb-0">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="10%">Unit Type</th>
-                                                                    <th width="20%">Vehicle/Asset</th>
-                                                                    <th width="15%">Completion Date/Odometer</th>
-                                                                    <th width="40%">Details</th>
-                                                                    <th width="15%">Total</th>
-                                                                    <th>Actions</th>
-                                                                </tr>
-                                                            </thead>
-                                        
-                                                            <tbody>
-                                                                <tr *ngIf="logs.length == 0" class="text-center">
-                                                                    <td colspan="6">{{dataMessage}}</td>
-                                                                </tr>
-                                                                <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
-                                                                    <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        {{item.unitType}}
-                                                                    </td>
-                                                                    <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        {{ item.unitName}} <br>
 
-                                                                        <span class="text-success text-capitalize" 
-                                                                            [ngClass]="{'text-danger': item.currentStatus == 'sold', 
-                                                                            'text-muted' : item.currentStatus === 'outOfService'}">
-                                                                            {{item.currentStatus}}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td>{{item.completionDate | date: 'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID"
-                                                                            class="font-size-12">{{item.odometer}} miles</span></td>
-                                                                    <td>
-                                                                        <div>
-                                                                            <span class="font-weight-bold">Service Task(s): </span>
-                                                                            <span 
-                                                                                title="Service Task"
-                                                                                *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last"
-                                                                                >{{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">, </span>
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row pt-1">
+                            <div class="col-lg-12">
+                                <div class="mb-3 pb-1">
+                                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" routerLink="/fleet/maintenance/service-log/list" id="service-log-tab" data-toggle="tab" href="#service-log" role="tab" aria-controls="open" aria-selected="true">Service Log</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" routerLink="/fleet/maintenance/service-program/list" id="service-prog-tab" data-toggle="tab" role="tab" aria-controls="overdue" aria-selected="false">Service Program</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content p-0 border-0 shadow-none" id="myTabContent">
+                                    <div class="tab-pane show active" id="service-log" role="tabpanel" aria-labelledby="service-log-tab">
+                                        <div class="row">
+                                            <div class="col pr-0">
+                                                <section class="card">
+                                                    <div class="card-body p-0">
+                                                        <div class="table-responsive">
+                                                            <table class="row-border hover table table-bordered table-striped mb-0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="10%">Unit Type</th>
+                                                                        <th width="20%">Vehicle/Asset</th>
+                                                                        <th width="15%">Completion Date/Odometer</th>
+                                                                        <th width="40%">Details</th>
+                                                                        <th width="15%">Total</th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                            
+                                                                <tbody>
+                                                                    <tr *ngIf="logs.length == 0" class="text-center">
+                                                                        <td colspan="6">{{dataMessage}}</td>
+                                                                    </tr>
+                                                                    <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
+                                                                        <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
+                                                                            {{item.unitType}}
+                                                                        </td>
+                                                                        <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
+                                                                            {{ item.unitName}} <br>
+    
+                                                                            <span class="text-success text-capitalize" 
+                                                                                [ngClass]="{'text-danger': item.currentStatus == 'sold', 
+                                                                                'text-muted' : item.currentStatus === 'outOfService'}">
+                                                                                {{item.currentStatus}}
                                                                             </span>
-                                                                            <span 
-                                                                                *ngIf="item.allServiceTasks.serviceTaskList == 0;"
-                                                                                >-
-                                                                            </span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <span class="font-weight-bold">Issue(s): </span>
-                                                                                <a  title="Issue"
-                                                                                    class="text-info font-size-12"
-                                                                                    *ngFor="let issue of item.selectedIssues;let $last = last"
-                                                                                >
-                                                                                    <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
-                                                                                    <span *ngIf="!$last" class="list-format">, </span>
-                                                                                </a>
+                                                                        </td>
+                                                                        <td>{{item.completionDate | date: 'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID"
+                                                                                class="font-size-12">{{item.odometer}} miles</span></td>
+                                                                        <td>
+                                                                            <div>
+                                                                                <span class="font-weight-bold">Service Task(s): </span>
                                                                                 <span 
-                                                                                    *ngIf="item.selectedIssues.length == 0;"
+                                                                                    title="Service Task"
+                                                                                    *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last"
+                                                                                    >{{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">, </span>
+                                                                                </span>
+                                                                                <span 
+                                                                                    *ngIf="item.allServiceTasks.serviceTaskList == 0;"
                                                                                     >-
                                                                                 </span>
-                                                                        </div>
-                                                                       <div>
-                                                                            <span class="font-weight-bold">Vendor: </span> 
-                                                                            <a (click)="openComponent(item.vendorID)" class="text-info font-size-12" href="javascript:;" title="Vendor">
-                                                                                {{vendorsObject[item.vendorID]}}
-                                                                            </a>
-                                                                       </div>
-                                                                    </td>
-                                                                    <td> 
-                                                                        {{ (item.allServiceParts.total + item.allServiceTasks.total).toFixed(2) }} {{item.allServiceParts.currency}}</td>
-                                                                    <td>
-                                        
-                                                                        <div class="dropdown dropright">
-                                                                            <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
-                                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                <i class="fas fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                                <a class="dropdown-item"
-                                                                                    routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                                <a class="dropdown-item" (click)="deleteProgram(item)"
-                                                                                    href="javascript:;">Delete</a>
                                                                             </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="row mt-3 dtPaginate" *ngIf="logs.length > 0">
-                                                        <div class="col-6">
-                                                            Showing {{ serviceLogStartPoint }} to {{ serviceLogEndPoint }} of {{ totalRecords }} enteries
+                                                                            <div>
+                                                                                <span class="font-weight-bold">Issue(s): </span>
+                                                                                    <a  title="Issue"
+                                                                                        class="text-info font-size-12"
+                                                                                        *ngFor="let issue of item.selectedIssues;let $last = last"
+                                                                                    >
+                                                                                        <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
+                                                                                        <span *ngIf="!$last" class="list-format">, </span>
+                                                                                    </a>
+                                                                                    <span 
+                                                                                        *ngIf="item.selectedIssues.length == 0;"
+                                                                                        >-
+                                                                                    </span>
+                                                                            </div>
+                                                                           <div>
+                                                                                <span class="font-weight-bold">Vendor: </span> 
+                                                                                <a (click)="openComponent(item.vendorID)" class="text-info font-size-12" href="javascript:;" title="Vendor">
+                                                                                    {{vendorsObject[item.vendorID]}}
+                                                                                </a>
+                                                                           </div>
+                                                                        </td>
+                                                                        <td> 
+                                                                            {{ (item.allServiceParts.total + item.allServiceTasks.total).toFixed(2) }} {{item.allServiceParts.currency}}</td>
+                                                                        <td>
+                                            
+                                                                            <div class="dropdown dropright">
+                                                                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
+                                                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                                </button>
+                                                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                                    <a class="dropdown-item"
+                                                                                        routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
+                                                                                    <a class="dropdown-item" (click)="deleteProgram(item)"
+                                                                                        href="javascript:;">Delete</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+    
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                        <div class="col-6 text-right">
-                                                            <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="serviceLogPrev">Prev</button>
-                                                            <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="serviceLogNext">Next</button>
+                                                        <div class="row mt-3 dtPaginate" *ngIf="logs.length > 0">
+                                                            <div class="col-6">
+                                                                Showing {{ serviceLogStartPoint }} to {{ serviceLogEndPoint }} of {{ totalRecords }} enteries
+                                                            </div>
+                                                            <div class="col-6 text-right">
+                                                                <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="serviceLogPrev">Prev</button>
+                                                                <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="serviceLogNext">Next</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </section>
-                                        </div>
-                                     </div>
+                                                </section>
+                                            </div>
+                                         </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                           
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+            
+             </section>
+
+            
         </section>
     </div>
 </section>
@@ -210,8 +220,8 @@
                 </button>
             </div>
             <div class="modal-body text-dark">
-                <div class="card-body text-dark">
-                    <ul class="nav top-tabs nav-tabs wizard-steps" *ngIf="vendorsData">
+                <div class="card-body text-dark p-0">
+                    <ul class="nav top-tabs nav-tabs wizard-steps mb-3" *ngIf="vendorsData">
                         <li class="nav-item active"> <a href="#vndrBasicDetails" data-toggle="tab"
                                 class="nav-link text-center {{basicActive}}">
                                 Basic Details
@@ -267,7 +277,7 @@
                             </div>
                         </div>
                         <div id="vndrAddressDetails" class="tab-pane" *ngIf="!vendorTextStatus">
-                            <table style="float: left;" class="table table-bordered mb-2">
+                            <table style="float: left;" class="table table-bordered mb-3 mt-1 pt-1">
                                 <tbody *ngFor="let item of vendorAddress;">
                                     <tr>
                                         <th width="40%" class="back-color-gray">Address Type:</th>
@@ -300,7 +310,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-3 mb-1">
                             <div class="col-lg-12 text-right">
                                 <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                             </div>

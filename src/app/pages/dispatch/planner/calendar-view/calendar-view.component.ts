@@ -538,16 +538,14 @@ export class CalendarViewComponent implements OnInit {
   }
 
   filterTrip(tripID) {
-    if(tripID == undefined) {
-      this.tempTrips = this.oldTrips;
-    } else {
+    this.tempTrips = this.oldTrips;
+    if(tripID != undefined) {
       this.tempTrips = this.tempTrips.filter((v) =>{
         if(v.tripID == tripID) {
           return v;
         }
       })
     }
-    
   }
 
   updateTripStatus(tripID, index, tripStatus) {
