@@ -160,7 +160,7 @@ export class AddOrdersComponent implements OnInit {
     advance: 0,
     finalAmount: 0,
     milesInfo: {
-      totalMiles: null, 
+      totalMiles: null,
       calculateBy: 'manual'
     },
     remarks: '',
@@ -290,6 +290,7 @@ export class AddOrdersComponent implements OnInit {
   isReceiverSubmit = false;
   orderAttachments = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  submitDisabled = false;
 
   constructor(
     private apiService: ApiService,
@@ -317,7 +318,7 @@ export class AddOrdersComponent implements OnInit {
     this.pdfService.dataSubscribe$
       .pipe(
         tap((v) => {
-          
+
           if (v.toString() !== "" && v !== "undefined" && v !== undefined) {
             const d = JSON.parse(v);
 
@@ -411,7 +412,7 @@ export class AddOrdersComponent implements OnInit {
     this.receivers = this.listService.receiverList;
   }
 
-  
+
   fetchStateTaxes() {
     this.apiService
       .getData("stateTaxes")
@@ -448,7 +449,7 @@ export class AddOrdersComponent implements OnInit {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((term) => {
-          
+
           if(term!=undefined){
           return this.HereMap.searchEntries(term);
         }
@@ -464,12 +465,12 @@ export class AddOrdersComponent implements OnInit {
 
         this.searchResults = res;
         this.searchResults1 = res;
-        
+
       });
   }
   resetSearch(){
     if(this.searchResults.length>0){
-    
+
     this.searchResults=[]
     }
   }
@@ -483,7 +484,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveShipper(i) {
-    // this.isShipperSubmit = true; 
+    // this.isShipperSubmit = true;
     let location = this.shippersReceivers[i].shippers.pickupLocation;
     let geoCodeResponse;
     let platform = new H.service.Platform({
@@ -492,12 +493,12 @@ export class AddOrdersComponent implements OnInit {
     const service = platform.getSearchService();
     if (location !== "") {
       let result = await service.geocode({ q: location });
-      // 
+      //
       result.items.forEach((res) => {
-        // 
+        //
         geoCodeResponse = res;
       });
-      // 
+      //
     }
 
     //check if all required fields are filled
@@ -505,7 +506,7 @@ export class AddOrdersComponent implements OnInit {
       !this.shippersReceivers[i].shippers.shipperID ||
       !this.shippersReceivers[i].shippers.pickupLocation ||
       !this.shippersReceivers[i].shippers.pickupDate ||
-      !this.shippersReceivers[i].shippers.pickupTime 
+      !this.shippersReceivers[i].shippers.pickupTime
       // !this.shippersReceivers[i].shippers.contactPerson ||
       // !this.shippersReceivers[i].shippers.phone
     ) {
@@ -542,7 +543,7 @@ export class AddOrdersComponent implements OnInit {
       return false;
     }
 
-    this.isShipperSubmit = false; 
+    this.isShipperSubmit = false;
 
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
@@ -826,7 +827,7 @@ export class AddOrdersComponent implements OnInit {
       let shippers = this.finalShippersReceivers[k].shippers;
       let receivers = this.finalShippersReceivers[k].receivers;
 
-      if (shippers.length == 0) flag = false; 
+      if (shippers.length == 0) flag = false;
       if (receivers.length == 0) flag = false;
     }
 
@@ -843,7 +844,7 @@ export class AddOrdersComponent implements OnInit {
 
       return false;
     }
-    
+
     this.orderData.milesInfo["calculateBy"] = value;
 
     if (this.mergedArray !== undefined) {
@@ -862,11 +863,11 @@ export class AddOrdersComponent implements OnInit {
         // this.origin = this.googleCords[0];
         // this.googleCords.shift();
         // this.destination = this.googleCords;
-        // // 
+        // //
         // this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
-        // 
+        //
       } else if (value === "pcmiles") {
-        // 
+        //
         this.google.pcMiles.next(true);
         this.google
           .pcMilesDistance(this.getAllCords.join(";"))
@@ -971,11 +972,11 @@ export class AddOrdersComponent implements OnInit {
       !this.orderData.milesInfo.calculateBy
 
     ) {
-      // 
+      //
       return false;
     }
 
-    // 
+    //
     return true;
   }
 
@@ -1018,7 +1019,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData['loc'] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -1029,6 +1030,7 @@ export class AddOrdersComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
+    this.submitDisabled = true;
 
     this.apiService.postData("orders", formData, true).subscribe({
       complete: () => {},
@@ -1044,19 +1046,23 @@ export class AddOrdersComponent implements OnInit {
               if(key == 'order'){
                 this.toastr.error("This Order already exists.");
               }
-              // 
+              //
             })
           )
           .subscribe({
             complete: () => {
               // this.throwErrors();
               this.Success = "";
+              this.submitDisabled = false;
             },
-            error: () => {},
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => {},
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.toastr.success("Order added successfully");
         this.router.navigateByUrl("/dispatch/orders");
       },
@@ -1119,7 +1125,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.charges.accessorialDeductionInfo.accessorialDeduction = this.accessorialDeductionInfo.accessDeductions;
 
     sum +=
-      (parseFloat(this.freightFee) || 0) + 
+      (parseFloat(this.freightFee) || 0) +
       (parseFloat(this.fuelSurcharge) || 0);
 
     this.subTotal = sum;
@@ -1131,8 +1137,10 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.discount = discountAmount;
     }
+
     
     this.totalAmount = (this.subTotal).toFixed(0);
+
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
     if(!this.orderData.zeroRated){
@@ -1146,7 +1154,7 @@ export class AddOrdersComponent implements OnInit {
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
     }
-    
+
   }
 
   removeList(elem, parentIndex, i) {
@@ -1167,8 +1175,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
   editList(elem, parentIndex, i) {
+
     let j = parentIndex; 
     
+
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1523,6 +1533,7 @@ export class AddOrdersComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
+    this.submitDisabled = true;
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
@@ -1544,12 +1555,16 @@ export class AddOrdersComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
               this.Success = "";
+              this.submitDisabled = false;
             },
-            error: () => {},
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => {},
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
        this.router.navigateByUrl("/dispatch/orders");
       },
@@ -1742,7 +1757,7 @@ export class AddOrdersComponent implements OnInit {
   stateSelectChange(){
     let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.orderData.stateTaxID);
     this.orderData.taxesInfo = [];
-    
+
           this.orderData.taxesInfo = [
             {
               name: 'GST',
@@ -1767,7 +1782,7 @@ export class AddOrdersComponent implements OnInit {
       $('#shipperArea-' + i).children('i').removeClass('fa-caret-right')
       $('#shipperArea-' + i).children('i').addClass('fa-caret-down');
     }
-    else {  
+    else {
       $('#shipperArea-' + i).children('i').addClass('fa-caret-right')
       $('#shipperArea-' + i).children('i').removeClass('fa-caret-down');
     }
@@ -1778,7 +1793,7 @@ export class AddOrdersComponent implements OnInit {
       $('#receiverArea-' + i).children('i').removeClass('fa-caret-right')
       $('#receiverArea-' + i).children('i').addClass('fa-caret-down');
     }
-    else {  
+    else {
       $('#receiverArea-' + i).children('i').addClass('fa-caret-right')
       $('#receiverArea-' + i).children('i').removeClass('fa-caret-down');
     }
@@ -1797,7 +1812,7 @@ export class AddOrdersComponent implements OnInit {
       } else {
         this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue.target.value;
       }
-      
+
     }
   }
 
@@ -1819,7 +1834,7 @@ export class AddOrdersComponent implements OnInit {
       type: type,
       name: name,
       date: this.orderData.createdDate,
-      time: this.orderData.createdTime 
+      time: this.orderData.createdTime
     }
     this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
       this.orderAttachments.splice(index, 1);
