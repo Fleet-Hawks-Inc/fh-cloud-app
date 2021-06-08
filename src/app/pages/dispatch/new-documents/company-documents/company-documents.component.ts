@@ -391,12 +391,17 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+    if(this.filterValues.startDate===null) this.filterValues.startDate=''
+    if(this.filterValues.endDate===null) this.filterValues.endDate=''
+    if (this.filterValues.startDate != '' || this.filterValues.endDate != '' ||  this.filterValues.searchValue != '') {
       if(this.filterValues.startDate != '' && this.filterValues.endDate == '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
       } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
+        return false;
+      }else if(this.filterValues.startDate>this.filterValues.endDate){
+        this.toastr.error('Start date should be less then end date');
         return false;
       } else { 
         this.dataMessage = Constants.FETCHING_DATA;
@@ -413,6 +418,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.fetchDocumentsCount();
       }
     } else {
+      this.toastr.error('Please fill at least one field')
       return false;
     }
   }
