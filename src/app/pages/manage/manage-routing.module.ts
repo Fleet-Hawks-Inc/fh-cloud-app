@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ReportComponent } from '../compliance/ifta/report/report.component';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent
+  },
+  {
+    path: 'reports',
+    component: ReportComponent
   },
 ];
 

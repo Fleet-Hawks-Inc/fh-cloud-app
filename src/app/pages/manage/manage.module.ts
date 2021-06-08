@@ -14,6 +14,9 @@ import {
   EditProfileComponent
 } from './index';
 import { SettingsComponent } from './settings/settings.component';
+import { ReportsComponent } from './reports/reports.component';
+import { DriverComponent } from './reports/fleet/driver/driver.component';
+import { VehicleComponent } from './reports/fleet/vehicle/vehicle.component';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -78,6 +81,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     SettingsComponent,
+    ReportsComponent,
+    DriverComponent,
+    VehicleComponent,
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],

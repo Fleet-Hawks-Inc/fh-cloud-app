@@ -689,3 +689,18 @@ label.error {
 .dropdown-item.active, .dropdown-item:active {
     background-color: #47a447;
 }
+
+.circle-wrap .circle .mask .fillgreen {
+    clip: rect(0px, 75px, 150px, 0px);
+    background-color: #47a447;
+}
+.circle-wrap .circle .mask.full, .circle-wrap .circle .fillgreen {
+    animation: fill ease-in-out 3s;
+    transform: rotate(150deg);
+}
+.circle-wrap .circle .mask, .circle-wrap .circle .fillgreen {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    border-radius: 50%;
+}
