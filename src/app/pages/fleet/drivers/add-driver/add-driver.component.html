@@ -712,7 +712,7 @@
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
-                          [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
+                          [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province/State">
                           <ng-option class="text-capitalize" *ngFor="let state of document.docStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
@@ -847,7 +847,7 @@
                     <div>
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST# <span
+                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card# <span
                               class="text-1 optional-label-color">(optional)</span>
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
@@ -885,7 +885,7 @@
                     <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Licence Details</label>
                   </div>
                   <div class="col-lg-10">
-                    <label class="control-label text-4 pt-2">Add other licence details(eg. Enhanced drivers licence) in the documents section.</label>
+                    <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence) in the documents section.</label>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -1009,7 +1009,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
-                          placeholder="Select licence type of driver">
+                          placeholder="Select vehicle type of driver">
                           <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
                           <ng-option value="Light Vehicle">Light Vehicle</ng-option>
                         </ng-select>
@@ -1243,7 +1243,7 @@
                             type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
                             <div *ngIf="payM.invalid && (payM.dirty || payM.touched)" class="text-danger">
                               <div *ngIf="payM.errors.required">
-                               Loaded miles is required.
+                               Loaded miles are required.
                               </div>
                               <div *ngIf="payM.errors.pattern">
                               Loaded miles must contain numbers.
@@ -1277,7 +1277,7 @@
                             type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
                             <div *ngIf="eMiles1.invalid && (eMiles1.dirty || eMiles1.touched)" class="text-danger">
                               <div *ngIf="eMiles1.errors.required">
-                               Empty miles is required.
+                               Empty miles are required.
                               </div>
                               <div *ngIf="eMiles1.errors.pattern">
                               Empty miles must contain numbers.

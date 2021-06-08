@@ -270,13 +270,12 @@
                         class="form-control"
                         name="bin"
                         [(ngModel)]="bin"
-                        placeholder="eg. 1,2,3"
-                        #iBin="ngModel" pattern="^[0-9]+$"/>
-                      <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
+                        placeholder="eg. 1,2,3">
+                      <!-- <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
                         <div *ngIf="iBin.errors.pattern">
                           Bin must contain numbers only.
                         </div>
-                      </div>
+                      </div> -->
 
                     </div>
                   </div>
@@ -645,7 +644,7 @@
                   name="stateCode"
                   [(ngModel)]="stateCode"
                   (change)="getCities(countryCode,stateCode)"
-                  placeholder="Select Province" #sltP="ngModel" required
+                  placeholder="Select Province/State" #sltP="ngModel" required
                 >
                   <optgroup label="Select State">
 
@@ -655,7 +654,7 @@
                 </ng-select>
                 <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
                   <div *ngIf="sltP.errors.required">
-                    Select valid province from the list is required.
+                    Select valid province/state from the list is required.
                   </div>
 
 

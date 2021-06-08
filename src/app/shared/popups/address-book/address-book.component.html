@@ -1054,12 +1054,12 @@
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="vendorData.workPhone"
-                                                name="workPhone" type="text" class="form-control" placeholder="eg. +12234567891" #vendorPh="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                 <div *ngIf="vendorPh.invalid && (vendorPh.dirty || vendorPh.touched)" class="text-danger">
+                                                name="workPhone" type="text" class="form-control" placeholder="eg. 2234567891"  >
+                                                 <!-- <div *ngIf="vendorPh.invalid && (vendorPh.dirty || vendorPh.touched)" class="text-danger">
                                                    <div *ngIf="vendorPh.errors.pattern">
                                                     Enter valid phone number eg. +12234567891.
                                                    </div>
-                                                 </div>
+                                                 </div> -->
 
 
                                             </div>
@@ -1365,13 +1365,13 @@
                                                             Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.workPhone"
-                                                        name="workPhone" type="text" class="form-control" placeholder="eg. +12234567891" #customerph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                        <div *ngIf="customerph.invalid && (customerph.dirty || customerph.touched)" class="text-danger">
+                                                        name="workPhone" type="text" class="form-control" placeholder="eg. 2234567891" >
+                                                        <!-- <div *ngIf="customerph.invalid && (customerph.dirty || customerph.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerph.errors.pattern">
                                                             Enter valid phone number eg. +12234567891.
                                                           </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -1659,13 +1659,13 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.phone"
-                                                        name="phone_{{ad}}" type="text" class="form-control" placeholder="eg. +12234567891" #customerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                        <div *ngIf="customerph1.invalid && (customerph1.dirty || customerph1.touched)" class="text-danger">
+                                                        name="phone_{{ad}}" type="text" class="form-control" placeholder="eg. 2234567891" >
+                                                        <!-- <div *ngIf="customerph1.invalid && (customerph1.dirty || customerph1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerph1.errors.pattern">
                                                             Enter valid phone number eg. +12234567891.
                                                           </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1932,13 +1932,13 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. +12234567891" #brokerphn2="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                          <div *ngIf="brokerphn2.invalid && (brokerphn2.dirty || brokerphn2.touched)" class="text-danger">
+                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. 2234567891" >
+                                                          <!-- <div *ngIf="brokerphn2.invalid && (brokerphn2.dirty || brokerphn2.touched)" class="text-danger">
                                                             <div *ngIf="brokerphn2.errors.pattern">
                                                                 Enter valid phone number eg. +12234567891.
                                                             </div>
 
-                                                          </div>                                                        
+                                                          </div>                                                         -->
 
 
                                                     </div>
@@ -2121,13 +2121,13 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.phone" name="phone_{{ad}}" type="text"
-                                                            class="form-control" placeholder="eg. +12234567891" #brokerphone="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                            <div *ngIf="brokerphone.invalid && (brokerphone.dirty || brokerphone.touched)" class="text-danger">
+                                                            class="form-control" placeholder="eg. 2234567891" >
+                                                            <!-- <div *ngIf="brokerphone.invalid && (brokerphone.dirty || brokerphone.touched)" class="text-danger">
                                                                 <div *ngIf="brokerphone.errors.pattern">
                                                                     Enter valid phone number eg. +12234567891.
                                                                 </div>
 
-                                                            </div>
+                                                            </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -2292,14 +2292,14 @@
                                                     </div> -->
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input [(ngModel)]="carrierData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. +12234567891"  #carrierph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                        <input [(ngModel)]="carrierData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 2234567891"  #carrierph="ngModel" required pattern="^[0-9]{10}$">
 
                                                         <div *ngIf="carrierph.invalid && (carrierph.dirty || carrierph.touched)" class="text-danger">
                                                             <div *ngIf="carrierph.errors.required">
                                                             Phone number is required 
                                                             </div>
                                                             <div *ngIf="carrierph.errors.pattern">
-                                                                Enter valid phone number eg. +12234567891.
+                                                                Enter valid phone number eg. 2234567891.
                                                             </div>
 
                                                         </div>
@@ -2865,13 +2865,13 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
-                                                            class="form-control" placeholder="eg.+12234567891" #cph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                            <div *ngIf="cph.invalid && (cph.dirty || cph.touched)" class="text-danger">
+                                                            class="form-control" placeholder="eg. 2234567891">
+                                                            <!-- <div *ngIf="cph.invalid && (cph.dirty || cph.touched)" class="text-danger">
                                                               
                                                               <div *ngIf="cph.errors.pattern">
                                                                 Enter valid phone number eg. +12234567891.
                                                               </div>
-                                                            </div>
+                                                            </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -3029,13 +3029,13 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone
                                                             &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="ownerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. +12234567891" #ownerph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                        <div *ngIf="ownerph.invalid && (ownerph.dirty || ownerph.touched)" class="text-danger">
+                                                        <input [(ngModel)]="ownerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 2234567891" >
+                                                        <!-- <div *ngIf="ownerph.invalid && (ownerph.dirty || ownerph.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerph.errors.pattern">
                                                             Enter valid phone number eg. +12234567891.
                                                           </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -3417,13 +3417,13 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text" class="form-control" placeholder="eg. +12234567891" #ownerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                        <div *ngIf="ownerph1.invalid && (ownerph1.dirty || ownerph1.touched)" class="text-danger">
+                                                        <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text" class="form-control" placeholder="eg. 2234567891" >
+                                                        <!-- <div *ngIf="ownerph1.invalid && (ownerph1.dirty || ownerph1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="ownerph1.errors.pattern">
                                                             Enter valid phone number eg. +12234567891.
                                                           </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -3614,13 +3614,13 @@
                                             <div class="col-lg-12 pt-1 mt-2">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="shipperData.workPhone" name="workPhone" type="text"
-                                                    class="form-control" placeholder="eg. +12234567891" #consignorph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                    <div *ngIf="consignorph.invalid && (consignorph.dirty || consignorph.touched)" class="text-danger">
+                                                    class="form-control" placeholder="eg. 2234567891" #consignorph="ngModel" required pattern="^[0-9]{10}$">
+                                                    <!-- <div *ngIf="consignorph.invalid && (consignorph.dirty || consignorph.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consignorph.errors.pattern">
                                                         Enter valid phone number eg. +12234567891.
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -3802,13 +3802,13 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
-                                                    class="form-control" placeholder="eg. +12234567891" #consignorph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                    <div *ngIf="consignorph1.invalid && (consignorph1.dirty || consignorph1.touched)" class="text-danger">
+                                                    class="form-control" placeholder="eg. 2234567891" >
+                                                    <!-- <div *ngIf="consignorph1.invalid && (consignorph1.dirty || consignorph1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consignorph1.errors.pattern">
                                                         Enter valid phone number eg. +12234567891.
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -3992,13 +3992,13 @@
                                             <div class="col-lg-12 pt-1 mt-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="consigneeData.workPhone" name="workPhone" type="text"
-                                                    class="form-control" placeholder="eg. +12234567891"  #consigneeph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                    <div *ngIf="consigneeph.invalid && (consigneeph.dirty || consigneeph.touched)" class="text-danger">
+                                                    class="form-control" placeholder="eg. 2234567891" >
+                                                    <!-- <div *ngIf="consigneeph.invalid && (consigneeph.dirty || consigneeph.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneeph.errors.pattern">
                                                         Enter valid phone number eg. +12234567891.
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -4182,13 +4182,13 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
-                                                    class="form-control" placeholder="eg. +12234567891" #consigneeph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                    <div *ngIf="consigneeph1.invalid && (consigneeph1.dirty || consigneeph1.touched)" class="text-danger">
+                                                    class="form-control" placeholder="eg. 2234567891" >
+                                                    <!-- <div *ngIf="consigneeph1.invalid && (consigneeph1.dirty || consigneeph1.touched)" class="text-danger">
                                                       
                                                       <div *ngIf="consigneeph1.errors.pattern">
                                                         Enter valid phone number eg. +12234567891.
                                                       </div>
-                                                    </div>
+                                                    </div> -->
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -4363,13 +4363,13 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="fcCompanyData.workPhone" name="workPhone" type="text"
-                                                            class="form-control" placeholder="eg. +12234567891" #fcph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                            <div *ngIf="fcph.invalid && (fcph.dirty || fcph.touched)" class="text-danger">
+                                                            class="form-control" placeholder="eg. 2234567891" >
+                                                            <!-- <div *ngIf="fcph.invalid && (fcph.dirty || fcph.touched)" class="text-danger">
                                                                 <div *ngIf="fcph.errors.pattern">
                                                                     Enter valid phone number eg. +12234567891.
                                                                 </div>
 
-                                                            </div>
+                                                            </div> -->
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
