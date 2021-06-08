@@ -82,11 +82,12 @@ export class AddInspectionComponent implements OnInit {
         param.isDefault=true
       }) 
     }
+    let parameters=this.parameters.filter(value=>value.name!='')
     const data={
       inspectionFormName: this.inspectionFormName,
       inspectionType: this.inspectionType,
       isDefaultInspectionType: this.isDefaultInspectionType,
-      parameters:this.parameters
+      parameters:parameters
     }
     
     this.apiService.postData('inspectionForms',data).subscribe({
@@ -131,7 +132,7 @@ export class AddInspectionComponent implements OnInit {
     this.location.back();
   }
   addFormParam(index){
-    if(this.parameters[index].name !== '') {
+    if(this.parameters[index].name != '') {
       this.hasError=false;
       this.parameters.push({
         name:'',

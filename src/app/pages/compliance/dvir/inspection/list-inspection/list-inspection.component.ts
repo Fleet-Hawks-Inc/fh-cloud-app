@@ -67,12 +67,13 @@ export class ListInspectionComponent implements OnInit {
       this.inspectionForms = result['Items'];
 
       if (result['LastEvaluatedKey'] !== undefined) {
+        let lastEvalKey = result[`LastEvaluatedKey`].inspectionFormSK.replace(/#/g,'--');
         this.inspectionNext = false;
         // for prev button
-        if (!this.inspectionPrevEvauatedKeys.includes(result['LastEvaluatedKey'].inspectionFormID)) {
-          this.inspectionPrevEvauatedKeys.push(result['LastEvaluatedKey'].inspectionFormID);
+        if (!this.inspectionPrevEvauatedKeys.includes(lastEvalKey)) {
+          this.inspectionPrevEvauatedKeys.push(lastEvalKey);
         }
-        this.lastEvaluatedKey = result['LastEvaluatedKey'].inspectionFormID;
+        this.lastEvaluatedKey = lastEvalKey;
 
       } else {
         this.inspectionNext = true;
