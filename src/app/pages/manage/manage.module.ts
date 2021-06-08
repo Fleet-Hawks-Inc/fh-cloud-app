@@ -73,6 +73,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     return null;
   }
 
+  
+
   format(date: NgbDateStruct | null): string {
     return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
   }
