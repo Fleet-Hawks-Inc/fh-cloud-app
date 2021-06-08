@@ -4,13 +4,14 @@ import {Auth} from 'aws-amplify';
 import {Router} from '@angular/router';
 import { ApiService } from 'src/app/services';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
-
+import { environment } from '../../../environments/environment'; 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';

@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-nav collapse">
-            <div class="header-nav-main header-nav-main-square">
+            <div class="header-nav-main header-nav-main-square"> 
                 <nav>
                     <ul class="nav">
                         <li class="" [class.active]="navSelected === 'fleet'">
@@ -44,7 +44,7 @@
                                 Routing & Dispatch
                             </a>
                         </li>
-                        <li class="" [class.active]="navSelected === 'safety'">
+                        <li class="" [class.active]="navSelected === 'safety'" *ngIf="!environment">
                             <a class="nav-link" [routerLink]="['/safety', 'overview']" (click)="onNavSelected('safety')">
                                 Safety
                             </a>

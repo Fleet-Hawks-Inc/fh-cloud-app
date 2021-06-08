@@ -74,7 +74,7 @@
                                                   <div>
 
                                                       <div *ngIf="order.errors.required">
-                                                           Order is required .
+                                                           Order# is required .
                                                       </div>
 
 
@@ -276,13 +276,17 @@
                                                   </td>
                                                   <td id="labelCell6{{i}}" class="labelRow{{i}}">{{ trip.miles }}
                                                   </td>
-                                                  <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ trip.vehicleName
+                                                  <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ vehiclesObjects[trip.vehicleID]
                                                       }}</td>
-                                                  <td id="labelCell8{{i}}" class="labelRow{{i}}">{{ trip.trailerName
-                                                      }}</td>
-                                                  <td id="labelCell9{{i}}" class="labelRow{{i}}">{{ trip.driverName }}
+                                                  <td id="labelCell8{{i}}" class="labelRow{{i}}">
+                                                        <span *ngFor="let addt of trip.trailerID; let f=index;">
+                                                            {{ assetsObjects[addt] }}
+                                                            <span *ngIf="f>0">,</span>
+                                                        </span>
+                                                    </td>
+                                                  <td id="labelCell9{{i}}" class="labelRow{{i}}">{{ driversObjects[trip.driverID] }}
                                                   </td>
-                                                  <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.coDriverName
+                                                  <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ driversObjects[trip.coDriverID]
                                                       }}</td>
                                                   <td id="labelCell11{{i}}" class="labelRow{{i}}">
                                                       {{ trip.carrierName }}
@@ -363,7 +367,7 @@
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input type="text" class="form-control" id="editCell7{{i}}"
                                                           (click)="showAssetModal('edit',i)"
-                                                          value="{{ trip.vehicleName }}">
+                                                          value="{{ vehiclesObjects[trip.vehicleID] }}">
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input type="text" class="form-control" id="editCell8{{i}}"
@@ -373,12 +377,12 @@
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input type="text" class="form-control" id="editCell9{{i}}"
                                                           (click)="showAssetModal('edit',i)"
-                                                          value="{{ trip.driverName }}">
+                                                          value="{{ driversObjects[trip.driverID] }}">
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input type="text" class="form-control" id="editCell10{{i}}"
                                                           (click)="showAssetModal('edit',i)"
-                                                          value="{{ trip.coDriverName }}">
+                                                          value="{{ driversObjects[trip.coDriverID] }}">
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <select class="form-control" name="carrierID"
