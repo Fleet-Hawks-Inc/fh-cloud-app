@@ -429,6 +429,11 @@ export class TripListComponent implements OnInit {
   }
 
   filterTrips() {
+    
+
+    if(this.tripsFiltr.startDate===null) this.tripsFiltr.startDate=''
+    if(this.tripsFiltr.endDate===null) this.tripsFiltr.endDate=''
+    
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
 
@@ -438,7 +443,11 @@ export class TripListComponent implements OnInit {
       } else if(this.tripsFiltr.startDate == '' && this.tripsFiltr.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
+      } else if(this.tripsFiltr.startDate>this.tripsFiltr.endDate){
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
         this.toastr.error('Please enter search value.');
         return false;
       }else {
