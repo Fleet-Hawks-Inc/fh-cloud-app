@@ -130,16 +130,19 @@
                                                   Driver
                                                   &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                               </label>
-                                              <ng-select [(ngModel)]="routeData.driverID" name="driverID"
+                                              <ng-select [(ngModel)]="routeData.driverID" name="driverID" 
                                                   placeholder="Select driver" (change)="resetCodrivers()">
                                                   <ng-option *ngFor="let driver of drivers | async;"
                                                       value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
                                               </ng-select>
                                           </div>
-                                          <div class="col-lg-2">
-                                              <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                  (click)="gotoDriverPage()" href="javascript:;"><i
-                                                      class="fas fa-plus"></i></a>
+                                          <div class="col-lg-1 pl-0">
+                                            <a href="#/fleet/drivers/add" target="_blank" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                class="fas fa-plus"></i></a>
+                                          </div>
+                                          <div class="col-lg-1 pl-0">
+                                            <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip" title="Refresh driver data" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                class="fas fa-sync"></i></a>
                                           </div>
                                       </div>
                                       <div class="row mt-2">
@@ -156,10 +159,13 @@
                                                   </ng-container>
                                               </ng-select>
                                           </div>
-                                          <div class="col-lg-2">
-                                              <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                  (click)="gotoDriverPage()" href="javascript:;"><i
-                                                      class="fas fa-plus"></i></a>
+                                          <div class="col-lg-1 pl-0">
+                                            <a href="#/fleet/drivers/add" target="_blank" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                class="fas fa-plus"></i></a>
+                                          </div>
+                                          <div class="col-lg-1 pl-0">
+                                            <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip" title="Refresh driver data" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                class="fas fa-sync"></i></a>
                                           </div>
                                       </div>
                                   </div>
