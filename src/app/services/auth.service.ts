@@ -27,7 +27,6 @@ export class AuthService implements CanActivate {
     return Auth.currentAuthenticatedUser().then(() => {
       return true;
     }).catch(() => {
-      this.router.navigate(['/Login']);
       return false;
     });
   }

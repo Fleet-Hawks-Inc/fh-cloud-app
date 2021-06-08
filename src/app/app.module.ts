@@ -14,11 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './entry/login/login.component';
-import { LogoutComponent } from './entry/logout/logout.component';
-import { HealthcheckComponent } from './entry/healthcheck/healthcheck.component';
 import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
-import { LeftBarComponent } from './entry/left-bar/left-bar.component';
 
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
@@ -60,9 +57,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    LeftBarComponent,
-    LogoutComponent,
-    HealthcheckComponent,
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
