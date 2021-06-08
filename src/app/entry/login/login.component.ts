@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/Map-Dashboard']);
     }
+
   }
 
   toggleFieldTextType() {
@@ -91,7 +92,6 @@ export class LoginComponent implements OnInit {
     this.submitDisabled = true;
     if (!this.authService.isTokenExpired) {
       this.router.navigate(['/Map-Dashboard']);
-      return false;
     }
     if ((this.userName) && (this.password)) {
       try {
