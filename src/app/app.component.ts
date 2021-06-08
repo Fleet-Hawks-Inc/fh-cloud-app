@@ -1,26 +1,26 @@
-import {Component, OnInit, Inject, AfterContentChecked, ChangeDetectorRef} from '@angular/core';
-import {Router, Event, NavigationStart, NavigationEnd, NavigationError, NavigationCancel} from '@angular/router';
+import { Component, OnInit, Inject, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import {delay} from 'rxjs/operators';
-import {HttpLoadingService, SharedServiceService} from './services';
+import { delay } from 'rxjs/operators';
+import { HttpLoadingService, SharedServiceService } from './services';
 declare var $: any;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  implements OnInit, AfterContentChecked  {
+export class AppComponent implements OnInit, AfterContentChecked {
   title = 'fleethawks-dashboard';
   loading = false;
   token: boolean = false;
   currentURL = '';
-  constructor(private router: Router,private sharedService: SharedServiceService,
-              @Inject(DOCUMENT) private document: Document,
-              private changeDetector: ChangeDetectorRef,
-              private httpLoadingService: HttpLoadingService) {
+  constructor(private router: Router, private sharedService: SharedServiceService,
+    @Inject(DOCUMENT) private document: Document,
+    private changeDetector: ChangeDetectorRef,
+    private httpLoadingService: HttpLoadingService) {
     // left sidebar collapsed on overview - fleet page
-    const rootHtml = document.getElementsByTagName( 'html' )[0];
-    
+    const rootHtml = document.getElementsByTagName('html')[0];
+
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentURL = event.url;
@@ -31,21 +31,19 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
           rootHtml.classList.add('sidebar-light');
           rootHtml.classList.add('sidebar-left-collapsed');
           localStorage.setItem('active-header', 'fleet')
-        } 
+        }
         else {
           rootHtml.classList.add('fixed');
           rootHtml.classList.remove('sidebar-left-collapsed');
         }
         this.sharedService.activeParentNav.next(currentModule);
-        
-        if(localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn') && localStorage.getItem('LoggedIn') != null) {
+
+        if (localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn') && localStorage.getItem('LoggedIn') != null) {
           this.token = true;
         } else {
           this.token = false;
         }
-
       }
-
 
       /**
        * Loading Indicator 
@@ -66,11 +64,7 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
           break;
         }
       }
-      /**
-       *
-       */
-
-  });
+    });
   }
 
   ngOnInit() {
@@ -88,12 +82,10 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
 
       }
     }, false);
-
-  
   }
 
-  getToken(){
-    if(localStorage.getItem('accessToken') != undefined) {
+  getToken() {
+    if (localStorage.getItem('accessToken') != undefined) {
       return true
     }
     return false;
@@ -109,13 +101,8 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
         this.loading = loading;
       });
   }
-  /**
-   *
-   */
-
 
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
   }
-
 }
