@@ -23,7 +23,7 @@
                         <div class="col-lg-5 mb-2 pb-1">
                            <div class="row">
                               <div class="col-lg-5">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name <span
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name/Number <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Name or Number for Vehicle"></i>
                                  </label>
@@ -31,10 +31,10 @@
                                     placeholder="eg. Semi Truck or 2344" #vName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                                  <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
                                     <div *ngIf="vName.errors.required">
-                                       Vehicle name is required.
+                                       Vehicle name/number is required.
                                     </div>
                                     <div *ngIf="vName.errors.pattern">
-                                       Vehicle name must contain alphanumeric characters.
+                                       Vehicle name/number must contain alphanumeric characters.
 
                                     </div>
                                  </div>
@@ -49,7 +49,7 @@
                                  </ng-select>
                                  <div *ngIf="vSlt.invalid && (vSlt.dirty || vSlt.touched)" class="text-danger">
                                     <div *ngIf="vSlt.errors.required">
-                                      Vehicle is required.
+                                      Vehicle type is required.
                                     </div>
                                  </div>
                               </div>
@@ -353,7 +353,7 @@
                                  <div class="checkbox mt-1">
                                     <label class="mb-1">
                                        <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder">
-                                       Set Reminder
+                                       Set Notification (30 Days Before Expiry)
                                     </label>
                                  </div>
                               </div>
@@ -508,7 +508,7 @@
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="d-flex">
                                     <ng-select class="form-control populate mr-2" name="inspectionFormID" [(ngModel)]="inspectionFormID"
-                                       placeHolder="Select Inspection Form" #iForm1="ngModel" (ngModelChange)="getInspectionForms()" required>
+                                       placeholder="Select Inspection Form" #iForm1="ngModel" (ngModelChange)="getInspectionForms()" required>
                                        <ng-option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
                                           {{iForm.inspectionFormName}}
                                        </ng-option>
@@ -979,7 +979,7 @@
                                     </div>
                                     <div class="col-lg-6 pl-0">
                                        <ng-select class="form-control populate" name="fluid.fuelTankOneType" min="1" [(ngModel)]="fluid.fuelTankOneType"
-                                          placeholder="Select fuel type" #tankType="ngModel" required>
+                                          placeholder="Select unit" #tankType="ngModel" required>
                                           <optgroup label="">
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
@@ -987,7 +987,7 @@
                                        </ng-select>
                                        <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)" class="text-danger">
                                           <div *ngIf="tankType.errors.required">
-                                          Fuel tank type is required.
+                                          Unit is required.
                                           </div>
                                        </div>
                                     </div>
@@ -1003,7 +1003,7 @@
                                     </div>
                                     <div class="col-lg-6 pl-0">
                                        <ng-select class="form-control populate" name="fluid.fuelTankTwoType" [(ngModel)]="fluid.fuelTankTwoType"
-                                          placeholder="Select fuel type">
+                                          placeholder="Select unit">
                                           <optgroup label="">
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
@@ -1045,13 +1045,13 @@
                                     </div>
                                     <div class="col-lg-6 pl-0">
                                        <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1" [(ngModel)]="fluid.oilCapacityType"
-                                          placeholder="Select fuel type" #oil1="ngModel" required>
+                                          placeholder="Select unit" #oil1="ngModel" required>
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
                                        </ng-select>
                                        <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
                                           <div *ngIf="oil1.errors.required">
-                                          Oil capacity tank type is required.
+                                         Unit is required.
                                           </div>
                                        </div>
                                     </div>
@@ -1078,7 +1078,7 @@
                                     </div>
                                     <div class="col-lg-6 pl-0">
                                        <ng-select class="form-control populate" name="fluid.defType" [(ngModel)]="fluid.defType"
-                                          placeholder="Select fuel type" #defType="ngModel" required>
+                                          placeholder="Select unit" #defType="ngModel" required>
                                           <optgroup label="">
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
@@ -1086,7 +1086,7 @@
                                        </ng-select>
                                        <div *ngIf="defType.invalid && (defType.dirty || defType.touched)" class="text-danger">
                                           <div *ngIf="defType.errors.required">
-                                             DEF tank type is required.
+                                             Unit is required.
                                           </div>
                                        </div>
                                     </div>
@@ -1323,7 +1323,7 @@
                                     <label>
                                        <input type="checkbox" name="purchase.warrantyExpirationDateReminder"
                                           [(ngModel)]="purchase.warrantyExpirationDateReminder">
-                                       Set Reminder
+                                       Set Reminder (30 Days Before Expiry)
                                     </label>
                                  </div>
                               </div>

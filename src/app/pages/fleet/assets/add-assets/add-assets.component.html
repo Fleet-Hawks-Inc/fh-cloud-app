@@ -515,7 +515,7 @@
                     <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set
                       Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                     <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
-                      name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
+                      name="assetDetails.annualSafetyDate" placeholder="yyyy/mm/dd"[(ngModel)]="assetsData.assetDetails.annualSafetyDate"
                       class="form-control" #dSlt="ngModel" required >
                       <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                           <div *ngIf="dSlt.errors.required">
