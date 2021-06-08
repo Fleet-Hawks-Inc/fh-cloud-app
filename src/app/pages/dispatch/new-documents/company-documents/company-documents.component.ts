@@ -194,13 +194,13 @@ export class CompanyDocumentsComponent implements OnInit {
           this.spinner.hide();
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
-          this.fetchDocuments();
-          this.initDataTable();
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
           // this.documentData.documentName = '';
           this.documentData.description = '';
+          this.lastEvaluatedKey='';
+          this.initDataTable();
         }
       });
   }
