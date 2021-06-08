@@ -2065,14 +2065,14 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                                  (change)="onChangeHideErrors('phone')" placeholder="eg. +12234567891" #mob="ngModel"
-                                  required pattern="^(\+1)[0-9]{10}$">
+                                  (change)="onChangeHideErrors('phone')" placeholder="eg. 2234567891" #mob="ngModel"
+                                  required pattern="^[0-9]{10}$">
                                 <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                                   <div *ngIf="mob.errors.required">
                                     Phone is required.
                                   </div>
                                   <div *ngIf="mob.errors.pattern">
-                                    Enter valid phone number eg. +12234567891
+                                    Enter valid phone number eg. 2234567891
                                   </div>
                                 </div>
                               </div>
