@@ -51,7 +51,7 @@ export class CompanyDocumentsComponent implements OnInit {
     uploadedDocs: [],
     dateCreated: moment().format('YYYY-MM-DD')
   };
-  totalRecords = 20;
+  totalRecords = 0;
   pageLength = 10;
   serviceUrl = '';
   filterValues = {
@@ -315,6 +315,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.documentData.tripID = '';
           // this.documentData.documentName = '';
           this.documentData.description = '';
+          this.lastEvaluatedKey='';
           this.initDataTable();
         }
       });
@@ -339,6 +340,7 @@ export class CompanyDocumentsComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
+    
     this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
@@ -353,12 +355,13 @@ export class CompanyDocumentsComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g,'--');
           this.docNext = false;
           // for prev button
-          if (!this.docPrevEvauatedKeys.includes(result['LastEvaluatedKey'].docID)) {
-            this.docPrevEvauatedKeys.push(result['LastEvaluatedKey'].docID);
+          if (!this.docPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.docPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].docID;
+          this.lastEvaluatedKey = lastEvalKey;
           
         } else {
           this.docNext = true;
@@ -470,12 +473,16 @@ export class CompanyDocumentsComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.docNext=true;
+    this.docPrev=true;
     this.docDraw += 1;
     this.initDataTable();
   }
 
   // prev button func
   prevResults() {
+    this.docPrev=true;
+    this.docNext=true;
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
