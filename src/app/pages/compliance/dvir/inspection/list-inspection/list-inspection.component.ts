@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { OnboardDefaultService } from '../../../../../services/onboard-default.service'
 import  Constants  from '../../../../fleet/constants';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-inspection',
@@ -22,14 +23,16 @@ export class ListInspectionComponent implements OnInit {
   inspectionStartPoint = 1;
   inspectionEndPoint = this.pageLength;
   dataMessage: string = Constants.FETCHING_DATA;
-  
+
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private onboard: OnboardDefaultService) { }
+    private onboard: OnboardDefaultService,
+    private route: ActivatedRoute) { }
 
 
   ngOnInit() {
+
     this.onboard.checkInspectionForms();
     this.fetchCount();
   }
