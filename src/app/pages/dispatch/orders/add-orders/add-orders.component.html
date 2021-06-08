@@ -329,7 +329,7 @@
                        <div class="row mt-2">
                           <div class="col-lg-5">
                              <label class="control-label font-weight-bold labelmt text-3 text-dark">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                             <input placeholder="eg. +12234567891" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control"  >
+                             <input placeholder="eg. 2234567891" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control"  >
                              <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                                 <div *ngIf="phone.errors.pattern">
                                  Phone must contains 10 number only eg. +1223366456.
@@ -502,10 +502,12 @@
                                                                  class="form-control " #pickupLocation="ngModel" required
                                                                  pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
                                                                  #location="ngModel" required>
+
                                                                  <div *ngIf="shippersReceivers[0].shippers.pickupLocation == '' && finalShippersReceivers[i].shippers.length == 0" class="text-danger">
                                                                     
                                                                      Pickup location is required.
                                                                     
+
 
                                                                     <!-- <div *ngIf="location.errors.pattern">
                                                                     Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
@@ -616,7 +618,7 @@
                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                               </label>
 
-                                                              <input placeholder="eg. +12234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
+                                                              <input placeholder="eg. 2234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
                                                                  type="text" class="form-control" id="inputDefault" >
                                                                  <!-- <div *ngIf="orderP.invalid && (orderP.dirty || orderP.touched)" class="text-danger">
                                                                     <div *ngIf="orderP.errors.pattern">
@@ -1028,7 +1030,7 @@
                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                               </label>
 
-                                                              <input placeholder="eg. +12234567891" [(ngModel)]="item.receivers.phone" name="phone"
+                                                              <input placeholder="eg. 2234567891" [(ngModel)]="item.receivers.phone" name="phone"
                                                                  type="text" class="form-control" id="inputDefault" >
                                                                  <!-- <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
                                                                     <div *ngIf="cPhone.errors.pattern">
@@ -1537,11 +1539,11 @@
                                 <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                    for="inputDefault">Total Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input placeholder="eg. 5,15,20" type="text" [disabled]="orderData.milesInfo.calculateBy == 'google' || orderData.milesInfo.calculateBy == 'pcmiles'" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
-                                #totalMiles="ngModel" required totalMiles class="form-control" #tMiles="ngModel" rquired pattern="^[0-9\.]+$">
+                                #totalMiles="ngModel" required totalMiles class="form-control" #tMiles="ngModel" required pattern="^[0-9\.]+$">
                                 <div *ngIf="tMiles.invalid && (tMiles.dirty || tMiles.touched)" class="text-danger">
 
                                    <div *ngIf="tMiles.errors.required">
-                                 Total Miles is requird.
+                                 Total Miles are required.
                                     </div>
                                     <div *ngIf="tMiles.errors.pattern">
                                       Total miles must contains number and with decimal allowed.

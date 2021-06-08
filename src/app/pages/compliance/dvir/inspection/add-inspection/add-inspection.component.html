@@ -42,7 +42,7 @@
                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection
                           Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select class="form-control" [(ngModel)]="inspectionType"
-                          (ngModelChange)="getInspectionForms($event)" name="inspectionType" #ifSlt="ngModel" required>
+                          (ngModelChange)="getInspectionForms($event)" [disabled]="inspectionFormID" name="inspectionType" #ifSlt="ngModel" required>
                           <ng-option value="vehicle">Vehicle</ng-option>
                           <ng-option value="asset">Asset</ng-option>
                         </ng-select>
@@ -80,7 +80,7 @@
                           <button type="button" class="btn btn-sm btn-success" *ngIf="t == (parameters.length)-1"
                             (click)="addFormParam(t)"><i class="fas fa-plus"></i></button>
                           <button type="button" (click)="deleteFormParam(t)"
-                            *ngIf="(t != (parameters.length)-1) && (param.isDefault==false)"
+                            *ngIf="(t != (parameters.length)-1)"
                             class="btn btn-sm btn-danger"> <i class="fas fa-minus"></i></button>
                         </div>
                       </div>
@@ -105,7 +105,8 @@
                       [(ngModel)]="isDefaultInspectionType" (change)="defaultCheckbox($event)"> Make this form as
                     default
                     <button (click)="cancel()" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</button>
-                    <button (click)="addInspectionForm()" class="btn btn-success mt-1 modal-confirm">Save</button>
+                    <button *ngIf="!inspectionFormID" (click)="addInspectionForm()" class="btn btn-success mt-1 modal-confirm">Save</button>
+                    <button *ngIf="inspectionFormID" (click)="updateInspectionForm()" class="btn btn-success mt-1 modal-confirm">Update</button>
                   </div>
                 </div>
               </form>
