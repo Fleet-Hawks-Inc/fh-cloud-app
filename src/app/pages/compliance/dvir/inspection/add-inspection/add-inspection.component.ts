@@ -104,7 +104,8 @@ export class AddInspectionComponent implements OnInit {
       inspectionFormName: this.inspectionFormName,
       inspectionType: this.inspectionType,
       isDefaultInspectionType: this.isDefaultInspectionType,
-      parameters:parameters
+      parameters:parameters,
+      inspectionFormID:this.inspectionFormID
     }
     this.apiService.putData('inspectionForms',data).subscribe({
       complete: () => { },
