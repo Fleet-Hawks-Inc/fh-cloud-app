@@ -89,12 +89,16 @@ export class AddInspectionComponent implements OnInit {
 
   getInspectionForms(event){
     this.selectedInspectionType=event
-    if(event=="vehicle"){
+    if(event=="vehicle" && this.vehicleParameters){
     this.parameters=this.vehicleParameters
     }
-    else{
+    else if(event=="asset" && this.assetParameters){
       this.parameters=this.assetParameters
     }
+    else this.parameters=[{
+      name:'',
+      isDefault:false
+    }]
   }
 
   updateInspectionForm(){
@@ -104,7 +108,8 @@ export class AddInspectionComponent implements OnInit {
       inspectionFormName: this.inspectionFormName,
       inspectionType: this.inspectionType,
       isDefaultInspectionType: this.isDefaultInspectionType,
-      parameters:parameters
+      parameters:parameters,
+      inspectionFormID:this.inspectionFormID
     }
     this.apiService.putData('inspectionForms',data).subscribe({
       complete: () => { },

@@ -64,8 +64,7 @@
                       <div class="col-lg-12">
                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection
                           Parameters <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
-                        <div class="col-lg-12 pl-0 d-flex mt-2" *ngFor="let param of parameters let t=index;">
+                          <div class="col-lg-12 pl-0 d-flex mt-2" *ngFor="let param of parameters let t=index;">
                           <input type="text" class="form-control mr-2" name="param"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="param.name"
                             [disabled]="t != (parameters.length)-1||param.isDefault==true" #input="ngModel" required>

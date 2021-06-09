@@ -1,20 +1,21 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header">
-        <div class="row pr-1" style="padding-top:10px;">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr19 pl11">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-2 col-lg-2">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Driver Profile</h4>
           </div>
 
-          <div class="col-md-10 col-lg-10 text-right">
-            <a class="text-uppercase btn btn-sm btn-dark mr-1" data-toggle="modal"
+          <div class="col-md-10 col-lg-10 text-right pr-1">
+            <a class="text-uppercase btn btn-sm btn-dark mr-3" data-toggle="modal"
               data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
             <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
               List</a>
           </div>
         </div>
       </header>
+
       <div class="routing-overview__wrapper m-3">
         <div class="row">
           <div class="col-lg-12 pr-1 pl-2">
@@ -155,7 +156,7 @@
                     <th>Trip Date</th>
                     <th>Trip#</th>
                     <th>Driver(s)</th>
-                    <th>Vehicle</th>
+                    <th>Vehicle(s)</th>
                     <th>Asset(s)</th>
                     <th>Status</th>
                   </tr>
@@ -195,7 +196,7 @@
       <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
-          <div class="col-lg-6 text-right"><button type="button" data-toggle="modal"
+          <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"
             data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button></div>
         </div>
         <div class="row">
@@ -351,7 +352,7 @@
           <div class="col-lg-12 font-weight-bold text-4 text-dark">Document Details</div>
         </div>
         <div class="row">
-          <div [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;let i = index;">
+          <div class="col-lg-12" [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;let i = index;">
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{documentsTypesObects[item.documentType]}}</div>
