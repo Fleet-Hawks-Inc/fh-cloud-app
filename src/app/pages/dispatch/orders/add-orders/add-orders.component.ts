@@ -447,6 +447,7 @@ export class AddOrdersComponent implements OnInit {
       .pipe(
         map((e: any) => {
           $(".map-search__results").hide();
+          $('div').removeClass('show-search__result');
           $(e.target).closest("div").addClass("show-search__result");
           target = e;
           return e.target.value;

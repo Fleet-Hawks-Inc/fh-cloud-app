@@ -6,8 +6,6 @@ import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { AuthService } from './services/';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
-import { LeftBarComponent } from './entry/left-bar/left-bar.component';
-import { HealthcheckComponent } from './entry/healthcheck/healthcheck.component';
 import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.component';
 
 
@@ -37,7 +35,6 @@ const routes: Routes = [
     component: MapDashboardComponent,
     canActivate: [AuthService],
   },
-  { path: 'healthcheck', component: HealthcheckComponent },
   {
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
@@ -69,9 +66,6 @@ const routes: Routes = [
     path: 'manage',
     loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false },
     canActivate: [AuthService]
-  },
-  {
-    path: 'Left-Bar', component: LeftBarComponent, canActivate: [AuthService]
   },
   {
     path: "404",
