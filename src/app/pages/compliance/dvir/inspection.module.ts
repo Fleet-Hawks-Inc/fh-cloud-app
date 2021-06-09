@@ -18,7 +18,7 @@ const routes: Routes = [
   {path:'inspections',component: ListInspectionComponent},
   {path: 'inspection-add',component:AddInspectionComponent},
   {path: 'inspection-details/:inspectionID',component: ViewInspectionComponent},
-  {path: 'inspection-edit/:inspectionID', component:EditInspectionComponent},
+  {path: 'inspection-add/:inspectionID', component:AddInspectionComponent},
   { path: 'inspection-summary', component: InspectionSummaryComponent },
   { path: 'inspection-detail/:inspectionID', component: InspectionDetailComponent },
     

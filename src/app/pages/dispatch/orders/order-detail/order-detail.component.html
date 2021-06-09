@@ -152,14 +152,14 @@
                       </div>
                       <div class="col-lg-9 p-2">{{ customerEmail }}</div>
                     </div>
-                    <div class="row m-0">
+                    <!-- <div class="row m-0">
                       <div
                         class="col-lg-3 p-2 font-weight-bold text-3 text-left"
                       >
                         Fax:
                       </div>
                       <div class="col-lg-9 p-2">{{ customerfax }}</div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -470,13 +470,13 @@
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes' : 'No'}}</div>
                     </div>
-                    <div class="row m-0" *ngIf="additionalDetails.dropTrailer">
+                    <div class="row m-0" *ngIf="!additionalDetails.dropTrailer">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
                         Asset Type:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType != undefined ? additionalDetails.trailerType : ''}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -713,19 +713,16 @@
                           </h2>
                         </div>
 
-                        <div class="row">
-                          <div class="col-md-3 mb-3 mt-3" *ngFor="let doc of docs">
-                            <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
-                              <img class="img-fluid" src="{{doc.imgPath}}" width="75">
-                            </a>
+                        <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
+                          <div class="col-5"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
+                          <div class="col-  3 text-right">
+                             <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                data-target="#viewDocModal"></em>
+                             <a href="javascript:;" (click)="delete('attachment',doc.name, d)" class="modal-with-form">
+                                <em class="fas fa-times text-danger"></em></a>
                           </div>
-
-                          <div class="col-md-3 mb-3" *ngFor="let localPhoto of localPhotos">
-                            <a class="image-popup-no-margins" href="{{localPhoto}}" target="_blank">
-                              <img class="img-fluid" src="{{localPhoto}}" width="75">
-                            </a>
-                          </div>
-                        </div>
+                       </div>
                       </div>
                     </div>
                   </div>

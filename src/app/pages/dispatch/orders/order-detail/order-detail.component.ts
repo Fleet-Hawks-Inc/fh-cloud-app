@@ -161,7 +161,7 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
-          console.log('order data', result)
+          
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
               this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
@@ -200,7 +200,7 @@ export class OrderDetailComponent implements OnInit {
 
               }
 
-
+              
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
@@ -212,12 +212,8 @@ export class OrderDetailComponent implements OnInit {
           this.taxesInfo = result.taxesInfo;
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
-
-          for(let i = 0; i < this.taxesInfo.length; i++){
-            if(this.taxesInfo[i].amount){
-              this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
-            }
-          }
+          
+              
 
           this.milesArr = [];
           for (let k = 0; k < element.receivers.length; k++) {
@@ -235,7 +231,11 @@ export class OrderDetailComponent implements OnInit {
 
           }
       }
-
+      for(let i = 0; i < this.taxesInfo.length; i++){
+        if(this.taxesInfo[i].amount){
+          this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
+        }
+      }
           // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
           //   const element = result.shippersReceiversInfo[p];
 
@@ -270,36 +270,40 @@ export class OrderDetailComponent implements OnInit {
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
-
-          if (
-            result.uploadedDocs != undefined &&
-            result.uploadedDocs.length > 0
-          ) {
-            // this.docs = result.uploadedDocs.map(
-            //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-            // );
-            result.uploadedDocs.map((x) => {
-              let name = x.split('.');
-              let ext = name[name.length-1];
-              let obj = {
-                imgPath: '',
-                docPath:''
-              }
-              if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-                obj = {
-                  imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
-                  docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-                }
-              } else {
-                obj = {
-                  imgPath: 'assets/img/icon-pdf.png',
-                  docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-                }
-              }
-              this.docs.push(obj);
-            });
-            this.allPhotos = result.uploadedDocs;
-          }
+          
+          if(result.attachments != undefined && result.attachments.length > 0){
+            this.docs = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+          } 
+          
+          // if (
+          //   result.uploadedDocs != undefined &&
+          //   result.uploadedDocs.length > 0
+          // ) {
+          //   // this.docs = result.uploadedDocs.map(
+          //   //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+          //   // );
+          //   result.uploadedDocs.map((x) => {
+          //     let name = x.split('.');
+          //     let ext = name[name.length-1];
+          //     let obj = {
+          //       imgPath: '',
+          //       docPath:''
+          //     }
+          //     if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+          //       obj = {
+          //         imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+          //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+          //       }
+          //     } else {
+          //       obj = {
+          //         imgPath: 'assets/img/icon-pdf.png',
+          //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+          //       }
+          //     }
+          //     this.docs.push(obj);
+          //   });
+          //   this.allPhotos = result.uploadedDocs;
+          // }
           // this.orderData = result['Items'];
 
           // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
@@ -386,13 +390,12 @@ export class OrderDetailComponent implements OnInit {
           this.customerAddress = result.address[0].userLocation;
         }
       }
-
       this.customerCityName = result.address[0].cityName;
       this.customerStateName = result.address[0].stateName;
       this.customerCountryName = result.address[0].countryName;
-      this.customerPhone = result.address[0].phone;
-      this.customerEmail = result.address[0].email;
-      this.customerfax = result.additionalContact.fax;
+      this.customerPhone = result.workPhone;
+      this.customerEmail = result.workEmail;
+      // this.customerfax = result.additionalContact.fax;
     });
   }
 
@@ -422,9 +425,16 @@ export class OrderDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string,name: string){
-    this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchOrder();
+  delete(type: string, name: string, index) {
+    let record = {
+      eventID: this.orderID,
+      type: type,
+      name: name,
+      date: this.createdDate,
+      time: this.createdTime
+    }
+    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
+      this.docs.splice(index, 1);
     });
   }
 
@@ -439,6 +449,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
+  
    /*
    * Selecting files before uploading
    */
@@ -531,4 +542,6 @@ export class OrderDetailComponent implements OnInit {
       $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
     }
   }
+
+  
 }

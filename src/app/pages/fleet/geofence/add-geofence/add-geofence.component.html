@@ -187,6 +187,16 @@
                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                      </label>
                      <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="eg. Parking Yard" #geoWarehouse1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                     <div *ngIf="geoWarehouse1.invalid && (geoWarehouse1.dirty || geoWarehouse1.touched)" class="text-danger">
+                        <div *ngIf="geoWarehouse1.errors.required">
+                         Geofence type  is required.
+
+                        </div>
+                        <div *ngIf="geoWarehouse1.errors.pattern">
+                         Geofence type must contain alphanumeric characters.
+
+                        </div>
+                     </div>
                   </div>
                   
                </div>
