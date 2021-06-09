@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { ThemeService } from 'ng2-charts';
 
 declare var $: any;
@@ -20,7 +20,8 @@ export class AddInspectionComponent implements OnInit {
     private apiService: ApiService,
     private route:ActivatedRoute,
     private location: Location,
-    private toaster: ToastrService,) { }
+    private toaster: ToastrService,
+    private router:Router) { }
 
   inspectionFormName:string ='';
   inspectionType:string = '';
@@ -37,6 +38,7 @@ export class AddInspectionComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
+
 
   selectedInspectionType:any;
   defaultInspectionForms:any;
@@ -132,7 +134,7 @@ export class AddInspectionComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.toaster.success('Form Updated successfully');
-        this.cancel();
+        this.router.navigateByUrl("/compliance/dvir/inspections")
       }
     });
   }
@@ -176,7 +178,7 @@ export class AddInspectionComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.toaster.success('Form Created successfully');
-        this.cancel();
+        this.router.navigateByUrl("/compliance/dvir/inspections")
       }
     });
   }
