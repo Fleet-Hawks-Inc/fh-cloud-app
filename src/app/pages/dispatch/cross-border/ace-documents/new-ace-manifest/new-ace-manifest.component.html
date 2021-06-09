@@ -800,8 +800,8 @@
                               Broker&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].broker.filerCode'" [(ngModel)]="shipment.broker.filerCode">
-                              <ng-option *ngFor="let broker of brokersList" value="{{broker.filerCode}}">
-                                {{broker.brokerName}} <span class="pull-right">
+                              <ng-option *ngFor="let broker of brokersList" value="{{broker.filerCode}}">{{broker.filerCode}} -
+                                {{broker.brokerName}} &nbsp;&nbsp;<span class="pull-right">Port Code-
                                   {{broker.portIdentifier}}</span></ng-option>
                             </ng-select>
                           </div>
@@ -1018,8 +1018,7 @@
                             </div>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRUCK'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
-                              Number</label>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle#</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
                               [(ngModel)]="commodity.loadedOn.number" #VehiNum1="ngModel" [required]="shipments.length !== 0">
@@ -1032,15 +1031,14 @@
                               <div>
 
                                 <div *ngIf="VehiNum1.errors.required">
-                                 Vehicle number is required.
+                                 Vehicle#is required.
                                  </div>
                               </div>
 
                             </div>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Asset
-                              Number</label>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Asset#</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
                               placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number" #AssetNum1="ngModel" [required]="shipments.length !== 0">
@@ -1051,7 +1049,7 @@
                               <div>
 
                                 <div *ngIf="AssetNum1.errors.required">
-                                 Asset number is required.
+                                 Asset# is required.
                                  </div>
                               </div>
 
