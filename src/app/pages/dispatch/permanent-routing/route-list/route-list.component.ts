@@ -61,8 +61,7 @@ export class RouteListComponent implements OnInit {
 
   deleteRoute(routeID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.spinner.show(); 
-      this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
+      this.apiService.getData('routes/delete/' + routeID).subscribe({
         complete: () => {},
         error: () => {},
         next: (result: any) => {
@@ -71,7 +70,6 @@ export class RouteListComponent implements OnInit {
           this.routeDraw = 0;
           this.lastEvaluatedKey = '';
           this.fetchRoutes();
-          this.spinner.hide();
           this.hasSuccess = true;
           this.toastr.success('Route deleted successfully.');
         }
@@ -95,13 +93,14 @@ export class RouteListComponent implements OnInit {
           this.routeEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result['LastEvaluatedKey'] !== undefined) { 
+          let lastEvalKey = result[`LastEvaluatedKey`].routeSK.replace(/#/g,'--');
           this.routeNext = false;
           // for prev button
-          if (!this.routePrevEvauatedKeys.includes(result['LastEvaluatedKey'].routeID)) {
-            this.routePrevEvauatedKeys.push(result['LastEvaluatedKey'].routeID);
+          if (!this.routePrevEvauatedKeys.includes(lastEvalKey)) {
+            this.routePrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].routeID;
+          this.lastEvaluatedKey = lastEvalKey;
           
         } else {
           this.routeNext = true;

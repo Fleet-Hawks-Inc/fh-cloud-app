@@ -64,50 +64,49 @@ export class RouteDetailComponent implements OnInit {
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;
-          this.sourceNotes = result.stops[0].stopNotes;
+          this.sourceNotes = result.stops[0].notes;
           for (let k = 0; k < result.stops.length; k++) {
             this.stopNumber.push(k);
           }
 
           if (result.stops.length > 1) {
-            this.destinationNotes = result.stops[result.stops.length-1].stopNotes;
+            this.destinationNotes = result.stops[result.stops.length-1].notes;
             this.getCoords(result.stops);
           }
-          this.mapShow();
         }
 
-        if(result.recurring.recurringRoute) {
-          if(result.recurring.recurringType != undefined && result.recurring.recurringType !== ''){
-            this.recurringType = result.recurring.recurringType;
+        if(result.recurring.route) {
+          if(result.recurring.type != undefined && result.recurring.type !== ''){
+            this.recurringType = result.recurring.type;
           }
   
-          if(result.recurring.recurringDate != undefined && result.recurring.recurringDate !== ''){
-            this.recurringDate = result.recurring.recurringDate;
+          if(result.recurring.date != undefined && result.recurring.date !== ''){
+            this.recurringDate = result.recurring.date;
           }
         }
 
-        if(result.sourceInformation.sourceAddress != '' && result.sourceInformation.sourceAddress != undefined){
-          this.sourceAddress = result.sourceInformation.sourceAddress;
-          this.sourceCountryName = result.sourceInformation.sourceCountry;
-          this.sourceStateName = result.sourceInformation.sourceState;
-          this.sourceCityName = result.sourceInformation.sourceCity;
-          this.sourceZipcode = result.sourceInformation.sourceZipCode;
+        if(result.sourceInfo.address != '' && result.sourceInfo.address != undefined){
+          this.sourceAddress = result.sourceInfo.address;
+          this.sourceCountryName = result.sourceInfo.country;
+          this.sourceStateName = result.sourceInfo.state;
+          this.sourceCityName = result.sourceInfo.city;
+          this.sourceZipcode = result.sourceInfo.zipCode;
         }
 
-        if(result.destinationInformation.destinationAddress != '' && result.destinationInformation.destinationAddress != undefined){
-          this.destinationAddress = result.destinationInformation.destinationAddress;
-          this.sourceCountryName = result.destinationInformation.destinationCountry;
-          this.sourceStateName = result.destinationInformation.destinationState;
-          this.sourceCityName = result.destinationInformation.destinationCity;
-          this.destinationZipcode = result.destinationInformation.destinationZipCode;
+        if(result.destInfo.address != '' && result.destInfo.address != undefined){
+          this.destinationAddress = result.destInfo.address;
+          this.destinationCountryName = result.destInfo.country;
+          this.destinationStateName = result.destInfo.state;
+          this.destinationCityName = result.destInfo.city;
+          this.destinationZipcode = result.destInfo.zipCode;
         }
 
-        if(result.AssetID != '' && result.AssetID != undefined){
-          this.fetchAssets(result.AssetID);
+        if(result.assetID != '' && result.assetID != undefined){
+          this.fetchAssets(result.assetID);
         }
 
-        if(result.VehicleID != '' && result.VehicleID != undefined){
-          this.fetchVehicle(result.VehicleID);
+        if(result.vehicleID != '' && result.vehicleID != undefined){
+          this.fetchVehicle(result.vehicleID);
         }
 
         if(result.driverID != '' && result.driverID != undefined){
@@ -153,6 +152,7 @@ export class RouteDetailComponent implements OnInit {
 
   
   mapShow() {
+    this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
   }
 
@@ -161,14 +161,14 @@ export class RouteDetailComponent implements OnInit {
    * @param data
    */
   async getCoords(data) {
-    this.spinner.show();
-    await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item.stopName);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
-    this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
+    this.mapShow();
     this.newCoords = [];
+
+    for (let i = 0; i < data.length; i++) {
+      const element = data[i];
+      this.newCoords.push(`${element.lat},${element.lng}`)
+    }
+    this.hereMap.calculateRoute(this.newCoords);
   }
 
   openDetailModal(data){
