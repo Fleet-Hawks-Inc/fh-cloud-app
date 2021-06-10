@@ -26,7 +26,71 @@
                 "remarks": ""
             },
             {
-                "name": "brakes",
+                "name": "Air Compressor",
+                "remarks": ""
+            },
+            {
+                "name": "Air Lines",
+                "remarks": ""
+            },
+            {
+                "name": "Battery",
+                "remarks": ""
+            },
+            {
+                "name": "Belts and Hoses",
+                "remarks": ""
+            },
+            {
+                "name": "Body",
+                "remarks": ""
+            },
+            {
+                "name": "Brake Accessories",
+                "remarks": ""
+            },
+            {
+                "name": "Brakes, Parking",
+                "remarks": ""
+            },
+            {
+                "name": "Brakes Service",
+                "remarks": ""
+            },
+            {
+                "name": "Defroster/Heater",
+                "remarks": ""
+            },
+            {
+                "name": "Drive Line",
+                "remarks": ""
+            },
+            {
+                "name": "Engine",
+                "remarks": ""
+            },
+            {
+                "name": "Exhaust",
+                "remarks": ""
+            },
+            {
+                "name": "Fluid Levels",
+                "remarks": ""
+            },
+            {
+                "name": "Frame and Assembly",
+                "remarks": ""
+            },
+            {
+                "name": "Front Axle",
+                "remarks": ""
+            },
+            {
+                "name": "Fuel Tanks",
+                "remarks": ""
+            },
+            {
+                "name": "Horn",
                 "remarks": ""
             }
         ]
