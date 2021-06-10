@@ -6,7 +6,7 @@ import { from, Subject, throwError } from 'rxjs';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
-
+import { passwordStrength } from 'check-password-strength'
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -98,6 +98,13 @@ export class AddAccountComponent implements OnInit {
   yardAddress: boolean;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  }
   constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -367,7 +374,39 @@ export class AddAccountComponent implements OnInit {
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    console.log(passwordVerify);
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else{
+      this.passwordValidation.lowerCase = false;
+    }
 
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else{
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else{
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else{
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true
+    } else{
+      this.passwordValidation.length = false;
+    }
+    
+  //  console.log(this.passwordValidation)
+  // this.passwordValidation.length = $().css('class="fas fa-check"');
+  }
 
 
 }

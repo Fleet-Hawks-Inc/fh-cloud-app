@@ -71,7 +71,9 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
+                              <input   id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})"
+
+                              [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -84,20 +86,21 @@
                                </div>
 
                             </div>
-                          <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
-                            <div *ngIf="pwd.errors.required">
-                              Password is required.
+                            <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                              <div *ngIf="pwd.errors.required">
+                                Password is required.
+                              </div>
+                              <div *ngIf="pwd.errors.pattern">
+                                Password should be 8 characters long which must contain number, small letter, capital letter and at least one special character (#,@,$,&).
+                              </div>
                             </div>
-                            <div *ngIf="pwd.errors.pattern">
-                              Password must be 8 digits long and a combination of small letters,capital letters,numbers and atleast one special characters(#,@,$,&).
-                            </div>
-                          </div>
+                         
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
+                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd1="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -109,14 +112,34 @@
                                   </span>
                                </div>
                             </div>
-                          <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
-                            <div *ngIf="cpwd.errors.required">
+                          <div *ngIf="cpwd1.invalid && (cpwd1.dirty || cpwd1.touched)" class="text-danger">
+                            <div *ngIf="cpwd1.errors.required">
                               Confirm password is required.
                             </div>
-                            <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                            <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
                           </div>
                       </div>
                     </div>
+                    
+                    <!-- <div * class="row"> 
+                      <div  class="col-lg-5">
+                       
+                        <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']" > <i  [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 character minimum</p>
+                        <p class="text-dark pt-2 mb-0"> <span class="pr-1"  [ngClass]="[passwordValidation.number ? 'green1': 'red1']"> <i  [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number</p>
+                      
+                      </div>
+                      <div class="col-lg-5">
+                       
+                         <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']" > <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span>  atleast 1 uppercase</p>
+                        <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']" > <i [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span>  atleast 1 lowecase</p>
+                      </div>
+                      <div class="col-lg-5">
+                       
+                        <p class="text-dark pt-2 mb-0"><span class="pr-1" [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']" > <i [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>atleast 1 special character(#,@,$,&)</p>
+                        
+                      </div>
+                    </div> -->
+                  
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
