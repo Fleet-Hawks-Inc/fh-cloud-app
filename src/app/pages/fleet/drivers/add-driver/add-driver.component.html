@@ -1,9 +1,9 @@
 <section class="body">
   <div class="inner-wrapper">
 
-    <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header">
-        <div class="row" style="padding-top:10px;">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr8 pl11">
+          <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 text-dark">{{pageTitle}}</h4>
           </div>
@@ -13,7 +13,8 @@
           </div>
         </div>
       </header>
-      <form id="driverForm" class="form-horizontal form-bordered bg-white" name="driverForm" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
+
+      <form id="driverForm" class="form-horizontal form-bordered" name="driverForm" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
         (ngSubmit)="onSubmit()" novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
@@ -21,9 +22,9 @@
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row justify-content-between adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Basic Details</label>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row">
                       <div class="col-lg-12 pt-2">
                         <div class="row">
@@ -255,7 +256,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row">
                       <div class="col-lg-12 pt-2">
                         <div class="row">
@@ -501,9 +502,9 @@
           <div class="row mb-3 text-dark">
             <div class="col-lg-12">
               <div class="bg-white p-3">
-                <div class="form-group row text-dark justify-content-between adddriverpl">
+                <div class="row text-dark justify-content-between adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Driver Address</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Driver Address</label>
                   </div>
                 </div>
                 <div *ngFor="let item of driverData.address; let i = index;"
@@ -526,9 +527,9 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
                         location&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
-                        type="text" class="form-control" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
+                        type="text" class="form-control mb-2" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                         [disabled]="item.manual">
-                      <div class="checkbox-custom pt-2">
+                      <div class="checkbox-custom mb2 ">
                         <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
                           type="checkbox">
                         <label for="man_address">Type Manually</label>
@@ -618,8 +619,7 @@
               <div class="bg-white p-3">
                 <div class="row adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-dark text-5 pt-2">Documents
-                      Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-dark text-5">Documents Details</label>
                   </div>
                 </div>
                 <div class="row">
@@ -752,7 +752,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
@@ -799,7 +799,7 @@
               <div class="bg-white p-3">
                 <div class="row text-dark adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Cross Border Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Cross Border Details</label>
                   </div>
                 </div>
                 <div class="form-group row adddriverpl text-dark" id="document-one">
@@ -836,7 +836,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <div class="checkbox-custom pt-2">
+                        <div class="checkbox-custom">
                           <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa" name="crossBorderDetails.csa" >
                           <label for="csa">CSA</label>
                         </div>
@@ -882,7 +882,7 @@
               <div class="bg-white p-3">
                 <div class="form-group row text-dark adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Licence Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Licence Details</label>
                   </div>
                   <div class="col-lg-10">
                     <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence) in the documents section.</label>
@@ -1025,9 +1025,9 @@
               <div class="bg-white p-3">
                 <div class="form-group row text-dark adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Payment Details</label>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Default
@@ -1065,7 +1065,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row" id="payPerHourForm"
                       *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
                       <div class="col-lg-4">
@@ -1374,9 +1374,9 @@
               <div class="bg-white p-3">
                 <div class="form-group row text-dark adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Compliance Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5">Compliance Details</label>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 mb-1">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Status<span
@@ -1540,7 +1540,7 @@
               <div class="bg-white p-3">
                 <div class="form-group row text-dark adddriverpl">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Emergency Contact
+                    <label class="control-label font-weight-bold text-lg-right text-5">Emergency Contact
                       Details</label>
                   </div>
                   <div class="col-lg-12">
@@ -1587,7 +1587,7 @@
                   </div>
                 </div>
                 <div class="form-group row mt-3">
-                  <div class="col-lg-12 text-right pb-4 pr-5">
+                  <div class="col-lg-11 text-right pb-1 pt-1 pr-2">
                     <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
 
                     <!-- if there is some error in validation  -->
