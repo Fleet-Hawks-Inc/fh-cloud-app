@@ -135,10 +135,13 @@
                                        Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <input [(ngModel)]="reminderData.tasks.odometer"
                                        placeholder="Miles to repeat service task" name="task.odometer" type="text"
-                                       class="form-control"  #odo1="ngModel" [required]="reminderData.tasks.remindByUnit == 'odometer'">
+                                       class="form-control"  #odo1="ngModel" [required]="reminderData.tasks.remindByUnit == 'odometer'" pattern="^[0-9\.]+$">
                                     <div *ngIf="odo1.invalid && (odo1.dirty || odo1.touched)" class="text-danger">
                                        <div *ngIf="odo1.errors.required">
-                                          Odometer miles are required and must contain numbers.
+                                          Odometer miles are required.
+                                       </div>
+                                       <div *ngIf="odo1.errors.pattern">
+                                          Odometer miles must contain numbers.
                                        </div>
                                     </div>
                                  </div>
