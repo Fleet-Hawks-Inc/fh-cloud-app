@@ -200,7 +200,7 @@ export class CompanyDocumentsComponent implements OnInit {
           // this.documentData.documentName = '';
           this.documentData.description = '';
           this.lastEvaluatedKey='';
-          this.initDataTable();
+          this.fetchDocumentsCount();
         }
       });
   }
