@@ -572,5 +572,9 @@ export class AddRouteComponent implements OnInit {
   gotoAssetPage() {
     $('#addAsset').modal('show');
   }
+
+  refreshDrivrData() {
+    this.listService.fetchDrivers();
+  }
 }
 

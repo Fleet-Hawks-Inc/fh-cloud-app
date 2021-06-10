@@ -85,10 +85,12 @@ export class AppComponent implements OnInit, AfterContentChecked {
   }
 
   getToken() {
-    if (localStorage.getItem('accessToken') != undefined) {
+    if (localStorage.getItem('signOut') === 'false') {
       return true
+    } else {
+      return false;
     }
-    return false;
+    
   }
 
   /**

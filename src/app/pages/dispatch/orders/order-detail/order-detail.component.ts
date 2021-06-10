@@ -212,8 +212,8 @@ export class OrderDetailComponent implements OnInit {
           this.taxesInfo = result.taxesInfo;
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
-
-        
+          
+              
 
           this.milesArr = [];
           for (let k = 0; k < element.receivers.length; k++) {
@@ -390,13 +390,12 @@ export class OrderDetailComponent implements OnInit {
           this.customerAddress = result.address[0].userLocation;
         }
       }
-
       this.customerCityName = result.address[0].cityName;
       this.customerStateName = result.address[0].stateName;
       this.customerCountryName = result.address[0].countryName;
-      this.customerPhone = result.address[0].phone;
-      this.customerEmail = result.address[0].email;
-      this.customerfax = result.additionalContact.fax;
+      this.customerPhone = result.workPhone;
+      this.customerEmail = result.workEmail;
+      // this.customerfax = result.additionalContact.fax;
     });
   }
 
@@ -426,11 +425,16 @@ export class OrderDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string, index:any) {
-    this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${type}/${name}`).subscribe((result: any) => {
-      if(type === 'doc') {
-        this.docs.splice(index, 1);
-      } 
+  delete(type: string, name: string, index) {
+    let record = {
+      eventID: this.orderID,
+      type: type,
+      name: name,
+      date: this.createdDate,
+      time: this.createdTime
+    }
+    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
+      this.docs.splice(index, 1);
     });
   }
 

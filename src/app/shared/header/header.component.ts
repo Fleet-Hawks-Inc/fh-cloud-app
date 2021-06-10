@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
   smallName: string;
   carrierBusiness;
   currentUserName = '';
+  disabled : boolean = false;
   nickName = '';
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
@@ -69,23 +70,27 @@ fetchCarrier() {
       });
 }
 
-  Logout() {
+  async Logout() {
+    try {
+      await Auth.signOut();
+      localStorage.removeItem('LoggedIn');
+      localStorage.removeItem('user');
+      localStorage.removeItem('active-header');
+      localStorage.removeItem('carrierID');
+      localStorage.removeItem('loggin-carrier');
+      localStorage.removeItem('issueVehicleID');
+      localStorage.removeItem('carrierID');
+      localStorage.removeItem('active-header');
+      localStorage.removeItem('currentUserName');
+      localStorage.removeItem('nickName');
+      localStorage.setItem('signOut', 'true'); //trigger flag
+      localStorage.removeItem('accessToken'); //Remove token from local
+      // localStorage.removeItem('jwt');
+      this.router.navigate(['/Login']);
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
     
-    Auth.signOut();
-    localStorage.removeItem('LoggedIn');
-    localStorage.removeItem('user');
-    localStorage.removeItem('active-header');
-    localStorage.removeItem('carrierID');
-    localStorage.removeItem('loggin-carrier');
-    localStorage.removeItem('issueVehicleID');
-    localStorage.removeItem('carrierID');
-    localStorage.removeItem('active-header');
-    localStorage.removeItem('currentUserName');
-    localStorage.removeItem('nickName');
-    localStorage.setItem('signOut', 'true'); //trigger flag
-    localStorage.removeItem('accessToken'); //Remove token from local
-    // localStorage.removeItem('jwt');
-    this.router.navigate(['/Login']);
   }
 
   getCurrentuser = async () => {

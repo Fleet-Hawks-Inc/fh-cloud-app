@@ -452,7 +452,9 @@ export class EditProfileComponent implements OnInit {
   deleteLogo() {
     this.apiService.deleteData(`carriers/uploadDelete/${this.carrierID}/${this.uploadedLogo}`).subscribe((result: any) => {
       this.toaster.success('Image Deleted Successfully');
-      this.fetchCarrier();
+      this.uploadedPhotos = [];
+      this.uploadedLogo = '';
+      this.logoSrc = '';
     });
   }
 

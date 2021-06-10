@@ -234,6 +234,8 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
+    if(this.orderFiltr.startDate===null) this.orderFiltr.startDate=''
+    if(this.orderFiltr.endDate===null) this.orderFiltr.endDate=''
     if (this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== ''
       || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== null) {
       if (this.orderFiltr.startDate != '' && this.orderFiltr.endDate == '') {
@@ -242,7 +244,11 @@ export class OrdersListComponent implements OnInit {
       } else if (this.orderFiltr.startDate == '' && this.orderFiltr.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if (this.orderFiltr.category !== null && this.orderFiltr.searchValue == '') {
+      }else if(this.orderFiltr.startDate>this.orderFiltr.endDate){
+        this.toastr.error('Start Date should be less then end Date.');
+        return false;
+      }
+       else if (this.orderFiltr.category !== null && this.orderFiltr.searchValue == '') {
         this.toastr.error('Please enter search value.');
         return false;
       } else {
