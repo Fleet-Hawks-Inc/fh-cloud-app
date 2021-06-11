@@ -184,13 +184,13 @@
                   </label>
                   <input [(ngModel)]="vehicleMakeData.manufacturerName" name="manufacturerName" type="text"
 
-                    class="form-control" placeholder="eg. Freightliner" #nMake="ngModel" required pattern="^[a-zA-Z\s]+$">
+                    class="form-control" placeholder="eg. Freightliner" #nMake="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                     <div *ngIf="nMake.invalid && (nMake.dirty || nMake.touched)" class="text-danger">
                       <div *ngIf="nMake.errors.required">
                       Vehicle make/manufacturer name is required.
                       </div>
                       <div *ngIf="nMake.errors.pattern">
-                      Vehicle make/manufacturer name must contain letters.
+                      Vehicle make/manufacturer name must contain alphanumeric characters.
                       </div>
                     </div>
 
@@ -250,13 +250,13 @@
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Model Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" placeholder="eg. Cascadia" class="form-control" #nModel="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" placeholder="eg. Cascadia" class="form-control" #nModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                   <div *ngIf="nModel.invalid && (nModel.dirty || nModel.touched)" class="text-danger">
                     <div *ngIf="nModel.errors.required">
                      Vehicle model name is required
                     </div>
                     <div *ngIf="nModel.errors.pattern">
-                     Vehicle model name must contain letters.
+                     Vehicle model name must contain alphanumeric characters.
                      </div>
 
                   </div>
@@ -296,13 +296,13 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Make Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input [(ngModel)]="assetMakeData.manufacturerName" name="manufacturerName" type="text"
-                    class="form-control" placeholder="eg. Freightliner" #mAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
+                    class="form-control" placeholder="eg. Freightliner" #mAsset="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                     <div *ngIf="mAsset.invalid && (mAsset.dirty || mAsset.touched)" class="text-danger">
                       <div *ngIf="mAsset.errors.required">
                         Asset make name is required.
                       </div>
                       <div *ngIf="mAsset.errors.pattern">
-                        Asset make name must contain letters.
+                        Asset make name must contain alphanumeric characters.
                       </div>
                     </div>
                 </div>
@@ -431,13 +431,13 @@
                             Program Name <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="serviceData.programName" name="programName" type="text"
-                            placeholder="eg. Heavy Vehicle" class="form-control" #sProgram1="ngModel" required pattern="^[a-zA-Z\s]+$">
+                            placeholder="eg. Heavy Vehicle" class="form-control" #sProgram1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                             <div *ngIf="sProgram1.invalid && (sProgram1.dirty || sProgram1.touched)" class="text-danger">
                               <div *ngIf="sProgram1.errors.required">
                                Service program name is required.
                               </div>
                               <div *ngIf="sProgram1.errors.pattern">
-                                Service program name must contain letters.
+                                Service program name must contain alphanumeric characters.
                               </div>
                             </div>
                         </div>
@@ -546,7 +546,7 @@
                                   <input [(ngModel)]="task.repeatByOdometer"
                                     [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'"
                                     [ngModelOptions]="{standalone: true}" type="text" placeholder="eg. 1000"
-                                    class="form-control" #sMiles="ngModel" required pattern="^[0-9]+$">
+                                    class="form-control" #sMiles="ngModel" required pattern="^[0-9\.]+$">
                                     <div *ngIf="sMiles.invalid && (sMiles.dirty || sMiles.touched)" class="text-danger">
                                       <div *ngIf="sMiles.errors.required">
                                         Repeat by odometer miles is required.
@@ -641,13 +641,13 @@
               <label class="control-label font-weight-bold">Service Task Name <span
                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
               <input [(ngModel)]="taskData.taskName" name="taskName" type="text" class="form-control"
-                placeholder="Enter service task name" #mService="ngModel" required pattern="^[a-zA-Z\s]+$">
+                placeholder="Enter service task name" #mService="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                 <div *ngIf="mService.invalid && (mService.dirty || mService.touched)" class="text-danger">
                   <div *ngIf="mService.errors.required">
                     Service task name is required.
                   </div>
                   <div *ngIf="mService.errors.pattern">
-                   Service task name must contain letters.
+                   Service task name must contain alphanumeric characters.
                   </div>
                 </div>
 
@@ -734,7 +734,7 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle"
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
-                          <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
+                          <input type="text" class="form-control text-uppercase" name="VIN" [(ngModel)]="VIN"
                             placeholder="eg.2G1WH55K5Y9322458" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                             <div *ngIf="mVin.invalid && (mVin.dirty || mVin.touched)" class="text-danger">
                               <div *ngIf="mVin.errors.required">
@@ -883,7 +883,7 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber"
+                          <input type="text" class="form-control text-uppercase" name="plateNumber" [(ngModel)]="plateNumber"
                             placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                             <div *ngIf="mPlate.invalid && (mPlate.dirty || mPlate.touched)" class="text-danger">
                               <div *ngIf="mPlate.errors.required">
@@ -1097,7 +1097,7 @@
                                   <div *ngIf="mHeight.errors.required">
                                    Height must contain numbers.
                                   </div>
-
+                                
 
                                </div>
                             </div>
@@ -1111,7 +1111,7 @@
                               </ng-select>
                               <div *ngIf="mhType.invalid && (mhType.dirty || mhType.touched)" class="text-danger">
                                 <div *ngIf="mhType.errors.required">
-                                 Height is required.
+                                 Height type is required.
                                 </div>
 
 
@@ -1372,13 +1372,13 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" class="form-control" id="issueName" name="issueName"
-                    [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z0-9\s]{4,30}$">
+                    [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z0-9\s]{1,30}$">
                     <div *ngIf="mIssue.invalid && (mIssue.dirty || mIssue.touched)" class="text-danger">
                       <div *ngIf="mIssue.errors.required">
                        Issue name is required.
                       </div>
                       <div *ngIf="mIssue.errors.pattern">
-                        Issue name must contain atleast 4 alphanumeric characters.
+                        Issue name must contain alphanumeric characters.
                       </div>
                     </div>
                 </div>
@@ -1561,7 +1561,7 @@
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
                           <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                            placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName1="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                            placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control text-uppercase" maxlength="18" #vName1="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                             <div *ngIf="vName1.invalid && (vName1.dirty || vName1.touched)" class="text-danger">
 
                               <div *ngIf="vName1.errors.required">
@@ -1748,7 +1748,7 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. 345678"
-                            name="assetDetails.licencePlateNumber" class="form-control" type="text" #pName9="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
+                            name="assetDetails.licencePlateNumber" class="form-control text-uppercase" type="text" #pName9="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                             <div *ngIf="pName9.invalid && (pName9.dirty || pName9.touched)"  class="text-danger">
                               <div *ngIf="pName9.errors.required">
                                 Licence plate number is required.
@@ -1862,7 +1862,7 @@
                                       <input (change)="onChangeHideErrors('employeeContractorId')"
                                         [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                         class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
-                                        pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
+                                        pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
 
                                     </div>
                                     <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
@@ -1870,7 +1870,7 @@
                                         Employee ID is required.
                                       </div>
                                       <div *ngIf="dName.errors.pattern">
-                                        Employee ID can only contain alphanumeric characters with length between 4-120
+                                        Employee ID can only contain alphanumeric characters.
                                       </div>
                                     </div>
                                   </div>
@@ -1881,14 +1881,14 @@
                                     <div class="input-group">
                                       <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId"
                                         type="text" class="form-control" placeholder="Any Numbers or Name" #cName="ngModel"
-                                        required pattern="^[a-zA-Z0-9\s\-]{2,30}$" maxlength="30">
+                                        required pattern="^[a-zA-Z0-9\s\-]{1,30}$" maxlength="30">
                                     </div>
                                     <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                                       <div *ngIf="cName.errors.required">
                                         Contractor ID is required.
                                       </div>
                                       <div *ngIf="cName.errors.pattern">
-                                        Contractor ID can only contain alphanumeric characters with length between 4-120.
+                                        Contractor ID can only contain alphanumeric characters.
                                       </div>
                                     </div>
                                   </div>
@@ -1931,7 +1931,7 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <input (change)="onChangeHideErrors('userName')"
-                                  [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
+                                  [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control text-lowercase"
                                   placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
                                   maxlength="30">
                                 <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
@@ -2080,7 +2080,7 @@
                                 </label>
                                 <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
                                   (change)="onChangeHideErrors('phone')" placeholder="eg. 2234567891" #mob="ngModel"
-                                  required pattern="^[0-9]{10}$">
+                                  required pattern="^[0-9]{1,10}$">
                                 <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                                   <div *ngIf="mob.errors.required">
                                     Phone is required.

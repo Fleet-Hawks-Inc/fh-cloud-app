@@ -58,7 +58,7 @@
                               <input [disabled]="isEdit" (change)="onChangeHideErrors('employeeContractorId')"
                                 [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                 class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
-                                pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
+                                pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
 
                             </div>
                             <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
@@ -66,7 +66,7 @@
                                 Employee ID is required.
                               </div>
                               <div *ngIf="dName.errors.pattern">
-                                Employee ID can only contain alphanumeric characters with length between 4-120.
+                                Employee ID can only contain alphanumeric characters.
                               </div>
                             </div>
                           </div>
@@ -77,14 +77,14 @@
                             <div class="input-group">
                               <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId"
                                 type="text" class="form-control" placeholder="Any Numbers or Name" #cName="ngModel"
-                                required pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
+                                required pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
                             </div>
                             <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                               <div *ngIf="cName.errors.required">
                                 Contractor ID is required.
                               </div>
                               <div *ngIf="cName.errors.pattern">
-                                Contractor ID can only contain alphanumeric characters with length between 4-120.
+                                Contractor ID can only contain alphanumeric characters.
                               </div>
                             </div>
                           </div>
@@ -136,8 +136,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [disabled]="isEdit" (change)="onChangeHideErrors('userName')"
-                          [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control"
-                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
+                          [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control text-lowercase"
+                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
 
                           maxlength="30">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
@@ -297,7 +297,7 @@
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
                           (change)="onChangeHideErrors('phone')" placeholder="eg. 2234567891" #mob="ngModel"
-                          required pattern="[0-9]{10}$">
+                          required pattern="[0-9]{1,10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
                             Phone is required.
@@ -311,7 +311,7 @@
                         <label class="control-label font-weight-bold text-lg-right">Email <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control" [disabled]="isEdit"
+                        <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control text-lowercase" [disabled]="isEdit"
                           (change)="onChangeHideErrors('email')" placeholder="eg. johnsmith@gmail.com" #em="ngModel"
                           required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                         <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
@@ -1667,7 +1667,7 @@
                       Group name is required.
                     </div>
                     <div *ngIf="groupModel.errors.pattern">
-                        Group name must contain letters.
+                        Group name must contain numbers.
                     </div>
                   </div>
               </div>

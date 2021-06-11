@@ -25,7 +25,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
-                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
                         <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                           <div *ngIf="fName.errors.required">
                             First name is required.
@@ -39,7 +39,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName"
-                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
                         <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                           <div *ngIf="lName.errors.required">
                             Last name is required.
@@ -54,13 +54,13 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" minlength="6"
-                          placeholder="eg. john.smith" #uName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
-                        <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
-                          <div *ngIf="uName.errors.required">
+                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6"
+                          placeholder="eg. john.smith" #uName1="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
+                        <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
+                          <div *ngIf="uName1.errors.required">
                             Username is required.
                           </div>
-                          <div *ngIf="uName.errors.pattern">
+                          <div *ngIf="uName1.errors.pattern">
                            Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
                           </div>
                         </div>
@@ -154,7 +154,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
-                          placeholder="eg. 2234567891" #ph="ngModel" required pattern="^[0-9]{10}$">
+                          placeholder="eg. 2234567891" #ph="ngModel" required pattern="^[0-9]{1,10}$">
                           <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
                             <div *ngIf="ph.errors.required">
                             Phone number is required.
