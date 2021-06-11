@@ -17,7 +17,7 @@ import {Injectable} from '@angular/core';
 import { DriverDetailComponent } from './driver-detail/driver-detail.component';
 
 const routes: Routes = [
-  { path: 'overview', component: OverviewComponent },
+  { path: '', component: OverviewComponent },
   { path: 'summary', component: DriverSummaryComponent },
   { path: 'detail', component: DriverDetailComponent },
 ];

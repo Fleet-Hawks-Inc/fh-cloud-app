@@ -5,7 +5,7 @@ import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ReportsComponent} from './reports/reports.component'
+import { ReportsModule } from './reports/reports.module';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -15,14 +15,6 @@ import {
 } from './index';
 import { SettingsComponent } from './settings/settings.component';
 
-import { VehicleReportComponent } from './reports/vehicle-report/vehicle-report.component';
-import { AssetReportComponent } from './reports/asset-report/asset-report.component';
-import { FuelReportComponent } from './reports/fuel-report/fuel-report.component';
-import { RemindersReportComponent } from './reports/reminders-report/reminders-report.component';
-import { IssuesReportComponent } from './reports/issues-report/issues-report.component';
-import { MaintenanceReportComponent } from './reports/maintenance-report/maintenance-report.component';
-import { InventoryReportComponent } from './reports/inventory-report/inventory-report.component';
-import { GeofenceReportComponent } from './reports/geofence-report/geofence-report.component';
 
 
 const COMPONENTS = [
@@ -32,7 +24,6 @@ const COMPONENTS = [
   CompanyProfileComponent,
   EditProfileComponent,
   SettingsComponent,
-  ReportsComponent
 ];
 
 
@@ -90,14 +81,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ...COMPONENTS,
     SettingsComponent,
 
-    VehicleReportComponent,
-    AssetReportComponent,
-    FuelReportComponent,
-    RemindersReportComponent,
-    IssuesReportComponent,
-    MaintenanceReportComponent,
-    InventoryReportComponent,
-    GeofenceReportComponent,
 
 
   ],
@@ -108,6 +91,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ManageRoutingModule,
     NgSelectModule,
+    ReportsModule,
     SharedModule,
     NgbModule
   ],exports: [...COMPONENTS],
