@@ -5,7 +5,6 @@ import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { ReportsModule } from './reports/reports.module';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -78,11 +77,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 @NgModule({
   declarations: [
-    ...COMPONENTS,
     SettingsComponent,
-
-
-
+    ...COMPONENTS
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],
@@ -91,7 +87,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ManageRoutingModule,
     NgSelectModule,
-    ReportsModule,
     SharedModule,
     NgbModule
   ],exports: [...COMPONENTS],

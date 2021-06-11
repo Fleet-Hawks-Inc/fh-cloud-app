@@ -8,14 +8,8 @@ import {
   EditProfileComponent
 } from './index';
 
-import {SettingsComponent} from './settings/settings.component'
+import {SettingsComponent} from './settings/settings.component';
 
-const COMPONENTS = [
-  AddUserComponent,
-  UserDetailsComponent,
-  UsersListComponent,
-  SettingsComponent
-];
 
 const routes: Routes = [
   {
@@ -41,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'reports',
-    loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule) ,
+    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
   }
 ];
 
