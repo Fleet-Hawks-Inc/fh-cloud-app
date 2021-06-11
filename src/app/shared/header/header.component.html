@@ -49,7 +49,7 @@
                                 Safety
                             </a>
                         </li>
-                        <li class="" [class.active]="navSelected === 'accounts'">
+                        <li class="" [class.active]="navSelected === 'accounts'" *ngIf="!environment">
                             <a class="nav-link" [routerLink]="['/accounts','accounts','Chart-Accounts']" (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>
