@@ -395,9 +395,7 @@ export class AddOrdersComponent implements OnInit {
     this.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
-    $(document).ready(() => {
-      // this.form = $("#form_").validate();
-    });
+    this.disableButton();
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
@@ -894,15 +892,18 @@ export class AddOrdersComponent implements OnInit {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
-        this.customerSelected = result.Items[0];
-        for (let i = 0; i < this.customerSelected.address.length; i++) {
-          const element = this.customerSelected.address[i];
-          if(element.addressType == 'Office') {
-            this.customerSelected.officeAddr = true;
-            this.customerSelected.email = result.Items[0].workEmail;
-            this.customerSelected.phone = result.Items[0].workPhone;
+        if(result.Items.length > 0) {
+          this.customerSelected = result.Items[0];
+          for (let i = 0; i < this.customerSelected.address.length; i++) {
+            const element = this.customerSelected.address[i];
+            if(element.addressType == 'Office') {
+              this.customerSelected.officeAddr = true;
+              this.customerSelected.email = result.Items[0].workEmail;
+              this.customerSelected.phone = result.Items[0].workPhone;
+            }
           }
         }
+        
       });
   }
 
@@ -1372,16 +1373,19 @@ export class AddOrdersComponent implements OnInit {
     this.stateShipperIndex = "";
   }
 
-
+  
   disableButton() {
-    if(this.orderData.customerID == '' || this.orderData.customerPO == '' || this.orderData.customerPO == '' 
-      || this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
-      this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || 
-      this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.currency == ''
+    if(this.orderData.customerID == '' || this.orderData.customerID == null || this.orderData.customerPO == '' || this.orderData.customerPO == '' 
+    || this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
+    this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || this.orderData.milesInfo.totalMiles == '' || 
+    this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.currency == ''
       ){
+
       return true
+    } else {
+      return false
     }
-    return false
+    
     
     
   }

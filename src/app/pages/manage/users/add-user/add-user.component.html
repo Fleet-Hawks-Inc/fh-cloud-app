@@ -32,28 +32,53 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Company Name <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" [(ngModel)]="userData.companyName" name="companyName"
-                            placeholder="eg. Parambir">
+                            placeholder="eg. Caroll group" #UcompanyName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                            <div *ngIf="UcompanyName.invalid && (UcompanyName.dirty || UcompanyName.touched)" class="text-danger">
+                              <div *ngIf="UcompanyName.errors.required">
+                                  Company name is required.
+                              </div>
+                              <div *ngIf="UcompanyName.errors.pattern">
+                                  Company name can only contain alphanumeric characters.
+                              </div>
+
+                          </div>
                         </div>
 
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">DBA Name <span
                               class="text-1 optional-label-color">(optional)</span></label>
-                          <input type="text" class="form-control" placeholder="eg. Parambir"
+                          <input type="text" class="form-control" placeholder="eg. Bookstore"
                             [(ngModel)]="userData.dbaName" name="dbaName">
                         </div>
 
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. Parambir"
-                            [(ngModel)]="userData.firstName" name="firstName">
+                          <input type="text" class="form-control" placeholder="eg. John"
+                            [(ngModel)]="userData.firstName" name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                            <div *ngIf="ufName.invalid && (ufName.dirty || ufName.touched)" class="text-danger">
+                              <div *ngIf="ufName.errors.required">
+                                   First name is required.
+                              </div>
+                              <div *ngIf="ufName.errors.pattern">
+                                   First name can only contains letters.
+                              </div>
+                         </div>
                         </div>
 
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. Bhullar"
-                            [(ngModel)]="userData.lastName" name="lastName">
+                          <input type="text" class="form-control" placeholder="eg. Smith"
+                            [(ngModel)]="userData.lastName" name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                            <div *ngIf="ulName.invalid && (ulName.dirty || ulName.touched)" class="text-danger">
+                              <div *ngIf="ulName.errors.required">
+                                   Last name is required.
+                              </div>
+                              <div *ngIf="ulName.errors.pattern">
+                                   Last name can only contains letters.
+                              </div>
+                         </div>
                         </div>
 
 
@@ -65,8 +90,17 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Employee ID <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. 4516788"
-                            [(ngModel)]="userData.employeeID" name="employeeID">
+                          <input type="text" class="form-control" placeholder="Any Numbers or Name"
+                            [(ngModel)]="userData.employeeID" name="employeeID" #ueName="ngModel" required
+                            pattern="^[a-zA-Z0-9\s]{4,30}$" maxlength="30">
+                            <div *ngIf="ueName.invalid && (ueName.dirty || ueName.touched)" class="text-danger">
+                              <div *ngIf="ueName.errors.required">
+                                Employee ID is required.
+                              </div>
+                              <div *ngIf="ueName.errors.pattern">
+                                Employee ID can only contain alphanumeric characters with length between 4-120.
+                              </div>
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
@@ -80,14 +114,32 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Phone <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. 7869945123"
-                            [(ngModel)]="userData.phone" name="phone">
+                          <input type="text" class="form-control" placeholder="eg. 2234567891"
+                            [(ngModel)]="userData.phone" name="phone" #umob="ngModel"
+                            required pattern="[0-9]{10}$">
+                            <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
+                              <div *ngIf="umob.errors.required">
+                                Phone is required.
+                              </div>
+                              <div *ngIf="umob.errors.pattern">
+                                Enter valid phone number eg. 2234567891.
+                              </div>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Email <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. fleethawks@support.com" [disabled]="enableUserLogin"
-                            [(ngModel)]="userData.email" name="email">
+                          <input type="text" class="form-control" placeholder="eg. johnsmith@gmail.com" [disabled]="enableUserLogin"
+                            [(ngModel)]="userData.email" name="email" #uem="ngModel"
+                            required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                            <div *ngIf="uem.invalid && (uem.dirty || uem.touched)" class="text-danger">
+                              <div *ngIf="uem.errors.required">
+                                Email is required.
+                              </div>
+                              <div *ngIf="uem.errors.pattern">
+                                Enter valid email eg. johnsmith@gmail.com
+                              </div>
+                            </div>
                         </div>
 
 
@@ -175,10 +227,10 @@
                                   </div>
                                   <div class="col-lg-5 offset-lg-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                      Province</label>
+                                      Province/State</label>
                                     <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
                                       name="stateCode{{i}}" class="form-control populate address_state"
-                                      placeholder="Select Province">
+                                      placeholder="Select province/state">
                                       <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">
                                         {{state.stateName}}</ng-option>
                                     </ng-select>
@@ -288,15 +340,26 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Username <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
-                            placeholder="eg. John_Smith"  class="form-control" [disabled]="enableUserLogin">
+                            placeholder="eg. John_Smith"  class="form-control" [disabled]="enableUserLogin" #uuName="ngModel" required pattern="^(?=[a-z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
+
+                            maxlength="30">
+                            <div *ngIf="uuName.invalid && (uuName.dirty || uuName.touched)" class="text-danger">
+                              <div *ngIf="uuName.errors.required">
+                                Username is required.
+                              </div>
+                              <div *ngIf="uuName.errors.pattern">
+                                Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
+    
+                              </div>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Type <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" [(ngModel)]="userData.userLoginData.userType"
-                            name="userType"  placeholder="Select User Type">
+                            name="userType"  placeholder="Select User Type" #usertype="ngModel" required>
                             <ng-option value="Super Admin">Super Admin</ng-option>
                             <!-- <ng-option value="Full Admin">Full Admin</ng-option>
                             <ng-option value="Read Only Admin">Read Only Admin</ng-option>
@@ -305,6 +368,12 @@
                             <ng-option value="Safety Manager">Safety Manager</ng-option>
                             <ng-option value="Other">Other</ng-option> -->
                           </ng-select>
+                          <div *ngIf="usertype.invalid && (usertype.dirty || usertype.touched)" class="text-danger">
+                            <div *ngIf="usertype.errors.required">
+                              User type is required.
+                            </div>
+                            
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -312,9 +381,9 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Password <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                <div class="input-group">
-                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg. $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
                                   />
                                   <div class="input-group-append">
                                     <span class="input-group-text eye">
@@ -336,8 +405,8 @@
                               </div>
                             </div>
                         <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Confirm Password<span
-                            class="text-1 optional-label-color">(optional)</span>
+                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Confirm Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
                               <input  id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword" [disabled]="enableUserLogin"  name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"/>
@@ -371,16 +440,22 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Payroll Type <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType"
-                            class="form-control" placeholder="Select Payroll Type">
+                            class="form-control" placeholder="Select Payroll Type" #upayrolltype="ngModel" required >
                             <ng-option value="Hours">Hours</ng-option>
                             <ng-option value="Flat">Flat</ng-option>
                           </ng-select>
+                          <div *ngIf="upayrolltype.invalid && (upayrolltype.dirty || upayrolltype.touched)" class="text-danger">
+                            <div *ngIf="upayrolltype.errors.required">
+                              Payroll type is required.
+                            </div>
+                          
+                          </div>
                         </div>
                         <div class="col-lg-3">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Rate <span
                               class="text-1 optional-label-color">(optional)</span></label>
                           <input [(ngModel)]="userData.paymentDetails.payrollRate" name="payrollRate" type="text"
-                            class="form-control" placeholder="eg. 1,2,3">
+                            class="form-control" placeholder="eg. $20 ,$40 ,$60">
                         </div>
                         <div class="col-lg-3">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">&nbsp;</label>
@@ -416,14 +491,23 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">SIN <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control"
-                            placeholder=" 9 digits eg. 123-456-789">
+                            placeholder=" 9 digits , eg.123456789" #usin="ngModel" required
+                            pattern="^[0-9]{9}$" maxlength="9">
+                            <div *ngIf="usin.invalid && (usin.dirty || usin.touched)" class="text-danger">
+                              <div *ngIf="usin.errors.required">
+                                SIN is required.
+                              </div>
+                              <div *ngIf="usin.errors.pattern">
+                                SIN must contain 9 numbers.
+                              </div>
+                            </div>
                         </div>
 
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Health Care# <span
                               class="text-1 optional-label-color">(optional)</span></label>
                           <input type="text" class="form-control" [(ngModel)]="userData.paymentDetails.healthCare"
-                            name="healthCare" placeholder="eg. 45812366">
+                            name="healthCare" placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB">
                         </div>
                       </div>
                     </div>
