@@ -264,14 +264,10 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.actualDropTime = $("#cell16").val();
 
             let coordResult = await this.hereMap.geoCode(this.textFieldValues.locationName);
-            console.log('coordResult====', coordResult);
             if(coordResult.items[0].position != undefined) {
                 this.textFieldValues['lat'] = coordResult.items[0].position.lat;
                 this.textFieldValues['lng'] = coordResult.items[0].position.lng;
-                console.log('this.trips---', this.trips);
-                console.log('innn', this.trips.length);
                 if(this.trips.length > 0) {
-                    console.log('innnss', this.trips.length);
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat']
                     await this.getSingleRowMiles(endingPoint);
                 }
@@ -722,7 +718,6 @@ export class AddTripComponent implements OnInit {
         try {
             this.pcMiles.pcMiles.next(true);
             let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
-            console.log('miles', miles);
             this.textFieldValues.miles = miles;
             this.calculateActualMiles(miles)
         }
@@ -817,7 +812,6 @@ export class AddTripComponent implements OnInit {
     }
 
     saveAssetModalData() {
-        console.log('this.tempTextFieldValues', this.tempTextFieldValues);
         if(this.tempTextFieldValues.coDriverUsername == undefined) {
             this.tempTextFieldValues.coDriverUsername = '';
         }
@@ -971,8 +965,6 @@ export class AddTripComponent implements OnInit {
     }
 
     assetsChange($event, type) {
-        console.log('$event-----', $event);
-        console.log('type-----', type);
         this.tempTextFieldValues.trailerName = '';
         if ($event === undefined) {
             $(".assetClass").removeClass('td_border');
@@ -1355,6 +1347,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['bol'] = result.bol;
                 this.tripData['createdDate'] = result.createdDate;
                 this.tripData['createdTime'] = result.createdTime;
+                this.tripData['mapFrom'] = result.mapFrom;
                 this.dateCreated = result.dateCreated;
                 this.orderNo = ''; 
                 
@@ -1449,6 +1442,8 @@ export class AddTripComponent implements OnInit {
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+        this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
+
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1576,7 +1571,6 @@ export class AddTripComponent implements OnInit {
         this.hasSuccess = false;
         // delete this.tripData.reeferTemperatureUnit;
         this.updateOrderStatusToConfirmed();
-
         this.apiService.putData('trips', this.tripData).subscribe({
             complete: () => {
             },
@@ -1781,12 +1775,11 @@ export class AddTripComponent implements OnInit {
     }
 
     changeMapRoute(type) {
-        console.log('type', type);
         if(type == 'route') {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
                 this.orderStops = this.trips;
                 this.trips = [];
-                this.mapOrderActiveDisabled = true;
+                // this.mapOrderActiveDisabled = true;
                 this.actualMiles = 0;
                 //change route
                 this.apiService.getData('routes/' + this.tripData.routeID)
@@ -1836,7 +1829,7 @@ export class AddTripComponent implements OnInit {
                         await this.hereMap.calculateRoute(this.newCoords);
                     }
                     await this.getMiles();
-                    this.mapOrderActiveDisabled = false;
+                    // this.mapOrderActiveDisabled = false;
                 });
                 
                 this.mapOrderActive = '';
@@ -1852,7 +1845,7 @@ export class AddTripComponent implements OnInit {
             }
         } else {
             if(this.orderNo != '' && this.orderNo != undefined) {
-                this.mapRouteActiveDisabled = true;
+                // this.mapRouteActiveDisabled = true;
                 this.trips = this.orderStops;
                 this.actualMiles = 0;
                 this.getMiles();
@@ -1860,10 +1853,10 @@ export class AddTripComponent implements OnInit {
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
-                this.mapRouteActiveDisabled = false;
+                // this.mapRouteActiveDisabled = false;
             } else {
                 $('input[name="mapFrom"]').attr('checked', false);
-                this.mapRouteActiveDisabled = false;
+                // this.mapRouteActiveDisabled = false;
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';
