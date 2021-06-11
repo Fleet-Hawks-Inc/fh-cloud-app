@@ -264,11 +264,14 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.actualDropTime = $("#cell16").val();
 
             let coordResult = await this.hereMap.geoCode(this.textFieldValues.locationName);
+            console.log('coordResult====', coordResult);
             if(coordResult.items[0].position != undefined) {
                 this.textFieldValues['lat'] = coordResult.items[0].position.lat;
                 this.textFieldValues['lng'] = coordResult.items[0].position.lng;
-
-                if(this.trips.length > 1) {
+                console.log('this.trips---', this.trips);
+                console.log('innn', this.trips.length);
+                if(this.trips.length > 0) {
+                    console.log('innnss', this.trips.length);
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat']
                     await this.getSingleRowMiles(endingPoint);
                 }
@@ -712,6 +715,7 @@ export class AddTripComponent implements OnInit {
         try {
             this.pcMiles.pcMiles.next(true);
             let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
+            console.log('miles', miles);
             this.textFieldValues.miles = miles;
             this.calculateActualMiles(miles)
         }
@@ -1762,6 +1766,7 @@ export class AddTripComponent implements OnInit {
     }
 
     changeMapRoute(type) {
+        console.log('type', type);
         if(type == 'route') {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
                 this.orderStops = this.trips;
@@ -1800,27 +1805,21 @@ export class AddTripComponent implements OnInit {
                                 dropTime: '',
                                 actualPickupTime: '',
                                 actualDropTime: '',
-                                locationName: element.stopName,
+                                locationName: element.name,
                                 vehicleName: '',
                                 trailerName: '',
                                 driverName: '',
                                 coDriverName: '',
                                 fromOrder: 'yes',
-                                lat:'',
-                                lng:''
+                                lat:element.lat,
+                                lng:element.lng
                             }
 
-                            const posResult = await this.hereMap.geoCode(element.stopName);
-                            if(posResult.items[0].position != undefined) {
-                                obj.lat = posResult.items[0].position.lat;
-                                obj.lng = posResult.items[0].position.lng;
-
-                                this.newCoords.push(`${posResult.items[0].position.lat},${posResult.items[0].position.lng}`)
-                            }
+                            await this.newCoords.push(`${element.lat},${element.lng}`)
                             
-                            this.trips.push(obj);
+                            await this.trips.push(obj);
                         }
-                        this.hereMap.calculateRoute(this.newCoords);
+                        await this.hereMap.calculateRoute(this.newCoords);
                     }
                     await this.getMiles();
                     this.mapOrderActiveDisabled = false;

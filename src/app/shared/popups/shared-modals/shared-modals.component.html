@@ -964,7 +964,7 @@
                           <div class="checkbox mt-1">
                             <label>
                               <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder">
-                              Set Reminder
+                              Set Notification (30 Days Before Expiry)
                             </label>
                           </div>
                         </div>
@@ -1013,7 +1013,7 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select the Inspection Form<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select placeholder="Select inspection form "[(ngModel)]="inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iForm="ngModel" required>
+                              <ng-select (click)="fetchInspectionForms()" placeholder="Select inspection form "[(ngModel)]="inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iForm="ngModel" required>
                                 <ng-option *ngFor="let data of inspectionForms" value="{{ data.inspectionFormID }}"> {{
                                   data.inspectionFormName }}</ng-option>
                               </ng-select>
@@ -1672,6 +1672,16 @@
                               </div>
                                                     </div>
                         </div>
+
+                        <div class="col-lg-12">
+                          <div class="checkbox mt-1">
+                            <label>
+                              <input type="checkbox" name="annualSafetyReminder"
+                                [(ngModel)]="assetsData.assetDetails.annualSafetyReminder" value="true">
+                                Set Notification (30 Days Before Expiry)                            </label>
+                          </div>
+                        </div>
+
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                             Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1689,15 +1699,7 @@
 
                           </div>
                         </div>
-                        <div class="col-lg-12">
-                          <div class="checkbox mt-1">
-                            <label>
-                              <input type="checkbox" name="annualSafetyReminder"
-                                [(ngModel)]="assetsData.assetDetails.annualSafetyReminder" value="true">
-                              Set Reminder
-                            </label>
-                          </div>
-                        </div>
+                        
 
 
 
@@ -1710,24 +1712,36 @@
                             Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryCode"
                             name="assetDetails.licenceCountryCode" (change)="getAssetStates($event)"
-                            placeholder="Select country" class="form-control populate">
+                            placeholder="Select country" class="form-control populate" #lacountry="ngModel" required>
                             <!-- <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
                               {{country.countryName}}
                             </ng-option> -->
                             <ng-option value="CA">Canada</ng-option>
                             <ng-option value="US">United States</ng-option>
                           </ng-select>
+                          <div *ngIf="lacountry.invalid && (lacountry.dirty || lacountry.touched)" class="text-danger">
+                            <div *ngIf="lacountry.errors.required">
+                              Licence Country is required.
+                            </div>
+                            
+                          </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Province/State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateCode"
                             name="assetDetails.licenceStateCode" class="form-control populate"
-                            placeholder="Select Province/State">
+                            placeholder="Select Province/State" #laprovince="ngModel" required>
                             <ng-option *ngFor="let state of assetStates" value="{{state.stateCode}}">
                               {{state.stateName}}
                             </ng-option>
                           </ng-select>
+                          <div *ngIf="laprovince.invalid && (laprovince.dirty || laprovince.touched)" class="text-danger">
+                            <div *ngIf="laprovince.errors.required">
+                              Licence Province/State is required.
+                            </div>
+                            
+                          </div>
                         </div>
 
                         <div class="col-lg-12">
@@ -1748,7 +1762,7 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                             the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iSlt1="ngModel" required>
+                          <ng-select (click)="fetchInspectionFormsAssets()" [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form" #iSlt1="ngModel" required>
                             <ng-option *ngFor="let data of inspectionFormsAsset" value="{{ data.inspectionFormID }}"> {{
                               data.inspectionFormName }}</ng-option>
                           </ng-select>

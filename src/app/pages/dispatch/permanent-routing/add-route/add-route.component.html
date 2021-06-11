@@ -1,676 +1,694 @@
 <section class="body">
-  <div class="inner-wrapper">
-      <section role="main" class="content-body pl-0 pt-0 pr-0">
-          <header class="page-header">
-              <div class="row" style="padding-top:10px;">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
 
-                  <div class="col-md-4 col-lg-4">
-                      <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
-                  </div>
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
+                    </div>
 
-                  <div class="col-md-8  col-lg-8 text-right">
-                      <a href="javascript:;" routerLink="/dispatch/routes/list" class="btn btn-sm btn-default"><i
-                              class="fas fa-list"></i> All Routes</a>
-                  </div>
-              </div>
-          </header>
-          <div class="row">
-              <div class="col pr-0">
-                  <section class="card">
-                      <div class="card-body">
-                          <form class="form-horizontal form-bordered" method="get" id="form_" autocomplete="off"
-                              #aRoute1="ngForm">
-                              <div class="row text-dark">
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold text-lg-right pt-2">Route#<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input type="text" class="form-control" name="routeNo"
-                                                  [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02"
-                                                  #routeNumber="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
-                                              <div *ngIf="routeNumber.invalid && (routeNumber.dirty || routeNumber.touched)"
-                                                  class="text-danger">
+                    <div class="col-md-8  col-lg-8 text-right">
+                        <a href="javascript:;" routerLink="/dispatch/routes/list" class="btn btn-sm btn-default"><i
+                                class="fas fa-list"></i> All Routes</a>
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get" id="form_" autocomplete="off"
+                                #aRoute1="ngForm">
+                                <div class="row text-dark">
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold text-lg-right pt-2">Route#<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input type="text" class="form-control" name="routeNo"
+                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02"
+                                                    #routeNumber="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
+                                                <div *ngIf="routeNumber.invalid && (routeNumber.dirty || routeNumber.touched)"
+                                                    class="text-danger">
 
-                                                  <div *ngIf="routeNumber.errors.required">
-                                                      Route# is required.
-                                                  </div>
-                                                  <div *ngIf="routeNumber.errors.pattern">
-                                                      Route# must be alphanumeric and allowed characters(-) .
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="row mt-2">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Route
-                                                  Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input type="text" class="form-control" name="routeName"
-                                                  [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"
-                                                  #routeName="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
-                                              <div *ngIf="routeName.invalid && (routeName.dirty || routeName.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="routeName.errors.required">
-                                                      Route name is required.
-                                                  </div>
-                                                  <div *ngIf="routeName.errors.pattern">
-                                                      Route name must be alphanumeric only.
-
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="row mt-2">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  Notes &nbsp; <span
-                                                      class="text-1 optional-label-color">(optional)</span>
-                                              </label>
-                                              <textarea class="form-control h-auto" rows="3" name="notes"
-                                                  [(ngModel)]="routeData.notes" placeholder="Enter notes" #NoteR1= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                                                  <div *ngIf="NoteR1.invalid && (NoteR1.dirty || NoteR1.touched)" class="text-danger">
-                                                    <div>
-                                                      <div *ngIf="NoteR1.errors.pattern">
-                                                        Only 500 characters are allowed.
-                                                       </div>
+                                                    <div *ngIf="routeNumber.errors.required">
+                                                        Route# is required.
+                                                    </div>
+                                                    <div *ngIf="routeNumber.errors.pattern">
+                                                        Route# must be alphanumeric and allowed characters(-) .
                                                     </div>
 
-                                                  </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                  Vehicle
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                              </label>
-                                              <ng-select [(ngModel)]="routeData.VehicleID" name="VehicleID"
-                                                  placeholder="Select vehicle">
-                                                  <ng-option *ngFor="let vehicle of vehicles | async;"
-                                                      value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}
-                                                  </ng-option>
-                                              </ng-select>
-                                          </div>
-                                          <div class="col-lg-2">
-                                              <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                  href="javascript:;" (click)="gotoVehiclePage();"><i
-                                                      class="fas fa-plus"></i></a>
-                                          </div>
-                                      </div>
-                                      <div class="row mt-2">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                  Asset
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                              </label>
-                                              <ng-select [(ngModel)]="routeData.AssetID" name="AssetID"
-                                                  placeholder="Select asset">
-                                                  <ng-option *ngFor="let asset of assets | async;"
-                                                      value="{{ asset.assetID }}">{{ asset.assetIdentification }}
-                                                  </ng-option>
-                                              </ng-select>
-                                          </div>
-                                          <div class="col-lg-2">
-                                              <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                  (click)="gotoAssetPage()" href="javascript:;"><i
-                                                      class="fas fa-plus"></i></a>
-                                          </div>
-                                      </div>
-                                      <div class="row mt-2">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                  Driver
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                              </label>
-                                              <ng-select [(ngModel)]="routeData.driverID" name="driverID" 
-                                                  placeholder="Select driver" (change)="resetCodrivers()">
-                                                  <ng-option *ngFor="let driver of drivers | async;"
-                                                      value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
-                                              </ng-select>
-                                          </div>
-                                          <div class="col-lg-1 pl-0">
-                                            <a href="#/fleet/drivers/add" target="_blank" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-plus"></i></a>
-                                          </div>
-                                          <div class="col-lg-1 pl-0">
-                                            <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip" title="Refresh driver data" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-sync"></i></a>
-                                          </div>
-                                      </div>
-                                      <div class="row mt-2">
-                                          <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                  Co-Driver
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                              </label>
-                                              <ng-select [(ngModel)]="routeData.coDriverID" id="codrvr"
-                                                  name="coDriverID" placeholder="Select co-driver">
-                                                  <ng-container *ngFor="let driver of drivers | async;">
-                                                      <ng-option *ngIf="routeData.driverID != driver.driverID"
-                                                          value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
-                                                  </ng-container>
-                                              </ng-select>
-                                          </div>
-                                          <div class="col-lg-1 pl-0">
-                                            <a href="#/fleet/drivers/add" target="_blank" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-plus"></i></a>
-                                          </div>
-                                          <div class="col-lg-1 pl-0">
-                                            <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip" title="Refresh driver data" class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-sync"></i></a>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row text-dark mt-4">
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Source
-                                                  Location</label>
-                                          </div>
 
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold pt-2 text-lg-right">Address<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="sourceInformation.sourceAddress"
-                                                  [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                  (keyup)="searchTerm.next($event);" class="form-control"
-                                                  autocomplete="off"
-                                                  placeholder="eg. 01,Business Hub Center,New York,USA"
-                                                  #sAddress="ngModel" required>
-                                              <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)"
-                                                  class="text-danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route
+                                                    Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input type="text" class="form-control" name="routeName"
+                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"
+                                                    #routeName="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
+                                                <div *ngIf="routeName.invalid && (routeName.dirty || routeName.touched)"
+                                                    class="text-danger">
 
-                                                  <div *ngIf="sAddress.errors.required">
-                                                      Source address is required.
-                                                  </div>
+                                                    <div *ngIf="routeName.errors.required">
+                                                        Route name is required.
+                                                    </div>
+                                                    <div *ngIf="routeName.errors.pattern">
+                                                        Route name must be alphanumeric only.
+
+                                                    </div>
 
 
-                                              </div>
-                                              <div class="map-search__results bg-white row mt-1 ml-0"
-                                                  style="width: 93%">
-                                                  <ul class="p-0 m-0 text-left" *ngIf="searchResults">
-                                                      <li *ngFor="let item of searchResults;">
-                                                          <a href="javascript:;"
-                                                              (click)="assignLocation('source', item.address.label)"
-                                                              title="{{item.address.label}}">{{item.address.label}}</a>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  Country<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="sourceInformation.sourceCountry"
-                                                  [(ngModel)]="routeData.sourceInformation.sourceCountry"
-                                                  class="form-control" autocomplete="nope"
-                                                  placeholder="eg. Canada,USA" #sCountry="ngModel" required>
-                                              <div *ngIf="sCountry.invalid && (sCountry.dirty || sCountry.touched)"
-                                                  class="text-danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Notes &nbsp; <span
+                                                        class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <textarea class="form-control h-auto" rows="3" name="notes"
+                                                    [(ngModel)]="routeData.notes" placeholder="Enter notes"
+                                                    #NoteR1="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+                                                <div *ngIf="NoteR1.invalid && (NoteR1.dirty || NoteR1.touched)"
+                                                    class="text-danger">
+                                                    <div>
+                                                        <div *ngIf="NoteR1.errors.pattern">
+                                                            Only 500 characters are allowed.
+                                                        </div>
+                                                    </div>
 
-                                                  <div *ngIf="sCountry.errors.required">
-                                                      Source country is required.
-                                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Vehicle
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.vehicleID" name="vehicleID"
+                                                    placeholder="Select vehicle">
+                                                    <ng-option *ngFor="let vehicle of vehicles | async;"
+                                                        value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37"
+                                                    href="javascript:;" (click)="gotoVehiclePage();"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Asset
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.assetID" name="assetID"
+                                                    placeholder="Select asset">
+                                                    <ng-option *ngFor="let asset of assets | async;"
+                                                        value="{{ asset.assetID }}">{{ asset.assetIdentification }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37"
+                                                    (click)="gotoAssetPage()" href="javascript:;"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Driver
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.driverID" name="driverID"
+                                                    placeholder="Select driver" (change)="resetCodrivers()">
+                                                    <ng-option *ngFor="let driver of drivers | async;"
+                                                        value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-lg-1 pl-0">
+                                                <a href="#/fleet/drivers/add" target="_blank"
+                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </div>
+                                            <div class="col-lg-1 pl-0">
+                                                <a href="javascript:;" (click)="refreshDrivrData()"
+                                                    data-toggle="tooltip" title="Refresh driver data"
+                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                        class="fas fa-sync"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    Co-Driver
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.coDriverID" id="codrvr"
+                                                    name="coDriverID" placeholder="Select co-driver">
+                                                    <ng-container *ngFor="let driver of drivers | async;">
+                                                        <ng-option *ngIf="routeData.driverID != driver.driverID"
+                                                            value="{{ driver.driverID }}">{{ driver.firstName }}
+                                                        </ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+                                            <div class="col-lg-1 pl-0">
+                                                <a href="#/fleet/drivers/add" target="_blank"
+                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </div>
+                                            <div class="col-lg-1 pl-0">
+                                                <a href="javascript:;" (click)="refreshDrivrData()"
+                                                    data-toggle="tooltip" title="Refresh driver data"
+                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                                        class="fas fa-sync"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-dark mt-4">
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Source
+                                                    Location</label>
+                                            </div>
 
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                Province/State<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="sourceInformation.sourceState"
-                                                  [(ngModel)]="routeData.sourceInformation.sourceState"
-                                                  class="form-control" placeholder="eg. Ontario" autocomplete="nope"
-                                                  #sProvince="ngModel" required>
-                                              <div *ngIf="sProvince.invalid && (sProvince.dirty || sProvince.touched)"
-                                                  class="text-danger">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold pt-2 text-lg-right">Address<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="sourceInfo.address"
+                                                    [(ngModel)]="routeData.sourceInfo.address"
+                                                    (keyup)="searchTerm.next($event);" class="form-control"
+                                                    autocomplete="off"
+                                                    placeholder="eg. 01,Business Hub Center,New York,USA"
+                                                    #sAddress="ngModel" required>
+                                                <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)"
+                                                    class="text-danger">
 
-                                                  <div *ngIf="sProvince.errors.required">
-                                                      Source province/state is required.
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="sourceInformation.sourceCity"
-                                                  [(ngModel)]="routeData.sourceInformation.sourceCity"
-                                                  class="form-control" placeholder="eg. Calgary" autocomplete="nope"
-                                                  #sCity="ngModel" required>
-                                              <div *ngIf="sCity.invalid && (sCity.dirty || sCity.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="sCity.errors.required">
-                                                      Source city is required.
-                                                  </div>
-
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                                  Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input type="text" class="form-control"
-                                                  name="sourceInformation.sourceZipCode"
-                                                  [(ngModel)]="routeData.sourceInformation.sourceZipCode"
-                                                  autocomplete="nope" placeholder="eg. 66777" #sCode="ngModel"
-                                                  required>
-                                              <div *ngIf="sCode.invalid && (sCode.dirty || sCode.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="sCode.errors.required">
-                                                      Source zip code is required.
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Destination
-                                                  Location</label>
-                                          </div>
-
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold pt-2 text-lg-right">Address<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="destinationInformation.destinationAddress"
-                                                  [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                  (keyup)="searchTerm.next($event);" class="form-control"
-                                                  autocomplete="nope"
-                                                  placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada"
-                                                  #dAddress="ngModel" required>
-                                              <div *ngIf="dAddress.invalid && (dAddress.dirty || dAddress.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="dAddress.errors.required">
-                                                      Destination address is required.
-                                                  </div>
-
-                                              </div>
-                                              <div class="map-search__results bg-white row mt-1 ml-0"
-                                                  style="width: 93%">
-                                                  <ul class="p-0 m-0 text-left" *ngIf="searchResults">
-                                                      <li *ngFor="let item of searchResults;">
-                                                          <a href="javascript:;"
-                                                              (click)="assignLocation('destination', item.address.label)"
-                                                              title="{{item.address.label}}">{{item.address.label}}</a>
-                                                      </li>
-                                                  </ul>
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  Country<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="destinationInformation.destinationCountry"
-                                                  [(ngModel)]="routeData.destinationInformation.destinationCountry"
-                                                  class="form-control" placeholder="eg. Canada" autocomplete="nope"
-                                                  #dCountry="ngModel" required>
-                                              <div *ngIf="dCountry.invalid && (dCountry.dirty || dCountry.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="dCountry.errors.required">
-                                                      Destination country is required.
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                Province/State<span
-                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="destinationInformation.destinationState"
-                                                  [(ngModel)]="routeData.destinationInformation.destinationState"
-                                                  class="form-control" placeholder="eg. Alberta" autocomplete="nope"
-                                                  #dProvince="ngModel" required>
-                                              <div *ngIf="dProvince.invalid && (dProvince.dirty || dProvince.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="dProvince.errors.required">
-                                                      Destination province/state is required.
-                                                  </div>
+                                                    <div *ngIf="sAddress.errors.required">
+                                                        Source address is required.
+                                                    </div>
 
 
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                  City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input name="destinationInformation.destinationCity"
-                                                  [(ngModel)]="routeData.destinationInformation.destinationCity"
-                                                  class="form-control" placeholder="eg. Calgary" autocomplete="nope"
-                                                  #dCity="ngModel" required>
-                                              <div *ngIf="dCity.invalid && (dCity.dirty || dCity.touched)"
-                                                  class="text-danger">
+                                                </div>
+                                                <div class="map-search__results bg-white row mt-1 ml-0"
+                                                    style="width: 93%">
+                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults">
+                                                        <li *ngFor="let item of searchResults;">
+                                                            <a href="javascript:;"
+                                                                (click)="assignLocation('source', item.address.label)"
+                                                                title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Country<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="sourceInfo.country"
+                                                    [(ngModel)]="routeData.sourceInfo.country"
+                                                    class="form-control" autocomplete="nope"
+                                                    placeholder="eg. Canada,USA" #sCountry="ngModel" required>
+                                                <div *ngIf="sCountry.invalid && (sCountry.dirty || sCountry.touched)"
+                                                    class="text-danger">
 
-                                                  <div *ngIf="dCity.errors.required">
-                                                      Destination city is required.
-                                                  </div>
+                                                    <div *ngIf="sCountry.errors.required">
+                                                        Source country is required.
+                                                    </div>
 
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Province/State<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="sourceInfo.state"
+                                                    [(ngModel)]="routeData.sourceInfo.state"
+                                                    class="form-control" placeholder="eg. Ontario" autocomplete="nope"
+                                                    #sProvince="ngModel" required>
+                                                <div *ngIf="sProvince.invalid && (sProvince.dirty || sProvince.touched)"
+                                                    class="text-danger">
 
-                                              </div>
-                                          </div>
-                                          <div class="col-lg-5">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                                  Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                              <input type="text" class="form-control"
-                                                  name="destinationInformation.destinationZipCode"
-                                                  [(ngModel)]="routeData.destinationInformation.destinationZipCode"
-                                                  placeholder="eg. 66777" autocomplete="nope" #dCode="ngModel"
-                                                  required>
-                                              <div *ngIf="dCode.invalid && (dCode.dirty || dCode.touched)"
-                                                  class="text-danger">
-
-                                                  <div *ngIf="dCode.errors.required">
-                                                      Destination zip code is required.
-                                                  </div>
-
-
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row text-dark mt-4">
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <div class="checkbox-custom checkbox-default">
-                                                  <input type="checkbox" id="recurringBtn"
-                                                      name="recurring.recurringRoute"
-                                                      [(ngModel)]="routeData.recurring.recurringRoute" value="yes">
-                                                  <label class="control-label font-weight-bold"
-                                                      for="recurringBtn">Recurring Route?
-                                                      &nbsp; <span
-                                                          class="text-1 optional-label-color">(optional)</span>
-                                                  </label>
-                                              </div>
-                                          </div>
-
-                                          <div class="col-lg-10 mt-2" id="recurringRadioDiv" style="display: none;">
-                                              <div class="row mt-2">
-                                                  <div class="col-lg-4">
-                                                      <div class="radio">
-                                                          <label for="dailyRecurringRadioBtn"
-                                                              class="btn btn-LTL active font-weight-bold reccRoute {{ dailyClass }}"
-                                                              style="width:120px;">
-                                                              <input type="radio" checked="" hidden=""
-                                                                  [(ngModel)]="routeData.recurring.recurringType"
-                                                                  name="recurringType" id="dailyRecurringRadioBtn"
-                                                                  (click)="selectRecurring($event)"
-                                                                  value="daily">Daily</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-lg-4">
-                                                      <div class="radio">
-                                                          <label for="weeklyRecurringRadioBtn"
-                                                              class="btn btn-LTL font-weight-bold reccRoute {{ weekClass }}"
-                                                              style="width:120px;">
-                                                              <input type="radio" hidden=""
-                                                                  [(ngModel)]="routeData.recurring.recurringType"
-                                                                  name="recurringType" id="weeklyRecurringRadioBtn"
-                                                                  (click)="selectRecurring($event)"
-                                                                  value="weekly">Weekly</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-lg-4">
-                                                      <div class="radio">
-                                                          <label for="biweeklyRecurringRadioBtn"
-                                                              class="btn btn-LTL font-weight-bold reccRoute {{ biClass }}"
-                                                              style="width:120px;">
-                                                              <input type="radio" hidden=""
-                                                                  [(ngModel)]="routeData.recurring.recurringType"
-                                                                  name="recurringType" id="biweeklyRecurringRadioBtn"
-                                                                  (click)="selectRecurring($event)"
-                                                                  value="biweekly">Biweekly</label>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-
-                                          <div class="col-lg-10" id="recurringDate" style="display: none;">
-                                              <div class="row" *ngIf='isDaily'>
-                                                  <div class="col-lg-10">
-                                                      <label
-                                                          class="control-label font-weight-bold text-lg-right pt-1">Start
-                                                          Date<span
-                                                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                      <input [(ngModel)]="routeData.recurring.recurringDate"
-                                                          name="recurring.recurringDate" type="text"
-                                                          placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
-                                                          #d="ngbDatepicker" class="form-control" #dateM="ngModel"
-                                                          required>
-                                                      <div *ngIf="dateM.invalid && (dateM.dirty || dateM.touched)"
-                                                          class="text-danger">
-
-                                                          <div *ngIf="dateM.errors.required">
-                                                              Start date is required.
-                                                          </div>
+                                                    <div *ngIf="sProvince.errors.required">
+                                                        Source province/state is required.
+                                                    </div>
 
 
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="sourceInfo.city"
+                                                    [(ngModel)]="routeData.sourceInfo.city"
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope"
+                                                    #sCity="ngModel" required>
+                                                <div *ngIf="sCity.invalid && (sCity.dirty || sCity.touched)"
+                                                    class="text-danger">
 
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <div class="checkbox-custom checkbox-default">
-                                                  <input type="checkbox" name="destinationStop" checked
-                                                      [(ngModel)]="destinationStop" (change)="eventCheck($event)"
-                                                      value="yes">
-                                                  <label class="control-label font-weight-bold"
-                                                      for="routeCheckBtn">Add Stop (s)</label>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
+                                                    <div *ngIf="sCity.errors.required">
+                                                        Source city is required.
+                                                    </div>
 
-                              <div class="row mt-4" *ngIf="mapVisible">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input type="text" class="form-control"
+                                                    name="sourceInfo.zipCode"
+                                                    [(ngModel)]="routeData.sourceInfo.zipCode"
+                                                    autocomplete="nope" placeholder="eg. 66777" #sCode="ngModel"
+                                                    required>
+                                                <div *ngIf="sCode.invalid && (sCode.dirty || sCode.touched)"
+                                                    class="text-danger">
 
-                                  <div class="col-lg-12">
-                                      <div class="row">
-                                          <div class="col-lg-12">
-                                              <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information
-                                              </h3>
-                                              <div class="row">
-                                                  <div class="col-lg-4 text-center">
-                                                      <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source
-                                                      </p>
-                                                      <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="routeData.stops.length == 0">-</p>
-                                                      <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="routeData.stops.length > 0">{{
-                                                              routeData.stops[0].stopName }}</p>
-                                                  </div>
-                                                  <div class="col-lg-4 text-center pt-3">
-                                                      <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                      <p class="mb-0 text-4 font-weight-semibold text-dark">{{
-                                                          routeData.miles }}
-                                                          Miles</p>
-                                                  </div>
-                                                  <div class="col-lg-4 text-center">
-                                                      <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">
-                                                          Destination</p>
-                                                      <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="routeData.stops.length == 0">-</p>
-                                                      <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="routeData.stops.length > 1">{{
-                                                          routeData.stops[routeData.stops.length-1].stopName }}</p>
-                                                  </div>
-                                              </div>
-                                              <div class="row mt-3 justify-content-center pl-5 pr-5">
-                                                  <div class="w100 pl-3">
-                                                      <div class="tripbarn"></div>
-                                                  </div>
-                                              </div>
+                                                    <div *ngIf="sCode.errors.required">
+                                                        Source zip code is required.
+                                                    </div>
 
-                                              <div class="tripinfoscroll">
-                                                  <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
-                                                      <div class="text-center" *ngFor="let data of routeData.stops; let i=index;">
-                                                          <div class="tripcirclen" data-toggle="tooltip" title="{{ data.stopName }}"></div>
-                                                          <div class="tripcontentn" data-toggle="tooltip" title="{{ data.stopName }}">
-                                                              <p class="font-weight-bold text-dark text-2 line-height-xs" *ngIf="i===0">Source
-                                                                  <br>{{ data.state }}
-                                                              </p>
-                                                              <p class="font-weight-bold text-dark text-2 line-height-xs" *ngIf="i > 0 && i < routeData.stops.length-1">Stop
-                                                                  <br>{{ data.state }}
-                                                              </p>
-                                                              <p class="font-weight-bold text-dark text-2 line-height-xs" *ngIf="i > 0 && i=== routeData.stops.length-1">Destination
-                                                                  <br>{{ data.state }}
-                                                              </p>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
 
-                                          <div class="col-lg-12">
-                                              <div class="mapclass vehiclemain" id="map_view">
-                                                  <div id="map" class="" style="height: calc(100vh - 150px);"></div>
-                                              </div>
-                                          </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Destination
+                                                    Location</label>
+                                            </div>
 
-                                          <div class="col-lg-12">
-                                              <div class="row text-dark">
-                                                  <h4>Route Stops</h4>
-                                              </div>
-                                              <div class="row">
-                                                  <div class="col-lg-12">
-                                                      <table class="table table-bordered">
-                                                          <thead>
-                                                              <tr>
-                                                                  <td width="5%"></td>
-                                                                  <td>
-                                                                      <label
-                                                                          class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
-                                                                          Location</label>
-                                                                  </td>
-                                                                  <td>
-                                                                      <label
-                                                                          class="control-label font-weight-semibold labelmt text-3 text-dark">Notes</label>
-                                                                  </td>
-                                                                  <td width="5%"></td>
-                                                              </tr>
-                                                              <tr
-                                                                  *ngFor="let stop of routeData.stops; let i = index;">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold pt-2 text-lg-right">Address<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="destInfo.address"
+                                                    [(ngModel)]="routeData.destInfo.address"
+                                                    (keyup)="searchTerm.next($event);" class="form-control"
+                                                    autocomplete="nope"
+                                                    placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada"
+                                                    #dAddress="ngModel" required>
+                                                <div *ngIf="dAddress.invalid && (dAddress.dirty || dAddress.touched)"
+                                                    class="text-danger">
 
-                                                                  <td><span class="badge badge-dark mt-2">{{i +
-                                                                          1}}</span>
-                                                                  </td>
-                                                                  <td>
-                                                                      <div class="mt-1">
-                                                                          <input name="stopName_{{i}}"
-                                                                              [(ngModel)]="routeData.stops[i].stopName"
-                                                                              (keyup)="searchTerm.next($event);"
-                                                                              class="form-control">
+                                                    <div *ngIf="dAddress.errors.required">
+                                                        Destination address is required.
+                                                    </div>
 
-                                                                          <div class="map-search__results bg-white row mt-1 ml-0 mt-5"
-                                                                              style="width: 46%">
-                                                                              <ul class="m-0 text-left"
-                                                                                  *ngIf="searchResults">
-                                                                                  <li
-                                                                                      *ngFor="let item of searchResults;">
-                                                                                      <a href="javascript:;"
-                                                                                          (click)="assignLocation('stops', item.address.label, i)"
-                                                                                          title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                                  </li>
-                                                                              </ul>
-                                                                          </div>
-                                                                      </div>
-                                                                  </td>
-                                                                  <td>
-                                                                      <input type="text" class="form-control"
-                                                                          placeholder="Notes" name="stopNotes_{{i}}"
-                                                                          [(ngModel)]="routeData.stops[i].stopNotes" #NoteR= "ngModel" pattern ="^[\s\S]{1,500}$" >
-                                                                          <div *ngIf="NoteR.invalid && (NoteR.dirty || NoteR.touched)" class="text-danger">
+                                                </div>
+                                                <div class="map-search__results bg-white row mt-1 ml-0"
+                                                    style="width: 93%">
+                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults">
+                                                        <li *ngFor="let item of searchResults;">
+                                                            <a href="javascript:;"
+                                                                (click)="assignLocation('destination', item.address.label)"
+                                                                title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Country<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="destInfo.country"
+                                                    [(ngModel)]="routeData.destInfo.country"
+                                                    class="form-control" placeholder="eg. Canada" autocomplete="nope"
+                                                    #dCountry="ngModel" required>
+                                                <div *ngIf="dCountry.invalid && (dCountry.dirty || dCountry.touched)"
+                                                    class="text-danger">
+
+                                                    <div *ngIf="dCountry.errors.required">
+                                                        Destination country is required.
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Province/State<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="destInfo.state"
+                                                    [(ngModel)]="routeData.destInfo.state"
+                                                    class="form-control" placeholder="eg. Alberta" autocomplete="nope"
+                                                    #dProvince="ngModel" required>
+                                                <div *ngIf="dProvince.invalid && (dProvince.dirty || dProvince.touched)"
+                                                    class="text-danger">
+
+                                                    <div *ngIf="dProvince.errors.required">
+                                                        Destination province/state is required.
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input name="destInfo.city"
+                                                    [(ngModel)]="routeData.destInfo.city"
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope"
+                                                    #dCity="ngModel" required>
+                                                <div *ngIf="dCity.invalid && (dCity.dirty || dCity.touched)"
+                                                    class="text-danger">
+
+                                                    <div *ngIf="dCity.errors.required">
+                                                        Destination city is required.
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input type="text" class="form-control"
+                                                    name="destInfo.zipCode"
+                                                    [(ngModel)]="routeData.destInfo.zipCode"
+                                                    placeholder="eg. 66777" autocomplete="nope" #dCode="ngModel"
+                                                    required>
+                                                <div *ngIf="dCode.invalid && (dCode.dirty || dCode.touched)"
+                                                    class="text-danger">
+
+                                                    <div *ngIf="dCode.errors.required">
+                                                        Destination zip code is required.
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-dark mt-4">
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" id="recurringBtn"
+                                                        name="recurring.route"
+                                                        [(ngModel)]="routeData.recurring.route" value="yes">
+                                                    <label class="control-label font-weight-bold"
+                                                        for="recurringBtn">Recurring Route?
+                                                        &nbsp; <span
+                                                            class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 mt-2" id="recurringRadioDiv" style="display: none;">
+                                                <div class="row mt-2">
+                                                    <div class="col-lg-4">
+                                                        <div class="radio">
+                                                            <label for="dailyRecurringRadioBtn"
+                                                                class="btn btn-LTL active font-weight-bold reccRoute {{ dailyClass }}"
+                                                                style="width:120px;">
+                                                                <input type="radio" checked="" hidden=""
+                                                                    [(ngModel)]="routeData.recurring.type"
+                                                                    name="recurringType" id="dailyRecurringRadioBtn"
+                                                                    (click)="selectRecurring($event)"
+                                                                    value="daily">Daily</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="radio">
+                                                            <label for="weeklyRecurringRadioBtn"
+                                                                class="btn btn-LTL font-weight-bold reccRoute {{ weekClass }}"
+                                                                style="width:120px;">
+                                                                <input type="radio" hidden=""
+                                                                    [(ngModel)]="routeData.recurring.type"
+                                                                    name="recurringType" id="weeklyRecurringRadioBtn"
+                                                                    (click)="selectRecurring($event)"
+                                                                    value="weekly">Weekly</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="radio">
+                                                            <label for="biweeklyRecurringRadioBtn"
+                                                                class="btn btn-LTL font-weight-bold reccRoute {{ biClass }}"
+                                                                style="width:120px;">
+                                                                <input type="radio" hidden=""
+                                                                    [(ngModel)]="routeData.recurring.type"
+                                                                    name="recurringType" id="biweeklyRecurringRadioBtn"
+                                                                    (click)="selectRecurring($event)"
+                                                                    value="biweekly">Biweekly</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10" id="recurringDate" style="display: none;">
+                                                <div class="row" *ngIf='isDaily'>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-1">Start
+                                                            Date<span
+                                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input [(ngModel)]="routeData.recurring.date"
+                                                            name="recurring.date" type="text"
+                                                            placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
+                                                            #d="ngbDatepicker" class="form-control" #dateM="ngModel"
+                                                            required>
+                                                        <div *ngIf="dateM.invalid && (dateM.dirty || dateM.touched)"
+                                                            class="text-danger">
+
+                                                            <div *ngIf="dateM.errors.required">
+                                                                Start date is required.
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="checkbox-custom checkbox-default">
+                                                    <input type="checkbox" name="destinationStop" checked
+                                                        [(ngModel)]="destinationStop" (change)="eventCheck($event)"
+                                                        value="yes">
+                                                    <label class="control-label font-weight-bold"
+                                                        for="routeCheckBtn">Add Stop (s)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4" *ngIf="mapVisible">
+
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information
+                                                </h3>
+                                                <div class="row">
+                                                    <div class="col-lg-4 text-center">
+                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source
+                                                        </p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                            *ngIf="routeData.stops.length == 0">-</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                            *ngIf="routeData.stops.length > 0">{{
+                                                            routeData.stops[0].name }}</p>
+                                                    </div>
+                                                    <div class="col-lg-4 text-center pt-3">
+                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                            routeData.miles }}
+                                                            Miles</p>
+                                                    </div>
+                                                    <div class="col-lg-4 text-center">
+                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">
+                                                            Destination</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                            *ngIf="routeData.stops.length == 0">-</p>
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                            *ngIf="routeData.stops.length > 1">{{
+                                                            routeData.stops[routeData.stops.length-1].name }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                                    <div class="w100 pl-3">
+                                                        <div class="tripbarn"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tripinfoscroll">
+                                                    <div
+                                                        class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                                        <div class="text-center"
+                                                            *ngFor="let data of routeData.stops; let i=index;">
+                                                            <div class="tripcirclen" data-toggle="tooltip"
+                                                                title="{{ data.stopName }}"></div>
+                                                            <div class="tripcontentn" data-toggle="tooltip"
+                                                                title="{{ data.stopName }}">
+                                                                <p class="font-weight-bold text-dark text-2 line-height-xs"
+                                                                    *ngIf="i===0">Source
+                                                                    <br>{{ data.state }}
+                                                                </p>
+                                                                <p class="font-weight-bold text-dark text-2 line-height-xs"
+                                                                    *ngIf="i > 0 && i < routeData.stops.length-1">Stop
+                                                                    <br>{{ data.state }}
+                                                                </p>
+                                                                <p class="font-weight-bold text-dark text-2 line-height-xs"
+                                                                    *ngIf="i > 0 && i=== routeData.stops.length-1">
+                                                                    Destination
+                                                                    <br>{{ data.state }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="mapclass vehiclemain" id="map_view">
+                                                    <div id="map" class="" style="height: calc(100vh - 150px);"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="row text-dark">
+                                                    <h4>Route Stops</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td width="5%"></td>
+                                                                    <td>
+                                                                        <label
+                                                                            class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
+                                                                            Location</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <label
+                                                                            class="control-label font-weight-semibold labelmt text-3 text-dark">Notes</label>
+                                                                    </td>
+                                                                    <td width="5%"></td>
+                                                                </tr>
+                                                                <tr
+                                                                    *ngFor="let stop of routeData.stops; let i = index;">
+
+                                                                    <td><span class="badge badge-dark mt-2">{{i +
+                                                                            1}}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="mt-1">
+                                                                            <input name="stopName_{{i}}"
+                                                                                [(ngModel)]="routeData.stops[i].name"
+                                                                                (keyup)="searchTerm.next($event);"
+                                                                                class="form-control">
+
+                                                                            <div class="map-search__results bg-white row mt-1 ml-0 mt-5"
+                                                                                style="width: 46%">
+                                                                                <ul class="m-0 text-left"
+                                                                                    *ngIf="searchResults">
+                                                                                    <li
+                                                                                        *ngFor="let item of searchResults;">
+                                                                                        <a href="javascript:;"
+                                                                                            (click)="assignLocation('stops', item.address.label, i)"
+                                                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Notes" name="stopNotes_{{i}}"
+                                                                            [(ngModel)]="routeData.stops[i].notes"
+                                                                            #NoteR="ngModel" pattern="^[\s\S]{1,500}$">
+                                                                        <div *ngIf="NoteR.invalid && (NoteR.dirty || NoteR.touched)"
+                                                                            class="text-danger">
                                                                             <div>
-                                                                              <div *ngIf="NoteR.errors.pattern">
-                                                                                Only 500 characters are allowed.
-                                                                               </div>
+                                                                                <div *ngIf="NoteR.errors.pattern">
+                                                                                    Only 500 characters are allowed.
+                                                                                </div>
 
                                                                             </div>
-                                                                          </div>
-                                                                  </td>
-                                                                  <td *ngIf="i >= 1 && i < routeData.stops?.length-1">
-                                                                      <span (click)="removeStops(i)"
-                                                                          class="fas fa-trash-alt pt-2"></span></td>
-                                                              </tr>
-                                                          </thead>
-                                                      </table>
-                                                  </div>
-                                              </div>
-                                              <div class="row">
-                                                  <div class="col-lg-12 text-right">
-                                                      <a (click)="addStops()" id="addStop"
-                                                          class="btn btn-sm btn-default"><i class="fas fa-plus"></i>
-                                                          Add More Stops</a>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <!-- <div class="col-lg-12">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td *ngIf="i >= 1 && i < routeData.stops?.length-1">
+                                                                        <span (click)="removeStops(i)"
+                                                                            class="fas fa-trash-alt pt-2"></span>
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-right">
+                                                        <a (click)="addStops()" id="addStop"
+                                                            class="btn btn-sm btn-default"><i class="fas fa-plus"></i>
+                                                            Add More Stops</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-lg-12">
                                       <div class="mapclass vehiclemain" id="map_view">
                                           <div id="map" class="" style="height: calc(100vh - 150px);"></div>
                                       </div>
                                   </div> -->
-                              </div>
-                              <div class="row text-right mt-3">
-                                  <div class="col-lg-12 pr-3">
-                                      <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
-                                          routerLink="/dispatch/routes/list">Cancel</a>
+                                </div>
+                                <div class="row text-right mt-3">
+                                    <div class="col-lg-12 pr-3">
+                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
+                                            routerLink="/dispatch/routes/list">Cancel</a>
 
-                                      <!-- if there is some error in validation  -->
-                                      <button type="button" *ngIf="!routeID && !aRoute1.form.valid "
-                                          [disabled]="!aRoute1.form.valid" class="btn btn-success mt-1">Create
-                                          Route</button>
+                                        <!-- if there is some error in validation  -->
+                                        <button type="button" *ngIf="!routeID && !aRoute1.form.valid "
+                                            [disabled]="!aRoute1.form.valid" class="btn btn-success mt-1">Create
+                                            Route</button>
 
-                                      <!-- if validations are ok and now the button will disable on submit click  -->
-                                      <button (click)="addRoute()" *ngIf="!routeID && aRoute1.form.valid "
-                                          [disabled]="routeBtnStatus" class="btn btn-success mt-1">Create
-                                          Route</button>
+                                        <!-- if validations are ok and now the button will disable on submit click  -->
+                                        <button (click)="addRoute()" *ngIf="!routeID && aRoute1.form.valid "
+                                            [disabled]="routeBtnStatus" class="btn btn-success mt-1">Create
+                                            Route</button>
 
-                                      <!-- update case -->
-                                      <button *ngIf="routeID && !aRoute1.form.valid" [disabled]="!aRoute1.form.valid"
-                                          class="btn btn-success mt-1">Update Route</button>
+                                        <!-- update case -->
+                                        <button *ngIf="routeID && !aRoute1.form.valid" [disabled]="!aRoute1.form.valid"
+                                            class="btn btn-success mt-1">Update Route</button>
 
-                                      <button (click)="updateRoute()" *ngIf="routeID && aRoute1.form.valid"
-                                          [disabled]="routeBtnStatus" class="btn btn-success mt-1">Update
-                                          Route</button>
-
-
-
-
-
-
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                  </section>
-              </div>
-          </div>
-      </section>
-  </div>
+                                        <button (click)="updateRoute()" *ngIf="routeID && aRoute1.form.valid"
+                                            [disabled]="routeBtnStatus" class="btn btn-success mt-1">Update
+                                            Route</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
 </section>
