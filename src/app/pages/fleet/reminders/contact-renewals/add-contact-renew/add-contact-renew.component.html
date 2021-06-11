@@ -186,7 +186,7 @@
                   class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name <span
                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                <input [(ngModel)]="serviceTask.taskName"
-                  name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type" #nameR="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type" #nameR="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                   <div *ngIf="nameR.invalid && (nameR.dirty || nameR.touched)" class="text-danger">
                      <div *ngIf="nameR.errors.required">
                        Renewal name is required.
@@ -202,7 +202,14 @@
                  <label
                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description&nbsp;<span
                  class="text-1 optional-label-color">(optional)</span></label>
-                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
+                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"#aNotes228="ngModel"
+                 pattern="^[\s\S]{1,500}$"></textarea>
+                 <div *ngIf="aNotes228.invalid && (aNotes228.dirty || aNotes228.touched)" class="text-danger">
+                  <div *ngIf="aNotes228.errors.pattern">
+                     Only 500 characters are allowed.
+                  </div>
+
+               </div>
                </div>
             </div>
           
