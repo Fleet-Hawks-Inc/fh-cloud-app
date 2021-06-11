@@ -150,9 +150,9 @@ export class AddTripComponent implements OnInit {
     selectedLocationAddress2 = '';
     selectedLocationAddress3 = '';
 
-    assetDataVehicleID = '';
-    assetDataDriverUsername = '';
-    assetDataCoDriverUsername = '';
+    assetDataVehicleID = null;
+    assetDataDriverUsername = null;
+    assetDataCoDriverUsername = null;
     informationAsset = [];
     allFetchedOrders = [];
     shippersObjects = [];
@@ -367,14 +367,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverUsername = '';
         this.tempTextFieldValues.trailerName = '';
 
-        this.assetDataVehicleID = '';
-        this.informationAsset = [];
-        this.assetDataDriverUsername = '';
-        this.assetDataCoDriverUsername = '';
-        $(".vehicleClass").removeClass('td_border');
-        $(".assetClass").removeClass('td_border');
-        $(".driverClass").removeClass('td_border');
-        $(".codriverClass").removeClass('td_border');
+        this.emptyAsigneeModal();
     }
 
     showEditRow(index) {
@@ -472,7 +465,19 @@ export class AddTripComponent implements OnInit {
         $("#orderModal").modal('show');
     }
 
+    emptyAsigneeModal() {
+        this.assetDataVehicleID = null;
+        this.informationAsset = [];
+        this.assetDataDriverUsername = null;
+        this.assetDataCoDriverUsername = null;
+        $(".vehicleClass").removeClass('td_border');
+        $(".assetClass").removeClass('td_border');
+        $(".driverClass").removeClass('td_border');
+        $(".codriverClass").removeClass('td_border');
+    }
+
     showAssetModal(type, index) {
+        this.emptyAsigneeModal();
 
         if (type === 'add') {
             if ($('#cell11').val() == '') {
@@ -498,6 +503,8 @@ export class AddTripComponent implements OnInit {
                 // set temp fields value
                 this.tempTextFieldValues.vehicleName = editRowValues.vehicleName;
                 this.tempTextFieldValues.vehicleID = editRowValues.vehicleID;
+                this.tempTextFieldValues.driverID = editRowValues.driverID;
+                this.tempTextFieldValues.coDriverID = editRowValues.coDriverID;
                 // this.tempTextFieldValues.trailer = [];
                 this.tempTextFieldValues.driverName = editRowValues.driverName;
                 this.tempTextFieldValues.driverUsername = editRowValues.driverUsername;
@@ -506,8 +513,8 @@ export class AddTripComponent implements OnInit {
                 this.tempTextFieldValues.trailerName = editRowValues.trailerName;
 
                 $("#veh_" + editRowValues.vehicleID).addClass('td_border');
-                $("#drivr_" + editRowValues.driverUsername).addClass('td_border');
-                $("#codrivr_" + editRowValues.coDriverUsername).addClass('td_border');
+                $("#drivr_" + editRowValues.driverID).addClass('td_border');
+                $("#codrivr_" + editRowValues.coDriverID).addClass('td_border');
 
                 // set selected asset values
                 if (editRowValues.trailer != undefined) {
@@ -810,6 +817,7 @@ export class AddTripComponent implements OnInit {
     }
 
     saveAssetModalData() {
+        console.log('this.tempTextFieldValues', this.tempTextFieldValues);
         if(this.tempTextFieldValues.coDriverUsername == undefined) {
             this.tempTextFieldValues.coDriverUsername = '';
         }
@@ -827,6 +835,9 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.vehicleName = this.tempTextFieldValues.vehicleName;
             this.textFieldValues.vehicleID = this.tempTextFieldValues.vehicleID;
             this.textFieldValues.trailer = this.tempTextFieldValues.trailer;
+            this.textFieldValues.driverID = this.tempTextFieldValues.driverID;
+            this.textFieldValues.coDriverID = this.tempTextFieldValues.coDriverID;
+
             this.textFieldValues.driverName = this.tempTextFieldValues.driverName;
             this.textFieldValues.driverUsername = this.tempTextFieldValues.driverUsername;
             this.textFieldValues.coDriverName = this.tempTextFieldValues.coDriverName;
@@ -863,6 +874,7 @@ export class AddTripComponent implements OnInit {
             this.trips[index].trailerName = this.tempTextFieldValues.trailerName;
             this.trips[index].driverID = this.tempTextFieldValues.driverID;
             this.trips[index].coDriverID = this.tempTextFieldValues.coDriverID;
+            this.trips[index].trailerID = this.informationAsset;
             
             if(this.trips[index].vehicleID != '' || this.trips[index].driverUsername != '' || this.trips[index].coDriverUsername != '' || this.trips[index].trailerName != '') {
                 $("#editCell11"+index).prop('disabled', true);
@@ -899,7 +911,7 @@ export class AddTripComponent implements OnInit {
             $(".vehicleClass").removeClass('td_border');
             this.tempTextFieldValues.vehicleName = '';
             this.tempTextFieldValues.vehicleID = '';
-            this.assetDataVehicleID = '';
+            this.assetDataVehicleID = null;
         } else {
             if (type === 'click') {
                 this.assetDataVehicleID = $event.vehicleID;
@@ -917,25 +929,25 @@ export class AddTripComponent implements OnInit {
                 $(".driverClass").removeClass('td_border');
                 this.tempTextFieldValues.driverName = '';
                 this.tempTextFieldValues.driverUsername = '';
-                this.assetDataDriverUsername = '';
+                this.assetDataDriverUsername = null;
                 this.tempTextFieldValues.driverID = '';
             } else {
                 $(".codriverClass").removeClass('td_border');
                 this.tempTextFieldValues.coDriverName = '';
                 this.tempTextFieldValues.coDriverUsername = '';
-                this.assetDataCoDriverUsername = '';
+                this.assetDataCoDriverUsername = null;
                 this.tempTextFieldValues.coDriverID = '';
             }
         } else {
             if (type === 'driver') {
                 // alert('here')
                 await this.spinner.show();
-                this.assetDataCoDriverUsername = ''; //reset the codriver selected
+                this.assetDataCoDriverUsername = null; //reset the codriver selected
                 await this.fetchCoDriver($event.driverID);
                 this.tempTextFieldValues.driverName = $event.fullName;
                 this.tempTextFieldValues.driverUsername = $event.userName;
                 this.tempTextFieldValues.driverID = $event.driverID;
-                this.assetDataCoDriverUsername = '';
+                this.assetDataCoDriverUsername = null;
                 if (eventType === 'click') {
                     this.assetDataDriverUsername = $event.userName;
                 }
@@ -959,6 +971,9 @@ export class AddTripComponent implements OnInit {
     }
 
     assetsChange($event, type) {
+        console.log('$event-----', $event);
+        console.log('type-----', type);
+        this.tempTextFieldValues.trailerName = '';
         if ($event === undefined) {
             $(".assetClass").removeClass('td_border');
         } else {
@@ -1815,9 +1830,8 @@ export class AddTripComponent implements OnInit {
                                 lng:element.lng
                             }
 
-                            await this.newCoords.push(`${element.lat},${element.lng}`)
-                            
-                            await this.trips.push(obj);
+                            this.newCoords.push(`${element.lat},${element.lng}`)
+                            this.trips.push(obj);
                         }
                         await this.hereMap.calculateRoute(this.newCoords);
                     }
