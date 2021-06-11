@@ -529,7 +529,7 @@
                                               <div class="col-lg-4 text-center">
                                                   <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                   <p class="mb-0 text-4 font-weight-semibold text-dark"
-                                                      *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined">
+                                                      *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && mapOrderActive == 'active'">
                                                       {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
                                                       '1.0-3'}}
                                                   </p>

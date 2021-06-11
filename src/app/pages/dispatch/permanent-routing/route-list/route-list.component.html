@@ -49,10 +49,8 @@
                                         <th>Destination Location</th>
                                         <th>Miles</th>
                                         <th>Recurring</th>
-                                        <!-- <th>Stops</th>
-                                        <th>Notes</th> -->
                                         <th>Actions</th>
-                                        </tr>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="routes.length == 0" class="text-center">
@@ -65,7 +63,7 @@
                                                 - 
                                             </span>
                                             <span *ngIf="route.stops.length > 0">
-                                                {{ route.stops[0].stopName }}
+                                                {{ route.stops[0].name }}
                                             </span>
                                         </td>                                                
                                         <td>
@@ -73,19 +71,15 @@
                                                 - 
                                             </span>
                                             <span *ngIf="route.stops.length > 1">
-                                                {{ route.stops[route.stops.length-1].stopName }}
+                                                {{ route.stops[route.stops.length-1].name }}
                                             </span>
                                         </td>
                                         <td>{{ route.miles }} miles</td>
                                         <td>
                                             <span *ngIf="route.recurring">
-                                                {{ route.recurring.recurringType }}
+                                                {{ route.recurring.type }}
                                             </span>
                                         </td>
-                                        <!-- <td>
-                                            {{ route.stopNames }}
-                                        </td>
-                                        <td>{{ route.notes }}</td> -->
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
