@@ -5,25 +5,16 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import { OverviewComponent } from './overview/overview.component';
-import { DriverSummaryComponent } from './driver-summary/driver-summary.component';
-
-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import {ChartsModule} from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import {Injectable} from '@angular/core';
-import { DriverDetailComponent } from './driver-detail/driver-detail.component';
-import { DriverLogsComponent } from './driver-logs/driver-logs.component';
-import { TripComponent } from './trip/trip.component';
+import { OverviewComponent } from './overview/overview.component';
+
 
 const routes: Routes = [
-  { path: '', component: OverviewComponent },
-  { path: 'summary', component: DriverSummaryComponent },
-  { path: 'detail', component: DriverDetailComponent },
-  { path: 'logs', component: DriverLogsComponent },
-  { path: 'trips', component: TripComponent },
+  { path: 'overview', component: OverviewComponent },
 ];
 
 /**
@@ -80,13 +71,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    OverviewComponent,
-    DriverSummaryComponent,
-    DriverDetailComponent,
-    DriverLogsComponent,
-    TripComponent,
     
-  ],
+    
+  OverviewComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -102,4 +89,4 @@ const routes: Routes = [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},]
 })
-export class ManageDriverModule {}
+export class ManageAssetModule {}
