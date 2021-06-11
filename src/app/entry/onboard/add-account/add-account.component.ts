@@ -376,7 +376,6 @@ export class AddAccountComponent implements OnInit {
   }
   validatePassword(password) {
     let passwordVerify = passwordStrength(password)
-    console.log(passwordVerify);
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
     } else{
@@ -403,10 +402,5 @@ export class AddAccountComponent implements OnInit {
     } else{
       this.passwordValidation.length = false;
     }
-    
-  //  console.log(this.passwordValidation)
-  // this.passwordValidation.length = $().css('class="fas fa-check"');
   }
-
-
 }
