@@ -10,15 +10,18 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import {ChartsModule} from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import {Injectable} from '@angular/core';
-import { OverviewComponent } from './overview/overview.component';
+import { FoverviewComponent } from './foverview/foverview.component';
 import { SummaryComponent } from './summary/summary.component';
-import { DetailComponent } from './detail/detail.component';
+import { FvreportComponent } from './fvreport/fvreport.component';
+import { FdreportComponent } from './fdreport/fdreport.component';
+
 
 
 const routes: Routes = [
-  { path: 'overview', component: OverviewComponent },
+  { path: 'foverview', component: FoverviewComponent },
   { path: 'summary', component: SummaryComponent },
-  { path: 'detail', component: DetailComponent },
+  { path: 'fvreport', component: FvreportComponent },
+  { path: 'fdreport', component: FdreportComponent },
 ];
 
 /**
@@ -75,15 +78,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    
-    
-  OverviewComponent,
-    
-    
-  SummaryComponent,
-    
-    
-  DetailComponent],
+    FoverviewComponent,
+    SummaryComponent,
+    FvreportComponent,
+    FdreportComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -99,4 +98,4 @@ const routes: Routes = [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},]
 })
-export class ManageAssetModule {}
+export class ManageFuelModule {}
