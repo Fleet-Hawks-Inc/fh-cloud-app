@@ -29,7 +29,7 @@
         <header class="page-header">
            <div class="row" style="padding-top:10px;">
               <div class="col-md-4 col-lg-4">
-                 <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
+                 <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}} {{getOrderNumber}}</h4>
               </div>
               <div class="col-md-8 col-lg-8 text-right">
                  <!--- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  -->
@@ -170,6 +170,12 @@
                                        class="fas fa-plus"></i>
                                  </a>
                               </div>
+                              <div class="col-10"  *ngIf="notOfficeAddress">
+                                 <div class="rounded p-2 mt-2" style="background-color:#e1e2e3;">
+                                    There is no office address of this customer
+                                 </div>
+                              </div>
+                              
                               <div class="col-lg-10 mt-4" *ngIf="customerSelected.officeAddr">
                                  <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
                                     <div class="row pl-3 pr-3">
@@ -182,6 +188,7 @@
                                     </div>
                                     <div class="row pl-3 pr-3">
                                        <div class="col-lg-12">
+                                         
                                           <div class="" *ngFor="let address of customerSelected.address">
                                              <div class="row" *ngIf="address.addressType =='Office'">
                                                 <div class="col-lg-6">
@@ -226,30 +233,14 @@
                         </div>
                         <div class="col-lg-5 offset-lg-1">
                            <div class="row">
-                              <div class="col-5">
-                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Order#
-    
-                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                 </label>
-    
-                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                       <span class="input-group-text text-uppercase"
-                                          style="padding:0.2rem 0.75rem">ORD</span>
-                                    </div>
-                                    <input [(ngModel)]="orderData.orderNumber" name="orderNumber" #orderNumber="ngModel" required orderNumber disabled
-                                       type="text"
-                                    class="form-control">
-                                 </div>
-                              </div>
-                              <div class="col-5">
+                             
+                              <div class="col-10">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                    PO#
-                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    PO# &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                  </label>
                                  <input  placeholder="eg. 0006,123" [(ngModel)]="orderData.customerPO" name="customerPO" #customerPO="ngModel" required customerPO type="text"
                                     class="form-control" #orderNum="ngModel" required pattern="^[0-9]+$">
-                                    <div *ngIf="orderNum.invalid && (orderNum.dirty || orderNum.touched)" class="text-danger">
+                                    <!-- <div *ngIf="orderNum.invalid && (orderNum.dirty || orderNum.touched)" class="text-danger">
                                        <div>
     
                                          <div *ngIf="orderNum.errors.required">
@@ -260,7 +251,7 @@
                                              </div>
                                        </div>
     
-                                     </div>
+                                     </div> -->
                                  
                               </div>
                            </div>
@@ -330,19 +321,19 @@
                   <div class="row mb-3">
                      <div class="col-12">
                         <div class="bg-white p-3 text-dark">
-                           <div class="form-group row">
+                           <div class="form-group row border-bottom-0">
                               <div class="col-lg-12 mb-4 mb-lg-0">
                                  <div *ngFor="let item of shippersReceivers; let i = index;">
                                     <div class="row">
                                        <div class="col-lg-5 offset-lg-1">
-                                          <h4 class="mt-0 text-dark font-weight-bold text-4">Shipment-{{i + 1}}</h4>
+                                          <h4 class="mt-0 text-dark font-weight-bold text-5">Shipment-{{i + 1}}</h4>
                                        </div>
                                     </div>
                                     
                                     <div class="row">
                                        <div class="col-lg-5 offset-lg-1">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Consignor</h4>
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Shipper</h4>
                                              <table class="table">
                                                 <tbody>
          
@@ -368,7 +359,7 @@
                                        </div>
                                        <div class="col-lg-5 offset-lg-1">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Consignee </h4>
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Receiver </h4>
                                              <table class="table">
                                                 <tbody>
          
@@ -394,15 +385,15 @@
                                        </div>
                                     </div>
                                     <div class="form-group row divderrel">
-                                       <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i
+                                       <p class="mb-1 mt-4 mr-1 midleicon btn btn-default"><i
                                              class="fas fa-arrow-circle-right"></i></p>
          
                                              <div class="col-lg-5 offset-lg-1">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Consignor</h4>
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
                                              </div>
          
                                              <div class="col-lg-5 offset-lg-1">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Consignee</h4>
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
                                              </div>
          
          
@@ -417,7 +408,7 @@
                                                          <div class="col-lg-11 col-md-12">
                                                             <label
                                                                class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Consignor
+                                                               for="inputDefault">Shipper
                                                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
          
@@ -428,7 +419,7 @@
          
                                                             </ng-select>
                                                             <div *ngIf="conSlt1.touched && (shippersReceivers[0].shippers.shipperID == null || shippersReceivers[0].shippers.shipperID == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-                                                                   Consignor is required.
+                                                               Shipper is required.
                                                            </div>
                                                             
                                                          </div>
@@ -825,7 +816,7 @@
          
                                                          <div class="col-lg-11 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Consignee
+                                                               for="inputDefault">Receiver
                                                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
          
@@ -836,7 +827,7 @@
                                                                <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
                                                             </ng-select>
                                                             <div *ngIf="consignee.touched && ( shippersReceivers[0].receivers.receiverID == null || shippersReceivers[0].receivers.receiverID == '') && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
-                                                                  Consignee is required.
+                                                               Receiver is required.
                                                                
                                                            </div>
                                                             
@@ -1786,7 +1777,7 @@
                                     <div class="col-lg-10 offset-lg-2 pl-3 mb-2">
                                        <div class="checkbox-custom checkbox-default">
                                           <input type="checkbox" id="ZeroRated" (change)="calculateAmount()" [(ngModel)]="orderData.zeroRated" name="zeroRated">
-                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Zero Rated</label>
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Exempt</label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10 offset-lg-2" *ngIf="!orderData.zeroRated">
@@ -2009,10 +2000,10 @@
             <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCarrierModal">Carrier</a>
          </li>
            <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Consignee</a>
+            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Receiver</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Consignor</a>
+            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Shipper</a>
          </li>
          <li>
             <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCustomerModal">Customer</a>

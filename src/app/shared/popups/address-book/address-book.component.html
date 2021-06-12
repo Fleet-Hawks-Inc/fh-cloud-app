@@ -16,8 +16,8 @@
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="resetModal('broker')" href="javascript:;">Broker</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="resetModal('carrier')" href="javascript:;">Carrier</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Consignor</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Receiver</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Shipper</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a>
                             <!-- <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a> -->
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a>
@@ -42,8 +42,8 @@
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item"> <a class="nav-link active" id="broker-tab" data-toggle="tab" href="#broker" role="tab" aria-controls="broker" aria-selected="false" (click)="setActiveDiv('broker')">Broker</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="carrier-tab" data-toggle="tab" href="#carrier" role="tab" aria-controls="carrier" aria-selected="false" (click)="setActiveDiv('carrier')">Carrier</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false" (click)="setActiveDiv('consignee')">Consignee</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Consignor</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false" (click)="setActiveDiv('consignee')">Receiver</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Shipper</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="customer-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="customer" aria-selected="false" (click)="setActiveDiv('customer')">Customer</a> </li>
                             <!-- <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li> -->
                             <li class="nav-item"> <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('company')">Factoring Company</a> </li>
@@ -3486,7 +3486,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ modalTitle }} Consignor </h5>
+                <h5 class="modal-title">{{ modalTitle }} Shipper </h5>
                 <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
@@ -3872,7 +3872,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ modalTitle }} Consignee</h5>
+                <h5 class="modal-title">{{ modalTitle }} Receiver</h5>
                 <button type="button" (click)="clearModalData()" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
