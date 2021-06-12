@@ -1717,6 +1717,9 @@ text-decoration: underline;
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
 
+  /* border radius */
+  .bor-radius0px{border-radius: 0px !important;}
+
   /* box */
   .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
   .boxshadow0{box-shadow: none !important;}
@@ -1801,6 +1804,7 @@ text-decoration: underline;
   .mr50{margin-right:50px !important;}
 
   /* margin bottom */
+  .mb2{margin-bottom:2px !important;} 
   .mb4{margin-bottom:4px !important;} 
   
   
