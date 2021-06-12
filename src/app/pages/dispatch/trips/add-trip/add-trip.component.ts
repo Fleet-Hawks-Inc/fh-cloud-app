@@ -9,7 +9,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
-import { GoogleMapsService } from 'src/app/services/google-maps.service';
 import * as moment from "moment";
 
 declare var $: any;
@@ -35,7 +34,7 @@ export class AddTripComponent implements OnInit {
     carriers = [];
     routes = [];
     constructor(private apiService: ApiService, private route: ActivatedRoute,
-        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService, private pcMiles: GoogleMapsService) { }
+        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
     public orderMiles={
         calculateBy:'manual',
         totalMiles:0
@@ -81,7 +80,7 @@ export class AddTripComponent implements OnInit {
     OrderIDs = [];
     temporaryOrderIDs = [];
     temporaryOrderNumber = [];
-    typeOptions = ['Pickup', 'Delivery', 'Stop', 'Enroute', 'Relay', 'Switch', 'Yard'];
+    typeOptions = ['Start','Pickup', 'Delivery', 'Stop', 'Enroute', 'Relay', 'Switch', 'Yard'];
     ftlOptions: any = {};
     ltlOptions: any = {};
     assetModalData: any = {};
@@ -268,10 +267,13 @@ export class AddTripComponent implements OnInit {
             if(coordResult.items[0].position != undefined) {
                 this.textFieldValues['lat'] = coordResult.items[0].position.lat;
                 this.textFieldValues['lng'] = coordResult.items[0].position.lng;
+
                 if(this.trips.length > 0) {
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat']
                     await this.getSingleRowMiles(endingPoint);
                 }
+
+                
             }
             await this.trips.push(this.textFieldValues);
 
@@ -695,10 +697,11 @@ export class AddTripComponent implements OnInit {
                 if (element.lng != undefined && element.lat != undefined) {
                     let endingPoint = element.lng + "," + element.lat;
                     try {
-                        this.pcMiles.pcMiles.next(true);
-                        let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
-                        element.miles = miles;
-                        this.calculateActualMiles(miles);
+                        let newsMiles = savedCord + ";" + endingPoint;
+                        this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+newsMiles).subscribe((result) => {
+                            element.miles = result;
+                            this.calculateActualMiles(result);
+                        });
                     }
                     catch (error) {
                         this.toastr.error('No route found with these locations.');
@@ -720,12 +723,12 @@ export class AddTripComponent implements OnInit {
         let tripLength = this.trips.length;
         savedCord = this.trips[tripLength-1].lng + "," + this.trips[tripLength-1].lat;
         try {
-            this.pcMiles.pcMiles.next(true);
-            let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
-            this.textFieldValues.miles = miles;
-            this.calculateActualMiles(miles)
-
-            this.getStateWiseMiles();
+            let newsMiles = savedCord + ";" + endingPoint;
+            this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+newsMiles).subscribe((result) => {
+                this.textFieldValues.miles = result;
+                this.calculateActualMiles(result);
+                this.getStateWiseMiles();
+            });
         }
         catch (error) {
             console.error(error)
@@ -1301,13 +1304,6 @@ export class AddTripComponent implements OnInit {
         });
     }
 
-    // fetchAllCarrierIDs() {
-    //     this.apiService.getData('contacts/get/list/carrier')
-    //         .subscribe((result: any) => {
-    //             this.carriersObject = result;
-    //         });
-    // }
-
     public searchLocation() {
         let target;
         this.searchTerm.pipe(
@@ -1444,7 +1440,6 @@ export class AddTripComponent implements OnInit {
                     this.trips[i].trailerName = trailerNames;
                 }
                 if(locations.length > 0) {
-                    // this.getCoords(locations);
                     this.resetMap();
                 }
                 this.spinner.hide();
@@ -1623,7 +1618,6 @@ export class AddTripComponent implements OnInit {
                 this.submitDisabled = false;
                 this.spinner.hide();
                 this.response = res;
-                // this.updateOrderStatus();
                 this.toastr.success('Trip updated successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
@@ -1634,7 +1628,7 @@ export class AddTripComponent implements OnInit {
         this.currentUser = (await Auth.currentSession()).getIdToken().payload;
         this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
     }
-    
+
     updateOrderStatusToConfirmed() {
         for (let i = 0; i < this.OldOrderIDs.length; i++) {
             const orderID = this.OldOrderIDs[i];
@@ -1682,6 +1676,9 @@ export class AddTripComponent implements OnInit {
             for (let i = 0; i < result.length; i++) {
                 const element = result[i];
                 const v = result[i];
+                if(v.invoiceGenerate) {
+                    this.submitDisabled = true;
+                }
                 calcultedBy = element.milesInfo.calculateBy;
                 totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
                 this.orderNo += element.orderNumber
@@ -1723,10 +1720,6 @@ export class AddTripComponent implements OnInit {
                                 lat:n.position.lat,
                                 lng:n.position.lng
                             }
-                            // current.calculateActualMiles(pickupMiles)
-                            // if(n.pickupLocation != '' && n.pickupLocation != undefined){
-                            //     locations.push(n.pickupLocation)
-                            // }
                             this.orderStops.push(obj);
                             this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
                         })
@@ -1764,9 +1757,6 @@ export class AddTripComponent implements OnInit {
                                 lat:k.position.lat,
                                 lng:k.position.lng
                             }
-                            // if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
-                            //     locations.push(k.dropOffLocation)
-                            // }
                             
                             this.orderStops.push(obj);
                             this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
@@ -1788,7 +1778,6 @@ export class AddTripComponent implements OnInit {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
                 this.orderStops = this.trips;
                 this.trips = [];
-                // this.mapOrderActiveDisabled = true;
                 this.actualMiles = 0;
                 //change route
                 this.apiService.getData('routes/' + this.tripData.routeID)
@@ -1838,7 +1827,6 @@ export class AddTripComponent implements OnInit {
                         await this.hereMap.calculateRoute(this.newCoords);
                     }
                     await this.getMiles();
-                    // this.mapOrderActiveDisabled = false;
                 });
                 
                 this.mapOrderActive = '';
@@ -1854,7 +1842,6 @@ export class AddTripComponent implements OnInit {
             }
         } else {
             if(this.orderNo != '' && this.orderNo != undefined) {
-                // this.mapRouteActiveDisabled = true;
                 this.trips = this.orderStops;
                 this.actualMiles = 0;
                 this.getMiles();
@@ -1862,10 +1849,8 @@ export class AddTripComponent implements OnInit {
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
-                // this.mapRouteActiveDisabled = false;
             } else {
                 $('input[name="mapFrom"]').attr('checked', false);
-                // this.mapRouteActiveDisabled = false;
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';
@@ -1897,11 +1882,12 @@ export class AddTripComponent implements OnInit {
         }
 
         try {
-            this.pcMiles.pcMiles.next(true);
-            this.tripData.iftaMiles = await this.pcMiles.stateWisePCMilesDistance(allLatLng.join(';')).toPromise();
+            let newsMiles = JSON.stringify(allLatLng);
+            this.apiService.getData('trips/calculate/pc/miles?type=stateReport&stops='+newsMiles).subscribe((result) => {
+                this.tripData.iftaMiles = result;
+            });
             this.submitDisabled = false;
         } catch (error) {
-            // this.toastr.error('No route found with these locations.');
             this.submitDisabled = false;
             return false;
         }
