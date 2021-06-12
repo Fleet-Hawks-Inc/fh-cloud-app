@@ -7,9 +7,8 @@ import { InventoryReportComponent } from './inventory-report/inventory-report.co
 import { IssuesReportComponent } from './issues-report/issues-report.component';
 import { MaintenanceReportComponent } from './maintenance-report/maintenance-report.component';
 import { RemindersReportComponent } from './reminders-report/reminders-report.component';
-import { VehicleReportComponent } from './vehicle-report/vehicle-report.component';
 
-import { AssetReportComponent } from './asset-report/asset-report.component';
+
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
 
@@ -19,14 +18,7 @@ const routes: Routes = [
     path: 'overview',
     component: OverviewComponent
   },
-  {
-    path: 'vehicle-report',
-    component: VehicleReportComponent
-  },
-  {
-    path: 'asset-report',
-    component: AssetReportComponent
-  },
+  
   {
     path: 'fuel-report',
     component: FuelReportComponent
@@ -54,6 +46,14 @@ const routes: Routes = [
   {
     path: 'drivers',
     loadChildren: () => import('./drivers/mange-drivers.module').then((m) => m.ManageDriverModule) ,
+  },
+  {
+    path: 'vehicles',
+    loadChildren: () => import('./vehicle-report/mange-vehicle.module').then((m) => m.ManageVehicleModule) ,
+  },
+  {
+    path: 'asset',
+    loadChildren: () => import('./asset-report/mange-asset.module').then((m) => m.ManageAssetModule) ,
   }
 ]
 
@@ -65,8 +65,7 @@ const routes: Routes = [
     IssuesReportComponent,
     MaintenanceReportComponent,
     RemindersReportComponent,
-    VehicleReportComponent,
-    AssetReportComponent,
+  
     OverviewComponent,
   ],
   imports: [
