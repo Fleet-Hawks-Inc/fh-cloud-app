@@ -70,7 +70,8 @@ export class AddTripComponent implements OnInit {
         vehicleIDs: [],
         assetIDs: [],
         loc: '',
-        mapFrom: 'order'
+        mapFrom: 'order',
+        iftaMiles: []
     };
     ltlOrders = [];
     ftlOrders = [];
@@ -686,6 +687,7 @@ export class AddTripComponent implements OnInit {
 
     async getMiles(){
         let savedCord='';
+        
         for (let i = 0; i < this.trips.length; i++) {
             const element = this.trips[i];
             
@@ -696,7 +698,7 @@ export class AddTripComponent implements OnInit {
                         this.pcMiles.pcMiles.next(true);
                         let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
                         element.miles = miles;
-                        this.calculateActualMiles(miles)
+                        this.calculateActualMiles(miles);
                     }
                     catch (error) {
                         this.toastr.error('No route found with these locations.');
@@ -709,9 +711,11 @@ export class AddTripComponent implements OnInit {
                 savedCord=element.lng + "," + element.lat;
             }
         }
+        this.getStateWiseMiles();
     }
 
     async getSingleRowMiles(endingPoint){
+        
         let savedCord='';
         let tripLength = this.trips.length;
         savedCord = this.trips[tripLength-1].lng + "," + this.trips[tripLength-1].lat;
@@ -720,9 +724,12 @@ export class AddTripComponent implements OnInit {
             let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
             this.textFieldValues.miles = miles;
             this.calculateActualMiles(miles)
+
+            this.getStateWiseMiles();
         }
         catch (error) {
             console.error(error)
+            throw new Error(error);
         }
     }
    
@@ -1011,6 +1018,7 @@ export class AddTripComponent implements OnInit {
         
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
         this.tripData.orderId = this.OrderIDs;
+        this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
         this.tripData.tripPlanning = []; 
         let planData = this.trips
 
@@ -1024,6 +1032,14 @@ export class AddTripComponent implements OnInit {
             this.toastr.error('Please add atleast two trip plans.');
             this.submitDisabled = false;
             return false;
+        }
+
+        for (let k = 0; k < this.tripData.iftaMiles.length; k++) {
+            const element = this.tripData.iftaMiles[k];
+            element.distanceUnit = 'miles';
+            delete element.Empty;
+            delete element.Energy;
+            delete element.Ferry;
         }
 
         let selectedDriverids = [];
@@ -1159,7 +1175,7 @@ export class AddTripComponent implements OnInit {
                 this.submitDisabled = false;
                 this.spinner.hide();
                 this.response = res;
-                this.updateOrderStatus();
+                // this.updateOrderStatus();
                 this.toastr.success('Trip added successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
@@ -1444,6 +1460,14 @@ export class AddTripComponent implements OnInit {
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
         this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
 
+        for (let k = 0; k < this.tripData.iftaMiles.length; k++) {
+            const element = this.tripData.iftaMiles[k];
+            element.distanceUnit = 'miles';
+            delete element.Empty;
+            delete element.Energy;
+            delete element.Ferry;
+        }
+
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1599,7 +1623,7 @@ export class AddTripComponent implements OnInit {
                 this.submitDisabled = false;
                 this.spinner.hide();
                 this.response = res;
-                this.updateOrderStatus();
+                // this.updateOrderStatus();
                 this.toastr.success('Trip updated successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
@@ -1610,22 +1634,7 @@ export class AddTripComponent implements OnInit {
         this.currentUser = (await Auth.currentSession()).getIdToken().payload;
         this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
     }
-
-    updateOrderStatus() {
-        for (let i = 0; i < this.OrderIDs.length; i++) {
-            const orderID = this.OrderIDs[i];
-
-            this.apiService.getData('orders/' + orderID)
-                .subscribe((result: any) => {
-                    let orderData = result.Items[0];
-                    if (orderData.orderStatus == 'confirmed') {
-                        this.apiService.getData('orders/update/orderStatus/' + orderID + '/dispatched')
-                            .subscribe((result: any) => {});
-                    }
-                });
-        }
-    }
-
+    
     updateOrderStatusToConfirmed() {
         for (let i = 0; i < this.OldOrderIDs.length; i++) {
             const orderID = this.OldOrderIDs[i];
@@ -1875,6 +1884,26 @@ export class AddTripComponent implements OnInit {
     makeRoutePlan() {
         if(this.tripData.mapFrom == 'route') {
             this.changeMapRoute('route')
+        }
+    }
+
+    async getStateWiseMiles () {
+        let allLatLng = [];
+        this.submitDisabled = true;
+        for (let ij = 0; ij < this.trips.length; ij++) {
+            const element1 = this.trips[ij];
+            let endingPoint = element1.lng + "," + element1.lat;
+            allLatLng.push(endingPoint);
+        }
+
+        try {
+            this.pcMiles.pcMiles.next(true);
+            this.tripData.iftaMiles = await this.pcMiles.stateWisePCMilesDistance(allLatLng.join(';')).toPromise();
+            this.submitDisabled = false;
+        } catch (error) {
+            // this.toastr.error('No route found with these locations.');
+            this.submitDisabled = false;
+            return false;
         }
     }
 }

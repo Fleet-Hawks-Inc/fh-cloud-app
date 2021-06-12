@@ -46,4 +46,16 @@ export class GoogleMapsService {
     }))
     
   }
+
+  stateWisePCMilesDistance(stops) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: '73DBE97231D737488E722DDFB8D1D0BB'
+    });
+    const URL = "https://pcmiler.alk.com/apis/rest/v1.0/Service.svc/route/routeReports?authToken=73DBE97231D737488E722DDFB8D1D0BB";
+    return this.http.get(URL + '&stops=' + stops + '&reports=State').pipe(map(res => {
+      console.log('state wise miles', res);
+      return res[0].StateReportLines;
+    }))
+  }
 }
