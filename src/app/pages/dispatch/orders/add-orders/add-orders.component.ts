@@ -6,7 +6,6 @@ import {
   NgbCalendar,
   NgbDateAdapter
 } from "@ng-bootstrap/ng-bootstrap";
-import { GoogleMapsService } from "../../../../services/google-maps.service";
 import {
   map,
   debounceTime,
@@ -77,6 +76,7 @@ export class AddOrdersComponent implements OnInit {
   };
   orderMode: string = "FTL";
 
+  getOrderNumber: string;
   orderData = {
     stateTaxID: "",
     customerID: null,
@@ -171,6 +171,8 @@ export class AddOrdersComponent implements OnInit {
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
+  notOfficeAddress: boolean = false;
+  
   Error: string = "";
   Success: string = "";
   errors = {};
@@ -302,7 +304,6 @@ export class AddOrdersComponent implements OnInit {
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
-    private google: GoogleMapsService,
     private HereMap: HereMapService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -395,16 +396,13 @@ export class AddOrdersComponent implements OnInit {
     this.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
-    $(document).ready(() => {
-      // this.form = $("#form_").validate();
-    });
+    this.disableButton();
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
-      this.pageTitle = "Edit Order";
       this.fetchOrderByID();
+      this.pageTitle = `Edit Order`;
     } else {
-      this.fetchLastOrderNumber();
       this.pageTitle = "Add Order";
     }
 
@@ -581,6 +579,8 @@ export class AddOrdersComponent implements OnInit {
     this.shipperReceiverMerge();
 
     this.toastr.success("Consignor Added.");
+    this.getMiles(this.orderData.milesInfo.calculateBy);
+    console.log('save shipper', this.finalShippersReceivers)
 
   }
 
@@ -682,12 +682,12 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.shipperReceiverMerge();
     this.emptyReceiver(i);
-
+    this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Consignee Added.");
-    
+    console.log('save reciever', this.finalShippersReceivers)
   }
 
-  shipperReceiverMerge() {
+  async shipperReceiverMerge() {
     this.mergedArray = [];
     this.finalShippersReceivers.forEach((item) => {
       item.shippers.forEach((elem) => {
@@ -855,7 +855,8 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-
+    console.log('this.mergedArray', this.mergedArray)
+    console.log('final', this.finalShippersReceivers)
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.position.lng},${element.position.lat}`;
@@ -877,12 +878,10 @@ export class AddOrdersComponent implements OnInit {
         //
       } else if (value === "pcmiles") {
         //
-        this.google.pcMiles.next(true);
-        this.google
-          .pcMilesDistance(this.getAllCords.join(";"))
-          .subscribe((res) => {
-            this.orderData.milesInfo["totalMiles"] = res;
-          });
+        //
+        this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+this.getAllCords.join(";")).subscribe((result) => {
+          this.orderData.milesInfo["totalMiles"] = result;
+        });
       } else {
         this.orderData.milesInfo["totalMiles"] = "";
       }
@@ -894,15 +893,21 @@ export class AddOrdersComponent implements OnInit {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
-        this.customerSelected = result.Items[0];
-        for (let i = 0; i < this.customerSelected.address.length; i++) {
-          const element = this.customerSelected.address[i];
-          if(element.addressType == 'Office') {
-            this.customerSelected.officeAddr = true;
-            this.customerSelected.email = result.Items[0].workEmail;
-            this.customerSelected.phone = result.Items[0].workPhone;
+        if(result.Items.length > 0) {
+          this.customerSelected = result.Items[0];
+          for (let i = 0; i < this.customerSelected.address.length; i++) {
+            const element = this.customerSelected.address[i];
+            if(element.addressType == 'Office') {
+              this.notOfficeAddress = false;
+              this.customerSelected.officeAddr = true;
+              this.customerSelected.email = result.Items[0].workEmail;
+              this.customerSelected.phone = result.Items[0].workPhone;
+            } else {
+              this.notOfficeAddress = true;
+            }
           }
         }
+        
       });
   }
 
@@ -1158,8 +1163,10 @@ export class AddOrdersComponent implements OnInit {
       let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
       let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
       let advance:any = this.orderData.advance;
-
-      let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
+      let totalTax = parseInt(gst)  + parseInt(pst) + parseInt(hst);
+      let taxAmount =  parseInt(this.totalAmount) * totalTax / 100;
+      let final = parseInt(this.totalAmount) + taxAmount;
+      
       this.orderData["totalAmount"] = final;
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
@@ -1167,7 +1174,7 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
-  removeList(elem, parentIndex, i) {
+  async removeList(elem, parentIndex, i) {
     if (elem === "shipper") {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
       this.shippersReceivers[parentIndex].shippers.update = false;
@@ -1175,8 +1182,10 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
       this.shippersReceivers[parentIndex].receivers.update = false;
-    this.shippersReceivers[parentIndex].receivers.save = true;
+      this.shippersReceivers[parentIndex].receivers.save = true;
     }
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     
     this.showShipperUpdate = false;
     this.showReceiverUpdate = false;
@@ -1367,21 +1376,24 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.success('Consignee Updated');
       this.emptyReceiver(i);
     }
-    
+    this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
     this.stateShipperIndex = "";
   }
 
-
+  
   disableButton() {
-    if(this.orderData.customerID == '' || this.orderData.customerPO == '' || this.orderData.customerPO == '' 
-      || this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
-      this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || 
-      this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.currency == ''
+    if(this.orderData.customerID == '' || this.orderData.customerID == null || 
+    this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
+    this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || this.orderData.milesInfo.totalMiles == '' || 
+    this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.type == null || this.orderData.charges.freightFee.amount == null || this.orderData.charges.freightFee.currency == '' || this.orderData.charges.freightFee.currency == null
       ){
+
       return true
+    } else {
+      return false
     }
-    return false
+    
     
     
   }
@@ -1430,6 +1442,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["email"] = result.email;
         this.orderData["orderMode"] = result.orderMode;
         this.orderData["orderNumber"] = result.orderNumber;
+        this.getOrderNumber = result.orderNumber;
         this.orderData["phone"] = result.phone;
         this.orderData["reference"] = result.reference;
         this.orderData["remarks"] = result.remarks;
@@ -1861,6 +1874,7 @@ export class AddOrdersComponent implements OnInit {
 
   fetchLastOrderNumber(){
     this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
+      console.log('ff', result)
       this.orderData.orderNumber = result.toString();
     });
   }

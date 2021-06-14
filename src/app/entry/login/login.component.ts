@@ -116,8 +116,8 @@ export class LoginComponent implements OnInit {
 
           if (!isActivatedUser.carrierID) {
             this.hasError = true;
-            this.Error = 'User has not active devices';
-
+            this.Error = 'Unable to find carrier information';
+            localStorage.setItem('signOut', 'true'); //trigger flag
           } else {
 
             /**
