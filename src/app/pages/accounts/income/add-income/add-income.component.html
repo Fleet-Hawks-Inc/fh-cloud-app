@@ -1,0 +1,235 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <h2>Add Income</h2>
+        <div class="right-wrapper text-right">
+          <div class="pull-right pr-2"> <a routerLink="/accounts/income/list" class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i class="fas fa-list"></i> Income Transactions</a> </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <section class="card mt-0 mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col pr-0">
+                  <div class="card-body text-dark">
+                    <form class="form-horizontal form-bordered" method="get">
+                      <div class="row">
+                        <div class="col-lg-5 offset-lg-1">
+                          <div class="row pt-2">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Income Category</label>
+                              <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control pull-left form-control mb-3">
+                                  <option>Accessorial Income</option>
+                                  <option>Advance</option>
+                                  <option>Fuel Surcharge</option>
+                                  <option>Income from Sales</option>
+                                  <option>Income Reimbursement</option>
+                                  <option>Interest Income</option>
+                                  <option>Lease Income</option>
+                                  <option>Mileage Income</option>
+                                  <option>Miscellaneous Income</option>
+                                  <option>Other Income</option>
+                                  <option>Tarp</option>
+                                  <option>Sales</option>
+                                  <option>Tax Collected</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 mar-top-37"> <a href="#addIncomeCategoryModal" class="btn modal-with-form btn-success btn-sm"><i class="fas fa-plus"></i></a> </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Income Account</label>
+                              <select data-plugin-selectTwo class="form-control populate">
+                                <optgroup label="">
+                                  <option value="1">Account 1</option>
+                                  <option value="1">Account 2</option>
+                                  <option value="1">Account 3</option>
+                                  <option value="1">Account 4</option>
+                                  <option value="1">Account 5</option>
+                                </optgroup>
+                              </select>
+                            </div>
+                            <div class="col-lg-2  mar-top-37"> <a href="#addAccountModal" class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i></a> </div>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Deposit Account</label>
+                              <select data-plugin-selectTwo class="form-control populate">
+                                <optgroup label="">
+                                  <option value="1">Account 1</option>
+                                  <option value="1">Account 2</option>
+                                  <option value="1">Account 3</option>
+                                  <option value="1">Account 4</option>
+                                  <option value="1">Account 5</option>
+                                </optgroup>
+                              </select>
+                            </div>
+                            <div class="col-lg-2  mar-top-37"> <a href="#addAccountModal" class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i></a> </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Income Date </label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <h4>Details</h4> </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-5 offset-lg-1">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Invoice</label>
+                              <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control pull-left form-control mb-3">
+                                  <option>Invoice 1</option>
+                                  <option>Invoice 2</option>
+                                  <option>Invoice 3</option>
+                                  <option>Invoice 4</option>
+                                  <option>Invoice 5</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer</label>
+                              <div class="input-group input-group-md">
+                                <select data-plugin-selectTwo class="form-control pull-left form-control">
+                                  <option>Manjit</option>
+                                  <option>Sunita</option>
+                                  <option>Jatinder</option>
+                                  <option>Ramandeep</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-lg-2 mar-top-37"> <a href="#addCustomerModal" class="btn modal-with-form btn-success btn-sm"><i class="fas fa-plus"></i></a> </div>
+                          </div>
+                          <div class="row pt-2">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold pt-2 labelalign">Received Amount</label>
+                              <div class="row">
+                                <div class="col-lg-6 pr-0">
+                                  <input type="text" class="form-control">
+                                </div>
+                                <div class="col-lg-6 pl-0">
+                                  <select data-plugin-selectTwo class="form-control populate">
+                                    <optgroup label="">
+                                      <option value="1">USD</option>
+                                      <option value="2">CAD</option>
+                                    </optgroup>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold pt-2 labelalign">Payment Mode</label>
+                              <select data-plugin-selectTwo class="form-control populate" id="paymentModeList" onchange="paymentMode()">
+                                <optgroup>
+                                  <option value="select">Select</option>
+                                  <option value="Cash">Cash</option>
+                                  <option value="Cheque">Cheque</option>
+                                  <option value="EFT">EFT</option>
+                                  <option value="creditCard">Credit Card</option>
+                                  <option value="debitCard">Debit Card</option>
+                                  <option value="demandDraft">Demand Draft</option>
+                                </optgroup>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="row pt-2" id="chequeDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Cheque Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Cheque Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                          <div class="row pt-2" id="cashDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Cash Reference Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Cash Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                          <div class="row pt-2" id="eftDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">EFT Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">EFT Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                          <div class="row pt-2" id="creditCardDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Credit Card Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Credit Card Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                          <div class="row pt-2" id="debitCardDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Debit Card Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Debit Card Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                          <div class="row pt-2" id="demandDraftDiv" style="display: none;">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Demand Draft Number</label>
+                              <input type="text" class="form-control"> </div>
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-bold  labelalign">Demand Draft Date</label>
+                              <input type="date" class="form-control"> </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row pt-2">
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold">Attachments</label>
+                                <input type="file" multiple class="form-control p-0"> </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold">Description</label>
+                                <textarea rows="3" class="form-control"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row mt-4">
+                        <div class="col-lg-11 text-right">
+                          <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> <a href="income-transactions.php" class="btn btn-success">Save</a> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
