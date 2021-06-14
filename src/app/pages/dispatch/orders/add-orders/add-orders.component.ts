@@ -117,12 +117,6 @@ export class AddOrdersComponent implements OnInit {
     additionalDetails: {
       trailerType: '',
       dropTrailer: false,
-      loadType: {
-        hazMat: false,
-        oversize: false,
-        reefer: false,
-        tanker: false,
-      },
       uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
@@ -580,8 +574,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.toastr.success("Consignor Added.");
     this.getMiles(this.orderData.milesInfo.calculateBy);
-    console.log('save shipper', this.finalShippersReceivers)
-
+    
   }
 
   async getCords(value){
@@ -684,7 +677,6 @@ export class AddOrdersComponent implements OnInit {
     this.emptyReceiver(i);
     this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Consignee Added.");
-    console.log('save reciever', this.finalShippersReceivers)
   }
 
   async shipperReceiverMerge() {
@@ -855,8 +847,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-    console.log('this.mergedArray', this.mergedArray)
-    console.log('final', this.finalShippersReceivers)
+    
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.position.lng},${element.position.lat}`;
@@ -1457,8 +1448,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.additionalDetails["trailerType"] =
           result.additionalDetails.trailerType;
 
-        this.orderData.additionalDetails["loadType"] =
-          result.additionalDetails.loadType;
+        // this.orderData.additionalDetails["loadType"] =
+        //   result.additionalDetails.loadType;
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
@@ -1478,16 +1469,16 @@ export class AddOrdersComponent implements OnInit {
         this.finalShippersReceivers = result.shippersReceiversInfo;
         this.shipperReceiverMerge();
 
-        let newLoadTypes = [];
-        if (
-          result.additionalDetails.loadType &&
-          result.additionalDetails.loadType.length > 0
-        ) {
-          for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
-            newLoadTypes.push(result.additionalDetails.loadType[i]);
-          }
-          this.loadTypeData = newLoadTypes;
-        }
+        // let newLoadTypes = [];
+        // if (
+        //   result.additionalDetails.loadType &&
+        //   result.additionalDetails.loadType.length > 0
+        // ) {
+        //   for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
+        //     newLoadTypes.push(result.additionalDetails.loadType[i]);
+        //   }
+        //   this.loadTypeData = newLoadTypes;
+        // }
 
         this.orderData.charges.freightFee.amount =
           result.charges.freightFee.amount;
@@ -1874,7 +1865,6 @@ export class AddOrdersComponent implements OnInit {
 
   fetchLastOrderNumber(){
     this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
-      console.log('ff', result)
       this.orderData.orderNumber = result.toString();
     });
   }

@@ -439,13 +439,16 @@ export class OrderDetailComponent implements OnInit {
       date: this.createdDate,
       time: this.createdTime
     }
-    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
+    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {});
+    if(type == 'attachment') {
+      this.attachments.splice(index, 1);
+    } else {
       this.docs.splice(index, 1);
-    });
+    }
+    this.toastr.error('Document deleted successfully');
   }
 
   setPDFSrc(val) {
-    console.log('val', val)
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length-1];
     this.pdfSrc = '';
@@ -463,7 +466,7 @@ export class OrderDetailComponent implements OnInit {
   selectDocuments(event) {
     let files = [...event.target.files];
     let totalCount = this.docs.length+files.length;
-    console.log('totalCount', totalCount)
+    
     if(totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
@@ -496,7 +499,7 @@ export class OrderDetailComponent implements OnInit {
       }
 
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
-        console.log('result', result)
+        
         this.docs = [];
         if (result.length > 0) {
           for (let k = 0; k < result.length; k++) {
@@ -520,7 +523,7 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-            console.log('this.docs', this.docs)
+            
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
