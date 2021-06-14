@@ -150,9 +150,9 @@ export class AddTripComponent implements OnInit {
     selectedLocationAddress2 = '';
     selectedLocationAddress3 = '';
 
-    assetDataVehicleID = '';
-    assetDataDriverUsername = '';
-    assetDataCoDriverUsername = '';
+    assetDataVehicleID = null;
+    assetDataDriverUsername = null;
+    assetDataCoDriverUsername = null;
     informationAsset = [];
     allFetchedOrders = [];
     shippersObjects = [];
@@ -264,14 +264,10 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.actualDropTime = $("#cell16").val();
 
             let coordResult = await this.hereMap.geoCode(this.textFieldValues.locationName);
-            console.log('coordResult====', coordResult);
             if(coordResult.items[0].position != undefined) {
                 this.textFieldValues['lat'] = coordResult.items[0].position.lat;
                 this.textFieldValues['lng'] = coordResult.items[0].position.lng;
-                console.log('this.trips---', this.trips);
-                console.log('innn', this.trips.length);
                 if(this.trips.length > 0) {
-                    console.log('innnss', this.trips.length);
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat']
                     await this.getSingleRowMiles(endingPoint);
                 }
@@ -367,14 +363,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverUsername = '';
         this.tempTextFieldValues.trailerName = '';
 
-        this.assetDataVehicleID = '';
-        this.informationAsset = [];
-        this.assetDataDriverUsername = '';
-        this.assetDataCoDriverUsername = '';
-        $(".vehicleClass").removeClass('td_border');
-        $(".assetClass").removeClass('td_border');
-        $(".driverClass").removeClass('td_border');
-        $(".codriverClass").removeClass('td_border');
+        this.emptyAsigneeModal();
     }
 
     showEditRow(index) {
@@ -472,7 +461,19 @@ export class AddTripComponent implements OnInit {
         $("#orderModal").modal('show');
     }
 
+    emptyAsigneeModal() {
+        this.assetDataVehicleID = null;
+        this.informationAsset = [];
+        this.assetDataDriverUsername = null;
+        this.assetDataCoDriverUsername = null;
+        $(".vehicleClass").removeClass('td_border');
+        $(".assetClass").removeClass('td_border');
+        $(".driverClass").removeClass('td_border');
+        $(".codriverClass").removeClass('td_border');
+    }
+
     showAssetModal(type, index) {
+        this.emptyAsigneeModal();
 
         if (type === 'add') {
             if ($('#cell11').val() == '') {
@@ -498,6 +499,8 @@ export class AddTripComponent implements OnInit {
                 // set temp fields value
                 this.tempTextFieldValues.vehicleName = editRowValues.vehicleName;
                 this.tempTextFieldValues.vehicleID = editRowValues.vehicleID;
+                this.tempTextFieldValues.driverID = editRowValues.driverID;
+                this.tempTextFieldValues.coDriverID = editRowValues.coDriverID;
                 // this.tempTextFieldValues.trailer = [];
                 this.tempTextFieldValues.driverName = editRowValues.driverName;
                 this.tempTextFieldValues.driverUsername = editRowValues.driverUsername;
@@ -506,8 +509,8 @@ export class AddTripComponent implements OnInit {
                 this.tempTextFieldValues.trailerName = editRowValues.trailerName;
 
                 $("#veh_" + editRowValues.vehicleID).addClass('td_border');
-                $("#drivr_" + editRowValues.driverUsername).addClass('td_border');
-                $("#codrivr_" + editRowValues.coDriverUsername).addClass('td_border');
+                $("#drivr_" + editRowValues.driverID).addClass('td_border');
+                $("#codrivr_" + editRowValues.coDriverID).addClass('td_border');
 
                 // set selected asset values
                 if (editRowValues.trailer != undefined) {
@@ -715,7 +718,6 @@ export class AddTripComponent implements OnInit {
         try {
             this.pcMiles.pcMiles.next(true);
             let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
-            console.log('miles', miles);
             this.textFieldValues.miles = miles;
             this.calculateActualMiles(miles)
         }
@@ -827,6 +829,9 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.vehicleName = this.tempTextFieldValues.vehicleName;
             this.textFieldValues.vehicleID = this.tempTextFieldValues.vehicleID;
             this.textFieldValues.trailer = this.tempTextFieldValues.trailer;
+            this.textFieldValues.driverID = this.tempTextFieldValues.driverID;
+            this.textFieldValues.coDriverID = this.tempTextFieldValues.coDriverID;
+
             this.textFieldValues.driverName = this.tempTextFieldValues.driverName;
             this.textFieldValues.driverUsername = this.tempTextFieldValues.driverUsername;
             this.textFieldValues.coDriverName = this.tempTextFieldValues.coDriverName;
@@ -863,6 +868,7 @@ export class AddTripComponent implements OnInit {
             this.trips[index].trailerName = this.tempTextFieldValues.trailerName;
             this.trips[index].driverID = this.tempTextFieldValues.driverID;
             this.trips[index].coDriverID = this.tempTextFieldValues.coDriverID;
+            this.trips[index].trailerID = this.informationAsset;
             
             if(this.trips[index].vehicleID != '' || this.trips[index].driverUsername != '' || this.trips[index].coDriverUsername != '' || this.trips[index].trailerName != '') {
                 $("#editCell11"+index).prop('disabled', true);
@@ -899,7 +905,7 @@ export class AddTripComponent implements OnInit {
             $(".vehicleClass").removeClass('td_border');
             this.tempTextFieldValues.vehicleName = '';
             this.tempTextFieldValues.vehicleID = '';
-            this.assetDataVehicleID = '';
+            this.assetDataVehicleID = null;
         } else {
             if (type === 'click') {
                 this.assetDataVehicleID = $event.vehicleID;
@@ -917,25 +923,25 @@ export class AddTripComponent implements OnInit {
                 $(".driverClass").removeClass('td_border');
                 this.tempTextFieldValues.driverName = '';
                 this.tempTextFieldValues.driverUsername = '';
-                this.assetDataDriverUsername = '';
+                this.assetDataDriverUsername = null;
                 this.tempTextFieldValues.driverID = '';
             } else {
                 $(".codriverClass").removeClass('td_border');
                 this.tempTextFieldValues.coDriverName = '';
                 this.tempTextFieldValues.coDriverUsername = '';
-                this.assetDataCoDriverUsername = '';
+                this.assetDataCoDriverUsername = null;
                 this.tempTextFieldValues.coDriverID = '';
             }
         } else {
             if (type === 'driver') {
                 // alert('here')
                 await this.spinner.show();
-                this.assetDataCoDriverUsername = ''; //reset the codriver selected
+                this.assetDataCoDriverUsername = null; //reset the codriver selected
                 await this.fetchCoDriver($event.driverID);
                 this.tempTextFieldValues.driverName = $event.fullName;
                 this.tempTextFieldValues.driverUsername = $event.userName;
                 this.tempTextFieldValues.driverID = $event.driverID;
-                this.assetDataCoDriverUsername = '';
+                this.assetDataCoDriverUsername = null;
                 if (eventType === 'click') {
                     this.assetDataDriverUsername = $event.userName;
                 }
@@ -959,6 +965,7 @@ export class AddTripComponent implements OnInit {
     }
 
     assetsChange($event, type) {
+        this.tempTextFieldValues.trailerName = '';
         if ($event === undefined) {
             $(".assetClass").removeClass('td_border');
         } else {
@@ -1340,6 +1347,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['bol'] = result.bol;
                 this.tripData['createdDate'] = result.createdDate;
                 this.tripData['createdTime'] = result.createdTime;
+                this.tripData['mapFrom'] = result.mapFrom;
                 this.dateCreated = result.dateCreated;
                 this.orderNo = ''; 
                 
@@ -1434,6 +1442,8 @@ export class AddTripComponent implements OnInit {
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+        this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
+
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1561,7 +1571,6 @@ export class AddTripComponent implements OnInit {
         this.hasSuccess = false;
         // delete this.tripData.reeferTemperatureUnit;
         this.updateOrderStatusToConfirmed();
-
         this.apiService.putData('trips', this.tripData).subscribe({
             complete: () => {
             },
@@ -1766,12 +1775,11 @@ export class AddTripComponent implements OnInit {
     }
 
     changeMapRoute(type) {
-        console.log('type', type);
         if(type == 'route') {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
                 this.orderStops = this.trips;
                 this.trips = [];
-                this.mapOrderActiveDisabled = true;
+                // this.mapOrderActiveDisabled = true;
                 this.actualMiles = 0;
                 //change route
                 this.apiService.getData('routes/' + this.tripData.routeID)
@@ -1815,14 +1823,13 @@ export class AddTripComponent implements OnInit {
                                 lng:element.lng
                             }
 
-                            await this.newCoords.push(`${element.lat},${element.lng}`)
-                            
-                            await this.trips.push(obj);
+                            this.newCoords.push(`${element.lat},${element.lng}`)
+                            this.trips.push(obj);
                         }
                         await this.hereMap.calculateRoute(this.newCoords);
                     }
                     await this.getMiles();
-                    this.mapOrderActiveDisabled = false;
+                    // this.mapOrderActiveDisabled = false;
                 });
                 
                 this.mapOrderActive = '';
@@ -1838,7 +1845,7 @@ export class AddTripComponent implements OnInit {
             }
         } else {
             if(this.orderNo != '' && this.orderNo != undefined) {
-                this.mapRouteActiveDisabled = true;
+                // this.mapRouteActiveDisabled = true;
                 this.trips = this.orderStops;
                 this.actualMiles = 0;
                 this.getMiles();
@@ -1846,10 +1853,10 @@ export class AddTripComponent implements OnInit {
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
-                this.mapRouteActiveDisabled = false;
+                // this.mapRouteActiveDisabled = false;
             } else {
                 $('input[name="mapFrom"]').attr('checked', false);
-                this.mapRouteActiveDisabled = false;
+                // this.mapRouteActiveDisabled = false;
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';

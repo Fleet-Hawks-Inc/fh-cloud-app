@@ -244,13 +244,13 @@
                      <label class="control-label font-weight-bold font-bold text-lg-right">Service Task Name<span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                      <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
-                        placeholder="Enter service task name" #txtTask="ngModel" required pattern="^[a-zA-Z\s]+">
+                        placeholder="Enter service task name" #txtTask="ngModel" required pattern="^[a-zA-Z0-9\s]+">
                         <div *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)" class="text-danger">
                            <div *ngIf="txtTask.errors.required">
                              Service task name is required.
                            </div>     
                            <div *ngIf="txtTask.errors.pattern">
-                                  Service task name must contain letters.
+                                  Service task name must contain alphanumeric characters.
                            </div>
                          </div>
                   </div>
@@ -260,7 +260,14 @@
                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task
                         Description&nbsp;<span class="text-1 optional-label-color">(optional)</span></label>
                      <textarea class="form-control heighta" rows="3" [(ngModel)]="serviceTask.description" name="description"
-                        placeholder="Enter service task description"></textarea>
+                        placeholder="Enter service task description" #aNotes227="ngModel"
+                        pattern="^[\s\S]{1,500}$"></textarea>
+                        <div *ngIf="aNotes227.invalid && (aNotes227.dirty || aNotes227.touched)" class="text-danger">
+                           <div *ngIf="aNotes227.errors.pattern">
+                              Only 500 characters are allowed.
+                           </div>
+
+                        </div>
                   </div>
                </div>
    

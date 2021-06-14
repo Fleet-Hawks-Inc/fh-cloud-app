@@ -1,9 +1,9 @@
 <section class="body">
 
     <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pt-0">
-            <header class="page-header">
-                <div class="row px-2" style="padding-top:10px;">
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <div class="row" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" placeholder="Search by contact">
@@ -11,7 +11,7 @@
                         </ng-select>
                     </div>
 
-                    <div class="col-lg-2 col-md-2">
+                    <div class="col-lg-2 col-md-2 pl-0">
                         <ng-select placeholder="Search By Renewal Type" [(ngModel)]="searchServiceTask"
                             name="searchServiceTask" style="width: 100%;">
                             <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
@@ -19,7 +19,7 @@
                         </ng-select>
                     </div>
 
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 pl-0 pr-0">
                         <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
                             placeholder="Select Reminder Status">
                             <optgroup label="Select Reminder Status">
@@ -32,7 +32,7 @@
 
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-2">Search</button>
+                            class="btn btn-sm btn-success mr-3">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
 
@@ -51,88 +51,97 @@
                     </div>
                 </div>
             </header>
-            <section class="card bg-white">
-                <div class="wtopnav">
-                    <ul class="nav nav-tabs top-tabs mt-1">
-                        <li class="nav-item"><a class="nav-link"
-                                routerLink="/fleet/reminders/service-reminder/list">Service Reminders </a></li>
-                        <li class="nav-item"><a class="nav-link"
-                                routerLink="/fleet/reminders/vehicle-renewals/list">Vehicle Renewals </a></li>
-                        <li class="nav-item"><a class="nav-link active"
-                                routerLink="/fleet/reminders/contact-renewals/list">Contact Renewals </a>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-            <div class="row text-dark">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body pt-1">
-                            <div class="table-responsive">
-                                <table class="row-border hover table table-bordered table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Contact</th>
-                                            <th>Contact Renewal Type</th>
-                                            <th>Send Reminder </th>
-                                            <th>Expiration Date</th>
-                                            <th>Subscribers</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngIf="remindersData.length == 0" class="text-center">
-                                            <td colspan="6">{{ dataMessage }}</td>
-                                        </tr>
-                                        <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                            <td>{{usersList[item.entityID]}}</td>
-                                            <td> <span class="text-warning font-weight-bold font-size-12 text-uppercase"
-                                                    *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
-                                                <span class="text-danger font-weight-bold font-size-12 text-uppercase"
-                                                    *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-                                                <span class="font-weight-bold"
-                                                    title="Task">{{tasksList[item.tasks.taskID]}}</span>
-                                            </td>
-                                            <td><span class="font-size-12">{{item.tasks.time}} {{item.tasks.timeUnit}}(s)
-                                                    Before</span></td>
-                                            <td><span class="font-size-12">{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</span></td>
-                                            <td>
-                                                {{item.subscribers}}
-                                            </td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                            class="fas fa-ellipsis-v"></i></button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item text-1" href="javascript:;"
-                                                            (click)="sendEmailNotification(item)">Send Notifications</a>
-                                                        <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}"
-                                                            class="dropdown-item text-1">Edit</a>
-                                                        <a href="javascript:;" class="dropdown-item text-1"
-                                                            (click)="deleteRenewal(item)">Delete</a>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="wtopnav">
+                                    <ul class="nav nav-tabs top-tabs pl-0 mb-3">
+                                        <li class="nav-item"><a class="nav-link"
+                                                routerLink="/fleet/reminders/service-reminder/list">Service Reminders </a></li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                routerLink="/fleet/reminders/vehicle-renewals/list">Vehicle Renewals </a></li>
+                                        <li class="nav-item"><a class="nav-link active"
+                                                routerLink="/fleet/reminders/contact-renewals/list">Contact Renewals </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="row-border hover table table-bordered table-striped mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Contact</th>
+                                                <th>Contact Renewal Type</th>
+                                                <th>Send Reminder </th>
+                                                <th>Expiration Date</th>
+                                                <th>Subscribers</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="remindersData.length == 0" class="text-center">
+                                                <td colspan="6">{{ dataMessage }}</td>
+                                            </tr>
+                                            <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
+                                                <td>{{usersList[item.entityID]}}</td>
+                                                <td> <span class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                                        *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
+                                                    <span class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                                        *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
+                                                    <span class="font-weight-bold"
+                                                        title="Task">{{tasksList[item.tasks.taskID]}}</span>
+                                                </td>
+                                                <td><span class="font-size-12">{{item.tasks.time}} {{item.tasks.timeUnit}}(s)
+                                                        Before</span></td>
+                                                <td><span class="font-size-12">{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</span></td>
+                                                <td>
+                                                    {{item.subscribers}}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group flex-wrap">
+                                                        <button type="button" class="btn p-0" data-toggle="dropdown"><i
+                                                                class="fas fa-ellipsis-v"></i></button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <a class="dropdown-item text-1" href="javascript:;"
+                                                                (click)="sendEmailNotification(item)">Send Notifications</a>
+                                                            <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}"
+                                                                class="dropdown-item text-1">Edit</a>
+                                                            <a href="javascript:;" class="dropdown-item text-1"
+                                                                (click)="deleteRenewal(item)">Delete</a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="row mt-3 dtPaginate" *ngIf="remindersData.length > 0">
-                                <div class="col-6">
-                                    Showing {{ contactRenewStartPoint }} to {{ contactRenewEndPoint }} of {{
-                                    totalRecords }} enteries
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
-                                        [disabled]="contactRenewPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults()"
-                                        [disabled]="contactRenewNext">Next</button>
+                                <div class="row mt-3 dtPaginate" *ngIf="remindersData.length > 0">
+                                    <div class="col-6">
+                                        Showing {{ contactRenewStartPoint }} to {{ contactRenewEndPoint }} of {{
+                                        totalRecords }} enteries
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                                            [disabled]="contactRenewPrev">Prev</button>
+                                        <button type="button" class="btn btn-default" (click)="nextResults()"
+                                            [disabled]="contactRenewNext">Next</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                           
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+             </section>
+
+          
         </section>
     </div>
 </section>

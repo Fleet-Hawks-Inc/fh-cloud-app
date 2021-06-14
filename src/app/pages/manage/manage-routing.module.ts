@@ -7,14 +7,9 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
-import {SettingsComponent} from './settings/settings.component'
 
-const COMPONENTS = [
-  AddUserComponent,
-  UserDetailsComponent,
-  UsersListComponent,
-  SettingsComponent
-];
+import {SettingsComponent} from './settings/settings.component';
+
 
 const routes: Routes = [
   {
@@ -38,6 +33,10 @@ const routes: Routes = [
     path: 'settings',
     component: SettingsComponent
   },
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
+  }
 ];
 
 @NgModule({

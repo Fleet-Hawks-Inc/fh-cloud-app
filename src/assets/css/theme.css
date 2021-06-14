@@ -14594,7 +14594,17 @@ ul.simple-post-list {
 
 ul.simple-post-list li {
 	border-bottom: 1px dotted #E2E2E2;
-	padding: 15px 0;
+	/* padding: 15px 0; */
+}
+
+ul.simple-post-list li a{
+	display:block; text-decoration:none;
+	border-bottom:solid 1px #f3f3f3;
+	line-height:40px; padding-left:10px;
+}
+
+ul.simple-post-list li a:hover{
+	text-decoration:none; background:#f7f7f7;
 }
 
 ul.simple-post-list li::after {
