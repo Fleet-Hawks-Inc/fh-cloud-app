@@ -174,13 +174,13 @@ export class OrdersListComponent implements OnInit {
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
       } else if(element.orderStatus == 'invoiced') {
-        this.deliveredOrders.push(element);
-      } else if(element.orderStatus == 'partiallyPaid') {
-        this.cancelledOrders.push(element);
-      } else if(element.orderStatus == 'cancelled') {
         this.invoicedOrders.push(element);
-      } else if(element.orderStatus == 'delivered') {
+      } else if(element.orderStatus == 'partiallyPaid') {
         this.partiallyOrders.push(element);
+      } else if(element.orderStatus == 'cancelled') {
+        this.cancelledOrders.push(element);
+      } else if(element.orderStatus == 'delivered') {
+        this.deliveredOrders.push(element);
       }
     }
 
