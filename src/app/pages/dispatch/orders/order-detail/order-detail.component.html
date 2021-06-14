@@ -281,14 +281,14 @@
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                              Consignor
+                              Shipper
                               </h4>
                             </div>
                             <div class="col-lg-6">
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                              Consignee
+                              Receiver
                               </h4>
                             </div>
 
@@ -297,7 +297,7 @@
 
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickShipper(i,j) id="shipperArea-{{i}}-{{j}}">
-                                      <span class="pull-left">Consignor {{j+1}}</span>
+                                      <span class="pull-left">Shipper {{j+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                   </a>
@@ -368,7 +368,7 @@
 
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}">
-                                      <span class="pull-left">Consignee {{k+1}}</span>
+                                      <span class="pull-left">Receiver {{k+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                     <div class="expand_caret caret"></div>
@@ -481,7 +481,7 @@
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}</div>
                     </div>
-                    <div class="row m-0">
+                    <!-- <div class="row m-0">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -494,8 +494,8 @@
                          {{additionalDetails.loadType.tanker ? 'Tanker' : ''}}
 
                       </div>
-                    </div>
-                    <div class="row m-0" *ngIf="additionalDetails.loadType.reefer">
+                    </div> -->
+                    <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
