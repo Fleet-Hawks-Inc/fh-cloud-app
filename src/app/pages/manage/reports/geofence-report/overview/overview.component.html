@@ -12,9 +12,8 @@
 					   <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Geofence Reports</h4>
 					</div>
                  
-                 
                   <div class="col-md-9 col-lg-9 text-right pr-1">
-                     <a href="reports1.php" class="btn btn-sm btn-success">Back</a>
+                     <a href="#" class="btn btn-sm btn-success">Back</a>
                   </div>
 				  
 				  
@@ -24,7 +23,7 @@
 			<div class="m-3">
 				<div class="row text-dark">
 				
-				<div class="col-4 mb-3" onclick="window.location='report-geo-summary.php'">
+				<div class="col-4 mb-3" [routerLink]="['/manage/reports/geofence/summary']">
                      <div class="bg-white p-3 cursorpoint">
 						<div>
                             <h4 class="m-0 text-4">Geofence</h4>
@@ -33,7 +32,7 @@
                      </div>
                   </div>
 				  
-				  <div class="col-4 mb-3" onclick="window.location='report-geo-detail.php'">
+				  <div class="col-4 mb-3" [routerLink]="['/manage/reports/geofence/detail']">
                      <div class="bg-white p-3 cursorpoint">
 						<div>
                             <h4 class="m-0 text-4">Geofence</h4>
@@ -42,12 +41,8 @@
                      </div>
                   </div>
 				  
-				  
-				
-				 
-				  
 				</div>
 			</div>
-         </section>
+         </section>    
     </div>
 </section>

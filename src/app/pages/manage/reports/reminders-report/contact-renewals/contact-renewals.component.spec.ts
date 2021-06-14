@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeofenceReportComponent } from './geofence-report.component';
+import { ContactRenewalsComponent } from './contact-renewals.component';
 
-describe('GeofenceReportComponent', () => {
-  let component: GeofenceReportComponent;
-  let fixture: ComponentFixture<GeofenceReportComponent>;
+describe('ContactRenewalsComponent', () => {
+  let component: ContactRenewalsComponent;
+  let fixture: ComponentFixture<ContactRenewalsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GeofenceReportComponent ]
+      declarations: [ ContactRenewalsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GeofenceReportComponent);
+    fixture = TestBed.createComponent(ContactRenewalsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

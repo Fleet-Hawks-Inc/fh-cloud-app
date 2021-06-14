@@ -1777,7 +1777,7 @@
                                     <div class="col-lg-10 offset-lg-2 pl-3 mb-2">
                                        <div class="checkbox-custom checkbox-default">
                                           <input type="checkbox" id="ZeroRated" (change)="calculateAmount()" [(ngModel)]="orderData.zeroRated" name="zeroRated">
-                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Exempt</label>
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Exempt <i title="This order will be exempted from taxes" class="fas fa-info-circle fa-fw"></i></label>
                                        </div>
                                     </div>
                                     <div class="col-lg-10 offset-lg-2" *ngIf="!orderData.zeroRated">
