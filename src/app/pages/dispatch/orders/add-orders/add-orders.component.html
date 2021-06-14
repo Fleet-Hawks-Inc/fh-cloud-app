@@ -137,10 +137,10 @@
                         <div class="col-lg-10 offset-lg-1">
                            <h4 class="mt-0 text-dark font-weight-bold text-5">Customer</h4>
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-4 offset-lg-1 pr-0">
                            
                            <div class="row">
-                              <div class="col-lg-10">
+                              <div class="col-lg-11">
                                  <label
                                     class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -165,7 +165,7 @@
                                   </div>
                                  
                               </div>
-                              <div class="col-lg-2 mar-top-37 pl-0">
+                              <div class="col-lg-1 mar-top-37 pl-0">
                                  <a class="btn btn-success btn-sm text-light" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
                                        class="fas fa-plus"></i>
                                  </a>
@@ -231,10 +231,10 @@
                            </div>
                            
                         </div>
-                        <div class="col-lg-5 offset-lg-1">
+                        <div class="col-lg-4 pr-0 offset-lg-2">
                            <div class="row">
                              
-                              <div class="col-10">
+                              <div class="col-12">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                     PO# &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                  </label>
@@ -257,7 +257,7 @@
                            </div>
                           
                            <div class="row mt-2">
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal
                                     Contact &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
     
@@ -274,7 +274,7 @@
                                     </div> -->
     
                               </div>
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                  <input placeholder="eg. 2234567891" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control"  >
                                  <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
@@ -286,7 +286,7 @@
                            </div>
                            <div class="row mt-2">
                               
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                  <input placeholder="eg. johnsmith@gmail.com"[(ngModel)]="orderData.email" name="email" type="text" class="form-control" >
                                  <!-- <div *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="text-danger">
@@ -295,7 +295,7 @@
                                      </div>
                                 </div> -->
                               </div>
-                              <div class="col-lg-5">
+                              <div class="col-lg-6">
                                  <label
                                     class="control-label font-weight-bold labelmt text-3 text-dark">Reference &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                  <input placeholder="eg. 024933435" [(ngModel)]="orderData.reference" name="order_reference" type="text"
@@ -321,7 +321,7 @@
                   <div class="row mb-3">
                      <div class="col-12">
                         <div class="bg-white p-3 text-dark">
-                           <div class="form-group row border-bottom-0">
+                           <div class="form-group row border-bottom-0 mb-0">
                               <div class="col-lg-12 mb-4 mb-lg-0">
                                  <div *ngFor="let item of shippersReceivers; let i = index;">
                                     <div class="row">
@@ -331,23 +331,23 @@
                                     </div>
                                     
                                     <div class="row">
-                                       <div class="col-lg-5 offset-lg-1">
+                                       <div class="col-lg-4 pr-0 offset-lg-1">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Shipper</h4>
-                                             <table class="table">
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4 px-2 mb-0" style="background-color: #999896;">Shipper</h4>
+                                             <table class="table table-bordered">
                                                 <tbody>
          
                                                    <tr *ngFor="let list of finalShippersReceivers[i].shippers; let j = index;">
-                                                      <td class="pl-0">
+                                                      <td class="">
                                                          {{shippersObjects[list.shipperID]}}
                                                       </td>
                                                       <td>
                                                          {{list.pickupLocation}}
                                                       </td>
                                                       <td>
-                                                         {{list.dateAndTime | date:'yyyy/MM/dd'}}
+                                                         {{list.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
                                                       </td>
-                                                      <td class="pr-0">
+                                                      <td class="">
                                                          <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
                                                          <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
                                                       </td>
@@ -357,23 +357,23 @@
                                              </table>
                                           </div>
                                        </div>
-                                       <div class="col-lg-5 offset-lg-1">
+                                       <div class="col-lg-4 pr-0 offset-lg-2">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Receiver </h4>
-                                             <table class="table">
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4 px-2 mb-0" style="background-color: #999896;">Receiver </h4>
+                                             <table class="table table-bordered">
                                                 <tbody>
          
                                                    <tr *ngFor="let list of finalShippersReceivers[i].receivers; let j = index;">
-                                                      <td class="pl-0">
+                                                      <td class="">
                                                          {{receiversObjects[list.receiverID]}}
                                                       </td>
                                                       <td>
                                                          {{list.dropOffLocation}}
                                                       </td>
                                                       <td>
-                                                         {{list.dateAndTime | date:'yyyy/MM/dd'}}
+                                                         {{list.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
                                                       </td>
-                                                      <td class="pr-0">
+                                                      <td class="">
                                                          <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
                                                          <i (click)="removeList('receiver', i, j)" class="fa fa-trash fa-fw"></i>
                                                       </td>
@@ -595,7 +595,7 @@
                                                                </label>
                                                             </div>
          
-                                                            <div class="col-lg-10">
+                                                            <div class="col-lg-11">
          
                                                                <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" (input)="assignReceiverValue('commodity','name',$event,i,z)"  >
                                                                <!-- <div *ngIf="commodityName.invalid && (commodityName.dirty || commodityName.touched)" class="text-danger">
@@ -611,7 +611,7 @@
                                                                </span> -->
          
                                                             </div>
-                                                            <div class="col-lg-2 text-right mt-1">
+                                                            <div class="col-lg-1 text-right mt-1 pl-0">
                                                                <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a>
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i></a>
                                                             </div>
@@ -1000,7 +1000,7 @@
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
                                                             </div>
-                                                            <div class="col-lg-10">
+                                                            <div class="col-lg-11">
          
                                                                <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" >
                                                                 <!-- <div *ngIf="cCommodity.invalid && (cCommodity.dirty || cCommodity.touched)" class="text-danger">
@@ -1015,7 +1015,7 @@
                                                                </span>  -->
          
                                                             </div>
-                                                            <div class="col-lg-2 text-right mt-1">
+                                                            <div class="col-lg-1 text-right mt-1 pl-0">
                                                                <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a>
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i></a>
          
@@ -1187,14 +1187,16 @@
                                        </div>
                                     </div>
          
-                                    <div class="d-flex justify-content-end">
-                                       <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
+                                    <div class="row">
+                                       <div class="col-11 pr-0 text-right">
+                                          <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
                            <div class="form-group row">
-                              <div class="col-lg-12 text-right">
+                              <div class="col-lg-11 text-right pr-0">
                                  <button  (click)="addAccordian()" type="button" class="btn btn-success pull-right">Add More</button>
                               </div>
                            </div>
@@ -1252,6 +1254,7 @@
                                            <ng-option value="stepDeck">StepDeck</ng-option>
                                            <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
                                            <ng-option value="dry_van">Dry Van</ng-option>
+                                           <ng-option value="over_size">Over Size</ng-option>
                                            <ng-option value="reefer">Reefer</ng-option>
                                            <ng-option value="power_only">Power Only</ng-option>
                                            <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
@@ -1275,7 +1278,7 @@
                                  </div>
           
           
-                                 <div class="row mt-3">
+                                 <!-- <div class="row mt-3">
                                     <div class="col-lg-10 offset-lg-2">
                                        <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Load Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
@@ -1320,10 +1323,10 @@
                                     </div>
           
           
-                                 </div>
+                                 </div> -->
           
                                  <!--Tempratures-->
-                                 <div class="row mt-2" *ngIf="orderData.additionalDetails.loadType.reefer">
+                                 <div class="row mt-2" *ngIf="orderData.additionalDetails.trailerType == 'reefer'">
                                     <div class="col-lg-10 offset-lg-2">
                                        <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temperature&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
@@ -1356,7 +1359,7 @@
           
           
           
-                                 <div class="row mt-3" *ngIf="orderData.additionalDetails.loadType.reefer">
+                                 <div class="row mt-3" *ngIf="orderData.additionalDetails.trailerType == 'reefer'">
           
                                     <div class="col-lg-4 offset-lg-2">
                                        <input
@@ -1496,21 +1499,21 @@
           
                               </div>
           
-                              <div class="col-lg-6">
+                              <div class="col-lg-4 pr-0 offset-lg-1">
                                  <div class="row">
-                                    <div class="col-lg-10 offset-lg-2">
+                                    <div class="col-lg-12">
                                        <h4 class="text-dark font-weight-bold text-5">Charges</h4>
                                     </div>
                                  </div>
           
                                  <div class="row mt-3">
-                                    <div class="col-lg-10 offset-lg-2">
+                                    <div class="col-lg-12">
                                        <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                           for="inputDefault">Freight Fee
                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        </label>
                                     </div>
-                                    <div class="col-lg-3 offset-lg-2 col-md-12">
+                                    <div class="col-lg-3 col-md-12">
                                        <ng-select placeholder="eg. Flat Fee " [(ngModel)]="orderData.charges.freightFee.type" name="freight_type"
           
                                        #freightType="ngModel" required freightType
@@ -1539,7 +1542,7 @@
                                       </div>
                                        
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <div class="input-group mb-3">
                                           <input [(ngModel)]="orderData.charges.freightFee.amount" name="freight_amount"
           
@@ -1556,7 +1559,7 @@
                                           
                                        </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.freightFee.currency"
                                        #freightCur="ngModel" required freightCur  name="freight_currency"
           
@@ -1583,11 +1586,11 @@
           
                                  </div>
                                  <div class="row mt-3">
-                                    <div class="col-lg-9 offset-lg-2">
+                                    <div class="col-lg-12">
                                        <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                           for="inputDefault">Fuel Surcharge&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
-                                    <div class="col-lg-3 offset-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select placeholder="eg. Flat Fee" [(ngModel)]="orderData.charges.fuelSurcharge.type" name="fuel_type"
                                           class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true" >
           
@@ -1603,7 +1606,7 @@
                                            </div>
                                       </div> -->
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <div class="input-group mb-3">
                                           <input [(ngModel)]="orderData.charges.fuelSurcharge.amount" name="fuel_amount"
                                              (blur)="calculateAmount()" type="number" min="0"  class="form-control" placeholder="0.00" >
@@ -1614,7 +1617,7 @@
                                             </div> -->
                                        </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="fuel_currency"
                                        placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
           
@@ -1633,11 +1636,11 @@
                                     </div>
                                  </div>
                                  <div class="row mt-3" *ngFor="let item of accessFeesInfo.accessFees; let i = index;">
-                                    <div class="col-lg-9 offset-lg-2">
+                                    <div class="col-lg-12">
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault"> Accessorial Fee&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
-                                    <div class="col-lg-3 offset-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select placeholder="eg. Lumper" [(ngModel)]="item.type" name="accessfee_type{{i}}"
                                           class="form-control populate" >
           
@@ -1653,7 +1656,7 @@
                                            </div>
                                       </div> -->
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <div class="input-group mb-3">
                                           <input (blur)="calculateAmount()"
                                              [(ngModel)]="item.amount" name="accessfee_amount{{i}}" type="number" min="0"
@@ -1665,7 +1668,7 @@
                                             </div> -->
                                        </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="accessfee_currency{{i}}"
                                        placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true" >
           
@@ -1691,11 +1694,11 @@
           
           
                                  <div class="row mt-3" *ngFor="let item of accessorialDeductionInfo.accessDeductions; let i = index;" >
-                                    <div class="col-lg-9 offset-lg-2">
+                                    <div class="col-lg-12">
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault">Accessorial Deduction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
-                                    <div class="col-lg-3 offset-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select placeholder="eg. Lumper" [(ngModel)]="item.type" name="type{{i}}"
                                           class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true" >
           
@@ -1711,7 +1714,7 @@
                                            </div>
                                       </div> -->
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <div class="input-group mb-3">
                                           <input (blur)="calculateAmount()"
                                              [(ngModel)]="item.amount" name="amount{{i}}"
@@ -1723,7 +1726,7 @@
                                             </div> -->
                                        </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                        <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="currency{{i}}"
                                           data-plugin-selecttwo="" placeholder="select currency"  class="form-control populate" data-select2-id="52"
                                           tabindex="-1" aria-hidden="true" >
@@ -1753,19 +1756,12 @@
                                  </div>
           
                                  <div class="row">
-                                    <div class="col-lg-7">
-                                       <div class="rows mt-4 pt-3">
-                                          <div class="col-lg-12">
-                                             &nbsp;
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-5">
+                                    <div class="col-lg-12">
                                        <div class="row mt-3 pb-1 mb-1">
                                           <div class="col-lg-9 pt-1">
                                              <h5 class="text-right font-weight-bold text-4 text-dark">Order Total</h5>
                                           </div>
-                                          <div class="col-lg-3 pt-1">
+                                          <div class="col-lg-3 mt-2 pt-1">
                                              <p class="text-right"><span [innerHTML]="subTotal"> </span></p>
                                           </div>
                                        </div>
@@ -1774,16 +1770,16 @@
           
           
                                  <div class="row mt-3">
-                                    <div class="col-lg-10 offset-lg-2 pl-3 mb-2">
+                                    <div class="col-lg-12 pl-3 mb-2">
                                        <div class="checkbox-custom checkbox-default">
                                           <input type="checkbox" id="ZeroRated" (change)="calculateAmount()" [(ngModel)]="orderData.zeroRated" name="zeroRated">
                                           <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Exempt</label>
                                        </div>
                                     </div>
-                                    <div class="col-lg-10 offset-lg-2" *ngIf="!orderData.zeroRated">
+                                    <div class="col-lg-12" *ngIf="!orderData.zeroRated">
                                        <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Provinces/States&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                     </div>
-                                    <div class="col-lg-5 offset-lg-2" *ngIf="!orderData.zeroRated">
+                                    <div class="col-lg-9" *ngIf="!orderData.zeroRated">
                                        <ng-select
                                        [(ngModel)]="orderData.stateTaxID"
                                        name="stateTaxID"
@@ -1836,7 +1832,7 @@
           
           
                                  <div class="row">
-                                    <div class="col-lg-5 offset-lg-2">
+                                    <div class="col-lg-9">
                                        <div *ngIf="!orderData.zeroRated">
                                           <div class="row mt-4" *ngFor="let item of orderData.taxesInfo; let i = index;">
                                              <div class="col-lg-5">
@@ -1869,26 +1865,15 @@
                                           </div>
                                        </div> -->
                                     </div>
-                                    <div class="col-lg-5">
+                                    <div class="col-lg-3">
                                        <div *ngIf="!orderData.zeroRated">
-                                          <div class="row mt-1 pb-1 mb-1" *ngFor="let item of orderData.taxesInfo; let i = index">
-                                             <div class="col-lg-9 pt-1">
-                                             </div>
-                                             <div class="col-lg-3 pt-1">
-                                                <p class="text-right">{{item.amount ? item.amount : 0}}</p>
+                                          <div class="row mt-4 pb-1 mb-1" *ngFor="let item of orderData.taxesInfo; let i = index">
+                                             <div class="col-lg-12 pt-1">
+                                                <p class="text-right m-0">{{item.amount ? item.amount : 0}}</p>
                                              </div>
                                           </div>
                                        </div>
           
-          
-                                       <div class="row mt-4">
-                                          <div class="col-lg-9 bordtop pt-1">
-                                             <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
-                                          </div>
-                                          <div class="col-lg-3 bordtop pt-1">
-                                             <p class="text-right"><span [innerHTML]="totalAmount"> </span></p>
-                                          </div>
-                                       </div>
                                        <!-- <div class="row">
                                           <div class="col-lg-9 bordtop pt-1">
                                              <h5 class="text-right font-weight-bold text-4 text-dark">Advance Paid</h5>
@@ -1907,12 +1892,20 @@
                                        </div> -->
                                     </div>
                                  </div>
+                                 <div class="row mt-1">
+                                    <div class="col-lg-9 bordtop pt-1">
+                                       <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
+                                    </div>
+                                    <div class="col-lg-3 bordtop pt-1">
+                                       <p class="text-right"><span [innerHTML]="totalAmount"> </span></p>
+                                    </div>
+                                 </div>
           
                               </div>
           
                            </div>
                            <div class="form-group row">
-                              <div class="col-lg-12 text-right">
+                              <div class="col-lg-11 text-right pr-0">
                                  <a href="javascript:;" routerLink="/dispatch/orders" 
                                     class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
                                  <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="disableButton()" class="btn btn-success" >Save</button>
