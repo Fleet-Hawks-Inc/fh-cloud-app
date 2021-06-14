@@ -2,7 +2,6 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import { Router } from '@angular/router';
-import { GoogleMapsService } from '../services/google-maps.service';
 
 import { from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -24,7 +23,7 @@ const whiteListedUrls = [
 export class JwtInterceptor implements HttpInterceptor {
   headers;
   withRequest;
-  constructor(private router: Router, private googleMap: GoogleMapsService) { }
+  constructor(private router: Router) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // let arr = request.url.split('/');
@@ -45,11 +44,10 @@ export class JwtInterceptor implements HttpInterceptor {
           const withAuthRequest = request.clone({
             setHeaders: {
               //'Content-Type': 'application/json',  //API Service decides the type
-              Authorization: (this.googleMap.pcMiles.value) ? '73DBE97231D737488E722DDFB8D1D0BB' : `Bearer ${jwt}`,
+              Authorization: `Bearer ${jwt}`,
               'fh-carrier-id': isCarrier
             }
           });
-          this.googleMap.pcMiles.next(false);
           return next.handle(withAuthRequest);
         })
       );
