@@ -413,7 +413,7 @@
                                                             </label>
          
                                                             <ng-select [(ngModel)]="item.shippers.shipperID"
-                                                               name="shipperID_{{i}}"  placeholder="Select Consignor" class="form-control" #conSlt1="ngModel" required>
+                                                               name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" #conSlt1="ngModel" required>
          
                                                                   <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
          
@@ -822,7 +822,7 @@
          
                                                             <ng-select [(ngModel)]="item.receivers.receiverID"
                                                                name="receiverID" #receiverID="ngModel" required
-                                                               receiverID placeholder="Select Consignee"class="form-control" data-select2-id="16"
+                                                               receiverID placeholder="Select Receiver"class="form-control" data-select2-id="16"
                                                                tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
                                                                <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
                                                             </ng-select>
