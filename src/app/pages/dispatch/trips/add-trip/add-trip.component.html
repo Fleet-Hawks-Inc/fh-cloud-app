@@ -112,15 +112,9 @@
 
                                               <div class="btn-group-toggle">
                                                   <label
-                                                      class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
-                                                      <input id="googleMiles" name="mapFrom"
-                                                          [(ngModel)]="tripData.mapFrom" value="order" type="radio"
-                                                          (change)="changeMapRoute('order')"> Order Number</label>
+                                                      class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2" (click)="changeMapRoute('order')">Order Number</label>
                                                   <label
-                                                      class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
-                                                      <input id="pcmiles" name="mapFrom" type="radio"
-                                                          [(ngModel)]="tripData.mapFrom" value="route"
-                                                          (change)="changeMapRoute('route')"> Permanent Route</label>
+                                                      class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}" (click)="changeMapRoute('route')">Permanent Route</label>
                                               </div>
                                           </div>
                                       </div>
@@ -163,7 +157,7 @@
                                               <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
                                                   placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                                   #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                                  #tDate="ngModel" required>
+                                                  #tDate="ngModel" required [minDate]="dateMinLimit">
                                               <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
                                                   class="text-danger">
                                                   <div>
@@ -310,7 +304,7 @@
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input id="cell2{{i}}" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off">
+                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
 
                                                       <!-- <input type="date" class="form-control" id="editCell2{{i}}"
                                                           value="{{ trip.date }}"> -->
@@ -410,7 +404,7 @@
                                                   </td>
                                                   <td>
                                                       <input id="cell2" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off">
+                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
                                                   </td>
                                                   <td>
                                                       <input type="time" class="form-control newRow" id="cell13"

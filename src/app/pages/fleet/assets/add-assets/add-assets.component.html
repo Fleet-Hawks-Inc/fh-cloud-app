@@ -97,7 +97,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                     [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                    class="form-control" #sd1="ngModel" required>
+                    class="form-control" #sd1="ngModel" required [minDate]="dateMinLimit">
                     <div *ngIf="sd1.invalid && (sd1.dirty || sd1.touched)" class="text-danger">
 
                         <div *ngIf="sd1.errors.required">
@@ -516,7 +516,7 @@
                       Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                     <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                       name="assetDetails.annualSafetyDate" placeholder="yyyy/mm/dd"[(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                      class="form-control" #dSlt="ngModel" required >
+                      class="form-control" #dSlt="ngModel" required [minDate]="dateMinLimit">
                       <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                           <div *ngIf="dSlt.errors.required">
                             Annual safety date is required.
@@ -557,7 +557,7 @@
                         class="fas fa-plus"></i></a>
                     <a (click)="getInspectionForms();"target="_blank" aria-hidden="true" class="ml-1 mmodal-with-form cus-btn-padd btn btn-success"><i style="color:#fff;"
                           class="fas fa-sync-alt"></i></a>
-                  </div>
+                  </div> 
                 </div>
 
                 <div class="row mt-2">
@@ -594,7 +594,7 @@
                       Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
                       type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                      class="form-control" >
+                      class="form-control" [minDate]="dateMinLimit">
 
                   </div>
                   <div class="col-lg-5">
@@ -640,7 +640,7 @@
                       Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
                       placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
-                      class="form-control">
+                      class="form-control" [minDate]="dateMinLimit">
 
                   </div>
                   <div class="col-lg-5">

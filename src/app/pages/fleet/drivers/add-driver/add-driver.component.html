@@ -157,7 +157,7 @@
                         <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
                          [(ngModel)]="driverData.DOB"
                           name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
-                          #dob="ngModel" required>
+                          #dob="ngModel" required [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit">
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
                             Birth date is required.
@@ -361,7 +361,7 @@
                             </label>
                             <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
                               #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text"
-                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required>
+                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required [minDate]="birthDateMinLimit">
                             <div *ngIf="date1.invalid && (date1.dirty || date1.touched)" class="text-danger">
                               <div *ngIf="date1.errors.required">
                                 Start date is required.
@@ -376,7 +376,7 @@
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              >
+                              [minDate]="birthDateMinLimit">
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
 
                               <div *ngIf="tDate.errors.required" class="text-danger">
@@ -393,7 +393,7 @@
                             <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker
                               #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
                               type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #date2="ngModel" required>
+                              #date2="ngModel" required [minDate]="birthDateMinLimit">
                             <div *ngIf="date2.invalid && (date2.dirty || date2.touched)" class="text-danger">
                               <div *ngIf="date2.errors.required">
                                 Start date is required.
@@ -409,7 +409,7 @@
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #endDate="ngModel">
+                              #endDate="ngModel" [minDate]="birthDateMinLimit">
                             <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
                                 End date is required.
@@ -743,7 +743,7 @@
                           [ngModelOptions]="{standalone: true}"
                           (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
-                          [minDate]="getcurrentDate" type="text" class="form-control" #expSlt="ngModel" >
+                          [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel" >
                         <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
                           <div *ngIf="expSlt.errors.required">
                             Expiry date is required.
@@ -868,7 +868,7 @@
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
                             name="crossBorderDetails.fastExpiry" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
-                            type="text" class="form-control" placeholder="yyyy/mm/dd">
+                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit">
                         </div>
                       </div>
                     </div>
@@ -987,7 +987,7 @@
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
                           name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
-                          class="form-control" placeholder="yyyy/mm/dd" >
+                          class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Health Care# <span

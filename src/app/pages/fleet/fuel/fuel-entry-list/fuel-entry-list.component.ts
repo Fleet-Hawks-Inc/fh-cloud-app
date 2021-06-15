@@ -64,6 +64,7 @@ export class FuelEntryListComponent implements OnInit {
   allVehicles = [];
   allAssets: any = [];
   wexCategories:any={};
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(
     private apiService: ApiService,

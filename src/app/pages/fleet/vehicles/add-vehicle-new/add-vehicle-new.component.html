@@ -366,7 +366,7 @@
                                        (Set Reminder) <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
                                     <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker"
                                        name="annualSafetyDate" [(ngModel)]="annualSafetyDate" placeholder="yyyy/mm/dd"
-                                       class="form-control" #annualSlt="ngModel" required>
+                                       class="form-control" #annualSlt="ngModel" required [minDate]="dateMinLimit">
                                     <div *ngIf="annualSlt.invalid && (annualSlt.dirty || annualSlt.touched)"
                                        class="text-danger">
                                        <div *ngIf="annualSlt.errors.required">
@@ -594,7 +594,7 @@
                                     </label>
                                     <input type="text" placeholder="yyyy/mm/dd" class="form-control"
                                        name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker
-                                       #d2="ngbDatepicker" [(ngModel)]="lifeCycle.startDate" #date="ngModel" required>
+                                       #d2="ngbDatepicker" [(ngModel)]="lifeCycle.startDate" #date="ngModel" required [minDate]="dateMinLimit">
                                     <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                        <div *ngIf="date.errors.required">
                                           Start date is required.
@@ -718,7 +718,7 @@
                                     </label>
                                     <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" class="form-control"
                                        name="lifeCycle.outOfServiceDate" [(ngModel)]="lifeCycle.outOfServiceDate"
-                                       placeholder="yyyy/mm/dd">
+                                       placeholder="yyyy/mm/dd" [minDate]="dateMinLimit">
                                  </div>
                               </div>
                            </div>
@@ -897,7 +897,7 @@
                                           class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfIssue"
-                                       [(ngModel)]="insurance.dateOfIssue">
+                                       [(ngModel)]="insurance.dateOfIssue" [minDate]="dateMinLimit">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount
@@ -949,7 +949,7 @@
                                        <span class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfExpiry"
-                                       [(ngModel)]="insurance.dateOfExpiry">
+                                       [(ngModel)]="insurance.dateOfExpiry" [minDate]="dateMinLimit">
                                  </div>
                                  <div class="col-lg-5 pb-3 mb-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Every
@@ -1400,7 +1400,7 @@
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control"
                                     Placeholder="yyyy/mm/dd" name="purchase.purchaseDate"
-                                    [(ngModel)]="purchase.purchaseDate">
+                                    [(ngModel)]="purchase.purchaseDate" [minDate]="dateMinLimit">
                               </div>
                               <div class="col-lg-10 pl-0">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer
@@ -1417,7 +1417,7 @@
                                        Date <span class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="purchase.warrantyExpirationDate"
-                                       [(ngModel)]="purchase.warrantyExpirationDate">
+                                       [(ngModel)]="purchase.warrantyExpirationDate" [minDate]="dateMinLimit">
                                  </div>
                                  <div class="col-lg-3 text-right">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
@@ -1538,13 +1538,13 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan <span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                     <input (click)="d8.toggle()" ngbDatepicker #d8="ngbDatepicker" class="form-control"
-                                       Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan">
+                                       Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan" [minDate]="dateMinLimit">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date <span
                                           class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d9.toggle()" ngbDatepicker #d9="ngbDatepicker" class="form-control"
-                                       Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate">
+                                       Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate" [minDate]="dateMinLimit">
                                  </div>
                               </div>
                            </div>
