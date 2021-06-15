@@ -9,7 +9,6 @@ const routes: Routes = [
   { path: 'list', component: IncomeListComponent},
   { path: 'add', component: AddIncomeComponent},
   { path: 'detail', component: IncomeDetailComponent},
-
 ];
 
 @NgModule({
