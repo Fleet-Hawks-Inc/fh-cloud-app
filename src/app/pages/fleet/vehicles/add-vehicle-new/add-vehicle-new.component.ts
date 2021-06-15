@@ -99,7 +99,7 @@ export class AddVehicleNewComponent implements OnInit {
     outOfServiceOdometer: '',
   };
   specifications = {
-    height: '',
+    height: null,
     heightUnit: 'Feet',
     length: '',
     lengthUnit: '',
@@ -137,11 +137,11 @@ export class AddVehicleNewComponent implements OnInit {
     fuelTankOneCapacity: '',
     fuelTankOneType: 'Litres',
     fuelQuality: '',
-    fuelTankTwoCapacity: '',
+    fuelTankTwoCapacity: null,
     fuelTankTwoType: 'Litres',
-    oilCapacity: '',
+    oilCapacity: null,
     oilCapacityType: 'Litres',
-    def: '',
+    def: null,
     defType: 'Litres'
   };
   wheelsAndTyres = {
@@ -532,6 +532,8 @@ export class AddVehicleNewComponent implements OnInit {
     };
 
     // create form data instance
+    // console.log(data); 
+    // return;
     const formData = new FormData();
 
     // append photos if any

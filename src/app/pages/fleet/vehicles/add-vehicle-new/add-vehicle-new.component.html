@@ -751,36 +751,35 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height <span class="text-1 optional-label-color"> (optional) </span> </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" placeholder="eg. 4.15 meters"
                                              class="form-control" name="specifications.height"
-                                             [(ngModel)]="specifications.height" #height="ngModel" required
-                                             pattern="^[0-9\.]+$">
-                                          <div *ngIf="height.invalid && (height.dirty || height.touched)"
+                                             [(ngModel)]="specifications.height" #height="ngModel" 
+                                             >
+                                          <!-- <div *ngIf="height.invalid && (height.dirty || height.touched)"
                                              class="text-danger">
                                              <div *ngIf="height.errors.required">
                                                 Height is required.
 
 
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6">
                                           <ng-select placeholder="Select unit" class="form-control populate"
                                              name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit"
-                                             #hType="ngModel" required>
+                                             #hType="ngModel" >
                                              <ng-option value="Feet">Feet</ng-option>
                                              <ng-option value="Meter">Meter</ng-option>
                                           </ng-select>
-                                          <div *ngIf="hType.invalid && (hType.dirty || hType.touched)"
+                                          <!-- <div *ngIf="hType.invalid && (hType.dirty || hType.touched)"
                                              class="text-danger">
                                              <div *ngIf="hType.errors.required">
                                                 Height type is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1016,20 +1015,19 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <ng-select class="form-control populate" placeholder="Select Fuel Type"
-                                       name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" required>
+                                       name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" >
                                        <ng-option value="Diesel">Diesel</ng-option>
                                        <ng-option value="Gasoline">Gasoline</ng-option>
                                        <ng-option value="Propane">Propane</ng-option>
                                     </ng-select>
-                                    <div *ngIf="fuel.invalid && (fuel.dirty || fuel.touched)" class="text-danger">
+                                    <!-- <div *ngIf="fuel.invalid && (fuel.dirty || fuel.touched)" class="text-danger">
                                        <div *ngIf="fuel.errors.required">
                                           Fuel type is required.
                                        </div>
-                                    </div>
+                                    </div> -->
                                  </div>
                               </div>
                            </div>
@@ -1039,36 +1037,36 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                                        Capacity
-                                       <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.fuelTankOneCapacity"
                                              min="0" [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200"
-                                             #fuelTank="ngModel" required pattern="^[0-9\.]+$">
+                                             #fuelTank="ngModel">
 
-                                          <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)"
+                                          <!-- <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)"
                                              class="text-danger">
                                              <div *ngIf="fuelTank.errors.required">
                                                 Fuel tank is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.fuelTankOneType" min="1"
                                              [(ngModel)]="fluid.fuelTankOneType" placeholder="Select unit"
-                                             #tankType="ngModel" required>
+                                             #tankType="ngModel" >
                                              <optgroup label="">
                                                 <ng-option value="Gallons">Gallons</ng-option>
                                                 <ng-option value="Litres">Litres</ng-option>
                                              </optgroup>
                                           </ng-select>
-                                          <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)"
+                                          <!-- <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)"
                                              class="text-danger">
                                              <div *ngIf="tankType.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1110,32 +1108,31 @@
                            <div class="col-lg-5 mb-3 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.oilCapacity" min="0"
                                              [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #oil="ngModel"
-                                             required  pattern="^[0-9\.]+$">
-                                          <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
+                                             >
+                                          <!-- <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
                                              <div *ngIf="oil.errors.required">
                                                 Oil capacity is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1"
                                              [(ngModel)]="fluid.oilCapacityType" placeholder="Select unit"
-                                             #oil1="ngModel" required>
+                                             #oil1="ngModel">
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
                                           </ng-select>
-                                          <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
+                                          <!-- <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
                                              <div *ngIf="oil1.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1146,34 +1143,34 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust
-                                       Fluid) Capacity <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       Fluid) Capacity <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.def" min="0"
                                              [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc." #def="ngModel"
-                                             required  pattern="^[0-9\.]+$">
-                                          <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
+                                             >
+                                          <!-- <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
                                              <div *ngIf="def.errors.required">
                                                 DEF is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.defType"
                                              [(ngModel)]="fluid.defType" placeholder="Select unit" #defType="ngModel"
-                                             required>
+                                             >
                                              <optgroup label="">
                                                 <ng-option value="Gallons">Gallons</ng-option>
                                                 <ng-option value="Litres">Litres</ng-option>
                                              </optgroup>
                                           </ng-select>
-                                          <div *ngIf="defType.invalid && (defType.dirty || defType.touched)"
+                                          <!-- <div *ngIf="defType.invalid && (defType.dirty || defType.touched)"
                                              class="text-danger">
                                              <div *ngIf="defType.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>

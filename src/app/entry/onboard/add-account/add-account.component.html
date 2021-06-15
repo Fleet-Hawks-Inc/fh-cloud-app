@@ -92,27 +92,26 @@
                               <div *ngIf="pwd.errors.pattern">
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 character
-                                      minimum</p>
-                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
-                                    </p>
+                                    <p class="text-dark pt-2  mb-1"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
+                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number</p>
+                                
                                   </div>
                                   <div class="col-lg-12">
-                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1
-                                      uppercase</p>
-                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 uppercase</p>
+                                      
+                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
                                         [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                          [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1
-                                      lowecase</p>
+                                          [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowecase</p>
+                                      
                                   </div>
                                   <div class="col-lg-12">
-                                    <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                    <p class="text-dark pt-2 mb-1 "><span class="pr-1"
                                         [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                                          [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>atleast 1
-                                      special character(#,@,$,&)</p>
+                                          [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                                    
                                   </div>
                                 </div>
                               </div>
