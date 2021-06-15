@@ -180,20 +180,20 @@
                           <thead>
                             <tr>
                               <th>Jurisdiction</th>
-                              <th>Distance(miles)</th>
-                              <th>Distance(kms)</th>
-                              <th>Fuel(gal)</th>
-                              <th>Fuel(litres)</th>
+                              <th>Vehicle</th>
+                              <th>Distance</th>
+                              <th>Fuel Quantity</th>
+                              <th>Fuel Unit</th>
                               <th>Fuel Type</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor = "let item of stateList"> 
-                              <td>{{stateNameList[item.stateID]}}</td>
-                              <td>45 miles</td>
-                              <td>72.08 kms</td>
-                              <td>{{item.fuelGal}}</td>
-                              <td>{{item.fuelLit}}</td>
+                            <tr *ngFor = "let item of records"> 
+                              <td>{{item.jurisdiction}}</td>
+                              <td>{{item.vehicle}}</td>
+                              <td>{{item.totalMiles}}</td>
+                              <td>{{item.quantity}}</td>
+                              <td>{{item.fuelUnit}}</td>
                               <td>{{item.fuelType}}</td>
                             </tr>
                           </tbody>
@@ -253,7 +253,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      <!-- </div>
       <form method="get" name="form" id="form_">
         <div class="modal-body">
 
@@ -329,7 +329,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-success" (click)="addIftaAccount()">Save</button>
         </div>
-      </form>
+      </form> -->
     </div>
   </div>
 </div>
@@ -339,12 +339,12 @@
   aria-hidden="true">
   <div class="modal-dialog fuelDetailModal" role="document" >
     <div class="modal-content fuelDetailModalWidth">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="vehicleLogModalLabel">{{unitType}} - Fuel Purchase Details , Jurisdiction - {{stateNameList[modalStateID]}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      </div> -->
       <div class="modal-body">
         <form>
           <div class="form-row">
