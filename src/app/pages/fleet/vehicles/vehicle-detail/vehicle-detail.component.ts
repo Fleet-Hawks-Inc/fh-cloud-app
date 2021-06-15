@@ -200,6 +200,7 @@ export class VehicleDetailComponent implements OnInit {
   inspectionForms = {
     inspectionFormName : '',
     parameters: [],
+    isDefaultInspectionType:'',
     inspectionType: ''
   };
   fuelEntries = [];

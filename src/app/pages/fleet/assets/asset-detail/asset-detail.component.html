@@ -408,6 +408,15 @@
                   {{ inspectionForms.inspectionType }}
                 </div>
               </div>
+              <div class="row text-dark mt-3">
+               <div class="col-lg-3 font-weight-bold">
+                 Default Inspection Form
+               </div>
+               <div class="col-lg-9">
+                  <span *ngIf="inspectionForms.isDefaultInspectionType==0">NO</span>
+                  <span *ngIf="inspectionForms.isDefaultInspectionType==1">YES</span>
+               </div>
+             </div>
             </div>
           </div>
           <div class="row mt-4">
