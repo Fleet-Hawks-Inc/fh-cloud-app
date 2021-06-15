@@ -1,15 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { GeofenceReportComponent } from './geofence-report/geofence-report.component';
-import { InventoryReportComponent } from './inventory-report/inventory-report.component';
-import { IssuesReportComponent } from './issues-report/issues-report.component';
-import { MaintenanceReportComponent } from './maintenance-report/maintenance-report.component';
 import { RemindersReportComponent } from './reminders-report/reminders-report.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
-
 
 
 const routes: Routes = [
@@ -17,28 +12,12 @@ const routes: Routes = [
     path: 'overview',
     component: OverviewComponent
   },
-  
-  
+    
   {
     path: 'reminders-report',
     component: RemindersReportComponent
   },
-  {
-    path: 'issues-report',
-    component: IssuesReportComponent
-  },
-  {
-    path: 'maintenance-report',
-    component: MaintenanceReportComponent
-  },
-  {
-    path: 'inventory-report',
-    component: InventoryReportComponent
-  },
-  {
-    path: 'geofence-report',
-    component: GeofenceReportComponent
-  },
+
   {
     path: 'drivers',
     loadChildren: () => import('./drivers/mange-drivers.module').then((m) => m.ManageDriverModule) ,
@@ -54,19 +33,36 @@ const routes: Routes = [
   {
     path: 'fuel',
     loadChildren: () => import('./fuel-report/mange-fuel.module').then((m) => m.ManageFuelModule) ,
+  },
+  {
+    path: 'reminders',
+    loadChildren: () => import('./reminders-report/mange-reminders.module').then((m) => m.ManageRemindersModule) ,
+  },
+  {
+    path: 'maintenance',
+    loadChildren: () => import('./maintenance-report/mange-maintenance.module').then((m) => m.ManageMaitenanceModule) ,
+  },
+  {
+    path: 'issues',
+    loadChildren: () => import('./issues-report/mange-issues.module').then((m) => m.ManageIssuesModule) ,
+  },
+  {
+    path: 'inventory',
+    loadChildren: () => import('./inventory-report/mange-inventory.module').then((m) => m.ManageInventoryModule) ,
+  },
+  {
+    path: 'geofence',
+    loadChildren: () => import('./geofence-report/mange-geofence.module').then((m) => m.ManageGeofenceModule) ,
   }
+  
+  
+  
 ]
 
 @NgModule({
   declarations: [
-  
-    GeofenceReportComponent,
-    InventoryReportComponent,
-    IssuesReportComponent,
-    MaintenanceReportComponent,
     RemindersReportComponent,
     OverviewComponent,
-  
   ],
   imports: [
     CommonModule,

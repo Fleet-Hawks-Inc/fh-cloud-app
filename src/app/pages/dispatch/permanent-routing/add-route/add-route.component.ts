@@ -6,7 +6,6 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../services';
-import { GoogleMapsService } from '../../../../services/google-maps.service'
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 declare var $: any;
@@ -90,7 +89,7 @@ export class AddRouteComponent implements OnInit {
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService, private pcMiler: GoogleMapsService) {
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
   }
 
   get today() {
@@ -198,8 +197,9 @@ export class AddRouteComponent implements OnInit {
       switchCoordinates.push(newPoint);
     })
     let stops = switchCoordinates.join(";");
-    this.pcMiler.pcMiles.next(true);
-    this.routeData.miles = await this.pcMiler.pcMilesDistance(stops).toPromise()
+    this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+stops).subscribe((result) => {
+      this.routeData.miles = result;
+    });
   }
 
   calculateActualMiles(miles) {
