@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AllReportsComponent } from './all-reports/all-reports.component';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -7,6 +8,7 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
+import { ManagemainComponent } from './managemain/managemain.component';
 
 import {SettingsComponent} from './settings/settings.component';
 
@@ -34,8 +36,20 @@ const routes: Routes = [
     component: SettingsComponent
   },
   {
+    path: 'overview',
+    component: ManagemainComponent
+  },
+  {
     path: 'reports',
-    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
+    component: AllReportsComponent
+  },
+  {
+    path: 'fleet',
+    loadChildren: () => import('./reports/fleet/manage-fleet-reports.module').then((m) => m.ManageFleetReportsModule) ,
+  },
+  {
+    path: 'dispatch',
+    loadChildren: () => import('./reports/dispatch/manage-dispatch-reports.module').then((m) => m.ManageDispatchReportsModule) ,
   }
 ];
 

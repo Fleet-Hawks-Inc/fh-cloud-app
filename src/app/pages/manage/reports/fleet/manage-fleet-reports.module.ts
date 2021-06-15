@@ -8,17 +8,10 @@ import { MaintenanceReportComponent } from './maintenance-report/maintenance-rep
 import { RemindersReportComponent } from './reminders-report/reminders-report.component';
 
 import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
 
 
 
 const routes: Routes = [
-  {
-    path: 'overview',
-    component: OverviewComponent
-  },
-  
-  
   {
     path: 'reminders-report',
     component: RemindersReportComponent
@@ -65,7 +58,6 @@ const routes: Routes = [
     IssuesReportComponent,
     MaintenanceReportComponent,
     RemindersReportComponent,
-    OverviewComponent,
   
   ],
   imports: [
@@ -73,4 +65,4 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ]
 })
-export class ManageReportsModule { }
+export class ManageFleetReportsModule { }
