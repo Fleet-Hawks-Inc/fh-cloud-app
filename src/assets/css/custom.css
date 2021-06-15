@@ -1181,7 +1181,7 @@ td.loadid a{color:#000 !important;}
 
 .divderrel{position: relative;}
 .midledriver{background: #dcdcdc; width: 1px; height: 700px; left: 48%; position: absolute;}
-.midleicon{left: 47%; top: 42%; position: absolute;}
+.midleicon{left: 50%; top: 50%; margin-left: -12px;position: absolute;}
 
 
 
@@ -1716,6 +1716,9 @@ text-decoration: underline;
 
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
+
+  /* border radius */
+  .bor-radius0px{border-radius: 0px !important;}
 
   /* box */
   .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}

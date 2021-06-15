@@ -32,13 +32,13 @@
                         <div class="col-lg-10">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Program Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                            <input [(ngModel)]="serviceData.programName" name="programName"
-                              type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
+                              type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z0-9\s]{1,30}$">
                               <div *ngIf="Spn.invalid && (Spn.dirty || Spn.touched)" class="text-danger">
                                 <div *ngIf="Spn.errors.required">
-                                  Service program Name is required.
+                                  Service program name is required.
                                 </div>
                                 <div *ngIf="Spn.errors.pattern">
-                                  Service program name must contain letters.
+                                  Service program name must contain alphanumeric characters.
                                 </div>
                               </div>
                         </div>
@@ -52,7 +52,14 @@
                               class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
                               class="text-1 optional-label-color">(optional)</span></label>
                            <textarea [(ngModel)]="serviceData.description" name="description"
-                              class="form-control h-auto" placeholder="eg. Brakes are not working " rows="3"></textarea>
+                              class="form-control h-auto" placeholder="eg. Brakes are not working " rows="3" #aNotes224="ngModel"
+                              pattern="^[\s\S]{1,500}$"></textarea>
+                              <div *ngIf="aNotes224.invalid && (aNotes224.dirty || aNotes224.touched)" class="text-danger">
+                                 <div *ngIf="aNotes224.errors.pattern">
+                                    Only 500 characters are allowed.
+                                 </div>
+      
+                              </div>
                         </div>
                      </div>
                   </div>
@@ -150,7 +157,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="task.repeatByOdometer"
 
-                                       [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="eg. 1000,2000" #Odomiles786="ngModel" required>
+                                       [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="eg. 1000,2000" #Odomiles786="ngModel" required pattern="^[0-9\.]+$">
                                        <div *ngIf="Odomiles786.invalid && (Odomiles786.dirty || Odomiles786.touched)" class="text-danger">
                                          <div *ngIf="Odomiles786.errors.required">
                                            Repeat by odometer is required.

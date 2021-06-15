@@ -98,7 +98,7 @@
                                                     Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" id="issueName" name="issueName"
                                                     [(ngModel)]="issueName" placeholder="eg. brake issue"
-                                                    #iName="ngModel" required pattern="^[a-zA-Z0-9\s]{4,30}$"
+                                                    #iName="ngModel" required pattern="^[a-zA-Z0-9\s]{1,30}$"
                                                     maxlength="30">
                                                 <div *ngIf="iName.invalid && (iName.dirty || iName.touched)"
                                                     class="text-danger">
@@ -107,7 +107,7 @@
 
                                                     </div>
                                                     <div *ngIf="iName.errors.pattern">
-                                                        Issue name must contain atleast 4 alphanumeric characters.
+                                                        Issue name must contain alphanumeric characters.
 
 
                                                     </div>

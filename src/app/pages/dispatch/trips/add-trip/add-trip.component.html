@@ -114,12 +114,12 @@
                                                   <label
                                                       class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
                                                       <input id="googleMiles" name="mapFrom"
-                                                          [(ngModel)]="tripData.mapFrom" type="radio"
+                                                          [(ngModel)]="tripData.mapFrom" value="order" type="radio"
                                                           (change)="changeMapRoute('order')"> Order Number</label>
                                                   <label
                                                       class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
                                                       <input id="pcmiles" name="mapFrom" type="radio"
-                                                          [(ngModel)]="tripData.mapFrom"
+                                                          [(ngModel)]="tripData.mapFrom" value="route"
                                                           (change)="changeMapRoute('route')"> Permanent Route</label>
                                               </div>
                                           </div>

@@ -1,0 +1,344 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+       
+            <header class="page-header pr-5">
+               
+             <!-- <div class="row py-2">
+             <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
+                        Logs Detail
+                     </div>
+             </div> -->
+               <div class="row pr-1 mr-1" style="padding-top:10px;">
+                  <div class="col-md-3 col-lg-3">
+                     <div class="input-daterange input-group" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="yyyy-mm-dd" name="start">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                        </span>
+                        <input type="text" class="form-control" name="end" placeholder="yyyy-mm-dd">
+                     </div>
+                  </div>
+				  
+                  <div class="col-md-2 col-lg-2">
+                     <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" placeholder="Search Group">
+                     </div>
+                  </div>
+				  
+                  <div class="col-md-2 col-lg-2">
+                     <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" placeholder="Search Drivers">
+                     </div>
+                  </div>
+				  
+                  <div class="col-md-1 col-lg-1">
+                     <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  </div>
+				  
+                  <div class="col-md-4 col-lg-4 text-right pr-1">
+						<a href="run-report.php" class="btn btn-sm btn-success">Run Report</a>
+						<a href="schedule-report.php" class="btn btn-sm btn-success">Schedule a Report</a>
+                     <div class="btn-group flex-wrap ml-2">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           <a class="dropdown-item text-1" href="">CSV</a>
+                           <a class="dropdown-item text-1" href="">PDF</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </header>
+			<div class="m-3">
+				<div class="row text-dark">
+					
+				  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total Distance Travelled (miles)</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">555</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+				  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total Idle Time</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">1h 22m</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+				  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total HOS Violations</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">1h 22m</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+				  
+				  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total Hours Travelled</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">16h 10m</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+					<div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total Stop</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">225h 18m</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+				  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+						<div>
+                            <h4 class="m-0 text-4">Total Defects</h4>
+                            <h3 class="mt-1 mb-0 font-weight-bold">11h 18m</h3>
+                        </div>
+                     </div>
+                  </div>
+				  
+				  
+				  
+				   <div class="col pr-0">
+					  <div class="card">
+						 <div class="card-body">
+						  <section class="reports_div">
+							
+							<table class="table table-striped table-bordered mb-0">
+							   <thead>
+								  <tr class="back-color-gray">
+									 <th>Driver</th>
+									 
+									 <th>Date</th>
+									 
+									 <th>SB</th>
+									 <th>D</th>
+									 <th>ON(YM)</th>
+									 <th>WT</th>
+									 <th>Travelled</th>
+									 <th>Vehicles</th>
+									 <th>Trailers</th>
+									 <th>Ship Docs</th>
+									 <th>Distance</th>
+									 <th>HOS Violation</th>
+									 <th>Form & Manner Errors</th>
+									 <th>Inspection Report</th>
+								  </tr>
+							   </thead>
+							   <tbody>
+								  <tr>
+									 <td>Gurpreet Singh Nijjar</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td class="text-danger">Driver Signature</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									 <td>Daljit Singh</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>David</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>Tim Pane</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>Webster</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>Jatin Sethi</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									 <td>J Denly</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td class="text-danger">Driver Signature</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>Morne Morkel</td>
+									 <td>Jun 01</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td class="text-danger">11 hours Driving Limit</td>
+									 <td>No Errors</td>
+									 <td>No Inspection Reports</td>
+								  </tr>
+								  <tr>
+									<td>Chris</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									<td>Joe Burns</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  <tr>
+									 <td>Mathews</td>
+									 <td>Jun 02</td>
+									 
+									 <td>20.90</td>
+									 <td>2.72</td>
+									 <td>0.38</td>
+									 <td>0</td>
+									 <td>3.1</td>
+									 <td>Vehicle 1</td>
+									 <td>Trailer 1</td>
+									 <td>SH7856867</td>
+									 <td>224 km</td>
+									 <td>No Violations</td>
+									 <td>No Errors</td>
+									 <td>	No Defects</td>
+								  </tr>
+								  
+							   </tbody>
+							</table>
+						  </section>
+						   
+
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			</div>
+         </section>
+    </div>
+</section>
