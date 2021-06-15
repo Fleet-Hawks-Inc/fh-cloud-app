@@ -1,17 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RemindersReportComponent } from './reminders-report/reminders-report.component';
 
 import { RouterModule, Routes } from '@angular/router';
 
 
 const routes: Routes = [
-  {
-    path: 'reminders-report',
-    component: RemindersReportComponent
-  },
-
   {
     path: 'drivers',
     loadChildren: () => import('./drivers/mange-drivers.module').then((m) => m.ManageDriverModule) ,
@@ -31,10 +25,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    RemindersReportComponent,
-  
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
