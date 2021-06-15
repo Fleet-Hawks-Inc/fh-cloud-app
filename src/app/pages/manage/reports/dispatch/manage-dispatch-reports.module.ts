@@ -9,7 +9,8 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: () => import('./order-report/manage-orders.module').then((m) => m.ManageOrdersModule) ,
-  }
+  },
+  
 ]
 
 @NgModule({

@@ -8,7 +8,7 @@
                     <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Reports</h4>
                 </div>
                 
-                <div class="col-md-3 col-lg-3">
+                <div class="col-md-2 col-lg-2">
                     <div class="input-group input-group-sm mb-3">
                         <input type="text" class="form-control" placeholder="Search Reports">
                     </div>
@@ -17,29 +17,16 @@
                     <button class="btn btn-sm btn-success">Search</button>
                 </div>
                 
-                <div class="col-md-6 col-lg-6 pr-1 text-right">
-                    <a href="run-report.php" class="btn btn-sm btn-success">Run Report</a>
+                <div class="col-md-7 col-lg-7 pr-1 text-right">
+                    <a href="run-report.php" class="btn btn-sm btn-success mr-3">Run Report</a>
                     <a href="schedule-report.php" class="btn btn-sm btn-success">Schedule a Report</a>
                 </div>	
                 
             </div>
             
             </header>
-            <!-- <section class="card mb-4">
-            <div class="card-body">
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Add Load</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Dispatch</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Invoice</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Contact</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Company</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Income</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Expense</a>
-                <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Equipment</a>
-                <div class="pull-right">
-                    <a href="#" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Create Your Widget</a>
-                </div>
-            </div>
-            </section> -->
+            
+            
             <div class="routing-overview__wrapper m-3">
             <div class="row">
                 <div class="col-lg-6 col-xl-6 mb-4">
@@ -52,63 +39,63 @@
                                 <ul class="simple-post-list">
                                     
                                     <li class="">
-                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="manage/reports">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/drivers">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Drivers</span>
                                         <span class="w-100 pull-left text-1">Summary, Detail Report, Driver Logs, Driver Trip</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-vehicles.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/vehicles/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Vehicles</span>
                                         <span class="w-100 pull-left text-1">Summary, Detail Report, Utilization, Inspection, Maintenance</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-assets.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/asset/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Assets</span>
                                         <span class="w-100 pull-left text-1">Summary, Detail Report</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-fuel.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/fuel/foverview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Fuel</span>
                                         <span class="w-100 pull-left text-1">Summary, Vehicle Based Fuel Detail, Distance Based Fuel Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-reminders.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/reminders/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Reminders</span>
                                         <span class="w-100 pull-left text-1">Logs, Document</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-issues.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/issues/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Issues</span>
                                         <span class="w-100 pull-left text-1">Issues Report</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-maintenance.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/maintenance/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Maintenance</span>
                                         <span class="w-100 pull-left text-1">Logs, Document</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-inventory.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/inventory/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Inventory</span>
                                         <span class="w-100 pull-left text-1">Inventory Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="report-geofence.php">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/geofence/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Geo Fencing</span>
                                         <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
@@ -130,15 +117,9 @@
 
                                 <ul class="simple-post-list">
                                     
+                                 
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
-                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Quotes</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/dispatch/orders/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Orders</span>
                                         <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
                                         </a>

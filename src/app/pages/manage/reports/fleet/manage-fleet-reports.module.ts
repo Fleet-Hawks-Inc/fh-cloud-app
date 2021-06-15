@@ -22,6 +22,26 @@ const routes: Routes = [
     path: 'fuel',
     loadChildren: () => import('./fuel-report/mange-fuel.module').then((m) => m.ManageFuelModule) ,
   },
+  {
+    path: 'reminders',
+    loadChildren: () => import('./reminders-report/mange-reminders.module').then((m) => m.ManageRemindersModule) ,
+  },
+  {
+    path: 'maintenance',
+    loadChildren: () => import('./maintenance-report/mange-maintenance.module').then((m) => m.ManageMaitenanceModule) ,
+  },
+  {
+    path: 'issues',
+    loadChildren: () => import('./issues-report/mange-issues.module').then((m) => m.ManageIssuesModule) ,
+  },
+  {
+    path: 'inventory',
+    loadChildren: () => import('./inventory-report/mange-inventory.module').then((m) => m.ManageInventoryModule) ,
+  },
+  {
+    path: 'geofence',
+    loadChildren: () => import('./geofence-report/mange-geofence.module').then((m) => m.ManageGeofenceModule) ,
+  }
 ]
 
 @NgModule({
