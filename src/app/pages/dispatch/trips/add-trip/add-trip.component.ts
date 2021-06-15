@@ -53,7 +53,7 @@ export class AddTripComponent implements OnInit {
         bol: '',
         reeferTemperature: '',
         reeferTemperatureUnit: null,
-        orderId: {},
+        orderId: [],
         orderType: 'FTL',
         tripPlanning: [],
         notifications: {
@@ -270,13 +270,15 @@ export class AddTripComponent implements OnInit {
                 this.textFieldValues['lng'] = coordResult.items[0].position.lng;
 
                 if(this.trips.length > 0) {
-                    let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat']
-                    await this.getSingleRowMiles(endingPoint);
+                    let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat'];
+                    console.log('endingPoint===', endingPoint);
+                    this.getSingleRowMiles(endingPoint, this.trips.length);
+                    console.log('hello')
                 }
 
                 
             }
-            await this.trips.push(this.textFieldValues);
+            this.trips.push(this.textFieldValues);
 
             this.textFieldValues = {
                 type: '',
@@ -599,7 +601,7 @@ export class AddTripComponent implements OnInit {
                                     type: 'Pickup',
                                     date: PDate,
                                     name: current.shippersObjects[n.shipperID],
-                                    
+                                    dateTime: n.dateAndTime,
                                     miles: pickupMiles,
                                     carrierID: '',
                                     carrierName: '',
@@ -622,7 +624,13 @@ export class AddTripComponent implements OnInit {
                                     locations.push(n.pickupLocation)
                                 }
                                 tripPlans.push(obj);
-                                tripPlans.sort((a, b) => b.type.localeCompare(a.type));
+                                // tripPlans.sort((a, b) => b.type.localeCompare(a.type)); 
+
+                                tripPlans.sort((a, b) => {
+                                    return (
+                                      new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
+                                    );
+                                });
                             })
                         })
 
@@ -640,6 +648,7 @@ export class AddTripComponent implements OnInit {
                                 let obj = {
                                     type: 'Delivery',
                                     date: DrDate,
+                                    dateTime: k.dateAndTime,
                                     name: current.receiversObjects[k.receiverID],
                                     miles: deliveryMiles,
                                     carrierID: '',
@@ -663,7 +672,12 @@ export class AddTripComponent implements OnInit {
                                 }
                                 
                                 tripPlans.push(obj);
-                                tripPlans.sort((a, b) => b.type.localeCompare(a.type));
+                                // tripPlans.sort((a, b) => b.type.localeCompare(a.type));
+                                tripPlans.sort((a, b) => {
+                                    return (
+                                      new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
+                                    );
+                                });
                             })
                         })
                     }
@@ -720,15 +734,17 @@ export class AddTripComponent implements OnInit {
         this.getStateWiseMiles();
     }
 
-    async getSingleRowMiles(endingPoint){
+    async getSingleRowMiles(endingPoint, tripLength){
         
         let savedCord='';
-        let tripLength = this.trips.length;
         savedCord = this.trips[tripLength-1].lng + "," + this.trips[tripLength-1].lat;
         try {
             let newsMiles = savedCord + ";" + endingPoint;
             this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+newsMiles).subscribe((result) => {
-                this.textFieldValues.miles = result;
+               
+                // this.textFieldValues.miles = result;
+                this.trips[tripLength].miles = result;
+                console.log('this.textFieldValues.miles', this.textFieldValues.miles);
                 this.calculateActualMiles(result);
                 this.getStateWiseMiles();
             });
@@ -823,7 +839,7 @@ export class AddTripComponent implements OnInit {
         });
     }
 
-    saveAssetModalData() {
+    saveAssetModalData(addType='') {
         if(this.tempTextFieldValues.coDriverUsername == undefined) {
             this.tempTextFieldValues.coDriverUsername = '';
         }
@@ -879,6 +895,27 @@ export class AddTripComponent implements OnInit {
                 $("#editCell11"+index).prop('disabled', true);
             } else {
                 $("#editCell11"+index).prop('disabled', false);
+            }
+
+            // if user select to populate all the fields
+            if(addType == 'populate') {
+                for (let l = 0; l < this.trips.length; l++) {
+                    const element = this.trips[l];
+                    
+                    element.vehicleName = this.tempTextFieldValues.vehicleName;
+                    element.vehicleID = this.tempTextFieldValues.vehicleID;
+                    element.trailer = this.tempTextFieldValues.trailer;
+                    element.driverName = this.tempTextFieldValues.driverName;
+                    element.driverUsername = this.tempTextFieldValues.driverUsername;
+                    element.coDriverName = this.tempTextFieldValues.coDriverName;
+                    element.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
+                    element.trailerName = this.tempTextFieldValues.trailerName;
+                    element.driverID = this.tempTextFieldValues.driverID;
+                    element.coDriverID = this.tempTextFieldValues.coDriverID;
+                    element.trailerID = this.informationAsset;
+                }
+
+                $("#assignConfirmationModal").modal('hide');
             }
 
             this.getStateWiseMiles();
@@ -1020,6 +1057,12 @@ export class AddTripComponent implements OnInit {
         this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
         this.tripData.tripPlanning = []; 
         let planData = this.trips
+
+        if(this.tripData.orderId.length == 0) {
+            this.toastr.error('Please select order(s).');
+            this.submitDisabled = false;
+            return false;
+        }
 
         if (planData.length == 0) {
             this.toastr.error('Please add trip plan.');
@@ -1445,6 +1488,12 @@ export class AddTripComponent implements OnInit {
 
         let planData = this.trips;
 
+        if(this.tripData.orderId.length == 0) {
+            this.toastr.error('Please select order.');
+            this.submitDisabled = false;
+            return false;
+        }
+
         if (planData.length == 0) {
             this.toastr.error('Please add trip plan.');
             this.submitDisabled = false;
@@ -1853,7 +1902,7 @@ export class AddTripComponent implements OnInit {
 
         for (let ij = 0; ij < this.trips.length; ij++) {
             const element1 = this.trips[ij];
-            if (!vehicleIDs.includes(element1.vehicleID) && element1.vehicleID != undefined) {
+            if (!vehicleIDs.includes(element1.vehicleID) && element1.vehicleID != undefined && element1.vehicleID != '') {
                 vehicleIDs.push(element1.vehicleID);
             }
         }
@@ -1893,5 +1942,9 @@ export class AddTripComponent implements OnInit {
         })
 
         this.tripData.iftaMiles = tripData;
+    }
+
+    showConfirmationPopup() {
+        $("#assignConfirmationModal").modal('show');
     }
 }
