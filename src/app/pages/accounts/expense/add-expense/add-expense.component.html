@@ -1,0 +1,477 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Other Expenses </div>
+          <div class="col-md-8  col-lg-8 text-right"> <a routerLink="/accounts/expense/list"
+              class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Other Expenses
+              List</a> </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <div class="card-body text-dark">
+            <form class="form-horizontal form-bordered" method="get">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Basic
+                    Details</label>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense Type</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">Annual Inspection Fees</option>
+                          <option value="2">Accessorial Deduction</option>
+                          <option value="2">Accessorial Expense</option>
+                          <option value="2">Accident Deductible</option>
+                          <option value="2">Escrow Maintenance</option>
+                          <option value="2">Factoring Charges </option>
+                          <option value="2">Fuel Expense </option>
+                          <option value="2">Insurance Health </option>
+                          <option value="2">Insurance Asset </option>
+                          <option value="2">Insurance Vehicle </option>
+                          <option value="2">Internet Fees </option>
+                          <option value="2">Liabilities </option>
+                          <option value="2">Lodging</option>
+                          <option value="2">Lumper Fee </option>
+                          <option value="2">Maintenance </option>
+                          <option value="2">Meals</option>
+                          <option value="2">Miscellaneous</option>
+                          <option value="2">Office Supplies</option>
+                          <option value="2">Other Expense</option>
+                          <option value="2">Parking</option>
+                          <option value="2">Payments</option>
+                          <option value="2">Payroll Taxes</option>
+                          <option value="2">Permits</option>
+                          <option value="2">Reimbursement</option>
+                          <option value="2">Rent</option>
+                          <option value="2">Repair</option>
+                          <option value="2">Scale Tickets</option>
+                          <option value="2">Tax Paid</option>
+                          <option value="2">Toll</option>
+                          <option value="2">Asset Lease Payment</option>
+                          <option value="2">Vehicle Lease Payment</option>
+                          <option value="2">Repair and Maintenance</option>
+                          <option value="2">Utilities</option>
+                          <option value="2">Wages</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37">
+                        <button type="button" data-target="#addExpenseTypeModal" data-toggle="modal" class="btn btn-success btn-sm "
+                         style="color:white;"><i class="fas fa-plus"></i></button>
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense Account</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">Account 1</option>
+                          <option value="1">Account 2</option>
+                          <option value="1">Account 3</option>
+                          <option value="1">Account 4</option>
+                          <option value="1">Account 5</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37">
+                      <button type="button" data-target="#addAccountModal" data-toggle="modal" class="btn btn-success btn-sm "
+                      style="color:white;"><i class="fas fa-plus"></i></button>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Paid Through</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">Account 1</option>
+                          <option value="1">Account 2</option>
+                          <option value="1">Account 3</option>
+                          <option value="1">Account 4</option>
+                          <option value="1">Account 5</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37">
+                      <button type="button" data-target="#addAccountModal" data-toggle="modal" class="btn btn-success btn-sm "
+              style="color:white;"><i class="fas fa-plus"></i></button>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount</label>
+                      <div class="row">
+                        <div class="col-lg-6 pr-0">
+                          <input type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="">
+                              <option value="1">USD</option>
+                              <option value="2">CAD</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-lg-5">
+                      <div class="checkbox-custom">
+                        <input type="checkbox" id="recurringChk" onclick="recurringExpenses()">
+                        <label class="control-label font-weight-bold">Recurring?</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="notRecurringDiv" style="display:block;">
+                    <div class="row mt-3">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
+                        <input type="date" class="form-control"> </div>
+                    </div>
+                  </div>
+                  <div id="recurringDiv" style="display:none;">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date</label>
+                        <input type="date" class="form-control"> </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">End Date</label>
+                        <input type="date" class="form-control"> </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Frequency</label>
+                        <select data-plugin-selectTwo class="form-control populate">
+                          <optgroup label="">
+                            <option value="1">Weekly</option>
+                            <option value="2">Biweekly</option>
+                            <option value="2">Monthly</option>
+                            <option value="2">Yearly</option>
+                          </optgroup>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Unit</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="Select Vehicle">
+                          <option value="1">Vehicle 1</option>
+                          <option value="2">Vehicle 2</option>
+                          <option value="2">Vehicle 3</option>
+                          <option value="2">Vehicle 4</option>
+                        </optgroup>
+                        <optgroup label="Select Asset">
+                          <option value="1">Asset 1</option>
+                          <option value="2">Asset 2</option>
+                          <option value="2">Asset 3</option>
+                          <option value="2">Asset 4</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">Vendor 1</option>
+                          <option value="2">Vendor 2</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37"> <a href="#addVendorModal"
+                        class="btn btn-sm modal-with-form btn-success"><i class="fas fa-plus"></i></a> </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Country</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">USA</option>
+                          <option value="2">Canada</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">State</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="alberta">Alberta</option>
+                          <option value="britishColumbia">British Columbia</option>
+                          <option value="manitoba">Manitoba</option>
+                          <option value="newBrunswick">New Brunswick</option>
+                          <option value="NewfoundlandandLabrador">Newfoundland and Labrador</option>
+                          <option value="NorthwestTerritories">Northwest Territories</option>
+                          <option value="NovaScotia">Nova Scotia</option>
+                          <option value="Nunavut">Nunavut</option>
+                          <option value="Ontario">Ontario</option>
+                          <option value="PrinceEdwardIsland">Prince Edward Island</option>
+                          <option value="Quebec">Quebec</option>
+                          <option value="Saskatchewan">Saskatchewan</option>
+                          <option value="Yukon">Yukon</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">City</label>
+                      <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                          <option value="1">City 1</option>
+                          <option value="2">City 2</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                        <input type="checkbox"> GST</label>
+                      <div class="row">
+                        <div class="col-lg-6 pr-0">
+                          <div class="input-group">
+                            <input type="text" class="form-control"> <span class="input-group-append">
+                              <span class="input-group-text" style="font-size: 0.7rem !important;">
+                                %
+                              </span> </span>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                          <input type="text" class="form-control" value="0.00"> </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                        <input type="checkbox"> PST</label>
+                      <div class="row">
+                        <div class="col-lg-6 pr-0">
+                          <div class="input-group">
+                            <input type="text" class="form-control"> <span class="input-group-append">
+                              <span class="input-group-text" style="font-size: 0.7rem !important;">
+                                %
+                              </span> </span>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                          <input type="text" class="form-control" value="0.00"> </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                        <input type="checkbox"> HST</label>
+                      <div class="row">
+                        <div class="col-lg-6 pr-0">
+                          <div class="input-group">
+                            <input type="text" class="form-control"> <span class="input-group-append">
+                              <span class="input-group-text" style="font-size: 0.7rem !important;">
+                                %
+                              </span> </span>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                          <input type="text" class="form-control" value="0.00"> </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer</label>
+                      <div class="input-group input-group-md">
+                        <select data-plugin-selectTwo class="form-control pull-left form-control">
+                          <option>Manjit</option>
+                          <option>Sunita</option>
+                          <option>Jatinder</option>
+                          <option>Ramandeep</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 mar-top-37"> <a href="#addCustomerModal"
+                        class="btn modal-with-form btn-success btn-sm"><i class="fas fa-plus"></i></a> </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Invoice</label>
+                      <div class="input-group input-group-md mb-3">
+                        <select data-plugin-selectTwo class="form-control pull-left form-control mb-3">
+                          <option>Invoice 1</option>
+                          <option>Invoice 2</option>
+                          <option>Invoice 3</option>
+                          <option>Invoice 4</option>
+                          <option>Invoice 5</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
+                    Details</label>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                  <div class="row" id="attachPhotoLine"></div>
+                  <div class="row mt-2">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document</label>
+                      <input type="file" multiple class="form-control p-0" id="inputDefault"> </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                  <div class="row ">
+                    <div class="col-lg-10">
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+                      <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-11 text-right">
+                  <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button> <a
+                    href="expenses.php" class="btn btn-success">Save</a> </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="form-row">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Type</label>
+            <select data-plugin-selectTwo class="form-control populate">
+              <option value="2">Current Assets</option>
+              <option value="2">Bank</option>
+              <option value="2">Credit Card/Loan</option>
+              <option value="2">Depreciation</option>
+              <option value="2">Direct Expenses</option>
+              <option value="2">Equity</option>
+              <option value="2">Expenses</option>
+              <option value="2">Fixed Assets</option>
+              <option value="2">Future Assets</option>
+              <option value="2">Liabilities</option>
+              <option value="2">Future Liabilities</option>
+              <option value="2">Other Income</option>
+              <option value="2">Overheads</option>
+              <option value="2">Sales</option>
+            </select>
+
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Number</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Name</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Balance</label>
+            <div class="row">
+              <div class="col-lg-3 pr-0">
+                <input type="text" class="form-control" placeholder="0.00"> </div>
+              <div class="col-lg-3 pl-0">
+                <select data-plugin-selectTwo class="form-control populate">
+                  <optgroup label="">
+                    <option value="2">CAD</option>
+                    <option value="2">USD</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-lg-1 pr-0">
+                <label class="control-label font-weight-bold">as of</label>
+              </div>
+              <div class="col-lg-4 pr-0">
+                <input type="date" class="form-control"> </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <div class="checkbox-custom">
+              <input type="checkbox" class="form-control">
+              <label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Description</label>
+            <textarea rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="col-lg-12 text-right">
+            <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
+            <button class="btn btn-success modal-dismiss">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addExpenseTypeModal" tabindex="-1" role="dialog" aria-labelledby="addExpenseTypeModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+					<div class="form-row">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Expense Type Name</label>
+							<input type="text" class="form-control">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Description</label>
+							<textarea rows="3" class="form-control"></textarea>
+						</div>
+					</div>
+        <div class="form-row mt-2">
+          <div class="col-lg-12 text-right">
+            <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
+            <button class="btn btn-success modal-dismiss">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

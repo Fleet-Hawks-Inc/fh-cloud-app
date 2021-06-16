@@ -7,21 +7,6 @@
             
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                        <!-- <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-sm mb-3">
-                                <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
-                                class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search by Vehicle Name"/>
-                            </div>
-                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                                <ul>
-                                   <li *ngFor="let suggestedUnit of suggestedVehicles" style="cursor: pointer"
-                                   (click)="setVehicle(suggestedUnit.vehicleID, suggestedUnit.vehicleIdentification)"
-                                   > {{ suggestedUnit.vehicleIdentification }}</li>
-                                </ul>
-                             </div>
-                        </div> -->
-
                         <div class="col-md-2 col-lg-2">
 							<div class="input-group input-group-sm mb-3"> 
                                 <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
@@ -115,10 +100,10 @@
                                                                         <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                                             {{ item.unitName}} <br>
     
-                                                                            <span class="text-success text-capitalize" 
+                                                                            <span class="text-success" 
                                                                                 [ngClass]="{'text-danger': item.currentStatus == 'sold', 
                                                                                 'text-muted' : item.currentStatus === 'outOfService'}">
-                                                                                {{item.currentStatus}}
+                                                                                {{item.entityStatus}}
                                                                             </span>
                                                                         </td>
                                                                         <td>{{item.completionDate | date: 'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID"
