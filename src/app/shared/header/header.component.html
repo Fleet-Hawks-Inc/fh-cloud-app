@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-nav collapse">
-            <div class="header-nav-main header-nav-main-square"> 
+            <div class="header-nav-main header-nav-main-square">
                 <nav>
                     <ul class="nav">
                         <li class="" [class.active]="navSelected === 'fleet'">
@@ -49,8 +49,9 @@
                                 Safety
                             </a>
                         </li>
+
                         <li class="" [class.active]="navSelected === 'accounts'" *ngIf="!environment">
-                            <a class="nav-link" [routerLink]="['/accounts','accounts','Chart-Accounts']" (click)="onNavSelected('accounts')">
+                            <a class="nav-link" [routerLink]="['/accounts','overview']" (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>
                         </li>

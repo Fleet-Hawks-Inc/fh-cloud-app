@@ -1,0 +1,357 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+          <h2>Add Advance Payment</h2>
+          <div class="right-wrapper text-right">
+
+              <div class="pull-right pr-2">
+                  <a routerLink="/accounts/payments/advance-payments/list" class=" mt-2 mr-5 btn  btn-default btn-sm"><i
+                          class="fas fa-list"></i> All Advance Payments</a>
+              </div>
+          </div>
+      </header>
+      <section class="card mt-0">
+          <div class="card-body pr-0 pt-0 pb-0">
+              <div class="row">
+                  <div class="col pr-0">
+                      <div class="card-body text-dark">
+                          <form class="form-horizontal form-bordered" method="get">
+                              <div class="row">
+                                  <div class="col-lg-5 offset-lg-1">
+                                  <div class="row">
+                                          <div class="col-lg-10">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
+                                                  Payment#</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="settlementListDiv">
+                                          <div class="col-lg-10">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
+                                                  Payment To
+                                              </label>
+                                              <select data-plugin-selectTwo class="form-control populate"
+                                                  id="settlementFor" onchange="settlementForFn()">
+                                                  <optgroup>
+                                                      <option value="Driver">Driver</option>
+                                                      <option value="Carrier">Carrier</option>
+                                                      <option value="OwnerOperator">Owner Operator</option>
+                                                      <option value="employee">Employee</option>
+                                                      <option value="vendor">Vendor</option>
+                                                      <option value="customer">Customer</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2">
+                                          <div class="col-lg-10" id="driverListDiv" style="display: block;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Driver</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Driver">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Manjot</option>
+                                                      <option value="2">Dan</option>
+                                                      <option value="2">Nirvair</option>
+                                                      <option value="2">Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+
+
+                                          <div class="col-lg-10" id="carrierListDiv" style="display: none;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Carrier</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Carrier">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Manjot</option>
+                                                      <option value="2">Dan</option>
+                                                      <option value="2">Nirvair</option>
+                                                      <option value="2">Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+
+                                          <div class="col-lg-10" id="customerListDiv" style="display: none;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Customer</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Customer">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Manjot</option>
+                                                      <option value="2">Dan</option>
+                                                      <option value="2">Nirvair</option>
+                                                      <option value="2">Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+                                          <div class="col-lg-10" id="ownerOperatorListDiv"
+                                              style="display: none;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Owner Operator</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Owner Operator">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Manjot</option>
+                                                      <option value="2">Dan</option>
+                                                      <option value="2">Nirvair</option>
+                                                      <option value="2">Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+
+
+
+                                          <div class="col-lg-10" id="employeeListDiv" style="display: none;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Employee</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Carrier">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Manjot</option>
+                                                      <option value="2">Dan</option>
+                                                      <option value="2">Nirvair</option>
+                                                      <option value="2">Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+
+                                          <div class="col-lg-10" id="vendorListDiv" style="display: none;">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                                  Vendor</label>
+                                              <select data-plugin-selectTwo class="form-control populate">
+                                                  <optgroup label="Select Carrier">
+                                                      <option value="1">Select</option>
+                                                      <option value="1">Vendor Manjot</option>
+                                                      <option value="2">Vendor Dan</option>
+                                                      <option value="2">Vendor Nirvair</option>
+                                                      <option value="2">Vendor Baljit</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+
+
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-5">
+                                      <div class="row">
+                                          <div class="col-lg-10">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                  Date
+                                              </label>
+                                              <input type="date" class="form-control">
+                                          </div>
+
+                                      </div>
+                                      <div class="row pt-2">
+                                          <div class="col-lg-10">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference#
+                                              </label>
+                                              <input type="text" class="form-control">
+                                          </div>
+
+                                      </div>
+                                      <!-- <div class="row pt-2">
+
+                                          <div class="col-lg-5">
+                                              <label class="control-label font-weight-bold pt-2">From
+                                                  Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label class="control-label font-weight-bold pt-2">To
+                                                  Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+
+                                      </div> -->
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="col-lg-5 offset-lg-1">
+                                      <div class="row">
+                                          <div class="col-lg-10">
+                                              <label
+                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount
+
+                                              </label>
+                                             <div class="row">
+                                                 <div class="col-lg-3">
+                                                     <input type="number" class="form-control">
+                                                 </div>
+                                                 <div class="col-lg-3">
+                                                  <select data-plugin-selectTwo class="form-control populate">
+                                                      <optgroup label="Select Currency">
+                                                          <option value="1">CAD</option>
+                                                          <option value="2">USD</option>
+                                                      </optgroup>
+                                                  </select>
+                                              </div>
+                                             </div>
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2">
+                                          <div class="col-lg-5"><label
+                                                  class="control-label font-weight-bold  labelalign">Payment
+                                                  Mode</label>
+                                              <select data-plugin-selectTwo class="form-control populate"
+                                                  id="paymentModeList"
+                                                  onchange="paymentMode()">
+                                                  <optgroup>
+                                                      <option value="select">Select</option>
+                                                      <option value="Cash">Cash</option>
+                                                      <option value="Cheque">Cheque</option>
+                                                      <option value="EFT">EFT</option>
+                                                      <option value="creditCard">Credit Card</option>
+                                                      <option value="debitCard">Debit Card</option>
+                                                      <option value="demandDraft">Demand Draft</option>
+                                                  </optgroup>
+                                              </select>
+                                          </div>
+                                          <div class="col-lg-5">
+
+                                                  <label
+                                                      class="control-label font-weight-bold font-bold text-lg-right">Account
+                                                      </label>
+                                                  <select data-plugin-selectTwo class="form-control populate">
+                                                      <optgroup label="Select Account">
+                                                          <option value="1">Select</option>
+                                                          <option value="1">Account 1</option>
+                                                          <option value="2">Account 2</option>
+                                                          <option value="2">Account 3</option>
+                                                          <option value="2">Account 4</option>
+                                                      </optgroup>
+                                                  </select>
+
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="chequeDivDriver" style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Cheque
+                                                  Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Cheque
+                                                  Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="cashDivDriver" style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Cash
+                                                  Reference Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Cash
+                                                  Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="eftDivDriver" style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">EFT
+                                                  Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">EFT
+                                                  Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="creditCardDivDriver"
+                                          style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Credit
+                                                  Card Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Credit
+                                                  Card Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="debitCardDivDriver"
+                                          style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Debit
+                                                  Card Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Debit
+                                                  Card Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                      <div class="row pt-2" id="demandDraftDivDriver"
+                                          style="display: none;">
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Demand
+                                                  Draft Number</label>
+                                              <input type="text" class="form-control">
+                                          </div>
+                                          <div class="col-lg-5">
+                                              <label
+                                                  class="control-label font-weight-bold  labelalign">Demand
+                                                  Draft Date</label>
+                                              <input type="date" class="form-control">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-5">
+                                     <div class="row">
+                                         <div class="col-lg-10">
+                                          <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes
+
+                                      </label>
+                                             <textarea class="form-control" rows="4"></textarea>
+                                         </div>
+                                     </div>
+                                  </div>
+                              </div>
+                              <div class="form-group row mt-4">
+                                  <div class="col-lg-10 text-right">
+                                      <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
+                                      <a href="advance-payment.php" class="btn btn-success">Save</a>
+
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  </section>
+  </div>
+</section>
