@@ -226,12 +226,11 @@
                             </tr>
                           </tbody>
                         </table>
-                      </div> <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
-
+                      </div>
+                      <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
                       <div class="row mb-3">
                         <div class="col-12">
                           <div class="bg-white text-dark">
-
                             <div class=" pt-2 ">
                               <div class="row">
                                 <div class="col-lg-6">
@@ -432,3 +431,94 @@
     </section>
   </div>
 </section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="form-row">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Type</label>
+            <select data-plugin-selectTwo class="form-control populate">
+              <option value="2">Current Assets</option>
+              <option value="2">Bank</option>
+              <option value="2">Credit Card/Loan</option>
+              <option value="2">Depreciation</option>
+              <option value="2">Direct Expenses</option>
+              <option value="2">Equity</option>
+              <option value="2">Expenses</option>
+              <option value="2">Fixed Assets</option>
+              <option value="2">Future Assets</option>
+              <option value="2">Liabilities</option>
+              <option value="2">Future Liabilities</option>
+              <option value="2">Other Income</option>
+              <option value="2">Overheads</option>
+              <option value="2">Sales</option>
+            </select>
+
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Number</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Name</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Balance</label>
+            <div class="row">
+              <div class="col-lg-3 pr-0">
+                <input type="text" class="form-control" placeholder="0.00"> </div>
+              <div class="col-lg-3 pl-0">
+                <select data-plugin-selectTwo class="form-control populate">
+                  <optgroup label="">
+                    <option value="2">CAD</option>
+                    <option value="2">USD</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-lg-1 pr-0">
+                <label class="control-label font-weight-bold">as of</label>
+              </div>
+              <div class="col-lg-4 pr-0">
+                <input type="date" class="form-control"> </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <div class="checkbox-custom">
+              <input type="checkbox" class="form-control">
+              <label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Description</label>
+            <textarea rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="col-lg-12 text-right">
+            <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
+            <button class="btn btn-success modal-dismiss">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

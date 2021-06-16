@@ -161,93 +161,40 @@
   </a>
   <ul class="nav nav-children">
      <li>
-        <a class="nav-link" href="general-ledger-report.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','general-ledger','list']">
         General Ledger Report
         </a>
      </li>
      <li>
-        <a class="nav-link" href="balance-sheet.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','balance-sheet']">
         Balance Sheet
         </a>
      </li>
      <li>
-        <a class="nav-link" href="profit-loss-report.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','profit-loss-report']">
         Profit and Loss Report
         </a>
      </li>
      <li>
-        <a class="nav-link" href="trial-balance.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','trial-balance']">
         Trial Balance
         </a>
      </li>
      <li>
-        <a class="nav-link" href="cash-flow-report.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','cash-flow-statement']">
         Cash Flow Statement
         </a>
      </li>
      <!-- <li>
-        <a class="nav-link" href="accounts-receivable.php">
-        Accounts Receivable
-        </a>
-     </li>
-     <li>
-        <a class="nav-link" href="accounts-payable.php">
-        Accounts Payable
-        </a>
-     </li> -->
-     <!-- <li>
-        <a class="nav-link" href="all-inter-bank-transfers.php">
-        Inter Bank Transfer
-        </a>
-     </li> -->
-     <!-- <li>
-        <a class="nav-link" href="bank-book.php">
-        Bank Book
-        </a>
-        </li> -->
-     <li>
         <a class="nav-link" href="income-statement.php">
         Income Statement
         </a>
-     </li>
+     </li> -->
      <li>
-        <a class="nav-link" href="tax-report.php">
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','tax-report']">
         Tax Report
         </a>
      </li>
   </ul>
 </li>
-  <!-- <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-    <a class="nav-link" href="#">
-      <i class="fa fa-users" aria-hidden="true"></i>
-      <Span>Driver Settlements</Span>
-    </a>
-    <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          routerLink="[]"
-        >
-          Driver Non-Settled
-        </a>
-      </li>
-
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'driver-settlements', 'Driver-Payments']"
-        >
-          Driver Payments
-        </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'driver-settlements', 'Recurring-Deductions']"
-        >
-          Recurring Deductions
-        </a>
-      </li>
-    </ul>
-  </li> -->
 </ul>

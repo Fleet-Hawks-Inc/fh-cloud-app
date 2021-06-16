@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 const routes: Routes = [
+  { path: 'overview', component: HomeComponent },
   {
     path: 'chart-accounts',
     loadChildren: () => import('./chart-accounts/chart-accounts.module').then((m) => m.ChartAccountsModule),
