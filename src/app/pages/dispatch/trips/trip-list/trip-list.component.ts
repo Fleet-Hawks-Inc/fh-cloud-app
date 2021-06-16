@@ -28,6 +28,7 @@ export class TripListComponent implements OnInit {
   title = "Trips";
   tripID = '';
   tripStatus = '';
+  prevStatus = '';
   tripNumber = '';
   bolNumber = '';
   tripData = {
@@ -147,6 +148,7 @@ export class TripListComponent implements OnInit {
   tripTime = '';
   recIndex:any = '';
   records = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -315,7 +317,7 @@ export class TripListComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-
+        this.prevStatus = result.tripStatus;
         this.tripStatus = result.tripStatus;
         this.tripNumber = result.tripNo;
         this.bolNumber = result.bol;
@@ -327,16 +329,46 @@ export class TripListComponent implements OnInit {
   }
 
   updateTripStatus() {
-    this.spinner.show();
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     if (this.tripStatus === '') {
       this.toastr.error('Please select trip status');
-      this.spinner.hide();
       return false;
     }
+
+    if (this.tripStatus === this.prevStatus) {
+      $("#tripStatusModal").modal('hide');
+      return false;
+    }
+
+    let allowedStatus = [];
+    switch(this.prevStatus){
+      case 'confirmed':
+        allowedStatus = ['dispatched','started','enroute','cancelled','delivered'];
+        break;
+      case 'dispatched':
+        allowedStatus = ['started','enroute','cancelled','delivered'];
+        break;
+      case 'started':
+        allowedStatus = ['enroute','cancelled','delivered'];
+        break;
+      case 'enroute':
+        allowedStatus = ['cancelled','delivered'];
+        break;
+      case 'cancelled':
+        allowedStatus = ['delivered'];
+        break;
+      case 'delivered':
+        allowedStatus = [];
+        break;
+    }
+    
+    if(!allowedStatus.includes(this.tripStatus)) {
+      this.toastr.error('Please select a valid status');
+      return false;
+    } 
 
     let tripObj = {
       entryID : this.tripID,
@@ -429,6 +461,11 @@ export class TripListComponent implements OnInit {
   }
 
   filterTrips() {
+    
+
+    if(this.tripsFiltr.startDate===null) this.tripsFiltr.startDate=''
+    if(this.tripsFiltr.endDate===null) this.tripsFiltr.endDate=''
+    
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
 
@@ -438,7 +475,11 @@ export class TripListComponent implements OnInit {
       } else if(this.tripsFiltr.startDate == '' && this.tripsFiltr.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
+      } else if(this.tripsFiltr.startDate>this.tripsFiltr.endDate){
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
         this.toastr.error('Please enter search value.');
         return false;
       }else {

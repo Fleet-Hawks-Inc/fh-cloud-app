@@ -34,7 +34,7 @@
                  <div class="row">
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                    <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification" maxlength="20" minlength="2"
+                    <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification" maxlength="20" 
                       class="form-control" placeholder="eg. Box asset" #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                       <div *ngIf="aName.invalid && (aName.dirty || aName.touched)" class="text-danger">
                         <div *ngIf="aName.errors.required">
@@ -79,7 +79,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                       data-placement="top" title="Vehicle Identification Number."></i></label>
                   <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control text-uppercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                     <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
@@ -97,7 +97,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                     [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                    class="form-control" #sd1="ngModel" required>
+                    class="form-control" #sd1="ngModel" required [minDate]="dateMinLimit">
                     <div *ngIf="sd1.invalid && (sd1.dirty || sd1.touched)" class="text-danger">
 
                         <div *ngIf="sd1.errors.required">
@@ -247,33 +247,33 @@
                 <div class="row mt-2">
                   <div class="col-lg-5">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Height<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      class="text-1 optional-label-color"> (optional)</span></label>
                     <div class="row">
                       <div class="col-lg-6">
                       <input [(ngModel)]="assetsData.assetDetails.height" name="assetDetails.height" min="0" type="number"
-                        class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #heightTxt="ngModel" required>
-                        <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
-                          <div>
+                        class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #heightTxt="ngModel">
+                        <!-- <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
+                          
                             <div *ngIf="heightTxt.errors.required">
                             Height must contain numbers.
                             </div>
-                          </div>
+                          
 
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-6 pl-0">
                       <ng-select [(ngModel)]="assetsData.assetDetails.heightUnit" name="assetDetails.heightUnit"
-                        placeholder="Select unit" #hName="ngModel" required >
+                        placeholder="Select unit" #hName="ngModel"  >
 
                         <ng-option value="Feet">Feet</ng-option>
                         <ng-option value="Meter">Meter</ng-option>
 
                       </ng-select>
-                      <div *ngIf="hName.invalid && (hName.dirty || hName.touched)" class="text-danger">
+                      <!-- <div *ngIf="hName.invalid && (hName.dirty || hName.touched)" class="text-danger">
                       <div *ngIf="hName.errors.required">
                         Height type is required.
                       </div>
-                      </div>
+                      </div> -->
                       </div>
                     </div>
                   </div>
@@ -499,7 +499,7 @@
                       Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
                       placeholder="eg. CAL 745" name="assetDetails.licencePlateNumber"
-                      class="form-control" type="text" maxlength="8" #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
+                      class="form-control text-uppercase" type="text" maxlength="8" #pName="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                       <div *ngIf="pName.invalid && (pName.dirty || pName.touched)"  class="text-danger">
                         <div *ngIf="pName.errors.required">
                           Licence plate number is required.
@@ -516,7 +516,7 @@
                       Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                     <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                       name="assetDetails.annualSafetyDate" placeholder="yyyy/mm/dd"[(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                      class="form-control" #dSlt="ngModel" required >
+                      class="form-control" #dSlt="ngModel" required [minDate]="dateMinLimit">
                       <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                           <div *ngIf="dSlt.errors.required">
                             Annual safety date is required.
@@ -557,7 +557,7 @@
                         class="fas fa-plus"></i></a>
                     <a (click)="getInspectionForms();"target="_blank" aria-hidden="true" class="ml-1 mmodal-with-form cus-btn-padd btn btn-success"><i style="color:#fff;"
                           class="fas fa-sync-alt"></i></a>
-                  </div>
+                  </div> 
                 </div>
 
                 <div class="row mt-2">
@@ -594,7 +594,7 @@
                       Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
                       type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                      class="form-control" >
+                      class="form-control" [minDate]="dateMinLimit">
 
                   </div>
                   <div class="col-lg-5">
@@ -640,7 +640,7 @@
                       Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
                       placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
-                      class="form-control">
+                      class="form-control" [minDate]="dateMinLimit">
 
                   </div>
                   <div class="col-lg-5">

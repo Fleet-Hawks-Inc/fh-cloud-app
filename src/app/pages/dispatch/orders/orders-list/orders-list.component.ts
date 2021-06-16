@@ -96,6 +96,7 @@ export class OrdersListComponent implements OnInit {
     },
   ]
   records = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -174,13 +175,13 @@ export class OrdersListComponent implements OnInit {
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
       } else if(element.orderStatus == 'invoiced') {
-        this.deliveredOrders.push(element);
-      } else if(element.orderStatus == 'partiallyPaid') {
-        this.cancelledOrders.push(element);
-      } else if(element.orderStatus == 'cancelled') {
         this.invoicedOrders.push(element);
-      } else if(element.orderStatus == 'delivered') {
+      } else if(element.orderStatus == 'partiallyPaid') {
         this.partiallyOrders.push(element);
+      } else if(element.orderStatus == 'cancelled') {
+        this.cancelledOrders.push(element);
+      } else if(element.orderStatus == 'delivered') {
+        this.deliveredOrders.push(element);
       }
     }
 
@@ -234,6 +235,8 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
+    if(this.orderFiltr.startDate===null) this.orderFiltr.startDate=''
+    if(this.orderFiltr.endDate===null) this.orderFiltr.endDate=''
     if (this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== ''
       || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== null) {
       if (this.orderFiltr.startDate != '' && this.orderFiltr.endDate == '') {
@@ -242,7 +245,11 @@ export class OrdersListComponent implements OnInit {
       } else if (this.orderFiltr.startDate == '' && this.orderFiltr.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if (this.orderFiltr.category !== null && this.orderFiltr.searchValue == '') {
+      }else if(this.orderFiltr.startDate>this.orderFiltr.endDate){
+        this.toastr.error('Start Date should be less then end Date.');
+        return false;
+      }
+       else if (this.orderFiltr.category !== null && this.orderFiltr.searchValue == '') {
         this.toastr.error('Please enter search value.');
         return false;
       } else {

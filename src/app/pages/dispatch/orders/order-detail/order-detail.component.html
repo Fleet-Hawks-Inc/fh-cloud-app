@@ -7,6 +7,9 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right">
+            <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"
+              ><i class="fas fa-pencil-alt"></i> Edit Order</a
+            >
             <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> All Orders</a
             >
@@ -152,14 +155,14 @@
                       </div>
                       <div class="col-lg-9 p-2">{{ customerEmail }}</div>
                     </div>
-                    <div class="row m-0">
+                    <!-- <div class="row m-0">
                       <div
                         class="col-lg-3 p-2 font-weight-bold text-3 text-left"
                       >
                         Fax:
                       </div>
                       <div class="col-lg-9 p-2">{{ customerfax }}</div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -189,7 +192,7 @@
                       >
                         Order Creation Date/Time:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ createdDate | date : 'yyyy/MM/dd' }} {{ createdTime }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ createdTime | date : 'yyyy/MM/dd hh:mm:ss a' }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -271,21 +274,19 @@
                         <div class="card-body">
                           <div class="form-group row divderrel">
                             <div class="midledriver"></div>
-                            <p class="mb-1 mt-1 mr-1 midleicon btn btn-default">
-                              <i class="fas fa-arrow-circle-right"></i>
-                            </p>
+                            
                             <div class="col-lg-6">
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                              Consignor
+                              Shipper
                               </h4>
                             </div>
                             <div class="col-lg-6">
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                              Consignee
+                              Receiver
                               </h4>
                             </div>
 
@@ -294,7 +295,7 @@
 
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickShipper(i,j) id="shipperArea-{{i}}-{{j}}">
-                                      <span class="pull-left">Consignor {{j+1}}</span>
+                                      <span class="pull-left">Shipper {{j+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                   </a>
@@ -365,7 +366,7 @@
 
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}">
-                                      <span class="pull-left">Consignee {{k+1}}</span>
+                                      <span class="pull-left">Receiver {{k+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                     <div class="expand_caret caret"></div>
@@ -478,7 +479,7 @@
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}</div>
                     </div>
-                    <div class="row m-0">
+                    <!-- <div class="row m-0">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -491,8 +492,8 @@
                          {{additionalDetails.loadType.tanker ? 'Tanker' : ''}}
 
                       </div>
-                    </div>
-                    <div class="row m-0" *ngIf="additionalDetails.loadType.reefer">
+                    </div> -->
+                    <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -520,7 +521,9 @@
                           <h2
                             class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
                           >
-                            Miles for the Load is entered using: {{milesInfo.calculateBy}}
+                            Miles for the Load is entered using: 
+                            <span *ngIf="milesInfo.calculateBy == 'pcmiles'">PC miles</span>
+                            <span *ngIf="milesInfo.calculateBy != 'pcmiles'">Manual</span>
                           </h2>
                         </div>
 
@@ -660,7 +663,7 @@
                               <span *ngIf="stateCode != ''">
                                 ( <span class="font-weight-semibold">{{ stateCode }}</span> )
                               </span>
-                              <span class="pull-right">{{taxesTotal}} {{charges.freightFee.currency}}</span>
+                              <span class="pull-right">{{taxableAmount}} {{charges.freightFee.currency}}</span>
                             </p>
 
                             <p class="mb-0 text-dark bordtopdas">
@@ -682,51 +685,84 @@
                   </div>
                 </div>
 
-                <div class="col-xl-6 col-12 pl-0 pr-0">
+                <div class="col-xl-3 col-12 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
                         <div class="widgettbload">
-                          <span class="pull-right text-3 mt-2 text-dark">
-                            <div class="row">
-                              <div class="col-lg-4 offset-lg-2 text-right">
-                                <label class="control-label font-weight-bold"
-                                  >Upload BOL/POD</label
-                                >
-                              </div>
-                              <div class="col-lg-6">
-                                <input
-                                  type="file"
-                                  (change)="selectDocuments($event)"
-                                  multiple
-                                  class="p-0 form-control mb-2"
-                                  id="bolUpload"
-                                />
-                              </div>
-                            </div>
-                          </span>
-
                           <h2
                             class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
                           >
                             <i class="fas fa-box"></i> Attachments
                           </h2>
                         </div>
-
-                        <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                          <div class="col-5"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
-                          <div class="col-  3 text-right">
-                             <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></em>
-                             <a href="javascript:;" (click)="delete('doc',doc.name, d)" class="modal-with-form">
-                                <em class="fas fa-times text-danger"></em></a>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d= index">
+                              <div class="col-5"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                    (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
+                              <div class="col-  3 text-right">
+                                 <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                    data-target="#viewDocModal"></em>
+                                 <a href="javascript:;" (click)="delete('attachment',item.name, d)" class="modal-with-form">
+                                    <em class="fas fa-times text-danger"></em></a>
+                              </div>
+                           </div>
+                           <div *ngIf="attachments.length == 0;" class="my-2 px-2">
+                                <span>No attachment found</span>
+                           </div>
                           </div>
-                       </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                <div class="col-xl-3 col-12 pl-0 pr-0">
+                    <div class="col-xl-12 col-12 mb-3">
+                      <div class="boxshadow1 maindisbox w100 pull-left">
+                        <div class="widgetload">
+                          <div class="widgettbload">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <h2
+                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
+                                >
+                                    <i class="fas fa-box"></i> Upload BOL/POD
+                                </h2>
+                               </div>
+                                <div class="col-6">
+                                    <input
+                                      type="file"
+                                      (change)="selectDocuments($event)"
+                                      multiple
+                                      class="p-0 form-control pull-right mb-0"
+                                      id="bolUpload"
+                                    />
+                                  </div>
+                            </div>
+                            </div>
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
+                                <div class="col-7"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                      (click)="setPDFSrc(doc.path)">Bol {{d+1}}</a> </div>
+                                <div class="col-3 text-right">
+                                   <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                      data-target="#viewDocModal"></em>
+                                   <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
+                                      <em class="fas fa-times text-danger"></em></a>
+                                </div>
+                             </div>
+                             <div *ngIf="docs.length == 0;" class="my-2 px-2">
+                                <span>No document found</span>
+                           </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>

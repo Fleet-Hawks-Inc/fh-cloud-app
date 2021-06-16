@@ -112,15 +112,9 @@
 
                                               <div class="btn-group-toggle">
                                                   <label
-                                                      class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
-                                                      <input id="googleMiles" name="mapFrom"
-                                                          [(ngModel)]="tripData.mapFrom" type="radio"
-                                                          (change)="changeMapRoute('order')"> Order Number</label>
+                                                      class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2" (click)="changeMapRoute('order')">Order Number</label>
                                                   <label
-                                                      class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
-                                                      <input id="pcmiles" name="mapFrom" type="radio"
-                                                          [(ngModel)]="tripData.mapFrom"
-                                                          (change)="changeMapRoute('route')"> Permanent Route</label>
+                                                      class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}" (click)="changeMapRoute('route')">Permanent Route</label>
                                               </div>
                                           </div>
                                       </div>
@@ -163,7 +157,7 @@
                                               <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
                                                   placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                                   #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                                  #tDate="ngModel" required>
+                                                  #tDate="ngModel" required [minDate]="dateMinLimit">
                                               <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
                                                   class="text-danger">
                                                   <div>
@@ -310,7 +304,7 @@
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input id="cell2{{i}}" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off">
+                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
 
                                                       <!-- <input type="date" class="form-control" id="editCell2{{i}}"
                                                           value="{{ trip.date }}"> -->
@@ -410,7 +404,7 @@
                                                   </td>
                                                   <td>
                                                       <input id="cell2" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off">
+                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
                                                   </td>
                                                   <td>
                                                       <input type="time" class="form-control newRow" id="cell13"
@@ -529,7 +523,7 @@
                                               <div class="col-lg-4 text-center">
                                                   <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                   <p class="mb-0 text-4 font-weight-semibold text-dark"
-                                                      *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined">
+                                                      *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && mapOrderActive == 'active'">
                                                       {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
                                                       '1.0-3'}}
                                                   </p>
@@ -995,12 +989,44 @@
               <div class="row">
                   <div class="col-md-12 text-right">
 
-                      <button class="btn btn-default modal-dismiss" data-dismiss="modal"> Cancel</button>
-                      <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()"> Save</a>
+                      <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal"> Cancel</button>
+                      <a href="javascript:;" class="btn btn-success mr-2" (click)="saveAssetModalData('')"> Assign</a>
+                      <a href="javascript:;" *ngIf="tempTextFieldValues.type == 'edit'" class="btn btn-success mr-2" (click)="showConfirmationPopup()"> Assign for all</a>
+                      <!-- <a href="javascript:;" *ngIf="tempTextFieldValues.type == 'edit'" class="btn btn-success mr-2" (click)="saveAssetModalData('populate')"> Save and populate</a> -->
                   </div>
               </div>
           </div>
       </div>
 
   </div>
+</div>
+
+<!-- confirmation modal -->
+<div class="modal fade" id="assignConfirmationModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmation</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group row text-dark">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="control-label pt-2">Do you want to assign selected Vehicles(s)/ Asset(s)/ Driver(s)/ CoDriver(s) to all the routes?</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" (click)="saveAssetModalData('populate')">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

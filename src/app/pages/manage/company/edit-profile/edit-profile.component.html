@@ -25,7 +25,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
-                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
                         <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                           <div *ngIf="fName.errors.required">
                             First name is required.
@@ -39,7 +39,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName"
-                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
                         <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                           <div *ngIf="lName.errors.required">
                             Last name is required.
@@ -53,7 +53,7 @@
                     <div class=" row">
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username</label>
-                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]=true
+                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" [disabled]=true
                           placeholder="johnsmith" #uName="ngModel" minlength="6"  pattern="^[^\.][a-z0-9\.]+[^\.]$">
                       </div>
                     </div>
@@ -64,7 +64,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
-                          placeholder="eg. +19897899879"  required pattern="^(\+1)[0-9]{10}$">
+                          placeholder="eg. 2032342345."  required pattern="^[0-9]{1,10}$">
                       </div>
                       <div class="col-lg-10 offset-lg-2">
                         <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
@@ -72,7 +72,7 @@
                           Phone number is required.
                           </div>
                           <div *ngIf="ph.errors.pattern">
-                            Enter valid phone number eg. +12032342345.
+                            Enter valid phone number eg. 2032342345.
                           </div>
                         </div>
                       </div>
@@ -122,10 +122,10 @@
                           placeholder="eg.  Westjet" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                           <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                             <div *ngIf="cName.errors.required">
-                              Carrier name is required.
+                              Company name is required.
                             </div>
                             <div *ngIf="cName.errors.pattern">
-                              Carrier can only contain alphanumeric characters with length between 4-120.
+                              Company can only contain alphanumeric characters with length between 4-120.
                             </div>
                           </div>
                       </div>

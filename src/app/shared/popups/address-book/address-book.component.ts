@@ -675,6 +675,7 @@ export class AddressBookComponent implements OnInit {
   vendorDisabled = false;
   detailTab = '';
   additionalDisabled = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(
             private apiService: ApiService,
@@ -1683,7 +1684,7 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.shippers = [];
           this.activeDiv = 'shipperTable';
-          this.toastr.success('Consignor Added Successfully');
+          this.toastr.success('Shipper Added Successfully');
         }
       });
   }
@@ -1764,7 +1765,7 @@ export class AddressBookComponent implements OnInit {
         this.listService.fetchCustomers();
         this.fetchShippersCount();
         this.activeDiv = 'shipperTable';
-        this.toastr.success('Consignor updated successfully');
+        this.toastr.success('Shipper updated successfully');
       },
     });
   }
@@ -1847,7 +1848,7 @@ export class AddressBookComponent implements OnInit {
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
           this.fetchConsigneeCount();
-          this.toastr.success('Consignee Added Successfully');
+          this.toastr.success('Receiver Added Successfully');
         }
       });
   }
@@ -1929,7 +1930,7 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.fetchConsigneeCount();
         this.activeDiv = 'consigneeTable';
-        this.toastr.success('Consignee updated successfully');
+        this.toastr.success('Receiver updated successfully');
       },
     });
   }
@@ -2593,7 +2594,7 @@ export class AddressBookComponent implements OnInit {
         this.shippers = [];
         this.fetchShippersCount();
         // this.initDataTableShipper();
-        this.toastr.success('Consignor deleted successfully');
+        this.toastr.success('Shipper deleted successfully');
       });
     }
   }
@@ -2608,7 +2609,7 @@ export class AddressBookComponent implements OnInit {
         this.receivers = [];
         this.fetchConsigneeCount();
         // this.initDataTableConsignee();
-        this.toastr.success('Consignee deleted successfully');
+        this.toastr.success('Receiver deleted successfully');
       });
     }
   }

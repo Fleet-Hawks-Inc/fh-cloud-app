@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/Map-Dashboard']);
+    } else {
+      this.router.navigate(['/login']);
     }
 
   }
@@ -114,8 +116,8 @@ export class LoginComponent implements OnInit {
 
           if (!isActivatedUser.carrierID) {
             this.hasError = true;
-            this.Error = 'User has not active devices';
-
+            this.Error = 'Unable to find carrier information';
+            localStorage.setItem('signOut', 'true'); //trigger flag
           } else {
 
             /**
@@ -130,6 +132,7 @@ export class LoginComponent implements OnInit {
               role: Role.FleetManager
             };
             localStorage.setItem('LoggedIn', 'true');
+            localStorage.setItem('signOut', 'false'); //trigger flag
             localStorage.setItem('accessToken', jwt);//save token in session storage
             await this.router.navigate(['/Map-Dashboard']);
             localStorage.setItem('user', JSON.stringify(user));

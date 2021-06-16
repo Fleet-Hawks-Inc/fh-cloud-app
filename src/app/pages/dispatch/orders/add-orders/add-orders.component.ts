@@ -6,7 +6,6 @@ import {
   NgbCalendar,
   NgbDateAdapter
 } from "@ng-bootstrap/ng-bootstrap";
-import { GoogleMapsService } from "../../../../services/google-maps.service";
 import {
   map,
   debounceTime,
@@ -77,6 +76,7 @@ export class AddOrdersComponent implements OnInit {
   };
   orderMode: string = "FTL";
 
+  getOrderNumber: string;
   orderData = {
     stateTaxID: "",
     customerID: null,
@@ -117,12 +117,6 @@ export class AddOrdersComponent implements OnInit {
     additionalDetails: {
       trailerType: '',
       dropTrailer: false,
-      loadType: {
-        hazMat: false,
-        oversize: false,
-        reefer: false,
-        tanker: false,
-      },
       uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
@@ -171,6 +165,8 @@ export class AddOrdersComponent implements OnInit {
   response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
+  notOfficeAddress: boolean = false;
+  
   Error: string = "";
   Success: string = "";
   errors = {};
@@ -302,7 +298,6 @@ export class AddOrdersComponent implements OnInit {
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
-    private google: GoogleMapsService,
     private HereMap: HereMapService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -395,16 +390,13 @@ export class AddOrdersComponent implements OnInit {
     this.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
-    $(document).ready(() => {
-      // this.form = $("#form_").validate();
-    });
+    this.disableButton();
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
-      this.pageTitle = "Edit Order";
       this.fetchOrderByID();
+      this.pageTitle = `Edit Order`;
     } else {
-      this.fetchLastOrderNumber();
       this.pageTitle = "Add Order";
     }
 
@@ -447,6 +439,7 @@ export class AddOrdersComponent implements OnInit {
       .pipe(
         map((e: any) => {
           $(".map-search__results").hide();
+          $('div').removeClass('show-search__result');
           $(e.target).closest("div").addClass("show-search__result");
           target = e;
           return e.target.value;
@@ -579,8 +572,9 @@ export class AddOrdersComponent implements OnInit {
     this.emptyShipper(i);
     this.shipperReceiverMerge();
 
-    this.toastr.success("Consignor Added.");
-
+    this.toastr.success("Shipper Added.");
+    this.getMiles(this.orderData.milesInfo.calculateBy);
+    
   }
 
   async getCords(value){
@@ -681,12 +675,11 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.shipperReceiverMerge();
     this.emptyReceiver(i);
-
-    this.toastr.success("Consignee Added.");
-    
+    this.getMiles(this.orderData.milesInfo.calculateBy);
+    this.toastr.success("Receiver Added.");
   }
 
-  shipperReceiverMerge() {
+  async shipperReceiverMerge() {
     this.mergedArray = [];
     this.finalShippersReceivers.forEach((item) => {
       item.shippers.forEach((elem) => {
@@ -697,7 +690,7 @@ export class AddOrdersComponent implements OnInit {
       });
     });
     // this.mergedArray = this.finalShippersReceivers[0].shippers.concat(this.finalShippersReceivers[0].receivers);
-
+    
     this.mergedArray.sort((a, b) => {
       return (
         new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf()
@@ -841,7 +834,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag && (value == 'google' || value == 'pcmiles')) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
 
       setTimeout(() => {
@@ -854,7 +847,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-
+    
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.position.lng},${element.position.lat}`;
@@ -876,12 +869,10 @@ export class AddOrdersComponent implements OnInit {
         //
       } else if (value === "pcmiles") {
         //
-        this.google.pcMiles.next(true);
-        this.google
-          .pcMilesDistance(this.getAllCords.join(";"))
-          .subscribe((res) => {
-            this.orderData.milesInfo["totalMiles"] = res;
-          });
+        //
+        this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+this.getAllCords.join(";")).subscribe((result) => {
+          this.orderData.milesInfo["totalMiles"] = result;
+        });
       } else {
         this.orderData.milesInfo["totalMiles"] = "";
       }
@@ -893,15 +884,21 @@ export class AddOrdersComponent implements OnInit {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
-        this.customerSelected = result.Items[0];
-        for (let i = 0; i < this.customerSelected.address.length; i++) {
-          const element = this.customerSelected.address[i];
-          if(element.addressType == 'Office') {
-            this.customerSelected.officeAddr = true;
-            this.customerSelected.email = result.Items[0].workEmail;
-            this.customerSelected.phone = result.Items[0].workPhone;
+        if(result.Items.length > 0) {
+          this.customerSelected = result.Items[0];
+          for (let i = 0; i < this.customerSelected.address.length; i++) {
+            const element = this.customerSelected.address[i];
+            if(element.addressType == 'Office') {
+              this.notOfficeAddress = false;
+              this.customerSelected.officeAddr = true;
+              this.customerSelected.email = result.Items[0].workEmail;
+              this.customerSelected.phone = result.Items[0].workPhone;
+            } else {
+              this.notOfficeAddress = true;
+            }
           }
         }
+        
       });
   }
 
@@ -1007,7 +1004,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1157,8 +1154,10 @@ export class AddOrdersComponent implements OnInit {
       let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
       let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
       let advance:any = this.orderData.advance;
-
-      let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
+      let totalTax = parseInt(gst)  + parseInt(pst) + parseInt(hst);
+      let taxAmount =  parseInt(this.totalAmount) * totalTax / 100;
+      let final = parseInt(this.totalAmount) + taxAmount;
+      
       this.orderData["totalAmount"] = final;
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
@@ -1166,7 +1165,7 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
-  removeList(elem, parentIndex, i) {
+  async removeList(elem, parentIndex, i) {
     if (elem === "shipper") {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
       this.shippersReceivers[parentIndex].shippers.update = false;
@@ -1174,8 +1173,10 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
       this.shippersReceivers[parentIndex].receivers.update = false;
-    this.shippersReceivers[parentIndex].receivers.save = true;
+      this.shippersReceivers[parentIndex].receivers.save = true;
     }
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     
     this.showShipperUpdate = false;
     this.showReceiverUpdate = false;
@@ -1308,7 +1309,7 @@ export class AddOrdersComponent implements OnInit {
       data.update = false;
       this.emptyShipper(i);
       
-      this.toastr.success('Consignor Updated');
+      this.toastr.success('Shipper Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
       
@@ -1363,24 +1364,27 @@ export class AddOrdersComponent implements OnInit {
       ].position = result.position;
       data.save = true;
       data.update = false;
-      this.toastr.success('Consignee Updated');
+      this.toastr.success('Receiver Updated');
       this.emptyReceiver(i);
     }
-    
+    this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
     this.stateShipperIndex = "";
   }
 
-
+  
   disableButton() {
-    if(this.orderData.customerID == '' || this.orderData.customerPO == '' || this.orderData.customerPO == '' 
-      || this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
-      this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || 
-      this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.currency == ''
+    if(this.orderData.customerID == '' || this.orderData.customerID == null || 
+    this.finalShippersReceivers[0].receivers.length == 0 || this.finalShippersReceivers[0].shippers.length == 0 || 
+    this.orderData.milesInfo.calculateBy == '' || this.orderData.milesInfo.totalMiles == null || this.orderData.milesInfo.totalMiles == '' || 
+    this.orderData.charges.freightFee.type == '' || this.orderData.charges.freightFee.type == null || this.orderData.charges.freightFee.amount == null || this.orderData.charges.freightFee.currency == '' || this.orderData.charges.freightFee.currency == null
       ){
+
       return true
+    } else {
+      return false
     }
-    return false
+    
     
     
   }
@@ -1409,7 +1413,6 @@ export class AddOrdersComponent implements OnInit {
             amount: (state) ? state.PST : '',
           },
         ];
-
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
 
@@ -1429,6 +1432,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["email"] = result.email;
         this.orderData["orderMode"] = result.orderMode;
         this.orderData["orderNumber"] = result.orderNumber;
+        this.getOrderNumber = result.orderNumber;
         this.orderData["phone"] = result.phone;
         this.orderData["reference"] = result.reference;
         this.orderData["remarks"] = result.remarks;
@@ -1443,8 +1447,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.additionalDetails["trailerType"] =
           result.additionalDetails.trailerType;
 
-        this.orderData.additionalDetails["loadType"] =
-          result.additionalDetails.loadType;
+        // this.orderData.additionalDetails["loadType"] =
+        //   result.additionalDetails.loadType;
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
@@ -1464,16 +1468,16 @@ export class AddOrdersComponent implements OnInit {
         this.finalShippersReceivers = result.shippersReceiversInfo;
         this.shipperReceiverMerge();
 
-        let newLoadTypes = [];
-        if (
-          result.additionalDetails.loadType &&
-          result.additionalDetails.loadType.length > 0
-        ) {
-          for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
-            newLoadTypes.push(result.additionalDetails.loadType[i]);
-          }
-          this.loadTypeData = newLoadTypes;
-        }
+        // let newLoadTypes = [];
+        // if (
+        //   result.additionalDetails.loadType &&
+        //   result.additionalDetails.loadType.length > 0
+        // ) {
+        //   for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
+        //     newLoadTypes.push(result.additionalDetails.loadType[i]);
+        //   }
+        //   this.loadTypeData = newLoadTypes;
+        // }
 
         this.orderData.charges.freightFee.amount =
           result.charges.freightFee.amount;
@@ -1569,7 +1573,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1633,7 +1637,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in existing shipment."
+        "Please add atleast one Shipper and Receiver in existing shipment."
       );
       return false;
     }

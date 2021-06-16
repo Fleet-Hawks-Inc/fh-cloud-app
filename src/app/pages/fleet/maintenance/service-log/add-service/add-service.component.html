@@ -107,7 +107,7 @@
                         <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                            <div class="col-lg-10">
                               <label
-                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span
+                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer in Miles<span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                               <input [(ngModel)]="serviceData.odometer" name="odometer" type="number"
@@ -134,7 +134,7 @@
                                  <div>
 
                                     <div *ngIf="Date.errors.required">
-                                       Completeion date is required.
+                                       Completion date is required.
                                     </div>
                                  </div>
 
@@ -222,8 +222,7 @@
                 <div class="bg-white p-3 text-dark">
                   <div class="form-group row adddriverpl pt-3">
                      <div class="col-lg-12">
-                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Dimensions</label>
-
+                       
                        <div class=" form-group row" *ngIf="issues">
                         <div class="col-lg-8">
                            <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Issue
