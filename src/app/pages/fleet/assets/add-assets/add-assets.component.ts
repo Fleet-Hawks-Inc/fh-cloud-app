@@ -42,7 +42,7 @@ export class AddAssetsComponent implements OnInit {
       model: null,
       length: 0,
       lengthUnit: null,
-      height: 0,
+      height: '',
       heightUnit: null,
       axle: '',
       GVWR: '',

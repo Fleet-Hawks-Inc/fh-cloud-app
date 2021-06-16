@@ -247,33 +247,33 @@
                 <div class="row mt-2">
                   <div class="col-lg-5">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Height<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      class="text-1 optional-label-color"> (optional)</span></label>
                     <div class="row">
                       <div class="col-lg-6">
                       <input [(ngModel)]="assetsData.assetDetails.height" name="assetDetails.height" min="0" type="number"
-                        class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #heightTxt="ngModel" required>
-                        <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
-                          <div>
+                        class="form-control" placeholder="eg.170.4 inch or 14.2 feet" #heightTxt="ngModel">
+                        <!-- <div *ngIf="heightTxt.invalid && (heightTxt.dirty || heightTxt.touched)" class="text-danger">
+                          
                             <div *ngIf="heightTxt.errors.required">
                             Height must contain numbers.
                             </div>
-                          </div>
+                          
 
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-6 pl-0">
                       <ng-select [(ngModel)]="assetsData.assetDetails.heightUnit" name="assetDetails.heightUnit"
-                        placeholder="Select unit" #hName="ngModel" required >
+                        placeholder="Select unit" #hName="ngModel"  >
 
                         <ng-option value="Feet">Feet</ng-option>
                         <ng-option value="Meter">Meter</ng-option>
 
                       </ng-select>
-                      <div *ngIf="hName.invalid && (hName.dirty || hName.touched)" class="text-danger">
+                      <!-- <div *ngIf="hName.invalid && (hName.dirty || hName.touched)" class="text-danger">
                       <div *ngIf="hName.errors.required">
                         Height type is required.
                       </div>
-                      </div>
+                      </div> -->
                       </div>
                     </div>
                   </div>

@@ -1,0 +1,279 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body">
+            <header class="page-header pr-5">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+                
+                <div class="col-md-2 col-lg-2">
+                    <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Reports</h4>
+                </div>
+                
+                <div class="col-md-2 col-lg-2">
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="text" class="form-control" placeholder="Search Reports">
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1 pr-1 text-right">
+                    <button class="btn btn-sm btn-success">Search</button>
+                </div>
+                
+                <div class="col-md-7 col-lg-7 pr-1 text-right">
+                    <a href="run-report.php" class="btn btn-sm btn-success mr-3">Run Report</a>
+                    <a href="schedule-report.php" class="btn btn-sm btn-success">Schedule a Report</a>
+                </div>	
+                
+            </div>
+            
+            </header>
+            
+            
+            <div class="routing-overview__wrapper m-3">
+            <div class="row">
+                <div class="col-lg-6 col-xl-6 mb-4">
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="thumb-info mb-3">
+                                    <p class="text-dark font-weight-bold text-5"><i class="fas fa-truck"></i> Fleet</p>
+                                </div>
+
+                                <ul class="simple-post-list">
+                                    
+                                    <li class="">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/drivers">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Drivers</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail Report, Driver Logs, Driver Trip</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/vehicles/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Vehicles</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail Report, Utilization, Inspection, Maintenance</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/asset/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Assets</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail Report</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/fuel/foverview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Fuel</span>
+                                        <span class="w-100 pull-left text-1">Summary, Vehicle Based Fuel Detail, Distance Based Fuel Detail</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/reminders/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Reminders</span>
+                                        <span class="w-100 pull-left text-1">Logs, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/issues/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Issues</span>
+                                        <span class="w-100 pull-left text-1">Issues Report</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/maintenance/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Maintenance</span>
+                                        <span class="w-100 pull-left text-1">Logs, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/inventory/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Inventory</span>
+                                        <span class="w-100 pull-left text-1">Inventory Detail</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/fleet/geofence/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Geo Fencing</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
+                                        </a>
+                                    </li>
+                                
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-lg-6 col-xl-6 pull-left mb-4">
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="thumb-info mb-3">
+                                    <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Routing &amp; Dispatch</p>
+                                </div>
+
+                                <ul class="simple-post-list">
+                                    
+                                 
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/dispatch/orders/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Orders</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Trips</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Routes</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Planner</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Cross Border</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Documents</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    <div class="col-lg-6 col-xl-6 mb-4">
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="thumb-info mb-3">
+                                    <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Compliance</p>
+                                </div>
+
+                                <ul class="simple-post-list">
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> HOS Summary</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Logs</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Unidentified Miles</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Inspection Summary</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> IFTA Reports</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    
+                    
+                    <div class="col-lg-6 col-xl-6 mb-4">
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="thumb-info mb-3">
+                                    <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Safety</p>
+                                </div>
+
+                                <ul class="simple-post-list">
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Safety Overview</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Critical Events</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Incidents</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> HOS Violations</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Driver Scorecard</span>
+                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        </a>
+                                    </li>
+                                    
+                                    
+                                    
+                                
+                                </ul>
+                                
+                                
+                            </div>
+                        </section>
+                    </div>
+                    
+            </div>
+            
+            
+
+            </div>
+            
+        </section>
+    </div>
+</section>

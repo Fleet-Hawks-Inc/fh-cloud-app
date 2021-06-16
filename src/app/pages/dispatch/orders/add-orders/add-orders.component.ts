@@ -117,12 +117,6 @@ export class AddOrdersComponent implements OnInit {
     additionalDetails: {
       trailerType: '',
       dropTrailer: false,
-      loadType: {
-        hazMat: false,
-        oversize: false,
-        reefer: false,
-        tanker: false,
-      },
       uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
@@ -138,14 +132,14 @@ export class AddOrdersComponent implements OnInit {
     shippersReceiversInfo: [],
     charges: {
       freightFee: {
-        type: "",
+        type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
       fuelSurcharge: {
-        type: "",
+        type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
       accessorialFeeInfo: {
         accessorialFee: [],
@@ -188,13 +182,20 @@ export class AddOrdersComponent implements OnInit {
   loadTypeData = [];
   
   activeId: string = "";
+  newTaxes = [
+    {
+      type: '',
+      amount: 0,
+      taxAmount: 0
+    }
+  ];
 
   showShipperUpdate: boolean = false;
   showReceiverUpdate: boolean = false;
   shippersReceivers = [
     {
       shippers: {
-        shipperID: "",
+        shipperID: null,
         pickupLocation: "",
         pickupDate: "",
         pickupTime: "",
@@ -207,9 +208,9 @@ export class AddOrdersComponent implements OnInit {
           {
             name: "",
             quantity: "",
-            quantityUnit: "",
+            quantityUnit: null,
             weight: "",
-            weightUnit: "",
+            weightUnit: null,
             pu: ""
           },
         ],
@@ -222,7 +223,7 @@ export class AddOrdersComponent implements OnInit {
         update: false
       },
       receivers: {
-        receiverID: "",
+        receiverID: null,
         dropOffLocation: "",
         dropOffDate: "",
         dropOffTime: "",
@@ -235,9 +236,9 @@ export class AddOrdersComponent implements OnInit {
           {
             name: "",
             quantity: "",
-            quantityUnit: "",
+            quantityUnit: null,
             weight: "",
-            weightUnit: "",
+            weightUnit: null,
             del:""
             // pu: ""
           },
@@ -262,6 +263,8 @@ export class AddOrdersComponent implements OnInit {
       },
     ],
   };
+
+  deletedFiles = [];
 
   accessorialDeductionInfo = {
     accessDeductions: [
@@ -436,6 +439,14 @@ export class AddOrdersComponent implements OnInit {
             amount: result.Items[0].PST,
           },
         ];
+        this.newTaxes = this.orderData.taxesInfo;
+        if(this.subTotal > 0) {
+          for (let i = 0; i < this.newTaxes.length; i++) {
+            const element = this.newTaxes[i];
+            element.taxAmount = (this.subTotal * element.amount) / 100;
+          }
+        }
+        
       });
   }
 
@@ -576,12 +587,10 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.emptyShipper(i);
-    this.shipperReceiverMerge();
-
-    this.toastr.success("Consignor Added.");
-    this.getMiles(this.orderData.milesInfo.calculateBy);
-    console.log('save shipper', this.finalShippersReceivers)
-
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
+    this.toastr.success("Shipper Added.");
+   
   }
 
   async getCords(value){
@@ -680,12 +689,11 @@ export class AddOrdersComponent implements OnInit {
     this.finalShippersReceivers[i].receivers.push(currentReceiver);
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    this.shipperReceiverMerge();
+    await this.shipperReceiverMerge();
     this.emptyReceiver(i);
-    this.getMiles(this.orderData.milesInfo.calculateBy);
-    this.toastr.success("Consignee Added.");
-    console.log('save reciever', this.finalShippersReceivers)
-  }
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
+    this.toastr.success("Receiver Added.");
+}
 
   async shipperReceiverMerge() {
     this.mergedArray = [];
@@ -698,12 +706,13 @@ export class AddOrdersComponent implements OnInit {
       });
     });
     // this.mergedArray = this.finalShippersReceivers[0].shippers.concat(this.finalShippersReceivers[0].receivers);
-
+    
     this.mergedArray.sort((a, b) => {
       return (
         new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf()
       );
     });
+    
   }
 
   emptyShipper(i) {
@@ -842,7 +851,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag && (value == 'google' || value == 'pcmiles')) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
 
       setTimeout(() => {
@@ -855,8 +864,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-    console.log('this.mergedArray', this.mergedArray)
-    console.log('final', this.finalShippersReceivers)
+    
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.position.lng},${element.position.lat}`;
@@ -886,6 +894,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.milesInfo["totalMiles"] = "";
       }
       this.getAllCords = [];
+      
     }
   }
 
@@ -1013,7 +1022,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1119,7 +1128,7 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  calculateAmount() {
+  async calculateAmount() {
     this.freightFee = this.orderData.charges.freightFee["amount"];
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
     let sum = 0;
@@ -1170,6 +1179,13 @@ export class AddOrdersComponent implements OnInit {
       this.orderData["totalAmount"] = final;
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
+    }
+    this.newTaxes = this.orderData.taxesInfo;
+    if(this.subTotal > 0) {
+      for (let i = 0; i < this.newTaxes.length; i++) {
+        const element = this.newTaxes[i];
+        element.taxAmount = (this.subTotal * element.amount) / 100;
+      }
     }
 
   }
@@ -1316,9 +1332,10 @@ export class AddOrdersComponent implements OnInit {
       ].position = result.position;
       data.save = true;
       data.update = false;
+      
       this.emptyShipper(i);
       
-      this.toastr.success('Consignor Updated');
+      this.toastr.success('Shipper Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
       
@@ -1373,10 +1390,11 @@ export class AddOrdersComponent implements OnInit {
       ].position = result.position;
       data.save = true;
       data.update = false;
-      this.toastr.success('Consignee Updated');
+      this.toastr.success('Receiver Updated');
       this.emptyReceiver(i);
     }
-    this.getMiles(this.orderData.milesInfo.calculateBy);
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
     this.stateShipperIndex = "";
   }
@@ -1422,7 +1440,6 @@ export class AddOrdersComponent implements OnInit {
             amount: (state) ? state.PST : '',
           },
         ];
-
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
 
@@ -1457,8 +1474,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.additionalDetails["trailerType"] =
           result.additionalDetails.trailerType;
 
-        this.orderData.additionalDetails["loadType"] =
-          result.additionalDetails.loadType;
+        // this.orderData.additionalDetails["loadType"] =
+        //   result.additionalDetails.loadType;
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
@@ -1478,16 +1495,16 @@ export class AddOrdersComponent implements OnInit {
         this.finalShippersReceivers = result.shippersReceiversInfo;
         this.shipperReceiverMerge();
 
-        let newLoadTypes = [];
-        if (
-          result.additionalDetails.loadType &&
-          result.additionalDetails.loadType.length > 0
-        ) {
-          for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
-            newLoadTypes.push(result.additionalDetails.loadType[i]);
-          }
-          this.loadTypeData = newLoadTypes;
-        }
+        // let newLoadTypes = [];
+        // if (
+        //   result.additionalDetails.loadType &&
+        //   result.additionalDetails.loadType.length > 0
+        // ) {
+        //   for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
+        //     newLoadTypes.push(result.additionalDetails.loadType[i]);
+        //   }
+        //   this.loadTypeData = newLoadTypes;
+        // }
 
         this.orderData.charges.freightFee.amount =
           result.charges.freightFee.amount;
@@ -1542,6 +1559,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["totalAmount"] = result.totalAmount;
         this.orderData.advance = result.advance;
         this.existingUploadedDocs = result.uploadedDocs;
+        
         this.calculateAmount();
       });
   }
@@ -1554,7 +1572,8 @@ export class AddOrdersComponent implements OnInit {
     this.orderData['uploadedDocs'] = this.existingUploadedDocs;
     this.orderData['orderID'] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
-
+    this.orderData['deletedFiles'] = this.deletedFiles;
+    
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -1583,7 +1602,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1647,7 +1666,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in existing shipment."
+        "Please add atleast one Shipper and Receiver in existing shipment."
       );
       return false;
     }
@@ -1827,26 +1846,26 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  stateSelectChange(){
+  async stateSelectChange(){
     let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.orderData.stateTaxID);
     this.orderData.taxesInfo = [];
 
-          this.orderData.taxesInfo = [
-            {
-              name: 'GST',
-              amount: selected.GST,
-            },
-            {
-              name: 'HST',
-              amount: selected.HST,
-            },
-            {
-              name: 'PST',
-              amount: selected.PST,
-            },
-          ];
-        this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
-        this.calculateAmount();
+    this.orderData.taxesInfo = [
+      {
+        name: 'GST',
+        amount: selected.GST,
+      },
+      {
+        name: 'HST',
+        amount: selected.HST,
+      },
+      {
+        name: 'PST',
+        amount: selected.PST,
+      },
+    ];
+    this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
+    await this.calculateAmount();
 
   }
 
@@ -1874,7 +1893,6 @@ export class AddOrdersComponent implements OnInit {
 
   fetchLastOrderNumber(){
     this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
-      console.log('ff', result)
       this.orderData.orderNumber = result.toString();
     });
   }
@@ -1910,8 +1928,10 @@ export class AddOrdersComponent implements OnInit {
       date: this.orderData.createdDate,
       time: this.orderData.createdTime
     }
-    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
-      this.orderAttachments.splice(index, 1);
-    });
+    // this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
+      
+    // });
+    this.deletedFiles.push(record)
+    this.orderAttachments.splice(index, 1);
   }
 }
