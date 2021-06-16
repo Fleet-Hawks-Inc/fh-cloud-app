@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../constants';
 import { ListService } from '../../../../services';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-inventory-list',
@@ -116,48 +117,46 @@ export class InventoryListComponent implements OnInit {
     this.fetchItemsCount();
     this.fetchWarehouses();
     this.fetchAllItemsList();
-    this.initDataTable();
     this.fetchVendors();
     this.fetchRequiredItemsCount();
-    this.initDataTableRequired();
     this.listService.fetchVendors();
     this.allVendors = this.listService.vendorList;
   }
 
-  getItemSuggestions(value, type) {
+  getItemSuggestions = _.debounce(function (value, type) {
     if (value != '') {
       value = value.toLowerCase();
       if (type === 'inv') {
         this.apiService
-          .getData(`items/suggestion/${value}`)
+          .getData(`items/suggestion/${value}?type=inventory`)
           .subscribe((result) => {
-            this.suggestedItems = result.Items;
+            this.suggestedItems = result;
           });
       } else {
         this.apiService
-          .getData(`items/suggestion/${value}`)
+          .getData(`items/suggestion/${value}?item=required`)
           .subscribe((result) => {
-            this.requiredSuggestedItems = result.Items;
+            this.requiredSuggestedItems = result;
           });
       }
     } else {
       this.suggestedItems = [];
       this.requiredSuggestedItems = [];
     }
-  }
+  }, 800)
 
-  getPartNumberSuggestions(value) {
+  getPartNumberSuggestions = _.debounce(function (value) {
     if (value != '') {
       value = value.toLowerCase();
       this.apiService
-        .getData(`requiredItems/suggestion/${value}`)
+        .getData(`items/partNo/suggestion/${value}?item=required`)
         .subscribe((result) => {
-          this.requiredSuggestedPartNo = result.Items;
+          this.requiredSuggestedPartNo = result;
         });
     } else {
       this.requiredSuggestedPartNo = [];
     }
-  }
+  }, 800)
 
   setPartNo(itemName) {
     this.requiredPartNumber = itemName;
@@ -185,7 +184,6 @@ export class InventoryListComponent implements OnInit {
       this.items = [];
       this.suggestedItems = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.initDataTable();
       this.resetCountResult('inv');
     } else {
       return false;
@@ -201,7 +199,6 @@ export class InventoryListComponent implements OnInit {
       this.requiredSuggestedPartNo = [];
       this.requiredItems = [];
       this.dataMessageReq = Constants.FETCHING_DATA;
-      this.initDataTableRequired();
       this.resetCountResult('req');
     } else {
       return false;
@@ -230,6 +227,8 @@ export class InventoryListComponent implements OnInit {
         if (this.itemID !== '' || this.vendorID !== null || this.category !== null) {
           this.inventoryEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -243,6 +242,8 @@ export class InventoryListComponent implements OnInit {
         if (this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
           this.requiredInventoryEndPoint = this.totalRecords;
         }
+
+        this.initDataTableRequired();
       },
     });
   }
@@ -267,7 +268,6 @@ export class InventoryListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.fetchItemsCount();
-        this.initDataTable();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
     }
@@ -457,7 +457,6 @@ export class InventoryListComponent implements OnInit {
       this.items = [];
       this.suggestedItems = [];
       this.suggestedVendors = [];
-      this.initDataTable();
     } else {
       return false;
     }
@@ -470,7 +469,6 @@ export class InventoryListComponent implements OnInit {
       this.fetchRequiredItemsCount();
       this.dataMessageReq = Constants.FETCHING_DATA;
       this.requiredSuggestedPartNo = [];
-      this.initDataTableRequired();
     } else {
       return false;
     }
@@ -496,7 +494,6 @@ export class InventoryListComponent implements OnInit {
         this.requiredLastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchRequiredItemsCount();
-        this.initDataTableRequired();
         this.toastr.success('Required Inventory Item Deleted Successfully!');
       });
     }

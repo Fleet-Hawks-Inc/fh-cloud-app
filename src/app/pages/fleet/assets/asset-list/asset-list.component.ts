@@ -6,7 +6,8 @@ import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
-import {OnboardDefaultService}from '../../../../services/onboard-default.service'
+import {OnboardDefaultService}from '../../../../services/onboard-default.service';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -111,19 +112,19 @@ export class AssetListComponent implements OnInit {
       this.fetchModalsByIDs();
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if(value != '') {
       this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedAssets = result.Items;
+        this.suggestedAssets = result;
       });
     } else {
       this.suggestedAssets = [];
     }
 
-  }
+  }, 800)
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
@@ -211,6 +212,9 @@ export class AssetListComponent implements OnInit {
         this.suggestedAssets = [];
         this.getStartandEndVal();
 
+        result[`Items`].map((v:any) => {
+          v.assetType = v.assetType.replace("_"," ")
+        })
         this.allData = result[`Items`];
 
         if(this.assetID != '' || this.assetType != null) {

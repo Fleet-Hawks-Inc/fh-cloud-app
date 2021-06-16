@@ -1,10 +1,10 @@
-
 <header class="header">
     <div class="logo-container">
         <a href="#" class="logo">
-            <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" class="img-fluid"/>
+            <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" class="img-fluid" />
         </a>
-        <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+        <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+            data-fire-event="sidebar-left-opened">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
         </div>
 
@@ -12,51 +12,38 @@
             <div class="header-nav-main header-nav-main-square">
                 <nav>
                     <ul class="nav">
-                        <li class="" [class.active]="navSelected === 'fleet'">
-                            <a class="nav-link" [routerLink]="['/Map-Dashboard']" (click)="onNavSelected('fleet')" >
+                        <li class="" [class.active]="navSelected === 'fleet'" *ngIf="isFleetEnabled">
+                            <a class="nav-link" [routerLink]="['/Map-Dashboard']" (click)="onNavSelected('fleet')">
                                 Fleet
                             </a>
                         </li>
-                        <li class="" [class.active]="navSelected === 'compliance'">
-                            <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']" (click)="onNavSelected('compliance')">
+                        <li class="" [class.active]="navSelected === 'compliance'" *ngIf="isComplianceEnabled">
+                            <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']"
+                                (click)="onNavSelected('compliance')">
                                 Compliance
                             </a>
                         </li>
-                        <!-- <li class="" [class.active]="navSelected === 'alert'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('alert')">
-                                Alert
-                            </a>
-                        </li>
-                        <li class="" [class.active]="navSelected === 'setting'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('setting')">
-                                Setting
-                            </a>
-                        </li> -->
-                        <!-- <li class="" [class.active]="navSelected === 'dispatch'">
-                            <a class="nav-link" [routerLink]="" (click)="onNavSelected('dispatch')">
-                                Routing & Dispatch
-                            </a>
-                        </li> -->
-                        <li class="" [class.active]="navSelected === 'dispatch'">
+                        <li class="" [class.active]="navSelected === 'dispatch'" *ngIf="isDispatchEnabled">
 
-                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']" (click)="onNavSelected('dispatch')">
-
+                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']"
+                                (click)="onNavSelected('dispatch')">
                                 Routing & Dispatch
                             </a>
                         </li>
-                        <li class="" [class.active]="navSelected === 'safety'" *ngIf="!environment">
-                            <a class="nav-link" [routerLink]="['/safety', 'overview']" (click)="onNavSelected('safety')">
+                        <li class="" [class.active]="navSelected === 'safety'" *ngIf="isSafetyEnabled">
+                            <a class="nav-link" [routerLink]="['/safety', 'overview']"
+                                (click)="onNavSelected('safety')">
                                 Safety
                             </a>
                         </li>
 
-                        <li class="" [class.active]="navSelected === 'accounts'" *ngIf="!environment">
+                        <li class="" [class.active]="navSelected === 'accounts'" *ngIf="isAccountsEnabled">
                             <a class="nav-link" [routerLink]="['/accounts','overview']" (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>
                         </li>
 
-                        <li class="" [class.active]="navSelected === 'manage'">
+                        <li class="" [class.active]="navSelected === 'manage'" *ngIf="isManageEnabled">
                             <a class="nav-link" [routerLink]="['/manage','overview']" (click)="onNavSelected('manage')">
                                 Manage
                             </a>
@@ -67,28 +54,15 @@
         </div>
     </div>
 
-    <!-- start: search & user box -->
     <div class="header-right">
-
-        <!-- <form action="#" class="search nav-form">
-            <div class="input-group">
-                <input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-                <span class="input-group-append">
-								<button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
-							</span>
-            </div>
-        </form> -->
-
-
-
-        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal" class="modal-with-form address-book-icon" title="Address Book">
+        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal"
+            class="modal-with-form address-book-icon" title="Address Book">
             <i class="far fa-address-book text-dark" style="font-size:16px;"></i>
         </a>
         <div id="userbox" class="userbox mt-0">
 
             <a href="#" data-toggle="dropdown">
                 <figure class="profile-picture text-uppercase font-weight-bold">
-                    <!-- <img src="assets/img/fh.png" alt="Joseph Doe" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" /> -->
                     <span>{{nickName}}</span>
                 </figure>
                 <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
@@ -103,19 +77,17 @@
                 <ul class="list-unstyled mb-2 text-dark">
                     <li class="divider"></li>
                     <li>
-                       <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{currentCarrierID}}" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
+                        <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{currentCarrierID}}"
+                            class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
-                    <!-- <li>
-                       <a role="menuitem" tabindex="-1" href="javascript:;"><i class="fas fa-user"></i> Account Setting</a>
-                    </li> -->
                     <li>
-                       <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off"></i> Logout</a>
+                        <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i
+                                class="fas fa-power-off"></i> Logout</a>
                     </li>
-                 </ul>
+                </ul>
             </div>
         </div>
     </div>
-    <!-- end: search & user box -->
 </header>
 
 <app-address-book></app-address-book>

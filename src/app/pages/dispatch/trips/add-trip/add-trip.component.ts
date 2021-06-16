@@ -1897,7 +1897,6 @@ export class AddTripComponent implements OnInit {
 
     async getStateWiseMiles() {
         let allLatLng = [];
-        this.submitDisabled = true;
         let vehicleIDs = [];
 
         for (let ij = 0; ij < this.trips.length; ij++) {
@@ -1934,9 +1933,7 @@ export class AddTripComponent implements OnInit {
                     }
                     tripData[0].push(data);
                 });
-                this.submitDisabled = false;
             } catch (error) {
-                this.submitDisabled = false;
                 return false;
             }
         })
