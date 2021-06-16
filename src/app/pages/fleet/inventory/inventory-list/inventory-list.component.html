@@ -5,15 +5,7 @@
 </style>
 
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
                 <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
@@ -53,57 +45,54 @@
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
                         <div class="btn-group flex-wrap mr-3" style="min-width:190px;">
-                            <button type="button"
-                                class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
+                            <button type="button" class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
                                 data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
-                            <div class="dropdown-menu dutystatwd" role="menu">
+                            <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
                                 <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part"
-                                            (change)="hideShowColumn()"> Part# </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name"
-                                            (change)="hideShowColumn()"> Item Name </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category"
-                                            (change)="hideShowColumn()">
-                                        Category </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.vendor" name="vendor"
-                                            (change)="hideShowColumn()">
-                                        Vendor </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.quantity" name="quantity"
-                                            (change)="hideShowColumn()"> Quantity </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.onHand" name="onHand"
-                                            (change)="hideShowColumn()"> On Hand </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.unitCost" name="unitCost"
-                                            (change)="hideShowColumn()"> Unit Cost </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.warehouse" name="warehouse"
-                                            (change)="hideShowColumn()">
-                                        Warehouse Details </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty"
-                                            (change)="hideShowColumn()"> Warranty Days and Time
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part#
                                     </label>
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint"
-                                            name="reorderPoint" (change)="hideShowColumn()"> Reorder Point </label>
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Item Name
+                                    </label>
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
+                                        Category </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.vendor" name="vendor" (change)="hideShowColumn()">
+                                        Vendor </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()">
+                                        Quantity </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.onHand" name="onHand" (change)="hideShowColumn()"> On
+                                        Hand </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()">
+                                        Unit Cost </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.warehouse" name="warehouse" (change)="hideShowColumn()">
+                                        Warehouse Details </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()">
+                                        Warranty Days and Time
+                                    </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint" name="reorderPoint"
+                                            (change)="hideShowColumn()"> Reorder Point </label>
+                                </a>
+                                <a class="dropdown-item text-1" href="javascript:;">
+                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity" name="reorderQuantity"
+                                            (change)="hideShowColumn()"> Reorder Quantity </label>
                                 </a>
                             </div>
                         </div>
@@ -123,7 +112,7 @@
                             </ng-select>
                         </div> -->
                         <div class="input-group input-group-sm mb-3">
-                          <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                          <input autocomplete="off" type="text" name="requiredItemName" [(ngModel)]="requiredItemName"
                               class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
                               placeholder="Search items by name" />
                       </div>
@@ -159,60 +148,6 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;">
-                            <button type="button" class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
-                                data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
-                            <div class="dropdown-menu dutystatwd" role="menu">
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part"
-                                            (change)="hideShowColumn()"> Part# </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name"
-                                            (change)="hideShowColumn()"> Item Name </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category"
-                                            (change)="hideShowColumn()">
-                                        Category </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.vendor" name="vendor"
-                                            (change)="hideShowColumn()">
-                                        Vendor </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.quantity" name="quantity"
-                                            (change)="hideShowColumn()"> Quantity </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.onHand" name="onHand"
-                                            (change)="hideShowColumn()"> On Hand </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.unitCost" name="unitCost"
-                                            (change)="hideShowColumn()"> Unit Cost </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.warehouse" name="warehouse"
-                                            (change)="hideShowColumn()">
-                                        Warehouse Details </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty"
-                                            (change)="hideShowColumn()"> Warranty Days and Time
-                                    </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint"
-                                            name="reorderPoint" (change)="hideShowColumn()"> Reorder Point </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
-                                </a>
-                            </div>
-                        </div>
                         <a [routerLink]="" (click)="openTransferModal()"
                             class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
                             Transfer</a>

@@ -12,6 +12,14 @@ import { environment } from '../../../environments/environment';
 })
 export class HeaderComponent implements OnInit {
   environment = environment.isFeatureEnabled;
+
+  isFleetEnabled = environment.isFleetEnabled;
+  isDispatchEnabled = environment.isDispatchEnabled;
+  isComplianceEnabled = environment.isComplianceEnabled;
+  isManageEnabled = environment.isManageEnabled;
+  isSafetyEnabled = environment.isSafetyEnabled;
+  isAccountsEnabled = environment.isAccountsEnabled;
+
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';
