@@ -13,6 +13,8 @@ import {
   EditProfileComponent
 } from './index';
 import { SettingsComponent } from './settings/settings.component';
+import { ManagemainComponent } from './managemain/managemain.component';
+import { AllReportsComponent } from './all-reports/all-reports.component';
 
 
 
@@ -78,7 +80,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 @NgModule({
   declarations: [
     SettingsComponent,
-    ...COMPONENTS
+    ...COMPONENTS,
+    ManagemainComponent,
+    AllReportsComponent,
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],

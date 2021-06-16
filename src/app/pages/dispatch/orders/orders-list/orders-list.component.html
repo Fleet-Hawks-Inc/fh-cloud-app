@@ -41,7 +41,7 @@
 
                                     placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
 
-                                    class="form-control" autocomplete="off">
+                                    class="form-control" autocomplete="off" [minDate]="dateMinLimit">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
@@ -49,7 +49,7 @@
 
                                     placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
 
-                                    class="form-control" autocomplete="off">
+                                    class="form-control" autocomplete="off" [minDate]="dateMinLimit">
                             </div>
                         </div>
 

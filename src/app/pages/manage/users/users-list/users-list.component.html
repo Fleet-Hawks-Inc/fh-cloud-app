@@ -70,14 +70,15 @@
                                          </tr>
                                     </tbody>
                                 </table>
-                                <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
-                                    <div class="col-6">
-                                        Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
-                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
-                                    </div>
+                                
+                            </div>
+                            <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
+                                <div class="col-6">
+                                    Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
                                 </div>
                             </div>
                         </div>

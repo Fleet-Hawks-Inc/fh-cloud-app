@@ -470,10 +470,10 @@ assetsData = {
     remarks: '',
   },
   insuranceDetails: {
-    dateOfIssue: '',
+    dateOfIssue: null,
     premiumAmount: '',
     premiumCurrency: '',
-    dateOfExpiry: '',
+    dateOfExpiry: null,
     reminderBefore: '',
     reminderBeforeUnit: '',
     vendor: ''
