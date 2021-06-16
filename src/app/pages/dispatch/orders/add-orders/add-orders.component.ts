@@ -588,10 +588,9 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.emptyShipper(i);
     await this.shipperReceiverMerge();
-
-    this.toastr.success("Consignor Added.");
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    
+    this.toastr.success("Shipper Added.");
+   
   }
 
   async getCords(value){
@@ -693,8 +692,8 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     this.emptyReceiver(i);
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    this.toastr.success("Consignee Added.");
-  }
+    this.toastr.success("Receiver Added.");
+}
 
   async shipperReceiverMerge() {
     this.mergedArray = [];
@@ -852,7 +851,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag && (value == 'google' || value == 'pcmiles')) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
 
       setTimeout(() => {
@@ -1023,7 +1022,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1336,7 +1335,7 @@ export class AddOrdersComponent implements OnInit {
       
       this.emptyShipper(i);
       
-      this.toastr.success('Consignor Updated');
+      this.toastr.success('Shipper Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
       
@@ -1391,7 +1390,7 @@ export class AddOrdersComponent implements OnInit {
       ].position = result.position;
       data.save = true;
       data.update = false;
-      this.toastr.success('Consignee Updated');
+      this.toastr.success('Receiver Updated');
       this.emptyReceiver(i);
     }
     await this.shipperReceiverMerge();
@@ -1441,7 +1440,6 @@ export class AddOrdersComponent implements OnInit {
             amount: (state) ? state.PST : '',
           },
         ];
-
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
 
@@ -1604,7 +1602,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in shipments."
+        "Please add atleast one Shipper and Receiver in shipments."
       );
       return false;
     }
@@ -1668,7 +1666,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one Consignor and Consignee in existing shipment."
+        "Please add atleast one Shipper and Receiver in existing shipment."
       );
       return false;
     }

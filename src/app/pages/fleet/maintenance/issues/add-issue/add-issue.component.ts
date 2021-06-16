@@ -62,6 +62,7 @@ export class AddIssueComponent implements OnInit {
   image;
   public issueDocs = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,

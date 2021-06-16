@@ -31,7 +31,6 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUsers();
-    this.initDataTable();
   }
   getSuggestions(value) {
     this.contactID = '';
@@ -140,7 +139,6 @@ export class UsersListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.users = [];
         this.fetchUsers();
-        this.initDataTable();
         this.toastr.success('User deleted successfully');
       });
     }

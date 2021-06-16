@@ -78,6 +78,7 @@ export class CompanyDocumentsComponent implements OnInit {
   docEndPoint = this.pageLength;
   descriptionData = '';
   documentNumberDisabled = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(
     private apiService: ApiService,

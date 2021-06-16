@@ -1,23 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RemindersReportComponent } from './reminders-report/reminders-report.component';
 
 import { RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
 
 
 const routes: Routes = [
-  {
-    path: 'overview',
-    component: OverviewComponent
-  },
-    
-  {
-    path: 'reminders-report',
-    component: RemindersReportComponent
-  },
-
   {
     path: 'drivers',
     loadChildren: () => import('./drivers/mange-drivers.module').then((m) => m.ManageDriverModule) ,
@@ -54,19 +42,13 @@ const routes: Routes = [
     path: 'geofence',
     loadChildren: () => import('./geofence-report/mange-geofence.module').then((m) => m.ManageGeofenceModule) ,
   }
-  
-  
-  
 ]
 
 @NgModule({
-  declarations: [
-    RemindersReportComponent,
-    OverviewComponent,
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
   ]
 })
-export class ManageReportsModule { }
+export class ManageFleetReportsModule { }
