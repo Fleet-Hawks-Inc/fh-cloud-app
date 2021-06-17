@@ -419,10 +419,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
 
-  fetchStateTaxes() {
-    this.apiService
-      .getData("stateTaxes")
-      .subscribe((result) => {
+  async fetchStateTaxes() {
+    
+    let result = await this.apiService
+      .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
         this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
         this.orderData.taxesInfo = [
@@ -446,8 +446,6 @@ export class AddOrdersComponent implements OnInit {
             element.taxAmount = (this.subTotal * element.amount) / 100;
           }
         }
-        
-      });
   }
 
   public searchLocation() {
@@ -1419,13 +1417,13 @@ export class AddOrdersComponent implements OnInit {
   /***************
    * For Edit Orders
    */
-  fetchOrderByID() {
+  async fetchOrderByID() {
     this.apiService
       .getData("orders/" + this.getOrderID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
-
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
+        
         this.orderData.taxesInfo = [
           {
             name: 'GST',
