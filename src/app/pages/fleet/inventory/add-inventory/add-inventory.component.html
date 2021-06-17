@@ -95,11 +95,11 @@
               </div>
               <div class="col-lg-5 offset-lg-1 mb-2 pb2">
                 <div class="row">
-                  <div class="col-lg-5">
+                  <div class="col-lg-8">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)<span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <div class="row">
-                      <div class="col-lg-6">
+                      <div class="col-lg-4">
                         <input type="number" min="0" class="form-control" placeholder="eg. 100,200,300" name="cost"
                           [(ngModel)]="cost" placeholder="Unit cost" #iUniC="ngModel" required />
                         <div *ngIf="iUniC.invalid && (iUniC.dirty || iUniC.touched)" class="text-danger">
@@ -109,16 +109,32 @@
 
                         </div>
                       </div>
-                      <div class="col-lg-6 pl-0">
+                      <div class="col-lg-4">
+                        <ng-select name="costUnitType" [(ngModel)]="costUnitType" data-plugin-selectTwo
+                          class="form-control populate" placeholder="Select unit" #UnitA="ngModel" required>
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                        </ng-select>
+                        <div *ngIf="UnitA.invalid && (UnitA.dirty || UnitA.touched)" class="text-danger">
+                          <div>
+
+                            <div *ngIf="UnitA.errors.required">
+                              Select valid unit cost from the list is required.
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
                         <ng-select name="costUnit" [(ngModel)]="costUnit" data-plugin-selectTwo
                           class="form-control populate" placeholder="Select unit" #UnitB="ngModel" required>
-                          <optgroup label="Select Unit">
-                            <ng-option value="Each">Each</ng-option>
-                            <ng-option value="Gallon">Gallon</ng-option>
-                            <ng-option value="Quart">Quart</ng-option>
-                            <ng-option value="Set">Set</ng-option>
-                            <ng-option value="Tube">Tube</ng-option>
-                          </optgroup>
+                          
+                          <ng-option value="Each">Each</ng-option>
+                          <ng-option value="Gallon">Gallon</ng-option>
+                          <ng-option value="Quart">Quart</ng-option>
+                          <ng-option value="Set">Set</ng-option>
+                          <ng-option value="Tube">Tube</ng-option>
+                          
                         </ng-select>
                         <div *ngIf="UnitB.invalid && (UnitB.dirty || UnitB.touched)" class="text-danger">
                           <div>
@@ -132,7 +148,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-5">
+                  <div class="col-lg-4">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Quantity<span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input type="number" min="0" class="form-control" placeholder="eg. 10,20,30" name="quantity"
@@ -146,7 +162,7 @@
                   </div>
                 </div>
                 <div class="row mt-2">
-                  <div class="col-lg-10">
+                  <div class="col-lg-12">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
                         class="text-1 optional-label-color">(optional)</span></label>
                     <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
@@ -174,9 +190,6 @@
               <div class="row">
                 <div class="col-lg-6">
                   <label class="control-label font-weight-bold text-dark text-4 pt-2">Warehouse Details</label>
-                </div>
-                <div class="col-lg-5">
-                  <label class="control-label font-weight-bold text-dark text-4 pt-2">Inventory Tracking</label>
                 </div>
               </div>
             </div>
@@ -309,94 +322,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-5 offset-lg-1 mb-2 pb2">
-              <div>
-                <div class="row">
-                  <div class="col-lg-3">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Quantity&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
-                    <input type="number" min="0" class="form-control" name="trackingQuantity"
-                      [(ngModel)]="trackingQuantity" placeholder="eg. 1,2,3 " />
-                    <!-- <div *ngIf="iQuani.invalid && (iQuani.dirty || iQuani.touched)" class="text-danger">
-                    <div *ngIf="iQuani.errors.required">
-                      Quantity must contains numbers only.
-                    </div>
-
-                  </div> -->
-
-                  </div>
-                </div>
-                <div class="row mt-2">
-                  <div class="col-lg-3">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Reorder Point&nbsp;<span
-                        class="text-1 optional-label-color">(opt)</span></label>
-                    <input type="number" min="0" class="form-control" name="reorderPoint" [(ngModel)]="reorderPoint"
-                      placeholder="eg. 1,2,3 " />
-                    <!-- <div *ngIf="iReco.invalid && (iReco.dirty || iReco.touched)" class="text-danger">
-                      <div *ngIf="iReco.errors.required">
-                        Recorder Point must contains numbers only.
-                      </div>
-
-                    </div> -->
-                  </div>
-                  <div class="col-lg-3 mx-4">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Reorder Qty&nbsp; <span
-                        class="text-1 optional-label-color">(opt)</span></label>
-                    <input type="number" min="0" class="form-control" name="reorderQuality"
-                      [(ngModel)]="reorderQuality" placeholder="eg. 1,2,3 " />
-                    <!-- <div *ngIf="iRecq.invalid && (iRecq.dirty || iRecq.touched)" class="text-danger">
-                      <div *ngIf="iRecq.errors.required">
-                        Recorder quality must contains numbers only.
-                      </div>
-
-                    </div> -->
-                  </div>
-                  <!-- <div class="col-lg-3">
-                               <label class="control-label font-weight-bold  text-lg-right pt-2" >Max. Quantity</label>
-                               <input type="number" class="form-control">
-                            </div> -->
-                </div>
-                <div class="row mt-2">
-                  <div class="col-lg-3">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Lead Time&nbsp; <span
-                        class="text-1 optional-label-color">(opt)</span></label>
-                    <input min="0" type="number" class="form-control" name="leadTime" [(ngModel)]="leadTime"
-                      placeholder="Select Lead time" />
-                  </div>
-                  <div class="col-lg-6 ml-4">
-                    <label class="font-weight-bold text-lg-right pt-2">Preferred Vendor&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
-                    <ng-select data-plugin-selectTwo class="form-control populate" name="preferredVendorID"
-                      [(ngModel)]="preferredVendorID" placeholder="Select preferred vendor">
-                      <optgroup label="Select">
-
-                        <ng-option
-                          *ngFor="let vendor of vendors | async"
-                          value="{{ vendor.contactID }}"
-                        >
-
-                          {{ vendor.companyName }}
-                        </ng-option>
-                      </optgroup>
-                    </ng-select>
-                    <!-- <div *ngIf="Preven.invalid && (Preven.dirty || Preven.touched)" class="text-danger">
-                      <div>
-
-                        <div *ngIf="Preven.errors.required">
-                         Select valid Preferred vendor from the list.
-                         </div>
-                      </div>
-
-                    </div> -->
-                  </div>
-                  <div class="col-lg-2 mar-top-37 px-0 pl-0">
-                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                      class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-              
+            
            </div>
           </div>
          </div>
@@ -413,23 +339,22 @@
                 <div class="row mt-2">
                   <div class="col-lg-10">
                     <div class="row">
-                      <div class="col-lg-12">
-                        <label
-                          class="control-label font-weight-bold text-lg-right text-dark text-4">Warranty</label>
+                      <div class="col">
+                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Warranty Time&nbsp;
+                          <span class="text-1 optional-label-color">(optional)</span></label>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Days&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                      <div class="col-lg-5">
                         <input type="number" min="0" class="form-control" name="days" [(ngModel)]="days"
                           placeholder="eg. 1,2,3 " />
                       </div>
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Time&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input min="0" type="time" class="form-control" name="time" [(ngModel)]="time"
-                          placeholder="Select Warranty time" />
+                         <ng-select name="costUnit" [(ngModel)]="costUnit" data-plugin-selectTwo
+                          class="form-control populate" placeholder="Select unit" #UnitB="ngModel" required>
+                              <ng-option value="Months">Months</ng-option>
+                              <ng-option value="Years">Years</ng-option>
+                          </ng-select>
                       </div>
                     </div>
 
