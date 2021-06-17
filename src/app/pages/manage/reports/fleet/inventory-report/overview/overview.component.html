@@ -1,28 +1,34 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5">
-               <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-2 col-lg-2">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+                  
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Inventory Reports</h4>
                   </div>
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <input class="form-control line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search item by name" type="text">
                   </div>
 				  
-				  <div class="col-md-2 col-lg-2">
+				      <div class="col-md-2 col-lg-2 pr-0">
                      <input class="form-control line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search item by vendor" type="text">
                   </div>
 				  
-				  <div class="col-md-2 col-lg-2">
-                     <input class="form-control line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search item by category" type="text">
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <select data-plugin-selectTwo class="form-control">
+                        <optgroup label="">
+                           <option value="1">Search item by category</option>
+                           <option value="2">Oil</option>
+                           <option value="2">Hardware</option>
+                           <option value="2">Brakes</option>
+                        </optgroup>
+                     </select>
                   </div>
-				  
-				  
-					  
+         
                   <div class="col-md-2 col-lg-2">
-                     <button type="submit" class="btn btn-sm mr-2 btn-success line-height-18">Search</button>
-					 <button class="btn btn-sm btn-success line-height-18" type="button">Reset</button>
+                     <button type="submit" class="btn btn-sm mr-3 btn-success line-height-18">Search</button>
+					      <button class="btn btn-sm btn-success line-height-18" type="button">Reset</button>
                   </div>
 				  
                   <div class="col-md-2 col-lg-2 text-right pr-1">
@@ -36,7 +42,8 @@
                   </div>
                </div>
             </header>
-            <div class="m-3">
+
+            <div class="m-2">
                <div class="row text-dark">
                   <div class="col-6 mb-3">
                      <div class="bg-white p-3">
@@ -58,9 +65,9 @@
 				  
 				  
 				  
-                  <div class="col pr-0">
+                  <div class="col">
                      <div class="card">
-                        <div class="card-body">
+                        <div class="card-body bor-radius0px">
                            <section class="reports_div">
                               <table class="table reports_small_div">
                                  <thead>
