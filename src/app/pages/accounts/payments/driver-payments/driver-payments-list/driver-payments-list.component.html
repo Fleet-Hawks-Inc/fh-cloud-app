@@ -1,0 +1,149 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header">
+         <form class="form-horizontal" method="get">
+
+            <div class="row px-4" style="padding-top:10px;">
+               <div class="col-md-2 col-lg-2">
+                  <div class="input-group input-group-md mb-3">
+                   <input type="text" class="form-control" placeholder="Search">
+                  </div>
+               </div>
+
+               <div class="col-lg-3 col-md-3">
+                  <div class="input-daterange input-group" data-plugin-datepicker>
+                     <span class="input-group-prepend">
+                        <span class="input-group-text">
+                           <i class="fas fa-calendar-alt"></i>
+                        </span>
+                     </span>
+                     <input type="text" class="form-control" name="start">
+                     <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                     </span>
+                     <input type="text" class="form-control" name="end">
+                  </div>
+                                          </div>
+                                          <div class="col-md-2  col-lg-2">
+                  <div class="input-group input-group-md mb-3">
+                     <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                           <option value="1">Driver</option>
+                           <option value="2">Carrier</option>
+                           <option value="2">Owner Operator</option>
+                        </optgroup>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="col-md-1  col-lg-1">
+                         <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        </div>
+               <div class="col-md-4  col-lg-4 text-right pr-5">
+
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+
+                        <a class="dropdown-item text-1" href="">Import</a>
+                        <a class="dropdown-item text-1" href="">Export</a>
+                     </div>
+                  </div>
+                  <a routerLink="/accounts/payments/driver-payments/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Payment </a>
+
+               </div>
+            </div>
+            </form>
+         </header>
+      <div class="row">
+         <div class="col pr-0">
+            <section class="card">
+
+               <div class="card-body">
+                  <table class="table table-bordered table-striped mb-0 simple-table">
+                     <thead>
+                        <tr class="bgcol2">
+                        <th class="text-2">Date</th>
+                           <th class="text-2">Payment#</th>
+                           <th class="text-2">Payment Mode Information</th>
+                           <th class="text-2">Settlement#</th>
+                           <th class="text-2">Paid To</th>
+                           <th class="text-2">Amount</th>
+                           <th class="text-2">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td routerLink="/accounts/payments/driver-payments/detail">05/25/2020</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">234</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">Cash</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">ST-47656</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail"><strong>Carrier:</strong>Manjot</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">CAD 9823</td>
+                           <td><div class="btn-group flex-wrap">
+                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                 <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item text-1" href="#">Edit</a>
+                                    <a class="dropdown-item text-1" href="#">Delete</a>
+                                 </div>
+                              </div></td>
+                        </tr>
+                        <tr>
+                           <td routerLink="/accounts/payments/driver-payments/detail">05/25/2020</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">234</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">Cash</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">ST-47656</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail"><strong>Driver:</strong>Heera</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">CAD 3423</td>
+                           <td><div class="btn-group flex-wrap">
+                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                 <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item text-1" href="#">Edit</a>
+                                    <a class="dropdown-item text-1" href="#">Delete</a>
+                                 </div>
+                              </div></td>
+                        </tr>
+                        <tr>
+                           <td routerLink="/accounts/payments/driver-payments/detail">05/25/2020</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">234</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">Cash</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">ST-47656</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail"><strong>Owner Operator:</strong>Meena</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">CAD 3553</td>
+                           <td><div class="btn-group flex-wrap">
+                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                 <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item text-1" href="#">Edit</a>
+                                    <a class="dropdown-item text-1" href="#">Delete</a>
+                                 </div>
+                              </div></td>
+                        </tr>
+                        <tr>
+                           <td routerLink="/accounts/payments/driver-payments/detail">05/25/2020</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">234</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">Cash</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">ST-47656</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail"><strong>Carrier:</strong>Manjot</td>
+                           <td routerLink="/accounts/payments/driver-payments/detail">CAD 7673</td>
+                           <td><div class="btn-group flex-wrap">
+                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                 <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item text-1" href="#">Edit</a>
+                                    <a class="dropdown-item text-1" href="#">Delete</a>
+                                 </div>
+                              </div></td>
+                        </tr>
+
+                     </tbody>
+                  </table>
+
+               </div>
+            </section>
+         </div>
+      </div>
+
+
+   </section>
+  </div>
+</section>

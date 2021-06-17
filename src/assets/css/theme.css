@@ -3456,7 +3456,7 @@ html.dark .inner-menu .inner-menu-toggle-inside:after {
 		border-radius: 4px;
 		font-size: 13px;
 		font-style: normal;
-		font-weight: 600;
+		font-weight: 700;
 		line-height: 20px;
 		padding:5px 10px;
 
@@ -3652,7 +3652,7 @@ html.dark .inner-menu .inner-menu-toggle-inside:after {
 	}
 
 	.header-nav-main.header-nav-main-square nav > ul > li > a {
-		border-radius: 0; color: #5d5d5d;
+		border-radius: 0; color: #1a1a1a;
 	}
 
 	.header-nav-main.header-nav-main-square nav > ul > li.dropdown .dropdown-menu {

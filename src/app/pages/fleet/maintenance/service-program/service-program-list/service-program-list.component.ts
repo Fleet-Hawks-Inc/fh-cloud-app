@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../../constants';
 declare var $: any;
 import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-service-program-list',
   templateUrl: './service-program-list.component.html',
@@ -168,7 +169,7 @@ export class ServiceProgramListComponent implements  OnInit {
     this.serviceProgramDraw = 0;
   }
 
-  getSuggestions(searchvalue='') {
+  getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
     if(searchvalue !== '') {
       searchvalue = searchvalue.toLowerCase();
@@ -176,11 +177,11 @@ export class ServiceProgramListComponent implements  OnInit {
         complete: () => {},
         error: () => { },
         next: (result: any) => {
-          this.suggestions = result.Items;
+          this.suggestions = result;
         }
       })
     } 
-  }
+  }, 800)
 
   setData(value) {
     this.programeName = value.trim();

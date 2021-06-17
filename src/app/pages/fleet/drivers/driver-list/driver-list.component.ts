@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -129,25 +130,25 @@ export class DriverListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
     this.driverID = '';
     value = value.toLowerCase();
     if (value != '') {
       this.apiService
         .getData(`drivers/get/suggestions/${value}`)
         .subscribe((result) => {
-          result.Items.map((v) => {
+          result.map((v) => {
             if (v.lastName == undefined) {
               v.lastName = '';
             }
             return v;
           })
-          this.suggestedDrivers = result.Items;
+          this.suggestedDrivers = result;
         });
     } else {
       this.suggestedDrivers = [];
     }
-  }
+  }, 800)
 
   setDriver(driverID, firstName, lastName) {
     this.driverName = firstName + ' ' + lastName;

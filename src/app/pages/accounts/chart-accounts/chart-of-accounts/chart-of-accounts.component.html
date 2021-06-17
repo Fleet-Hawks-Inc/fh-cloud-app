@@ -1,0 +1,290 @@
+<!----- -<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> ----->
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-md mb-3">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-2">
+            <select class="form-control pull-left form-control-sm mb-0">
+              <option value="2">All</option>
+              <option value="2">Current Assets</option>
+              <option value="2">Bank</option>
+              <option value="2">Credit Card/Loan</option>
+              <option value="2">Depreciation</option>
+              <option value="2">Direct Expenses</option>
+              <option value="2">Equity</option>
+              <option value="2">Expenses</option>
+              <option value="2">Fixed Assets</option>
+              <option value="2">Future Assets</option>
+              <option value="2">Liabilities</option>
+              <option value="2">Future Liabilities</option>
+              <option value="2">Other Income</option>
+              <option value="2">Overheads</option>
+              <option value="2">Sales</option>
+            </select>
+          </div>
+          <div class="col-md-1  col-lg-1">
+            <button type="submit" class="btn btn-sm btn-success">Search</button>
+          </div>
+          <div class="col-md-7  col-lg-7 text-right">
+            <button data-target="#addAccountModal" data-toggle="modal" class="btn btn-success btn-sm "
+              style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
+          </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col-lg-12 pr-0">
+          <section class="card">
+            <div class="card-body">
+              <div class="row bg-white">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-hover table-striped mb-0 simple-table">
+                    <thead>
+                      <tr class="bgcol2">
+                        <th class="text-2">Account Name</th>
+                        <th class="text-2">Account Number</th>
+                        <th class="text-2">Account Type</th>
+                        <!-- <th class="text-2">Detail Type</th> -->
+                        <th class="text-2">Description</th>
+                        <th class="text-2">Running Balance</th>
+                        <th class="text-2">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">customer1 </td>
+                        <td routerLink="/accounts/chart-accounts/detail">2002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Accounts Receivable (A/R)</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Accounts Receivable (A/R)</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description about accounts.
+                        </td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Vendor 1 </td>
+                        <td routerLink="/accounts/chart-accounts/detail">2002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Accounts Payable (A/P)</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Accounts Payable (A/P)</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description about accounts.
+                        </td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Other Income</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Interest Earned</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Income</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Non Profit Income</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">60.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Other Expense</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Depreciaton</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Current Assets</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Inventory</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">this is description of the account.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Bank</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Chequing</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">this is description of the account.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">60.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
+                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
+                        <td routerLink="/accounts/chart-accounts/detail">Loterm Assets</td>
+                        <!-- <td routerLink="/accounts/chart-accounts/detail">Goodwill</td> -->
+                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
+                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                        <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="btn" data-toggle="dropdown"><i
+                                class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
+                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="form-row">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Type</label>
+            <select data-plugin-selectTwo class="form-control populate">
+              <option value="2">Current Assets</option>
+              <option value="2">Bank</option>
+              <option value="2">Credit Card/Loan</option>
+              <option value="2">Depreciation</option>
+              <option value="2">Direct Expenses</option>
+              <option value="2">Equity</option>
+              <option value="2">Expenses</option>
+              <option value="2">Fixed Assets</option>
+              <option value="2">Future Assets</option>
+              <option value="2">Liabilities</option>
+              <option value="2">Future Liabilities</option>
+              <option value="2">Other Income</option>
+              <option value="2">Overheads</option>
+              <option value="2">Sales</option>
+            </select>
+
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Number</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Account Name</label>
+            <input type="text" class="form-control">
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Balance</label>
+            <div class="row">
+              <div class="col-lg-3 pr-0">
+                <input type="text" class="form-control" placeholder="0.00"> </div>
+              <div class="col-lg-3 pl-0">
+                <select data-plugin-selectTwo class="form-control populate">
+                  <optgroup label="">
+                    <option value="2">CAD</option>
+                    <option value="2">USD</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-lg-1 pr-0">
+                <label class="control-label font-weight-bold">as of</label>
+              </div>
+              <div class="col-lg-4 pr-0">
+                <input type="date" class="form-control"> </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <div class="checkbox-custom">
+              <input type="checkbox" class="form-control">
+              <label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="form-group col-lg-12">
+            <label class="control-label font-weight-bold">Description</label>
+            <textarea rows="3" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="form-row mt-2">
+          <div class="col-lg-12 text-right">
+            <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
+            <button class="btn btn-success modal-dismiss">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
