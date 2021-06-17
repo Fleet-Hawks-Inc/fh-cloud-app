@@ -1,23 +1,37 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5">
-               <!-- <div class="row py-2">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
-                             Logs Detail
-                          </div>
-                  </div> -->
-               <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+
+               <div class="col-md-3 col-lg-3 pr-0">
+					   <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+							<span class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
+                     </div>
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by vehicle" type="text">
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by asset" type="text">
+                  </div>
+
                   <div class="col-md-2 col-lg-2">
-                     <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Fuel Summary</h4>
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
                   </div>
-                  <div class="col-md-2 col-lg-2">
-                     <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel Entry by Unit" type="text">
-                  </div>
-                  <div class="col-md-1 col-lg-1">
-                     <button type="submit" class="btn btn-sm btn-success">Search</button>
-                  </div>
-                  <div class="col-md-7 col-lg-7 text-right pr-1">
+
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
                      <div class="btn-group flex-wrap ml-2">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -28,8 +42,22 @@
                   </div>
                </div>
             </header>
-            <div class="m-3">
+
+            <div class="m-2">
                <div class="row text-dark">
+                  <div class="col-12 mb-3">
+                     <div class="bg-white p-3">
+					  <div class="row text-dark">
+							<div class="col-12">
+								<div>
+								   <h4 class="mt-1 mb-0 font-weight-bold">Fuel Summary</h4>
+								</div>
+							</div>
+							
+						</div>
+                     </div>
+                  </div>
+
                   <div class="col-4 mb-3">
                      <div class="bg-white p-3">
                         <div>
@@ -54,26 +82,26 @@
                         </div>
                      </div>
                   </div>
-                  <div class="col pr-0">
+                  <div class="col">
                      <div class="card">
-                        <div class="card-body">
+                        <div class="card-body bor-radius0px">
                            <section class="reports_div">
                               <table class="table reports_small_div">
                                  <thead>
 									  <tr class="back-color-gray">
 										 <th>Date/Time</th>
-										 <th>Fuel Card</th>
-										 <th>Jurisdiction</th>
-										 <th>Vehicle/Reefer</th>
+										 <th>Fuel Card#</th>
+										 <th>Province/State</th>
+										 
 										 <th>Vehicle Name</th>
 										 <th>Reefer</th>
-										 
+										 <th>Unit Number</th>
+                               <th>Unit Type</th>
 										 <th>Odometer</th>
 										 <th>Fuel Type</th>
-										 <th>Fuel Gallon</th>
-										 <th>Fuel Litres</th>
-										 <th>Fuel Unit</th>
 										 
+										 <th>Fuel Unit</th>
+                               <th>Vendor</th>
 										 <th>Cost/Liters or Gallons</th>
 										 <th>Total Cost</th>
 										 
@@ -84,16 +112,18 @@
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">2020/06/20, 09:20 AM</td>
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">76782020</td>
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">Toronto</td>
-										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">Vehicle</td>
+										 
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">Tesla Truck</td>
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">451318</td>
 										 
-										 
+										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">2400</td>
+                               <td class="cursorpoint" onclick="window.location='fuel-details.php';">Vehicle</td>
+
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">61658</td>
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">Diesel</td>
-										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">-</td>
-										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">38</td>
+										 
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">315.52 litre(s)</td>
+                               <td class="cursorpoint" onclick="window.location='fuel-details.php';">FJ-MOOSE JAW 811</td>
 										 
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">1.339 CAD</td>
 										 <td class="cursorpoint" onclick="window.location='fuel-details.php';">550.50 USD</td>

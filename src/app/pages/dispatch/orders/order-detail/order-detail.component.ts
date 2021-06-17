@@ -431,7 +431,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string, index) {
+  async delete(type: string, name: string, index) {
     let record = {
       eventID: this.orderID,
       type: type,
@@ -439,7 +439,7 @@ export class OrderDetailComponent implements OnInit {
       date: this.createdDate,
       time: this.createdTime
     }
-    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {});
+    await this.apiService.postData(`orders/uploadDelete`, record).toPromise();
     if(type == 'attachment') {
       this.attachments.splice(index, 1);
     } else {
@@ -523,10 +523,12 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
+                    
             
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
+        this.fetchOrder();
       })
     }
   }

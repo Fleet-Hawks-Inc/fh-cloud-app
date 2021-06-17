@@ -1,28 +1,25 @@
 <section class="body">
    <div class="inner-wrapper">
-      <section role="main" class="content-body pt-0 pr-0 pl-0">
-         <header class="page-header pr-5">
-            <!-- <div class="row py-2">
-               <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
-                          Logs Detail
-                       </div>
-               </div> -->
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
-               <div class="col-md-3 col-lg-3">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+               
+               <div class="col-md-3 col-lg-3 pr-0">
                   <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                      <span class="input-group-prepend">
                      <span class="input-group-text">
                      <i class="fas fa-calendar-alt"></i>
                      </span>
                      </span>
-                     <input type="text" class="form-control" name="start">
+                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
                      to
                      </span>
-                     <input type="text" class="form-control" name="end">
+                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
                   </div>
                </div>
-               <div class="col-md-2 col-lg-2">
+               
+               <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
@@ -33,7 +30,8 @@
                      </select>
                   </div>
                </div>
-               <div class="col-md-2 col-lg-2">
+
+               <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
@@ -45,7 +43,8 @@
                      </select>
                   </div>
                </div>
-               <div class="col-md-2 col-lg-2">
+
+               <div class="col-md-2 col-lg-2 pr-0">
                   <select  data-plugin-selectTwo class="form-control populate">
                      <optgroup label="Select Service Task">
                         <option value="">A/C Compressor Replacement</option>
@@ -75,10 +74,12 @@
                      </optgroup>
                   </select>
                </div>
-               <div class="col-md-1 col-lg-1">
-                  <button type="submit" class="btn btn-xs btn-success mr-4">Search</button>  
+               <div class="col-md-2 col-lg-2">
+                  <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="submit">Reset</button>
                </div>
-               <div class="col-md-2 col-lg-2 text-right pr-1">
+
+               <div class="col-md-1 col-lg-1 text-right pr-1">
                   <div class="btn-group flex-wrap ml-4">
                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -89,7 +90,8 @@
                </div>
             </div>
          </header>
-         <div class="m-3">
+
+         <div class="m-2">
          <div class="row text-dark">
             <div class="col-12 mb-3">
                <div class="bg-white p-3">
@@ -134,9 +136,9 @@
                   </div>
                </div>
             </div>
-            <div class="col pr-0">
+            <div class="col">
                <div class="card">
-                  <div class="card-body">
+                  <div class="card-body bor-radius0px">
                      <!-- Vehicle Div  -->
                      <div id="ifta-report-distance-vehicle-div">
                         <section class="reports_div">
