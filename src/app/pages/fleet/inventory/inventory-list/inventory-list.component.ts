@@ -327,6 +327,7 @@ export class InventoryListComponent implements OnInit {
         if (result.Items.length == 0) {
           this.dataMessageReq = Constants.NO_RECORDS_FOUND;
         }
+        this.requiredSuggestedItems = [];
         this.requiredSuggestedPartNo = [];
         this.getStartandEndVal('req');
 
