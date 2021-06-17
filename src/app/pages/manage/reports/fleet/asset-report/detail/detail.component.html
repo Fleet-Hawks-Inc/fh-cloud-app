@@ -1,15 +1,10 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5">
-               <!-- <div class="row py-2">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
-                             Logs Detail
-                          </div>
-                  </div> -->
-               <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
                   
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                                           <optgroup label="Select Group">
@@ -20,22 +15,38 @@
                                        </select>
                      </div>
                   </div>
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                                           <optgroup label="">
                                              <option value="1">Active</option>
-                                             <option value="2">Deactivated</option>
+                                             <option value="2">Inactive</option>
                                           </optgroup>
                                        </select>
                      </div>
                   </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <select data-plugin-selectTwo class="form-control">
+                        <optgroup label="">
+                           <option value="1">Asset Type</option>
+                           <option value="2">Flat Bed</option>
+                           <option value="2">Container</option>
+                           <option value="2">Double Drop</option>
+                           <option value="2">Stepdek</option>
+                           <option value="2">Lowboy</option>
+                           <option value="2">Dump Trailer</option>
+                        </optgroup>
+                     </select>
+                  </div>
+
                  
-                  <div class="col-md-1 col-lg-1">
-                     <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  <div class="col-md-2 col-lg-2">
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+					       <button class="btn btn-sm btn-success" type="submit">Reset</button>
                   </div>
                  
-                  <div class="col-md-7 col-lg-7 text-right pr-1">
+                  <div class="col-md-4 col-lg-4 text-right pr-1">
                      <div class="btn-group flex-wrap ml-2">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -46,6 +57,7 @@
                   </div>
                </div>
             </header>
+
             <div class="row text-dark">
                <div class="col pr-0">
                   <div class="card">
@@ -71,7 +83,7 @@
                                  <thead>
                                     <tr class="back-color-gray">
                                        <th >VIN</th>
-                                       <th >Asset Name</th>
+                                       <th >Asset Name/Number</th>
                                        <th >Asset Type</th>
                                        <th >Make</th>
                                        <th >Last Location</th>
