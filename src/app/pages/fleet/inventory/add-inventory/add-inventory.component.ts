@@ -29,6 +29,7 @@ export class AddInventoryComponent implements OnInit {
   description = '';
   category = '';
   warehouseID = '';
+  costUnitType = '';
   aisle = '';
   row = '';
   bin = '';
