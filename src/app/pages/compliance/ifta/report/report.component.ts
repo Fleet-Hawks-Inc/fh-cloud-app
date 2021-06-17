@@ -1,4 +1,7 @@
+import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from 'src/app/services/api.service'
+
 
 
 @Component({
@@ -8,8 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportComponent implements OnInit {
 
-
-  constructor() { }
+  public allQuarters:any;
+  public quarters={
+    '1':"JAN - MAR",
+    '2':"APR - JUN",
+    '3':"JUL - SEP",
+    '4':"OCT - DEC"
+  }
+  constructor(private apiService:ApiService) { }
 
   
   ngOnInit() {
@@ -18,7 +27,10 @@ export class ReportComponent implements OnInit {
 
   }
   fetchQuarter(){
-    //this.currentQuarter=this.moment.quarter();
+    this.apiService.getData('ifta/quarters').subscribe(result=>{
+      
+      this.allQuarters=result;
+    });
   }
 
 }

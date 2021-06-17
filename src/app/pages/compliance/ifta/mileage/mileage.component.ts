@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { timer } from 'rxjs';
+import {ActivatedRoute} from '@angular/router'
 import {CountryStateCity} from 'src/app/shared/utilities/countryStateCities'
 import Constants from '../../../fleet/constants';
 import {NgxSpinnerService} from 'ngx-spinner'
@@ -26,27 +27,49 @@ export class MileageComponent implements OnInit {
   public pageLength=10;
   public records:any;
   public recordNext:any;
-  public recordPrevEvauatedKeys:any;
+  public recordPrevEvauatedKeys=[];
   public lastEvaluatedKey='';
   public totalRecords;
   public recordPrev:any;
-  constructor(private apiService: ApiService, private spinner: NgxSpinnerService) { }
+  public quarter:any;
+  public quarterReport:any={};
+  public jurisdictionReport:any;
+  constructor(private apiService: ApiService, private spinner: NgxSpinnerService,private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.quarter=this.route.snapshot.params['quarter']
     this.fetchCountries();
     this.fetchVehicleList();
     this.fetchCount();
+    this.fetchQuarterRreport();
+    this.fetchJurisdiction();
 
   }
 
+  fetchJurisdiction(){
+    this.apiService.getData('ifta/jurisdiction/'+this.quarter).subscribe(result=>{
+      this.jurisdictionReport=result;
+    })
+
+  }
+
+  fetchQuarterRreport(){
+    this.apiService.getData('ifta/quarter/'+this.quarter).subscribe(result=>{
+      this.quarterReport.totalMilesCA=result[0].totalMilesCA
+      this.quarterReport.totalMilesUS=result[0].totalMilesUS
+      this.quarterReport.totalQuantityGallons=result[0].totalQuantityGallons
+      this.quarterReport.totalQuantityLitres=result[0].totalQuantityLitres
+    })
+
+  }
   fetchCount(){
     this.recordCount=0;
-    this.apiService.getData('ifta/get/count').subscribe({
+    this.apiService.getData('ifta/get/count?quarter='+this.quarter).subscribe({
       complete:()=>{},
       error:()=>{},
       next:(result:any)=>{
         this.recordCount=result.Count;
-        console.log(result.Count)
+        
         this.initDataTable();
       }
 
@@ -80,7 +103,7 @@ export class MileageComponent implements OnInit {
   }
   initDataTable() {
    this.spinner.show();
-   this.apiService.getData('ifta/fetch/records?lastKey=' + this.lastEvaluatedKey)
+   this.apiService.getData('ifta/fetch/records?quarter='+this.quarter+'&lastKey=' + this.lastEvaluatedKey)
    .subscribe((result:any)=>{
      if(result.Items.length==0){
        this.dataMessage=Constants.NO_RECORDS_FOUND;
@@ -90,7 +113,7 @@ export class MileageComponent implements OnInit {
        this.isRecords=true;
      }
     this.getStartandEndVal('all');
-    this.records=result.Items
+   this.fetchRecords(result,'all')
     if (result['LastEvaluatedKey'] !== undefined) {
       let lastEvalKey = result[`LastEvaluatedKey`].iftaSK.replace(/#/g,'--');
       this.recordNext = false;
@@ -120,6 +143,11 @@ export class MileageComponent implements OnInit {
   });
   }
   
+
+  fetchRecords(result,type=null){
+    this.records=result.Items
+
+  }
   
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
