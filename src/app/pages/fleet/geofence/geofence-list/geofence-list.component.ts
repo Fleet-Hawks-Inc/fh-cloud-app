@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../constants';
 import { environment } from '../../../../../environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 declare var L: any;
 
@@ -143,17 +144,18 @@ export class GeofenceListComponent implements OnInit {
     }
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     this.apiService
       .getData(`geofences/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedGeofences = result.Items;
+        this.suggestedGeofences = result;
         if(this.suggestedGeofences.length == 0){
+          this.suggestedGeofences = [];
           this.geofenceID = '';
         }
       });
-  }
+  }, 800)
   
 
   fetchGeofenceTypes() {

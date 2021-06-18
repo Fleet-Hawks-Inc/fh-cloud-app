@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -124,7 +125,7 @@ export class RouteListComponent implements OnInit {
       });
   }
 
-  getSuggestions(searchvalue='') {
+  getSuggestions = _.debounce(function (searchvalue) {
     this.suggestedRoutes = [];
     this.searchedRouteId = '';
     if(searchvalue !== '') {
@@ -133,11 +134,11 @@ export class RouteListComponent implements OnInit {
         complete: () => {},
         error: () => { },
         next: (result: any) => {
-          this.suggestedRoutes = result.Items;
+          this.suggestedRoutes = result;
         }
       })
     }    
-  }
+  }, 800)
 
   searchSelectedRoute(route) {
     this.searchedRouteId = route.routeName;

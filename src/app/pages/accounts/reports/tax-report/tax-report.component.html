@@ -1,0 +1,396 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <form class="form-horizontal" method="get">
+          <div class="row px-4" style="padding-top:10px;">
+            <div class="col-lg-3 col-md-3">
+              <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span> </span>
+                <input type="text" class="form-control" name="start"> <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+                </span>
+                <input type="text" class="form-control" name="end"> </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <select data-plugin-selectTwo class="form-control populate">
+                  <optgroup label="Select Quarter">
+                    <option value="1">Select Quarter</option>
+                    <option value="1">Q1 - 1 JAN - 31 MAR</option>
+                    <option value="2">Q2 - 1 APR - 30 JUN</option>
+                    <option value="2">Q3 - 1 JUL - 30 SEP</option>
+                    <option value="2">Q4 - 1 OCT - 31 DEC</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <select data-plugin-selectTwo class="form-control populate">
+                  <optgroup label="Select Year">
+                    <option value="1">Select Year</option>
+                    <option value="1">2015</option>
+                    <option value="2">2016</option>
+                    <option value="2">2017</option>
+                    <option value="2">2018</option>
+                    <option value="2">2019</option>
+                    <option value="2">2020</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-1  col-lg-1">
+              <button type="submit" class="btn btn-sm btn-success">Search</button>
+            </div>
+            <div class="col-md-4  col-lg-4 text-right pr-5"> </div>
+          </div>
+        </form>
+      </header>
+      <section class="card mt-0">
+        <div class="card-body pr-0 pt-0 pb-0">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body text-dark">
+                <form class="form-horizontal form-bordered" method="get">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="font-weight-bold">Tax Details</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <h5 class="font-weight-bold">Taxes Received</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                          <tr class="bgcol2">
+                            <th class="text-2" width="25%">Sales</th>
+                            <th class="text-2" width="25%">GST</th>
+                            <th class="text-2" width="25%">PST</th>
+                            <th class="text-2" width="25%" width="25%">HST</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1000</td>
+                            <td>13</td>
+                            <td>14</td>
+                            <td>15</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- PAID TAXES -->
+                  <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
+                      <h5 class="font-weight-bold">Taxes Paid</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                          <tr class="bgcol2">
+                            <th class="text-2" width="25%">Purchase</th>
+                            <th class="text-2" width="25%">GST</th>
+                            <th class="text-2" width="25%">PST</th>
+                            <th class="text-2" width="25%">HST</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>800</td>
+                            <td>10</td>
+                            <td>10</td>
+                            <td>13</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- BALANCE TAXES -->
+                  <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
+                      <h5 class="font-weight-bold">Balance</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                          <tr class="bgcol2">
+                            <th class="text-2" width="25%">Balance</th>
+                            <th class="text-2" width="25%">GST</th>
+                            <th class="text-2" width="25%">PST</th>
+                            <th class="text-2" width="25%">HST</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>2</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-lg-12">
+                      <h5 class="font-weight-bold">Purchase Details</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <table class="table table-bordered table-striped mb-0 simple-table table-hover">
+                        <thead>
+                          <tr class="bgcol2">
+                            <th class="text-2">Date</th>
+                            <th class="text-2">Invoice#</th>
+                            <th class="text-2">Vendor</th>
+                            <th class="text-2">Purchase Amount</th>
+                            <th class="text-2">GST</th>
+                            <th class="text-2">PST/QST</th>
+                            <th class="text-2">HST</th>
+                            <th class="text-2">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-lg-12">
+                      <h5 class="font-weight-bold">Sales Details</h5>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <table class="table table-bordered table-striped mb-0 simple-table table-hover">
+                        <thead>
+                          <tr class="bgcol2">
+                            <th class="text-2">Date</th>
+                            <th class="text-2">Invoice#</th>
+                            <th class="text-2">Customer</th>
+                            <th class="text-2">Sale Amount</th>
+                            <th class="text-2">GST</th>
+                            <th class="text-2">PST/QST</th>
+                            <th class="text-2">HST</th>
+                            <th class="text-2">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+                          <tr>
+                            <td>06/06/2020</td>
+                            <td>INV-062020</td>
+                            <td>Vendor 1</td>
+                            <td>4500</td>
+                            <td>30</td>
+                            <td>0.00</td>
+                            <td>0.00</td>
+                            <td>4540</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>

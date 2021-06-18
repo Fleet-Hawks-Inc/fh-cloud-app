@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-company-documents',
@@ -79,6 +80,8 @@ export class CompanyDocumentsComponent implements OnInit {
   descriptionData = '';
   documentNumberDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
 
   constructor(
     private apiService: ApiService,
@@ -445,7 +448,7 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  getSuggestions(searchvalue='') {
+  getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
     if(searchvalue !== '') {
       this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
@@ -453,8 +456,8 @@ export class CompanyDocumentsComponent implements OnInit {
         error: () => { },
         next: (result: any) => {
           this.suggestions = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
 
             let obj = {
               id: element.docID,
@@ -465,7 +468,7 @@ export class CompanyDocumentsComponent implements OnInit {
         }
       })
     }
-  }
+  }, 800)
 
   searchSelectedRoute(document) {
     this.filterValues.docID = document.id;

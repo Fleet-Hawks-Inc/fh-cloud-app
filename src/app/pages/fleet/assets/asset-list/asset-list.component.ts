@@ -6,7 +6,8 @@ import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
-import {OnboardDefaultService}from '../../../../services/onboard-default.service'
+import {OnboardDefaultService}from '../../../../services/onboard-default.service';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -111,19 +112,19 @@ export class AssetListComponent implements OnInit {
       this.fetchModalsByIDs();
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if(value != '') {
       this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedAssets = result.Items;
+        this.suggestedAssets = result;
       });
     } else {
       this.suggestedAssets = [];
     }
 
-  }
+  }, 800)
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
@@ -155,7 +156,7 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?asset=' + this.assetID + '&assetType=' + this.assetType).subscribe({
+    this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -203,7 +204,7 @@ export class AssetListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('assets/fetch/records?asset=' + this.assetID+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -211,6 +212,9 @@ export class AssetListComponent implements OnInit {
         this.suggestedAssets = [];
         this.getStartandEndVal();
 
+        result[`Items`].map((v:any) => {
+          v.assetType = v.assetType.replace("_"," ")
+        })
         this.allData = result[`Items`];
 
         if(this.assetID != '' || this.assetType != null) {
@@ -249,7 +253,7 @@ export class AssetListComponent implements OnInit {
       });
   }
 
-  searchFilter() {
+  searchFilter() { 
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
       if(this.assetID == '') {

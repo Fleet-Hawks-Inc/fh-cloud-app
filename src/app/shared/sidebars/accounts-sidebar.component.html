@@ -1,153 +1,200 @@
 <ul class="nav nav-main mr-0 bg-white">
-  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'chart-accounts', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Chart of Accounts</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'income', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Income Transactions</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'expense', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Expense Transactions</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'manual-journal', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Manual Journal</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'invoices', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Invoices</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link"
+          [routerLink]="['/accounts', 'receipts', 'list']"
+        >
+        <i class="fas fa-users-cog fa-fw" aria-hidden="true"></i>
+      <span>Receipts</span>
+    </a>
+  </li>
+  <li>
+    <hr class="solid mt-2 mb-2">
+ </li>
+ <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fa fa-users" aria-hidden="true"></i>
-      <span>Accounts</span>
+    <i class="fas fa-check-square" aria-hidden="true"></i>
+    <span>Sales</span>
     </a>
     <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a class="nav-link" [routerLink]="['/accounts', 'accounts', 'Chart-Accounts']">
-          Chart of Accoounts
-        </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'accounts', 'Income-Transactions']"
-        >
-          Income Transactions
-        </a>
-      </li>
-      <li class="nav-parent" routerLinkActive="nav-expanded">
-        <a>
-          Expenses
-        </a>
-        <ul class="nav nav-children">
-          <li routerLinkActive="nav-active">
-            <a
-              class="nav-link"
-              [routerLink]="['/accounts', 'accounts', 'expenses', 'Expense-Transactions']"
-            >
-              Expense Transactions
-            </a>
+       <li>
+          <a class="nav-link" [routerLink]="['/accounts', 'sales','orders','list']">
+          Sales Orders
+          </a>
+       </li>
+       <li>
+          <a class="nav-link" [routerLink]="['/accounts', 'sales','invoices','list']">
+          Sales Invoices
+          </a>
+       </li>
+       <li>
+          <a class="nav-link" [routerLink]="['/accounts', 'sales','receipts','list']">
+          Sales Receipts
+          </a>
           </li>
-
-          <li routerLinkActive="nav-active">
-            <a
-              class="nav-link"
-              routerLink="[]"
-            >
-              Recurring Transactions
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'accounts', 'Receive-Payments']"
-        >
-          Receive Payments
-        </a>
-      </li>
+       <li>
+          <a class="nav-link" [routerLink]="['/accounts', 'sales','credit-notes','list']">
+          Sales Customer Credit Notes
+          </a>
+       </li>
     </ul>
-  </li>
-  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-    <a class="nav-link" href="#">
-      <i class="fa fa-users" aria-hidden="true"></i>
-      <Span>Invoices</Span>
-    </a>
-    <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Open-Invoices']"
-        >
-          Open Invoices
+ </li>
+ <li>
+  <hr class="solid mt-2 mb-2">
+</li>
+<li class="nav-parent">
+  <a class="nav-link" href="#">
+  <i class="fas fa-check-square" aria-hidden="true"></i>
+  <span>Purchases</span>
+  </a>
+  <ul class="nav nav-children">
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'purchases','orders','list']">
+        Purchase Orders
         </a>
-      </li>
-
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Emailed-Invoices']"
-        >
-          Emailed Invoices
+     </li>
+        <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'purchases','vendor-payments','list']">
+        Vendor Payments
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Paid-Invoices']"
-        >
-          Paid Invoices
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'purchases','vendor-credit-notes','list']">
+        Vendor Credit Notes
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Partially-Paid-Invoices']"
-        >
-          Partially Paid Invoices
+     </li>
+  </ul>
+</li>
+<li>
+  <hr class="solid mt-2 mb-2">
+</li>
+<li class="nav-parent">
+  <a class="nav-link" href="#">
+  <i class="fas fa-check-square" aria-hidden="true"></i>
+  <span>Settlements/Payments</span>
+  </a>
+  <ul class="nav nav-children">
+  <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'settlements','list']">
+        Settlements
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Voided-Invoices']"
-        >
-          Voided Invoices
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'payments','advance-payments','list']">
+        Advance Payments
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'All-Invoices']"
-        >
-          All Invoices
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'payments','driver-payments','list']">
+        Driver Payments
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'invoices', 'Aging-Report']"
-        >
-          Aging Report
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'payments','employee-payments','list']">
+        Employee Payments
         </a>
-      </li>
-    </ul>
-  </li>
-  <li class="nav-parent" appNavOpened routerLinkActive="nav-expanded">
-    <a class="nav-link" href="#">
-      <i class="fa fa-users" aria-hidden="true"></i>
-      <Span>Driver Settlements</Span>
-    </a>
-    <ul class="nav nav-children">
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          routerLink="[]"
-        >
-          Driver Non-Settled
+     </li>
+  </ul>
+</li>
+<li>
+  <hr class="solid mt-2 mb-2">
+</li>
+<li class="nav-parent">
+  <a class="nav-link" href="#">
+  <i class="fas fa-check-square" aria-hidden="true"></i>
+  <span>Transactions</span>
+  </a>
+  <ul class="nav nav-children">
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'transactions','transfers','list']">
+        Transfer
         </a>
-      </li>
-
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'driver-settlements', 'Driver-Payments']"
-        >
-          Driver Payments
+     </li>
+  </ul>
+</li>
+<li>
+  <hr class="solid mt-2 mb-2">
+</li>
+<li class="nav-parent">
+  <a class="nav-link" href="#">
+  <i class="fas fa-check-square" aria-hidden="true"></i>
+  <span>Reports</span>
+  </a>
+  <ul class="nav nav-children">
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','general-ledger','list']">
+        General Ledger Report
         </a>
-      </li>
-      <li routerLinkActive="nav-active">
-        <a
-          class="nav-link"
-          [routerLink]="['/accounts', 'driver-settlements', 'Recurring-Deductions']"
-        >
-          Recurring Deductions
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','balance-sheet']">
+        Balance Sheet
         </a>
-      </li>
-    </ul>
-  </li>
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','profit-loss-report']">
+        Profit and Loss Report
+        </a>
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','trial-balance']">
+        Trial Balance
+        </a>
+     </li>
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','cash-flow-statement']">
+        Cash Flow Statement
+        </a>
+     </li>
+     <!-- <li>
+        <a class="nav-link" href="income-statement.php">
+        Income Statement
+        </a>
+     </li> -->
+     <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports','tax-report']">
+        Tax Report
+        </a>
+     </li>
+  </ul>
+</li>
 </ul>

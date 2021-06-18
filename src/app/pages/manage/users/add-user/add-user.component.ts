@@ -115,15 +115,20 @@ export class AddUserComponent implements OnInit {
   userStartPoint = 1;
   userEndPoint = this.pageLength;
   isEdit = false;
-  enableUserLogin = false;
-  dateMinLimit = { year: 1950, month: 1, day: 1 };
-  passwordValidation = {
+   passwordValidation = {
     upperCase: false,
     lowerCase: false,
     number: false,
     specialCharacters: false,
     length: false
   }
+  enableUserLogin = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
+  
+
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
     if (this.contactID) {

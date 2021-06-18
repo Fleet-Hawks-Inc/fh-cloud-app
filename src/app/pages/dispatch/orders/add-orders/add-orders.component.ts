@@ -132,14 +132,14 @@ export class AddOrdersComponent implements OnInit {
     shippersReceiversInfo: [],
     charges: {
       freightFee: {
-        type: "",
+        type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
       fuelSurcharge: {
-        type: "",
+        type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
       accessorialFeeInfo: {
         accessorialFee: [],
@@ -182,13 +182,20 @@ export class AddOrdersComponent implements OnInit {
   loadTypeData = [];
   
   activeId: string = "";
+  newTaxes = [
+    {
+      type: '',
+      amount: 0,
+      taxAmount: 0
+    }
+  ];
 
   showShipperUpdate: boolean = false;
   showReceiverUpdate: boolean = false;
   shippersReceivers = [
     {
       shippers: {
-        shipperID: "",
+        shipperID: null,
         pickupLocation: "",
         pickupDate: "",
         pickupTime: "",
@@ -201,9 +208,9 @@ export class AddOrdersComponent implements OnInit {
           {
             name: "",
             quantity: "",
-            quantityUnit: "",
+            quantityUnit: null,
             weight: "",
-            weightUnit: "",
+            weightUnit: null,
             pu: ""
           },
         ],
@@ -216,7 +223,7 @@ export class AddOrdersComponent implements OnInit {
         update: false
       },
       receivers: {
-        receiverID: "",
+        receiverID: null,
         dropOffLocation: "",
         dropOffDate: "",
         dropOffTime: "",
@@ -229,9 +236,9 @@ export class AddOrdersComponent implements OnInit {
           {
             name: "",
             quantity: "",
-            quantityUnit: "",
+            quantityUnit: null,
             weight: "",
-            weightUnit: "",
+            weightUnit: null,
             del:""
             // pu: ""
           },
@@ -256,6 +263,8 @@ export class AddOrdersComponent implements OnInit {
       },
     ],
   };
+
+  deletedFiles = [];
 
   accessorialDeductionInfo = {
     accessDeductions: [
@@ -410,10 +419,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
 
-  fetchStateTaxes() {
-    this.apiService
-      .getData("stateTaxes")
-      .subscribe((result) => {
+  async fetchStateTaxes() {
+    
+    let result = await this.apiService
+      .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
         this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
         this.orderData.taxesInfo = [
@@ -430,7 +439,13 @@ export class AddOrdersComponent implements OnInit {
             amount: result.Items[0].PST,
           },
         ];
-      });
+        this.newTaxes = this.orderData.taxesInfo;
+        if(this.subTotal > 0) {
+          for (let i = 0; i < this.newTaxes.length; i++) {
+            const element = this.newTaxes[i];
+            element.taxAmount = (this.subTotal * element.amount) / 100;
+          }
+        }
   }
 
   public searchLocation() {
@@ -570,11 +585,10 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.emptyShipper(i);
-    this.shipperReceiverMerge();
-
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Shipper Added.");
-    this.getMiles(this.orderData.milesInfo.calculateBy);
-    
+   
   }
 
   async getCords(value){
@@ -673,11 +687,11 @@ export class AddOrdersComponent implements OnInit {
     this.finalShippersReceivers[i].receivers.push(currentReceiver);
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    this.shipperReceiverMerge();
+    await this.shipperReceiverMerge();
     this.emptyReceiver(i);
-    this.getMiles(this.orderData.milesInfo.calculateBy);
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Receiver Added.");
-  }
+}
 
   async shipperReceiverMerge() {
     this.mergedArray = [];
@@ -696,6 +710,7 @@ export class AddOrdersComponent implements OnInit {
         new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf()
       );
     });
+    
   }
 
   emptyShipper(i) {
@@ -877,6 +892,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.milesInfo["totalMiles"] = "";
       }
       this.getAllCords = [];
+      
     }
   }
 
@@ -1110,7 +1126,7 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  calculateAmount() {
+  async calculateAmount() {
     this.freightFee = this.orderData.charges.freightFee["amount"];
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
     let sum = 0;
@@ -1161,6 +1177,13 @@ export class AddOrdersComponent implements OnInit {
       this.orderData["totalAmount"] = final;
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
+    }
+    this.newTaxes = this.orderData.taxesInfo;
+    if(this.subTotal > 0) {
+      for (let i = 0; i < this.newTaxes.length; i++) {
+        const element = this.newTaxes[i];
+        element.taxAmount = (this.subTotal * element.amount) / 100;
+      }
     }
 
   }
@@ -1307,6 +1330,7 @@ export class AddOrdersComponent implements OnInit {
       ].position = result.position;
       data.save = true;
       data.update = false;
+      
       this.emptyShipper(i);
       
       this.toastr.success('Shipper Updated');
@@ -1367,7 +1391,8 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.success('Receiver Updated');
       this.emptyReceiver(i);
     }
-    this.getMiles(this.orderData.milesInfo.calculateBy);
+    await this.shipperReceiverMerge();
+    await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
     this.stateShipperIndex = "";
   }
@@ -1392,13 +1417,13 @@ export class AddOrdersComponent implements OnInit {
   /***************
    * For Edit Orders
    */
-  fetchOrderByID() {
+  async fetchOrderByID() {
     this.apiService
       .getData("orders/" + this.getOrderID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
-
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
+        
         this.orderData.taxesInfo = [
           {
             name: 'GST',
@@ -1532,6 +1557,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["totalAmount"] = result.totalAmount;
         this.orderData.advance = result.advance;
         this.existingUploadedDocs = result.uploadedDocs;
+        
         this.calculateAmount();
       });
   }
@@ -1544,7 +1570,8 @@ export class AddOrdersComponent implements OnInit {
     this.orderData['uploadedDocs'] = this.existingUploadedDocs;
     this.orderData['orderID'] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
-
+    this.orderData['deletedFiles'] = this.deletedFiles;
+    
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -1817,26 +1844,26 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  stateSelectChange(){
+  async stateSelectChange(){
     let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.orderData.stateTaxID);
     this.orderData.taxesInfo = [];
 
-          this.orderData.taxesInfo = [
-            {
-              name: 'GST',
-              amount: selected.GST,
-            },
-            {
-              name: 'HST',
-              amount: selected.HST,
-            },
-            {
-              name: 'PST',
-              amount: selected.PST,
-            },
-          ];
-        this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
-        this.calculateAmount();
+    this.orderData.taxesInfo = [
+      {
+        name: 'GST',
+        amount: selected.GST,
+      },
+      {
+        name: 'HST',
+        amount: selected.HST,
+      },
+      {
+        name: 'PST',
+        amount: selected.PST,
+      },
+    ];
+    this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
+    await this.calculateAmount();
 
   }
 
@@ -1899,8 +1926,10 @@ export class AddOrdersComponent implements OnInit {
       date: this.orderData.createdDate,
       time: this.orderData.createdTime
     }
-    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
-      this.orderAttachments.splice(index, 1);
-    });
+    // this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
+      
+    // });
+    this.deletedFiles.push(record)
+    this.orderAttachments.splice(index, 1);
   }
 }

@@ -29,12 +29,12 @@
                   </span>
                 </span>
                 <input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit">
+                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
                 </span>
                 <input [(ngModel)]="toDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                  ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit">
+                  ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
               </div>
             </div>
             <div class="col-md-2 col-lg- pl-2">
