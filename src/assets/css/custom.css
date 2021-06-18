@@ -1742,6 +1742,7 @@ text-decoration: underline;
   .pb10{padding-bottom:10px !important;}
   .pb12{padding-bottom:12px !important;}
   .pb14{padding-bottom:14px !important;}
+  .pb21{padding-bottom:21px !important;}
 
   /* padding left */
   .pl4{padding-left:4px !important;}
@@ -2492,3 +2493,8 @@ input.placeholder-lowercase {
 }
 
 
+/* on board page width according screen sizes */
+.onboardwidth {width: 95% !important;	}
+@media (min-width: 1640px) {
+	.onboardwidth {width: 75% !important;	}
+}
