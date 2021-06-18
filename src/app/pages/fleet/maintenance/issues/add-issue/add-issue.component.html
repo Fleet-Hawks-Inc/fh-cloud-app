@@ -125,7 +125,7 @@
                                                 <input class="form-control" placeholder="yyyy-mm-dd"
                                                     [(ngModel)]="reportedDate" (keydown)="$event.preventDefault()"
                                                     name="reportedDate" (click)="d.toggle()" ngbDatepicker
-                                                    #d="ngbDatepicker" #dateReport="ngModel" required [minDate]="dateMinLimit">
+                                                    #d="ngbDatepicker" #dateReport="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                                 <div *ngIf="dateReport.invalid && (dateReport.dirty || dateReport.touched)"
                                                     class="text-danger">
                                                     <div *ngIf="dateReport.errors.required">
