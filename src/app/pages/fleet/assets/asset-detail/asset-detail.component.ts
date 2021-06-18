@@ -81,6 +81,7 @@ export class AssetDetailComponent implements OnInit {
   inspectionForms = {
     inspectionFormName : '',
     parameters: [],
+    isDefaultInspectionType:'',
     inspectionType: ''
   };
   // Charts
