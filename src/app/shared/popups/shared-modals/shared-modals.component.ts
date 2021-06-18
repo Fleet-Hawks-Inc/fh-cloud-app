@@ -452,7 +452,7 @@ assetsData = {
     manufacturer: '',
     model: '',
     height: '',
-    heightUnit: '',
+    heightUnit: null,
     length: '',
     lengthUnit: '',
     axle: '',

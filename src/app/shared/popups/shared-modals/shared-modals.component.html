@@ -734,8 +734,8 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle"
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
-                          <input type="text" class="form-control text-uppercase" name="VIN" [(ngModel)]="VIN"
-                            placeholder="eg.2G1WH55K5Y9322458" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                          <input type="text" class="form-control placeholder-lowercase" name="VIN" [(ngModel)]="VIN"
+                            placeholder="eg.17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                             <div *ngIf="mVin.invalid && (mVin.dirty || mVin.touched)" class="text-danger">
                               <div *ngIf="mVin.errors.required">
                                  VIN is required.
@@ -883,7 +883,7 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control text-uppercase" name="plateNumber" [(ngModel)]="plateNumber"
+                          <input type="text" class="form-control placeholder-lowercase" name="plateNumber" [(ngModel)]="plateNumber"
                             placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                             <div *ngIf="mPlate.invalid && (mPlate.dirty || mPlate.touched)" class="text-danger">
                               <div *ngIf="mPlate.errors.required">
@@ -1560,7 +1560,7 @@
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
                           <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                            placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control text-uppercase" maxlength="18" #vName1="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                            placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control placeholder-lowercase" maxlength="18" #vName1="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                             <div *ngIf="vName1.invalid && (vName1.dirty || vName1.touched)" class="text-danger">
 
                               <div *ngIf="vName1.errors.required">
@@ -1746,8 +1746,8 @@
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                             Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. 345678"
-                            name="assetDetails.licencePlateNumber" class="form-control text-uppercase" type="text" #pName9="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
+                          <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. CAL 3454"
+                            name="assetDetails.licencePlateNumber" class="form-control placeholder-lowercase" type="text" #pName9="ngModel" required pattern="^[a-zA-Z0-9\s]{6,8}$">
                             <div *ngIf="pName9.invalid && (pName9.dirty || pName9.touched)"  class="text-danger">
                               <div *ngIf="pName9.errors.required">
                                 Licence plate number is required.
@@ -1964,7 +1964,7 @@
                                     </label>
                                     <input [(ngModel)]="driverData.firstName" (change)="onChangeHideErrors('firstName')"
                                       name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel"
-                                      required pattern="^[a-zA-Z]+$" maxlength="30">
+                                      required pattern="^[a-zA-Z\s]+$" maxlength="30">
                                     <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                                       <div *ngIf="fName.errors.required">
                                         First name is required.
@@ -1980,7 +1980,7 @@
                                     </label>
                                     <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
                                       name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName04="ngModel"
-                                      required pattern="^[a-zA-Z]+$" maxlength="30">
+                                      required pattern="^[a-zA-Z\s]+$" maxlength="30">
                                     <div *ngIf="lName04.invalid && (lName04.dirty || lName04.touched)" class="text-danger">
                                       <div *ngIf="lName04.errors.required">
                                         Last name is required.

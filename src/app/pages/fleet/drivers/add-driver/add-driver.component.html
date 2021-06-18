@@ -172,7 +172,7 @@
                             </label>
                             <input [(ngModel)]="driverData.firstName" (change)="onChangeHideErrors('firstName')"
                               name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel"
-                              required pattern="^[a-zA-Z]+$" maxlength="30">
+                              required pattern="^[a-zA-Z\s]+$" maxlength="30">
                             <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                               <div *ngIf="fName.errors.required">
                                 First name is required.
@@ -188,7 +188,7 @@
                             </label>
                             <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
                               name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                              required pattern="^[a-zA-Z]+$" maxlength="30">
+                              required pattern="^[a-zA-Z\s]+$" maxlength="30">
                             <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                               <div *ngIf="lName.errors.required">
                                 Last name is required.
