@@ -92,7 +92,6 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  // getSuggestions(value) {
   getSuggestions = _.debounce(function (value) {
 
     value = value.toLowerCase();
@@ -100,7 +99,7 @@ export class VehicleListComponent implements OnInit {
       this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedVehicles = result.Items;
+        this.suggestedVehicles = result;
       });
     } else {
       this.suggestedVehicles = []

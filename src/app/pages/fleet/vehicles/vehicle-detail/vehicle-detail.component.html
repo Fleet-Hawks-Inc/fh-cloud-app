@@ -351,7 +351,7 @@
                     <div class="col-lg-8 p-2 border-box">{{ lifeCycle.startDate | date:"yyyy/MM/dd"  }}</div>
                   </div>
                   <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">In-Service Odometer:
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">In-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box"> {{ lifeCycle.inServiceOdometer }}</div>
                   </div>
@@ -386,7 +386,7 @@
                     <div class="col-lg-8 p-2 border-box">{{ lifeCycle.outOfServiceDate | date:"yyyy/MM/dd"  }}</div>
                   </div>
                   <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Out-of-Service Odometer:
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Out-of-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">{{ lifeCycle.outOfServiceOdometer }}</div>
                   </div>
@@ -665,7 +665,7 @@
                     <div class="col-lg-8 p-2 border-box">{{ purchase.purchaseDate | date:"yyyy/MM/dd"  }}</div>
                   </div>
                   <div class="row m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Odometer:</div>
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Odometer in Miles:</div>
                     <div class="col-lg-8 p-2 border-box">{{ purchase.purchaseOdometer }}</div>
                   </div>
 
@@ -821,6 +821,16 @@
                 </div>
                 <div class="col-lg-9">
                   {{ inspectionForms.inspectionType }}
+                </div>
+              </div>
+              <div class="row text-dark mt-3">
+                <div class="col-lg-3 font-weight-bold">
+                  Default Inspection Form:
+                </div>
+                <div class="col-lg-9">
+                  <span *ngIf="inspectionForms.isDefaultInspectionType=='0'">NO</span>
+                  <span *ngIf="inspectionForms.isDefaultInspectionType=='1'">YES</span>
+
                 </div>
               </div>
             </div>

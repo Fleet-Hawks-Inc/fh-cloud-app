@@ -52,12 +52,12 @@
                                 </span>
 
                                 <input [(ngModel)]="tripsFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off">
+                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="tripsFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                    ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off">
+                                    ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
                             </div>
                         </div>

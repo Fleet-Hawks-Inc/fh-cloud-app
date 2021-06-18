@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -66,19 +67,19 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
 
     if(value != '') {
       this.apiService
       .getData(`issues/get/suggestions/${value}`)
       .subscribe((result) => {
-        this.suggestedIssues = result.Items;
+        this.suggestedIssues = result; 
       });
     } else {
       this.suggestedIssues = [];
     }
-  }
+  }, 800);
 
   setIssue(issueName) {
     this.issueName = issueName;

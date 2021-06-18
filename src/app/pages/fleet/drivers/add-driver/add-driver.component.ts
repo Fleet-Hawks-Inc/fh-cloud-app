@@ -19,6 +19,7 @@ import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import { passwordStrength } from 'check-password-strength'
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -132,7 +133,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       csa: false,
     },
     paymentDetails: {
-      paymentType: null,
+      paymentType: '',
       loadedMiles: '',
       loadedMilesTeam: '',
       loadedMilesUnit: '',
@@ -144,13 +145,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       loadPayPercentage: '',
       loadPayPercentageOf: '',
       rate: '',
-      rateUnit: null,
+      rateUnit: '',
       waitingPay: '',
       waitingPayUnit: '',
       waitingHourAfter: '',
       deliveryRate: '',
-      deliveryRateUnit: null,
-      payPeriod: null,
+      deliveryRateUnit: '',
+      payPeriod: '',
     },
     SIN: '',
     CDL_Number: '',
@@ -271,6 +272,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   submitDisabled = false;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  }
   finaltimezones: any = [];
   nullVar = null;
   constructor(private apiService: ApiService,
@@ -307,9 +315,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
-    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate() };
-    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
-    this.futureDatesLimit = { year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate() };
+    this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+    this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: 12, day: 31 };
+    this.futureDatesLimit = { year: date.getFullYear() + 30, month: 12, day: 1 };
   }
 
   /**
@@ -799,7 +807,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number' || v==='SIN'){
+       
+        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number'|| v==='SIN'){
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
@@ -1267,6 +1276,35 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     $('#addDriverGroupModal').modal('hide');
 
+  }
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else{
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else{
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else{
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else{
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true
+    } else{
+      this.passwordValidation.length = false;
+    }
   }
 
 

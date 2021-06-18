@@ -148,7 +148,7 @@
                             Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
 
                           </div>
-                        </div>
+                        </div> 
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Birth Date <span
@@ -157,7 +157,7 @@
                         <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
                          [(ngModel)]="driverData.DOB"
                           name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
-                          #dob="ngModel" required>
+                          #dob="ngModel" required [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit">
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
                             Birth date is required.
@@ -207,7 +207,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  (input) ="validatePassword($event.target.value)" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -224,7 +224,30 @@
                                   Password is required.
                                 </div>
                                 <div *ngIf="pwd.errors.pattern">
-                                  Password should be 8 characters long which must contain number, small letter, capital letter and at least one special character (#,@,$,&).
+                                  <div class="row">
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+                                      
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowecase</p>
+                                        
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                                        
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                           </div>
@@ -361,7 +384,7 @@
                             </label>
                             <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
                               #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text"
-                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required>
+                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date1.invalid && (date1.dirty || date1.touched)" class="text-danger">
                               <div *ngIf="date1.errors.required">
                                 Start date is required.
@@ -376,7 +399,7 @@
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              >
+                              [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
 
                               <div *ngIf="tDate.errors.required" class="text-danger">
@@ -393,7 +416,7 @@
                             <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker
                               #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
                               type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #date2="ngModel" required>
+                              #date2="ngModel" required [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date2.invalid && (date2.dirty || date2.touched)" class="text-danger">
                               <div *ngIf="date2.errors.required">
                                 Start date is required.
@@ -409,7 +432,7 @@
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #endDate="ngModel">
+                              #endDate="ngModel" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
                                 End date is required.
@@ -743,7 +766,7 @@
                           [ngModelOptions]="{standalone: true}"
                           (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
-                          [minDate]="getcurrentDate" type="text" class="form-control" #expSlt="ngModel" >
+                          [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel" >
                         <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
                           <div *ngIf="expSlt.errors.required">
                             Expiry date is required.
@@ -868,7 +891,7 @@
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
                             name="crossBorderDetails.fastExpiry" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
-                            type="text" class="form-control" placeholder="yyyy/mm/dd">
+                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                         </div>
                       </div>
                     </div>
@@ -987,7 +1010,7 @@
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
                           name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
-                          class="form-control" placeholder="yyyy/mm/dd" >
+                          class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Health Care# <span
@@ -1031,34 +1054,35 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Default
-                          Payment Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          Payment Type<span
+                          class="text-1 optional-label-color"> (optional) </span></label>
                         <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                           placeholder="Select the payment type" id="paymentTypeForm"
                           (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event)"
-                          #paySlt="ngModel" required>
+                          #paySlt="ngModel" >
                           <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                           <ng-option value="Percentage">Percentage</ng-option>
                           <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
                           <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                         </ng-select>
-                        <div *ngIf="paySlt.invalid && (paySlt.dirty || paySlt.touched)" class="text-danger">
+                        <!-- <div *ngIf="paySlt.invalid && (paySlt.dirty || paySlt.touched)" class="text-danger">
                           <div *ngIf="paySlt.errors.required">
                             Default payment type is required.
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SIN <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input (change)="onChangeHideErrors('SIN')"
                           [(ngModel)]="driverData.SIN" name="SIN"
-                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin="ngModel" required
-                          pattern="^[0-9]{9}$" maxlength="9">
-                        <div *ngIf="sin.invalid && (sin.dirty || sin.touched)" class="text-danger">
-                          <div *ngIf="sin.errors.required">
+                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" required pattern="^[0-9]{9}$" 
+                           >
+                        <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
+                          <div *ngIf="sin1.errors.required">
                             SIN is required.
                           </div>
-                          <div *ngIf="sin.errors.pattern">
+                          <div *ngIf="sin1.errors.pattern">
                             SIN must contain 9 numbers.
                           </div>
                         </div>
@@ -1069,82 +1093,84 @@
                     <div class="row" id="payPerHourForm"
                       *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Rate<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2"> Rate <span
+                          class="text-1 optional-label-color"> (optional) </span></label>
                         <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
 
-                          class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
-                          <div *ngIf="payHour.invalid && (payHour.dirty || payHour.touched)" class="text-danger">
+                          class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" >
+                          <!-- <div *ngIf="payHour.invalid && (payHour.dirty || payHour.touched)" class="text-danger">
                             <div *ngIf="payHour.errors.required">
                               Rate is required.
                             </div>
                             <div *ngIf="payHour.errors.pattern">
                              Rate must contain numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                         <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.rateUnit" placeholder="Select Currency" #payS="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                          name="paymentDetails.rateUnit" placeholder="Select Currency" >
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
-                        <div *ngIf="payS.invalid && (payS.dirty || payS.touched)" class="text-danger">
+                        <!-- <div *ngIf="payS.invalid && (payS.dirty || payS.touched)" class="text-danger">
                           <div *ngIf="payS.errors.required">
                             Currency is required.
                           </div>
 
-                        </div>
+                        </div> -->
 
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
-                          period Pay<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          period Pay<span
+                          class="text-1 optional-label-color"> (optional) </span></label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay"
 
-                          type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
-                          <div *ngIf="payWait.invalid && (payWait.dirty || payWait.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" >
+                          <!-- <div *ngIf="payWait.invalid && (payWait.dirty || payWait.touched)" class="text-danger">
                             <div *ngIf="payWait.errors.required">
                               Waiting period pay is required.
                             </div>
                             <div *ngIf="payWait.errors.pattern">
                              Waiting period pay must contain numbers.
                             </div>
-                          </div>
+                          </div> -->
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                         <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.waitingPayUnit" placeholder="Select Currency" #curr1="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                          name="paymentDetails.waitingPayUnit" placeholder="Select Currency" >
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
-                        <div *ngIf="curr1.invalid && (curr1.dirty || curr1.touched)" class="text-danger">
+                        <!-- <div *ngIf="curr1.invalid && (curr1.dirty || curr1.touched)" class="text-danger">
                           <div *ngIf="curr1.errors.required">
                             Currency is required.
                           </div>
 
-                        </div>
+                        </div> -->
 
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour
-                          start after<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          start after<span
+                          class="text-1 optional-label-color"> (optional) </span></label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
-                          name="paymentDetails.waitingHourAfter" type="text" class="form-control" #payWait1="ngModel"  pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Hour'"
+                          name="paymentDetails.waitingHourAfter" type="text" class="form-control" 
 
                           placeholder="eg. Min 3 hours">
-                          <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
+                          <!-- <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
                             <div *ngIf="payWait1.errors.required">
                               Waiting hour start is required.
                             </div>
                             <div *ngIf="payWait1.errors.pattern">
                              Waiting hour start must contain numbers.
                             </div>
-                          </div>
+                          </div> -->
 
                       </div>
 
@@ -1153,34 +1179,35 @@
                       *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Delivery
-                          Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          Rate<span
+                          class="text-1 optional-label-color"> (optional) </span></label>
                         <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
 
-                          type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Delivery'" >
-                          <div *ngIf="dRate.invalid && (dRate.dirty || dRate.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60"  >
+                          <!-- <div *ngIf="dRate.invalid && (dRate.dirty || dRate.touched)" class="text-danger">
                             <div *ngIf="dRate.errors.required">
                               Delivery rate is required.
                             </div>
                             <div *ngIf="dRate.errors.pattern">
                              Delivery rate must contain numbers.
                             </div>
-                          </div>
+                          </div> -->
 
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                         <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.deliveryRateUnit" placeholder="Select Currency" #curr2="ngModel"  [required]="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
+                          name="paymentDetails.deliveryRateUnit" placeholder="Select Currency" >
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
-                        <div *ngIf="curr2.invalid && (curr2.dirty || curr2.touched)" class="text-danger">
+                        <!-- <div *ngIf="curr2.invalid && (curr2.dirty || curr2.touched)" class="text-danger">
                           <div *ngIf="curr2.errors.required">
                             Currency is required.
                           </div>
 
-                        </div>
+                        </div> -->
 
                       </div>
                     </div>
@@ -1188,22 +1215,23 @@
                       *ngIf="driverData.paymentDetails.paymentType == 'Percentage'">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay
-                          Percent<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          Percent <span
+                          class="text-1 optional-label-color"> (optional) </span> </label>
                         <div class="row">
                           <div class="col-lg-3">
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                               name="paymentDetails.loadPayPercentage" type="text" class="form-control"
-                              placeholder="eg. 2%, 5%, 10%" #lPay1="ngModel" pattern="^[0-9]+$" [required]="driverData.paymentDetails.paymentType == 'Percentage'"
+                              placeholder="eg. 2%, 5%, 10%" 
 
                               (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
-                              <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
+                              <!-- <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
                                 <div *ngIf="lPay1.errors.required">
                                  Load pay percent is required.
                                 </div>
                                 <div *ngIf="lPay1.errors.pattern">
                                 Load pay percent must contain numbers.
                                 </div>
-                              </div>
+                              </div> -->
 
                           </div>
                           <div class="col-lg-2 px-0">
@@ -1213,7 +1241,7 @@
                           <div class="col-lg-7">
                             <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf"
                               name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of"
-                              (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')" #ff="ngModel"[required]="driverData.paymentDetails.paymentType == 'Percentage'" >
+                              (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')" >
 
                               <ng-option value="Freight Fees">Freight Fees</ng-option>
                               <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
@@ -1221,12 +1249,12 @@
                               <ng-option value="Total Income">Total Income</ng-option>
 
                             </ng-select>
-                            <div *ngIf="ff.invalid && (ff.dirty || ff.touched)" class="text-danger">
+                            <!-- <div *ngIf="ff.invalid && (ff.dirty || ff.touched)" class="text-danger">
                               <div *ngIf="ff.errors.required">
                               Load pay percent type is required.
                               </div>
 
-                            </div>
+                            </div> -->
 
                           </div>
                         </div>
@@ -1237,18 +1265,19 @@
                         *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Mile'" style="display: flex;">
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
-                            Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            Miles<span
+                            class="text-1 optional-label-color"> (optional) </span></label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
 
-                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #payM="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
-                            <div *ngIf="payM.invalid && (payM.dirty || payM.touched)" class="text-danger">
+                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
+                            <!-- <div *ngIf="payM.invalid && (payM.dirty || payM.touched)" class="text-danger">
                               <div *ngIf="payM.errors.required">
                                Loaded miles are required.
                               </div>
                               <div *ngIf="payM.errors.pattern">
                               Loaded miles must contain numbers.
                               </div>
-                            </div>
+                            </div> -->
 
 
                         </div>
@@ -1256,54 +1285,56 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit"
                             name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                            (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')" #curr4="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
+                            (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')">
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div *ngIf="curr4.invalid && (curr4.dirty || curr4.touched)" class="text-danger">
+                          <!-- <div *ngIf="curr4.invalid && (curr4.dirty || curr4.touched)" class="text-danger">
                             <div *ngIf="curr4.errors.required">
                             Currency type is required.
                             </div>
 
-                          </div>
+                          </div> -->
 
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
-                            Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            Miles<span
+                            class="text-1 optional-label-color"> (optional) </span></label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
 
-                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" pattern="^[0-9\.]+$" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'">
-                            <div *ngIf="eMiles1.invalid && (eMiles1.dirty || eMiles1.touched)" class="text-danger">
+                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
+                            <!-- <div *ngIf="eMiles1.invalid && (eMiles1.dirty || eMiles1.touched)" class="text-danger">
                               <div *ngIf="eMiles1.errors.required">
                                Empty miles are required.
                               </div>
                               <div *ngIf="eMiles1.errors.pattern">
                               Empty miles must contain numbers.
                               </div>
-                            </div>
+                            </div> -->
 
                         </div>
                         <div class="col-lg-2 ">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit"
                             name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                            (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')" #curr5="ngModel" [required]="driverData.paymentDetails.paymentType == 'Pay Per Mile'" >
+                            (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')"  >
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div *ngIf="curr5.invalid && (curr5.dirty || curr5.touched)" class="text-danger">
+                          <!-- <div *ngIf="curr5.invalid && (curr5.dirty || curr5.touched)" class="text-danger">
                             <div *ngIf="curr5.errors.required">
                             Currency type is required.
                             </div>
 
-                          </div>
+                          </div> -->
 
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
-                            Miles (Team) </label>
+                            Miles (Team) <span
+                            class="text-1 optional-label-color"> (optional) </span> </label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                             name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
 
@@ -1322,7 +1353,8 @@
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
-                            Miles (Team)</label>
+                            Miles (Team) <span
+                            class="text-1 optional-label-color"> (optional) </span></label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                             name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
 
@@ -1343,10 +1375,11 @@
                       <div class="row">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Pay
-                            Period<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            Period <span
+                            class="text-1 optional-label-color"> (optional) </span></label>
                           <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod"
                             placeholder="Select pay period of the driver"
-                            (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt="ngModel" required>
+                            (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt="ngModel" >
 
                             <ng-option value="Weekly">Weekly</ng-option>
                             <ng-option value="Biweekly">Biweekly</ng-option>
@@ -1354,11 +1387,11 @@
                             <ng-option value="Quaterly">Quaterly</ng-option>
                             <ng-option value="Annually">Annually</ng-option>
                           </ng-select>
-                          <div *ngIf="ppSlt.invalid && (ppSlt.dirty || ppSlt.touched)" class="text-danger">
+                          <!-- <div *ngIf="ppSlt.invalid && (ppSlt.dirty || ppSlt.touched)" class="text-danger">
                             <div *ngIf="ppSlt.errors.required">
                               Pay period type is required.
                             </div>
-                          </div>
+                          </div> -->
 
 
                         </div>

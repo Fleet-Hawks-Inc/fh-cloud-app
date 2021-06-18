@@ -1,0 +1,282 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-3 col-lg-3 pr-0">
+                     <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                        </span>
+                        <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" name="end">
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <div class="input-group input-group-sm mb-3">
+                        <select data-plugin-selectTwo class="form-control populate">
+                           <optgroup label="">
+                              <option value="1">All Drivers</option>
+                              <option value="2">Mukhtiyar Singh</option>
+                              <option value="2">ABC</option>
+                           </optgroup>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <div class="btn-group flex-wrap" style="min-width:100%;">
+                        <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle line-height-18 toggleright" data-toggle="dropdown">Active Drivers<span class="caret"></span></button>
+                        <div class="dropdown-menu dutystatwd" role="menu">
+                           <a class="dropdown-item text-1" href="#">Inactive Drivers</a>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2">
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+                     <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                  </div>
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
+                     <div class="btn-group flex-wrap ml-2">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           <a class="dropdown-item text-1" href="">CSV</a>
+                           <a class="dropdown-item text-1" href="">PDF</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </header>
+
+            <div class="m-2">
+               <div class="row text-dark">
+                  <div class="col-12 mb-3">
+                     <div class="bg-white p-3">
+                        <div class="row text-dark">
+                           <div class="col-12">
+                              <div>
+                                 <h4 class="mt-1 mb-0 font-weight-bold">Driver Summary</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-3 mb-3">
+                     <div class="bg-white p-3">
+                        <div>
+                           <h4 class="m-0 text-4">All Drivers</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold">240</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-3 mb-3">
+                     <div class="bg-white p-3">
+                        <div>
+                           <h4 class="m-0 text-4">Active Drivers</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold">170</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-3 mb-3">
+                     <div class="bg-white p-3">
+                        <div>
+                           <h4 class="m-0 text-4">Inactive Drivers</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold">70</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col">
+                     <div class="card">
+                        <div class="card-body bor-radius0px">
+                           <!-- Driver Div  -->
+                           <div >
+                              <section class="reports_div">
+                                 <table class="table table-responsive-md table-bordered mb-0 no-footer table-xs table-striped table-hover" id="datatable-default">
+                                    <thead>
+                                       <tr class="bgcol2">
+                                          <th>Name</th>
+                                          <th>Duty Status</th>
+                                          <th>Current Cycle</th>
+                                          <th>Current Vehicle</th>
+                                          <th>Location</th>
+										            <th>CDL#</th>
+                                          <!-- <th>App Version</th> -->
+                                          <th>Phone</th>
+                                          <th>Status</th>
+                                          
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Rashmi Mahajan</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">YM</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">60 hours/7 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7011 Blue Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> 100 street Ontario,Toronto</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">5689421</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.135</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">8956231478</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Ricky</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">SB</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">70 hours/8 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Tesla 7016</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> 100 street Brampton</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">1124860</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4564567898</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Anchal</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark btn-success p-1">ON</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">70 hours/8 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">GMC 88956</td>
+                                          <td onclick="window.location='driver-profile2.php';"> Queen street, California</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">85422</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.123</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4564567898</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Deep</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">SB</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Cycle 1</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Ford-457800</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Brampton</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">77009</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">5878343536</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Maninder</span>  </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark btn-success p-1">ON</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Cycle 2</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7011 Green Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Winnipeg</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">46088</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">9876543210</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Jatinder</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark btn-success p-1">ON</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">60 hours/7 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">TATA-52301</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Surrey,British Columbia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">939396</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">9998843210</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">David Thomas123</span>  </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark bggreyn text-dark p-1">OFF</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">60 hours/7 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7011 Blue Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> 100 street Ontario,Toronto</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">91175</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7654567865</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark bggreyn text-dark p-1">INACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Ricky</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark btn-success p-1">ON</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">70 hours/8 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Tesla-2010212</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> 100 street Brampton</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">50021</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">70004567865</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Raj</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">PC</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">70 hours/8 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7011 Blue Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, California</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">36549980</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">46504567865</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Deep</span> </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">PC</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Cycle 1</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Ford-21456</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Brampton</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">38070</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4650406865</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Maninder</span>  </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark bggreyn text-dark p-1">OFF</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Winnipeg</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">Cycle 2</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">MAC-25456</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">66324789</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4654656865</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">Jatinder</span>  </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">YM</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">60 hours/7 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">7011 Blue Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> Queen street, Surrey,British Columbia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">364790</td>
+										            <!-- <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><i class="fas fa-robot"></i> 1.0.126</td> -->
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4884650065</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <tr>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="font-weight-bold line-height-lg">David Thomas123</span>  </td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark btn-success p-1">ON</span></td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">60 hours/7 days</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">9911 White Cascadia</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"> 100 street Ontario,Toronto</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">981144</td>
+										  
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';">4884650065</td>
+                                          <td class="cursorpoint" onclick="window.location='driver-profile2.php';"><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                          
+                                       </tr>
+                                       <!-- delete below code -->
+                                    </tbody>
+                                 </table>
+                              </section>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

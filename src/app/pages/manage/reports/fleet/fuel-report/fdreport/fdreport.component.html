@@ -1,0 +1,288 @@
+<section class="body">
+    <div class="inner-wrapper">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+
+                  <div class="col-md-3 col-lg-3 pr-0">
+                     <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search by Vehicle" type="text">
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <div class="input-group input-group-sm mb-3">
+                        <select data-plugin-selectTwo class="form-control populate">
+                           <optgroup label="Select Locations">
+                              <option value="1">Search by State</option>
+                              <option value="2">Alberta</option>
+                              <option value="2">Alabama</option>
+                              <option value="1">Arkansas</option>
+                              <option value="2">American Samoa</option>
+                              <option value="2">Arizona</option>
+                           </optgroup>
+                        </select>
+                     </div>
+                  </div>
+                  
+                 
+
+                  <div class="col-md-2 col-lg-2">
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                  </div>
+                  
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
+                     <div class="btn-group flex-wrap ml-4">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           <a class="dropdown-item text-1" href="">CSV</a>
+                           <a class="dropdown-item text-1" href="">PDF</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </header>
+            <div class="row text-dark">
+               <div class="col">
+                  <div class="card">
+                     <div class="card-body bor-radius0px">
+                        <!-- Vehicle Div  -->
+                        <div id="ifta-report-distance-vehicle-div">
+                           <div class="row">
+                              <div class="col-lg-6 pr-0">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Total Distance</td>
+                                          <td width="60%">57676 mi </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="col-lg-6 pl-0">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Total Fuel</td>
+                                          <td width="60%">0 gal </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                           <section class="reports_div">
+                              <div class="row">
+                                 <div class="col-lg-12">  <label class="control-label text-5 font-weight-bold">7016</label> </div>
+                              </div>
+                              <table class="table reports_small_div">
+                                 <thead>
+                                    <tr class="back-color-gray">
+                                       <th width="15%">Source</th>
+									            <th width="15%">Destination</th>
+                                       <th width="10%">Juridiction</th>
+                                       <th width="10%">Total Distance</th>
+                                       <th width="10%">Price Per Unit</th>
+                                       <th width="10%">Cost/Ltr or Gallon</th>
+                                       <th width="15%">Total Fuel</th>
+									            <th width="15%">Fuel Economy</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Montana</td>
+									             <td>North Dakota</td>
+                                       <td>7345.25</td>
+                                       <td>90.19</td>
+                                       <td>$54.46</td>
+                                       <td>2.15</td>
+                                       <td>44.5</td>
+                                       <td>$40.46</td>
+                                    </tr>
+                                    <tr>
+                                       <td>North Dakota</td>
+									           <td>Toronto</td>
+                                       <td>2145.25</td>
+                                       <td>110.50</td>
+									             <td>$64.46</td>
+                                        <td>2.15</td>
+                                       <td>54.5</td>
+                                       <td>$60.46</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Nevada</td>
+									             <td>Saskatchewan</td>
+                                       <td>645.25</td>
+                                       <td>300.33</td>
+                                       <td>$64.46</td>
+                                       <td>2.15</td>
+                                      <td>54.5</td>
+                                      <td>$60.46</td>
+                                    </tr>
+                                    
+                                 </tbody>
+                              </table>
+                           </section>
+                           <section class="reports_div mt-3">
+                              <div class="row">
+                                 <div class="col-lg-12">  <label class="control-label text-5 font-weight-bold">7345</label> </div>
+                              </div>
+                              <table class="table reports_small_div">
+                                 <thead>
+                                    <tr class="back-color-gray">
+                                       <th width="15%">Source</th>
+									            <th width="15%">Destination</th>
+                                       <th width="10%">Juridiction</th>
+                                       <th width="10%">Total Distance</th>
+                                       <th width="10%">Price Per Unit</th>
+                                       <th width="10%">Cost/Ltr or Gallon</th>
+                                       <th width="15%">Total Fuel</th>
+									            <th width="15%">Fuel Economy</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Montana</td>
+									             <td>North Dakota</td>
+                                       <td>7345.25</td>
+                                       <td>90.19</td>
+                                       <td>$54.46</td>
+                                       <td>2.15</td>
+                                       <td>44.5</td>
+                                       <td>$40.46</td>
+                                    </tr>
+                                    <tr>
+                                       <td>North Dakota</td>
+									           <td>Toronto</td>
+                                       <td>2145.25</td>
+                                       <td>110.50</td>
+									             <td>$64.46</td>
+                                        <td>2.15</td>
+                                       <td>54.5</td>
+                                       <td>$60.46</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Nevada</td>
+									             <td>Saskatchewan</td>
+                                       <td>645.25</td>
+                                       <td>300.33</td>
+                                       <td>$64.46</td>
+                                       <td>2.15</td>
+                                      <td>54.5</td>
+                                      <td>$60.46</td>
+                                    </tr>
+                                    
+                                 </tbody>
+                              </table>
+                           </section>
+                           
+                           
+                        </div>
+
+                        <!-- FLEET Div  -->
+                        <div id="ifta-report-distance-fleet-div" style="display:none;">
+                           <div class="row">
+                              <div class="col-lg-6 pr-0">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Total Distance</td>
+                                          <td width="60%">55467676 mi </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="col-lg-6 pl-0">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Total Fuel</td>
+                                          <td width="60%">0 gal </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                           <section class="reports_div">
+                              <table class="table reports_small_div">
+                                 <thead>
+                                    <tr class="back-color-gray">
+                                       <th width="40%">Location</th>
+                                       <th width="30%">Distance</th>
+                                       <th width="30%">Fuel(gal)</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr>
+                                       <td>Montana</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>North Dakota</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Nevada</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Saskatchewan</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Wyoming</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Montana</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>North Dakota</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Nevada</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Saskatchewan</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Wyoming</td>
+                                       <td>7345.25</td>
+                                       <td>0</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </section>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

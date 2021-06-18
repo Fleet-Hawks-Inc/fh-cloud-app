@@ -1,7 +1,12 @@
 export const environment = {
   production: true,
-
   isFeatureEnabled: true,
+  isFleetEnabled: true,
+  isDispatchEnabled: true,
+  isComplianceEnabled: true,
+  isManageEnabled: true,
+  isSafetyEnabled: false,
+  isAccountsEnabled: false,
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads-cacentral1.s3.ca-central-1.amazonaws.com',
   temp: 'search',

@@ -1,0 +1,205 @@
+<section class="body">
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+               
+               <div class="col-md-3 col-lg-3 pr-0">
+                  <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                     <span class="input-group-prepend">
+                     <span class="input-group-text">
+                     <i class="fas fa-calendar-alt"></i>
+                     </span>
+                     </span>
+                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
+                     <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                     to
+                     </span>
+                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
+                  </div>
+               </div>
+               
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                           <option value="1">ABC</option>
+                           <option value="2">All Drivers</option>
+                           <option value="1">Test</option>
+                        </optgroup>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <select data-plugin-selectTwo class="form-control populate">
+                        <optgroup label="">
+                           <option value="1">Vehicle 1</option>
+                           <option value="2">Vehicle 2</option>
+                           <option value="1">Vehicle 3</option>
+                           <option value="2">Vehicle 4</option>
+                        </optgroup>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <select  data-plugin-selectTwo class="form-control populate">
+                     <optgroup label="Select Service Task">
+                        <option value="">A/C Compressor Replacement</option>
+                        <option value="">A/C Condenser Replacement</option>
+                        <option value="">A/C Diagnosis</option>
+                        <option value="">A/C Evaporator Replacement</option>
+                        <option value="">A/C Inspection</option>
+                        <option value="">A/C Recharge</option>
+                        <option value="">Air Brake System Valve Inspection</option>
+                        <option value="">Air Cleaner Inspection</option>
+                        <option value="">Air Compressor Inspection</option>
+                        <option value="">Air Dryer Desiccant Replacement</option>
+                        <option value="">Air Dryer Inspection</option>
+                        <option value="">Air Filter Replacement</option>
+                        <option value="">Alcohol Evaporator Cleaning</option>
+                        <option value="">Alternator Replacement</option>
+                        <option value="">Automatic Drain Valve Inspection</option>
+                        <option value="">Axle Lubricant and Filter Replacement</option>
+                        <option value="">Ball Joint Replacement</option>
+                        <option value="">Battery Inspection</option>
+                        <option value="">Battery-Powered HVAC System Inspection</option>
+                        <option value="">Battery Replacement</option>
+                        <option value="">Brake Caliper Replacement</option>
+                        <option value="">Brake Camshaft Bracket Lubrication</option>
+                        <option value="">Brake Inspection</option>
+                        <option value="">Brake Pad(s) Replacement</option>
+                     </optgroup>
+                  </select>
+               </div>
+               <div class="col-md-2 col-lg-2">
+                  <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="submit">Reset</button>
+               </div>
+
+               <div class="col-md-1 col-lg-1 text-right pr-1">
+                  <div class="btn-group flex-wrap ml-4">
+                     <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">CSV</a>
+                        <a class="dropdown-item text-1" href="">PDF</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </header>
+
+         <div class="m-2">
+         <div class="row text-dark">
+            <div class="col-12 mb-3">
+               <div class="bg-white p-3">
+                  <div class="row text-dark">
+                     <div class="col-12">
+                        <div>
+                           <h4 class="mt-1 mb-0 font-weight-bold">Vehicle Maintenance Report</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-3 mb-3">
+               <div class="bg-white p-3">
+                  <div>
+                     <h4 class="m-0 text-4">Total Drivers</h4>
+                     <h3 class="mt-1 mb-0 font-weight-bold">122</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="col-3 mb-3">
+               <div class="bg-white p-3">
+                  <div>
+                     <h4 class="m-0 text-4">Total Vehicles</h4>
+                     <h3 class="mt-1 mb-0 font-weight-bold">66</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="col-3 mb-3">
+               <div class="bg-white p-3">
+                  <div>
+                     <h4 class="m-0 text-4">Active Issues</h4>
+                     <h3 class="mt-1 mb-0 font-weight-bold">99</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="col-3 mb-3">
+               <div class="bg-white p-3">
+                  <div>
+                     <h4 class="m-0 text-4">Resolved Issues</h4>
+                     <h3 class="mt-1 mb-0 font-weight-bold">44</h3>
+                  </div>
+               </div>
+            </div>
+            <div class="col">
+               <div class="card">
+                  <div class="card-body bor-radius0px">
+                     <!-- Vehicle Div  -->
+                     <div id="ifta-report-distance-vehicle-div">
+                        <section class="reports_div">
+                           <table class="table reports_small_div">
+                              <thead>
+                                 <tr class="back-color-gray">
+                                    <th>Vehicle</th>
+                                    <th>Driver</th>
+                                    <th>Issue</th>
+                                    <th>Service Task</th>
+                                    <th>Status</th>
+                                    <th>Completion Date</th>
+                                    <th>Total Cost</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr>
+                                    <td>255F-54</td>
+                                    <td>Alex</td>
+                                    <td>Brakes</td>
+                                    <td>Brake Inspection</td>
+                                    <td>Pending</td>
+                                    <td>Dec 22, 2020</td>
+                                    <td>$ 30.00</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Vehicle 2</td>
+                                    <td>Ritesh</td>
+                                    <td>Tires</td>
+                                    <td>Tire Service</td>
+                                    <td>Done</td>
+                                    <td>Nov 09, 2020</td>
+                                    <td>$ 355.00</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Vehicle 3</td>
+                                    <td>Manjit</td>
+                                    <td>Brakes</td>
+                                    <td>Brake Inspection</td>
+                                    <td>Pending</td>
+                                    <td>Dec 12, 2020</td>
+                                    <td>$ 30.00</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Vehicle 4</td>
+                                    <td>Hardeep</td>
+                                    <td>Tires</td>
+                                    <td>Tire Service</td>
+                                    <td>Pending</td>
+                                    <td>Nov 30, 2020</td>
+                                    <td>$ 355.00</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </section>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </section>
+   </div>
+</section>

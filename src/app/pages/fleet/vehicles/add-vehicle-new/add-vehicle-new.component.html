@@ -366,7 +366,7 @@
                                        (Set Reminder) <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
                                     <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker"
                                        name="annualSafetyDate" [(ngModel)]="annualSafetyDate" placeholder="yyyy/mm/dd"
-                                       class="form-control" #annualSlt="ngModel" required>
+                                       class="form-control" #annualSlt="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <div *ngIf="annualSlt.invalid && (annualSlt.dirty || annualSlt.touched)"
                                        class="text-danger">
                                        <div *ngIf="annualSlt.errors.required">
@@ -594,7 +594,7 @@
                                     </label>
                                     <input type="text" placeholder="yyyy/mm/dd" class="form-control"
                                        name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker
-                                       #d2="ngbDatepicker" [(ngModel)]="lifeCycle.startDate" #date="ngModel" required>
+                                       #d2="ngbDatepicker" [(ngModel)]="lifeCycle.startDate" #date="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                        <div *ngIf="date.errors.required">
                                           Start date is required.
@@ -607,7 +607,7 @@
                            <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer in Miles
                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Odometer reading on in-service date."></i>
@@ -718,7 +718,7 @@
                                     </label>
                                     <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" class="form-control"
                                        name="lifeCycle.outOfServiceDate" [(ngModel)]="lifeCycle.outOfServiceDate"
-                                       placeholder="yyyy/mm/dd">
+                                       placeholder="yyyy/mm/dd" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                               </div>
                            </div>
@@ -726,7 +726,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service
-                                       Odometer <span class="text-1 optional-label-color">(optional) </span>
+                                       Odometer in Miles <span class="text-1 optional-label-color">(optional) </span>
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Final odometer reading on out-of-service date"></i>
                                     </label>
@@ -751,36 +751,35 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height <span class="text-1 optional-label-color"> (optional) </span> </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" placeholder="eg. 4.15 meters"
                                              class="form-control" name="specifications.height"
-                                             [(ngModel)]="specifications.height" #height="ngModel" required
-                                             pattern="^[0-9\.]+$">
-                                          <div *ngIf="height.invalid && (height.dirty || height.touched)"
+                                             [(ngModel)]="specifications.height" #height="ngModel" 
+                                             >
+                                          <!-- <div *ngIf="height.invalid && (height.dirty || height.touched)"
                                              class="text-danger">
                                              <div *ngIf="height.errors.required">
                                                 Height is required.
 
 
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6">
                                           <ng-select placeholder="Select unit" class="form-control populate"
                                              name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit"
-                                             #hType="ngModel" required>
+                                             #hType="ngModel" >
                                              <ng-option value="Feet">Feet</ng-option>
                                              <ng-option value="Meter">Meter</ng-option>
                                           </ng-select>
-                                          <div *ngIf="hType.invalid && (hType.dirty || hType.touched)"
+                                          <!-- <div *ngIf="hType.invalid && (hType.dirty || hType.touched)"
                                              class="text-danger">
                                              <div *ngIf="hType.errors.required">
                                                 Height type is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -897,7 +896,7 @@
                                           class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfIssue"
-                                       [(ngModel)]="insurance.dateOfIssue">
+                                       [(ngModel)]="insurance.dateOfIssue" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount
@@ -949,7 +948,7 @@
                                        <span class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfExpiry"
-                                       [(ngModel)]="insurance.dateOfExpiry">
+                                       [(ngModel)]="insurance.dateOfExpiry" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5 pb-3 mb-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Every
@@ -1016,20 +1015,19 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <ng-select class="form-control populate" placeholder="Select Fuel Type"
-                                       name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" required>
+                                       name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" >
                                        <ng-option value="Diesel">Diesel</ng-option>
                                        <ng-option value="Gasoline">Gasoline</ng-option>
                                        <ng-option value="Propane">Propane</ng-option>
                                     </ng-select>
-                                    <div *ngIf="fuel.invalid && (fuel.dirty || fuel.touched)" class="text-danger">
+                                    <!-- <div *ngIf="fuel.invalid && (fuel.dirty || fuel.touched)" class="text-danger">
                                        <div *ngIf="fuel.errors.required">
                                           Fuel type is required.
                                        </div>
-                                    </div>
+                                    </div> -->
                                  </div>
                               </div>
                            </div>
@@ -1039,36 +1037,36 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                                        Capacity
-                                       <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.fuelTankOneCapacity"
                                              min="0" [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200"
-                                             #fuelTank="ngModel" required pattern="^[0-9\.]+$">
+                                             #fuelTank="ngModel">
 
-                                          <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)"
+                                          <!-- <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)"
                                              class="text-danger">
                                              <div *ngIf="fuelTank.errors.required">
                                                 Fuel tank is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.fuelTankOneType" min="1"
                                              [(ngModel)]="fluid.fuelTankOneType" placeholder="Select unit"
-                                             #tankType="ngModel" required>
+                                             #tankType="ngModel" >
                                              <optgroup label="">
                                                 <ng-option value="Gallons">Gallons</ng-option>
                                                 <ng-option value="Litres">Litres</ng-option>
                                              </optgroup>
                                           </ng-select>
-                                          <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)"
+                                          <!-- <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)"
                                              class="text-danger">
                                              <div *ngIf="tankType.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1110,32 +1108,31 @@
                            <div class="col-lg-5 mb-3 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.oilCapacity" min="0"
                                              [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #oil="ngModel"
-                                             required  pattern="^[0-9\.]+$">
-                                          <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
+                                             >
+                                          <!-- <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
                                              <div *ngIf="oil.errors.required">
                                                 Oil capacity is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1"
                                              [(ngModel)]="fluid.oilCapacityType" placeholder="Select unit"
-                                             #oil1="ngModel" required>
+                                             #oil1="ngModel">
                                              <ng-option value="Gallons">Gallons</ng-option>
                                              <ng-option value="Litres">Litres</ng-option>
                                           </ng-select>
-                                          <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
+                                          <!-- <div *ngIf="oil1.invalid && (oil1.dirty || oil1.touched)" class="text-danger">
                                              <div *ngIf="oil1.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1146,34 +1143,34 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust
-                                       Fluid) Capacity <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                       Fluid) Capacity <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.def" min="0"
                                              [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc." #def="ngModel"
-                                             required  pattern="^[0-9\.]+$">
-                                          <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
+                                             >
+                                          <!-- <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
                                              <div *ngIf="def.errors.required">
                                                 DEF is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                        <div class="col-lg-6 pl-0">
                                           <ng-select class="form-control populate" name="fluid.defType"
                                              [(ngModel)]="fluid.defType" placeholder="Select unit" #defType="ngModel"
-                                             required>
+                                             >
                                              <optgroup label="">
                                                 <ng-option value="Gallons">Gallons</ng-option>
                                                 <ng-option value="Litres">Litres</ng-option>
                                              </optgroup>
                                           </ng-select>
-                                          <div *ngIf="defType.invalid && (defType.dirty || defType.touched)"
+                                          <!-- <div *ngIf="defType.invalid && (defType.dirty || defType.touched)"
                                              class="text-danger">
                                              <div *ngIf="defType.errors.required">
                                                 Unit is required.
                                              </div>
-                                          </div>
+                                          </div> -->
                                        </div>
                                     </div>
                                  </div>
@@ -1400,10 +1397,10 @@
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control"
                                     Placeholder="yyyy/mm/dd" name="purchase.purchaseDate"
-                                    [(ngModel)]="purchase.purchaseDate">
+                                    [(ngModel)]="purchase.purchaseDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                               </div>
                               <div class="col-lg-10 pl-0">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer in Miles
                                     <span class="text-1 optional-label-color">(optional)</span> </label>
                                  <input type="text" class="form-control" name="purchase.purchaseOdometer"
                                     [(ngModel)]="purchase.purchaseOdometer" placeholder="eg. 4500">
@@ -1417,7 +1414,7 @@
                                        Date <span class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="purchase.warrantyExpirationDate"
-                                       [(ngModel)]="purchase.warrantyExpirationDate">
+                                       [(ngModel)]="purchase.warrantyExpirationDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-3 text-right">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
@@ -1538,13 +1535,13 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan <span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                     <input (click)="d8.toggle()" ngbDatepicker #d8="ngbDatepicker" class="form-control"
-                                       Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan">
+                                       Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date <span
                                           class="text-1 optional-label-color">(optional)</span> </label>
                                     <input (click)="d9.toggle()" ngbDatepicker #d9="ngbDatepicker" class="form-control"
-                                       Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate">
+                                       Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                               </div>
                            </div>

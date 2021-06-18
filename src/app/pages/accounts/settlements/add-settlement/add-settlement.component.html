@@ -1,0 +1,1489 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <h2>Settlement</h2>
+        <div class="right-wrapper text-right">
+          <div class="pull-right pr-2"> <a routerLink="/accounts/settlements/list" class="mb-1 mt-1 mr-1 mr-5 btn  btn-default"><i
+                     class="fas fa-list"></i> All Settlements</a>
+                     </div>
+        </div>
+      </header>
+      <section class="card mt-0">
+        <div class="card-body pr-0 pt-0 pb-0">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body text-dark">
+                <form class="form-horizontal form-bordered" method="get">
+                  <div class="row">
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row" id="settlementListDiv">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement For </label>
+                          <select data-plugin-selectTwo class="form-control populate" id="settlementFor" onchange="settlementForFn()">
+                            <optgroup>
+                              <option value="Driver">Driver</option>
+                              <option value="Carrier">Carrier</option>
+                              <option value="OwnerOperator">Owner Operator</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement#</label>
+                          <input type="text" class="form-control">
+                         </div>
+                         <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement Date </label>
+                          <input type="date" class="form-control">
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row pt-2">
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row" id="driverListDiv" style="display: block;">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Driver</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Driver">
+                              <option value="1">Select</option>
+                              <option value="1">Manjot</option>
+                              <option value="2">Dan</option>
+                              <option value="2">Nirvair</option>
+                              <option value="2">Baljit</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row" id="carrierListDiv" style="display: none;">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Carrier</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Carrier">
+                              <option value="1">Select</option>
+                              <option value="1">Manjot</option>
+                              <option value="2">Dan</option>
+                              <option value="2">Nirvair</option>
+                              <option value="2">Baljit</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row" id="ownerOperatorListDiv" style="display: none;">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Owner Operator</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Owner Operator">
+                              <option value="1">Select</option>
+                              <option value="1">Manjot</option>
+                              <option value="2">Dan</option>
+                              <option value="2">Nirvair</option>
+                              <option value="2">Baljit</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <label class="control-label font-weight-bold pt-2">From Date</label>
+                      <input type="date" class="form-control"> </div>
+                    <div class="col-lg-2">
+                      <label class="control-label font-weight-bold pt-2">To Date</label>
+                      <input type="date" class="form-control"> </div>
+                    <div class="col-lg-2">
+                      <button class="btn btn-success mar-top-37">Search</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h4>Select Trips</h4> </div>
+                  </div>
+                  <!-- DRIVER SETTLEMENT DIV -->
+                  <div id="driverSettlementDiv" style="display: block;">
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                          <thead>
+                            <tr>
+                              <th width="5%">
+                                <input type="checkbox">
+                              </th>
+                              <th>Trip</th>
+                              <th>Type</th>
+                              <th>Date</th>
+                              <th>Order#</th>
+                              <th>Pick-up</th>
+                              <th>Delivery</th>
+                              <th>Driver</th>
+                              <th>Vehicle</th>
+                              <th>Assets</th>
+                              <th>Carrier</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>2205</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>119856</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>KJ54782</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>DFE-3250</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>ACV552</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>3389567</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-lg-10 offset-lg-1 text-right">
+                        <button class="btn btn-success">Select Trips</button>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <h4>Trips Information</h4> </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Loaded Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Empty Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="5"> </div>
+                        </div>
+                      </div>
+                                               <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Team Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Team Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="15"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                    <div class="col-lg-10 offset-lg-1">
+                    <h4 class="font-weight-bold">Trip Expenses</h4>
+                    </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                        <th>Trip#</th>
+                         <th>Expense Name</th>
+                         <th>Description</th>
+                         <th>Expense Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        <td>1212</td>
+                         <td>Fuel Expenses</td>
+                         <td>Paid by driver</td>
+                         <td>240 CAD</td>
+                        </tr>
+                        <tr>
+                        <td>78687</td>
+                         <td>Maintenance Expenses</td>
+                         <td>Paid by driver</td>
+                         <td>40 CAD</td>
+                        </tr>
+                      </tbody>
+                      </table>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Addition</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered" id="otherChargesTable">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>34 CAD</td>
+                              <td><span class="badge badge-dark p-2"><i class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" id="cell1" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell2" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell3" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell4" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm" onclick="insertRow()"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Addition</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Deduction</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>34 CAD</td>
+                              <td><span class="badge badge-dark p-2"><i
+                                                class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Deduction</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-4">
+                      <div class="col-lg-7 offset-lg-1">
+                        <!-- <div class="row pt-2">
+                          <div class="col-lg-2">
+                            <label class="control-label font-weight-bold">Driver Payment</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <option value="1">Pay Per Mile</option>
+                              <option value="1">Pay Per Hour</option>
+                              <option value="2">Percentage</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-2">
+                          </div>
+                        </div> -->
+                        <!-- <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 1</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="GST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 2</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="PST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 3</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="HST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div> -->
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Payment</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Other Charges</label>
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Add</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Deduct</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <!-- <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Taxes</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div> -->
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Grand Total</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- CARRIER SETTLEMENT DIV -->
+                  <div id="carrierSettlementDiv" style="display: none;">
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                                    <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                          <thead>
+                            <tr>
+                              <th width="5%">
+                                <input type="checkbox">
+                              </th>
+                              <th>Trip</th>
+                              <th>Type</th>
+                              <th>Date</th>
+                              <th>Order#</th>
+                              <th>Pick-up</th>
+                              <th>Delivery</th>
+                              <th>Driver</th>
+                              <th>Vehicle</th>
+                              <th>Assets</th>
+                              <th>Carrier</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>2205</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>119856</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>KJ54782</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>DFE-3250</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>ACV552</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>3389567</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-lg-10 offset-lg-1 text-right">
+                        <button class="btn btn-success">Select Trips</button>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <h4>Trips Information</h4> </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Loaded Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Empty Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="5"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                    <div class="col-lg-10 offset-lg-1">
+                    <h4 class="font-weight-bold">Trip Expenses</h4>
+                    </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                        <th>Trip#</th>
+                         <th>Expense Name</th>
+                         <th>Description</th>
+                         <th>Expense Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        <td>1212</td>
+                         <td>Fuel Expenses</td>
+                         <td></td>
+                         <td>240 CAD</td>
+                        </tr>
+                        <tr>
+                        <td>78687</td>
+                         <td>Maintenance Expenses</td>
+                         <td></td>
+                         <td>40 CAD</td>
+                        </tr>
+                      </tbody>
+                      </table>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Addition</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered" id="otherChargesTable">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>CAD 34</td>
+                              <td><span class="badge badge-dark p-2"><i
+                                                class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" id="cell1" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell2" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell3" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell4" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm" onclick="insertRow()"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Addition</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Deduction</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>CAD 34</td>
+                              <td><span class="badge badge-dark p-2"><i
+                                                class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Deduction</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-7 offset-lg-1">
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Carrier Payment</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="Flat">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Local Tax</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Federal Tax</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Total Payment</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Other Charges</label>
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Add</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Deduct</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Taxes</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Grand Total</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- OWNER OPERATOR SETTLEMENT -->
+                  <div id="ownerOperatorSettlementDiv" style="display: none;">
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                                    <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                          <thead>
+                            <tr>
+                              <th width="5%">
+                                <input type="checkbox">
+                              </th>
+                              <th>Trip</th>
+                              <th>Type</th>
+                              <th>Date</th>
+                              <th>Order#</th>
+                              <th>Pick-up</th>
+                              <th>Delivery</th>
+                              <th>Driver</th>
+                              <th>Vehicle</th>
+                              <th>Assets</th>
+                              <th>Carrier</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>2205</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>119856</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>KJ54782</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>DFE-3250</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>ACV552</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                            <tr onclick="window.location='trip-detail.php'">
+                              <td>
+                                <input type="checkbox">
+                              </td>
+                              <td>5689</td>
+                              <td>Regular</td>
+                              <td>1231</td>
+                              <td>22120</td>
+                              <td>Date: 6/02/2020 05:25 AM Location: Regina, SK</td>
+                              <td>Date: 06/10/2020 05:20 PM Location: Winnipeg, YT</td>
+                              <td>Mike</td>
+                              <td>5320</td>
+                              <td>3389567</td>
+                              <td>T11320</td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-lg-10 offset-lg-1 text-right">
+                        <button class="btn btn-success">Select Trips</button>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <h4>Trips Information</h4> </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Total Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Loaded Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Empty Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="5"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Total Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- DRIVER 1  -->
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Driver 1 Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Loaded Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Empty Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="5"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Total Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- DRIVER 2  -->
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Driver 2 Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Loaded Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Empty Miles</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="5"> </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold mt-1">Total Hours</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" value="345"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                    <div class="col-lg-10 offset-lg-1">
+                    <h4 class="font-weight-bold">Trip Expenses</h4>
+                    </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                        <th>Trip#</th>
+                         <th>Expense Name</th>
+                         <th>Description</th>
+                         <th>Expense Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                        <td>1212</td>
+                         <td>Fuel Expenses</td>
+                         <td>Paid by driver</td>
+                         <td>240 CAD</td>
+                        </tr>
+                        <tr>
+                        <td>78687</td>
+                         <td>Maintenance Expenses</td>
+                         <td>Paid by driver</td>
+                         <td>40 CAD</td>
+                        </tr>
+                      </tbody>
+                      </table>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Addition</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered" id="otherChargesTable">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>CAD 34</td>
+                              <td><span class="badge badge-dark p-2"><i class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" id="cell1" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell2" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell3" class="form-control"> </td>
+                              <td>
+                                <input type="text" id="cell4" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm" onclick="insertRow()"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Addition</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                        <h4 class="font-weight-bold">Deduction</h4> </div>
+                      <div class="col-lg-10 offset-lg-1">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Trip#</th>
+                              <th>Charge Name</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>23020</td>
+                              <td>Extra Time</td>
+                              <td>Took extra time.</td>
+                              <td>CAD 34</td>
+                              <td><span class="badge badge-dark p-2"><i
+                                                class="fas fa-trash-alt text-light"></i></span> </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <input type="text" class="form-control"> </td>
+                              <td>
+                                <button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="row">
+                          <div class="col-lg-3 offset-lg-8 pr-5">
+                            <div class="row">
+                              <div class="col-lg-6 text-right">
+                                <label class="control-label font-weight-bold">Total Deduction</label>
+                              </div>
+                              <div class="col-lg-6">
+                                <input type="text" class="form-control" value="345.67">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-1 text-right"> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-2 offset-lg-1"> <a href="driver1-settlement.php" class="btn btn-default btn-sm">Driver 1 Settlement</a> </div>
+                      <div class="col-lg-2"> <a href="driver1-settlement.php" class="btn btn-default btn-sm">Driver 2 Settlement</a> </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-7 offset-lg-1">
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Driver 1 Payment</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="342">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="font-weight-bold">
+                              <input type="checkbox"> Deduct from Owner Operator</label>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Driver 2 Payment</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="34">
+                          </div>
+                          <div class="col-lg-4">
+                            <label class="font-weight-bold">
+                              <input type="checkbox"> Deduct from Owner Operator</label>
+                          </div>
+                        </div>
+                        <!-- <div class="row pt-2">
+                                       <div class="col-lg-3 text-right"><label class="control-label font-weight-bold">Carrier Payment</label></div>
+                                       <div class="col-lg-2"><input type="text" class="form-control" value="Flat"></div>
+                                       <div class="col-lg-2"><input type="text" class="form-control" placeholder="Value"></div>
+                                       </div> -->
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 1</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="GST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 2</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="PST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row pt-2">
+                          <div class="col-lg-3 text-right">
+                            <label class="control-label font-weight-bold">Tax 3</label>
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" value="HST">
+                          </div>
+                          <div class="col-lg-2">
+                            <input type="text" class="form-control" placeholder="Value">
+                          </div>
+                          <div class="col-lg-2">
+                            <select data-plugin-selectTwo class="form-control populate">
+                              <optgroup>
+                                <option value="1">%</option>
+                                <option value="2">CAD</option>
+                                <option value="2">USD</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Freight Charges</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Other Charges</label>
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Add</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Deduct</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Taxes</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">Grand Total</label>
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" value="345.67">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row mt-4">
+                    <div class="col-lg-11 text-right">
+                      <button class="btn btn-default" onclick="goBack()">Cancel</button>
+                      <button class="btn btn-success">Save</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>

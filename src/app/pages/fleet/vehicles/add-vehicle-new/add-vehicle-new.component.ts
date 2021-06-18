@@ -99,7 +99,7 @@ export class AddVehicleNewComponent implements OnInit {
     outOfServiceOdometer: '',
   };
   specifications = {
-    height: '',
+    height: null,
     heightUnit: 'Feet',
     length: '',
     lengthUnit: '',
@@ -137,11 +137,11 @@ export class AddVehicleNewComponent implements OnInit {
     fuelTankOneCapacity: '',
     fuelTankOneType: 'Litres',
     fuelQuality: '',
-    fuelTankTwoCapacity: '',
+    fuelTankTwoCapacity: null,
     fuelTankTwoType: 'Litres',
-    oilCapacity: '',
+    oilCapacity: null,
     oilCapacityType: 'Litres',
-    def: '',
+    def: null,
     defType: 'Litres'
   };
   wheelsAndTyres = {
@@ -262,6 +262,9 @@ export class AddVehicleNewComponent implements OnInit {
   groupSubmitDisabled = false;
   countryName = '';
   stateName = '';
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {
@@ -532,6 +535,8 @@ export class AddVehicleNewComponent implements OnInit {
     };
 
     // create form data instance
+    // console.log(data); 
+    // return;
     const formData = new FormData();
 
     // append photos if any

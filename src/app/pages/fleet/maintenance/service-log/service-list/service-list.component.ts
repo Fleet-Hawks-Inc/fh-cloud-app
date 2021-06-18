@@ -164,6 +164,16 @@ export class ServiceListComponent implements OnInit {
         this.suggestedVehicles = [];
         this.getStartandEndVal();
 
+        result['Items'].map((v:any) => {
+          v.entityStatus = 'Active';
+          if(v.currentStatus === 'outOfService') {
+            v.entityStatus = 'Out of service';
+          } else if(v.currentStatus === 'active') {
+            v.entityStatus = 'Active';
+          } else if(v.currentStatus === 'inActive') {
+            v.entityStatus = 'In-active';
+          }
+        })
         this.logs = result['Items'];
         
         if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
@@ -172,12 +182,13 @@ export class ServiceListComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          this.serviceLogNext = false;
+          this.serviceLogNext = false; 
+          let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g,'--');
           // for prev button
-          if (!this.serviceLogPrevEvauatedKeys.includes(result['LastEvaluatedKey'].logID)) {
-            this.serviceLogPrevEvauatedKeys.push(result['LastEvaluatedKey'].logID);
+          if (!this.serviceLogPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.serviceLogPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].logID;
+          this.lastEvaluatedKey = lastEvalKey;
           
         } else {
           this.serviceLogNext = true;

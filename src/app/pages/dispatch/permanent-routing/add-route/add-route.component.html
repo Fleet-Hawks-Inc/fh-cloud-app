@@ -468,7 +468,7 @@
                                                             name="recurring.date" type="text"
                                                             placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control" #dateM="ngModel"
-                                                            required>
+                                                            required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                                         <div *ngIf="dateM.invalid && (dateM.dirty || dateM.touched)"
                                                             class="text-danger">
 

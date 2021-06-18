@@ -16,11 +16,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import {
-  DashboardDriverComponent,
-
-} from './index';
-import {DeviceModule} from './devices/devices.module'
+import { DashboardDriverComponent } from './index';
+import {DeviceModule} from './devices/devices.module';
 const COMPONENTS = [
   DashboardDriverComponent,
 ];

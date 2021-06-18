@@ -42,7 +42,7 @@ export class AddAssetsComponent implements OnInit {
       model: null,
       length: 0,
       lengthUnit: null,
-      height: 0,
+      height: '',
       heightUnit: null,
       axle: '',
       GVWR: '',
@@ -111,6 +111,9 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
   submitDisabled = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
