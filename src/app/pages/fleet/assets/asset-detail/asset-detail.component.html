@@ -69,13 +69,13 @@
                                            <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
                                            <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model"> &amp;</span> {{modelsObjects[model]}}</td>
                                         </tr>
-                                        <tr *ngIf="lengthUnit != null">
+                                        <tr>
                                            <td class="back-color-gray font-weight-bold">Length</td>
-                                           <td class="text-capitalize">{{length ? length : '-'}}</td>
+                                           <td class="text-capitalize">{{length ? length : '-'}} {{lengthUnit}}</td>
                                         </tr>
                                         <tr>
                                          <td class="back-color-gray font-weight-bold">Height</td>
-                                         <td class="text-capitalize">{{height ? height : '-'}}</td>
+                                         <td class="text-capitalize">{{height ? height : '-'}} {{heightUnit}}</td>
                                       </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Axles</td>

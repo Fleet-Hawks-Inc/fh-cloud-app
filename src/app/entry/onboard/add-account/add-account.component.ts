@@ -401,6 +401,15 @@ export class AddAccountComponent implements OnInit {
       this.passwordValidation.length = true
     } else{
       this.passwordValidation.length = false;
+  
+    
     }
+    if(password.includes('.')|| password.includes('-')){
+      this.passwordValidation.specialCharacters = true;
+    }
+
+
   }
+
+
 }

@@ -10,6 +10,7 @@ import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { ActivatedRoute } from '@angular/router';
 import { HighlightSpanKind } from 'typescript';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import { passwordStrength } from 'check-password-strength'
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -33,7 +34,7 @@ export class AddUserComponent implements OnInit {
     firstName: '',
     lastName: '',
     employeeID: '',
-    dateOfBirth: '',
+    dateOfBirth: null,
     phone: '',
     email: '',
     entityType: 'employee',
@@ -68,8 +69,8 @@ export class AddUserComponent implements OnInit {
       cities: []
     }],
     userAccount: {
-      contractStartDate: '',
-      contractEndDate: '',
+      contractStartDate: null,
+      contractEndDate: null,
       department: '',
       designation: ''
     },
@@ -98,6 +99,7 @@ export class AddUserComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+ 
   Error = '';
   Success = '';
   totalRecords = 20;
@@ -115,7 +117,13 @@ export class AddUserComponent implements OnInit {
   isEdit = false;
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  }
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
     if (this.contactID) {
@@ -265,6 +273,7 @@ export class AddUserComponent implements OnInit {
   }
 
   async addUser() {
+    
     this.hasError = false;
     this.hasSuccess = false;
     this.userDisabled = true;
@@ -311,9 +320,11 @@ export class AddUserComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
                 this.userDisabled = false;
+         
               },
               error: () => {
                 this.userDisabled = false;
+              
               },
               next: () => { },
             });
@@ -474,6 +485,38 @@ export class AddUserComponent implements OnInit {
           this.toastr.success('User is updated successfully');
         }
       });
+  }
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else{
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else{
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else{
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else{
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true
+    } else{
+      this.passwordValidation.length = false;
+    }
+    if(password.includes('.')|| password.includes('-')){
+      this.passwordValidation.specialCharacters = true;
+    }
   }
 
 }

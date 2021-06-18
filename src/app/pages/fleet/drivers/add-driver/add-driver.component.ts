@@ -1305,6 +1305,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } else{
       this.passwordValidation.length = false;
     }
+    if(password.includes('.')|| password.includes('-')){
+      this.passwordValidation.specialCharacters = true;
+    }
   }
 
 

@@ -20,7 +20,7 @@
             <section class="card form-wizard" id="w1">
               <div class="card-body card-body-nopadding">
                 <form id="userForm" class="form-horizontal form-bordered bg-white" name="userForm" [mustMatch]="['password', 'confirmPassword']"
-                #uForm="ngForm" novalidate="novalidate">
+                #uForm1="ngForm" novalidate="novalidate">
                   <div class="row pt-3">
                     <div class="col-lg-11">
                       <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
@@ -55,7 +55,7 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="eg. John"
-                            [(ngModel)]="userData.firstName" name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
+                            [(ngModel)]="userData.firstName" name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
                             <div *ngIf="ufName.invalid && (ufName.dirty || ufName.touched)" class="text-danger">
                               <div *ngIf="ufName.errors.required">
                                    First name is required.
@@ -70,7 +70,7 @@
                           <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="eg. Smith"
-                            [(ngModel)]="userData.lastName" name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z]{1,30}$">
+                            [(ngModel)]="userData.lastName" name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
                             <div *ngIf="ulName.invalid && (ulName.dirty || ulName.touched)" class="text-danger">
                               <div *ngIf="ulName.errors.required">
                                    Last name is required.
@@ -342,7 +342,7 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Username <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
-                            placeholder="eg. John_Smith"  class="form-control text-lowercase" [disabled]="enableUserLogin" #uuName="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
+                            placeholder="eg. John_Smith"  class="form-control text-lowercase" [disabled]="enableUserLogin" #uuName="ngModel" [required]="userData.loginEnabled" pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
 
                             maxlength="30">
                             <div *ngIf="uuName.invalid && (uuName.dirty || uuName.touched)" class="text-danger">
@@ -359,7 +359,7 @@
                           <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Type <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" [(ngModel)]="userData.userLoginData.userType"
-                            name="userType"  placeholder="Select User Type" #usertype="ngModel" required>
+                            name="userType"  placeholder="Select User Type" #usertype="ngModel" [required]="userData.loginEnabled">
                             <ng-option value="Super Admin">Super Admin</ng-option>
                             <!-- <ng-option value="Full Admin">Full Admin</ng-option>
                             <ng-option value="Read Only Admin">Read Only Admin</ng-option>
@@ -383,7 +383,7 @@
                           <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Password <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                <div class="input-group">
-                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg. $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
+                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg. $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" [required]="userData.loginEnabled" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\-\.]).{8,20}$" [type]="fieldTextType ? 'text' : 'password'" (input) ="validatePassword($event.target.value)"  class="form-control"
                                   />
                                   <div class="input-group-append">
                                     <span class="input-group-text eye">
@@ -400,7 +400,30 @@
                                   Password is required.
                                 </div>
                                 <div *ngIf="pwd.errors.pattern">
-                                  Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
+                                  <div class="row">
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
+                                      </p>
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+                                      
+                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowecase</p>
+                                        
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                                        
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -409,7 +432,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input  id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword" [disabled]="enableUserLogin"  name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"/>
+                              <input  id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword" [disabled]="enableUserLogin"  name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" [required]="userData.loginEnabled"   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"/>
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
                                     <i class="fa" [ngClass]="{
@@ -514,10 +537,14 @@
                     <div class="col-lg-11 text-right mt-3">
 
                       <button class="btn btn-default mr-1" data-dismiss="modal" type="button" (click)="cancel()">Cancel</button>
-                      <button type="button" class="btn btn-success mr-1"
-                      (click)="addUser()" *ngIf="!contactID" >Save</button>
-                      <button class="btn btn-success btnNext ng-star-inserted mr-1"
-                        (click)="updateUser()" *ngIf="contactID" >Update</button>
+                        <!-- if there is some error in validation  -->
+                      <button type="button" class="btn btn-success mr-1" (click)="addUser()" *ngIf="!contactID && !uForm1.form.valid" [disabled]="!uForm1.form.valid" >Save</button>
+                     <!-- if validations are ok and now the button will disable on submit click  -->
+                      <button type="button" class="btn btn-success mr-1" (click)="addUser()" *ngIf="!contactID && uForm1.form.valid" [disabled]="userDisabled" >Save</button>
+                         <!---- update case -->
+                      <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()" *ngIf="contactID  && !uForm1.form.valid"  [disabled]="!uForm1.form.valid" >Update</button>
+                      <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()" *ngIf="contactID && uForm1.form.valid" [disabled]="userDisabled">Update</button>
+                        
                     </div>
                   </div>
                 </form>

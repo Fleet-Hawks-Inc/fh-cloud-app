@@ -2472,12 +2472,23 @@ table.dataTable thead th, table.dataTable thead td {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
 
-
-
-
-
-
-
-
+input.placeholder-lowercase { 
+  text-transform: uppercase;
+}
+.placeholder-lowercase::-webkit-input-placeholder { /* WebKit browsers */
+  text-transform: none;
+}
+.placeholder-lowercase:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+.placeholder-lowercase::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+.placeholder-lowercase:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-transform: none;
+}
+.placeholder-lowercase::placeholder { /* Recent browsers */
+  text-transform: none;
+}
 
 

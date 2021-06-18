@@ -79,7 +79,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                       data-placement="top" title="Vehicle Identification Number."></i></label>
                   <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control text-uppercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control placeholder-lowercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                     <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
