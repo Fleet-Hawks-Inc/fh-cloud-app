@@ -61,7 +61,7 @@
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Vehicle Identification Number"></i>
                                     </label>
-                                    <input type="text" class="form-control text-uppercase" name="VIN" [(ngModel)]="VIN"
+                                    <input type="text" class="form-control placeholder-lowercase" name="VIN" [(ngModel)]="VIN"
                                        placeholder="17-18 digits alphanumeric,eg. 2G1WH55K5Y9322458" maxlength="18"
                                        #vin="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                                     <div *ngIf="vin.invalid && (vin.dirty || vin.touched)" class="text-danger">
@@ -76,7 +76,7 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number <span
                                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <input type="text" class="form-control text-uppercase" name="plateNumber" [(ngModel)]="plateNumber"
+                                    <input type="text" class="form-control placeholder-lowercase" name="plateNumber" [(ngModel)]="plateNumber"
                                        placeholder="eg. CAL 890" #pNum="ngModel" required
                                        pattern="^[a-zA-Z0-9\s]{6,8}$">
                                     <div *ngIf="pNum.invalid && (pNum.dirty || pNum.touched)" class="text-danger">

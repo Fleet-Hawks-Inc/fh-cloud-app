@@ -135,14 +135,14 @@ export class AddVehicleNewComponent implements OnInit {
   fluid = {
     fuelType: null,
     fuelTankOneCapacity: '',
-    fuelTankOneType: 'Litres',
+    fuelTankOneType: '',
     fuelQuality: '',
     fuelTankTwoCapacity: null,
-    fuelTankTwoType: 'Litres',
+    fuelTankTwoType: '',
     oilCapacity: null,
-    oilCapacityType: 'Litres',
+    oilCapacityType: '',
     def: null,
-    defType: 'Litres'
+    defType: ''
   };
   wheelsAndTyres = {
     numberOfTyres: '',

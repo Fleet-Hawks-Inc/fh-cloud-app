@@ -403,7 +403,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
-      this.fetchOrderByID();
+      this.fetchOrderByID(); 
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
@@ -424,7 +424,10 @@ export class AddOrdersComponent implements OnInit {
     let result = await this.apiService
       .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
-        this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+        if (!this.getOrderID) {
+          this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+        }
+        
         this.orderData.taxesInfo = [
           {
             name: 'GST',
