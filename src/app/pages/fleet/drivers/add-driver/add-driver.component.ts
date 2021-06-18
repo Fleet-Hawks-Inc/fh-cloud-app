@@ -317,7 +317,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.getcurrentDate = { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
     this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
     this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: 12, day: 31 };
-    this.futureDatesLimit = { year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate() };
+    this.futureDatesLimit = { year: date.getFullYear() + 30, month: 12, day: 1 };
   }
 
   /**

@@ -96,7 +96,7 @@
                                     Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
                                     [(ngModel)]="reminderData.tasks.dueDate" (click)="d.toggle()" ngbDatepicker
-                                    #d="ngbDatepicker" #date="ngModel" required />
+                                    #d="ngbDatepicker" #date="ngModel" required  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"/>
                                  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                     <div *ngIf="date.errors.required">
                                        Due date is required.
