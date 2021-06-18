@@ -1,12 +1,10 @@
-import { Injectable, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
-import { AccountsRoutingModule } from './accounts-routing.module';
+import { AddAccountComponent } from './add-account.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ChartsModule } from 'ng2-charts';
-import { HomeComponent } from './home/home.component';
+import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -58,19 +56,18 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
   }
 }
+
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [AddAccountComponent],
   imports: [
     CommonModule,
-    AccountsRoutingModule,
-    SharedModule,
+    FormsModule,
     NgSelectModule,
-    ChartsModule,
-    FormsModule
+    NgbModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class AccountsModule { }
+export class AddAccountModule { }

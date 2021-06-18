@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-chart-of-accounts',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChartOfAccountsComponent implements OnInit {
 
-  constructor() { }
+  carrierID = '5078';
+  http: any;
+  constructor(private accountService: AccountService, private toaster: ToastrService) { }
 
   ngOnInit() {
   }
+  addAccount() {
+    const data = {
+      name: 'harp'
+    };
+    this.accountService.postData(`sample/${this.carrierID}`, data).subscribe((res: any) => {
 
+        this.toaster.success('Account Added Successfully.');
+
+    });
+  }
 }

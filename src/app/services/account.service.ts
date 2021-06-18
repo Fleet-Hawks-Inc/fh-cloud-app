@@ -7,14 +7,13 @@ import {switchMap} from 'rxjs/internal/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class AccountService {
 
   public jwt = '';
   public jwtDecoded;
   public carrierID = '';
-  public BaseUrl = environment.BaseUrl;
   public AssetUrl = environment.AssetURL;
-  public AccountService = environment.AccountServiceUrl;
+  public AccountServiceUrl = environment.AccountServiceUrl;
   private httpOptions;
 
   private httpOptionsOld = {
@@ -49,7 +48,7 @@ export class ApiService {
   getJwt(url: string, data) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
+    return this.http.post(this.AccountServiceUrl + url , data , this.httpOptions);
 
   }
 
@@ -63,7 +62,7 @@ export class ApiService {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
 
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.AccountServiceUrl + url , data , headers);
 
   }
 
@@ -76,7 +75,7 @@ export class ApiService {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
 
-    return this.http.put<any>(this.BaseUrl + url , data , headers);
+    return this.http.put<any>(this.AccountServiceUrl + url , data , headers);
 
   }
   getData(url: string) {
@@ -87,7 +86,7 @@ export class ApiService {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
     };
 
-    return this.http.get<any>(this.BaseUrl + url , headers);
+    return this.http.get<any>(this.AccountServiceUrl + url , headers);
   }
 
   deleteData(url: string) {
@@ -97,7 +96,7 @@ export class ApiService {
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.delete<any>(this.BaseUrl + url , headers);
+    return this.http.delete<any>(this.AccountServiceUrl + url , headers);
   }
 
 
@@ -145,7 +144,7 @@ export class ApiService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.AccountServiceUrl + url , data , headers);
 
   }
 
