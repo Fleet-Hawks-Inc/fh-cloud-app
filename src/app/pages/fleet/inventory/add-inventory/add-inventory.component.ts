@@ -30,6 +30,8 @@ export class AddInventoryComponent implements OnInit {
   category = '';
   warehouseID = '';
   costUnitType = '';
+  warrantyTime: '';
+  warrantyUnit: '';
   aisle = '';
   row = '';
   bin = '';
@@ -123,10 +125,12 @@ export class AddInventoryComponent implements OnInit {
     let files = [...event.target.files];
 
     if (obj === 'uploadedDocs') {
+      this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
     } else {
+      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
       }
@@ -150,6 +154,7 @@ export class AddInventoryComponent implements OnInit {
       this.partNumber = result.partNumber;
       this.cost = result.cost;
       this.costUnit = result.costUnit;
+      this.costUnitType = result.costUnitType;
       this.quantity = result.quantity;
       this.itemName = result.itemName;
       this.description = result.description;
@@ -167,6 +172,8 @@ export class AddInventoryComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.warrantyTime= result.warrantyTime,
+      this.warrantyUnit= result.warrantyUnit,
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
       if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
@@ -236,6 +243,7 @@ export class AddInventoryComponent implements OnInit {
     const data = {
       partNumber: this.partNumber,
       cost: this.cost,
+      costUnitType: this.costUnitType,
       costUnit: this.costUnit,
       quantity: this.quantity,
       itemName: this.itemName,
@@ -246,14 +254,11 @@ export class AddInventoryComponent implements OnInit {
       row: this.row,
       bin: this.bin,
       warehouseVendorID: this.warehouseVendorID,
-      trackingQuantity: this.trackingQuantity,
-      reorderPoint: this.reorderPoint,
-      reorderQuality: this.reorderQuality,
-      leadTime: this.leadTime,
-      preferredVendorID: this.preferredVendorID,
       days: this.days,
       time: this.time,
       notes: this.notes,
+      warrantyTime: this.warrantyTime,
+      warrantyUnit: this.warrantyUnit
     };
 
      // create form data instance
@@ -321,6 +326,8 @@ export class AddInventoryComponent implements OnInit {
           this.days = '';
           this.time = '';
           this.notes = '';
+          this.warrantyTime = '',
+          this.warrantyUnit = ''
           this.toastr.success('Inventory Added Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
           if (this.requiredItem) {
@@ -371,6 +378,7 @@ export class AddInventoryComponent implements OnInit {
       partNumber: this.partNumber,
       cost: this.cost,
       costUnit: this.costUnit,
+      costUnitType: this.costUnitType,
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
@@ -388,6 +396,8 @@ export class AddInventoryComponent implements OnInit {
       days: this.days,
       time: this.time,
       notes: this.notes,
+      warrantyTime: this.warrantyTime,
+      warrantyUnit: this.warrantyUnit,
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs
     };
