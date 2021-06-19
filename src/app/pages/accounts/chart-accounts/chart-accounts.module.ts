@@ -9,7 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: 'list', component: ChartOfAccountsComponent},
-  { path: 'detail', component: ChartOfAccountsDetailsComponent},
+  { path: 'detail/:actID', component: ChartOfAccountsDetailsComponent},
 
 ];
 

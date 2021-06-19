@@ -32,7 +32,7 @@
             <button type="submit" class="btn btn-sm btn-success">Search</button>
           </div>
           <div class="col-md-7  col-lg-7 text-right">
-            <button data-target="#addAccountModal" data-toggle="modal" class="btn btn-success btn-sm "
+            <button (click)="showAcModal()" class="btn btn-success btn-sm "
               style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
           </div>
         </div>
@@ -56,133 +56,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">customer1 </td>
-                        <td routerLink="/accounts/chart-accounts/detail">2002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Accounts Receivable (A/R)</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Accounts Receivable (A/R)</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description about accounts.
-                        </td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
+                      <tr *ngFor="let ac of accounts">
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actDesc}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actBal}}&nbsp; {{ac.actBalCurrency}}</td>
                         <td>
                           <div class="btn-group flex-wrap">
                             <button type="button" class="btn" data-toggle="dropdown"><i
                                 class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Vendor 1 </td>
-                        <td routerLink="/accounts/chart-accounts/detail">2002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Accounts Payable (A/P)</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Accounts Payable (A/P)</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description about accounts.
-                        </td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Other Income</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Interest Earned</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Income</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Non Profit Income</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">60.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Other Expense</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Depreciaton</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Current Assets</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Inventory</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">this is description of the account.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Bank</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Chequing</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">this is description of the account.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">60.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td routerLink="/accounts/chart-accounts/detail">Account Name</td>
-                        <td routerLink="/accounts/chart-accounts/detail">1002</td>
-                        <td routerLink="/accounts/chart-accounts/detail">Loterm Assets</td>
-                        <!-- <td routerLink="/accounts/chart-accounts/detail">Goodwill</td> -->
-                        <td routerLink="/accounts/chart-accounts/detail">This is test description of the acount.</td>
-                        <td routerLink="/accounts/chart-accounts/detail">0.00 CAD</td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" class="btn" data-toggle="dropdown"><i
-                                class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu"> <a class="dropdown-item text-1" href="#">Edit</a> <a
-                                class="dropdown-item text-1" href="#">Delete</a> </div>
+                            <div class="dropdown-menu" role="menu">
+                              <button type="button" (click)="editAccount(ac.actID)" class="dropdown-item text-1">Edit</button>
+                               <!-- <button type="button" data-target="#addAccountModal" data-toggle="modal" class="dropdown-item text-1">Edit</button> -->
+                               <button type="button" class="dropdown-item text-1" (click)="deleteAccount(ac.actID)">Delete</button>
+                            </div>
                           </div>
                         </td>
                       </tr>
@@ -202,13 +90,13 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Account</h5>
+        <h5 class="modal-title">{{modalTitle}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
       <div class="modal-body text-dark">
-<app-add-account></app-add-account>
+<app-add-account [childMessage]="parentMessage"></app-add-account>
       </div>
     </div>
   </div>

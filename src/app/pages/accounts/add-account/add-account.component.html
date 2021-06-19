@@ -1,5 +1,4 @@
-<!-- <section class="body">
-<div class="inner-wrapper"> -->
+
   <form id="accountForm" class="form-horizontal form-bordered bg-white" name="accountForm">
     <div class="form-row">
       <div class="form-group col-lg-12">
@@ -42,8 +41,8 @@
             <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="actBal" name="actBal"> </div>
           <div class="col-lg-3 pl-0">
             <ng-select  class="form-control populate" [(ngModel)]="actBalCurrency" name="actBalCurrency">
-                <ng-option value="2">CAD</ng-option>
-                <ng-option value="2">USD</ng-option>
+                <ng-option value="CAD">CAD</ng-option>
+                <ng-option value="USD">USD</ng-option>
             </ng-select>
           </div>
           <div class="col-lg-1 pr-0">
@@ -73,10 +72,9 @@
     </div>
     <div class="form-row mt-2">
       <div class="col-lg-12 text-right">
-        <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="addAccount()">Save</button>
+        <button class="btn btn-default mr-2" (click)="hideModal()">Cancel</button>
+        <button type="button" class="btn btn-success" *ngIf="!childMessage" (click)="addAccount()">Save</button>
+        <button type="button" class="btn btn-success" *ngIf="childMessage" (click)="updateAccount()">Update</button>
       </div>
     </div>
   </form>
-<!-- </div>
-</section> -->
