@@ -135,14 +135,14 @@ export class AddVehicleNewComponent implements OnInit {
   fluid = {
     fuelType: null,
     fuelTankOneCapacity: '',
-    fuelTankOneType: 'Litres',
+    fuelTankOneType: '',
     fuelQuality: '',
-    fuelTankTwoCapacity: null,
-    fuelTankTwoType: 'Litres',
+    fuelTankTwoCapacity: '',
+    fuelTankTwoType: '',
     oilCapacity: null,
-    oilCapacityType: 'Litres',
+    oilCapacityType: '',
     def: null,
-    defType: 'Litres'
+    defType: ''
   };
   wheelsAndTyres = {
     numberOfTyres: '',
@@ -264,7 +264,7 @@ export class AddVehicleNewComponent implements OnInit {
   stateName = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {

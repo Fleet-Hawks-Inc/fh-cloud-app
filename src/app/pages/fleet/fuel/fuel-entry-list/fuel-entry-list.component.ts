@@ -66,7 +66,7 @@ export class FuelEntryListComponent implements OnInit {
   wexCategories:any={};
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(
     private apiService: ApiService,

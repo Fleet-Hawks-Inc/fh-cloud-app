@@ -76,11 +76,13 @@ export class DriverDetailComponent implements OnInit {
   calculateMiles: any;
 
   rate: string;
+  rateUnit: string;
   waitingPay: string;
+  waitingPayUnit: string;
   waitingHourAfter: string;
 
   deliveryRate: string;
-
+  deliveryRateUnit: string;
   SIN: any;
   loadPayPercentage: any;
   loadPayPercentageOf: any;
@@ -277,10 +279,13 @@ export class DriverDetailComponent implements OnInit {
           this.emptyMilesTeam = this.driverData.paymentDetails.emptyMilesTeam;
           this.emptyMilesTeamUnit = this.driverData.paymentDetails.emptyMilesTeamUnit;
 
-          this.rate = this.driverData.paymentDetails.rate + this.driverData.paymentDetails.rateUnit;
-          this.waitingPay = this.driverData.paymentDetails.waitingPay + this.driverData.paymentDetails.waitingPayUnit;
+          this.rate = this.driverData.paymentDetails.rate;
+          this.rateUnit = this.driverData.paymentDetails.rateUnit;
+          this.waitingPay = this.driverData.paymentDetails.waitingPay;
+          this.waitingPayUnit = this.driverData.paymentDetails.waitingPayUnit;
           this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
-          this.deliveryRate = this.driverData.paymentDetails.deliveryRate + this.driverData.paymentDetails.deliveryRateUnit;
+          this.deliveryRate = this.driverData.paymentDetails.deliveryRate;
+          this.deliveryRateUnit = this.driverData.paymentDetails.deliveryRateUnit;
           this.SIN = this.driverData.SIN;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;

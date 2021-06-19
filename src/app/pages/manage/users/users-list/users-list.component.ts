@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -32,25 +33,26 @@ export class UsersListComponent implements OnInit {
   ngOnInit() {
     this.fetchUsers();
   }
-  getSuggestions(value) {
+
+  getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
     if (value != '') {
       this.apiService
         .getData(`contacts/getEmployee/suggestions/${value}`)
         .subscribe((result) => {
-          result.Items.map((v) => {
+          result.map((v) => {
             if (v.lastName === undefined) {
               v.lastName = '';
             }
             return v;
           });
-          this.suggestedUsers = result.Items;
+          this.suggestedUsers = result;
         });
     } else {
       this.suggestedUsers = [];
     }
-  }
+  }, 800)
 
   setUser(contactID, firstName, lastName) {
     this.searchUserName = firstName + ' ' + lastName;

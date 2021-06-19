@@ -542,12 +542,12 @@
                   </div>
                   <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Rate:</div>
-                    <div class="col-lg-6 p-2 bor_half">{{rate}}</div>
+                    <div class="col-lg-6 p-2 bor_half">{{rate}}<span *ngIf="rateUnit != undefined">{{rateUnit}}</span></div>
                   </div>
                   <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting period Pay
                       ($):</div>
-                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingPay}}</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingPay}}<span *ngIf="waitingPayUnit!= undefined">{{waitingPayUnit}}</span></div>
                   </div>
                   <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting hour start
@@ -556,7 +556,7 @@
                   </div>
                   <div class="row  m-0" *ngIf="paymentType === 'Pay Per Delivery'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Delivery Rate:</div>
-                    <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}</div>
+                    <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}<span *ngIf="deliveryRateUnit != undefined">{{deliveryRateUnit}}</span></div>
                   </div>
 
                   <div class="row  m-0">

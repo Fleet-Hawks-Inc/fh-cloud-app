@@ -157,7 +157,8 @@
                                  Date (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="reminderData.lastServiceDate" name="reminderData.lastServiceDate" type="text"
                                  placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker
-                                 #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" #date123="ngModel" #lastService="ngModel" [required]="reminderData.tasks.remindByUnit == 'time'">
+                                 #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" #date123="ngModel" #lastService="ngModel" [required]="reminderData.tasks.remindByUnit == 'time'"
+                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  <div *ngIf="lastService.invalid && (lastService.dirty || lastService.touched)" class="text-danger">
                                     <div *ngIf="lastService.errors.required">
                                        Last service date is required.
