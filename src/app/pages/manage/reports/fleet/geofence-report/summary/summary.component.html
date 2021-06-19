@@ -1,18 +1,24 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5">
-               <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-2 col-lg-2">
-                     <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Geofence Reports</h4>
-                  </div>
-                  
-                  <div class="col-md-2 col-lg-2">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+               
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search geofence by name" type="text">
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <select data-plugin-selectTwo class="form-control">
+                        <optgroup label="">
+                           <option value="1">Geofence Type</option>
+                           <option value="2">Yard</option>
+                        </optgroup>
+                     </select>
                   </div>
             
                   <div class="col-md-2 col-lg-2">
-                     <button type="submit" class="btn btn-sm mr-2 btn-success line-height-18">Search</button>
+                     <button type="submit" class="btn btn-sm mr-3 btn-success line-height-18">Search</button>
                      <button class="btn btn-sm btn-success line-height-18" type="button">Reset</button>
                   </div>
                   
@@ -27,18 +33,30 @@
                   </div>
                </div>
             </header>
-            <div class="m-3">
+
+
+            <div class="m-2">
                <div class="row text-dark">
-                  
-                  
-                  <div class="col pr-0">
+                  <div class="col-12 mb-3">
+                     <div class="bg-white p-3">
+                        <div class="row text-dark">
+                           <div class="col-12">
+                              <div>
+                                 <h4 class="mt-1 mb-0 font-weight-bold">Geofence Summary</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col">
                      <div class="card">
-                        <div class="card-body">
+                        <div class="card-body bor-radius0px">
                            <section class="reports_div">
                               <table class="table reports_small_div">
                                  <thead>
                                       <tr class="back-color-gray">
-                                        <th>Geo-Fence Name</th>										
+                                        <th>Geofence Name</th>										
                                         <th>Location</th>
                                         <th>Type</th>
                                         <th>Description</th>

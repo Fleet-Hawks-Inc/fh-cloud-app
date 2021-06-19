@@ -148,7 +148,7 @@
                             Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
 
                           </div>
-                        </div>
+                        </div> 
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Birth Date <span
@@ -172,7 +172,7 @@
                             </label>
                             <input [(ngModel)]="driverData.firstName" (change)="onChangeHideErrors('firstName')"
                               name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel"
-                              required pattern="^[a-zA-Z]+$" maxlength="30">
+                              required pattern="^[a-zA-Z\s]+$" maxlength="30">
                             <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                               <div *ngIf="fName.errors.required">
                                 First name is required.
@@ -188,7 +188,7 @@
                             </label>
                             <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
                               name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                              required pattern="^[a-zA-Z]+$" maxlength="30">
+                              required pattern="^[a-zA-Z\s]+$" maxlength="30">
                             <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                               <div *ngIf="lName.errors.required">
                                 Last name is required.
@@ -238,7 +238,7 @@
                                       
                                       <p class="text-dark pt-2 mb-0"> <span class="pr-1"
                                           [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowecase</p>
+                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
                                         
                                     </div>
                                     <div class="col-lg-12">
@@ -384,7 +384,7 @@
                             </label>
                             <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
                               #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text"
-                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required [minDate]="birthDateMinLimit">
+                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date1.invalid && (date1.dirty || date1.touched)" class="text-danger">
                               <div *ngIf="date1.errors.required">
                                 Start date is required.
@@ -399,7 +399,7 @@
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              [minDate]="birthDateMinLimit">
+                              [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
 
                               <div *ngIf="tDate.errors.required" class="text-danger">
@@ -416,7 +416,7 @@
                             <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker
                               #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
                               type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #date2="ngModel" required [minDate]="birthDateMinLimit">
+                              #date2="ngModel" required [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date2.invalid && (date2.dirty || date2.touched)" class="text-danger">
                               <div *ngIf="date2.errors.required">
                                 Start date is required.
@@ -432,7 +432,7 @@
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #endDate="ngModel" [minDate]="birthDateMinLimit">
+                              #endDate="ngModel" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
                                 End date is required.
@@ -891,7 +891,7 @@
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
                             name="crossBorderDetails.fastExpiry" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
-                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit">
+                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                         </div>
                       </div>
                     </div>
@@ -1010,7 +1010,7 @@
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
                           name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
-                          class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit">
+                          class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Health Care# <span

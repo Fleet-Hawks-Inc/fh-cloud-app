@@ -79,7 +79,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                       data-placement="top" title="Vehicle Identification Number."></i></label>
                   <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control text-uppercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control placeholder-lowercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                     <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
@@ -97,7 +97,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                     [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                    class="form-control" #sd1="ngModel" required [minDate]="dateMinLimit">
+                    class="form-control" #sd1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                     <div *ngIf="sd1.invalid && (sd1.dirty || sd1.touched)" class="text-danger">
 
                         <div *ngIf="sd1.errors.required">
@@ -516,7 +516,7 @@
                       Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                     <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                       name="assetDetails.annualSafetyDate" placeholder="yyyy/mm/dd"[(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                      class="form-control" #dSlt="ngModel" required [minDate]="dateMinLimit">
+                      class="form-control" #dSlt="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                       <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                           <div *ngIf="dSlt.errors.required">
                             Annual safety date is required.
@@ -594,7 +594,7 @@
                       Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
                       type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                      class="form-control" [minDate]="dateMinLimit">
+                      class="form-control" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
                   </div>
                   <div class="col-lg-5">
@@ -640,7 +640,7 @@
                       Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                     <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
                       placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
-                      class="form-control" [minDate]="dateMinLimit">
+                      class="form-control" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
                   </div>
                   <div class="col-lg-5">

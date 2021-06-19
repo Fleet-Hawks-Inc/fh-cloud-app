@@ -1,51 +1,34 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-4">
-               <!-- <div class="row py-2">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
-                             Logs Detail
-                          </div>
-                  </div> -->
-               <div class="row"  style="padding-top:10px;">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
                   
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                                          <optgroup label="Select Group">
-                                             <option value="1">All Drivers</option>
-                                             <option value="2">Test</option>
-                                             <option value="2"> ABC</option>
-                                          </optgroup>
-                                       </select>
+                        <input class="form-control" placeholder="Search Vehicle" type="text">
                      </div>
                   </div>
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                                           <optgroup label="">
                                              <option value="1">Active</option>
-                                             <option value="2">Deactivated</option>
+                                             <option value="2">Inactive</option>
+                                             <option value="2">Out of Service</option>
+                                             <option value="2">Sold</option>
                                           </optgroup>
                                        </select>
                      </div>
                   </div>
+
+
                   <div class="col-md-2 col-lg-2">
-                     <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                                          <optgroup label="">
-                                             <option value="1">All Assignments</option>
-                                             <option value="2">Assigned</option>
-                                             <option value="2">Not Assigned</option>
-                                          </optgroup>
-                                       </select>
-                     </div>
-                  </div>
-                  <div class="col-md-1 col-lg-1">
-                     <button type="submit" class="btn btn-sm btn-success">Search</button>
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
                   </div>
                  
-                  <div class="col-md-5  col-lg-5 text-right pr-5">
+                  <div class="col-md-6 col-lg-6 text-right pr-1">
                      <div class="btn-group flex-wrap ml-2">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -56,12 +39,11 @@
                   </div>
                </div>
             </header>
+
             <div class="row text-dark">
-               <div class="col pr-0">
+               <div class="col">
                   <div class="card">
-                     <div class="card-body">
-                       
-                       
+                     <div class="card-body bor-radius0px">
                            <div class="row">
                               <div class="col-lg-4">
                                  <table class="table table-bordered table-responsive-lg">
@@ -102,13 +84,13 @@
                               <table class="table reports_small_div">
                                  <thead>
                                     <tr class="back-color-gray">
-                                       <th>Vehicle ID</th>
-                                       <th>Trip ID</th>
-									   <th>VIN</th>
+                                       <th>Vehicle Name/Number</th>
+                                       <th>Trip</th>
+									            <th>VIN</th>
                                        <th>Year</th>
-									   <th>Make</th>
-									   <th>Model</th>
-									   <th>Type</th>
+                                       <th>Make</th>
+                                       <th>Model</th>
+                                       <th>Type</th>
                                        <th>Plate#</th>
                                        <th>Vehicle ELD S/N</th>
                                        <th>Last Drive Time</th>

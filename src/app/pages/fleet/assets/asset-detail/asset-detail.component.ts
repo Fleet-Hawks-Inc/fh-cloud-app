@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import {environment} from '../../../../../environments/environment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -43,6 +44,7 @@ export class AssetDetailComponent implements OnInit {
   length: string;
   lengthUnit: string;
   height: string;
+  heightUnit:string;
   axle: string;
   GAWR: string;
   GAWR_Unit: string;
@@ -81,6 +83,7 @@ export class AssetDetailComponent implements OnInit {
   inspectionForms = {
     inspectionFormName : '',
     parameters: [],
+    isDefaultInspectionType:'',
     inspectionType: ''
   };
   // Charts
@@ -204,9 +207,10 @@ export class AssetDetailComponent implements OnInit {
           this.year =  result.assetDetails.year;
           this.manufacturer =  result.assetDetails.manufacturer;
           this.model =  result.assetDetails.model;
-          this.length = result.assetDetails.length + ' ' + result.assetDetails.lengthUnit;
-          this.height = result.assetDetails.height + ' ' + result.assetDetails.heightUnit;
+          this.length = result.assetDetails.length; 
+          this.height = result.assetDetails.height; 
           this.lengthUnit = result.assetDetails.lengthUnit;
+          this.heightUnit=result.assetDetails.heightUnit;
           this.axle = result.assetDetails.axle;
           this.GAWR = result.assetDetails.GAWR;
           this.GAWR_Unit = result.assetDetails.GAWR_Unit;
