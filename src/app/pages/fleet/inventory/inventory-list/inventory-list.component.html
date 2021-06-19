@@ -80,17 +80,10 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()">
-                                        Warranty Days and Time
+                                        Warranty Time
                                     </label>
                                 </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint" name="reorderPoint"
-                                            (change)="hideShowColumn()"> Reorder Point </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity" name="reorderQuantity"
-                                            (change)="hideShowColumn()"> Reorder Quantity </label>
-                                </a>
+                                
                             </div>
                         </div>
                         <a [routerLink]="" (click)="openTransferModal()"
@@ -186,7 +179,7 @@
                                                         <th class="col5">Quantity</th>
                                                         <th class="col7">Unit Cost</th>
                                                         <th class="col8">Warehouse Details</th>
-                                                        <th class="col9 extra">Warranty Days and Time</th>
+                                                        <th class="col9 extra">Warranty Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
                                                         <th class="col11 extra">Reorder Quantity</th>
                                                         <th>Actions</th>
@@ -231,17 +224,9 @@
                                                         <!-- extra columns -->
                                                         <td *ngIf="hideShow.warranty"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.days}} and {{item.time}}
+                                                            {{item.warrantyTime ? item.warrantyTime : '-'}} {{item.warrantyUnit}}
                                                         </td>
-                                                        <td *ngIf="hideShow.reorderPoint"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.reorderPoint}}
-                                                        </td>
-                                                        <td *ngIf="hideShow.reorderQuantity"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.reorderQuality}}
-                                                        </td>
-
+                                                        
                                                         <td>
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button"
