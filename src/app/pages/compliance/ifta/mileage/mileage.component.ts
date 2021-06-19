@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { timer } from 'rxjs';
+import {ActivatedRoute} from '@angular/router'
+import {CountryStateCity} from 'src/app/shared/utilities/countryStateCities'
+import Constants from '../../../fleet/constants';
+import {NgxSpinnerService} from 'ngx-spinner'
 declare var $: any;
 @Component({
   selector: 'app-mileage',
@@ -10,54 +14,73 @@ declare var $: any;
 export class MileageComponent implements OnInit {
 
   activeTab = 'jurisdiction';
-  countries = [];
-  states = [];
-  form;
-  fuelList;
-  unitType = '';
-  modalStateID = '';
-  baseState: string;
-  baseCountry: string;
-  accountNumber: string;
-  EIN: string;
-  signingAuthority = {
-    name: '',
-    phone: '',
-    title: '',
-  };
-  totalGallons = 0;
-  data = [];
-  stateList = [];
-  unitList = [];
-  vehicleList = [];
-  assetList = [];
-  tripList = [];
-  stateNameList = [];
-  constructor(private apiService: ApiService) { }
+  public countries:any;
+  public states:any;
+  public baseCountry:any;
+  public vehicleList:any;
+  public recordCount:any;
+  public dataMessage:any;
+  public isRecords:any;
+  public recordStartPoint:any;
+  public recordEndPoint:any;
+  public recordDraw:any;
+  public pageLength=10;
+  public records:any;
+  public recordNext:any;
+  public recordPrevEvauatedKeys=[];
+  public lastEvaluatedKey='';
+  public totalRecords;
+  public recordPrev:any;
+  public quarter:any;
+  public quarterReport:any={};
+  public jurisdictionReport:any;
+  constructor(private apiService: ApiService, private spinner: NgxSpinnerService,private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this. fetchCountries();
-    this.fuelEntries();
-    this.fetchStateData();
+    this.quarter=this.route.snapshot.params['quarter']
+    this.fetchCountries();
     this.fetchVehicleList();
-    this.fetchAssetList();
-    this.fetchTripList();
-    this.fetchStateList();
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
+    this.fetchCount();
+    this.fetchQuarterRreport();
+    this.fetchJurisdiction();
+
+  }
+
+  fetchJurisdiction(){
+    this.apiService.getData('ifta/jurisdiction/'+this.quarter).subscribe(result=>{
+      this.jurisdictionReport=result;
+    })
+
+  }
+
+  fetchQuarterRreport(){
+    this.apiService.getData('ifta/quarter/'+this.quarter).subscribe(result=>{
+      this.quarterReport.totalMilesCA=result[0].totalMilesCA
+      this.quarterReport.totalMilesUS=result[0].totalMilesUS
+      this.quarterReport.totalQuantityGallons=result[0].totalQuantityGallons
+      this.quarterReport.totalQuantityLitres=result[0].totalQuantityLitres
+    })
+
+  }
+  fetchCount(){
+    this.recordCount=0;
+    this.apiService.getData('ifta/get/count?quarter='+this.quarter).subscribe({
+      complete:()=>{},
+      error:()=>{},
+      next:(result:any)=>{
+        this.recordCount=result.Count;
+        
+        this.initDataTable();
+      }
+
+    })
+
   }
   fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
+  this.countries=CountryStateCity.GetAllCountries();
   }
   getStates() {
-    this.apiService.getData('states/country/' + this.baseCountry)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+    this.states=CountryStateCity.GetStatesByCountryCode([this.baseCountry])
   }
   addIftaAccount() {
     // const data = {
@@ -71,85 +94,64 @@ export class MileageComponent implements OnInit {
     //   }
     // };
   }
-  fuelEntries() {
-    this.apiService.getData('fuelEntries/group/byunit').subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        this.fuelList = result;
-      },
-    });
-  }
-  fetchStateData() {
-    this.apiService.getData('fuelEntries/group/bystate').subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
-      next: (result: any) => {
-        this.stateList = result;
-        for(let i=0; i < this.stateList.length; i++){
-           this.totalGallons = this.totalGallons + this.stateList[i].fuelGal;
 
-        }
-      },
-    });
+  getStartandEndVal(type){
+    if(type=='all'){
+      this.recordStartPoint=this.recordDraw*this.pageLength+1;
+      this.recordEndPoint=this.recordStartPoint + this.pageLength -1;
+    }
   }
   initDataTable() {
-    timer(200).subscribe(() => {
-      $('#datatable-default').DataTable();
-    });
-  }
-  getFuelDetails(ID, type, state) {
-    if(type === 'vehicle'){
-      this. fetchFuelDetailVehicle(ID, state);
+   this.spinner.show();
+   this.apiService.getData('ifta/fetch/records?quarter='+this.quarter+'&lastKey=' + this.lastEvaluatedKey)
+   .subscribe((result:any)=>{
+     if(result.Items.length==0){
+       this.dataMessage=Constants.NO_RECORDS_FOUND;
+       this.isRecords=false;
+     }
+     else{
+       this.isRecords=true;
+     }
+    this.getStartandEndVal('all');
+   this.fetchRecords(result,'all')
+    if (result['LastEvaluatedKey'] !== undefined) {
+      let lastEvalKey = result[`LastEvaluatedKey`].iftaSK.replace(/#/g,'--');
+      this.recordNext = false;
+      // for prev button
+      if (!this.recordPrevEvauatedKeys.includes(lastEvalKey)) {
+        this.recordPrevEvauatedKeys.push(lastEvalKey);
+      }
+      this.lastEvaluatedKey = lastEvalKey;
+
+    } else {
+      this.recordNext = true;
+      this.lastEvaluatedKey = '';
+      this.recordEndPoint = this.totalRecords;
     }
-    else {
-      this. fetchFuelDetailReefer(ID, state);
+
+    if(this.totalRecords < this.recordEndPoint) {
+      this.recordEndPoint = this.totalRecords;
     }
+    if (this.recordDraw > 0) {
+      this.recordPrev = false;
+    } else {
+      this.recordPrev = true;
+    }
+    this.spinner.hide();
+  }, err => {
+    this.spinner.hide();
+  });
   }
-  fetchFuelDetailVehicle(ID, state) {
-    const vehicleID = ID;
-    const stateID = state;
-    this.modalStateID = state;
-    this.unitType = 'Vehicle';
-    this.apiService.getData('fuelEntries/vehicle/' + vehicleID)
-      .subscribe((result: any) => {
-        this.data = result.Items;
-        this.unitList = this.data.filter(v => v.stateID === stateID);
-      });
+  
+
+  fetchRecords(result,type=null){
+    this.records=result.Items
+
   }
-  fetchFuelDetailReefer(ID, state) {
-    const reeferID = ID;
-    const stateID = state;
-    this.unitType = 'Reefer';
-    this.modalStateID = state;
-    this.apiService.getData('fuelEntries/reefer/' + reeferID)
-      .subscribe((result: any) => {
-        this.data = result.Items;
-        this.unitList =  this.data.filter(r => r.stateID === stateID);
-      });
-  }
+  
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
-    });
-  }
-  fetchAssetList() {
-    this.apiService.getData('assets/get/list').subscribe((result: any) => {
-      this.assetList = result;
-    });
-  }
-  fetchTripList() {
-    this.apiService.getData('trips/get/list').subscribe((result: any) => {
-      this.tripList = result;
-    });
-  }
-  fetchStateList() {
-    this.apiService.getData('states/get/list').subscribe((result: any) => {
-      this.stateNameList = result;
     });
   }
 }

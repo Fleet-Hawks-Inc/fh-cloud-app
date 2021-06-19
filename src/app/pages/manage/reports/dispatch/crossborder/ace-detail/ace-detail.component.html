@@ -1,0 +1,615 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-3 col-lg-3 pr-0">
+                     <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        </span>
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                        to
+                        </span>
+                        <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" name="end">
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <div class="input-group input-group-sm mb-3">
+                        <select data-plugin-selectTwo class="form-control populate">
+                           <optgroup label="">
+                              <option value="1">Search by Drivers</option>
+                              <option value="2">Daljit Singh</option>
+                              <option value="2">Rosh</option>
+                           </optgroup>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
+                    <div class="input-group input-group-sm mb-3">
+                       <select data-plugin-selectTwo class="form-control populate">
+                          <optgroup label="">
+                             <option value="1">Search by Vehicle</option>
+                             <option value="2">1248</option>
+                             <option value="2">KE-2220</option>
+                          </optgroup>
+                       </select>
+                    </div>
+                 </div>
+                 
+                  
+                  <div class="col-md-2 col-lg-2">
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+                     <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                  </div>
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
+                     <div class="btn-group flex-wrap ml-2">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                           <a class="dropdown-item text-1" href="">CSV</a>
+                           <a class="dropdown-item text-1" href="">PDF</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </header>
+
+            <div class="m-2">
+               <div class="row text-dark">
+                  <div class="col-12 mb-3">
+                     <div class="bg-white p-3">
+                        <div class="row text-dark">
+                           <div class="col-12">
+                              <div>
+                                 <h4 class="mt-1 mb-0 font-weight-bold">ACE eManifest Detail</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+                        <div>
+                           <h4 class="m-0 text-4">Draft ACE</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold">40</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-4 mb-3">
+                     <div class="bg-white p-3">
+                        <div>
+                           <h4 class="m-0 text-4">Cancelled Manifest</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold">20</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-4 mb-3">
+                    <div class="bg-white p-3">
+                       <div>
+                          <h4 class="m-0 text-4">Completed Manifest</h4>
+                          <h3 class="mt-1 mb-0 font-weight-bold">20</h3>
+                       </div>
+                    </div>
+                 </div>
+                
+                  
+                  <div class="col">
+                     <div class="card">
+                        <div class="card-body bor-radius0px">
+                           <!-- Driver Div  -->
+                           <div >
+                              <section class="reports_div">
+                                <div  class="row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-5 font-weight-bold">Rajesh Sharma</label>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                                    <thead>
+                                       <tr>
+                                          <th>Trip#</th>
+										  <th>Shipment#</th>
+                                          <th>Shipment Type</th>
+                                          <th>Est Date/Time</th>                                          
+                                          <th>Port of entry</th>
+										  
+                                          <th>Vehicle</th>                                          
+                                          <th>Asset</th>
+                                          <th>Consignor</th>
+                                          <th>Consignee</th>
+                                          <th>Status</th>
+										  <th>Action</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">95800</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-13&nbsp;01:15:00</td>                                          
+                                          <td>Portland, ME</td>
+										  
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>whole</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+									   
+									   
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">55650</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td>                                          
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>test xyz</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="yellowBtn statusBtn">Transmitted to CBP</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">12000</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>mark</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="redBtn statusBtn">Cancelled Manifest</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+									   
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">9800</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td> 
+										  <td>Portland, ME</td>										  
+                                        
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>daljit</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="preliminaryStatusBtn statusBtn">Preliminary Manifest On File with CBP</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">4454</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td>   
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>tred</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="completeManifestStatusBtn statusBtn">Complete Manifest On File with CBP</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">2207</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Ostis</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="truckArrivalStatusBtn statusBtn">Truck Arrived at Border</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">2207</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Keeev</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="truckReleasedStatusBtn statusBtn">Truck Released at Border</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">2207</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Zent Cart</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="cbpReturnedError statusBtn">CBP Returned Error</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='ace-manifest-details.php'">2207</td>
+										  <td>D6111-40700-12</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Portland, ME</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Oxfording</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="completeManifestEntry statusBtn">Complete Manifest and Entry Numbers On File with CBP</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+
+                                 <div  class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <label class="control-label text-5 font-weight-bold">Jaswinder</label>
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                                    <thead>
+                                       <tr>
+                                          
+                                          
+                                          <th>Trip#</th>
+										  <th>Cargo Control#</th>
+                                          <th>Shipment Type</th>
+										  
+                                          <th>Est Date/Time</th>                                          
+										  <th>Port of entry</th>
+                                          
+                                          <th>Vehicle</th>                                          
+                                          <th>Asset</th>
+                                          <th>Consignor</th>
+                                          <th>Consignee</th>
+                                          <th>Status</th>
+										  <th>Action</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">95800</td>
+										  <td>45498245454545</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-13&nbsp;01:15:00</td>                                          
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>whole</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+									   
+									   
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">55650</td>
+										  <td>6598124004545</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>test xyz</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">12000</td>
+										  <td>12458745540</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>mark</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+									   
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">9800</td>
+										  <td>698554001277</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td>   
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>daljit</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">4454</td>
+										  <td>9987565230</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-17&nbsp;00:45:00</td>
+											<td>Abbotsford-Huntingdon</td>										  
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>tred</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-detailsv.php'">2207</td>
+										  <td>7575757332</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Ostis</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">2207</td>
+										  <td>235689</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Keeev</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">2207</td>
+										  <td>2542542000</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Zent Cart</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                       <tr class="cursorpoint">
+                                          
+                                          <td onclick="window.location='aci-manifest-details.php'">2207</td>
+										  <td>80991111</td>
+                                          <td>PARS</td>
+										  
+                                          <td>2021-02-12&nbsp;01:00:00</td>
+										  <td>Abbotsford-Huntingdon</td>
+                                          
+                                          <td>13B25</td>
+                                          <td>HH2546</td>
+                                          <td>Oxfording</td>
+                                          <td>Diamond, Detroit</td>
+                                          <td><span class="darkBlackBtn statusBtn">Draft</span></td>
+										  <td>
+											  <div class="btn-group flex-wrap">
+											  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
+											  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+												 <a href="" class="dropdown-item text-1">Edit</a>
+												 <a href="" class="dropdown-item text-1">Delete</a> 
+											  </div>
+											</div>
+										</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+
+
+                              </section>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

@@ -149,6 +149,13 @@ export class TripListComponent implements OnInit {
   recIndex:any = '';
   records = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  fetchedRecordsCount = 0;
+  lastFetched = {
+    draw:0,
+    status: false
+  }
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -420,7 +427,7 @@ export class TripListComponent implements OnInit {
         } else {
           this.records = true;
         }
-        
+        this.fetchedRecordsCount += result.Count;
         this.getStartandEndVal('all');
 
         this.fetchTrips(result, 'all')
@@ -449,10 +456,19 @@ export class TripListComponent implements OnInit {
         }
 
         // disable prev btn
-        if (this.tripDraw > 0) {
-          this.tripPrev = false;
-        } else {
+        if (this.tripDraw == 0) {
           this.tripPrev = true;
+        } 
+
+        // disable next btn when no records at last
+        if(this.fetchedRecordsCount < this.totalRecords ){
+          this.tripNext = false;
+        } else if(this.fetchedRecordsCount === this.totalRecords) {
+          this.tripNext = true;
+        }
+        this.lastFetched = {
+          draw:this.tripDraw,
+          status: this.tripNext
         }
         this.spinner.hide();
       }, err => {
@@ -589,13 +605,23 @@ export class TripListComponent implements OnInit {
   nextResults(type) {
     if(type == 'all') {
       this.tripNext = true;
-      this.tripPrev = true;
       this.tripDraw += 1;
 
       if(this.trips[this.tripDraw] == undefined) {
         this.records = false;
         this.initDataTable();
+        this.tripPrev = false;
       } else {
+        if(this.tripDraw <= 0 ){
+          this.tripPrev = true;
+        } else {
+          this.tripPrev = false;
+        }
+        if(this.tripDraw < this.lastFetched.draw ){
+          this.tripNext = false;
+        } else {
+          this.tripNext = this.lastFetched.status;
+        }
         this.getStartandEndVal('all');
         this.tripEndPoint = this.tripStartPoint+this.trips[this.tripDraw].length-1;
       }
@@ -612,6 +638,11 @@ export class TripListComponent implements OnInit {
       if(this.trips[this.tripDraw] == undefined) {
         this.initDataTable();
       } else {
+        if(this.tripDraw <= 0 ){
+          this.tripPrev = true;
+        } else {
+          this.tripPrev = false;
+        }
         this.tripNext = false;
         this.getStartandEndVal('all');
       }

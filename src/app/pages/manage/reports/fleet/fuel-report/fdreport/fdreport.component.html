@@ -1,32 +1,32 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-4">
-               <!-- <div class="row py-2">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-5 text-dark">
-                             Logs Detail
-                          </div>
-                  </div> -->
-               <div class="row"  style="padding-top:10px;">
-                  <div class="col-md-3 col-lg-3">
+      <section role="main" class="content-body pt-0 pr-0 pl-1">
+         <header class="page-header pr19 pl11">
+            <div class="row" style="padding-top:10px;">
+
+                  <div class="col-md-3 col-lg-3 pr-0">
                      <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                         <span class="input-group-prepend">
                         <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                         </span>
                         </span>
-                        <input type="text" class="form-control" name="start">
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
                         <span class="input-group-text border-left-0 border-right-0 rounded-0">
                         to
                         </span>
-                        <input type="text" class="form-control" name="end">
+                        <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
                      </div>
                   </div>
-                  <div class="col-md-1 col-lg-1">
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search by Vehicle" type="text">
+                  </div>
+
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-sm mb-3">
                         <select data-plugin-selectTwo class="form-control populate">
                            <optgroup label="Select Locations">
-                              <option value="1">Alaska</option>
+                              <option value="1">Search by State</option>
                               <option value="2">Alberta</option>
                               <option value="2">Alabama</option>
                               <option value="1">Arkansas</option>
@@ -37,33 +37,14 @@
                      </div>
                   </div>
                   
+                 
+
                   <div class="col-md-2 col-lg-2">
-                     <div class="input-group input-group-sm mb-3">
-                        <select data-plugin-selectTwo class="form-control populate">
-                           <optgroup label="">
-                              <option value="1">All Fuel Types</option>
-                              <option value="2">Diesel</option>
-                              <option value="1">Gasoline</option>
-                              <option value="2">Propane</option>
-                              <option value="1">Liquid Natural Gas</option>
-                              <option value="2">Compressed Natural Gas</option>
-                              <option value="1">Gas</option>
-                              <option value="2">Ethanol</option>
-                              <option value="1">Methanol</option>
-                              <option value="2">E-85</option>
-                              <option value="1">M-85</option>
-                              <option value="2">A55</option>
-                              <option value="1">Biodiesel</option>
-                              <option value="2">Other</option>
-                           </optgroup>
-                        </select>
-                     </div>
+                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
                   </div>
                   
-                  <div class="col-md-6 col-lg-6 pr-5">
-                     <button type="submit" class="btn btn-sm btn-success mr-4">Search</button>
-                     <button type="button" class="btn btn-sm btn-success" onclick="showiftaDistanceReports('ifta-report-distance-vehicle-div','ifta-report-distance-vehicle-btn')" id="ifta-report-distance-vehicle-btn">Vehicle</button>
-                     <button type="button" class="btn btn-sm btn-default" onclick="showiftaDistanceReports('ifta-report-distance-fleet-div','ifta-report-distance-fleet-btn')" id="ifta-report-distance-fleet-btn">Fleet</button>
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
                      <div class="btn-group flex-wrap ml-4">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -75,9 +56,9 @@
                </div>
             </header>
             <div class="row text-dark">
-               <div class="col pr-0">
+               <div class="col">
                   <div class="card">
-                     <div class="card-body">
+                     <div class="card-body bor-radius0px">
                         <!-- Vehicle Div  -->
                         <div id="ifta-report-distance-vehicle-div">
                            <div class="row">
@@ -109,56 +90,48 @@
                               <table class="table reports_small_div">
                                  <thead>
                                     <tr class="back-color-gray">
-                                       <th width="20%">Source</th>
-									   <th width="20%">Destination</th>
+                                       <th width="15%">Source</th>
+									            <th width="15%">Destination</th>
                                        <th width="10%">Juridiction</th>
-									   <th width="10%">Total Distance</th>
-									   <th width="20%">Price Per Unit</th>
+                                       <th width="10%">Total Distance</th>
+                                       <th width="10%">Price Per Unit</th>
+                                       <th width="10%">Cost/Ltr or Gallon</th>
                                        <th width="15%">Total Fuel</th>
-									   <th width="15%">Fuel Economy</th>
+									            <th width="15%">Fuel Economy</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     <tr>
                                        <td>Montana</td>
-									   <td>North Dakota</td>
+									             <td>North Dakota</td>
                                        <td>7345.25</td>
-									   <td>2.19</td>
-									   <td>$154.46</td>
-                                       <td>44.5</td>
+                                       <td>90.19</td>
+                                       <td>$54.46</td>
+                                       <td>2.15 ltr</td>
+                                       <td>$440.5</td>
+                                       <td>$40.46</td>
                                     </tr>
                                     <tr>
                                        <td>North Dakota</td>
-									   <td>Toronto</td>
+									           <td>Toronto</td>
                                        <td>2145.25</td>
-                                       <td>2.019</td>
-									   <td>$104.46</td>
-                                       <td>54.5</td>
+                                       <td>110.50</td>
+									             <td>$64.46</td>
+                                        <td>2.10 ltr</td>
+                                       <td>$555.5</td>
+                                       <td>$60.46</td>
                                     </tr>
                                     <tr>
                                        <td>Nevada</td>
-									   <td>Saskatchewan</td>
+									             <td>Saskatchewan</td>
                                        <td>645.25</td>
-                                       <td>2.33</td>
-									   <td>$111.16</td>
-                                       <td>54.2</td>
+                                       <td>300.33</td>
+                                       <td>$64.46</td>
+                                       <td>2.02 gallons</td>
+                                      <td>$500.5</td>
+                                      <td>$60.46</td>
                                     </tr>
-                                    <tr>
-                                       <td>Saskatchewan</td>
-									   <td>Calgary</td>
-                                       <td>8801.20</td>
-                                       <td>2.01</td>
-									   <td>$112.46</td>
-                                       <td>49.5</td>
-                                    </tr>
-                                    <tr>
-                                       <td>Calgary</td>
-									   <td>Brampton</td>
-                                       <td>6345.25</td>
-                                       <td>2.33</td>
-									   <td>$111.16</td>
-                                       <td>54.2</td>
-                                    </tr>
+                                    
                                  </tbody>
                               </table>
                            </section>
@@ -169,55 +142,48 @@
                               <table class="table reports_small_div">
                                  <thead>
                                     <tr class="back-color-gray">
-                                       <th width="20%">Source</th>
-									   <th width="20%">Destination</th>
+                                       <th width="15%">Source</th>
+									            <th width="15%">Destination</th>
+                                       <th width="10%">Juridiction</th>
                                        <th width="10%">Total Distance</th>
-									   <th width="20%">Cost/Ltr or Gallon</th>
+                                       <th width="10%">Price Per Unit</th>
+                                       <th width="10%">Cost/Ltr or Gallon</th>
                                        <th width="15%">Total Fuel</th>
-									   <th width="15%">Fuel Economy</th>
+									            <th width="15%">Fuel Economy</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     <tr>
                                        <td>Montana</td>
-									   <td>North Dakota</td>
+									             <td>North Dakota</td>
                                        <td>7345.25</td>
-									   <td>2.19</td>
-									   <td>$154.46</td>
-                                       <td>44.5</td>
+                                       <td>90.19</td>
+                                       <td>$54.46</td>
+                                       <td>3.33 ltr</td>
+                                       <td>$444.5</td>
+                                       <td>$40.46</td>
                                     </tr>
                                     <tr>
                                        <td>North Dakota</td>
-									   <td>Toronto</td>
+									           <td>Toronto</td>
                                        <td>2145.25</td>
-                                       <td>2.019</td>
-									   <td>$104.46</td>
-                                       <td>54.5</td>
+                                       <td>110.50</td>
+									             <td>$64.46</td>
+                                        <td>2.15 gallons</td>
+                                       <td>$204.5</td>
+                                       <td>$60.46</td>
                                     </tr>
                                     <tr>
                                        <td>Nevada</td>
-									   <td>Saskatchewan</td>
+									             <td>Saskatchewan</td>
                                        <td>645.25</td>
-                                       <td>2.33</td>
-									   <td>$111.16</td>
-                                       <td>54.2</td>
+                                       <td>300.33</td>
+                                       <td>$64.46</td>
+                                       <td>3.03 ltr</td>
+                                      <td>$266.7</td>
+                                      <td>$60.46</td>
                                     </tr>
-                                    <tr>
-                                       <td>Saskatchewan</td>
-									   <td>Calgary</td>
-                                       <td>8801.20</td>
-                                       <td>2.01</td>
-									   <td>$112.46</td>
-                                       <td>49.5</td>
-                                    </tr>
-                                    <tr>
-                                       <td>Calgary</td>
-									   <td>Brampton</td>
-                                       <td>6345.25</td>
-                                       <td>2.33</td>
-									   <td>$111.16</td>
-                                       <td>54.2</td>
-                                    </tr>
+                                    
                                  </tbody>
                               </table>
                            </section>
