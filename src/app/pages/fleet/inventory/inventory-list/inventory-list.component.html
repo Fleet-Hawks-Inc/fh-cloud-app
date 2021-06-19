@@ -69,10 +69,7 @@
                                     <label><input type="checkbox" disabled [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()">
                                         Quantity </label>
                                 </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.onHand" name="onHand" (change)="hideShowColumn()"> On
-                                        Hand </label>
-                                </a>
+                                
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" disabled [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()">
                                         Unit Cost </label>
@@ -187,7 +184,6 @@
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
                                                         <th class="col5">Quantity</th>
-                                                        <th class="col6">On Hand</th>
                                                         <th class="col7">Unit Cost</th>
                                                         <th class="col8">Warehouse Details</th>
                                                         <th class="col9 extra">Warranty Days and Time</th>
@@ -223,13 +219,10 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.quantity}}
                                                         </td>
-                                                        <td *ngIf="hideShow.onHand"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            234
-                                                        </td>
+                                                        
                                                         <td *ngIf="hideShow.unitCost"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            $ {{item.cost}}
+                                                             {{item.cost}} {{item.costUnitType}}
                                                         </td>
                                                         <td *ngIf="hideShow.warehouse"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -362,42 +355,16 @@
                 </button>
             </div>
             <div class="modal-body text-dark pt-2">
-                <form>
+                <form #tranferQuanForm="ngForm">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
 
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part#</label>
-                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="transfer.partNumber">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part Details</label>
-                                    <input type="text" class="form-control" placeholder="Enter part details"name="partDetails"
-                                        [(ngModel)]="transfer.partDetails">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="transfer.quantity">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
-                                    <input type="date" data-plugin-datepicker="" class="form-control" name="date"
-                                        [(ngModel)]="transfer.date">
-                                </div>
-                            </div>
-
-
+                            
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
-                                    <ng-select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
-
+                                    <ng-select #w1="ngModel" class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
+                                        (change)="getWarehouseItems($event)"
                                         [(ngModel)] ="transfer.warehouseID1">
                                             <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
@@ -405,19 +372,73 @@
 
 
                                     </ng-select>
+                                    <div *ngIf="w1.touched && (transfer.warehouseID1 == null || transfer.warehouseID1 == '')" class="text-danger">
+                                        Warehouse is required.
+                                    </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
-                                    <ng-select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
+                                    <ng-select #w2="ngModel" class="form-control populate" name="warehouseID2"
                                         [(ngModel)]="transfer.warehouseID2">
-                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
+                                        <ng-container *ngFor="let warehouse of warehouses | keyvalue">
+                                            <ng-option *ngIf="warehouse.key != transfer.warehouseID1"
                                                 value="{{warehouse.key}}">
                                                 {{warehouse.value}}</ng-option>
+                                        </ng-container>
+                                            
 
                                     </ng-select>
+                                    <div *ngIf="w2.touched && (transfer.warehouseID2 == null || transfer.warehouseID2 == '')" class="text-danger">
+                                        Warehouse is required.
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part#</label>
+                                    <ng-select #part="ngModel" (change)="getQuanity($event)" type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" 
+                                    [(ngModel)]="transfer.partNumber">
+                                        <ng-option *ngFor="let item of allWarehouses" value={{item.partNumber}}>
+                                            {{item.partNumber}} - {{item.warehouseVendorName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div *ngIf="partQuantity && transfer.partNumber != ''">Existing quantity: {{partQuantity}}</div>
+                                    <div *ngIf="part.touched && (transfer.partNumber == null || transfer.partNumber == '')" class="text-danger">
+                                        Part number is required.
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right">Quantity to be transferred</label>
+                                    <input #tranQty="ngModel"  type="text" (blur)="checkQuanity($event.target.value)" class="form-control" 
+                                    placeholder="eg. 1,2,3 "name="transferQuantity" [(ngModel)]="transfer.transferQuantity">
+                                    <span class="text-danger" *ngIf="quantityError">You can't transfer more than existing quantity</span>
+                                    <div *ngIf="tranQty.touched && (transfer.transferQuantity == null || transfer.transferQuantity == '')" class="text-danger">
+                                        Quantity is required.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                
+                                <div class="col-lg-6">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
+                                    <input #date="ngModel" type="text" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" class="form-control" name="date"
+                                        [(ngModel)]="transfer.date">
+                                    <div *ngIf="date.touched && (transfer.date == null || transfer.date == '')" class="text-danger">
+                                        Quantity is required.
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Notes</label>
+                                    <textarea type="text" class="form-control h-auto" rows="4" placeholder="Enter part details"name="notes"
+                                        [(ngModel)]="transfer.notes"></textarea>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -427,7 +448,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-success" (click)="transferInventory()">
+                <button type="button" [disabled]="disableButton()" class="btn btn-success" (click)="transferInventory()">
                     Save
                 </button>
             </div>

@@ -67,7 +67,8 @@
                 <div class="row mt-2">
                   <div class="col-lg-10">
 
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Category</label>
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Category <span
+                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <ng-select
                       class="form-control populate"
                       name="category"
@@ -83,9 +84,9 @@
 
 
 
-                        <!-- <div *ngIf="Category.errors.required">
+                        <div *ngIf="Category.errors.required">
                          Select valid Category from the list.
-                         </div> -->
+                         </div>
 
 
                     </div>
@@ -346,11 +347,11 @@
                     </div>
                     <div class="row">
                       <div class="col-lg-5">
-                        <input type="number" min="0" class="form-control" name="days" [(ngModel)]="days"
+                        <input type="number" min="0" class="form-control" name="warrantyTime" [(ngModel)]="warrantyTime"
                           placeholder="eg. 1,2,3 " />
                       </div>
                       <div class="col-lg-4">
-                         <ng-select name="costUnit" [(ngModel)]="costUnit" data-plugin-selectTwo
+                         <ng-select name="warrantyUnit" [(ngModel)]="warrantyUnit" data-plugin-selectTwo
                           class="form-control populate" placeholder="Select unit" #UnitB="ngModel" required>
                               <ng-option value="Months">Months</ng-option>
                               <ng-option value="Years">Years</ng-option>

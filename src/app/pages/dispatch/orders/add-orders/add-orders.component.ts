@@ -391,7 +391,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-    this.fetchStateTaxes();
+    
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.searchLocation();
@@ -407,6 +407,7 @@ export class AddOrdersComponent implements OnInit {
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
+      this.fetchStateTaxes();
     }
 
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
@@ -424,21 +425,44 @@ export class AddOrdersComponent implements OnInit {
     let result = await this.apiService
       .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
-        this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
-        this.orderData.taxesInfo = [
-          {
-            name: 'GST',
-            amount: result.Items[0].GST,
-          },
-          {
-            name: 'HST',
-            amount: result.Items[0].HST,
-          },
-          {
-            name: 'PST',
-            amount: result.Items[0].PST,
-          },
-        ];
+        if (!this.getOrderID) {
+          this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+
+          this.orderData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: result.Items[0].GST,
+            },
+            {
+              name: 'HST',
+              amount: result.Items[0].HST,
+            },
+            {
+              name: 'PST',
+              amount: result.Items[0].PST,
+            },
+          ];
+        } else {
+          this.stateTaxes.map((v:any) => {
+            if(this.orderData.stateTaxID == v.stateTaxID) {
+              this.orderData.taxesInfo = [
+                {
+                  name: 'GST',
+                  amount: v.GST,
+                },
+                {
+                  name: 'HST',
+                  amount: v.HST,
+                },
+                {
+                  name: 'PST',
+                  amount: v.PST,
+                },
+              ];
+            }
+          })
+        }
+       
         this.newTaxes = this.orderData.taxesInfo;
         if(this.subTotal > 0) {
           for (let i = 0; i < this.newTaxes.length; i++) {
@@ -1422,6 +1446,7 @@ export class AddOrdersComponent implements OnInit {
       .getData("orders/" + this.getOrderID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        await this.fetchStateTaxes();
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
         
         this.orderData.taxesInfo = [

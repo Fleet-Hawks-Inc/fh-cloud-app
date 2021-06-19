@@ -21,7 +21,7 @@ export class InventoryListComponent implements OnInit {
   itemGroups = {};
   vendors = {};
   warehouses = [];
-
+  allWarehouses = [];
   partNumber = '';
   partDetails = '';
   quantity = '';
@@ -35,7 +35,6 @@ export class InventoryListComponent implements OnInit {
     category: true,
     vendor: true,
     quantity: true,
-    onHand: true,
     unitCost: true,
     warehouse: true,
     warranty: false,
@@ -49,6 +48,7 @@ export class InventoryListComponent implements OnInit {
   lastEvaluatedKey = '';
   partNo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  partQuantity;
   /**
    * search props
    */
@@ -76,10 +76,13 @@ export class InventoryListComponent implements OnInit {
   };
   transfer = {
     partNumber: '',
-    partDetails: '',
-    quantity: '',
+    itemID: '',
+    quantity: 0,
+    notes: '',
+    transferQuantity: '',
     warehouseID1: '',
     warehouseID2: '',
+    vendorID: '',
     date: ''
   };
   requiredItemName = '';
@@ -110,6 +113,7 @@ export class InventoryListComponent implements OnInit {
   allCompanies: any = [];
   searchItems: any = [];
   requiredSuggestedPartNo = [];
+  quantityError = false;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
@@ -120,6 +124,7 @@ export class InventoryListComponent implements OnInit {
     this.fetchVendors();
     this.fetchRequiredItemsCount();
     this.listService.fetchVendors();
+    this.disableButton();
     this.allVendors = this.listService.vendorList;
   }
 
@@ -284,6 +289,7 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('inv');
 
         this.items = result[`Items`];
+        console.log('items', this.items)
         if (this.vendorID != null || this.category != null || this.itemID != null) {
           this.inventoryStartPoint = 1;
           this.inventoryEndPoint = this.totalRecords;
@@ -399,11 +405,7 @@ export class InventoryListComponent implements OnInit {
       $('.col5').css('display', '');
     }
 
-    if (this.hideShow.onHand === false) {
-      $('.col6').css('display', 'none');
-    } else {
-      $('.col6').css('display', '');
-    }
+    
 
     if (this.hideShow.unitCost === false) {
       $('.col7').css('display', 'none');
@@ -593,17 +595,74 @@ export class InventoryListComponent implements OnInit {
     this.currentTab = type;
   }
 
+
+  getWarehouseItems(id: any) {
+    this.allWarehouses = [];
+    if(id != undefined) {
+      this.apiService.getData(`items/warehouseParts/${id}`).subscribe(result => {
+        this.allWarehouses = result;
+        console.log('all', this.allWarehouses)
+
+      })
+    }
+  }
+
+  getQuanity(id: any) {
+    var result = this.allWarehouses.filter(item => {
+      return item.partNumber === id;
+    })
+    this.partQuantity = result[0].quantity;
+    this.transfer.vendorID = result[0].warehouseVendorID;
+    this.transfer.itemID = result[0].itemID;
+    this.transfer.quantity = result[0].quantity;
+  }
+
+  checkQuanity (value: any){
+    if(value > this.partQuantity ) {
+      this.quantityError = true;
+      this.transfer.transferQuantity = this.partQuantity;
+    } else {
+      this.quantityError = false;
+
+    }
+  }
+
   transferInventory() {
-  this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
-    this.toastr.success('Inventory Tranfered Successfully.');
-     this.transfer = {
-      partNumber: '',
-      partDetails: '',
-      quantity: '',
-      warehouseID1: '',
-      warehouseID2: '',
-      date: ''
-    };
-  });
+    console.log('this.transfer', this.transfer)
+      this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
+        this.transfer = {
+          itemID: '',
+          quantity: 0,
+          partNumber: '',
+          notes: '',
+          transferQuantity: '',
+          warehouseID1: '',
+          warehouseID2: '',
+          vendorID: '',
+          date: ''
+        };
+        $('#transferModal').modal('hide');
+        this.toastr.success('Inventory Transferred Successfully.');
+        this.initDataTable();
+        this.fetchItemsCount();
+      });
+  }
+
+  
+  disableButton() {
+    if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null || 
+    this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null || 
+    this.transfer.partNumber == '' || this.transfer.partNumber == null ||
+    this.transfer.transferQuantity == '' || this.transfer.transferQuantity == null ||
+    this.transfer.date == '' || this.transfer.date == null
+    ){
+
+      return true
+    } else {
+      return false
+    }
+    
+    
+    
   }
 }
