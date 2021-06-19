@@ -950,7 +950,7 @@
 
                           <input type="text" ngbDatepicker #d111="ngbDatepicker"
                             (click)="onChangeHideErrors('annualSafetyDate');d111.toggle()" name="annualSafetyDate" placeholder="yyyy/mm/dd"
-                            [(ngModel)] ="annualSafetyDate" class="form-control" #mAnnual="ngModel" required>
+                            [(ngModel)] ="annualSafetyDate" class="form-control" #mAnnual="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="mAnnual.invalid && (mAnnual.dirty || mAnnual.touched)" class="text-danger">
                               <div *ngIf="mAnnual.errors.required">
                                Annual safety date is required.
@@ -1044,7 +1044,7 @@
 
                           <input type="text" ngbDatepicker #d112="ngbDatepicker"
                             (click)="onChangeHideErrors('lifeCycle.startDate');d112.toggle()" class="form-control"
-                            name="lifeCycle.startDate" placeholder="yyyy/mm/dd" [(ngModel)]="lifeCycle.startDate" #mDate="ngModel" required>
+                            name="lifeCycle.startDate" placeholder="yyyy/mm/dd" [(ngModel)]="lifeCycle.startDate" #mDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                               <div *ngIf="mDate.errors.required">
                                Start date is required.
@@ -1388,7 +1388,7 @@
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                   <input class="form-control" placeholder="dd-mm-yyyy" [(ngModel)]="issuesData.reportedDate"
-                    name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required>
+                    name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                     <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                       <div *ngIf="mDate.errors.required">
                  Reported date is required.
@@ -1540,7 +1540,7 @@
                             Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                             [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
-                            class="form-control" #sd9="ngModel" required>
+                            class="form-control" #sd9="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="sd9.invalid && (sd9.dirty || sd9.touched)" class="text-danger">
 
                               <div *ngIf="sd9.errors.required">
@@ -1664,7 +1664,7 @@
                             Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                           <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                             name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                            placeholder="yyyy/mm/dd" class="form-control" #dSlt1="ngModel" required>
+                            placeholder="yyyy/mm/dd" class="form-control" #dSlt1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="dSlt1.invalid && (dSlt1.dirty || dSlt1.touched)" class="text-danger">
                               <div *ngIf="dSlt1.errors.required">
                                 Annual safety date is required.
@@ -2113,7 +2113,7 @@
                                     </label>
                                     <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
                                       #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text"
-                                      class="form-control" placeholder="yyyy/mm/dd" #dSlt="ngModel" required>
+                                      class="form-control" placeholder="yyyy/mm/dd" #dSlt="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                                       <div *ngIf="dSlt.errors.required">
                                         Start date is required.
@@ -2127,7 +2127,7 @@
                                     <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                       [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
                                        class="form-control" placeholder="yyyy/mm/dd" 
-                                      >
+                                       [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                                       <div *ngIf="tDate.errors.required" class="text-danger">
                                         Termination Date must contain yyyy/mm/dd format.
@@ -2142,7 +2142,7 @@
                                     <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker
                                       #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
                                       type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                                      #dSlt="ngModel" required>
+                                      #dSlt="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                                       <div *ngIf="dSlt.errors.required">
                                         Start date is required.
@@ -2156,7 +2156,7 @@
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                                       [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
                                       data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" 
-                                      >
+                                      [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                                       <div *ngIf="endDate.errors.required">
                                         End date is required and must contain yyyy/mm/dd format.
