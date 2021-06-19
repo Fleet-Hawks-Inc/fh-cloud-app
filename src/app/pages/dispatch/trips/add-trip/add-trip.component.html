@@ -157,7 +157,7 @@
                                               <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
                                                   placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                                   #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                                  #tDate="ngModel" required [minDate]="dateMinLimit">
+                                                  #tDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                               <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
                                                   class="text-danger">
                                                   <div>
@@ -304,7 +304,7 @@
                                                   </td>
                                                   <td class="rowStatus textRows editRow{{i}}">
                                                       <input id="cell2{{i}}" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
+                                                          ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
                                                       <!-- <input type="date" class="form-control" id="editCell2{{i}}"
                                                           value="{{ trip.date }}"> -->
@@ -404,7 +404,7 @@
                                                   </td>
                                                   <td>
                                                       <input id="cell2" name="cell2" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit">
+                                                          ngbDatepicker #to="ngbDatepicker" class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                                   </td>
                                                   <td>
                                                       <input type="time" class="form-control newRow" id="cell13"

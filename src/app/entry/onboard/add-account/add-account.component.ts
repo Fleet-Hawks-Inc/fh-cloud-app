@@ -112,7 +112,7 @@ export class AddAccountComponent implements OnInit {
   ngOnInit() {
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
-      this.carrierForm = $('#carrierForm').validate();
+      // this.carrierForm = $('#carrierForm').validate();
     });
   }
   // Show password

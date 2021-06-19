@@ -5,7 +5,7 @@
       <div class="row text-dark">
         <div class="col">
           <section class="card" style="align-items: center;">
-            <div class="card-body pr-5 pl-5" style="width: 70%;">
+            <div class="card-body pr-5 pl-5 onboardwidth">
               <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm" [mustMatch]="['password', 'confirmPassword']"
                  #cForm="ngForm" novalidate="novalidate">
                 <div class="row text-center">
@@ -20,7 +20,7 @@
                       Detail</label>
                   </div>
                   <div class="col-lg-6">
-                    <div class=" row">
+                    <div class="row">
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -54,7 +54,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6"
+                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6" 
                           placeholder="eg. john.smith" #uName1="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
                         <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
                           <div *ngIf="uName1.errors.required">
