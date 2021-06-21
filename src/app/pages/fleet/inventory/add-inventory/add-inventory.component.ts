@@ -22,20 +22,20 @@ export class AddInventoryComponent implements OnInit {
   itemID = '';
   requiredItem: '';
   partNumber = '';
-  cost = '';
-  costUnit = '';
-  quantity = '';
+  cost = 0;
+  costUnit = null;
+  quantity = 0;
   itemName = '';
   description = '';
-  category = '';
-  warehouseID = '';
-  costUnitType = '';
+  category = null;
+  warehouseID = null;
+  costUnitType = null;
   warrantyTime: '';
   warrantyUnit: '';
   aisle = '';
   row = '';
   bin = '';
-  warehouseVendorID = '';
+  warehouseVendorID = null;
   trackingQuantity = '';
   reorderPoint = '';
   reorderQuality = '';
@@ -107,15 +107,11 @@ export class AddInventoryComponent implements OnInit {
     } else {
       this.pageTitle = `Add Inventory Part`;
     }
- if(this.requiredItem){
-  this.pageTitle = `Add Inventory Part`;
-  this.getRequiredInventory();
- }
-    $(document).ready(() => {
-     // this.form = $('#form').validate();
-      //this.groupForm = $('#groupForm').validate();
-      //this.warehoseForm = $('#warehoseForm').validate();
-    });
+    if(this.requiredItem){
+      this.pageTitle = `Add Inventory Part`;
+      this.getRequiredInventory();
+    }
+    this.disableButton()
   }
 
    /*
@@ -307,9 +303,9 @@ export class AddInventoryComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.partNumber = '';
-          this.cost = '';
+          this.cost = 0;
           this.costUnit = '';
-          this.quantity = '';
+          this.quantity = 0;
           this.itemName = '';
           this.description = '';
           this.category = '';
@@ -388,13 +384,6 @@ export class AddInventoryComponent implements OnInit {
       row: this.row,
       bin: this.bin,
       warehouseVendorID: this.warehouseVendorID,
-      trackingQuantity: this.trackingQuantity,
-      reorderPoint: this.reorderPoint,
-      reorderQuality: this.reorderQuality,
-      leadTime: this.leadTime,
-      preferredVendorID: this.preferredVendorID,
-      days: this.days,
-      time: this.time,
       notes: this.notes,
       warrantyTime: this.warrantyTime,
       warrantyUnit: this.warrantyUnit,
@@ -505,5 +494,15 @@ export class AddInventoryComponent implements OnInit {
   }
   setSrcValue(){
     this.pdfSrc = '';
+  }
+
+  disableButton() {
+    if(this.partNumber == '' || this.costUnit == '' || this.costUnit == null || this.costUnitType == '' || this.costUnitType == null || 
+      this.category == '' || this.category == null
+     || this.warehouseID == '' || this.warehouseID == null || this.warehouseVendorID == '' || this.warehouseVendorID == null){
+      return true;
+    } else {
+      return false;
+    }
   }
 }
