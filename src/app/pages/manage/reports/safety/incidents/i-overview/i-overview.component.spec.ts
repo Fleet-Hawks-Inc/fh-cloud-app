@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CriticalEventsComponent } from './critical-events.component';
+import { IOverviewComponent } from './i-overview.component';
 
-describe('CriticalEventsComponent', () => {
-  let component: CriticalEventsComponent;
-  let fixture: ComponentFixture<CriticalEventsComponent>;
+describe('IOverviewComponent', () => {
+  let component: IOverviewComponent;
+  let fixture: ComponentFixture<IOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CriticalEventsComponent ]
+      declarations: [ IOverviewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CriticalEventsComponent);
+    fixture = TestBed.createComponent(IOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
