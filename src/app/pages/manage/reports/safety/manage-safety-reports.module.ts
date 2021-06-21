@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { SafetyOverviewComponent } from './safety-overview/safety-overview.component';
-import { CriticalEventsComponent } from './critical-events/critical-events.component';
 
 const routes: Routes = [
    
@@ -13,11 +11,16 @@ const routes: Routes = [
    {
     path: 'criticalevents',
     loadChildren: () => import('./critical-events/mange-critical-events.module').then((m) => m.ManageCriticalEventsModule) ,
+  },
+  {
+    path: 'incidents',
+    loadChildren: () => import('./incidents/mange-incidents.module').then((m) => m.ManageIncidentsModule) ,
   }
+  
 ]
 
 @NgModule({
-  declarations: [SafetyOverviewComponent, CriticalEventsComponent],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
