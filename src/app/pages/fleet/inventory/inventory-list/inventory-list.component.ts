@@ -38,8 +38,6 @@ export class InventoryListComponent implements OnInit {
     unitCost: true,
     warehouse: true,
     warranty: false,
-    reorderPoint: false,
-    reorderQuantity: false,
     preferredVendor: false,
   }
 
@@ -428,19 +426,7 @@ export class InventoryListComponent implements OnInit {
       $('.col9').css('display', '');
     }
 
-    if (this.hideShow.reorderPoint === false) {
-      $('.col10').css('display', 'none');
-    } else {
-      $('.col10').removeClass('extra');
-      $('.col10').css('display', '');
-    }
-
-    if (this.hideShow.reorderQuantity === false) {
-      $('.col11').css('display', 'none');
-    } else {
-      $('.col11').removeClass('extra');
-      $('.col11').css('display', '');
-    }
+    
     if (this.hideShow.preferredVendor === false) {
       $('.col12').css('display', 'none');
     } else {
