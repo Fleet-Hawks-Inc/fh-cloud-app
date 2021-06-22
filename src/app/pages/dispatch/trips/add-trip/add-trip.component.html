@@ -92,7 +92,7 @@
                                               <label
                                                   class="control-label font-weight-semibold labelmt text-3 text-dark">Select
                                                   Permanent Route
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                  
                                               </label>
                                               <ng-select [(ngModel)]="tripData.routeID" name="routeID" (change)="makeRoutePlan()"
                                                   placeholder="eg. Calgary to Edmonton" #pRoute="ngModel">
@@ -129,20 +129,12 @@
                                           <div class="col-lg-10 col-md-12">
                                               <label
                                                   class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
-                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                  
                                               </label>
                                               <input type="text" class="form-control" name="bol"
                                                   [(ngModel)]="tripData.bol" placeholder="eg. 13253578"
                                                   >
-                                              <!-- <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
-                                                  class="text-danger">
-                                                  <div>
-                                                      <div *ngIf="BOL.errors.pattern">
-                                                          BOL/POD must contains uppercase , lowercase, number and
-                                                          special characters period(-,/) only. eg BOL-123
-                                                      </div>
-                                                  </div>
-                                              </div> -->
+                                              
                                           </div>
                                       </div>
 
@@ -177,7 +169,7 @@
                                           <div class="col-lg-12">
                                               <label
                                                   class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
-                                                  Temperature &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                  Temperature </label>
                                           </div>
                                           <div class="col-lg-10 col-md-12">
                                               <div class="row">
