@@ -1,18 +1,9 @@
 <section class="body">
-
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-
+        
         <section role="main" class="content-body pr-0 pt-0 pl-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
@@ -40,42 +31,34 @@
                         </ng-select>
                     </div>
 
-                    <div class="col-md-6 col-lg-6 pr-1 text-right">
-                        <!-- <div class="d-inline-flex flex-wrap align-items-center">
-                            <button type="button" class="mr-1 btn btn-sm btn-default px-2 py-1"><i
-                                    class="fas fa-chevron-left"></i></button>
-                            <p class="b-0 mx-2 my-0">June 24, 2020</p>
-                            <button type="button" class="ml-1 btn btn-sm btn-default px-2 py-1"><i
-                                    class="fas fa-chevron-right"></i></button> -->
-
-
-                        <div class="col-md-2  col-lg-2">
-                            <a href="javascript:;" (click)="searchEvents()" class="btn btn-success btn-sm mr-1"
-                                style="color:white;"> Search
-                            </a>
-                            <a href="javascript:;" (click)="resetFilter()" class="btn btn-success btn-sm"
-                                style="color:white;"> Reset
-                            </a>
-                        </div>
-                        <div class="col-md-4 col-lg-4">
-                            <a href="#fetchEventModal" class="modal-with-form btn btn-success btn-sm mx-2 "
-                                style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
-
-                            <div class="btn-group flex-wrap mr-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
-                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
-                                </div>
-                            </div>
-                            <a href="javascript:;" routerLink="/safety/critical-events/add-event"
-                                class="btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add
-                                Event</a>
-                        </div>
+                    <div class="col-md-2  col-lg-2">
+                        <a href="javascript:;" (click)="searchEvents()" class="btn btn-success btn-sm mr-1"
+                            style="color:white;"> Search
+                        </a>
+                        <a href="javascript:;" (click)="resetFilter()" class="btn btn-success btn-sm"
+                            style="color:white;"> Reset
+                        </a>
                     </div>
+                    <div class="col-md-4 col-lg-4 pr-1 text-right">
+                        <a href="#fetchEventModal" class="modal-with-form btn btn-success btn-sm mx-2 "
+                            style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
+
+                        <!-- <div class="btn-group flex-wrap mr-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="false">Actions<span
+                                    class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                                <a class="dropdown-item text-1" href="javascript:;">Export</a>
+                            </div>
+                        </div> -->
+                        <a href="javascript:;" routerLink="/safety/critical-events/add-event"
+                            class="btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add
+                            Event</a>
+                    </div>
+
+                    
                 </div>
             </header>
 

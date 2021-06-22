@@ -22,13 +22,15 @@ export class AddInventoryComponent implements OnInit {
   itemID = '';
   requiredItem: '';
   partNumber = '';
+
   cost = 0;
   costUnit = null;
   quantity = 0;
   itemName = '';
   description = '';
   category = null;
-  warehouseID = null;
+  warehouseID = '';
+
   costUnitType = null;
   warrantyTime: '';
   warrantyUnit: '';
@@ -184,10 +186,16 @@ export class AddInventoryComponent implements OnInit {
     });
   }
   /*Delete upload */
-  delete(type: string,name: string){
+  delete(type: string,name: string, index: any){
     this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
       this.getInventory();
+      if(type == 'doc') {
+        this.inventoryDocs.splice(index, 1);
+      } else {
+        this.inventoryImages.splice(index, 1);
+      }
     });
+    
   }
   ngOnInit() {
     this.listService.fetchVendors();
@@ -303,12 +311,14 @@ export class AddInventoryComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.partNumber = '';
+
           this.cost = 0;
-          this.costUnit = '';
+          this.costUnit = null;
           this.quantity = 0;
+
           this.itemName = '';
           this.description = '';
-          this.category = '';
+          this.category = null;
           this.warehouseID = '';
           this.aisle = '';
           this.row = '';
