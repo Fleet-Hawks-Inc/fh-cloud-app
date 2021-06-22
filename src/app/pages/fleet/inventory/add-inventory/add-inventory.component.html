@@ -74,7 +74,8 @@
                       name="category"
                       [(ngModel)]="category"
                       placeholder="Select inventory category of inventory part"
-                      #Category="ngModel">
+                      #Category="ngModel"
+                      required>
                         <ng-option value="hardware">Hardware</ng-option>
                         <ng-option value="brakes">Brakes</ng-option>
 
@@ -83,9 +84,8 @@
                     <div *ngIf="Category.invalid && (Category.dirty || Category.touched)" class="text-danger">
 
 
-
                         <div *ngIf="Category.errors.required">
-                         Select valid Category from the list.
+                          Category is required.
                          </div>
 
 
@@ -112,7 +112,7 @@
                       </div>
                       <div class="col-lg-4">
                         <ng-select name="costUnitType" [(ngModel)]="costUnitType" data-plugin-selectTwo
-                          class="form-control populate" placeholder="Select unit" #UnitA="ngModel" required>
+                          class="form-control populate" placeholder="Select Currency" #UnitA="ngModel" required>
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                         </ng-select>
@@ -120,15 +120,15 @@
                           <div>
 
                             <div *ngIf="UnitA.errors.required">
-                              Select valid unit cost from the list is required.
+                              Currency is required.
                             </div>
                           </div>
 
                         </div>
                       </div>
                       <div class="col-lg-4">
-                        <ng-select name="costUnit" [(ngModel)]="costUnit" data-plugin-selectTwo
-                          class="form-control populate" placeholder="Select unit" #UnitB="ngModel" required>
+                        <ng-select name="costUnit" [(ngModel)]="costUnit"
+                          class="form-control populate" placeholder="Select type" #UnitC="ngModel" required>
                           
                           <ng-option value="Each">Each</ng-option>
                           <ng-option value="Gallon">Gallon</ng-option>
@@ -137,14 +137,10 @@
                           <ng-option value="Tube">Tube</ng-option>
                           
                         </ng-select>
-                        <div *ngIf="UnitB.invalid && (UnitB.dirty || UnitB.touched)" class="text-danger">
-                          <div>
-
-                            <div *ngIf="UnitB.errors.required">
-                              Select valid unit cost from the list is required.
+                        <div *ngIf="UnitC.invalid && (UnitC.dirty || UnitC.touched)" class="text-danger">
+                            <div *ngIf="UnitC.errors.required">
+                              Unit type is required.
                             </div>
-                          </div>
-
                         </div>
                       </div>
                     </div>
@@ -397,7 +393,7 @@
                       <div class="row">
                         <div class="col-lg-8">Image {{i+1}}</div>
                         <div class="col-lg-4 text-right">
-                          <i class="fas fa-times text-danger" (click)="delete('image',photo.name)"></i>
+                          <i class="fas fa-times text-danger" (click)="delete('image',photo.name, i)"></i>
 
                         </div>
                       </div>
@@ -428,7 +424,7 @@
                         <div class="col-lg-9"> <a href="{{doc.path}}" target="_blank">Document No. {{d+1}}</a></div>
                         <div class="col-lg-3 text-right">
                           <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
-                          <i class="fas fa-times text-danger" (click)="delete('doc',doc.name)"></i>
+                          <i class="fas fa-times text-danger" (click)="delete('doc',doc.name, d)"></i>
                         </div>
                       </div>
                     </div>

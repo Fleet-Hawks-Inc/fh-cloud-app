@@ -79,7 +79,7 @@ export class InventoryListComponent implements OnInit {
     itemID: '',
     quantity: 0,
     notes: '',
-    transferQuantity: '',
+    transferQuantity: 0,
     warehouseID1: '',
     warehouseID2: '',
     vendorID: '',
@@ -114,6 +114,10 @@ export class InventoryListComponent implements OnInit {
   searchItems: any = [];
   requiredSuggestedPartNo = [];
   quantityError = false;
+
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date1: any = new Date();
+  futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
@@ -289,7 +293,6 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('inv');
 
         this.items = result[`Items`];
-        console.log('items', this.items)
         if (this.vendorID != null || this.category != null || this.itemID != null) {
           this.inventoryStartPoint = 1;
           this.inventoryEndPoint = this.totalRecords;
@@ -602,20 +605,22 @@ export class InventoryListComponent implements OnInit {
     if(id != undefined) {
       this.apiService.getData(`items/warehouseParts/${id}`).subscribe(result => {
         this.allWarehouses = result;
-        console.log('all', this.allWarehouses)
-
       })
     }
   }
 
   getQuanity(id: any) {
-    var result = this.allWarehouses.filter(item => {
-      return item.partNumber === id;
-    })
-    this.partQuantity = result[0].quantity;
-    this.transfer.vendorID = result[0].warehouseVendorID;
-    this.transfer.itemID = result[0].itemID;
-    this.transfer.quantity = result[0].quantity;
+    if(id != undefined) {
+      var result = this.allWarehouses.filter(item => {
+        return item.partNumber === id;
+      })
+      this.partQuantity = result[0].quantity;
+      this.transfer.vendorID = result[0].warehouseVendorID;
+      this.transfer.itemID = result[0].itemID;
+      this.transfer.quantity = result[0].quantity;
+      
+    }
+    
   }
 
   checkQuanity (value: any){
@@ -629,14 +634,14 @@ export class InventoryListComponent implements OnInit {
   }
 
   transferInventory() {
-    console.log('this.transfer', this.transfer)
+    
       this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
         this.transfer = {
           itemID: '',
           quantity: 0,
           partNumber: '',
           notes: '',
-          transferQuantity: '',
+          transferQuantity: 0,
           warehouseID1: '',
           warehouseID2: '',
           vendorID: '',
@@ -644,7 +649,7 @@ export class InventoryListComponent implements OnInit {
         };
         $('#transferModal').modal('hide');
         this.toastr.success('Inventory Transferred Successfully.');
-        this.initDataTable();
+        this.lastEvaluatedKey = '';
         this.fetchItemsCount();
       });
   }
@@ -654,8 +659,8 @@ export class InventoryListComponent implements OnInit {
     if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null || 
     this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null || 
     this.transfer.partNumber == '' || this.transfer.partNumber == null ||
-    this.transfer.transferQuantity == '' || this.transfer.transferQuantity == null ||
-    this.transfer.date == '' || this.transfer.date == null
+    this.transfer.transferQuantity <= 0 || this.transfer.transferQuantity == null ||
+    this.transfer.date == '' || this.transfer.date == null || this.quantityError || this.transfer.notes.length > 500
     ){
 
       return true
