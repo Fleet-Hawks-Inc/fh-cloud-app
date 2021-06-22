@@ -347,7 +347,8 @@
                             
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select #w1="ngModel" class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
                                         (change)="getWarehouseItems($event)"
                                         [(ngModel)] ="transfer.warehouseID1">
@@ -363,7 +364,8 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select #w2="ngModel" class="form-control populate" name="warehouseID2"
                                         [(ngModel)]="transfer.warehouseID2">
                                         <ng-container *ngFor="let warehouse of warehouses | keyvalue">
@@ -382,26 +384,29 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part#</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part# <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select #part="ngModel" (change)="getQuanity($event)" type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" 
                                     [(ngModel)]="transfer.partNumber">
                                         <ng-option *ngFor="let item of allWarehouses" value={{item.partNumber}}>
                                             {{item.partNumber}} - {{item.warehouseVendorName}}
                                         </ng-option>
                                     </ng-select>
-                                    <div *ngIf="partQuantity && transfer.partNumber != ''">Existing quantity: {{partQuantity}}</div>
+                                    <div *ngIf="partQuantity >=0 && transfer.partNumber != ''">Existing quantity: {{partQuantity}}</div>
                                     <div *ngIf="part.touched && (transfer.partNumber == null || transfer.partNumber == '')" class="text-danger">
                                         Part number is required.
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <label
-                                        class="control-label font-weight-bold font-bold text-lg-right">Quantity to be transferred</label>
-                                    <input #tranQty="ngModel"  type="text" (blur)="checkQuanity($event.target.value)" class="form-control" 
+                                        class="control-label font-weight-bold font-bold text-lg-right">Quantity to be transferred <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <input #tranQty="ngModel"  type="number" min="0" (blur)="checkQuanity($event.target.value)" class="form-control" 
                                     placeholder="eg. 1,2,3 "name="transferQuantity" [(ngModel)]="transfer.transferQuantity">
                                     <span class="text-danger" *ngIf="quantityError">You can't transfer more than existing quantity</span>
-                                    <div *ngIf="tranQty.touched && (transfer.transferQuantity == null || transfer.transferQuantity == '')" class="text-danger">
-                                        Quantity is required.
+                                    <!-- <span class="text-danger" *ngIf="transfer.transferQuantity <= 0">Value should be greater than 0</span> -->
+                                    <div *ngIf="tranQty.touched && transfer.transferQuantity <= 0" class="text-danger">
+                                        Value should be greater than 0
                                     </div>
                                 </div>
                             </div>
@@ -410,17 +415,21 @@
                                 
                                 <div class="col-lg-6">
                                     <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date</label>
+                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <input #date="ngModel" type="text" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" class="form-control" name="date"
-                                        [(ngModel)]="transfer.date">
+                                        [(ngModel)]="transfer.date" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                     <div *ngIf="date.touched && (transfer.date == null || transfer.date == '')" class="text-danger">
-                                        Quantity is required.
+                                        Date is required.
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Notes</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
                                     <textarea type="text" class="form-control h-auto" rows="4" placeholder="Enter part details"name="notes"
                                         [(ngModel)]="transfer.notes"></textarea>
+                                        <div *ngIf="transfer.notes?.length > 500" class="text-danger">
+                                            Only 500 characters are allowed.
+                                          </div>
                                 </div>
                             </div>
 
