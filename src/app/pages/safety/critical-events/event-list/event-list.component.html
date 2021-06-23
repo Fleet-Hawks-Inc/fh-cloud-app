@@ -43,16 +43,7 @@
                         <a href="#fetchEventModal" class="modal-with-form btn btn-success btn-sm mx-2 "
                             style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
 
-                        <!-- <div class="btn-group flex-wrap mr-2">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false">Actions<span
-                                    class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="javascript:;">Import</a>
-                                <a class="dropdown-item text-1" href="javascript:;">Export</a>
-                            </div>
-                        </div> -->
+                        
                         <a href="javascript:;" routerLink="/safety/critical-events/add-event"
                             class="btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add
                             Event</a>
@@ -74,23 +65,30 @@
                                         <thead>
                                             <tr>
                                                 <th>Driver Name</th>
-                                                <th>Date &amp; Time</th>
-                                                <th>Location</th>
                                                 <th>Vehicle</th>
-                                                <th>Type of Event</th>
+                                                <th>Date </th>
+                                                <th>Time</th>
+                                                <th>Event Type</th>
+                                                <th>Event Source</th>
+                                                <th>Created By</th>
+                                                <th>Location</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody *ngIf="events.length > 0">
                                             <tr class="cursorpoint" *ngFor="let data of events; let i= index">
                                                 <td routerLink="/safety/critical-events/event-details/{{data.eventID}}">
                                                     {{ driversObject[data.driverUsername] }}</td>
-                                                <td>{{ data.date | date: 'dd-MM-yyyy HH:mm' }}</td>
+                                                <td> {{ vehiclesObject[data.vehicleID] }} </td>
+                                                <td>{{ data.eventDate | date: 'dd-MM-yyyy' }}</td>
+                                                <td>{{ data.eventTime }}</td>
+                                                <td>{{ data.eventType }}</td>
+                                                <td>{{ data.eventSource }}</td>
+                                                <td>{{ data.createdBy }}</td>
                                                 <td>{{ data.location }}</td>
-                                                <td>{{ vehiclesObject[data.vehicleID] }} </td>
-                                                <td>{{ data.criticalityType }}</td>
-                                                <td>
+                                                
+                                                <td>{{ data.status }}</td>
+                                                <!-- <td>
                                                     <select class="form-control" name="coachingStatus"
                                                         [(ngModel)]="data.coachingStatus"
                                                         (change)="changeCoachingStatus($event, data.eventID)">
@@ -113,7 +111,7 @@
                                                                 (click)="deleteEvent(data.eventID)">Delete</a>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         </tbody>
 

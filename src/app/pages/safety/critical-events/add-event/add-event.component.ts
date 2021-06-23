@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { from, Subject, throwError  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Auth } from 'aws-amplify';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router} from '@angular/router';
 import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { SafetyService } from 'src/app/services/safety.service';
 
 declare var $: any;
 
@@ -20,22 +22,16 @@ export class AddEventComponent implements OnInit {
 
     errors = {};
     event = {
+        driverUsername: null,
+        vehicleID: null,
         eventDate: '',
-        date: '',
         eventTime: '',
+        eventType: null,
+        eventSource: 'manual',
+        createdBy: '',
         location: '',
-        documentID: [],
-        vehicleID: '',
-        tripID: '',
-        incidentVideodocumentID: [],
-        eventType: 'critical',
-        modeOfOrign: 'manual',
-        coachingStatus: 'open',
-        driverUsername: '',
-        severity: '',
-        criticalityType: '',
-        remarks: '',
-        assignedUsername: ''
+        notes: '',
+        status: 'Open',
     };
     carrierID = '';
     selectedFiles: FileList;
@@ -95,8 +91,9 @@ export class AddEventComponent implements OnInit {
     public searchTerm = new Subject<string>();
     uploadedVideos = [];
     uploadedDocs = [];
+    currentUser: any;
 
-    constructor(private apiService: ApiService, private toastr: ToastrService,
+    constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
                 this.selectedFileNames = new Map<any, any>();
     }
@@ -104,9 +101,17 @@ export class AddEventComponent implements OnInit {
     ngOnInit() {
         this.fetchVehicles();
         this.fetchDrivers();
-        this.fetchUsers();
+        // this.fetchUsers();
         this.fetchTrips();
         this.searchLocation();
+        this.getCurrentuser();
+    }
+
+    getCurrentuser = async () => {
+        let result = (await Auth.currentSession()).getIdToken().payload;
+        this.currentUser = `${result.firstName} ${result.lastName}`;
+        this.event.createdBy = this.currentUser;
+        console.log('currentUser', this.currentUser);
     }
 
     fetchVehicles() {
@@ -119,13 +124,15 @@ export class AddEventComponent implements OnInit {
     fetchDrivers() {
         this.apiService.getData('drivers')
         .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+            
+            // result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
                 if(element.isDeleted === 0) {
                     this.drivers.push(element);
                 }
             }
+            console.log('this.drivers', this.drivers);
         })
     }
 
@@ -156,10 +163,10 @@ export class AddEventComponent implements OnInit {
         const fdate = this.event.eventDate.split('-');
         const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
         timestamp = moment(date + ' ' + this.event.eventTime).format('X');
-        this.event.date = (timestamp * 1000).toString();
-        this.event.documentID = this.uploadedDocs;
-        this.event.incidentVideodocumentID = this.uploadedVideos;
-
+        // this.event.date = (timestamp * 1000).toString();
+        // this.event.documentID = this.uploadedDocs;
+        // this.event.incidentVideodocumentID = this.uploadedVideos;
+        console.log('critical', this.event)
         // create form data instance
         const formData = new FormData();
 
@@ -176,7 +183,7 @@ export class AddEventComponent implements OnInit {
         // append other fields
         formData.append('data', JSON.stringify(this.event));
 
-        this.apiService.postData('safety/eventLogs', formData, true).subscribe({
+        this.safetyService.postData('critical-events', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
                 from(err.error)
