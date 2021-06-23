@@ -124,8 +124,8 @@
               </div>
               <div class="col-lg-12">
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
-                <table class="table table-bordered table-responsive-lg">
-                  <tbody *ngFor="let address of carriers.addressDetails">
+                <table class="table table-bordered table-responsive-lg" *ngFor="let address of carriers.addressDetails">
+                  <tbody>
                     <tr>
                       <td width="20%" class="back-color-gray">Address Type</td>
                       <td width="30%">{{address.addressType | titlecase}}</td>
@@ -141,7 +141,7 @@
                     <tr>
                       <td class="back-color-gray">City</td>
                       <td>{{address.cityName}}</td>
-                      <td class="back-color-gray">Postal Code</td>
+                      <td class="back-color-gray">Zip Code</td>
                       <td>{{address.zipCode}}</td>
                     </tr>
                   </tbody>

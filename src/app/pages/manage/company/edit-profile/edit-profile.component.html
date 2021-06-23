@@ -52,7 +52,7 @@
                     </div>
                     <div class=" row">
                       <div class="col-lg-10">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Username</label>
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Username <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" [disabled]=true
                           placeholder="johnsmith" #uName="ngModel" minlength="6"  pattern="^[^\.][a-z0-9\.]+[^\.]$">
                       </div>
@@ -62,7 +62,7 @@
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Phone <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
                           placeholder="eg. 2032342345."  required pattern="^[0-9]{1,10}$">
                       </div>
@@ -80,7 +80,8 @@
                     <div class=" row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Email</label>
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"  [disabled]=true
                           placeholder="eg. johnsmith@gmail.com">
                       </div>
