@@ -296,7 +296,7 @@ export class AddInventoryComponent implements OnInit {
       },
       next: (res) => {
         if (res === true) {
-          this.toastr.warning('Part number already exists,please edit the existing entry');
+          this.toastr.error('Part number already exists,please edit the existing entry');
         } else {
           this.response = res;
           this.hasSuccess = true;
@@ -415,7 +415,7 @@ export class AddInventoryComponent implements OnInit {
       next: (res) => {
 
         if (res === true) {
-          this.toastr.warning('Part number already exists,please edit the existing entry');
+          this.toastr.error('Part number already exists,please edit the existing entry');
         } else {
 
         this.response = res;

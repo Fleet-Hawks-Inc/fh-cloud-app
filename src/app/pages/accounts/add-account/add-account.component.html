@@ -24,7 +24,7 @@
     <div class="form-row mt-2">
       <div class="form-group col-lg-12">
         <label class="control-label font-weight-bold">Account Number</label>
-        <input type="text" class="form-control" [(ngModel)]="actNo" name="actNo">
+        <input type="number" class="form-control" [(ngModel)]="actNo" name="actNo">
       </div>
     </div>
     <div class="form-row mt-2">
@@ -38,9 +38,9 @@
         <label class="control-label font-weight-bold">Balance</label>
         <div class="row">
           <div class="col-lg-3 pr-0">
-            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="actBal" name="actBal"> </div>
+            <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal"> </div>
           <div class="col-lg-3 pl-0">
-            <ng-select  class="form-control populate" [(ngModel)]="actBalCurrency" name="actBalCurrency">
+            <ng-select  class="form-control populate" [(ngModel)]="opnBalCurrency" name="opnBalCurrency">
                 <ng-option value="CAD">CAD</ng-option>
                 <ng-option value="USD">USD</ng-option>
             </ng-select>
@@ -50,7 +50,6 @@
           </div>
           <div class="col-lg-4 pr-0">
             <input type="date"  class="form-control" [(ngModel)]="actDate" name="actDate" >
-
             <!-- <input type="text" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" class="form-control" [(ngModel)]="actDate" name="actDate" data-plugin-datepicker=""> -->
            </div>
         </div>

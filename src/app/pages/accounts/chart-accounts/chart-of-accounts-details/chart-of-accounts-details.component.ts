@@ -11,8 +11,11 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
 
   carrierID = '560';
   actID = '';
-  account = [];
-  constructor(private accountService: AccountService,private route: ActivatedRoute,) { }
+  account =  {
+    opnBal: 0,
+    transactionLog: []
+  };
+  constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.actID = this.route.snapshot.params[`actID`];
@@ -22,7 +25,9 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   }
 fetchAccount() {
   this.accountService.getData(`chartAc/${this.carrierID}/${this.actID}`).subscribe((res) => {
-    this.account = res;
+    this.account = res[0];
+    console.log('res', res);
+    console.log('this.account', this.account);
     });
 }
 }

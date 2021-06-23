@@ -51,17 +51,19 @@
                         <th class="text-2">Account Type</th>
                         <!-- <th class="text-2">Detail Type</th> -->
                         <th class="text-2">Description</th>
-                        <th class="text-2">Running Balance</th>
+                        <th class="text-2">Opening Balance</th>
+                        <th class="text-2">Closing Balance</th>
                         <th class="text-2">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let ac of accounts">
+                      <tr *ngFor="let ac of accounts | async">
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actDesc}}</td>
-                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actBal}}&nbsp; {{ac.actBalCurrency}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.opnBal}}&nbsp;{{ac.opnBalCurrency}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.closingAmt}}&nbsp;{{ac.opnBalCurrency}}</td>
                         <td>
                           <div class="btn-group flex-wrap">
                             <button type="button" class="btn" data-toggle="dropdown"><i
