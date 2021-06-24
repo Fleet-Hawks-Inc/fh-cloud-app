@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-add-invoice',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddInvoiceComponent implements OnInit {
 
-  constructor() { }
+  constructor( private accountService: AccountService) { }
 
   ngOnInit() {
   }
-
+   addInvoice() {
+    const data = {
+invoiceNo: 1234
+    };
+     this.accountService.postData(`invoices`, data).subscribe((res) => {
+  console.log('res', res);
+     });
+   }
 }
