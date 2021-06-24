@@ -12,8 +12,16 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   carrierID = '560';
   actID = '';
   account =  {
-    opnBal: 0,
-    transactionLog: []
+    actName: '',
+  actType: '',
+  actNo: 0,
+  actDesc: '',
+  opnBal: 0,
+  opnBalCurrency: '',
+  actDash: false,
+  actDate: '',
+  closingAmt: 0,
+  transactionLog: [],
   };
   constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
