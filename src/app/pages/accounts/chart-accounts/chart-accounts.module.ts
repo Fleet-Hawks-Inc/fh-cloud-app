@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
 import { ChartOfAccountsDetailsComponent } from './chart-of-accounts-details/chart-of-accounts-details.component';
-import { AddAccountComponent } from '../add-account/add-account.component';
+// import { AddAccountComponent } from '../add-account/add-account.component';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ChartOfAccountsComponent, ChartOfAccountsDetailsComponent,AddAccountComponent],
+  declarations: [ChartOfAccountsComponent, ChartOfAccountsDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,
