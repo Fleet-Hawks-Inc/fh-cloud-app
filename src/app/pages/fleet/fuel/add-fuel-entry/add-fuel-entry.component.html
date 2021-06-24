@@ -626,7 +626,7 @@
                                 ngbDatepicker
                                 #d="ngbDatepicker"
                                 #date="ngModel"
-                                required
+                                required  [minDate]="dateMinLimit"
                                 />
                                 <div
                                    *ngIf="date.invalid && (date.dirty || date.touched)"

@@ -37,6 +37,9 @@ export class SharedModalsComponent implements OnInit {
   errors = {};
   deletedAddress = [];
   allAssetTypes: any;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private HereMap: HereMapService, private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
     ) {
@@ -44,7 +47,6 @@ export class SharedModalsComponent implements OnInit {
       this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 12, day: date.getDate()};
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 12, day: date.getDate() };
-      this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 12, day: date.getDate()};
 
       this.listService.fetchAppendIssues().subscribe(res => {
        this.issuesData.unitID = res.name;
@@ -373,7 +375,6 @@ ownerOperators: any = [];
 getcurrentDate: any;
 birthDateMinLimit: any;
 birthDateMaxLimit: any;
-futureDatesLimit: any;
 countriesObject: any;
 fieldTextType: boolean;
   cpwdfieldTextType: boolean;
@@ -452,7 +453,7 @@ assetsData = {
     manufacturer: '',
     model: '',
     height: '',
-    heightUnit: '',
+    heightUnit: null,
     length: '',
     lengthUnit: '',
     axle: '',

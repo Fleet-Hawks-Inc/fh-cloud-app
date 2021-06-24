@@ -302,6 +302,9 @@ export class AddOrdersComponent implements OnInit {
   orderAttachments = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   submitDisabled = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(
     private apiService: ApiService,
@@ -391,7 +394,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-    this.fetchStateTaxes();
+    
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.searchLocation();
@@ -403,10 +406,11 @@ export class AddOrdersComponent implements OnInit {
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
-      this.fetchOrderByID();
+      this.fetchOrderByID(); 
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
+      this.fetchStateTaxes();
     }
 
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
@@ -419,26 +423,49 @@ export class AddOrdersComponent implements OnInit {
   }
 
 
-  fetchStateTaxes() {
-    this.apiService
-      .getData("stateTaxes")
-      .subscribe((result) => {
+  async fetchStateTaxes() {
+    
+    let result = await this.apiService
+      .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
-        this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
-        this.orderData.taxesInfo = [
-          {
-            name: 'GST',
-            amount: result.Items[0].GST,
-          },
-          {
-            name: 'HST',
-            amount: result.Items[0].HST,
-          },
-          {
-            name: 'PST',
-            amount: result.Items[0].PST,
-          },
-        ];
+        if (!this.getOrderID) {
+          this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+
+          this.orderData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: result.Items[0].GST,
+            },
+            {
+              name: 'HST',
+              amount: result.Items[0].HST,
+            },
+            {
+              name: 'PST',
+              amount: result.Items[0].PST,
+            },
+          ];
+        } else {
+          this.stateTaxes.map((v:any) => {
+            if(this.orderData.stateTaxID == v.stateTaxID) {
+              this.orderData.taxesInfo = [
+                {
+                  name: 'GST',
+                  amount: v.GST,
+                },
+                {
+                  name: 'HST',
+                  amount: v.HST,
+                },
+                {
+                  name: 'PST',
+                  amount: v.PST,
+                },
+              ];
+            }
+          })
+        }
+       
         this.newTaxes = this.orderData.taxesInfo;
         if(this.subTotal > 0) {
           for (let i = 0; i < this.newTaxes.length; i++) {
@@ -446,8 +473,6 @@ export class AddOrdersComponent implements OnInit {
             element.taxAmount = (this.subTotal * element.amount) / 100;
           }
         }
-        
-      });
   }
 
   public searchLocation() {
@@ -1419,13 +1444,14 @@ export class AddOrdersComponent implements OnInit {
   /***************
    * For Edit Orders
    */
-  fetchOrderByID() {
+  async fetchOrderByID() {
     this.apiService
       .getData("orders/" + this.getOrderID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
-
+        await this.fetchStateTaxes();
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
+        
         this.orderData.taxesInfo = [
           {
             name: 'GST',

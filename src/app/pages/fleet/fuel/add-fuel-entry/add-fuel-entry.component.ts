@@ -109,7 +109,7 @@ export class AddFuelEntryComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
-
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(private apiService: ApiService,
               private route: ActivatedRoute,
@@ -121,7 +121,7 @@ export class AddFuelEntryComponent implements OnInit {
     const date = new Date();
     this.getcurrentDate = {
       year: date.getFullYear(),
-      month: date.getMonth() + 1,
+      month: 12,
       day: date.getDate(),
     };
   }

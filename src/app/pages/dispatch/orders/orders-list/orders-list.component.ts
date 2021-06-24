@@ -97,6 +97,13 @@ export class OrdersListComponent implements OnInit {
   ]
   records = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  fetchedRecordsCount = 0;
+  lastFetched = {
+    draw:0,
+    status: false
+  }
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -199,6 +206,7 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.records = true;
         }
+        this.fetchedRecordsCount += result.Count;
         this.getStartandEndVal('all');
         // this.orders.push(result['Items']);
         this.allignOrders(result['Items']);
@@ -221,13 +229,22 @@ export class OrdersListComponent implements OnInit {
           this.ordersEndPoint = this.totalRecords;
         }
 
-
         // disable prev btn
-        if (this.ordersDraw > 0) {
-          this.ordersPrev = false;
-        } else {
+        if (this.ordersDraw == 0) {
           this.ordersPrev = true;
+        } 
+
+        // disable next btn when no records at last
+        if(this.fetchedRecordsCount < this.totalRecords ){
+          this.ordersNext = false;
+        } else if(this.fetchedRecordsCount === this.totalRecords) {
+          this.ordersNext = true;
         }
+        this.lastFetched = {
+          draw:this.ordersDraw,
+          status: this.ordersNext
+        }
+
         this.spinner.hide(); 
       }, err => {
         this.spinner.hide();
@@ -346,13 +363,24 @@ export class OrdersListComponent implements OnInit {
   nextResults(type) {
     if(type == 'all') {
       this.ordersNext = true;
-      this.ordersPrev = true;
       this.ordersDraw += 1;
 
       if(this.orders[this.ordersDraw] == undefined) {
         this.records = false;
+        
         this.initDataTable();
+        this.ordersPrev = false;
       } else {
+        if(this.ordersDraw <= 0 ){
+          this.ordersPrev = true;
+        } else {
+          this.ordersPrev = false;
+        }
+        if(this.ordersDraw < this.lastFetched.draw ){
+          this.ordersNext = false;
+        } else {
+          this.ordersNext = this.lastFetched.status;
+        }
         this.getStartandEndVal('all');
         this.ordersEndPoint = this.ordersStartPoint+this.orders[this.ordersDraw].length-1;
       }
@@ -365,11 +393,15 @@ export class OrdersListComponent implements OnInit {
       this.ordersNext = true;
       this.ordersPrev = true;
       this.ordersDraw -= 1;
-      this.lastEvaluatedKey = this.ordersPrevEvauatedKeys[this.ordersDraw];
 
       if(this.orders[this.ordersDraw] == undefined) {
         this.initDataTable();
       } else {
+        if(this.ordersDraw <= 0 ){
+          this.ordersPrev = true;
+        } else {
+          this.ordersPrev = false;
+        }
         this.ordersNext = false;
         this.getStartandEndVal('all');
       }

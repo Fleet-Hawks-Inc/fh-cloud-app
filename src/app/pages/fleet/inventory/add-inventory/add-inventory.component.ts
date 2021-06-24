@@ -22,17 +22,22 @@ export class AddInventoryComponent implements OnInit {
   itemID = '';
   requiredItem: '';
   partNumber = '';
-  cost = '';
-  costUnit = '';
-  quantity = '';
+
+  cost = 0;
+  costUnit = null;
+  quantity = 0;
   itemName = '';
   description = '';
-  category = '';
+  category = null;
   warehouseID = '';
+
+  costUnitType = null;
+  warrantyTime: '';
+  warrantyUnit: '';
   aisle = '';
   row = '';
   bin = '';
-  warehouseVendorID = '';
+  warehouseVendorID = null;
   trackingQuantity = '';
   reorderPoint = '';
   reorderQuality = '';
@@ -104,15 +109,11 @@ export class AddInventoryComponent implements OnInit {
     } else {
       this.pageTitle = `Add Inventory Part`;
     }
- if(this.requiredItem){
-  this.pageTitle = `Add Inventory Part`;
-  this.getRequiredInventory();
- }
-    $(document).ready(() => {
-     // this.form = $('#form').validate();
-      //this.groupForm = $('#groupForm').validate();
-      //this.warehoseForm = $('#warehoseForm').validate();
-    });
+    if(this.requiredItem){
+      this.pageTitle = `Add Inventory Part`;
+      this.getRequiredInventory();
+    }
+    this.disableButton()
   }
 
    /*
@@ -122,10 +123,12 @@ export class AddInventoryComponent implements OnInit {
     let files = [...event.target.files];
 
     if (obj === 'uploadedDocs') {
+      this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
     } else {
+      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
       }
@@ -149,6 +152,7 @@ export class AddInventoryComponent implements OnInit {
       this.partNumber = result.partNumber;
       this.cost = result.cost;
       this.costUnit = result.costUnit;
+      this.costUnitType = result.costUnitType;
       this.quantity = result.quantity;
       this.itemName = result.itemName;
       this.description = result.description;
@@ -166,6 +170,8 @@ export class AddInventoryComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.warrantyTime= result.warrantyTime,
+      this.warrantyUnit= result.warrantyUnit,
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
       if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
@@ -180,10 +186,16 @@ export class AddInventoryComponent implements OnInit {
     });
   }
   /*Delete upload */
-  delete(type: string,name: string){
+  delete(type: string,name: string, index: any){
     this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
       this.getInventory();
+      if(type == 'doc') {
+        this.inventoryDocs.splice(index, 1);
+      } else {
+        this.inventoryImages.splice(index, 1);
+      }
     });
+    
   }
   ngOnInit() {
     this.listService.fetchVendors();
@@ -235,6 +247,7 @@ export class AddInventoryComponent implements OnInit {
     const data = {
       partNumber: this.partNumber,
       cost: this.cost,
+      costUnitType: this.costUnitType,
       costUnit: this.costUnit,
       quantity: this.quantity,
       itemName: this.itemName,
@@ -245,14 +258,11 @@ export class AddInventoryComponent implements OnInit {
       row: this.row,
       bin: this.bin,
       warehouseVendorID: this.warehouseVendorID,
-      trackingQuantity: this.trackingQuantity,
-      reorderPoint: this.reorderPoint,
-      reorderQuality: this.reorderQuality,
-      leadTime: this.leadTime,
-      preferredVendorID: this.preferredVendorID,
       days: this.days,
       time: this.time,
       notes: this.notes,
+      warrantyTime: this.warrantyTime,
+      warrantyUnit: this.warrantyUnit
     };
 
      // create form data instance
@@ -301,12 +311,14 @@ export class AddInventoryComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.partNumber = '';
-          this.cost = '';
-          this.costUnit = '';
-          this.quantity = '';
+
+          this.cost = 0;
+          this.costUnit = null;
+          this.quantity = 0;
+
           this.itemName = '';
           this.description = '';
-          this.category = '';
+          this.category = null;
           this.warehouseID = '';
           this.aisle = '';
           this.row = '';
@@ -320,6 +332,8 @@ export class AddInventoryComponent implements OnInit {
           this.days = '';
           this.time = '';
           this.notes = '';
+          this.warrantyTime = '',
+          this.warrantyUnit = ''
           this.toastr.success('Inventory Added Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
           if (this.requiredItem) {
@@ -370,6 +384,7 @@ export class AddInventoryComponent implements OnInit {
       partNumber: this.partNumber,
       cost: this.cost,
       costUnit: this.costUnit,
+      costUnitType: this.costUnitType,
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
@@ -379,14 +394,9 @@ export class AddInventoryComponent implements OnInit {
       row: this.row,
       bin: this.bin,
       warehouseVendorID: this.warehouseVendorID,
-      trackingQuantity: this.trackingQuantity,
-      reorderPoint: this.reorderPoint,
-      reorderQuality: this.reorderQuality,
-      leadTime: this.leadTime,
-      preferredVendorID: this.preferredVendorID,
-      days: this.days,
-      time: this.time,
       notes: this.notes,
+      warrantyTime: this.warrantyTime,
+      warrantyUnit: this.warrantyUnit,
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs
     };
@@ -494,5 +504,15 @@ export class AddInventoryComponent implements OnInit {
   }
   setSrcValue(){
     this.pdfSrc = '';
+  }
+
+  disableButton() {
+    if(this.partNumber == '' || this.costUnit == '' || this.costUnit == null || this.costUnitType == '' || this.costUnitType == null || 
+      this.category == '' || this.category == null
+     || this.warehouseID == '' || this.warehouseID == null || this.warehouseVendorID == '' || this.warehouseVendorID == null){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

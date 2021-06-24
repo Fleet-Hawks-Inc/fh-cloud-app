@@ -112,7 +112,7 @@ export class AddAccountComponent implements OnInit {
   ngOnInit() {
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
-      this.carrierForm = $('#carrierForm').validate();
+      // this.carrierForm = $('#carrierForm').validate();
     });
   }
   // Show password
@@ -401,6 +401,15 @@ export class AddAccountComponent implements OnInit {
       this.passwordValidation.length = true
     } else{
       this.passwordValidation.length = false;
+  
+    
     }
+    if(password.includes('.')|| password.includes('-')){
+      this.passwordValidation.specialCharacters = true;
+    }
+
+
   }
+
+
 }

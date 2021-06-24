@@ -13,7 +13,7 @@ import { ChartsModule } from 'ng2-charts';
 import { MatExpansionModule } from "@angular/material/expansion";
 const routes: Routes = [
     
-    { path: 'mileage', component: MileageComponent },
+    { path: 'detail/:quarter', component: MileageComponent },
     { path: 'report', component: ReportComponent },
     { path: 'new-quarterly-report', component: GenerateQuarterlyReportComponent },
     { path: 'report-history', component: IftaReportHistoryComponent},

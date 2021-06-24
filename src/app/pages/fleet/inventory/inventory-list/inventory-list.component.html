@@ -69,10 +69,7 @@
                                     <label><input type="checkbox" disabled [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()">
                                         Quantity </label>
                                 </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.onHand" name="onHand" (change)="hideShowColumn()"> On
-                                        Hand </label>
-                                </a>
+                                
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" disabled [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()">
                                         Unit Cost </label>
@@ -83,17 +80,10 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()">
-                                        Warranty Days and Time
+                                        Warranty Time
                                     </label>
                                 </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint" name="reorderPoint"
-                                            (change)="hideShowColumn()"> Reorder Point </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity" name="reorderQuantity"
-                                            (change)="hideShowColumn()"> Reorder Quantity </label>
-                                </a>
+                                
                             </div>
                         </div>
                         <a [routerLink]="" (click)="openTransferModal()"
@@ -187,10 +177,9 @@
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
                                                         <th class="col5">Quantity</th>
-                                                        <th class="col6">On Hand</th>
                                                         <th class="col7">Unit Cost</th>
                                                         <th class="col8">Warehouse Details</th>
-                                                        <th class="col9 extra">Warranty Days and Time</th>
+                                                        <th class="col9 extra">Warranty Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
                                                         <th class="col11 extra">Reorder Quantity</th>
                                                         <th>Actions</th>
@@ -223,13 +212,10 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.quantity}}
                                                         </td>
-                                                        <td *ngIf="hideShow.onHand"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            234
-                                                        </td>
+                                                        
                                                         <td *ngIf="hideShow.unitCost"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            $ {{item.cost}}
+                                                             {{item.cost}} {{item.costUnitType}}
                                                         </td>
                                                         <td *ngIf="hideShow.warehouse"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -238,17 +224,9 @@
                                                         <!-- extra columns -->
                                                         <td *ngIf="hideShow.warranty"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.days}} and {{item.time}}
+                                                            {{item.warrantyTime ? item.warrantyTime : '-'}} {{item.warrantyUnit}}
                                                         </td>
-                                                        <td *ngIf="hideShow.reorderPoint"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.reorderPoint}}
-                                                        </td>
-                                                        <td *ngIf="hideShow.reorderQuantity"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.reorderQuality}}
-                                                        </td>
-
+                                                        
                                                         <td>
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button"
@@ -362,42 +340,17 @@
                 </button>
             </div>
             <div class="modal-body text-dark pt-2">
-                <form>
+                <form #tranferQuanForm="ngForm">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
 
+                            
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part#</label>
-                                    <input type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" [(ngModel)]="transfer.partNumber">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part Details</label>
-                                    <input type="text" class="form-control" placeholder="Enter part details"name="partDetails"
-                                        [(ngModel)]="transfer.partDetails">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                                    <input type="text" class="form-control" placeholder="eg. 1,2,3 "name="quantity" [(ngModel)]="transfer.quantity">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
-                                    <input type="date" data-plugin-datepicker="" class="form-control" name="date"
-                                        [(ngModel)]="transfer.date">
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
-                                    <ng-select data-plugin-selectTwo class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
-
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <ng-select #w1="ngModel" class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
+                                        (change)="getWarehouseItems($event)"
                                         [(ngModel)] ="transfer.warehouseID1">
                                             <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
@@ -405,19 +358,81 @@
 
 
                                     </ng-select>
+                                    <div *ngIf="w1.touched && (transfer.warehouseID1 == null || transfer.warehouseID1 == '')" class="text-danger">
+                                        Warehouse is required.
+                                    </div>
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
-                                    <ng-select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <ng-select #w2="ngModel" class="form-control populate" name="warehouseID2"
                                         [(ngModel)]="transfer.warehouseID2">
-                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
+                                        <ng-container *ngFor="let warehouse of warehouses | keyvalue">
+                                            <ng-option *ngIf="warehouse.key != transfer.warehouseID1"
                                                 value="{{warehouse.key}}">
                                                 {{warehouse.value}}</ng-option>
+                                        </ng-container>
+                                            
 
                                     </ng-select>
+                                    <div *ngIf="w2.touched && (transfer.warehouseID2 == null || transfer.warehouseID2 == '')" class="text-danger">
+                                        Warehouse is required.
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Part# <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <ng-select #part="ngModel" (change)="getQuanity($event)" type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" 
+                                    [(ngModel)]="transfer.partNumber">
+                                        <ng-option *ngFor="let item of allWarehouses" value={{item.partNumber}}>
+                                            {{item.partNumber}} - {{item.warehouseVendorName}}
+                                        </ng-option>
+                                    </ng-select>
+                                    <div *ngIf="partQuantity >=0 && transfer.partNumber != ''">Existing quantity: {{partQuantity}}</div>
+                                    <div *ngIf="part.touched && (transfer.partNumber == null || transfer.partNumber == '')" class="text-danger">
+                                        Part number is required.
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right">Quantity to be transferred <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <input #tranQty="ngModel"  type="number" min="0" (blur)="checkQuanity($event.target.value)" class="form-control" 
+                                    placeholder="eg. 1,2,3 "name="transferQuantity" [(ngModel)]="transfer.transferQuantity">
+                                    <span class="text-danger" *ngIf="quantityError">You can't transfer more than existing quantity</span>
+                                    <!-- <span class="text-danger" *ngIf="transfer.transferQuantity <= 0">Value should be greater than 0</span> -->
+                                    <div *ngIf="tranQty.touched && transfer.transferQuantity <= 0" class="text-danger">
+                                        Value should be greater than 0
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                
+                                <div class="col-lg-6">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date <span
+                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <input #date="ngModel" type="text" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" class="form-control" name="date"
+                                        [(ngModel)]="transfer.date" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                    <div *ngIf="date.touched && (transfer.date == null || transfer.date == '')" class="text-danger">
+                                        Date is required.
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+                                    <textarea type="text" class="form-control h-auto" rows="4" placeholder="Enter part details"name="notes"
+                                        [(ngModel)]="transfer.notes"></textarea>
+                                        <div *ngIf="transfer.notes?.length > 500" class="text-danger">
+                                            Only 500 characters are allowed.
+                                          </div>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -427,7 +442,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-success" (click)="transferInventory()">
+                <button type="button" [disabled]="disableButton()" class="btn btn-success" (click)="transferInventory()">
                     Save
                 </button>
             </div>

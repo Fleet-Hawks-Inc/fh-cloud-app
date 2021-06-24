@@ -42,7 +42,7 @@
                     </div>
                     <div class="row m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Name/Number:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ vehicleIdentification | uppercase}} </div>
+                      <div class="col-lg-8 p-2 border-box">{{ vehicleIdentification }} </div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
@@ -821,6 +821,17 @@
                 </div>
                 <div class="col-lg-9">
                   {{ inspectionForms.inspectionType }}
+                </div>
+              </div>
+              <div class="row text-dark mt-3">
+                <div class="col-lg-3 font-weight-bold">
+                  Default Inspection Form:
+                </div>
+                <div class="col-lg-9">
+                  <span *ngIf="inspectionForms"> 
+                    <span *ngIf="inspectionForms.isDefaultInspectionType=='0'">NO</span>
+                    <span *ngIf="inspectionForms.isDefaultInspectionType=='1'">YES</span>
+                  </span>
                 </div>
               </div>
             </div>

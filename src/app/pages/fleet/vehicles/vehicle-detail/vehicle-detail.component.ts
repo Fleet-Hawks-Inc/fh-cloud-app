@@ -200,6 +200,7 @@ export class VehicleDetailComponent implements OnInit {
   inspectionForms = {
     inspectionFormName : '',
     parameters: [],
+    isDefaultInspectionType:'0',
     inspectionType: ''
   };
   fuelEntries = [];
@@ -343,7 +344,12 @@ export class VehicleDetailComponent implements OnInit {
         this.ownerOperatorName = result.ownerOperatorID;
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
-            this.inspectionForms = result1.Items[0];
+            if(result1.Items.length > 0) {
+              if(result1.Items[0].isDefaultInspectionType === undefined) {
+                result1.Items[0].isDefaultInspectionType = '0';
+              }
+              this.inspectionForms = result1.Items[0];
+            }
           });
         }
         this.annualSafetyDate = result.annualSafetyDate;
@@ -409,8 +415,15 @@ export class VehicleDetailComponent implements OnInit {
           EPAHighway: result.specifications.EPAHighway,
           tareWeight: result.specifications.tareWeight,
         };
+        if(result.insurance.remiderEvery === 'weekly') {
+          result.insurance.remiderEvery= 'Week(s)';
+        } else if(result.insurance.remiderEvery === 'monthly') {
+          result.insurance.remiderEvery= 'Month(s)';
+        } else if(result.insurance.remiderEvery === 'yearly') {
+          result.insurance.remiderEvery= 'Year(s)';
+        }
         this.insurance = {
-          dateOfIssue: result.insurance.dateOfIssue,
+          dateOfIssue: result.insurance.dateOfIssue, 
           premiumAmount: result.insurance.premiumAmount,
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
@@ -553,7 +566,7 @@ export class VehicleDetailComponent implements OnInit {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx' || ext == 'pdf') {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);

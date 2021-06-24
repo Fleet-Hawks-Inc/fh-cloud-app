@@ -156,7 +156,7 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?asset=' + this.assetID + '&assetType=' + this.assetType).subscribe({
+    this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -204,7 +204,7 @@ export class AssetListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('assets/fetch/records?asset=' + this.assetID+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -253,7 +253,7 @@ export class AssetListComponent implements OnInit {
       });
   }
 
-  searchFilter() {
+  searchFilter() { 
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
       if(this.assetID == '') {

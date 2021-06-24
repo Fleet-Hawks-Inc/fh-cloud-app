@@ -69,8 +69,7 @@
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    Notes &nbsp; <span
-                                                        class="text-1 optional-label-color">(optional)</span>
+                                                    Notes
                                                 </label>
                                                 <textarea class="form-control h-auto" rows="3" name="notes"
                                                     [(ngModel)]="routeData.notes" placeholder="Enter notes"
@@ -92,7 +91,7 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Vehicle
-                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.vehicleID" name="vehicleID"
                                                     placeholder="Select vehicle">
@@ -111,7 +110,7 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Asset
-                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.assetID" name="assetID"
                                                     placeholder="Select asset">
@@ -130,7 +129,7 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Driver
-                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.driverID" name="driverID"
                                                     placeholder="Select driver" (change)="resetCodrivers()">
@@ -154,7 +153,7 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Co-Driver
-                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.coDriverID" id="codrvr"
                                                     name="coDriverID" placeholder="Select co-driver">
@@ -410,8 +409,7 @@
                                                         [(ngModel)]="routeData.recurring.route" value="yes">
                                                     <label class="control-label font-weight-bold"
                                                         for="recurringBtn">Recurring Route?
-                                                        &nbsp; <span
-                                                            class="text-1 optional-label-color">(optional)</span>
+                                                        
                                                     </label>
                                                 </div>
                                             </div>
@@ -468,7 +466,7 @@
                                                             name="recurring.date" type="text"
                                                             placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control" #dateM="ngModel"
-                                                            required [minDate]="dateMinLimit">
+                                                            required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                                         <div *ngIf="dateM.invalid && (dateM.dirty || dateM.touched)"
                                                             class="text-danger">
 
