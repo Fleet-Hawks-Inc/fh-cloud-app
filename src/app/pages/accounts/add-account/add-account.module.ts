@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddAccountComponent } from './add-account.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { AddAccountComponent } from './add-account.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -65,6 +65,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     NgbModule
   ],
+  exports: [AddAccountComponent],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },

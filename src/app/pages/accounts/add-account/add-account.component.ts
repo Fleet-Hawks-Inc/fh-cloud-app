@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  @Input() childMessage: string;
+   @Input() childMessage: string;
   receivedActID = '';
   carrierID = '560';
   actName: '';
@@ -47,21 +47,20 @@ export class AddAccountComponent implements OnInit {
     }
   }
   ngOnChanges() {
-    this.receivedActID = this.childMessage;
-    if (this.receivedActID !== '' && this.receivedActID !== undefined) {
-      this.fetchAccount();
-    }
-    else {
-      this.actName = '';
-      this.actType = '';
-      this.actNo = null;
-      this.actDesc = '';
-      this.opnBal = null;
-      this.opnBalCurrency = '';
-      this.actDash = false;
-      this.actDate = '';
-      this.closingAmt = null;
-    }
+    // this.receivedActID = this.childMessage;
+    // if (this.receivedActID !== '' && this.receivedActID !== undefined) {
+    //   this.fetchAccount();
+    // } else {
+    //   this.actName = '';
+    //   this.actType = '';
+    //   this.actNo = null;
+    //   this.actDesc = '';
+    //   this.opnBal = null;
+    //   this.opnBalCurrency = '';
+    //   this.actDash = false;
+    //   this.actDate = '';
+    //   this.closingAmt = null;
+    // }
   }
   addAccount() {
     const data = {
@@ -94,17 +93,17 @@ export class AddAccountComponent implements OnInit {
     });
   }
   fetchAccount() {
-    this.accountService.getData(`chartAc/${this.carrierID}/${this.childMessage}`).subscribe((res) => {
-      this.actName = res[0].actName;
-      this.actType = res[0].actType;
-      this.actNo = res[0].actNo;
-      this.actDesc = res[0].actDesc;
-      this.opnBal = res[0].opnBal;
-      this.opnBalCurrency = res[0].opnBalCurrency;
-      this.actDash = res[0].actDash;
-      this.actDate = res[0].actDate;
-      this.closingAmt = res[0].closingAmt;
-    });
+    // this.accountService.getData(`chartAc/${this.carrierID}/${this.childMessage}`).subscribe((res) => {
+    //   this.actName = res[0].actName;
+    //   this.actType = res[0].actType;
+    //   this.actNo = res[0].actNo;
+    //   this.actDesc = res[0].actDesc;
+    //   this.opnBal = res[0].opnBal;
+    //   this.opnBalCurrency = res[0].opnBalCurrency;
+    //   this.actDash = res[0].actDash;
+    //   this.actDate = res[0].actDate;
+    //   this.closingAmt = res[0].closingAmt;
+    // });
   }
   updateAccount() {
     const data = {

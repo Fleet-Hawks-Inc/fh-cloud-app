@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 import { HomeComponent } from './home/home.component';
 import { AddAccountComponent } from '../accounts/add-account/add-account.component';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartAccountsModule } from './chart-accounts/chart-accounts.module';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -60,14 +61,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 @NgModule({
-  declarations: [HomeComponent, AddAccountComponent],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     AccountsRoutingModule,
     SharedModule,
     NgSelectModule,
     ChartsModule,
-    FormsModule
+    FormsModule,
+    ChartAccountsModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
