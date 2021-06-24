@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import * as moment from "moment";
+import { SafetyService } from 'src/app/services/safety.service';
 
 @Component({
   selector: 'app-event-list',
@@ -53,7 +54,7 @@ export class EventListComponent implements OnInit {
   vehiclesObject: any = {};
   driversObject: any = {};
   
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
@@ -153,9 +154,10 @@ export class EventListComponent implements OnInit {
   }
 
   fetchevents() {
-    this.apiService.getData('safety/eventLogs/fetch?event=critical')
+    this.safetyService.getData('critical-events')
       .subscribe((result: any) => {
-        this.totalRecords = result.Count;
+        console.log('result', result)
+        this.events = result;
       })
   }
 
@@ -218,6 +220,7 @@ export class EventListComponent implements OnInit {
     this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
+        console.log("this.driversObject", this.driversObject)
       });
   }
 }
