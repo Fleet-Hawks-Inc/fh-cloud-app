@@ -33,6 +33,8 @@ export class AddEventComponent implements OnInit {
         notes: '',
         status: 'Open',
     };
+    uploadedPhotos = [];
+    uploadedVideos = [];
     carrierID = '';
     selectedFiles: FileList;
     selectedFileNames: Map<any, any>;
