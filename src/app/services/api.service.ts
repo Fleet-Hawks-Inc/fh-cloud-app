@@ -14,6 +14,7 @@ export class ApiService {
   public carrierID = '';
   public BaseUrl = environment.BaseUrl;
   public AssetUrl = environment.AssetURL;
+  public AccountService = environment.AccountServiceUrl;
   private httpOptions;
 
   private httpOptionsOld = {
@@ -27,11 +28,11 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.jwt = localStorage.getItem('jwt');
-   // 
+   //
     // from(Auth.currentSession())
     //     .pipe(
     //         switchMap((auth: any) => { // switchMap() is used instead of map().
-    //          
+    //
     //           const jwt = auth.accessToken.jwtToken;
     //           // this.httpOptions = {
     //           //   headers: new HttpHeaders({
@@ -61,7 +62,7 @@ export class ApiService {
     else {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
-    
+
     return this.http.post(this.BaseUrl + url , data , headers);
 
   }
@@ -85,7 +86,7 @@ export class ApiService {
     let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
     };
-    
+
     return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
@@ -104,9 +105,9 @@ export class ApiService {
     from(Auth.currentSession())
         .pipe(
             switchMap((auth: any) => { // switchMap() is used instead of map().
-              
+
               const jwt = auth.accessToken.jwtToken;
-              
+
               this.httpOptions = {
                 headers: new HttpHeaders({
                   'Authorization': `Bearer ${jwt}`,
@@ -133,7 +134,7 @@ export class ApiService {
 
     } catch (error) {
       return undefined;
-      
+
     }
   }
 

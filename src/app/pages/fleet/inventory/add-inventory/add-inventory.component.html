@@ -444,19 +444,19 @@
                         </button>
 
                         <!-- if there is some error in validation  -->
-                        <button *ngIf="!itemID && !inventoryF.form.valid" (click)="addInventory()"
-                          class="btn btn-success" [disabled]="!inventoryF.form.valid">Save</button>
+                        <!-- <button *ngIf="!itemID && !inventoryF.form.valid" (click)="addInventory()"
+                          class="btn btn-success" [disabled]="!inventoryF.form.valid">Save 1</button> -->
 
                         <!-- if validations are ok and now the button will disable on submit click  -->
-                        <button *ngIf="!itemID && inventoryF.form.valid" (click)="addInventory()"
-                          class="btn btn-success" [disabled]="submitDisabled">Save</button>
+                        <button *ngIf="!itemID" (click)="addInventory()"
+                          class="btn btn-success" [disabled]="disableButton()">Save</button>
 
                         <!--- update case -->
-                        <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
-                          [disabled]="!inventoryF.form.valid" class="btn btn-success">Update</button>
+                        <!-- <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
+                          [disabled]="!inventoryF.form.valid" class="btn btn-success">Update 1</button> -->
 
-                        <button *ngIf="itemID  && inventoryF.form.valid" (click)="updateInventory()"
-                          [disabled]="submitDisabled" class="btn btn-success">Update</button>
+                        <button *ngIf="itemID" (click)="updateInventory()"
+                          [disabled]="disableButton()" class="btn btn-success">Update</button>
                       </div>
                     </div>
                   </div>

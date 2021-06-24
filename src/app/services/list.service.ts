@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs";
-
+import { AccountService } from 'src/app/services/account.service';
 @Injectable({
   providedIn: "root",
 })
@@ -62,10 +62,13 @@ export class ListService {
   assetsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetsList = this.assetsDataSource.asObservable();
 
+  accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  accountsList = this.accountsDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,private accountService: AccountService,) {}
 
   fetchVendors() {
     this.apiService.getData("vendors").subscribe((result: any) => {
@@ -214,5 +217,13 @@ fetchReceivers() {
   fetchAppendIssues() {
     return this._subject.asObservable()
   }
-  
+
+
+  // fetch accounts of chart of accounts
+  fetchChartAccounts() {
+    this.accountService.getData('chartAc').subscribe((res: any) => {
+      console.log('res',res);
+      this.accountsDataSource.next(res);
+      });
+  }
 }
