@@ -1189,8 +1189,17 @@ export class AddVehicleNewComponent implements OnInit {
 
   deleteDocument(name: string, index: string) {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
-      this.documentSlides.splice(parseInt(index), 1);
-    });
+      this.documentSlides = [];
+      this.uploadedDocs = result.Attributes.uploadedDocs;
+      this.existingDocs = result.Attributes.uploadedDocs;
+      result.Attributes.uploadedDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.documentSlides.push(obj);
+      })
+    }); 
   }
 
   clearGroup() {

@@ -190,16 +190,16 @@
             
                <div class="row">
                   <div class="col-lg-12">
-                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name <span
+                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type <span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                      <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
-                        placeholder="Enter renewal type name" #Rname="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                        placeholder="Enter renewal type " #Rname="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                         <div *ngIf="Rname.invalid && (Rname.dirty || Rname.touched)" class="text-danger">
                            <div *ngIf="Rname.errors.required">
-                             Renewal name is required.
+                             Renewal type is required.
                            </div>     
                            <div *ngIf="Rname.errors.pattern">
-                                  Renewal name must contain alphanumeric characters.
+                                  Renewal type must contain alphanumeric characters.
                            </div>
                          </div>
                   </div>
