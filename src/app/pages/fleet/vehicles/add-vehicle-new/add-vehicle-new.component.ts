@@ -137,7 +137,7 @@ export class AddVehicleNewComponent implements OnInit {
     fuelTankOneCapacity: '',
     fuelTankOneType: '',
     fuelQuality: '',
-    fuelTankTwoCapacity: null,
+    fuelTankTwoCapacity: '',
     fuelTankTwoType: '',
     oilCapacity: null,
     oilCapacityType: '',
@@ -264,7 +264,7 @@ export class AddVehicleNewComponent implements OnInit {
   stateName = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 1 };
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {
@@ -1189,8 +1189,17 @@ export class AddVehicleNewComponent implements OnInit {
 
   deleteDocument(name: string, index: string) {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
-      this.documentSlides.splice(parseInt(index), 1);
-    });
+      this.documentSlides = [];
+      this.uploadedDocs = result.Attributes.uploadedDocs;
+      this.existingDocs = result.Attributes.uploadedDocs;
+      result.Attributes.uploadedDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.documentSlides.push(obj);
+      })
+    }); 
   }
 
   clearGroup() {

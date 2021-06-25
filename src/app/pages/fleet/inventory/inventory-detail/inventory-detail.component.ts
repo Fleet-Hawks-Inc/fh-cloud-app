@@ -45,7 +45,11 @@ export class InventoryDetailComponent implements OnInit {
   vendors = {};
   itemGroups = {};
   warehouses = [];
+  warrantyTime;
+  warrantyUnit;
+  inventoryDataUpdate: any;
   warehousesList: any = {};
+  costUnitType;
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -70,7 +74,7 @@ export class InventoryDetailComponent implements OnInit {
 
   fetchWarehouses() {
     this.apiService.getData(`items/get/itemqty/warehouses/` + this.partNumber).subscribe((result: any) => {
-      this.warehouses = result.Items;
+      this.warehouses = result;
     });
   }
   fetchWarehousesList() {
@@ -81,9 +85,12 @@ export class InventoryDetailComponent implements OnInit {
   getInventory() {
     this.apiService.getData(`items/` + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
+      this.inventoryDataUpdate = result;
+      
       this.carrierID = result.carrierID;
       this.partNumber = result.partNumber;
       this.cost = result.cost;
+      this.costUnitType = result.costUnitType;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
       this.itemName = result.itemName;
@@ -102,6 +109,8 @@ export class InventoryDetailComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.warrantyTime = result.warrantyTime;
+      this.warrantyUnit = result.warrantyUnit;
       this.uploadedPhotos = result.uploadedPhotos;
       this.uploadedDocs = result.uploadedDocs;
       if (
@@ -124,12 +133,15 @@ export class InventoryDetailComponent implements OnInit {
     });
   }
 
-  delete(type: string, name: string) {
-    this.apiService
-      .deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`)
-      .subscribe((result: any) => {
-        this.getInventory();
-      });
+  // delete uploaded images and documents
+  delete(type: string, name: string, index:any) {
+    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
+      if(type === 'image') {
+        this.photos.splice(index, 1);
+      } else {
+        this.documents.splice(index,1);
+      }
+    });
   }
 
   deleteItem() {

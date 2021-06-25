@@ -21,7 +21,7 @@ export class InventoryListComponent implements OnInit {
   itemGroups = {};
   vendors = {};
   warehouses = [];
-
+  allWarehouses = [];
   partNumber = '';
   partDetails = '';
   quantity = '';
@@ -35,12 +35,9 @@ export class InventoryListComponent implements OnInit {
     category: true,
     vendor: true,
     quantity: true,
-    onHand: true,
     unitCost: true,
     warehouse: true,
     warranty: false,
-    reorderPoint: false,
-    reorderQuantity: false,
     preferredVendor: false,
   }
 
@@ -49,6 +46,7 @@ export class InventoryListComponent implements OnInit {
   lastEvaluatedKey = '';
   partNo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  partQuantity;
   /**
    * search props
    */
@@ -76,10 +74,13 @@ export class InventoryListComponent implements OnInit {
   };
   transfer = {
     partNumber: '',
-    partDetails: '',
-    quantity: '',
+    itemID: '',
+    quantity: 0,
+    notes: '',
+    transferQuantity: 0,
     warehouseID1: '',
     warehouseID2: '',
+    vendorID: '',
     date: ''
   };
   requiredItemName = '';
@@ -110,6 +111,11 @@ export class InventoryListComponent implements OnInit {
   allCompanies: any = [];
   searchItems: any = [];
   requiredSuggestedPartNo = [];
+  quantityError = false;
+
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date1: any = new Date();
+  futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
@@ -120,6 +126,7 @@ export class InventoryListComponent implements OnInit {
     this.fetchVendors();
     this.fetchRequiredItemsCount();
     this.listService.fetchVendors();
+    this.disableButton();
     this.allVendors = this.listService.vendorList;
   }
 
@@ -400,11 +407,7 @@ export class InventoryListComponent implements OnInit {
       $('.col5').css('display', '');
     }
 
-    if (this.hideShow.onHand === false) {
-      $('.col6').css('display', 'none');
-    } else {
-      $('.col6').css('display', '');
-    }
+    
 
     if (this.hideShow.unitCost === false) {
       $('.col7').css('display', 'none');
@@ -426,19 +429,7 @@ export class InventoryListComponent implements OnInit {
       $('.col9').css('display', '');
     }
 
-    if (this.hideShow.reorderPoint === false) {
-      $('.col10').css('display', 'none');
-    } else {
-      $('.col10').removeClass('extra');
-      $('.col10').css('display', '');
-    }
-
-    if (this.hideShow.reorderQuantity === false) {
-      $('.col11').css('display', 'none');
-    } else {
-      $('.col11').removeClass('extra');
-      $('.col11').css('display', '');
-    }
+    
     if (this.hideShow.preferredVendor === false) {
       $('.col12').css('display', 'none');
     } else {
@@ -594,17 +585,76 @@ export class InventoryListComponent implements OnInit {
     this.currentTab = type;
   }
 
+
+  getWarehouseItems(id: any) {
+    this.allWarehouses = [];
+    if(id != undefined) {
+      this.apiService.getData(`items/warehouseParts/${id}`).subscribe(result => {
+        this.allWarehouses = result;
+      })
+    }
+  }
+
+  getQuanity(id: any) {
+    if(id != undefined) {
+      var result = this.allWarehouses.filter(item => {
+        return item.partNumber === id;
+      })
+      this.partQuantity = result[0].quantity;
+      this.transfer.vendorID = result[0].warehouseVendorID;
+      this.transfer.itemID = result[0].itemID;
+      this.transfer.quantity = result[0].quantity;
+      
+    }
+    
+  }
+
+  checkQuanity (value: any){
+    if(value > this.partQuantity ) {
+      this.quantityError = true;
+      this.transfer.transferQuantity = this.partQuantity;
+    } else {
+      this.quantityError = false;
+
+    }
+  }
+
   transferInventory() {
-  this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
-    this.toastr.success('Inventory Tranfered Successfully.');
-     this.transfer = {
-      partNumber: '',
-      partDetails: '',
-      quantity: '',
-      warehouseID1: '',
-      warehouseID2: '',
-      date: ''
-    };
-  });
+    
+      this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
+        this.transfer = {
+          itemID: '',
+          quantity: 0,
+          partNumber: '',
+          notes: '',
+          transferQuantity: 0,
+          warehouseID1: '',
+          warehouseID2: '',
+          vendorID: '',
+          date: ''
+        };
+        $('#transferModal').modal('hide');
+        this.toastr.success('Inventory Transferred Successfully.');
+        this.lastEvaluatedKey = '';
+        this.fetchItemsCount();
+      });
+  }
+
+  
+  disableButton() {
+    if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null || 
+    this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null || 
+    this.transfer.partNumber == '' || this.transfer.partNumber == null ||
+    this.transfer.transferQuantity <= 0 || this.transfer.transferQuantity == null ||
+    this.transfer.date == '' || this.transfer.date == null || this.quantityError || this.transfer.notes.length > 500
+    ){
+
+      return true
+    } else {
+      return false
+    }
+    
+    
+    
   }
 }

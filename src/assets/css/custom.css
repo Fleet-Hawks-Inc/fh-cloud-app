@@ -1732,6 +1732,7 @@ text-decoration: underline;
   .pr8{padding-right:8px !important;}
   .pr10{padding-right:10px !important;}
   .pr19{padding-right:19px !important;}
+  .pr27{padding-right:27px !important;}
   .pr32{padding-right:32px !important;}
 
   .pr123{padding-right:123px !important;}
@@ -1742,6 +1743,7 @@ text-decoration: underline;
   .pb10{padding-bottom:10px !important;}
   .pb12{padding-bottom:12px !important;}
   .pb14{padding-bottom:14px !important;}
+  .pb21{padding-bottom:21px !important;}
 
   /* padding left */
   .pl4{padding-left:4px !important;}
@@ -2492,3 +2494,8 @@ input.placeholder-lowercase {
 }
 
 
+/* on board page width according screen sizes */
+.onboardwidth {width: 95% !important;	}
+@media (min-width: 1640px) {
+	.onboardwidth {width: 75% !important;	}
+}

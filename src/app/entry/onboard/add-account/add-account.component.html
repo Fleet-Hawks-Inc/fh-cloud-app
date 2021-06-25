@@ -5,7 +5,7 @@
       <div class="row text-dark">
         <div class="col">
           <section class="card" style="align-items: center;">
-            <div class="card-body pr-5 pl-5" style="width: 70%;">
+            <div class="card-body pr-5 pl-5 onboardwidth">
               <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm" [mustMatch]="['password', 'confirmPassword']"
                  #cForm="ngForm" novalidate="novalidate">
                 <div class="row text-center">
@@ -20,7 +20,7 @@
                       Detail</label>
                   </div>
                   <div class="col-lg-6">
-                    <div class=" row">
+                    <div class="row">
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -54,7 +54,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6"
+                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6" 
                           placeholder="eg. john.smith" #uName1="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
                         <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
                           <div *ngIf="uName1.errors.required">
@@ -169,7 +169,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"
+                        <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="email" name="email"
                           placeholder="eg. johnsmith@gmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                           <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
                             <div *ngIf="em.errors.required">
@@ -386,7 +386,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
+                        <input type="text" class="form-control"  [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
                         #scac="ngModel"  >
                           <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
@@ -570,7 +570,7 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
 
-                              <label class="control-label font-weight-bold text-lg-right pt-2">Postal Code<span *ngIf="item.manual && item.addressType==='yard'"
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code<span *ngIf="item.manual && item.addressType==='yard'"
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="eg. 7V2 3R4"  #zip="ngModel">

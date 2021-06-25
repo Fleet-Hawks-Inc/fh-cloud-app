@@ -129,7 +129,7 @@
                               <input type="text" placeholder="yyyy/mm/dd" #Date="ngModel" required
                                  (click)="d1.toggle()" (keydown)="$event.preventDefault()" ngbDatepicker
                                  #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate"
-                                 class="form-control">
+                                 class="form-control" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                               <div *ngIf="Date.invalid && (Date.dirty || Date.touched)" class="text-danger">
                                  <div>
 

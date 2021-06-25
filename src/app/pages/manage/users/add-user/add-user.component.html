@@ -116,7 +116,7 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="eg. 2234567891"
                             [(ngModel)]="userData.phone" name="phone" #umob="ngModel"
-                            required pattern="[0-9]{10}$">
+                            required pattern="[0-9]{1,10}$">
                             <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
                               <div *ngIf="umob.errors.required">
                                 Phone is required.
@@ -414,7 +414,7 @@
                                       
                                       <p class="text-dark pt-2 mb-0"> <span class="pr-1"
                                           [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowecase</p>
+                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
                                         
                                     </div>
                                     <div class="col-lg-12">
