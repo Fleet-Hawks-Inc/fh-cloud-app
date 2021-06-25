@@ -236,83 +236,44 @@
                              
                               <div class="col-12">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                    PO# &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                    PO#
                                  </label>
                                  <input  placeholder="eg. 0006,123" [(ngModel)]="orderData.customerPO" name="customerPO" #customerPO="ngModel" required customerPO type="text"
                                     class="form-control" #orderNum="ngModel" required pattern="^[0-9]+$">
-                                    <!-- <div *ngIf="orderNum.invalid && (orderNum.dirty || orderNum.touched)" class="text-danger">
-                                       <div>
-    
-                                         <div *ngIf="orderNum.errors.required">
-                                          Customer PO is required.
-                                          </div>
-                                          <div *ngIf="orderNum.errors.pattern">
-                                            Customer PO must contains numbers only.
-                                             </div>
-                                       </div>
-    
-                                     </div> -->
-                                 
+                                    
                               </div>
                            </div>
                           
                            <div class="row mt-2">
                               <div class="col-lg-6">
-                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal
-                                    Contact &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal Contact</label>
     
                                  <ng-select [(ngModel)]="orderData.additionalContact" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
                                     <ng-option value="{{ data.fullName }}" *ngFor="let data of customerSelected.additionalContact">{{ data.fullName }}</ng-option>
                                  </ng-select>
-                                 <!-- <input placeholder="eg. John Shaw" [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text"
-                                    class="form-control" #contact="ngModel"  pattern="^[a-zA-Z\s]+$">
-                                    <div *ngIf="contact.invalid && (contact.dirty || contact.touched)" class="text-danger">
-                                       <div *ngIf="contact.errors.pattern">
-                                       Additional Contact Name must contains upper, lowecase characters and special character for peiod(space) only.
-                                          </div>
-                                    </div> -->
     
                               </div>
                               <div class="col-lg-6">
-                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Phone</label>
                                  <input placeholder="eg. 2234567891" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control"  >
-                                 <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
-                                    <div *ngIf="phone.errors.pattern">
-                                     Phone must contains 10 number only eg. +1223366456.
-                                     </div>
-                                </div> -->
+                                 
                               </div>
                            </div>
                            <div class="row mt-2">
                               
                               <div class="col-lg-6">
-                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Email</label>
                                  <input placeholder="eg. johnsmith@gmail.com"[(ngModel)]="orderData.email" name="email" type="text" class="form-control" >
-                                 <!-- <div *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="text-danger">
-                                    <div *ngIf="mail.errors.pattern">
-                                    Enter valid email Id eg. johnsmith@gmail.com.
-                                     </div>
-                                </div> -->
+                                
                               </div>
                               <div class="col-lg-6">
                                  <label
-                                    class="control-label font-weight-bold labelmt text-3 text-dark">Reference &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                    class="control-label font-weight-bold labelmt text-3 text-dark">Reference</label>
                                  <input placeholder="eg. 024933435" [(ngModel)]="orderData.reference" name="order_reference" type="text"
                                     class="form-control" >
-                                    <!-- <div *ngIf="ref.invalid && (ref.dirty || ref.touched)" class="text-danger">
-                                       <div *ngIf="ref.errors.pattern">
-                                       Reference must contains  numbers only.
-                                        </div>
-                                   </div> -->
                               </div>
-                              <!-- <div class="col-lg-12 mt-2">
-                                 <div class="checkbox-custom checkbox-default">
-                                    <input [(ngModel)]="orderData.invoiceEmail" name="invoiceEmail" type="checkbox"
-                                       name="terms" id="checkboxExample1">
-                                    <label for="checkboxExample1">CC - Invoice Email</label>
-                                 </div>
-                              </div> -->
+                              
                            </div>
                            
                         </div>
@@ -408,8 +369,7 @@
                                                          <div class="col-lg-11 col-md-12">
                                                             <label
                                                                class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Shipper
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               for="inputDefault">Shipper <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
          
                                                             <ng-select [(ngModel)]="item.shippers.shipperID"
@@ -434,8 +394,7 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Location
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
          
                                                             <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.shippers.pickupLocation"
@@ -447,15 +406,7 @@
                                                                <div *ngIf="pickupLocation.touched && shippersReceivers[0].shippers.pickupLocation == '' && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
                                                                   
                                                                    Pickup location is required.
-                                                                  
-         
-         
-                                                                  <!-- <div *ngIf="location.errors.pattern">
-                                                                  Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
-                                                                   </div> -->
-         
-         
-         
+                                                                 
                                                               </div>
          
                                                             <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
@@ -474,8 +425,7 @@
                                                       <div class="row mt-3">
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pick Date and Time
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               for="inputDefault">Pick Date and Time <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
                                                          </div>
                                                          <div class="col-lg-6">
@@ -518,16 +468,12 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Instruction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                               for="inputDefault">Pickup Instruction</label>
          
                                                             <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
                                                                name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
                                                                ></textarea>
-                                                               <!-- <div *ngIf="Pickup1.errors.pattern" class="text-danger">
-                                                                
-                                                                    Only 500 characters are allowed.
-                                                                   
-                                                              </div> -->
+                                                               
                                                          </div>
          
                                                       </div>
@@ -535,23 +481,14 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Pickup&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               for="inputDefault">Contact Person at Pickup
                                                                <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                             </label>
          
                                                             <input placeholder="eg. John Smith" [(ngModel)]="item.shippers.contactPerson"
                                                                name="shippers.contactPerson_{{i}}" type="text" class="form-control"
                                                                id="inputDefault" >
-                                                               <!-- <div *ngIf="person.invalid && (person.dirty || person.touched)" class="text-danger">
-                                                                  <div *ngIf="person.errors.pattern">
-                                                                Contact person at pickup must contains uppercase, lowercase and special character for period(space) only.
-                                                                   </div>
-                                                              </div> -->
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span> -->
+                                                               
                                                          </div>
          
                                                       </div>
@@ -559,38 +496,22 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               for="inputDefault">Phone
                                                                <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                             </label>
          
                                                             <input placeholder="eg. 2234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
                                                                type="text" class="form-control" id="inputDefault" >
-                                                               <!-- <div *ngIf="orderP.invalid && (orderP.dirty || orderP.touched)" class="text-danger">
-                                                                  <div *ngIf="orderP.errors.pattern">
-                                                                   Phone must contains 10 number only eg. +12234567891.
-                                                                   </div>
-                                                              </div> -->
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.phone == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span> -->
+                                                              
                                                          </div>
          
                                                       </div>
          
-                                                      <!-- <div class="row mt-3">
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Notes</label>
-                                                            <input [(ngModel)]="item.shippers.notes" name="notes"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                         </div>
-                                                      </div> -->
+                                                     
                                                       <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
                                                             </div>
@@ -598,18 +519,7 @@
                                                             <div class="col-lg-11">
          
                                                                <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" (input)="assignReceiverValue('commodity','name',$event,i,z)"  >
-                                                               <!-- <div *ngIf="commodityName.invalid && (commodityName.dirty || commodityName.touched)" class="text-danger">
-                                                                  <div *ngIf="commodityName.errors.pattern">
-                                                                  Commodity must alphanumeric characters and special characters for period(space) only.
-                                                                   </div>
-                                                              </div> -->
-         
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].name == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
-         
+                                                              
                                                             </div>
                                                             <div class="col-lg-1 text-right mt-1 pl-0">
                                                                <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a>
@@ -621,51 +531,30 @@
          
                                                             <div class="col-lg-12 col-md-12">
                                                                <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                  >PU# &nbsp;<i
-                                                                  class="fas fa-question-circle" data-toggle="tooltip"
+                                                                  >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
                                                                   data-placement="top"
                                                                   title="Pickup Number"></i>
-                                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                                  
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
          
                                                                <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
-                                                                  name="pu{{z}}" type="text" class="form-control"
-                                                                   >
-                                                                  <!-- <div *ngIf="pu.invalid && (pu.dirty || pu.touched)" class="text-danger">
-                                                                     <div *ngIf="pu.errors.pattern">
-                                                                  PU must contains numbers only.
-                                                                      </div>
-                                                                 </div> -->
-         
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].pu == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
+                                                                  name="pu{{z}}" type="text" class="form-control" >
+                                                                  
                                                             </div>
          
                                                          </div>
          
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
                                                             </div>
                                                             <div class="col-lg-6">
          
                                                                <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control" (input)="assignReceiverValue('commodity','quantity',$event,i,z)" >
-                                                               <!-- <div *ngIf="quantity.invalid && (quantity.dirty || quantity.touched)" class="text-danger">
-                                                                  <div *ngIf="quantity.errors.pattern">
-                                                                  Quantity must contains numbers only.
-                                                                   </div>
-                                                              </div> -->
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantity == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
+                                                               
                                                             </div>
          
          
@@ -684,24 +573,14 @@
                                                                      <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
                                                                      <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
                                                                </ng-select>
-                                                               <!-- <div *ngIf="quantityType.invalid && (quantityType.dirty || quantityType.touched)" class="text-danger">
-                                                                  <div *ngIf="quantityType.errors.required">
-                                                                 Select valid quantity from the list.
-                                                                   </div>
-                                                              </div> -->
-         
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantityUnit == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
+                                                               
          
                                                             </div>
                                                             <div class="col-lg-3"> </div>
                                                          </div>
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                                </label>
                                                             </div>
@@ -727,17 +606,7 @@
                                                                      <ng-option value="Kilograms">Kilograms</ng-option>
                                                                      <ng-option value="lbs">lbs</ng-option>
                                                                </ng-select>
-                                                               <!-- <div *ngIf="weightType.invalid && (weightType.dirty || weightType.touched)" class="text-danger">
-                                                                  <div *ngIf="weightType.errors.required">
-                                                                  Select valid weight from the list.
-                                                                   </div>
-                                                              </div> -->
-         
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].weightUnit == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
+                                                              
          
                                                             </div>
          
@@ -748,7 +617,7 @@
                                                       <div class="row mt-3">
                                                          <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Load ? &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                               for="inputDefault">Will Driver Load ?</label>
                                                          </div>
          
                                                          <div class="col-lg-5 mb-3 pl-0 pr-0">
@@ -774,25 +643,6 @@
                                                       </div>
          
          
-         
-                                                      <!-- <div class="row mt-3">
-                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
-                                                            <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark" for="inputDefault">Will Driver Load ?</label>
-                                                         </div>
-                                                         <div class="col-lg-5 mb-3 pl-0 pr-0">
-                                                            <div class="btn-group-toggle" data-toggle="buttons">
-                                                               <label class="btn btn-outline btn-yesno mr-2 mb-2">
-                                                               <input id="googleMiles" name="calculateMiles" type="radio"> Yes</label>
-                                                               <label class="btn btn-outline btn-yesno mr-2 mb-2 active">
-                                                               <input id="pcmiles" name="calculateMiles" type="radio"> No</label>
-                                                            </div>
-                                                         </div>
-                                                         <div class="col-lg-3 col-sm-12 col-xs-12 col-12 text-right">
-                                                            <p class="mb-1"><a href="#" class="btn btnw90px btn-md btn-dark">Save</a></p>
-                                                         </div>
-                                                      </div> -->
-         
-         
                                                    </div>
                                                 </section>
                                              </div>
@@ -816,8 +666,7 @@
          
                                                          <div class="col-lg-11 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Receiver
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                               for="inputDefault">Receiver <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
          
                                                             <ng-select [(ngModel)]="item.receivers.receiverID"
@@ -855,14 +704,6 @@
                                                                <div *ngIf="dropOffLocation.touched && shippersReceivers[0].receivers.dropOffLocation == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
                                                                    Drop off location is required.
                                                                   
-         
-         
-         <!--
-                                                                  <div *ngIf="drop.errors.pattern">
-                                                                  Drop Off Location must contains upper, lower case and special characters for period(space,-,&,',') only.
-                                                                   </div> -->
-         
-         
          
                                                               </div>
          
@@ -923,7 +764,7 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Instruction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                               for="inputDefault">Delivery Instruction</label>
          
                                                             <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="item.receivers.dropOffInstruction"
                                                                name="dropOffInstruction" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
@@ -943,7 +784,7 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Delivery&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               for="inputDefault">Contact Person at Delivery
                                                                <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                             </label>
          
@@ -967,7 +808,7 @@
          
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               for="inputDefault">Phone
                                                                <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                             </label>
          
@@ -996,23 +837,14 @@
                                                       <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
                                                             </div>
                                                             <div class="col-lg-11">
          
                                                                <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" >
-                                                                <!-- <div *ngIf="cCommodity.invalid && (cCommodity.dirty || cCommodity.touched)" class="text-danger">
-                                                                  <div *ngIf="cCommodity.errors.pattern">
-                                                                 Commodity must alphanumeric characters and special characters for period(space) only.
-                                                                   </div>
-                                                              </div> -->
-         
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].name == ''">
-                                                                  This Field is required
-                                                               </span>  -->
+                                                              
          
                                                             </div>
                                                             <div class="col-lg-1 text-right mt-1 pl-0">
@@ -1031,7 +863,7 @@
                                                                   class="fas fa-question-circle" data-toggle="tooltip"
                                                                   data-placement="top"
                                                                   title="Delivery Number "></i>
-                                                                  &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                                  
          
                                                                   <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
          
@@ -1055,7 +887,7 @@
          
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                                </label>
                                                             </div>
@@ -1104,7 +936,7 @@
                                                          </div>
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                                </label>
                                                             </div>
@@ -1147,7 +979,7 @@
                                                       <div class="row mt-3">
                                                          <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Unload ?&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                               for="inputDefault">Will Driver Unload ?</label>
                                                          </div>
          
                                                          <div class="col-lg-5 mb-3 pl-0 pr-0">
@@ -1241,7 +1073,7 @@
           
                                     <div class="col-lg-8 offset-lg-2">
                                        <label class="control-label font-weight-bold text-3 text-dark"
-                                          for="inputDefault">Asset Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          for="inputDefault">Asset Type</label>
           
                                        <ng-select placeholder="eg. Reefer" [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                           class="form-control populate" >
@@ -1329,7 +1161,7 @@
                                  <!--Tempratures-->
                                  <div class="row mt-2" *ngIf="orderData.additionalDetails.trailerType == 'reefer'">
                                     <div class="col-lg-10 offset-lg-2">
-                                       <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temperature&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                       <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temperature</label>
                                     </div>
                                     <div class="col-lg-4 offset-lg-2">
                                        <input
@@ -1391,7 +1223,7 @@
                                  <div class="row mt-3">
           
                                     <div class="col-lg-8 offset-lg-2">
-                                       <label class="control-label font-weight-bold labelmt text-3 text-dark">Attachments Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                       <label class="control-label font-weight-bold labelmt text-3 text-dark">Attachments Type</label>
                                        <input [(ngModel)]="orderData.additionalDetails.uploadedDocs" name="uploadedDocs"
                                           type="file" (change)="selectDocuments($event)" multiple class="form-control p-0">
                                     </div>
@@ -1456,9 +1288,6 @@
                                              <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
                                                 hidden value="manual"> Manual </label>
                                           </div>
-          
-          
-          
           
           
                                        </div>
@@ -1589,7 +1418,7 @@
                                  <div class="row mt-3">
                                     <div class="col-lg-12">
                                        <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                          for="inputDefault">Fuel Surcharge&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          for="inputDefault">Fuel Surcharge</label>
                                     </div>
                                     <div class="col-lg-3">
                                        <ng-select placeholder="eg. Flat Fee" [(ngModel)]="orderData.charges.fuelSurcharge.type" name="fuel_type"
@@ -1639,7 +1468,7 @@
                                  <div class="row mt-3" *ngFor="let item of accessFeesInfo.accessFees; let i = index;">
                                     <div class="col-lg-12">
                                        <label class="control-label font-weight-bold text-3 text-dark"
-                                          for="inputDefault"> Accessorial Fee&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          for="inputDefault"> Accessorial Fee</label>
                                     </div>
                                     <div class="col-lg-3">
                                        <ng-select placeholder="eg. Lumper" [(ngModel)]="item.type" name="accessfee_type{{i}}"
@@ -1697,7 +1526,7 @@
                                  <div class="row mt-3" *ngFor="let item of accessorialDeductionInfo.accessDeductions; let i = index;" >
                                     <div class="col-lg-12">
                                        <label class="control-label font-weight-bold text-3 text-dark"
-                                          for="inputDefault">Accessorial Deduction&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          for="inputDefault">Accessorial Deduction</label>
                                     </div>
                                     <div class="col-lg-3">
                                        <ng-select placeholder="eg. Lumper" [(ngModel)]="item.type" name="type{{i}}"
@@ -1778,7 +1607,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-12" *ngIf="!orderData.zeroRated">
-                                       <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Province/State&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                       <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Province/State</label>
                                     </div>
                                     <div class="col-lg-9" *ngIf="!orderData.zeroRated">
                                        <ng-select

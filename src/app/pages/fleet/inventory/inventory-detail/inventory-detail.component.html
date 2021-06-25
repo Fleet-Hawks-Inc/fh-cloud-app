@@ -63,15 +63,9 @@
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
-                              In Stock
-                            </td>
-                            <td>3445</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
                               Unit Cost
                             </td>
-                            <td>$ {{cost}}</td>
+                            <td>{{cost}} {{costUnitType}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -79,12 +73,12 @@
                             </td>
                             <td>{{costUnit}}</td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
                             <td class="back-color-gray font-weight-bold">
                               Purchase Order#
                             </td>
                             <td>54560</td>
-                          </tr>
+                          </tr> -->
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Description
@@ -142,18 +136,9 @@
                               width="40%"
                               class="back-color-gray font-weight-bold"
                             >
-                              Days
+                              Warranty Time
                             </td>
-                            <td width="60%">{{days}}</td>
-                          </tr>
-                          <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Time
-                            </td>
-                            <td width="60%">{{time}}</td>
+                            <td width="60%">{{warrantyTime ? warrantyTime : '-'}} {{warrantyUnit ? warrantyUnit : '-'}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -166,64 +151,6 @@
                     </div>
                   </div>
 
-                  <!-- inventory TABLE -->
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <label class="control-label font-weight-bold text-3 mb-3"
-                        >Inventory Tracking</label
-                      >
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg mb4">
-                        <tbody>
-                          <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Quantity
-                            </td>
-                            <td width="60%">{{quantity}}</td>
-                          </tr>
-                          <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Reorder Point
-                            </td>
-                            <td width="60%">{{reorderPoint}}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Reorder Quantity
-                            </td>
-                            <td>{{reorderQuality}}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Max. Quantity
-                            </td>
-                            <td>0</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Lead Time
-                            </td>
-                            <td>{{leadTime}}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Preferred Vendor
-                            </td>
-                            <td>{{vendors[preferredVendorID]}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="row pb14" *ngIf="photos?.length">
@@ -246,7 +173,7 @@
                               <div class="row">
                                 <div class="col-lg-8">Image {{i+1}}</div>
                                 <div class="col-lg-4 text-right">
-                                   <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
+                                   <i class="fas fa-times text-danger"  (click)="delete('image',photo.name, i)"></i>
                                 </div>
                               </div>
                             </div>
@@ -272,43 +199,15 @@
                             <a href="{{document.path}}" target="_blank">Document No. {{i+1}}</a>
                           </div>
                           <div class="col-lg-3 text-right">
-                              <i class="fas fa-times text-danger"  (click)="delete('doc',document.name)"></i>
+                              <i class="fas fa-times text-danger"  (click)="delete('doc',document.name, i)"></i>
 
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- VENDOR LIST -->
-                  <div class="row pt-2">
-                    <div class="col-lg-12">
-                      <table
-                        class="table table-bordered table-responsive-lg table-striped mb-0"
-                        id="simple-table"
-                      >
-                        <thead>
-                          <tr>
-                            <th width="60%">Vendor Name</th>
-                            <th width="40%">Part Price</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Vendor 1</td>
-                            <td>$4.90</td>
-                          </tr>
-                          <tr>
-                            <td>Vendor 2</td>
-                            <td>$5.00</td>
-                          </tr>
-                          <tr>
-                            <td>Vendor 3</td>
-                            <td>$4.70</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                  
+                  
                 </div>
               </div>
             </form>

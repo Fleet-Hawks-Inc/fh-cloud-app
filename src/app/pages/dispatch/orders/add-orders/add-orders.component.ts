@@ -394,7 +394,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-    this.fetchStateTaxes();
+    
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.searchLocation();
@@ -410,6 +410,7 @@ export class AddOrdersComponent implements OnInit {
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
+      this.fetchStateTaxes();
     }
 
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
@@ -1448,6 +1449,7 @@ export class AddOrdersComponent implements OnInit {
       .getData("orders/" + this.getOrderID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        await this.fetchStateTaxes();
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
         
         this.orderData.taxesInfo = [

@@ -5072,11 +5072,11 @@
                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
                                     </tr>
                                     
-                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee'">
+                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee' || detailTab == 'Broker' || detailTab == 'Customer'">
                                         <th width="40%" class="back-color-gray">MC#:</th>
                                         <td>{{(userDetailData.mc) ? userDetailData.mc : '-'}}</td>
                                     </tr>
-                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee'">
+                                    <tr *ngIf="detailTab == 'Consignor' || detailTab == 'Consignee' || detailTab == 'Broker' || detailTab == 'Customer'">
                                         <th width="40%" class="back-color-gray">DOT#:</th>
                                         <td>{{(userDetailData.dot) ? userDetailData.dot : '-'}}</td>
                                     </tr>
@@ -5360,9 +5360,9 @@
                                 <th width="40%" class="back-color-gray">Account#:</th>
                                 <td>{{ (userDetailData.fcDetails.accountNumber) ? userDetailData.fcDetails.accountNumber : '-'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.fcDetails.factoringRate">
+                            <tr>
                                 <th width="40%" class="back-color-gray">Factoring Rate:</th>
-                                <td>{{(userDetailData.fcDetails.factoringRate) ? userDetailData.fcDetails.factoringRate : '-'}}{{(userDetailData.fcDetails.factoringUnit) ? userDetailData.fcDetails.factoringUnit : '-'}}</td>
+                                <td>{{(userDetailData.fcDetails.factoringRate) ? userDetailData.fcDetails.factoringRate : '-'}}{{(userDetailData.fcDetails.factoringUnit) ? userDetailData.fcDetails.factoringUnit : ''}}</td>
                             </tr>
                         </tbody>
                     </table>

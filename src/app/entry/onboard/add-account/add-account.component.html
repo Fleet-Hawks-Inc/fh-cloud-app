@@ -169,7 +169,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"
+                        <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="email" name="email"
                           placeholder="eg. johnsmith@gmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                           <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
                             <div *ngIf="em.errors.required">
@@ -386,7 +386,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
+                        <input type="text" class="form-control"  [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
                         #scac="ngModel"  >
                           <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
@@ -570,7 +570,7 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
 
-                              <label class="control-label font-weight-bold text-lg-right pt-2">Postal Code<span *ngIf="item.manual && item.addressType==='yard'"
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code<span *ngIf="item.manual && item.addressType==='yard'"
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="eg. 7V2 3R4"  #zip="ngModel">

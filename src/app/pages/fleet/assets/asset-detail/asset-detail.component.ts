@@ -185,6 +185,7 @@ export class AssetDetailComponent implements OnInit {
           // if (!result.hasOwnProperty('devices')) {
           //   result['devices'] = [];
           // }
+          result.assetType = result.assetType.replace("_"," ");
           if(result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
             this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
