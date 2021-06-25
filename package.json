@@ -43,7 +43,7 @@
     "aws-amplify-angular": "5.0.60",
     "aws-crt": "^1.6.2",
     "aws-iot-device-sdk": "^2.2.6",
-    "aws-iot-device-sdk-v2": "1.0.3",
+    "aws-iot-device-sdk-v2": "1.4.7",
     "aws-sdk": "2.683.0",
     "buffer": "5.4.3",
     "chart.js": "2.9.4",
