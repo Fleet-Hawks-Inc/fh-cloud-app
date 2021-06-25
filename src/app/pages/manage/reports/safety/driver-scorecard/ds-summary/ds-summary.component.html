@@ -3,20 +3,22 @@
        <section role="main" class="content-body pt-0 pr-0 pl-1">
           <header class="page-header pr19 pl11">
              <div class="row" style="padding-top:10px;">
-                <div class="col-md-3 col-lg-3 pr-0">
-                   <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
-                      <span class="input-group-prepend">
-                      <span class="input-group-text">
-                      <i class="fas fa-calendar-alt"></i>
-                      </span>
-                      </span>
-                      <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                      to
-                      </span>
-                      <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" name="end">
-                   </div>
+               
+               <div class="col-lg-1 col-md-1 pr-0">
+                  <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Distance</h4>
                 </div>
+
+                <div class="col-md-1 col-lg-1 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <input type="text" class="form-control" placeholder="From">
+                  </div>
+               </div>
+               <div class="col-md-1 col-lg-1 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <input type="text" class="form-control" placeholder="To">
+                  </div>
+               </div>
+
                 <div class="col-md-2 col-lg-2 pr-0">
                    <div class="input-group input-group-sm mb-3">
                       <input type="text" class="form-control" placeholder="Search by driver name">
@@ -50,6 +52,7 @@
                       </div>
                    </div>
                 </div>
+                
                 <div class="col-2 mb-3">
                    <div class="bg-white p-3">
                       <div>
@@ -91,18 +94,18 @@
                                <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table safety-table dataTable no-footer" id="DataTables_Table_9" role="grid">
                                   <thead>
                                      <tr role="row bgcol2">
-                                        <th class="sorting_asc" aria-label="Driver Name: activate to sort column descending">Rank</th>
-                                        <th class="sorting" aria-label="Vehicle: activate to sort column ascending" >Driver Name</th>
-                                        <th class="sorting" aria-label="Date: activate to sort column ascending" >Compliance</th>
-                                        <th class="sorting" aria-label="Time: activate to sort column ascending" >Safety Score</th>
-                                        <th class="sorting" aria-label="Event Type: activate to sort column ascending" >Fuel Idling</th>
-                                        <th class="sorting" aria-label="Created By: activate to sort column ascending" >Harsh Brake</th>
-                                        <th class="sorting" aria-label="Location: activate to sort column ascending" >Harsh Acceleration</th>
-                                        <th class="sorting" aria-label="Status: activate to sort column ascending" >Harh Turn</th>
-                                        <th class="sorting" aria-label="Status: activate to sort column ascending" >Rolling Stop</th>
-                                        <th class="sorting" aria-label="Status: activate to sort column ascending" >Crashes</th>
-                                        <th class="sorting" aria-label="Status: activate to sort column ascending" >Distance</th>
-                                        <th class="sorting" aria-label="Status: activate to sort column ascending" >Time</th>
+                                        <th >Rank</th>
+                                        <th >Driver Name</th>
+                                        <th >Compliance</th>
+                                        <th >Safety Score</th>
+                                        <th >Fuel Idling</th>
+                                        <th >Harsh Brake</th>
+                                        <th >Harsh Acceleration</th>
+                                        <th >Harsh Turn</th>
+                                        <th >Rolling Stop</th>
+                                        <th >Crashes</th>
+                                        <th >Distance</th>
+                                        <th >Time</th>
                                      </tr>
                                   </thead>
                                   <tbody>

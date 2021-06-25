@@ -113,7 +113,7 @@
                           <tr *ngFor = "let warehouse of warehouses">
                             <td>{{warehouse.warehouseID ? warehousesList[warehouse.warehouseID] : '-'}}</td>
                             <td>{{warehouse.quantity ? warehouse.quantity : '-'}}</td>
-                            <td>100 street 34Ave King Town,City,Country</td>
+                            <td>{{warehouse.address}}</td>
                           </tr>
                         </tbody>
                       </table>
