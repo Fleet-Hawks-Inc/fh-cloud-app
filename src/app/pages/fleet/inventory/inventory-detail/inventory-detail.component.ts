@@ -74,7 +74,7 @@ export class InventoryDetailComponent implements OnInit {
 
   fetchWarehouses() {
     this.apiService.getData(`items/get/itemqty/warehouses/` + this.partNumber).subscribe((result: any) => {
-      this.warehouses = result.Items;
+      this.warehouses = result;
     });
   }
   fetchWarehousesList() {

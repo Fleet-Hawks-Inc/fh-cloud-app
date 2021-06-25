@@ -4,47 +4,21 @@ import {environment} from '../../environments/environment';
 import { Auth } from 'aws-amplify';
 import {EMPTY, from} from 'rxjs';
 import {switchMap} from 'rxjs/internal/operators';
+
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class SafetyService {
 
   public jwt = '';
-  public jwtDecoded;
-  public carrierID = '';
-  public BaseUrl = environment.BaseUrl;
-  public AssetUrl = environment.AssetURL;
-  public AccountService = environment.AccountServiceUrl;
+  
+  public BaseUrl = environment.safetyURL;
+  public safetyURL = environment.safetyURL;
   private httpOptions;
-
-  private httpOptionsOld = {
-    headers: new HttpHeaders({
-      'Accept': 'text/html, application/xhtml+xml, */*',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }),
-    responseType: 'text'
-  };
-
 
   constructor(private http: HttpClient) {
     this.jwt = localStorage.getItem('jwt');
-   //
-    // from(Auth.currentSession())
-    //     .pipe(
-    //         switchMap((auth: any) => { // switchMap() is used instead of map().
-    //
-    //           const jwt = auth.accessToken.jwtToken;
-    //           // this.httpOptions = {
-    //           //   headers: new HttpHeaders({
-    //           //     'Authorization': `Bearer ${jwt}`,
-    //           //     'Content-Type': 'application/json'
-    //           //   })
-    //           // }
-    //         })
-    //     ).subscribe();
-
-
-  }
+   }
 
   getJwt(url: string, data) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
@@ -52,7 +26,6 @@ export class ApiService {
     return this.http.post(this.BaseUrl + url , data , this.httpOptions);
 
   }
-
 
   postData(url: string, data, formData: boolean = false) {
     let headers: object;
@@ -62,7 +35,7 @@ export class ApiService {
     else {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
-
+    
     return this.http.post(this.BaseUrl + url , data , headers);
 
   }
@@ -86,7 +59,7 @@ export class ApiService {
     let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
     };
-
+    
     return this.http.get<any>(this.BaseUrl + url , headers);
   }
 
@@ -100,14 +73,15 @@ export class ApiService {
     return this.http.delete<any>(this.BaseUrl + url , headers);
   }
 
+  
 
   getHeaders() {
     from(Auth.currentSession())
         .pipe(
             switchMap((auth: any) => { // switchMap() is used instead of map().
-
+              
               const jwt = auth.accessToken.jwtToken;
-
+              
               this.httpOptions = {
                 headers: new HttpHeaders({
                   'Authorization': `Bearer ${jwt}`,
@@ -134,7 +108,7 @@ export class ApiService {
 
     } catch (error) {
       return undefined;
-
+      
     }
   }
 
@@ -148,6 +122,4 @@ export class ApiService {
     return this.http.post(this.BaseUrl + url , data , headers);
 
   }
-
-
 }
