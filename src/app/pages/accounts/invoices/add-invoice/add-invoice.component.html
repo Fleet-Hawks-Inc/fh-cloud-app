@@ -121,13 +121,11 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
                             Terms</label>
                           <ng-select class="form-control populate" [(ngModel)]="invPayTerms" name="invPayTerms">
-                            <optgroup label="Select">
                               <ng-option value="1">15 Days</ng-option>
                               <ng-option value="2">30 Days</ng-option>
                               <ng-option value="2">45 Days</ng-option>
                               <ng-option value="2">Due On Receipt</ng-option>
                               <ng-option value="2">Due End Of The Month</ng-option>
-                            </optgroup>
                           </ng-select>
                         </div>
                       </div>
@@ -169,43 +167,42 @@
                         <table class="table table-bordered">
                           <thead>
                             <tr>
-                              <th>Commodity/Service</th>
-                              <th>Quantity/Hours</th>
-                              <th>Price/Rate</th>
-                              <th>Amount</th>
-                              <th>Account</th>
+                              <th width="25%">Commodity/Service</th>
+                              <th width="15%">Quantity/Hours</th>
+                              <th width="10%">Price/Rate</th>
+                              <th width="20%">Amount</th>
+                              <th width="25%">Account</th>
+                              <th width="5%">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
+                            <tr *ngFor="let dt of details; let d = index;">
                               <td>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" [(ngModel)]="dt.commodityService" name="dt.commodityService">
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" [(ngModel)]="dt.qtyHours" name="dt.qtyHours">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" [(ngModel)]="dt.priceRate" name="dt.priceRate">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-6 pr-0">
-                                    <input type="text" class="form-control" placeholder="0.00">
+                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="dt.amount">
                                   </div>
                                   <div class="col-lg-6 pl-0">
-                                    <ng-select class="form-control populate">
-                                      <optgroup label="">
-                                        <ng-option value="2">CAD</ng-option>
-                                        <ng-option value="2">USD</ng-option>
-                                      </optgroup>
+                                    <ng-select class="form-control populate" [(ngModel)]="dt.amtCur" name="dt.amtCur">
+                                        <ng-option value="CAD">CAD</ng-option>
+                                        <ng-option value="USD">USD</ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
@@ -213,24 +210,20 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <ng-select class="form-control populate">
-                                      <optgroup label="">
-                                        <ng-option value="2">Account 1</ng-option>
-                                        <ng-option value="2">Account 2</ng-option>
-                                        <ng-option value="2">Account 3</ng-option>
-                                        <ng-option value="2">Account 4</ng-option>
-                                        <ng-option value="2">Account 5</ng-option>
-                                        <ng-option value="2">Account 6</ng-option>
-                                      </optgroup>
+                                    <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="dt.accountID">
+                                        <ng-option *ngFor="let act of accounts | async" value="{{act.actID}}">{{act.actNo}} - {{act.actName}}</ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
+                              </td>
+                              <td class="text-center">
+                               <span *ngIf="d>0"><i class="fas fa-trash" (click)="deleteDetail(d)"></i></span>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
+                      <button type="button" class="btn btn-success btn-sm" (click)="addDetails()"><i class="fas fa-plus"></i> Add Another Line</button>
                       <div class="row mb-3">
                         <div class="col-12">
                           <div class="bg-white text-dark">
@@ -238,28 +231,25 @@
                               <div class="row">
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" rows="7" [(ngModel)]="remarks"
-                                    name="remarks"></textarea>
+                                  <textarea class="form-control" rows="7" [(ngModel)]="remarks" name="remarks"></textarea>
                                 </div>
                                 <div class="col-lg-6">
-
                                   <div class="row">
                                     <div class="col-lg-5 offset-lg-2">
                                       <div class="row mt-4">
                                         <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="Discount">
+                                          <input type="text" class="form-control" disabled value="Discount" >
                                         </div>
                                         <div class="col-lg-7">
                                           <div class="row">
                                             <div class="col-lg-6 pr-0">
-                                              <input type="text" class="form-control" placeholder="0.00">
+                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="discount" name="discount">
                                             </div>
                                             <div class="col-lg-6 pl-0">
-                                              <ng-select class="form-control populate">
-                                                <ng-option value="2">%</ng-option>
-                                                <ng-option value="2">CAD</ng-option>
-                                                <ng-option value="2">USD</ng-option>
-
+                                              <ng-select class="form-control populate" [(ngModel)]="discountUnit" name="discountUnit">
+                                                <ng-option value="%">%</ng-option>
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
                                               </ng-select>
                                             </div>
                                           </div>
@@ -303,105 +293,51 @@
                                         for="inputDefault">Province/State</label>
                                     </div>
                                     <div class="col-lg-5 offset-lg-2">
-                                      <ng-select name="invStateProvince" [(ngModel)]="invStateProvince"
-                                        class="form-control populate">
-                                        <ng-option value="2" data-select2-id="63">New Brunswick</ng-option>
-                                        <ng-option value="2">Nova Scotia</ng-option>
-                                        <ng-option value="2">Quebec</ng-option>
-                                        <ng-option value="2">Yukon</ng-option>
-                                        <ng-option value="2">Ontario</ng-option>
-
+                                      <ng-select
+                                      [(ngModel)]="invStateProvince"
+                                      name="invStateProvince"
+                                       (change)="stateSelectChange()"
+                                         class="form-control populate">
+                                         <ng-option *ngFor="let stateTax of stateTaxes" selected value="{{stateTax.stateTaxID}}">{{stateTax.stateName}}</ng-option>
                                       </ng-select>
                                     </div>
                                   </div>
                                   <div class="row">
-                                    <div class="col-lg-5 offset-lg-2">
-                                      <div class="row mt-4">
-                                        <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="GST">
-                                        </div>
-                                        <div class="col-lg-7">
-                                          <div class="input-group">
-                                            <input type="text" class="form-control" disabled placeholder="0.00">
-                                            <span class="input-group-append">
-                                              <span class="input-group-text pt-0 pb-0">%</span>
-                                            </span>
+                                    <div class="col-lg-7 offset-lg-2">
+                                          <div class="row mt-4" *ngFor="let item of taxesInfo; let i = index;">
+                                             <div class="col-lg-5">
+                                                <input type="text" class="form-control" value="{{item.name}}" disabled>
+                                             </div>
+                                             <div class="col-lg-7">
+                                                <div class="input-group">
+                                                   <input type="text" class="form-control" placeholder="0.00" value="{{item.amount}}" disabled>
+                                                   <span class="input-group-append">
+                                                   <span class="input-group-text pt-0 pb-0">%</span>
+                                                   </span>
+                                                </div>
+                                             </div>
                                           </div>
-                                        </div>
-                                      </div>
-                                      <div class="row mt-4">
-                                        <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="PST">
-                                        </div>
-                                        <div class="col-lg-7">
-                                          <div class="input-group">
-                                            <input type="text" class="form-control" disabled placeholder="0.00">
-                                            <span class="input-group-append">
-                                              <span class="input-group-text pt-0 pb-0">%</span>
-                                            </span>
+                                          <div class="row mt-3">
+                                             <div class="col-lg-10 offset-lg-2">
+                                                <span>&nbsp;</span>
+                                             </div>
                                           </div>
-                                        </div>
-                                      </div>
-                                      <div class="row mt-4">
-                                        <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="HST">
-                                        </div>
-                                        <div class="col-lg-7">
-                                          <div class="input-group">
-                                            <input type="text" class="form-control" disabled placeholder="0.00">
-                                            <span class="input-group-append">
-                                              <span class="input-group-text pt-0 pb-0">%</span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
 
-                                      <div class="row mt-3">
-                                        <div class="col-lg-10 offset-lg-2">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
-
-                                      <div class="row mt-4">
-                                        <div class="col-lg-10 offset-lg-2">
-                                          <span>&nbsp;</span>
-                                        </div>
-                                      </div>
                                     </div>
-                                    <div class="col-lg-5">
-                                      <div class="row mt-1 pb-1 mb-1">
-                                        <div class="col-lg-9 pt-1">
-                                        </div>
-                                        <div class="col-lg-3 pt-1">
-                                          <p class="text-right">0.00</p>
-                                        </div>
-                                      </div>
-                                      <div class="row pb-1 mb-1">
-                                        <div class="col-lg-9 pt-1 bordtop text-right">
-                                        </div>
-                                        <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">0.00</p>
-                                        </div>
-                                      </div>
-                                      <div class="row pb-1">
-                                        <div class="col-lg-9 bordtop pt-1">
-                                        </div>
-                                        <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">0.00</p>
-                                        </div>
-                                      </div>
-                                      <div class="row pb-1">
-                                        <div class="col-lg-9 bordtop pt-1">
-                                        </div>
-                                        <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">0.00</p>
-                                        </div>
-                                      </div>
+                                    <div class="col-lg-3">
+                                          <div class="row mt-4 pb-1 mb-1" *ngFor="let item of newTaxes; let i = index">
+                                             <div class="col-lg-12 pt-1">
+                                                <p class="text-right m-0">{{item.taxAmount ? item.taxAmount : 0}}</p>
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 offset-lg-7">
                                       <div class="row">
                                         <div class="col-lg-9 bordtop pt-1">
                                           <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
                                         </div>
-
                                         <div class="col-lg-3 bordtop pt-1">
                                           <p class="text-right">0.00</p>
                                         </div>
