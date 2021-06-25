@@ -20,7 +20,16 @@ const routes: Routes = [
   {
     path: 'ulreports',
     loadChildren: () => import('./uncertified-logs-reports/mange-uncertified-logs-reports.module').then((m) => m.ManageUncertifiedLogsReportsModule) ,
+  },
+  {
+    path: 'isreports',
+    loadChildren: () => import('./inspection-summary-reports/mange-inspection-summary-reports.module').then((m) => m.ManageInspectionSummaryReportsModule) ,
+  },
+  {
+    path: 'iftareports',
+    loadChildren: () => import('./ifta-reports/mange-ifta-reports.module').then((m) => m.ManageIftaReportsModule) ,
   }
+  
   
  
   
