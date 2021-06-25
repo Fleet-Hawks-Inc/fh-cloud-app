@@ -1,7 +1,6 @@
-import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { AccountService, ListService } from '../../../../services';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/services/account.service';
-import { ListService } from 'src/app/services/list.service';
 declare var $: any;
 @Component({
   selector: 'app-chart-of-accounts',

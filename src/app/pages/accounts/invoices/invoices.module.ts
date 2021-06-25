@@ -6,6 +6,8 @@ import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.componen
 import { Routes, RouterModule } from '@angular/router';
 import { LoadInvoiceDetailComponent } from './load-invoice-detail/load-invoice-detail.component';
 import { AddLoadInvoiceComponent } from './add-load-invoice/add-load-invoice.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'list', component: InvoiceListComponent},
@@ -19,6 +21,8 @@ const routes: Routes = [
   declarations: [AddInvoiceComponent, InvoiceListComponent, InvoiceDetailComponent, LoadInvoiceDetailComponent, AddLoadInvoiceComponent],
   imports: [
     CommonModule,
+    NgSelectModule,
+    FormsModule,
     RouterModule.forChild(routes)
   ]
 })

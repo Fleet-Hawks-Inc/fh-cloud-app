@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from '../../../../services';
 
 @Component({
   selector: 'app-chart-of-accounts-details',
