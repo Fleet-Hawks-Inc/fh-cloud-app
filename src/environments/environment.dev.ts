@@ -9,6 +9,8 @@ export const environment = {
   isAccountsEnabled: true,
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
+  AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com',
+  SafetyUrl: 'https://safety.ap-south-1.fleethawks.com/',
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
