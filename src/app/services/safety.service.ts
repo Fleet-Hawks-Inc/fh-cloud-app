@@ -12,8 +12,7 @@ export class SafetyService {
 
   public jwt = '';
   
-  public BaseUrl = environment.safetyURL;
-  public safetyURL = environment.safetyURL;
+  public safetyServiceUrl = environment.SafetyServiceUrl;
   private httpOptions;
 
   constructor(private http: HttpClient) {
@@ -23,7 +22,7 @@ export class SafetyService {
   getJwt(url: string, data) {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
+    return this.http.post(this.safetyServiceUrl + url , data , this.httpOptions);
 
   }
 
@@ -36,7 +35,7 @@ export class SafetyService {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
     
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.safetyServiceUrl + url , data , headers);
 
   }
 
@@ -49,7 +48,7 @@ export class SafetyService {
       headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
     }
 
-    return this.http.put<any>(this.BaseUrl + url , data , headers);
+    return this.http.put<any>(this.safetyServiceUrl + url , data , headers);
 
   }
   getData(url: string) {
@@ -60,7 +59,7 @@ export class SafetyService {
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
     };
     
-    return this.http.get<any>(this.BaseUrl + url , headers);
+    return this.http.get<any>(this.safetyServiceUrl + url , headers);
   }
 
   deleteData(url: string) {
@@ -70,7 +69,7 @@ export class SafetyService {
     // };
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.http.delete<any>(this.BaseUrl + url , headers);
+    return this.http.delete<any>(this.safetyServiceUrl + url , headers);
   }
 
   
@@ -119,7 +118,7 @@ export class SafetyService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.safetyServiceUrl + url , data , headers);
 
   }
 }
