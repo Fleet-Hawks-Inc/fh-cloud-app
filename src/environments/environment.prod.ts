@@ -9,6 +9,8 @@ export const environment = {
   isAccountsEnabled: false,
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads-ue1.s3.us-east-1.amazonaws.com',
+  AccountServiceUrl: 'http://localhost:4002/api/v1/',
+  SafetyUrl: 'http://localhost:4000/api/v1/',
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -27,7 +29,7 @@ export const environment = {
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads-ue1',
-  
+
     region: 'us-east-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
