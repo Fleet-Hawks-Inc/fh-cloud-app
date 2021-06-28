@@ -16,7 +16,6 @@
 
       <section class="m-2">
         <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #assetF="ngForm">
-
         
         <div class="row mb-3">
          <div class="col-lg-12">
@@ -907,8 +906,7 @@
             </div>
             <div class="form-row mt-2">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold">Group Members&nbsp;<span
-                    class="text-1 optional-label-color">(optional)</span></label>
+                <label class="control-label font-weight-bold">Group Members</label>
                 <ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers"
                   placeholder="Select group members" style="width: 100%;">
                   <ng-option *ngFor="let item of allAssets;" value={{item.assetID}}>
@@ -916,10 +914,10 @@
                 </ng-select>
               </div>
             </div>
+
             <div class="form-row mt-2">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold text-lg-right">Description&nbsp; <span
-                    class="text-1 optional-label-color">(optional)</span></label>
+                <label class="control-label font-weight-bold text-lg-right">Description</label>
                 <textarea [(ngModel)]="groupData.description" name="description" class="form-control heighta" rows="4"
                   id="comment" placeholder="Enter group description" #desName246="ngModel"
                   pattern="^[\s\S]{1,500}$"></textarea>
