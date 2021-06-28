@@ -7,13 +7,13 @@
             
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-md mb-3">
-                <ng-select class="form-control populate" [(ngModel)]="filterVehicle" name="filterVehicle">
+                <ng-select class="form-control populate" [(ngModel)]="filterVehicle" name="filterVehicle" placeholder="Select Vehicle">
                   <ng-option *ngFor="let vehicle of vehicleList;" value="{{vehicle.vehicleIdentification}}">{{vehicle.vehicleIdentification}}</ng-option>
                 </ng-select>
               </div>
             </div>
             <div class="col-lg-2">
-              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="filterFuel" name="filterFuel">
+              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="filterFuel" name="filterFuel" placeholder="Select Fuel Type">
                 <ng-option *ngFor="let fuelType of fuelList" value="{{fuelType}}">{{fuelType}}</ng-option>
               </ng-select>
             </div>
@@ -21,7 +21,11 @@
               <button type="button" class="btn btn-sm btn-success mr-3" (click)="filterRecords()">Search</button>
               <button type="button" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
           </div>
+          <div class="col-md-5 col-lg-5 text-right pr-1">
+            <a (click)="generatePDF()" class="btn btn-success btn-sm ml-2" style="color:#fff;"><i class="fas fa-plus"></i> Generate IFTA Report</a>
+         </div>
           </div>
+         
         </form>
       </header>
       <div class="row">
@@ -85,7 +89,7 @@
                         </div>
                         <div class="">
                           <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
-                            {{quarterReport.totalAmountUSD}}</h1>
+                            {{quarterReport.totalAmountUSD | currency:'USD':'symbol'}}</h1>
                         </div>
                       </div>
                     </div>
@@ -98,7 +102,7 @@
                         </div>
                         <div class="">
                           <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
-                            {{quarterReport.totalAmountCAD}}</h1>
+                            {{quarterReport.totalAmountCAD |currency:'CAD':'symbol'}}</h1>
                         </div>
                       </div>
                     </div>
@@ -111,7 +115,7 @@
                         </div>
                         <div class="">
                           <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
-                            {{quarterReport.totalDiscountUSD}}</h1>
+                            {{quarterReport.totalDiscountUSD| currency:'USD':'symbol'}}</h1>
                         </div>
                       </div>
                     </div>
@@ -124,7 +128,7 @@
                         </div>
                         <div class="">
                           <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
-                            {{quarterReport.totalDiscountCAD}}</h1>
+                            {{quarterReport.totalDiscountCAD | currency:'CAD':'symbol'}}</h1>
                         </div>
                       </div>
                     </div>
@@ -135,7 +139,7 @@
 
                     <div class="row">
                       <div class="col-lg-12">
-                        <table class="table table-responsive-lg mb-0 table-bordered table-striped simple-table">
+                        <table id="ifta" class="table table-responsive-lg mb-0 table-bordered table-striped simple-table">
                           <thead>
                             <tr>
                               <th>Jurisdiction</th>
@@ -160,7 +164,7 @@
                               <td>{{item.quantity}}</td>
                               <td>{{item.fuelUnit}}</td>
                               <td>{{item.fuelType}}</td>
-                              <td>{{item.currency}} {{item.actualAmount}}</td>
+                              <td>{{item.actualAmount | currency:item.currency : 'symbol' }}</td>
                             </tr>
                           </tbody>
                         </table>

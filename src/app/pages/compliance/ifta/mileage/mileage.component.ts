@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import {ListService} from '../../../../services/list.service'
-import { timer } from 'rxjs';
 import {ActivatedRoute} from '@angular/router'
 import {CountryStateCity} from 'src/app/shared/utilities/countryStateCities'
 import Constants from '../../../fleet/constants';
 import {NgxSpinnerService} from 'ngx-spinner'
 import { HttpClient} from '@angular/common/http'
-import {CommonModule} from '@angular/common/common'
+import {jsPDF} from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 declare var $: any;
 @Component({
@@ -49,9 +49,7 @@ export class MileageComponent implements OnInit {
 
   ngOnInit() {
     this.quarter=this.route.snapshot.params['quarter']
-    
-    
-  
+    this.fetchJurisdiction();
     this.fetchCountries();
     this.fetchCount();
     this.fetchVehicles();
@@ -114,7 +112,6 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
   }
   fetchQuarterRreport(){
     this.apiService.getData('ifta/quarter/'+this.quarter).subscribe(result=>{
-      console.log(result)
       this.quarterReport.totalMilesCA=result[0].totalMilesCA
       this.quarterReport.totalMilesUS=result[0].totalMilesUS
       this.quarterReport.totalQuantityGallons=result[0].totalQuantityGallons
@@ -123,11 +120,24 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
       this.quarterReport.totalAmountUSD=result[0].totalAmountUSD
       this.quarterReport.totalDiscountUSD=result[0].totalDiscountUS
       this.quarterReport.totalDiscountCAD=result[0].totalDiscountCA
-
-      
     })
 
   }
+
+   generatePDF(){
+    
+    if(this.jurisdictionReport){
+    const doc=new jsPDF();
+    // doc.setFontSize(20);
+    // doc.addImage('assets/img/logo.png',10,20,50,25)
+    // doc.text("IFTA Report",25,75)
+    
+    autoTable(doc, { html: '#ifta' })
+    doc.save(`ifta ${this.quarter}.pdf`)
+    }
+  }
+
+
   nextResults(type) {
     if(type == 'all') {
       this.recordNext = true;
