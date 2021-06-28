@@ -347,8 +347,7 @@
                         </div>
                       </div>
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group
                         </label>
                         <ng-select class="form-control form-control-sm" [(ngModel)]="driverData.groupID" name="groupID"
                           placeholder="Select group of which driver will be part of">
@@ -363,8 +362,7 @@
                         </a>
                       </div>
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle
                         </label>
                         <ng-select [(ngModel)]="driverData.assignedVehicle" name="assignedVehicle"
                           placeholder="Assign vehicle to driver">
@@ -392,8 +390,7 @@
                             </div>
                           </div>
                           <div class="col-lg-6" *ngIf="driverData.driverType !== 'contractor'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date <span
-                                class="text-1 optional-label-color">(optional)</span>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date
                             </label>
                             <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
@@ -537,7 +534,7 @@
                       <div class="row">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Address
-                            Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                            Type</label>
                           <ng-select [(ngModel)]="item.addressType" name="address[{{i}}].addressType"
                             placeholder="Select address type">
                             <ng-option value="Home">Home</ng-option>
@@ -548,7 +545,7 @@
                     </div>
                     <div class="col-lg-4">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
-                        location&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                        location</label>
                       <input [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                         type="text" class="form-control mb-2" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                         [disabled]="item.manual">
@@ -625,7 +622,7 @@
                           </div>
                           <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
-                              2&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                              2</label>
                             <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control"
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
@@ -658,7 +655,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type <span class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type 
                         </label>
                         <ng-select [(ngModel)]="document.documentType"
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
@@ -682,7 +679,7 @@
                   <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Document# <span class="text-1 optional-label-color">(optional)</span>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Document# 
                           </label>
                           <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
@@ -700,8 +697,7 @@
                           </div> -->
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority <span
-                              class="text-1 optional-label-color">(optional)</span>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority 
                           </label>
                           <input [(ngModel)]="document.issuingAuthority"
                             [attr.name]="'documentDetails['+i+'].issuingAuthority'"
@@ -719,7 +715,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country <span class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country 
                         </label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
@@ -731,7 +727,7 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State <span class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State </label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -745,7 +741,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date <span class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date 
                         </label>
                         <input [(ngModel)]="document.issueDate"
                           (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
@@ -760,7 +756,7 @@
                         </div> -->
                       </div>
                       <div class="col-5" *ngIf="document.documentType != 'BCN'">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date <span class="text-1 optional-label-color"> (optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date 
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
                           [ngModelOptions]="{standalone: true}"
@@ -780,7 +776,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
 
-                          Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                          Document </label>
 
                         <input class="form-control p-0" name="document.uploadedDocs{{i}}"
                           (change)="selectDocuments($event, i)" type="file" multiple>
@@ -829,8 +825,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
                           type="text" class="form-control" placeholder="10 digits , eg.4567895676"
@@ -843,8 +838,7 @@
                         </div> -->
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
                           type="text" class="form-control" placeholder="10 digits , eg.4567895676"
@@ -870,8 +864,7 @@
                     <div>
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card# <span
-                              class="text-1 optional-label-color">(optional)</span>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
                             type="text" class="form-control"
@@ -886,8 +879,7 @@
                           </div> -->
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry <span
-                              class="text-1 optional-label-color">(optional)</span>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
                             name="crossBorderDetails.fastExpiry" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
@@ -990,8 +982,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">WCB# <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">WCB#
                         </label>
                         <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text"
                           class="form-control"
@@ -1004,8 +995,7 @@
                         </div> -->
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Medical Card Renewal <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Medical Card Renewal
                         </label>
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
@@ -1013,8 +1003,7 @@
                           class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Health Care# <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#
                         </label>
                         <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare"
                           type="text" class="form-control"
@@ -1028,8 +1017,7 @@
                         </div> -->
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle Type <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle Type
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
                           placeholder="Select vehicle type of driver">
@@ -1054,8 +1042,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Default
-                          Payment Type<span
-                          class="text-1 optional-label-color"> (optional) </span></label>
+                          Payment Type</label>
                         <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                           placeholder="Select the payment type" id="paymentTypeForm"
                           (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event)"
@@ -1093,8 +1080,7 @@
                     <div class="row" id="payPerHourForm"
                       *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Rate <span
-                          class="text-1 optional-label-color"> (optional) </span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2"> Rate</label>
                         <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
 
                           class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" >
@@ -1125,8 +1111,7 @@
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
-                          period Pay<span
-                          class="text-1 optional-label-color"> (optional) </span></label>
+                          period Pay</label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay"
 
                           type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" >
@@ -1157,8 +1142,7 @@
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour
-                          start after<span
-                          class="text-1 optional-label-color"> (optional) </span></label>
+                          start after</label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
                           name="paymentDetails.waitingHourAfter" type="text" class="form-control" 
 
@@ -1179,8 +1163,7 @@
                       *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Delivery
-                          Rate<span
-                          class="text-1 optional-label-color"> (optional) </span></label>
+                          Rate</label>
                         <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
 
                           type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60"  >
@@ -1215,8 +1198,7 @@
                       *ngIf="driverData.paymentDetails.paymentType == 'Percentage'">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay
-                          Percent <span
-                          class="text-1 optional-label-color"> (optional) </span> </label>
+                          Percent</label>
                         <div class="row">
                           <div class="col-lg-3">
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
@@ -1265,8 +1247,7 @@
                         *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Mile'" style="display: flex;">
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
-                            Miles<span
-                            class="text-1 optional-label-color"> (optional) </span></label>
+                            Miles</label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
 
                             type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
@@ -1300,8 +1281,7 @@
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
-                            Miles<span
-                            class="text-1 optional-label-color"> (optional) </span></label>
+                            Miles</label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
 
                             type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
@@ -1333,8 +1313,7 @@
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
-                            Miles (Team) <span
-                            class="text-1 optional-label-color"> (optional) </span> </label>
+                            Miles (Team)</label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                             name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
 
@@ -1353,8 +1332,7 @@
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
-                            Miles (Team) <span
-                            class="text-1 optional-label-color"> (optional) </span></label>
+                            Miles (Team)</label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                             name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
 
@@ -1375,8 +1353,7 @@
                       <div class="row">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Pay
-                            Period <span
-                            class="text-1 optional-label-color"> (optional) </span></label>
+                            Period</label>
                           <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod"
                             placeholder="Select pay period of the driver"
                             (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt="ngModel" >
@@ -1433,7 +1410,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks
                           if
-                          driver is Exempted.<span class="text-1 optional-label-color">(optional)</span>
+                          driver is Exempted.
                         </label>
                         <textarea style="height: unset !important;" [(ngModel)]="driverData.hosDetails.hosRemarks"
                           name="hosDetails.hosRemarks" class="form-control" rows="4"
@@ -1579,8 +1556,7 @@
                   <div class="col-lg-12">
                     <div class="row">
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Name <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Name
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.name" name="name" type="text"
                           class="form-control" placeholder="eg. John Smith" >
@@ -1591,8 +1567,7 @@
                         </div> -->
                       </div>
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone<span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.phone" name="emergencyDetails.phone" type="text"
                           class="form-control" placeholder="eg. 2234567891"
@@ -1604,8 +1579,7 @@
                         </div> -->
                       </div>
                       <div class="col-lg-3">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Relationship <span
-                            class="text-1 optional-label-color">(optional)</span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Relationship
                         </label>
                         <input type="text" class="form-control" placeholder="eg. Manager"
                           [(ngModel)]="driverData.emergencyDetails.relationship" name="emergencyDetails.relationship"
