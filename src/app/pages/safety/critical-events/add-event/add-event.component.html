@@ -126,22 +126,22 @@
                                  <div class="row pt-2">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
-                                       <input type="file" [(ngModel)]="uploadedPhotos" #photos="ngModel" required  name="uploadedPhotos" multiple="" class="form-control p-0">
-                                       <div *ngIf="photos.invalid && (photos.dirty || photos.touched)" class="text-danger">
+                                       <input type="file" (change)="selectDocuments($event, 'uploadedPhotos')" required  name="uploadedPhotos" multiple="" class="form-control p-0">
+                                       <!-- <div *ngIf="photos.invalid && (photos.dirty || photos.touched)" class="text-danger">
                                           <div *ngIf="photos.errors.required">
                                              This field is required.
                                           </div>
-                                       </div>
+                                       </div> -->
                                     </div>
                             
                             <div class="col-lg-5">
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
-                                       <input type="file" [(ngModel)]="uploadedVideos" #videos="ngModel" required  name="uploadedVideos" multiple="" class="form-control p-0"> 
-                                       <div *ngIf="videos.invalid && (videos.dirty || videos.touched)" class="text-danger">
+                                       <input type="file" (change)="selectDocuments($event, 'uploadedDocs')"  required  name="uploadedVideos" multiple="" class="form-control p-0"> 
+                                       <!-- <div *ngIf="videos.invalid && (videos.dirty || videos.touched)" class="text-danger">
                                           <div *ngIf="videos.errors.required">
                                              This field is required.
                                           </div>
-                                       </div>
+                                       </div> -->
                                     </div>
                                  </div>
                                  
@@ -161,7 +161,7 @@
                               <div class="col-lg-11 text-right">
                                  <button type="button" class="btn btn-default mt-4 mr-3"
                                     routerLink="safety/critical-events">Cancel</button>
-                                 <button [disabled]="!eventForm.form.valid" (click)="addEvent()"
+                                 <button (click)="addEvent()"
                                     class="btn btn-success mt-4 modal-confirm">Save</button>
                               </div>
                            </div>

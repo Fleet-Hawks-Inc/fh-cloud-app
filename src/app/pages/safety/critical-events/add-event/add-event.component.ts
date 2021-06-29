@@ -91,7 +91,7 @@ export class AddEventComponent implements OnInit {
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
-    uploadedVideos = [];
+    
     uploadedDocs = [];
     currentUser: any;
 
@@ -113,7 +113,6 @@ export class AddEventComponent implements OnInit {
         let result = (await Auth.currentSession()).getIdToken().payload;
         this.currentUser = `${result.firstName} ${result.lastName}`;
         this.event.createdBy = this.currentUser;
-        console.log('currentUser', this.currentUser);
     }
 
     fetchVehicles() {
@@ -134,7 +133,6 @@ export class AddEventComponent implements OnInit {
                     this.drivers.push(element);
                 }
             }
-            console.log('this.drivers', this.drivers);
         })
     }
 
@@ -169,6 +167,7 @@ export class AddEventComponent implements OnInit {
         // this.event.documentID = this.uploadedDocs;
         // this.event.incidentVideodocumentID = this.uploadedVideos;
         console.log('critical', this.event)
+        
         // create form data instance
         const formData = new FormData();
 
@@ -178,8 +177,8 @@ export class AddEventComponent implements OnInit {
         }
 
         // append docs if any
-        for (let j = 0; j < this.uploadedDocs.length; j++){
-            formData.append('uploadedDocs', this.uploadedDocs[j]);
+        for (let j = 0; j < this.uploadedPhotos.length; j++){
+            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
         }
 
         // append other fields
@@ -265,16 +264,18 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-        if (obj === 'uploadedDocs') {
-            this.uploadedDocs = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i]);
-            }
+    
+        if (obj === 'uploadedPhotos') {
+          this.uploadedPhotos = [];
+          for (let i = 0; i < files.length; i++) {
+            this.uploadedPhotos.push(files[i])
+          }
         } else {
-            this.uploadedVideos = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i]);
-            }
+          this.uploadedVideos = [];
+          for (let i = 0; i < files.length; i++) {
+              this.uploadedVideos.push(files[i])
+          }
         }
-    }
+        
+      }
 }
