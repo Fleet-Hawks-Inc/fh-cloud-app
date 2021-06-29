@@ -92,7 +92,6 @@ export class AddEventComponent implements OnInit {
     private readonly search: any;
     public searchTerm = new Subject<string>();
     
-    uploadedDocs = [];
     currentUser: any;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
@@ -168,22 +167,7 @@ export class AddEventComponent implements OnInit {
         // this.event.incidentVideodocumentID = this.uploadedVideos;
         console.log('critical', this.event)
         
-        // create form data instance
-        const formData = new FormData();
-
-        // append videos if any
-        for (let i = 0; i < this.uploadedVideos.length; i++){
-            formData.append('uploadedVideos', this.uploadedVideos[i]);
-        }
-
-        // append docs if any
-        for (let j = 0; j < this.uploadedPhotos.length; j++){
-            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
-        }
-
-        // append other fields
-        formData.append('data', JSON.stringify(this.event));
-
+        
         this.safetyService.postData('critical-events', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
