@@ -243,23 +243,5 @@ export class AddEventComponent implements OnInit {
         $('div').removeClass('show-search__result');
     }
 
-    /*
-    * Selecting files before uploading
-    */
-    selectDocuments(event, obj) {
-        let files = [...event.target.files];
     
-        if (obj === 'uploadedPhotos') {
-          this.uploadedPhotos = [];
-          for (let i = 0; i < files.length; i++) {
-            this.uploadedPhotos.push(files[i])
-          }
-        } else {
-          this.uploadedVideos = [];
-          for (let i = 0; i < files.length; i++) {
-              this.uploadedVideos.push(files[i])
-          }
-        }
-        
-      }
 }
