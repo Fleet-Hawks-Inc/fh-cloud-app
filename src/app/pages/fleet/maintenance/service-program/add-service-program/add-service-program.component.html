@@ -80,7 +80,7 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
 
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select placeholder="Select service task "   [(ngModel)]="task.serviceTask"
                                     [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'" [ngModelOptions]="{standalone: true}"  style="width: 100%;" #Sst="ngModel" required
                                     >
@@ -95,7 +95,7 @@
 
 
                                     <div *ngIf="Sst.errors.required">
-                                    Service tasks is required.
+                                    Service task is required.
                                      </div>
 
 
@@ -133,9 +133,9 @@
                                              [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'" [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
                                                 class="form-control populate" #Uni785="ngModel" required>
 
-                                                   <ng-option value="Days">Days</ng-option>
-                                                   <ng-option value="Weeks">Weeks</ng-option>
-                                                   <ng-option value="Months">Months</ng-option>
+                                                   <ng-option value="Days">Day(s)</ng-option>
+                                                   <ng-option value="Weeks">Week(s)</ng-option>
+                                                   <ng-option value="Months">Month(s)</ng-option>
 
                                              </ng-select>
                                              <div *ngIf="Uni785.invalid && (Uni785.dirty || Uni785.touched)" class="text-danger">
@@ -156,7 +156,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="task.repeatByOdometer"
 
-                                       [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="eg. 1000,2000" #Odomiles786="ngModel" required pattern="^[0-9\.]+$">
+                                       [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" class="form-control" min="0" placeholder="eg. 1000,2000" #Odomiles786="ngModel" required pattern="^[0-9\.]+$">
                                        <div *ngIf="Odomiles786.invalid && (Odomiles786.dirty || Odomiles786.touched)" class="text-danger">
                                          <div *ngIf="Odomiles786.errors.required">
                                            Repeat by odometer is required.
@@ -208,7 +208,7 @@
                            <div *ngIf="Svsp.invalid && (Svsp.dirty || Svsp.touched)" class="text-danger">
 
                             <div *ngIf="Svsp.errors.required">
-                             Vehicle service program is required.
+                             Vehicle for service program is required.
                              </div>
 
                          </div>
