@@ -141,8 +141,8 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
   nextResults(type) {
     if(type == 'all') {
       this.recordNext = true;
-      this.recordPrev = true;
       this.recordDraw += 1;
+      this.recordPrev=true
       
         this.initDataTable();
     } 
@@ -153,8 +153,11 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
       this.recordNext = true;
       this.recordPrev = true;
       this.recordDraw -= 1;
-        this.initDataTable();
-    } 
+      this.lastEvaluatedKey=this.recordPrevEvauatedKeys[this.recordDraw]
+      this.initDataTable();
+      
+    }
+  
   }
 
   fetchCount(){
@@ -242,6 +245,7 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
       if (!this.recordPrevEvauatedKeys.includes(lastEvalKey)) {
         this.recordPrevEvauatedKeys.push(lastEvalKey);
       }
+      
       this.lastEvaluatedKey = lastEvalKey;
 
     } else {
