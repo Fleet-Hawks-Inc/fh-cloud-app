@@ -222,8 +222,8 @@
                                    #fuelqty1="ngModel"
                                    required
                                    >
-                                   <ng-option value="gallon">gallon</ng-option>
-                                   <ng-option value="litre">litre</ng-option>
+                                   <ng-option value="Gallons">Gallons</ng-option>
+                                   <ng-option value="Litres">Litres</ng-option>
                                    </ng-select>
                                    <div
                                       *ngIf="
@@ -281,15 +281,15 @@
                                <div *ngIf="defFuel.invalid && (defFuel.dirty || defFuel.touched)" class="text-danger">
                                  <div *ngIf="defFuel.errors.required">
                                    DEF fuel quantity must contain numbers only.
-                             
+
                                  </div>
-                             
-                             
-                             
+
+
+
                                </div>
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
-                             
+
                                 <label class="control-label pl-2 text-lg-right">{{fuelUnit}}</label>
                                <ng-select class="form-control populate" name="fuelUnit" [(ngModel)]="fuelData.fuelUnit"  #ftype="ngModel" required
                               >
@@ -299,7 +299,7 @@
                              <div *ngIf="ftype.invalid && (ftype.dirty || ftype.touched)" class="text-danger">
                                <div *ngIf="ftype.errors.required">
                                  Fuel unit is required.
-                             
+
                                </div>
                              </div>
                              <div class="col-lg-4">
@@ -310,12 +310,12 @@
                                <div *ngIf="amountDef.invalid && (amountDef.dirty || amountDef.touched)" class="text-danger">
                                  <div *ngIf="amountDef.errors.required">
                                    Amount must contain numbers only.
-                             
-                             
+
+
                                  </div>
-                             
-                             
-                             
+
+
+
                                </div>
                              </div>
                              </div> -->
@@ -337,12 +337,12 @@
                                      </div>
                                      <div class="pl-1 ml-0" *ngIf="subTotal.errors.pattern">
                                        Subtotal must contain numbers only.
-                             
-                             
+
+
                                      </div>
-                             
-                             
-                             
+
+
+
                                   </div>
                                  </div> -->
                           <!-- <div class="col-lg-6">
@@ -356,12 +356,12 @@
                                class="text-danger">
                                <div *ngIf="sltCurrency.errors.required">
                                  Currency is required.
-                             
-                             
+
+
                                </div>
-                             
-                             
-                             
+
+
+
                              </div>
                              </div>
                              </div>
@@ -644,11 +644,7 @@
                                    font-weight-bold font-bold
                                    text-lg-right
                                    "
-                                   >Fuel Time&nbsp;
-                                <span class="text-1 optional-label-color"
-                                   >(optional)</span
-                                   ></label
-                                   >
+                                   >Fuel Time</label>
                                 <input
                                 type="time"
                                 class="form-control"
@@ -818,7 +814,7 @@
                                       Fuel card# is required.
                                    </div>
                                    <div *ngIf="fuelCard.errors.pattern">
-                                      Fuel card must contain numbers.
+                                      Fuel card# must contain numbers.
                                    </div>
                                 </div>
                              </div>
@@ -1124,11 +1120,7 @@
                                    text-lg-right
                                    pt-2
                                    "
-                                   >Select Trip &nbsp;
-                                <span class="text-1 optional-label-color"
-                                   >(optional)</span
-                                   ></label
-                                   >
+                                   >Select Trip </label>
                                 <ng-select
                                 placeholder="Select Trip"
                                 name="tripID"
@@ -1171,11 +1163,7 @@
                                    text-lg-right
                                    pt-2
                                    "
-                                   >Attach Photo &nbsp;
-                                <span class="text-1 optional-label-color"
-                                   >(optional)</span
-                                   ></label
-                                   >
+                                   >Attach Photo </label>
                                 <input
                                    (change)="selectDocuments($event, 'uploadedPhotos')"
                                    name="uploadedPhotos"
@@ -1223,7 +1211,7 @@
                                    text-lg-right
                                    pt-2
                                    "
-                                   >Odometer Reading at Time of Fuelling (miles)<span
+                                   >Odometer Reading at Time of Fueling (miles)<span
                                    class="mandfield text-2 ml-1"
                                    ><sup>*</sup></span
                                    >
@@ -1266,11 +1254,7 @@
                                    text-lg-right
                                    pt-2
                                    "
-                                   >Description&nbsp;
-                                <span class="text-1 optional-label-color"
-                                   >(optional)</span
-                                   ></label
-                                   >
+                                   >Description</label>
                                 <textarea
                                 class="form-control h-auto"
                                 rows="3"
