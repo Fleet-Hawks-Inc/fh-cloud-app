@@ -49,8 +49,7 @@
                      <div class="row pt-2">
                         <div class="col-lg-10">
                            <label
-                              class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                              class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
                            <textarea [(ngModel)]="serviceData.description" name="description"
                               class="form-control h-auto" placeholder="eg. Brakes are not working " rows="3" #aNotes224="ngModel"
                               pattern="^[\s\S]{1,500}$"></textarea>
@@ -162,9 +161,7 @@
                                          <div *ngIf="Odomiles786.errors.required">
                                            Repeat by odometer is required.
                                          </div>
-
                                        </div>
-
 
                                     </div>
 
@@ -210,11 +207,9 @@
                            </ng-select>
                            <div *ngIf="Svsp.invalid && (Svsp.dirty || Svsp.touched)" class="text-danger">
 
-
                             <div *ngIf="Svsp.errors.required">
                              Vehicle service program is required.
                              </div>
-
 
                          </div>
                              </div>
