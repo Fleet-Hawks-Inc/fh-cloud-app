@@ -24,7 +24,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
                             Date</label>
-                          <input type="text" [(ngModel)]="invDate" name="invDate" class="form-control"
+                          <input type="date" [(ngModel)]="invDate" name="invDate" class="form-control"
                             placeholder="mm/dd/yyyy">
                         </div>
                       </div>
@@ -197,7 +197,7 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-6 pr-0">
-                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="dt.amount">
+                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="dt.amount" (change)="calculateAmount($event,d)">
                                   </div>
                                   <div class="col-lg-6 pl-0">
                                     <ng-select class="form-control populate" [(ngModel)]="dt.amtCur" name="dt.amtCur">
@@ -217,7 +217,7 @@
                                 </div>
                               </td>
                               <td class="text-center">
-                               <span *ngIf="d>0"><i class="fas fa-trash" (click)="deleteDetail(d)"></i></span>
+                               <span *ngIf="d>0"><i class="fas fa-trash" (click)="deleteDetail(dt.amount,d)"></i></span>
                               </td>
                             </tr>
                           </tbody>
@@ -238,15 +238,15 @@
                                     <div class="col-lg-5 offset-lg-2">
                                       <div class="row mt-4">
                                         <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="Discount" >
+                                          <input type="text" class="form-control" disabled value="Discount">
                                         </div>
                                         <div class="col-lg-7">
                                           <div class="row">
                                             <div class="col-lg-6 pr-0">
-                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="discount" name="discount">
+                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="discount" name="discount" (change)="calculateSubtotal()">
                                             </div>
                                             <div class="col-lg-6 pl-0">
-                                              <ng-select class="form-control populate" [(ngModel)]="discountUnit" name="discountUnit">
+                                              <ng-select class="form-control populate" [(ngModel)]="discountUnit" name="discountUnit" (change)="calculateSubtotal()">
                                                 <ng-option value="%">%</ng-option>
                                                 <ng-option value="CAD">CAD</ng-option>
                                                 <ng-option value="USD">USD</ng-option>
@@ -282,7 +282,7 @@
                                         </div>
 
                                         <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">0.00</p>
+                                          <p class="text-right">{{subTotal}}</p>
                                         </div>
                                       </div>
                                     </div>

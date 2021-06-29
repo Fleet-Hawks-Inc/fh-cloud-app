@@ -1,6 +1,7 @@
 import { ApiService, AccountService, ListService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
-
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -8,7 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddInvoiceComponent implements OnInit {
 
-  constructor(private accountService: AccountService, private listService: ListService, private apiService: ApiService) { }
+  constructor(
+    private accountService: AccountService,
+     private listService: ListService,
+      private apiService: ApiService,
+      private toaster: ToastrService,
+      private router: Router,) { }
   invNo: number;
   invDate: string;
   invRef: string;
@@ -17,20 +23,12 @@ export class AddInvoiceComponent implements OnInit {
   invCustomerID: string;
   invSalesman: string;
   invSubject: string;
-  // details: [
-  //   {
-  //     commodityService: string;
-  //     qtyHours: string;
-  //     priceRate: string;
-  //     amount: number;
-  //     amtCur: string;
-  //     accountID: string;
-  //   },
-  // ];
   remarks: string;
   discount: number;
   discountUnit: string;
   invStateProvince: string;
+  invType = 'manual'; // either it's manual or load invoice
+  invStatus = 'OPEN'; // default status is OPEN
   // gst: number;
   // pst: number;
   // hst: number;
@@ -43,6 +41,7 @@ export class AddInvoiceComponent implements OnInit {
     amtCur: '',
     accountID: '',
   }];
+  midAmt = 0; // midAmt is sum of all the amount values in details table
   taxesInfo = [];
   /**
    *Customer related properties
@@ -89,7 +88,7 @@ export class AddInvoiceComponent implements OnInit {
           this.customerSelected = result.Items[0];
           for (let i = 0; i < this.customerSelected.address.length; i++) {
             const element = this.customerSelected.address[i];
-            if (element.addressType == 'Office') {
+            if (element.addressType === 'Office') {
               this.notOfficeAddress = false;
               this.customerSelected.officeAddr = true;
               this.customerSelected.email = result.Items[0].workEmail;
@@ -149,8 +148,6 @@ export class AddInvoiceComponent implements OnInit {
         ];
       }
     });
-
-
     this.newTaxes = this.taxesInfo;
     if (this.subTotal > 0) {
       for (let i = 0; i < this.newTaxes.length; i++) {
@@ -169,7 +166,8 @@ export class AddInvoiceComponent implements OnInit {
       accountID: '',
     });
   }
-  deleteDetail(d) {
+  deleteDetail(amount: number, d: number) {
+    console.log('amount', amount);
     this.details.splice(d, 1);
   }
   addInvoice() {
@@ -187,10 +185,37 @@ export class AddInvoiceComponent implements OnInit {
       discount: this.discount,
       discountUnit: this.discountUnit,
       invStateProvince: this.invStateProvince,
+      invStatus: this.invStatus,
+      invType: this.invType,
+
     };
     console.log('input', data);
-     this.accountService.postData(`invoices`, data).subscribe((res) => {
-     console.log('res', res);
-     });
+    this.accountService.postData(`invoices`, data).subscribe((res) => {
+    console.log('res', res);
+    this.toaster.success('Invoice Added Successfully.');
+    this.router.navigateByUrl('/accounts/invoices/list');
+    });
+  }
+
+  calculateAmount(e: any , d: any) {
+   console.log('event', e.target.value);
+   console.log('data', d);
+   this.midAmt = Number(this.midAmt) + Number(e.target.value);
+   console.log('this.midAmt', this.midAmt);
+  }
+  calculateSubtotal() {
+    if (this.discountUnit === '%') {
+      this.subTotal = this.midAmt - ((this.discount * this.midAmt) / 100);
+      console.log('subtotal', this.subTotal);
+    } else if (this.discountUnit === 'CAD') {
+      this.subTotal = this.midAmt  - this.discount;
+      console.log('subtotal', this.subTotal);
+    } else {
+     this.subTotal = this.midAmt  - this.discount;
+     console.log('subtotal', this.subTotal);
+    }
+  }
+  changeStatus(invID: string) {
+
   }
 }

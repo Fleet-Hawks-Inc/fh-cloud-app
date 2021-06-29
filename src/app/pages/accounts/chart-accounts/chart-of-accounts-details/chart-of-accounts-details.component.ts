@@ -9,7 +9,7 @@ import { AccountService } from '../../../../services';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
 
-  carrierID = '560';
+  carrierID = '100';
   actID = '';
   account =  {
     actName: '',

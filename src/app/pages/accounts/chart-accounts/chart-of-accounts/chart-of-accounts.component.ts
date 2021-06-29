@@ -10,10 +10,10 @@ declare var $: any;
 export class ChartOfAccountsComponent implements OnInit {
   modalTitle = 'Add Account';
   accounts: any = [];
-  carrierID = '560';
+  carrierID = '100';
   // receivedActID = '1uLSjFBJ3QUebg8vhjAAzL572JI';
   parentMessage: '';
-  constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService,) { }
+  constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
    // this.trxFn(); // test function to call debit credit api
