@@ -1,12 +1,16 @@
 {
+    
     "baseUrl": "http://localhost:4200",
     "experimentalStudio": true,
     "viewportHeight": 1080,
     "viewportWidth": 1920,
-    "testerUserName": "e2etestcarrier",
-    "testerPassword": "FleetHawks@2502",
+    "testerUserName": "cypress.testing",
+    "testerPassword": "11nAm11@",
     "defaultCommandTimeout": 60000,
     "requestTimeout": 8000,
     "pageLoadTimeout": 80000,
-    "video":false
+    "video": false,
+    "env": {
+        "SERVICE_URL": "http://localhost:3000/api/v1"
+    }
 }

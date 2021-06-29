@@ -1,93 +1,129 @@
-describe(" reminders tests", () => {
+describe(" Reminders tests", () => {
+  it('should allow users to add reminders with all required fields.', function () {
 
-  /* === Test Created with Cypress Studio === */
-  it('Add service-reminder test', function () {
-
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
 
     cy.get(':nth-child(6) > .nav-link > .fas').first().click();
 
-    cy.get('.col-md-4 > .btn').first().click({ force: true });
+    cy.get('.col-md-4 > .btn').first().click();
 
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
-    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Delivery{enter}');
-    cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .pl-0 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
-    cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .pl-0 > .ng-select > .ng-select-container').first().click();
-    cy.get('#serviceForm > :nth-child(1) > :nth-child(3)').last().click({ force: true });
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Task Sevrice');
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
+    cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
 
-    cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').clear();
-    cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').type('100');
-    cy.get('.col-10 > .btn-success').click();
+    cy.get('input[name="reminderData.lastServiceDate"]').first().click();
+    cy.get('div:nth-of-type(2) > div:nth-of-type(2) > .btn-light.ng-star-inserted').last().click();
+    cy.get('.col-11 > .btn-success').first().click();
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      // returning false here prevents Cypress from
+      // failing the test
+      return false
+    })
 
   });
 
-  /* === Test Created with Cypress Studio === */
-it('search-reset the reminder', function() {
+  
+it('should list the reminders which were added and then verify the added reminders are listed by name/other properties.', function() {
 
-  cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
+  cy.visit('/#/Login');
+        cy.get(':nth-child(1) > .input-group > .form-control').clear();
+        cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+        cy.get(':nth-child(2) > .input-group > .form-control').clear();
+        cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+        cy.get('#btnsubmit').click();
 
   cy.get(':nth-child(6) > .nav-link > .fas').click();
 
-  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.wait(1000);
+  cy.get('.input-group.input-group-md.mb-3 > ng-select[role="listbox"] input[role="combobox"]').first().click();
+  cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+
   cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
   cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
-  cy.get('.ng-option-label').first().click({force: true});
-  cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ALL{enter}');
-  //cy.get('#a83fb1241580-0 > .ng-option-label').click({force: true});
-  cy.get(':nth-child(4) > .mr-2').click();
-  cy.get('.row > :nth-child(4) > [type="button"]').click();
+  cy.get('[name="searchServiceTask"] input').first().click();
+  cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+  cy.get('[name="filterStatus"] input').first().click();
+  cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(2)').last().click();
+  cy.get('.btn.btn-sm.btn-success.mr-3').click();
+  cy.get('.page-header [type="button"]').click();
 
 });
 
 
-/* === Test Created with Cypress Studio === */
-it('Delete the reminder test', function() {
 
-  cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
+it('should allow users to delete reminders.', function() {
+
+  cy.visit('/#/Login');
+        cy.get(':nth-child(1) > .input-group > .form-control').clear();
+        cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+        cy.get(':nth-child(2) > .input-group > .form-control').clear();
+        cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+        cy.get('#btnsubmit').click();
   cy.get(':nth-child(6) > .nav-link > .fas').click();
-  cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').first().click({force: true});
+  cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').first().click();
   cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(4)').click();
-  /* ==== End Cypress Studio ==== */
+ 
 });
-const { contains } = require("jquery");
 
 
-it('validation error message', function() {
 
-  cy.visit('http://localhost:4200/');
+it('.should give validation error messages when the required field is not provided.', function() {
+
+  cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+
+    cy.get(':nth-child(6) > .nav-link > .fas').first().click();
+
+    cy.get('.col-md-4 > .btn').first().click();
+  cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
+  cy.get('input[name="subscribers"]').clear();
+  cy.get('.col-lg-10 > .ng-star-inserted.text-danger > .ng-star-inserted').contains('Email is required.');
+  cy.get('input[name="tasks.time"]').clear();
+  cy.get('input[name="tasks.time"]').type('2');
+  cy.get('input[name="tasks.time"]').clear();
+  cy.get('.col-lg-5.offset-lg-1 .ng-star-inserted').contains('Time is required.');
+ 
+});
+
+
+it.only('check button is enabled or not.', function () {
+
+  cy.visit('/#/Login');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+  cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
   cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+  cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
   cy.get('#btnsubmit').click();
-  cy.get(':nth-child(6) > .nav-link > .fas').click();
-  cy.get('.col-md-4 > .btn').click();
-  cy.get('.col-10 > .btn-success').click();
-  cy.wait(2000);
- // cy.get('.text').contains('This Field is not allowed to be empty');
-  /* ==== End Cypress Studio ==== */
-});
 
+  cy.get(':nth-child(6) > .nav-link > .fas').first().click();
+
+  cy.get('.col-md-4 > .btn').first().click();
+
+  cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+  cy.wait(1000);
+  cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+  cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Task Sevrice');
+  cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
+  cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
+
+  cy.get('input[name="reminderData.lastServiceDate"]').first().click();
+  cy.get('div:nth-of-type(2) > div:nth-of-type(2) > .btn-light.ng-star-inserted').last().click();
+
+
+});
 
 
 

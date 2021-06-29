@@ -43,39 +43,39 @@ export class LoginComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-//   LoginAction() {
-//     this.hasError = false;
+  //   LoginAction() {
+  //     this.hasError = false;
 
-//     const data = JSON.stringify({
-//       'userName': this.email,
-//       'password': this.password
-//     });
-//     this.apiService.getJwt('auth', data).
-//       subscribe({
-//         complete: () => { },
-//         error: (err) => {
-//           this.hasError = true;
-//           this.Error = err.error;
+  //     const data = JSON.stringify({
+  //       'userName': this.email,
+  //       'password': this.password
+  //     });
+  //     this.apiService.getJwt('auth', data).
+  //       subscribe({
+  //         complete: () => { },
+  //         error: (err) => {
+  //           this.hasError = true;
+  //           this.Error = err.error;
 
-//         },
-//         next: (res) => {
-//           const user: User = {
-//             id: '1',
-//             username: 'admin',
-//             firstName: 'Admin',
-//             lastName: 'User',
-//             role: Role.FleetManager
-//           };
+  //         },
+  //         next: (res) => {
+  //           const user: User = {
+  //             id: '1',
+  //             username: 'admin',
+  //             firstName: 'Admin',
+  //             lastName: 'User',
+  //             role: Role.FleetManager
+  //           };
 
-//           this.response = res;
-//           localStorage.setItem('jwt', this.response.jwt);
-//           localStorage.setItem('LoggedIn', 'true');
-//           /************set the role from server **********/
-//           localStorage.setItem('user', JSON.stringify(user));
-//           this.router.navigate(['/Map-Dashboard']);
-//         }
-//       });
-//   }
+  //           this.response = res;
+  //           localStorage.setItem('jwt', this.response.jwt);
+  //           localStorage.setItem('LoggedIn', 'true');
+  //           /************set the role from server **********/
+  //           localStorage.setItem('user', JSON.stringify(user));
+  //           this.router.navigate(['/Map-Dashboard']);
+  //         }
+  //       });
+  //   }
 
   /** Cognito user action */
   resendSignUpCode = async () => {
@@ -100,7 +100,9 @@ export class LoginComponent implements OnInit {
         this.userName = this.userName.trim();
         await Auth.signIn(this.userName, this.password);
         const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
-        const jwt = (await Auth.currentSession()).getIdToken().getJwtToken()
+        const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
+        const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
+        localStorage.setItem('congnitoAT', at);
         var decodedToken = jwt_decode(jwt);
 
         if (decodedToken.userType == 'driver') {
@@ -151,7 +153,7 @@ export class LoginComponent implements OnInit {
 
     }
   }
-  
+
   submitConfirmationCode = async () => {
     if (this.signUpCode !== '') {
       await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
