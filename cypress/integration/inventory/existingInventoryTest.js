@@ -1,127 +1,169 @@
 describe(" Inventory tests", () => {
-  /* === Test Created with Cypress Studio === */
-  it('Add existing inventory', function () {
-    /* ==== Generated with Cypress Studio ==== */
+  
+  it('should allow users to add inventory with all required fields.', function () {
+    
     cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(9) > .nav-link > .fas').click();
     cy.get('[routerlink="/fleet/inventory/add"]').click();
-    cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .col-lg-10 > .form-control').clear();
-    cy.get(':nth-child(1) > :nth-child(2) > :nth-child(1) > .col-lg-10 > .form-control').type('123AZ');
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .form-control').clear();
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .form-control').type('tires');
-    cy.get(':nth-child(1) > :nth-child(2) > :nth-child(3) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(1) > :nth-child(2) > :nth-child(3) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('m{enter}');
-    cy.get(':nth-child(1) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(1) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('f{enter}');
-    cy.get(':nth-child(2) > :nth-child(2) > :nth-child(3) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(2) > :nth-child(3) > .col-lg-10 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('f{enter}');
-    cy.get('#form > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(1) > .row > :nth-child(1) > .form-control').clear();
-    cy.get('#form > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(1) > .row > :nth-child(1) > .form-control').type('1');
-    cy.get(':nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(1) > .row > .pl-0 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(1) > .row > .pl-0 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('g{enter}');
-    cy.get('#form > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(2) > .form-control').clear();
-    cy.get('#form > :nth-child(1) > :nth-child(3) > :nth-child(1) > :nth-child(2) > .form-control').type('1000');
-    cy.get('.col-10 > .btn-success').click();
-    /* ==== End Cypress Studio ==== */
+    cy.get('[name="partNumber"]').clear();
+    cy.get('[name="partNumber"]').type('nut bolt 2020');
+    cy.get('input[name="itemName"]').clear();
+    cy.get('input[name="itemName"]').type('tires');
+    cy.get('[name="category"] input').first().click();
+    cy.get('div:nth-of-type(1) > .ng-option-label').last().click();
+    cy.get('input[name="cost"]').clear();
+    cy.get('input[name="cost"]').type('5');
+    cy.get('input[name="quantity"]').clear();
+    cy.get('[name="costUnitType"] input').first().click();
+    cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
+    cy.get('[name="costUnit"] input').first().click();
+    cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
+    cy.get('input[name="quantity"]').type('10');
+    cy.get('[name="warehouseID"] input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+    cy.get('[name="warehouseVendorID"] input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+    cy.get('[class="col-11 pr-0"] .ng-star-inserted').click();
+    
   });
-  /* === Test Created with Cypress Studio === */
-  it('Search and reset Existing Inventory', function () {
-    /* ==== Generated with Cypress Studio ==== */
+  it('should not allow users to add inventory with optional fields.', function () {
+    
     cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(9) > .nav-link > .fas').click();
+    cy.get('[routerlink="/fleet/inventory/add"]').click();
+    cy.get('.bg-white.p-3.text-dark textarea[name="description"]').type('Inventory is not added with optional fields.');
+    cy.get('input[name="aisle"]').type('20');
+    cy.get('[name="row"]').type('10');
+    cy.get('[name="bin"]').type('4');
+    cy.get('.bg-white.p-3.text-dark textarea[name="description"]').type('Inventory is not added with optional fields.')
+    cy.get('input[name="warrantyTime"]').type('5');
+    cy.get('[name="warrantyUnit"] input').first().click()
+    cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(1)').last().click();
+    cy.get('[name="notes"]').type('do not add inventory with optional fields.')
+    const imagefile5 = "download.jpg";
+    cy.get('[class="form-group row adddriverpl pt-2"] .row:nth-of-type(1) [type="file"]').attachFile(imagefile5);
+    const file5 = "load1.pdf";
+    cy.get('[class] [class="row mt-2"] [type="file"]').attachFile(file5);
+    
+    
+  });
+  
+  it('should list the inventory which was added and then verify the added inventory is listed by name/other properties.', function () {
+    
+    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(9) > .nav-link > .fas').click();
     cy.get('.page-header > .row > :nth-child(1) > .input-group > .form-control').clear();
     cy.get('.page-header > .row > :nth-child(1) > .input-group > .form-control').type('tires{enter}');
     cy.get(':nth-child(2) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('f{enter}');
+    cy.get(':nth-child(2) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('fleet{enter}');
+    cy.get('.result-suggestions > ul > li').click();
     cy.get(':nth-child(3) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(3) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('m{enter}');
-    cy.get(':nth-child(4) > .mr-2').click();
-    cy.get(':nth-child(4) > [type="button"]').click();
-    /* ==== End Cypress Studio ==== */
+    cy.get(':nth-child(3) > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('hardware{enter}');
+    cy.get('.page-header [type="submit"]').click();
+    cy.wait(4000);
+    cy.get('[class="col-md-2 col-lg-2"]:nth-of-type(4) [type="button"]').click();
+    cy.get('.btn.btn-default.btn-md.driverbtn.dropdown-toggle.mb-1.toggleright').first().click();
+    cy.get('input[name="warranty"]').last().click();
+    
   });
- /* === Test Created with Cypress Studio === */
-it('edit, update and delete existing inventory', function() {
-  /* ==== Generated with Cypress Studio ==== */
+ 
+it('should allow users to delete inventory.', function() {
+  
   cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
   cy.get(':nth-child(9) > .nav-link > .fas').click();
-  cy.get('#dropdownMenuButton-1 > .fas').click();
-  cy.get('[ng-reflect-router-link="/fleet/inventory/edit/f9e1ca80"]').click({ force: true });
-  // cy.get(':nth-child(1) > :nth-child(2) > :nth-child(3) > .col-lg-2 > .btn > .fas').click();
-  // cy.get('#groupForm > form.ng-untouched > :nth-child(1) > .form-group > .form-control').clear();
-  // cy.get('#groupForm > form.ng-untouched > :nth-child(1) > .form-group > .form-control').type('mechtronics');
-  // cy.get('#categoryModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
-  cy.get(':nth-child(1) > .col-lg-2 > .modal-with-form > .fas').click();
-  cy.get('#warehoseForm > :nth-child(1) > .form-group > .form-control').clear();
-  cy.get('#warehoseForm > :nth-child(1) > .form-group > .form-control').type('mg hector');
-  cy.get('.form-group > :nth-child(2) > :nth-child(1) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.form-group > :nth-child(2) > :nth-child(1) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('cana{enter}');
-  cy.get('.form-group > :nth-child(2) > :nth-child(2) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.form-group > :nth-child(2) > :nth-child(2) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('albe{enter}');
-  cy.get('.form-group > :nth-child(3) > :nth-child(1) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.form-group > :nth-child(3) > :nth-child(1) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('w{enter}');
-  cy.get('.form-group > :nth-child(3) > :nth-child(2) > .form-control').clear();
-  cy.get('.form-group > :nth-child(3) > :nth-child(2) > .form-control').type('416004');
-  cy.get(':nth-child(4) > .col-lg-12 > .form-control').clear();
-  cy.get(':nth-child(4) > .col-lg-12 > .form-control').type('fashion street, alberta ');
-  cy.get('#warehouseModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
-  cy.get('.col-10 > .btn-success').click();
+  
   cy.get('#dropdownMenuButton-0 > .fas').click();
-  cy.get(':nth-child(1) > :nth-child(9) > .dropdown > .dropdown-menu > [href="javascript:;"]').click();
-  /* ==== End Cypress Studio ==== */
+  cy.get('[aria-labelledby] > .dropdown-item:nth-of-type(2)').click();
+  
 });
 
-it('validation error message Test', function() {
-  /* ==== Generated with Cypress Studio ==== */
+it('should give validation error messages when the required field is not provided.', function() {
+  
   cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
   cy.get(':nth-child(9) > .nav-link > .fas').click();
   cy.get('[routerlink="/fleet/inventory/add"]').click();
-  cy.get('.col-10 > .btn-success').click();
-  /* ==== End Cypress Studio ==== */
+  
+   
+    cy.get('[name="partNumber"]').type('nut bolt 2020');
+    cy.get('[name="partNumber"]').clear();
+    cy.get('.col-lg-12 > .bg-white.p-3.text-dark .text-danger > div').contains('Part number is required.');
+    
+    
+    cy.get('input[name="itemName"]').type('tires');
+    cy.get('input[name="itemName"]').clear();
+    cy.get('div:nth-of-type(2) > .col-lg-10 > .text-danger > div').contains('Item name is required.');
+
+    
+    cy.get('input[name="cost"]').type('5');
+    cy.get('input[name="cost"]').clear();
+    cy.get('.col-lg-8 > .row > div:nth-of-type(1) > .text-danger > div').contains('Unit cost is required.');
+
+    cy.get('input[name="quantity"]').type('10');
+    cy.get('input[name="quantity"]').clear();
+    cy.get('.col-lg-5.mb-2.offset-lg-1.pb2 > .row > .col-lg-4 > .text-danger > div').contains('Quantity must contain numbers.');
+    
 });
-/* === Test Created with Cypress Studio === */
-it('Adding transfer inventory', function() {
-  /* ==== Generated with Cypress Studio ==== */
+
+it('check button is enabled or not.', function() {
+  
   cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
-  cy.get(':nth-child(9) > .nav-link > .fas').click();
-  cy.get('.col-md-4 > .modal-with-form').click();
-  cy.get('#transferModal > .modal-dialog > .modal-content > .modal-body > form.ng-untouched > .form-row > .form-group > :nth-child(1) > :nth-child(1) > .form-control').clear();
-  cy.get('#transferModal > .modal-dialog > .modal-content > .modal-body > form.ng-untouched > .form-row > .form-group > :nth-child(1) > :nth-child(1) > .form-control').type('123as');
-  cy.get('.form-group > :nth-child(2) > :nth-child(1) > .form-control').clear();
-  cy.get('.form-group > :nth-child(2) > :nth-child(1) > .form-control').type('5');
-  cy.get('.form-group > :nth-child(3) > :nth-child(1) > .form-control').select('18faf020-a436-11eb-b72c-9fd36c59e7d8');
-  cy.get('.form-row > .form-group > :nth-child(1) > :nth-child(2)').click();
-  cy.get('.form-group > :nth-child(1) > :nth-child(2) > .form-control').clear();
-  cy.get('.form-group > :nth-child(1) > :nth-child(2) > .form-control').type('engine');
-  cy.get('.form-group > :nth-child(2) > :nth-child(2) > .form-control').click();
-  cy.get('.form-group > :nth-child(2) > :nth-child(2) > .form-control').click();
-  cy.get(':nth-child(3) > :nth-child(2) > .form-control').select('25243f10-a430-11eb-b72c-9fd36c59e7d8');
-  cy.get('#transferModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
-  /* ==== End Cypress Studio ==== */
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(9) > .nav-link > .fas').click();
+    cy.get('[routerlink="/fleet/inventory/add"]').click();
+    cy.get('[name="partNumber"]').clear();
+    cy.get('[name="partNumber"]').type('nut bolt 2020');
+    cy.get('input[name="itemName"]').clear();
+    cy.get('input[name="itemName"]').type('tires');
+    cy.get('[name="category"] input').first().click();
+    cy.get('div:nth-of-type(1) > .ng-option-label').last().click();
+    cy.get('input[name="cost"]').clear();
+    cy.get('input[name="cost"]').type('5');
+    cy.get('input[name="quantity"]').clear();
+    cy.get('[name="costUnitType"] input').first().click();
+    cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
+    cy.get('[name="costUnit"] input').first().click();
+    cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
+    cy.get('input[name="quantity"]').type('10');
+    cy.get('[name="warehouseID"] input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+    cy.get('[name="warehouseVendorID"] input').first().click();
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
+  
 });
 
 
