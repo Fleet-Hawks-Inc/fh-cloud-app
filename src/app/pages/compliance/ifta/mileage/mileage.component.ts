@@ -22,7 +22,7 @@ export class MileageComponent implements OnInit {
   public states:any;
   public baseCountry:any;
   public vehicleList=[]
-  public recordCount:any;
+  public recordCount=10;
   public pageLength=10;
   public dataMessage:any;
   public isRecords:any;
@@ -31,7 +31,7 @@ export class MileageComponent implements OnInit {
   public recordDraw=0;
   public records=[];
   public recordNext=false;
-  public recordPrevEvauatedKeys=[];
+  public recordPrevEvauatedKeys=[''];
   public lastEvaluatedKey='';
   public totalRecords;
   public recordPrev=true;
@@ -55,7 +55,7 @@ export class MileageComponent implements OnInit {
     this.fetchVehicles();
     this.fetchWexFuelCode();
     this.fetchQuarterRreport();
-    this.fetchAllRecordsCount();
+    //this.fetchAllRecordsCount();
     this.getCanadaStates();
     this.getUSStates();
   }
@@ -66,7 +66,7 @@ export class MileageComponent implements OnInit {
           fuelList.push(element.type)
         });
       });
-this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
+this.fuelList=["Diesel","Gasoline","Propane"]
 
   }
 
@@ -95,6 +95,10 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
 
   }
   filterRecords(){
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.lastEvaluatedKey=''
+    this.isRecords=false;
+    this.records=[]
     if(this.filterFuel==null) this.filterFuel=''
 
     if(this.filterVehicle==null) this.filterVehicle=''
@@ -138,30 +142,28 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
   }
 
 
-  nextResults(type) {
-    if(type == 'all') {
+  nextResults() {
+    
       this.recordNext = true;
       this.recordDraw += 1;
       this.recordPrev=true
       
         this.initDataTable();
-    } 
+    
   }
   // prev button func
-  prevResults(type) {
-    if(type == 'all') {
+  prevResults() {
       this.recordNext = true;
       this.recordPrev = true;
       this.recordDraw -= 1;
       this.lastEvaluatedKey=this.recordPrevEvauatedKeys[this.recordDraw]
       this.initDataTable();
       
-    }
   
   }
 
   fetchCount(){
-    this.recordCount=0;
+    
     this.apiService.getData('ifta/get/count?quarter='+this.quarter+'&vehicle='+this.filterVehicle+'&fuelType='+this.filterFuel).subscribe({
       complete:()=>{},
       error:()=>{},
@@ -175,20 +177,20 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
 
   }
 
-  fetchAllRecordsCount(){
-    this.totalRecords=0
-    this.apiService.getData('ifta/get/count?quarter='+this.quarter).subscribe({
-      complete:()=>{},
-      error:()=>{},
-      next:(result:any)=>{
-        this.totalRecords=result.Count;
+  // fetchAllRecordsCount(){
+  //   this.totalRecords=0
+  //   this.apiService.getData('ifta/get/count?quarter='+this.quarter).subscribe({
+  //     complete:()=>{},
+  //     error:()=>{},
+  //     next:(result:any)=>{
+  //       this.totalRecords=result.Count;
         
-        this.initDataTable();
-      }
+  //       this.initDataTable();
+  //     }
 
-    })
+  //   })
 
-  }
+  // }
   fetchCountries() {
   this.countries=CountryStateCity.GetAllCountries();
   }
@@ -218,11 +220,10 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
     // };
   }
 
-  getStartandEndVal(type){
-    if(type=='all'){
+  getStartandEndVal(){
+ 
       this.recordStartPoint=this.recordDraw*this.pageLength+1;
       this.recordEndPoint=this.recordStartPoint + this.pageLength -1;
-    }
   }
   initDataTable() {
    this.spinner.show();
@@ -236,8 +237,8 @@ this.fuelList=["Diesel","Gasoline","Agricultural","Gas","Propane"]
      else{
        this.isRecords=true;
      }
-    this.getStartandEndVal('all');
-   this.fetchRecords(result,'all')
+    this.getStartandEndVal();
+   this.fetchRecords(result)
     if (result['LastEvaluatedKey'] !== undefined) {
       let lastEvalKey = result[`LastEvaluatedKey`].iftaSK.replace(/#/g,'--');
       this.recordNext = false;
