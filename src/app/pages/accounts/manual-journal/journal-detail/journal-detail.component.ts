@@ -11,13 +11,19 @@ export class JournalDetailComponent implements OnInit {
 
   journalID;
   journal = {
+    date: null,
+    referenceNo: '',
+    currency: null,
+    notes: '',
     details: [{
       accountID: null,
       description: '',
       contactID: null,
       debit: 0,
       credit: 0
-    }]
+    }],
+    debitTotalAmount: 0,
+    creditTotalAmount: 0,
   };
   contacts = [];
   accounts = [];
