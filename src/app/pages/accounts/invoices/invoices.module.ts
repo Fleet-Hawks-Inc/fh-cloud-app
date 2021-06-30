@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
 const routes: Routes = [
   { path: 'list', component: InvoiceListComponent},
   { path: 'add', component: AddInvoiceComponent},
-  { path: 'detail', component: InvoiceDetailComponent},
+  { path: 'detail/:invID', component: InvoiceDetailComponent},
+  { path: 'edit/:invID', component: AddInvoiceComponent},
   { path: 'add-load-invoice', component: AddLoadInvoiceComponent},
   { path: 'load-invoice-detail', component: LoadInvoiceDetailComponent},
 ];

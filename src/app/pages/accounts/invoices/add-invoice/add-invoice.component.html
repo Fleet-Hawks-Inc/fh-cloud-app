@@ -3,7 +3,7 @@
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
         <div class="row pr-5 " style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Invoice</div>
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{ pageTitle }}</div>
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/invoices/list"
               class="btn btn-default"><i class="fas fa-list"></i> All Invoices</a> </div>
         </div>
@@ -19,19 +19,19 @@
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice#</label>
-                          <input type="text" class="form-control" [(ngModel)]="invNo" name="invNo">
+                          <input type="text" class="form-control" [(ngModel)]="invoiceData.invNo" name="invNo">
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
                             Date</label>
-                          <input type="date" [(ngModel)]="invDate" name="invDate" class="form-control"
+                          <input type="date" [(ngModel)]="invoiceData.invDate" name="invDate" class="form-control"
                             placeholder="mm/dd/yyyy">
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer</label>
-                          <ng-select [(ngModel)]="invCustomerID" name="invCustomerID"
+                          <ng-select [(ngModel)]="invoiceData.invCustomerID" name="invCustomerID"
                             (change)="selectedCustomer($event)" placeholder="Select Customer" class="form-control">
                             <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
                               {{customer.companyName}}
@@ -115,12 +115,12 @@
                       <div class="row pt-2">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
-                          <input type="date" class="form-control" [(ngModel)]="invDueDate" name="invDueDate">
+                          <input type="date" class="form-control" [(ngModel)]="invoiceData.invDueDate" name="invDueDate">
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
                             Terms</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invPayTerms" name="invPayTerms">
+                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms">
                               <ng-option value="1">15 Days</ng-option>
                               <ng-option value="2">30 Days</ng-option>
                               <ng-option value="2">45 Days</ng-option>
@@ -133,13 +133,13 @@
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                             Salesperson</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invSalesman" name="invSalesman">
+                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
                             <optgroup label="Select">
-                              <ng-option value="1">Salesman 1</ng-option>
-                              <ng-option value="1">Salesman 2</ng-option>
-                              <ng-option value="1">Salesman 3</ng-option>
-                              <ng-option value="1">Salesman 4</ng-option>
-                              <ng-option value="1">Salesman 5</ng-option>
+                              <ng-option value="Salesman 1">Salesman 1</ng-option>
+                              <ng-option value="Salesman 2">Salesman 2</ng-option>
+                              <ng-option value="Salesman 3">Salesman 3</ng-option>
+                              <ng-option value="Salesman 4">Salesman 4</ng-option>
+                              <ng-option value="Salesman 5">Salesman 5</ng-option>
                             </optgroup>
                           </ng-select>
                         </div>
@@ -148,7 +148,7 @@
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
                             Subject</label>
-                          <input type="text" class="form-control" placeholder="Rent Invoice" [(ngModel)]="invSubject"
+                          <input type="text" class="form-control" placeholder="Rent Invoice" [(ngModel)]="invoiceData.invSubject"
                             name="invSubject">
                         </div>
                       </div>
@@ -176,31 +176,31 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let dt of details; let d = index;">
+                            <tr *ngFor="let dt of invoiceData.details; let d = index;">
                               <td>
-                                <input type="text" class="form-control" [(ngModel)]="dt.commodityService" name="dt.commodityService">
+                                <input type="text" class="form-control" [(ngModel)]="dt.commodityService" name="commodityService{{d}}">
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control" [(ngModel)]="dt.qtyHours" name="dt.qtyHours">
+                                    <input type="text" class="form-control" [(ngModel)]="dt.qtyHours" name="qtyHours{{d}}">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control" [(ngModel)]="dt.priceRate" name="dt.priceRate">
+                                    <input type="text" class="form-control" [(ngModel)]="dt.priceRate" name="priceRate{{d}}">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-6 pr-0">
-                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="dt.amount" (change)="calculateAmount($event,d)">
+                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="amount{{d}}" (change)="calculateAmount()">
                                   </div>
                                   <div class="col-lg-6 pl-0">
-                                    <ng-select class="form-control populate" [(ngModel)]="dt.amtCur" name="dt.amtCur">
+                                    <ng-select class="form-control populate" [(ngModel)]="dt.amtCur" name="amtCur{{d}}">
                                         <ng-option value="CAD">CAD</ng-option>
                                         <ng-option value="USD">USD</ng-option>
                                     </ng-select>
@@ -210,7 +210,7 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="dt.accountID">
+                                    <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="accountID{{d}}">
                                         <ng-option *ngFor="let act of accounts | async" value="{{act.actID}}">{{act.actNo}} - {{act.actName}}</ng-option>
                                     </ng-select>
                                   </div>
@@ -231,7 +231,7 @@
                               <div class="row">
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" rows="7" [(ngModel)]="remarks" name="remarks"></textarea>
+                                  <textarea class="form-control" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="row">
@@ -243,10 +243,10 @@
                                         <div class="col-lg-7">
                                           <div class="row">
                                             <div class="col-lg-6 pr-0">
-                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="discount" name="discount" (change)="calculateSubtotal()">
+                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="invoiceData.discount" name="discount" (change)="calculateAmount()">
                                             </div>
                                             <div class="col-lg-6 pl-0">
-                                              <ng-select class="form-control populate" [(ngModel)]="discountUnit" name="discountUnit" (change)="calculateSubtotal()">
+                                              <ng-select class="form-control populate" [(ngModel)]="invoiceData.discountUnit" name="discountUnit" (change)="calculateAmount()">
                                                 <ng-option value="%">%</ng-option>
                                                 <ng-option value="CAD">CAD</ng-option>
                                                 <ng-option value="USD">USD</ng-option>
@@ -273,7 +273,7 @@
                                         <div class="col-lg-9 pt-1">
                                         </div>
                                         <div class="col-lg-3 pt-1">
-                                          <p class="text-right">0.00</p>
+                                          <p class="text-right">{{midAmt}}</p>
                                         </div>
                                       </div>
                                       <div class="row">
@@ -282,7 +282,7 @@
                                         </div>
 
                                         <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">{{subTotal}}</p>
+                                          <p class="text-right">{{invoiceData.subTotal}}</p>
                                         </div>
                                       </div>
                                     </div>
@@ -294,7 +294,7 @@
                                     </div>
                                     <div class="col-lg-5 offset-lg-2">
                                       <ng-select
-                                      [(ngModel)]="invStateProvince"
+                                      [(ngModel)]="invoiceData.invStateProvince"
                                       name="invStateProvince"
                                        (change)="stateSelectChange()"
                                          class="form-control populate">
@@ -304,7 +304,7 @@
                                   </div>
                                   <div class="row">
                                     <div class="col-lg-7 offset-lg-2">
-                                          <div class="row mt-4" *ngFor="let item of taxesInfo; let i = index;">
+                                          <div class="row mt-4" *ngFor="let item of invoiceData.taxesInfo; let i = index;">
                                              <div class="col-lg-5">
                                                 <input type="text" class="form-control" value="{{item.name}}" disabled>
                                              </div>
@@ -322,7 +322,6 @@
                                                 <span>&nbsp;</span>
                                              </div>
                                           </div>
-
                                     </div>
                                     <div class="col-lg-3">
                                           <div class="row mt-4 pb-1 mb-1" *ngFor="let item of newTaxes; let i = index">
@@ -339,7 +338,7 @@
                                           <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
                                         </div>
                                         <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">0.00</p>
+                                          <p class="text-right">{{invoiceData.totalAmount}}</p>
                                         </div>
                                       </div>
                                     </div>
@@ -355,8 +354,9 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button type="button" class="btn btn-default mr-2" onclick="goBack()">Cancel</button>
-                      <button class="btn btn-success mr-2" type="button" (click)="addInvoice()">Save</button>
-                      <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a>
+                      <button class="btn btn-success mr-2" type="button" *ngIf="!invID" (click)="addInvoice()">Save</button>
+                      <button class="btn btn-success mr-2" type="button" *ngIf="invID" (click)="updateInvoice()">Update</button>
+                      <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a> -->
                     </div>
                   </div>
                 </form>

@@ -158,24 +158,24 @@
                         </thead>
                         <tbody>
                            <tr *ngFor="let inv of invoices; let i = index;">
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">{{inv.invNo}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">{{inv.invDate}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">{{customersObjects[inv.invCustomerID]}}</td>
-                              <td class="loadid cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"></td>
-                              <td  class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">CAD 600</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">{{inv.invDate}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail">3 days left</td>
-                             <td class="cursorpoint"  routerLink="/accounts/invoices/load-invoice-detail"><span class="badge badge-dark p-1">{{inv.invStatus}}</span></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                              <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">CAD 600</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus}}</span></td>
                              <td>
                                  <div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
                                        <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
+                                       <a class="dropdown-item text-1" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
                                     </div>
                                  </div>

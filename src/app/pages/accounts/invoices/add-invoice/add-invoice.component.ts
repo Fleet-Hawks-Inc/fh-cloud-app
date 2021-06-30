@@ -2,6 +2,7 @@ import { ApiService, AccountService, ListService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -11,38 +12,42 @@ export class AddInvoiceComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-     private listService: ListService,
-      private apiService: ApiService,
-      private toaster: ToastrService,
-      private router: Router,) { }
-  invNo: number;
-  invDate: string;
-  invRef: string;
-  invDueDate: string;
-  invPayTerms: string;
-  invCustomerID: string;
-  invSalesman: string;
-  invSubject: string;
-  remarks: string;
-  discount: number;
-  discountUnit: string;
-  invStateProvince: string;
-  invType = 'manual'; // either it's manual or load invoice
-  invStatus = 'OPEN'; // default status is OPEN
-  // gst: number;
-  // pst: number;
-  // hst: number;
-  subTotal: any = 0;
-  details = [{
-    commodityService: '',
-    qtyHours: '',
-    priceRate: '',
-    amount: 0,
-    amtCur: '',
-    accountID: '',
-  }];
+    private listService: ListService,
+    private apiService: ApiService,
+    private toaster: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router) { }
+    pageTitle = 'Add Invoice';
+  invoiceData = {
+    invNo: '',
+    invDate: null,
+    invRef: '',
+    invDueDate: null,
+    invPayTerms: '',
+    invCustomerID: null,
+    invSalesman: null,
+    invSubject: '',
+    details: [{
+      commodityService: '',
+      qtyHours: '',
+      priceRate: '',
+      amount: 0,
+      amtCur: null,
+      accountID: null,
+    }],
+    remarks: '',
+    discount: 0,
+    discountUnit: '%',
+    invStateProvince: null,
+    invStatus: 'OPEN',
+    invType: 'manual',
+    subTotal: 0,
+    taxesInfo: [],
+    totalAmount: 0,
+    taxAmount: 0
+  };
   midAmt = 0; // midAmt is sum of all the amount values in details table
-  taxesInfo = [];
+  totalAmount: any = 0;
   /**
    *Customer related properties
    */
@@ -63,7 +68,7 @@ export class AddInvoiceComponent implements OnInit {
   /**
    * Taxes part
    */
-   tax: any = 0;
+  tax: any = 0;
   stateTaxes = [];
   stateTaxID = '';
   newTaxes = [
@@ -73,12 +78,20 @@ export class AddInvoiceComponent implements OnInit {
       taxAmount: 0
     }
   ];
+  invID: string;
   ngOnInit() {
     this.listService.fetchCustomers();
     this.customers = this.listService.customersList;
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     this.fetchStateTaxes();
+    this.invID = this.route.snapshot.params[`invID`];
+    if (this.invID) {
+      this.pageTitle = 'Edit Invoice';
+      this.fetchInvoice();
+    } else {
+      this.pageTitle = 'Add Invoice';
+    }
   }
   selectedCustomer(customerID: any) {
     this.apiService
@@ -102,10 +115,10 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   async stateSelectChange() {
-    let selected: any = this.stateTaxes.find(o => o.stateTaxID === this.invStateProvince);
-    this.taxesInfo = [];
+    const selected: any = this.stateTaxes.find(o => o.stateTaxID === this.invoiceData.invStateProvince);
+    this.invoiceData.taxesInfo = [];
 
-    this.taxesInfo = [
+    this.invoiceData.taxesInfo = [
       {
         name: 'GST',
         amount: selected.GST,
@@ -120,19 +133,17 @@ export class AddInvoiceComponent implements OnInit {
       },
     ];
     this.tax = (parseInt(selected.GST) ? selected.GST : 0) + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
-    // await this.calculateAmount();
-
+    console.log('this.tax', this.tax);
+    await this.calculateAmount();
   }
 
   async fetchStateTaxes() {
-
-    let result = await this.apiService
-      .getData(`stateTaxes`).toPromise();
+    let result = await this.apiService.getData(`stateTaxes`).toPromise();
     this.stateTaxes = result.Items;
-    this.invStateProvince = this.stateTaxes[0].stateTaxID;
+    this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
     this.stateTaxes.map((v: any) => {
-      if (this.invStateProvince === v.stateTaxID) {
-        this.taxesInfo = [
+      if (this.invoiceData.invStateProvince === v.stateTaxID) {
+        this.invoiceData.taxesInfo = [
           {
             name: 'GST',
             amount: result.Items[0].GST,
@@ -148,74 +159,85 @@ export class AddInvoiceComponent implements OnInit {
         ];
       }
     });
-    this.newTaxes = this.taxesInfo;
-    if (this.subTotal > 0) {
+    this.newTaxes = this.invoiceData.taxesInfo;
+    if (this.invoiceData.subTotal > 0) {
       for (let i = 0; i < this.newTaxes.length; i++) {
         const element = this.newTaxes[i];
-        element.taxAmount = (this.subTotal * element.amount) / 100;
+        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
       }
     }
   }
+
   addDetails() {
-    this.details.push({
+    this.invoiceData.details.push({
       commodityService: '',
       qtyHours: '',
       priceRate: '',
       amount: 0,
-      amtCur: '',
-      accountID: '',
+      amtCur: null,
+      accountID: null,
     });
   }
+
   deleteDetail(amount: number, d: number) {
     console.log('amount', amount);
-    this.details.splice(d, 1);
+    this.invoiceData.details.splice(d, 1);
   }
-  addInvoice() {
-    const data = {
-      invNo: this.invNo,
-      invDate: this.invDate,
-      invRef: this.invRef,
-      invDueDate: this.invDueDate,
-      invPayTerms: this.invPayTerms,
-      invCustomerID: this.invCustomerID,
-      invSalesman: this.invSalesman,
-      invSubject: this.invSubject,
-      details: this.details,
-      remarks: this.remarks,
-      discount: this.discount,
-      discountUnit: this.discountUnit,
-      invStateProvince: this.invStateProvince,
-      invStatus: this.invStatus,
-      invType: this.invType,
 
-    };
-    console.log('input', data);
-    this.accountService.postData(`invoices`, data).subscribe((res) => {
-    console.log('res', res);
-    this.toaster.success('Invoice Added Successfully.');
-    this.router.navigateByUrl('/accounts/invoices/list');
+  addInvoice() {
+    console.log('input', this.invoiceData);
+    this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
+      console.log('res', res);
+      this.toaster.success('Invoice Added Successfully.');
+      this.router.navigateByUrl('/accounts/invoices/list');
     });
   }
 
-  calculateAmount(e: any , d: any) {
-   console.log('event', e.target.value);
-   console.log('data', d);
-   this.midAmt = Number(this.midAmt) + Number(e.target.value);
-   console.log('this.midAmt', this.midAmt);
-  }
-  calculateSubtotal() {
-    if (this.discountUnit === '%') {
-      this.subTotal = this.midAmt - ((this.discount * this.midAmt) / 100);
-      console.log('subtotal', this.subTotal);
-    } else if (this.discountUnit === 'CAD') {
-      this.subTotal = this.midAmt  - this.discount;
-      console.log('subtotal', this.subTotal);
+  async calculateAmount() {
+    this.midAmt = 0;
+    for (let i = 0; i < this.invoiceData.details.length; i++) {
+      console.log('this.invoiceData.details[i].amount', this.invoiceData.details[i].amount);
+      this.midAmt += Number(this.invoiceData.details[i].amount);
+    }
+    this.invoiceData.subTotal = this.midAmt;
+    if (this.invoiceData.discountUnit === '%') {
+      this.invoiceData.subTotal = this.midAmt - ((this.invoiceData.discount * this.midAmt) / 100);
+    } else if (this.invoiceData.discountUnit === 'CAD') {
+      this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
     } else {
-     this.subTotal = this.midAmt  - this.discount;
-     console.log('subtotal', this.subTotal);
+      this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
+    }
+    this.totalAmount = (this.invoiceData.subTotal).toFixed(0);
+    const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
+    const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
+    const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
+    const totalTax = parseInt(gst)  + parseInt(pst) + parseInt(hst);
+    const taxAmount =  parseInt(this.totalAmount) * totalTax / 100;
+    this.invoiceData.taxAmount = taxAmount;
+    const final = parseInt(this.totalAmount) + taxAmount;
+
+    this.invoiceData.totalAmount = final;
+    this.newTaxes = this.invoiceData.taxesInfo;
+    if (this.invoiceData.subTotal > 0) {
+      for (let i = 0; i < this.newTaxes.length; i++) {
+        const element = this.newTaxes[i];
+        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+      }
     }
   }
-  changeStatus(invID: string) {
 
+  fetchInvoice() {
+    this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
+      console.log('fetched invoice', res);
+      this.invoiceData = res[0];
+      this.invoiceData.details = res[0].details;
+      });
+  }
+  updateInvoice() {
+    console.log('input update', this.invoiceData);
+    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
+      this.toaster.success('Invoice Updated Successfully.');
+      this.router.navigateByUrl('/accounts/invoices/list');
+    });
   }
 }

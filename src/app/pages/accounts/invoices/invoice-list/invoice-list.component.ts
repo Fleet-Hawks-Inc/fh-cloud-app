@@ -11,6 +11,7 @@ export class InvoiceListComponent implements OnInit {
  invoices = [];
  customersObjects = {};
  invNewStatus: string;
+ invID: string;
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, ) { }
 
   ngOnInit() {
@@ -42,7 +43,18 @@ export class InvoiceListComponent implements OnInit {
   }
 
   changeStatus(invID: string) {
+    this.invID = invID;
     console.log('invID', invID);
-    $('#updateStatusModal').model('show');
+    $('#updateStatusModal').modal('show');
+  }
+
+  updateInvStatus() {
+    console.log('this.invID', this.invID);
+    console.log('updated status', this.invNewStatus);
+    this.accountService.getData(`invoices/status/${this.invID}/${this.invNewStatus}`).subscribe(() => {
+      this.toaster.success('Invoice Status Updated Successfully.');
+      $('#updateStatusModal').modal('hide');
+      this.fetchInvoices();
+      });
   }
 }
