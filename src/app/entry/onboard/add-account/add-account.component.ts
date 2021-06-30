@@ -47,6 +47,7 @@ export class AddAccountComponent implements OnInit {
     trailers: 0,
     trucks: 0,
   };
+  reCaptcha:any
   addressDetails = [{
     addressType: 'yard',
     countryName: '',
@@ -105,6 +106,7 @@ export class AddAccountComponent implements OnInit {
     specialCharacters: false,
     length: false
   }
+  siteKey="6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo"
   constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
