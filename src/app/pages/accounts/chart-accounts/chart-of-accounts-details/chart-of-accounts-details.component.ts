@@ -9,7 +9,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
 
-  carrierID = '560';
+  carrierID = 'fb5e9b40-46g4-11eb-b12c-592c24496432';
   actID = '';
   account =  {
     actName: '',
@@ -33,7 +33,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   }
 fetchAccount() {
   this.accountService.getData(`chartAc/${this.carrierID}/${this.actID}`).subscribe((res) => {
-    this.account = res[0];
+    this.account = res;
     console.log('res', res);
     console.log('this.account', this.account);
     });

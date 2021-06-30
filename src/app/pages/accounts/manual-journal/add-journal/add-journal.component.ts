@@ -27,25 +27,19 @@ export class AddJournalComponent implements OnInit {
       contactID: null,
       debit: 0,
       credit: 0
+    },
+    {
+      accountID: null,
+      description: '',
+      contactID: null,
+      debit: 0,
+      credit: 0
     }],
     debitTotalAmount: 0,
     creditTotalAmount: 0,
   };
   difference = 0;
-  accounts = [
-    {
-      accountID: "1",
-      name: "first"
-    },
-    {
-      accountID: "2",
-      name: "second"
-    },
-    {
-      accountID: "3",
-      name: "third"
-    }
-  ];
+  accounts = [];
 
   contacts: any = [];
   errors = {};
@@ -65,7 +59,7 @@ export class AddJournalComponent implements OnInit {
       this.fetchJournalByID();
       this.submitDisabled = false;
     }
-
+    this.fetchAccounts();
     this.listService.fetchCustomers();
     this.contacts = this.listService.customersList;
   }
@@ -83,6 +77,7 @@ export class AddJournalComponent implements OnInit {
 
   deleteDetail(index) {
     this.journal.details.splice(index, 1);
+    this.calculateTotal();
   }
 
   calculateTotal() {
@@ -150,6 +145,7 @@ export class AddJournalComponent implements OnInit {
           delete result[0].journalID;
           delete result[0].carrierID;
           delete result[0]._type;
+          delete result[0].isDeleted;
           this.journal = result[0];
         }
       })
@@ -189,5 +185,31 @@ export class AddJournalComponent implements OnInit {
         this.router.navigateByUrl('/accounts/manual-journal/list');
       },
     });
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc`)
+      .subscribe((result: any) => {
+        if (result[0] != undefined) {
+          this.accounts = result;
+        }
+      })
+  }
+
+  checkSelectedAccount(accountID, selectedIndex) {
+    let prevAccounts = [];
+    this.journal.details.map((element, index) => {
+      if(selectedIndex !== index && element.accountID !== null) {
+        prevAccounts.push(element.accountID)
+      }
+      return true;
+    });
+    if(prevAccounts.includes(accountID)) {
+      setTimeout(() => {
+        this.journal.details[selectedIndex].accountID = null;
+      });
+      this.toaster.error('This bank account is already selected.');
+      return false;
+    }
   }
 }

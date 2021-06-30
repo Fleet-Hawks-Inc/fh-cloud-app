@@ -79,7 +79,7 @@ const routes: Routes = [
   { path: 'list', component: JournalListComponent },
   { path: 'add', component: AddJournalComponent },
   { path: 'edit/:journalID', component: AddJournalComponent },
-  { path: 'detail', component: JournalDetailComponent },
+  { path: 'detail/:journalID', component: JournalDetailComponent },
 ];
 
 

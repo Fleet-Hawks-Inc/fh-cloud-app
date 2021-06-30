@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ListService } from "../../../../services";
 import { AccountService } from '../../../../services';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-journal-list',
   templateUrl: './journal-list.component.html',
   styleUrls: ['./journal-list.component.css']
-})
+}) 
 export class JournalListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   journals = [];
-  constructor(private listService: ListService, private router: Router, private toaster: ToastrService, private accountService: AccountService) { }
+  constructor(private toaster: ToastrService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.fetchJournals();
@@ -21,8 +21,10 @@ export class JournalListComponent implements OnInit {
   fetchJournals() {
     this.accountService.getData('journal')
       .subscribe((result: any) => {
+        if(result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
         this.journals = result;
-        console.log('this.journals', this.journals);
       })
   }
 
@@ -33,5 +35,4 @@ export class JournalListComponent implements OnInit {
         this.toaster.success('Manual journal deleted successfully.');
       })
   }
-
 }

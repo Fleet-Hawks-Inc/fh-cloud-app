@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../../../services';
+import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,26 +10,42 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class JournalDetailComponent implements OnInit {
 
   journalID;
-  journal;
+  journal = {
+    details: []
+  };
+  contacts = [];
+  accounts = [];
 
-  constructor(private accountService: AccountService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private accountService: AccountService, private router: Router, private route: ActivatedRoute, private apiService: ApiService) { }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params['journalID'];
     this.fetchJournalByID();
+    this.fetchContacts();
+    this.fetchAccounts();
   }
 
   fetchJournalByID() {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
         if(result[0] != undefined) {
-          delete result[0].created;
-          delete result[0].accountSK;
-          delete result[0].journalID;
-          delete result[0].carrierID;
-          delete result[0]._type;
           this.journal = result[0];
         }
+      })
+  }
+
+  fetchContacts() {
+    this.apiService.getData(`contacts/get/list`)
+      .subscribe((result: any) => {
+        this.contacts = result;
+      })
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/get/list/all`)
+      .subscribe((result: any) => {
+        this.accounts = result;
+        console.log('this.accounts', this.accounts)
       })
   }
 }

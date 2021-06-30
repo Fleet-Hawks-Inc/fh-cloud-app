@@ -85,8 +85,8 @@
                                                     <tbody>
                                                         <tr *ngFor="let data of journal.details; let i=index">
                                                             <td>
-                                                                <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account">
-                                                                    <ng-option value="{{ item.accountID }}" *ngFor="let item of accounts">{{ item.name }}</ng-option>
+                                                                <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account" (change)="checkSelectedAccount($event, i)" >
+                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actName }} - {{ item.actNo }}</ng-option>
                                                                 </ng-select>
                                                             </td>
                                                             <td>
