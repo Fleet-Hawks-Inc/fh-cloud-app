@@ -11,7 +11,13 @@ export class JournalDetailComponent implements OnInit {
 
   journalID;
   journal = {
-    details: []
+    details: [{
+      accountID: null,
+      description: '',
+      contactID: null,
+      debit: 0,
+      credit: 0
+    }]
   };
   contacts = [];
   accounts = [];
@@ -45,7 +51,6 @@ export class JournalDetailComponent implements OnInit {
     this.accountService.getData(`chartAc/get/list/all`)
       .subscribe((result: any) => {
         this.accounts = result;
-        console.log('this.accounts', this.accounts)
       })
   }
 }
