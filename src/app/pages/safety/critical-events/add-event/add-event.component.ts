@@ -92,6 +92,7 @@ export class AddEventComponent implements OnInit {
     private readonly search: any;
     public searchTerm = new Subject<string>();
     
+    uploadedDocs = [];
     currentUser: any;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
@@ -118,13 +119,14 @@ export class AddEventComponent implements OnInit {
         this.apiService.getData('vehicles')
         .subscribe((result: any) => {
             this.vehicles = result.Items;
+            console.log('this.vehicles', this.vehicles);
         })
     }
 
     fetchDrivers() {
         this.apiService.getData('drivers')
         .subscribe((result: any) => {
-            
+            console.log('drivers', result);
             // result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
@@ -167,8 +169,23 @@ export class AddEventComponent implements OnInit {
         // this.event.incidentVideodocumentID = this.uploadedVideos;
         console.log('critical', this.event)
         
-        
-        this.safetyService.postData('critical-events', this.event).subscribe({
+        // create form data instance
+        const formData = new FormData();
+
+        // append videos if any
+        for (let i = 0; i < this.uploadedVideos.length; i++){
+            formData.append('uploadedVideos', this.uploadedVideos[i]);
+        }
+
+        // append docs if any
+        for (let j = 0; j < this.uploadedPhotos.length; j++){
+            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
+        }
+
+        // append other fields
+        formData.append('data', JSON.stringify(this.event));
+
+        this.safetyService.postData('critical-events', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
                 from(err.error)
@@ -248,18 +265,19 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-    
+
         if (obj === 'uploadedPhotos') {
-          this.uploadedPhotos = [];
-          for (let i = 0; i < files.length; i++) {
-            this.uploadedPhotos.push(files[i])
-          }
+            this.uploadedPhotos = [];
+            for (let i = 0; i < files.length; i++) {
+                this.uploadedPhotos.push(files[i])
+            }
         } else {
-          this.uploadedVideos = [];
-          for (let i = 0; i < files.length; i++) {
-              this.uploadedVideos.push(files[i])
-          }
+            this.uploadedVideos = [];
+            for (let i = 0; i < files.length; i++) {
+                this.uploadedVideos.push(files[i])
+            }
         }
-        
-      }
+        console.log('this.uploadedVideos', this.uploadedVideos);
+        console.log('this.uploadedPhotos', this.uploadedPhotos);
+    }
 }
