@@ -20,6 +20,7 @@ export class ChartOfAccountsComponent implements OnInit {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     console.log('this.accounts', this.accounts);
+
   }
  // debit/credit test function
 // trxFn() {
@@ -36,6 +37,12 @@ export class ChartOfAccountsComponent implements OnInit {
 //   this.accountService.putData(`chartAc/trx/${this.carrierID}/${this.receivedActID}`, data).subscribe((res) => {
 //   });
 // }
+preAccounts() {
+  console.log('hello accounts');
+  this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
+    console.log('predefined accounts  function');
+  });
+}
 deleteAccount(actID: string) {
   this.accountService.deleteData(`chartAc/${this.carrierID}/${actID}`).subscribe((res) => {
     this.toaster.success('Account Deleted Successfully.');

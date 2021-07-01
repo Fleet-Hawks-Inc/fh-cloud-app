@@ -76,7 +76,7 @@ export class AddAccountComponent implements OnInit {
       closingAmt: 0,
     };
     console.log('data', data);
-    this.accountService.postData(`chartAc/${this.carrierID}`, data).subscribe((res: any) => {
+    this.accountService.postData(`chartAc`, data).subscribe((res: any) => {
       this.toaster.success('Account Added Successfully.');
       $('#addAccountModal').modal('hide');
       this.listService.fetchChartAccounts();
@@ -94,16 +94,16 @@ export class AddAccountComponent implements OnInit {
     });
   }
   fetchAccount() {
-    this.accountService.getData(`chartAc/${this.carrierID}/${this.childMessage}`).subscribe((res) => {
-      this.actName = res[0].actName;
-      this.actType = res[0].actType;
-      this.actNo = res[0].actNo;
-      this.actDesc = res[0].actDesc;
-      this.opnBal = res[0].opnBal;
-      this.opnBalCurrency = res[0].opnBalCurrency;
-      this.actDash = res[0].actDash;
-      this.actDate = res[0].actDate;
-      this.closingAmt = res[0].closingAmt;
+    this.accountService.getData(`chartAc/account/${this.childMessage}`).subscribe((res) => {
+      this.actName = res.actName;
+      this.actType = res.actType;
+      this.actNo = res.actNo;
+      this.actDesc = res.actDesc;
+      this.opnBal = res.opnBal;
+      this.opnBalCurrency = res.opnBalCurrency;
+      this.actDash = res.actDash;
+      this.actDate = res.actDate;
+      this.closingAmt = res.closingAmt;
     });
   }
   updateAccount() {
@@ -122,7 +122,7 @@ export class AddAccountComponent implements OnInit {
       closingAmt: this.closingAmt,
     };
     console.log('data', data);
-    this.accountService.putData(`chartAc/${this.carrierID}/${this.receivedActID}`, data).subscribe((res: any) => {
+    this.accountService.putData(`chartAc/update/${this.receivedActID}`, data).subscribe((res: any) => {
       this.toaster.success('Account Updated Successfully.');
       this.listService.fetchChartAccounts();
       this.router.navigateByUrl('/accounts/chart-accounts/list');
