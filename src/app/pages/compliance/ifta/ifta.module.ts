@@ -11,6 +11,7 @@ import { IftaReportHistoryComponent } from './ifta-report-history/ifta-report-hi
 import { IftaReturnDetailsComponent } from './ifta-return-details/ifta-return-details.component';
 import { ChartsModule } from 'ng2-charts';
 import { MatExpansionModule } from "@angular/material/expansion";
+import { NgSelectModule } from '@ng-select/ng-select';
 const routes: Routes = [
     
     { path: 'detail/:quarter', component: MileageComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
     NgbModule,
     ChartsModule,
     RouterModule.forChild(routes),
-    MatExpansionModule
+    MatExpansionModule,
+    NgSelectModule
   ],
   declarations: [
     MileageComponent,

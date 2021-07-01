@@ -115,8 +115,7 @@
                               <div class="col-lg-12">
                                  <label
                                     class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                    >Description&nbsp; <span
-                                    class="text-1 optional-label-color">(optional)</span></label>
+                                    >Description</label>
                                  <textarea class="form-control h-auto" placeholder="Enter Description" [(ngModel)]="geofenceData.description"
                                  name="description" rows="3" #desName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                                  <div *ngIf="desName.invalid && (desName.dirty || desName.touched)" class="text-danger">
@@ -202,8 +201,7 @@
                </div>
                <div class="form-row mt-2">
                   <div class="form-group col-md-12">
-                     <label class="font-weight-bold control-label">Description&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                     <label class="font-weight-bold control-label">Description</label>
                      <textarea [(ngModel)]="geofenceTypeData.description"
                      name="description" class="form-control heighta" row="3" placeholder="Enter description of the geofence type" #descName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
                      <div *ngIf="descName.invalid && (descName.dirty || descName.touched)" class="text-danger">
