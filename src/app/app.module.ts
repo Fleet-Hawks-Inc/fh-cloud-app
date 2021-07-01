@@ -45,6 +45,8 @@ import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.compo
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
 
 import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
+import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
+
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -64,6 +66,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ErrorComponent,
     UnsavedChangesComponent,
     AddAccountComponent,
+    ForgotPasswordComponent,
 
   ],
   imports: [

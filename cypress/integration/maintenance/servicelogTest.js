@@ -1,12 +1,12 @@
 describe(" Maintenance tests", () => {
-  /* === Test Created with Cypress Studio === */
-  it('Add Service Log ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+
+  it('should allow users to add service log with all required fields', function () {
+    
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(8) > .nav-link > .fas').click();
     cy.get('.col-md-4 > .btn').click();
@@ -15,91 +15,112 @@ describe(" Maintenance tests", () => {
     cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').clear();
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').type('1000');
-    cy.get(':nth-child(4) > .col-lg-10 > .form-control').click();
-    cy.get('[aria-label="Friday, April 30, 2021"] > .btn-light').click();
+    cy.get(':nth-child(4) > .col-lg-10 > .form-control').first().click();
+    cy.get('div:nth-of-type(2) > div:nth-of-type(3) > .btn-light').last().click();
     cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
-    cy.get('tbody > .ng-star-inserted > :nth-child(1) > .ng-untouched').check();
-    cy.get(':nth-child(3) > .col-lg-5.pl-0 > .row > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(3) > .col-lg-5.pl-0 > .row > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('t{enter}');
-    cy.get('tbody > .ng-star-inserted > :nth-child(2) > .form-control').clear();
-    cy.get('tbody > .ng-star-inserted > :nth-child(2) > .form-control').type('2');
-    cy.get(':nth-child(4) > .pl-0 > .row > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container').click();
-    cy.get('.col-10 > #nextBtn').click();
+    
+    cy.get('[class="col-11 pr-0"] #nextBtn').click();
 
-    /* ==== End Cypress Studio ==== */
+    
   });
-  /* === Test Created with Cypress Studio === */
-  it('search and reset service log', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+  it('should not allow users to add service log with all optional fields', function () {
+    
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(8) > .nav-link > .fas').click();
-    cy.get('.pl-0 > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.wait(1000);
-    cy.get('.pl-0 > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
-    cy.get('.form-horizontal > .row > :nth-child(3) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get('.form-horizontal > .row > :nth-child(3) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').type('tyre{enter}');
-    cy.get(':nth-child(4) > .mr-2').click();
-    cy.get(':nth-child(4) > [type="button"]').click();
+    cy.get('.col-md-4 > .btn').click();
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
+    cy.get('.m-2 > form[method="get"] textarea[name="description"]').type('Service log is working');
+    cy.get('input[name="selected0"]').click();
+    cy.get('[bindlabel="taskName"] input').first().click();
+    cy.get('div:nth-of-type(1) > .ng-option-label').last().click();
+    const imagefile4 = "download.jpg";
+    cy.get('input[name="uploadedPhotos"]').attachFile(imagefile4);
+    const file4 = "load1.pdf";
+    cy.get('input[name="uploadedDocuments"]').attachFile(file4);
+   
+    
+  });
+  it('should list the maintenance which was added and then verify the added maintenance are listed by name/other properties.', function () {
+    
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(8) > .nav-link > .fas').click();
+    cy.get('[name="vehicleID"] input').clear();
+  
+    cy.get('[name="vehicleID"] input').type('tes{enter}');
+    cy.get('[name="taskID"] input').clear();
+    cy.get('[name="taskID"] input').type('testing{enter}');
+    cy.get('.page-header [type="submit"]').click();
+    cy.wait(3000);
+    cy.get('.page-header [type="button"]').click();
 
-    /* ==== End Cypress Studio ==== */
+    
   });
 
-  /* === Test Created with Cypress Studio === */
-it('edit, update and delete service log', function() {
-  /* ==== Generated with Cypress Studio ==== */
-  cy.visit('http://localhost:4200/');
+  
+it('should allow users to delete service log.', function() {
+  
+  cy.visit('/#/Login');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+  cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
   cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+  cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
   cy.get('#btnsubmit').click();
   cy.get(':nth-child(8) > .nav-link > .fas').click();
-  cy.get('#dropdownMenuButton-0 > .fas').click();
-  cy.get(':nth-child(1) > :nth-child(6) > .dropdown > .dropdown-menu > [ng-reflect-router-link="/fleet/maintenance/service-log"]').click();
-  cy.get('.col-lg-10 > .row > .col-lg-12 > .btn').click();
-  cy.get(':nth-child(2) > .col-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get(':nth-child(2) > .col-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('{enter}');
-  cy.get('.pt-4 > .col-lg-12 > .form-control').clear();
-  cy.get('.pt-4 > .col-lg-12 > .form-control').type('3000');
-  cy.get('#issueName').clear();
-  cy.get('#issueName').type('brake issue');
-  cy.get(':nth-child(4) > .col-12 > .form-control').click();
-  cy.get('[aria-label="Friday, April 30, 2021"] > .btn-light').click();
-  cy.get('.mt-4 > .col-lg-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.mt-4 > .col-lg-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('el{enter}');
-  cy.get('.mt-3 > .row.pt-2 > .col-lg-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-  cy.get('.mt-3 > .row.pt-2 > .col-lg-12 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ele{enter}');
-  cy.get('#issueForm > .form-group > .col-lg-12 > .btn-success').click();
-  cy.get('.col-lg-5.pl-0 > .row > .col-lg-2 > .btn > .fas').click();
-  cy.get('#form1_ > :nth-child(1) > .form-group > .form-control').clear();
-  cy.get('#form1_ > :nth-child(1) > .form-group > .form-control').type('windows glasses');
-  cy.get('#addServiceTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
-  cy.get('.col-10 > .btn-success').click();
-  cy.get('#dropdownMenuButton-0 > .fas').click();
+   cy.get('#dropdownMenuButton-0 > .fas').click();
   cy.get('.row-border > tbody > :nth-child(1) > :nth-child(6) > .dropdown > .dropdown-menu > [href="javascript:;"]').click();
   cy.wait(1000);
-  /* ==== End Cypress Studio ==== */
+  
 });
-/* === Test Created with Cypress Studio === */
-it('validation error message test', function() {
-  /* ==== Generated with Cypress Studio ==== */
-  cy.visit('http://localhost:4200/');
+
+it('should give validation error messages when the required field is not provided.', function() {
+  
+  cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+  cy.get(':nth-child(8) > .nav-link > .fas').click();
+  cy.get('.col-md-4 > .btn').click();
+  
+  cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').type('1000');
+  cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').clear();
+  cy.get('.m-2 > form[method="get"] .text-danger > div').contains('Odometer is required.');
+});
+it('check button is enabled or not.', function () {
+    
+  cy.visit('/#/Login');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+  cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
   cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+  cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
   cy.get('#btnsubmit').click();
   cy.get(':nth-child(8) > .nav-link > .fas').click();
   cy.get('.col-md-4 > .btn').click();
-  cy.get('.col-10 > #nextBtn').click();
-  /* ==== End Cypress Studio ==== */
+  cy.wait(2000);
+  cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+  cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
+  cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').clear();
+  cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').type('1000');
+  cy.get(':nth-child(4) > .col-lg-10 > .form-control').first().click();
+  cy.get('div:nth-of-type(2) > div:nth-of-type(3) > .btn-light').last().click();
+  cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
+  cy.get('.ng-option-label').click();
+  
+  
+  
 });
-
 
 });

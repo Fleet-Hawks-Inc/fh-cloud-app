@@ -20,11 +20,13 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AllCarriersComponent } from './shared/all-carriers/all-carriers.component';
 import { CheckUserService } from './services/check-user.service';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
   { path: 'onboard', component: AddAccountComponent },
+  { path: 'forgotPassword', component: ForgotPasswordComponent },
   {
     path: 'Dashboard',
     component: DashboardComponent,
