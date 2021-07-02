@@ -65,44 +65,8 @@ export class EventListComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
-    this.initDataTable();
   }
 
-  
-  initDataTable() {
-  }
-
-  deleteEvent(eventID) {
-    let current = this;
-    this.spinner.show();
-    this.apiService.getData('safety/eventLogs/delete/' + eventID + '/1').subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        // current.initDataTable();
-        current.spinner.hide();
-        current.toastr.success('Event deleted successfully');
-      }
-    })
-  }
-
-  changeCoachingStatus(event, eventID) {
-    let current = this;
-    current.spinner.show();
-    let updateData = {
-      eventID: eventID,
-      coachingStatus: event.target.value
-    }
-
-    this.apiService.putData('safety/eventLogs/update-status', updateData).subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        current.spinner.hide();
-        current.toastr.success('Event updated successfully');
-      }
-    })
-  }
 
   fetchVehicles() {
     this.apiService.getData('vehicles')
