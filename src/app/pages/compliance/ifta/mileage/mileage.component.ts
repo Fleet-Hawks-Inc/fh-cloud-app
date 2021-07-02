@@ -25,7 +25,7 @@ export class MileageComponent implements OnInit {
   public recordCount=10;
   public pageLength=10;
   public dataMessage:any;
-  public isRecords:any;
+  public isRecords=false;
   public recordStartPoint=1;
   public recordEndPoint=this.pageLength;
   public recordDraw=0;
@@ -33,12 +33,10 @@ export class MileageComponent implements OnInit {
   public recordNext=false;
   public recordPrevEvauatedKeys=[''];
   public lastEvaluatedKey='';
-  public totalRecords;
   public recordPrev=true;
   public quarter:any;
   public quarterReport:any={};
   public jurisdictionReport:any;
-  public active='all'
   public recs=false;
   public canadianStates={};
   public usStates={}
@@ -55,7 +53,6 @@ export class MileageComponent implements OnInit {
     this.fetchVehicles();
     this.fetchWexFuelCode();
     this.fetchQuarterRreport();
-    //this.fetchAllRecordsCount();
     this.getCanadaStates();
     this.getUSStates();
   }
@@ -177,20 +174,6 @@ this.fuelList=["Diesel","Gasoline","Propane"]
 
   }
 
-  // fetchAllRecordsCount(){
-  //   this.totalRecords=0
-  //   this.apiService.getData('ifta/get/count?quarter='+this.quarter).subscribe({
-  //     complete:()=>{},
-  //     error:()=>{},
-  //     next:(result:any)=>{
-  //       this.totalRecords=result.Count;
-        
-  //       this.initDataTable();
-  //     }
-
-  //   })
-
-  // }
   fetchCountries() {
   this.countries=CountryStateCity.GetAllCountries();
   }
@@ -207,18 +190,7 @@ this.fuelList=["Diesel","Gasoline","Propane"]
       this.usStates[element.stateCode]=element.stateName
     })
   }
-  addIftaAccount() {
-    // const data = {
-    //   baseState : this.baseState,
-    //   baseCountry: this.baseCountry,
-    //   accountNumber:  this.accountNumber,
-    //   signingAuthority: {
-    //     name: '',
-    //     phone: '',
-    //     title: '',
-    //   }
-    // };
-  }
+
 
   getStartandEndVal(){
  
@@ -270,7 +242,7 @@ this.fuelList=["Diesel","Gasoline","Propane"]
   }
   
 
-  fetchRecords(result,type=null){
+  fetchRecords(result){
     this.records=result.Items
 
   }
