@@ -48,6 +48,10 @@ export class AddAccountComponent implements OnInit {
     trucks: 0,
   };
   reCaptcha:any
+  size="Normal"
+  lang="en"
+  theme="light"
+
   addressDetails = [{
     addressType: 'yard',
     countryName: '',

@@ -66,7 +66,7 @@
     "ng-pick-datetime-moment": "^1.0.8",
     "ng2-charts": "2.4.2",
     "ngx-bootstrap": "^5.6.2",
-    "ngx-captcha": "^9.0.1",
+    "ngx-captcha": "^8.0.1",
     "ngx-fs": "0.0.1",
     "ngx-material-timepicker": "^4.0.2",
     "ngx-mqtt": "^6.14.0",

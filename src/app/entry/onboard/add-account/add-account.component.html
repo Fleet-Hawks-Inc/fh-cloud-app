@@ -717,8 +717,8 @@
                             </div>
                           </div> -->
                         <div class="mt-2 d-flex flex-row-reverse">
-                          <ngx-recaptcha2 #captchaElem="ngModel" [siteKey]="siteKey" [size]="Normal" [hl]="en"
-                            [theme]="light" [(ngModel)]="reCaptcha" name="reCaptcha" required>
+                          <ngx-recaptcha2 #captchaElem="ngModel" [siteKey]="siteKey" [size]="size" [hl]="lang"
+                            [theme]="theme" [(ngModel)]="reCaptcha" name="reCaptcha" required>
                           </ngx-recaptcha2>
                         </div>
                         <div *ngIf="captchaElem.invalid && (captchaElem.dirty || captchaElem.touched)"
