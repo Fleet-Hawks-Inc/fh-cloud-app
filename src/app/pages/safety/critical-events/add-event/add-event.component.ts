@@ -34,7 +34,7 @@ export class AddEventComponent implements OnInit {
         status: 'Open',
     };
     uploadedPhotos = [];
-    uploadedVideos = [];
+   
     carrierID = '';
     selectedFiles: FileList;
     selectedFileNames: Map<any, any>;
@@ -119,14 +119,12 @@ export class AddEventComponent implements OnInit {
         this.apiService.getData('vehicles')
         .subscribe((result: any) => {
             this.vehicles = result.Items;
-            console.log('this.vehicles', this.vehicles);
         })
     }
 
     fetchDrivers() {
         this.apiService.getData('drivers')
         .subscribe((result: any) => {
-            console.log('drivers', result);
             // result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
@@ -167,7 +165,6 @@ export class AddEventComponent implements OnInit {
         // this.event.date = (timestamp * 1000).toString();
         // this.event.documentID = this.uploadedDocs;
         // this.event.incidentVideodocumentID = this.uploadedVideos;
-        console.log('critical', this.event)
         
         // create form data instance
         const formData = new FormData();
@@ -277,7 +274,7 @@ export class AddEventComponent implements OnInit {
                 this.uploadedVideos.push(files[i])
             }
         }
-        console.log('this.uploadedVideos', this.uploadedVideos);
-        console.log('this.uploadedPhotos', this.uploadedPhotos);
+   
     }
+
 }

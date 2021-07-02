@@ -160,8 +160,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-lg-12">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
                     <textarea class="form-control heighta" rows="4" name="description" [(ngModel)]="description"
                       placeholder="Enter description of the inventory part" #desName2="ngModel"
                       pattern="^[\s\S]{1,500}$"></textarea>
@@ -223,21 +222,18 @@
                   <div class="row">
                     <div class="col-lg-4">
                       <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                        class="control-label font-weight-bold text-lg-right pt-2">Aisle</label>
                     </div>
                     <div class="col-lg-4">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Row&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span>
+                        >Row
                         </label>
                     </div>
                     <div class="col-lg-4">
                       <label
                         class="control-label font-weight-bold text-lg-right pt-2"
-                        >Bin&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                        >Bin</label>
 
                     </div>
                   </div>
@@ -337,8 +333,7 @@
                   <div class="col-lg-10">
                     <div class="row">
                       <div class="col">
-                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Warranty Time&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Warranty Time</label>
                       </div>
                     </div>
                     <div class="row">
@@ -357,8 +352,7 @@
 
                     <div class="row mt-2">
                       <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notes&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Notes</label>
                         <textarea class="form-control heighta" rows="3" name="notes" [(ngModel)]="notes"
                           placeholder="Enter notes about warranty of inventory part" #notes1="ngModel"
                           pattern="^[\s\S]{1,500}$"></textarea>
@@ -376,8 +370,7 @@
               <div class="col-lg-5 offset-lg-1">
                 <div class="row">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo <span
-                        class="text-1 optional-label-color">(optional)</span> </label>
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo</label>
                     <input (change)="selectDocuments($event, 'uploadedPhotos')" type="file" class="form-control p-0"
                       multiple />
                   </div>
@@ -402,8 +395,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Document <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Document</label>
                     <input (change)="selectDocuments($event, 'uploadedDocs')" type="file" class="form-control p-0"
                       multiple />
                   </div>
@@ -444,19 +436,19 @@
                         </button>
 
                         <!-- if there is some error in validation  -->
-                        <button *ngIf="!itemID && !inventoryF.form.valid" (click)="addInventory()"
-                          class="btn btn-success" [disabled]="!inventoryF.form.valid">Save</button>
+                        <!-- <button *ngIf="!itemID && !inventoryF.form.valid" (click)="addInventory()"
+                          class="btn btn-success" [disabled]="!inventoryF.form.valid">Save 1</button> -->
 
                         <!-- if validations are ok and now the button will disable on submit click  -->
-                        <button *ngIf="!itemID && inventoryF.form.valid" (click)="addInventory()"
-                          class="btn btn-success" [disabled]="submitDisabled">Save</button>
+                        <button *ngIf="!itemID" (click)="addInventory()"
+                          class="btn btn-success" [disabled]="disableButton()">Save</button>
 
                         <!--- update case -->
-                        <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
-                          [disabled]="!inventoryF.form.valid" class="btn btn-success">Update</button>
+                        <!-- <button *ngIf="itemID  && !inventoryF.form.valid" (click)="updateInventory()"
+                          [disabled]="!inventoryF.form.valid" class="btn btn-success">Update 1</button> -->
 
-                        <button *ngIf="itemID  && inventoryF.form.valid" (click)="updateInventory()"
-                          [disabled]="submitDisabled" class="btn btn-success">Update</button>
+                        <button *ngIf="itemID" (click)="updateInventory()"
+                          [disabled]="disableButton()" class="btn btn-success">Update</button>
                       </div>
                     </div>
                   </div>

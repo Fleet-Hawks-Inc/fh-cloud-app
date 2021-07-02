@@ -1,91 +1,122 @@
-describe(" reminders tests", () => {
+describe("Vehicle Reminders tests", () => {
+  it('should allow users to add Vehicle reminders with all required fields', function () {
 
-
-  /* === Test Created with Cypress Studio === */
-  it('Add vehicle renewal reminder', function () {
-
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-    cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
+    cy.get(':nth-child(6) > .nav-link > .fas').first().click();
 
-    cy.get(':nth-child(6) > .nav-link > .fas').first().click({ force: true });
-
-    cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click({ force: true });
+    cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
     cy.get('.col-md-4 > .btn').click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.wait(1000);
+  
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
 
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.wait(1000);
-    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('pi{enter}');
-    cy.get(':nth-child(3) > :nth-child(2) > :nth-child(1) > .form-control').click();
-    cy.get('[aria-label="Select month"]').select('5');
-    cy.get('[tabindex="0"] > .btn-light').click();
-    //cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-clear-wrapper').click();
+       cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Testing Renewal');
+    cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
+    cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
+   
+      cy.get('input[name="dueDate"]').first().click();
+    cy.get('div:nth-of-type(2) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();
     cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
-    cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click({ force: true });
-    cy.get('.col-10 > .btn-success').click();
+    cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click();
+    cy.get('.col-11 > .btn-success').first().click();
+    cy.wait(4000);
 
   });
 
-  it('search and reset the reminder', function () {
+  it('should list the vehicle reminders which were added and then verify the added reminders are listed by name/other properties.', function () {
 
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
-    cy.wait(3000);
-    cy.get('.ng-star-inserted > .nav > :nth-child(6) > .nav-link').first().click({ force: true });
-    cy.wait(3000);
-    cy.get('.bg-white.card  ul > li:nth-of-type(2) > .nav-link').click({ force: true }).should('not.exist');
+    cy.get(':nth-child(6) > .nav-link > .fas').first().click();
+
+    cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
+    
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ALL{enter}');
-    cy.get(':nth-child(4) > .mr-2').click();
-    cy.get('.row > :nth-child(4) > [type="button"]').click();
+    cy.get('.btn.btn-sm.btn-success.mr-3').click();
+    cy.get('.page-header [type="button"]').click();
 
   });
-  /* === Test Created with Cypress Studio === */
-  it('delete the reminder', function () {
+  
+  it('should allow users to delete vehicle reminders.', function () {
 
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(6) > .nav-link > .fas').click();
     cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
     cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').click();
     cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
-    //cy.get(':nth-child(2) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
-  /* === Test Created with Cypress Studio === */
-it.only('validation error message', function() {
+ 
 
-  cy.visit('http://localhost:4200/');
-  cy.get(':nth-child(1) > .input-group > .form-control').clear();
-  cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
-  cy.get(':nth-child(2) > .input-group > .form-control').clear();
-  cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
-  cy.get('#btnsubmit').click();
-  cy.get(':nth-child(6) > .nav-link > .fas').click();
-  cy.wait(2000);
-  cy.get('.col-md-4 > .btn').click();
-  cy.get('.col-10 > .btn-success').click()
+it('should give validation error messages when the required field is not provided.', function() {
 
+  cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(6) > .nav-link > .fas').first().click();
+
+    cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
+    cy.get('.col-md-4 > .btn').click();
+     
+  
+        
+           cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
+           cy.get('input[name="subscribers"]').clear();
+           cy.get('.text-danger .ng-star-inserted').contains('Email is required');
+           cy.get('input[name="time"]').clear();
+           cy.get('input[name="time"]').type('2')
+           cy.get('input[name="time"]').clear();
+           cy.get('[class] [class="col-lg-4"] .ng-star-inserted .ng-star-inserted').contains('Time is required.');
   
 });
 
+it('check button is enabled or not.', function () {
 
+  cy.visit('/#/Login');
+  cy.get(':nth-child(1) > .input-group > .form-control').clear();
+  cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+  cy.get(':nth-child(2) > .input-group > .form-control').clear();
+  cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+  cy.get('#btnsubmit').click();
+  cy.get(':nth-child(6) > .nav-link > .fas').first().click();
+
+  cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
+  cy.get('.col-md-4 > .btn').click();
+  cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+
+  cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+
+  cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Testing Renewal');
+  cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
+  cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
+ 
+    cy.get('input[name="dueDate"]').first().click();
+  cy.get('div:nth-of-type(2) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();
+  cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
+  cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click();
+});
 });

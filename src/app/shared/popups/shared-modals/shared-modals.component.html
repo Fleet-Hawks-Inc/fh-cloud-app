@@ -475,7 +475,7 @@
                             <div class="col-lg-12">
 
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                Service Tasks  <span
+                                Service Task  <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select placeholder="Select Service Task" [(ngModel)]="task.serviceTask"
                                 [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'"
@@ -525,9 +525,9 @@
                                         [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
                                         class="form-control populate" #sPeriod="ngModel" required>
 
-                                        <ng-option value="Days">Days</ng-option>
-                                        <ng-option value="Weeks">Weeks</ng-option>
-                                        <ng-option value="Months">Months</ng-option>
+                                        <ng-option value="Day(s)">Day(s)</ng-option>
+                                        <ng-option value="Week(s)">Week(s)</ng-option>
+                                        <ng-option value="Month(s)">Month(s)</ng-option>
 
                                       </ng-select>
                                       <div *ngIf="sPeriod.invalid && (sPeriod.dirty || sPeriod.touched)" class="text-danger">
@@ -1387,7 +1387,7 @@
                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported Date<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
-                  <input class="form-control" placeholder="dd-mm-yyyy" [(ngModel)]="issuesData.reportedDate"
+                  <input class="form-control" placeholder="yyyy/mm/dd" [(ngModel)]="issuesData.reportedDate"
                     name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                     <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                       <div *ngIf="mDate.errors.required">

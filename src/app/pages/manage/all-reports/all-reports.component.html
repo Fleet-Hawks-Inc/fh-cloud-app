@@ -1,10 +1,10 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body">
-            <header class="page-header pr-5">
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+            <div class="row" style="padding-top:10px;">
                 
-                <div class="col-md-2 col-lg-2">
+                <div class="col-md-1 col-lg-1">
                     <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Reports</h4>
                 </div>
                 
@@ -13,9 +13,11 @@
                         <input type="text" class="form-control" placeholder="Search Reports">
                     </div>
                 </div>
-                <div class="col-lg-1 col-md-1 pr-1 text-right">
-                    <button class="btn btn-sm btn-success">Search</button>
-                </div>
+
+                <div class="col-md-2 col-lg-2">
+                    <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+                    <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                 </div>
                 
                 <div class="col-md-7 col-lg-7 pr-1 text-right">
                     <a href="run-report.php" class="btn btn-sm btn-success mr-3">Run Report</a>
@@ -175,37 +177,44 @@
                                 <ul class="simple-post-list">
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/hossummary/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> HOS Summary</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/logs/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Logs</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/umiles/summary">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Unidentified Miles</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/ulreports/overview">
+                                        <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Uncertified Logs</span>
+                                        <span class="w-100 pull-left text-1">Summary, Form & Manner Error</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/isreports/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Inspection Summary</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail, Logs without Inspection Form, Inspection Form</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/compliance/iftareports/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> IFTA Reports</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -224,37 +233,37 @@
                                 <ul class="simple-post-list">
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/safety/safetyoverview/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Safety Overview</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/safety/criticalevents/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Critical Events</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/safety/incidents/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Incidents</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/safety/hosviolations/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> HOS Violations</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
                                     <li>
-                                        <a class="w-100 pb-2 line-height-lg pull-left" href="#">
+                                        <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/manage/safety/scorecard/overview">
                                         <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Driver Scorecard</span>
-                                        <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
+                                        <span class="w-100 pull-left text-1">Summary, Detail</span>
                                         </a>
                                     </li>
                                     
