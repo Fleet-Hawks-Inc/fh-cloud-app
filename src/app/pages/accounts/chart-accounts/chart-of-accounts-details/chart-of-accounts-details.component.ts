@@ -8,18 +8,19 @@ import { AccountService } from '../../../../services';
   styleUrls: ['./chart-of-accounts-details.component.css']
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
+
   actID = '';
-  account =  {
+  account = {
     actName: '',
-  actType: '',
-  actNo: 0,
-  actDesc: '',
-  opnBal: 0,
-  opnBalCurrency: '',
-  actDash: false,
-  actDate: '',
-  closingAmt: 0,
-  transactionLog: [],
+    actType: '',
+    actNo: 0,
+    actDesc: '',
+    opnBal: 0,
+    opnBalCurrency: '',
+    actDash: false,
+    actDate: '',
+    closingAmt: 0,
+    transactionLog: [],
   };
   constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
@@ -32,6 +33,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
 fetchAccount() {
   this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
     this.account = res;
+
     });
-}
+  }
 }

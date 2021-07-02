@@ -1063,13 +1063,13 @@
 
 
                                             </div>
-                                            <div class="col-lg-12 pt-2">
+                                            <!-- <div class="col-lg-12 pt-2">
                                                 <div class="checkbox-custom">
                                                     <input [(ngModel)]="vendorData.preferedVendor"
                                                     name="preferedVendor"  type="checkbox" name="terms">
                                                     <label for="w1-terms">Prefered Vendor?</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -5093,10 +5093,10 @@
                                         <td *ngIf="userDetailData.fastExpiry">{{ userDetailData.fastExpiry | date:'yyyy/MM/dd'}}</td>
                                         <td *ngIf="!userDetailData.fastExpiry">-</td>
                                     </tr>
-                                    <tr *ngIf="userDetailData.preferedVendor != undefined && detailTab == 'Vendor'">
+                                    <!-- <tr *ngIf="userDetailData.preferedVendor != undefined && detailTab == 'Vendor'">
                                         <th width="40%" class="back-color-gray">Preferred Vendor:</th>
                                         <td>{{ (userDetailData.preferedVendor) ? 'Yes' : 'No' }}</td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import * as moment from "moment";
+import { SafetyService } from 'src/app/services/safety.service';
 
 @Component({
   selector: 'app-event-list',
@@ -49,11 +50,14 @@ export class EventListComponent implements OnInit {
     driverName: '',
     vehicleID:null
   };
+  
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
+
+  status_values: any = ["open", "investigating", "coaching", "closed"];
   
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
@@ -61,65 +65,8 @@ export class EventListComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
-    this.initDataTable();
   }
 
-  getEventDetail(arrValues) {
-    this.events = [];
-    for (let i = 0; i < arrValues.length; i++) {
-      const element = arrValues[i];
-
-      element.driverName = '';
-      element.vehicleName = '';
-      if(element.criticalityType == 'harshBrake') {
-        element.criticalityType = 'Harsh Brake';
-      } else if(element.criticalityType == 'harshAcceleration') {
-        element.criticalityType = 'Harsh Acceleration';
-      } else if(element.criticalityType == 'overSpeeding') {
-        element.criticalityType = 'Over Speeding';
-      } else if(element.criticalityType == 'overSpeedingStart') {
-        element.criticalityType = 'Over Speeding Start';
-      } else if(element.criticalityType == 'overSpeedingEnd') {
-        element.criticalityType = 'Over Speeding End';
-      }
-      this.events.push(element);
-    }
-  }
-
-  initDataTable() {
-  }
-
-  deleteEvent(eventID) {
-    let current = this;
-    this.spinner.show();
-    this.apiService.getData('safety/eventLogs/delete/' + eventID + '/1').subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        // current.initDataTable();
-        current.spinner.hide();
-        current.toastr.success('Event deleted successfully');
-      }
-    })
-  }
-
-  changeCoachingStatus(event, eventID) {
-    let current = this;
-    current.spinner.show();
-    let updateData = {
-      eventID: eventID,
-      coachingStatus: event.target.value
-    }
-
-    this.apiService.putData('safety/eventLogs/update-status', updateData).subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        current.spinner.hide();
-        current.toastr.success('Event updated successfully');
-      }
-    })
-  }
 
   fetchVehicles() {
     this.apiService.getData('vehicles')
@@ -153,9 +100,9 @@ export class EventListComponent implements OnInit {
   }
 
   fetchevents() {
-    this.apiService.getData('safety/eventLogs/fetch?event=critical')
+    this.safetyService.getData('critical-events')
       .subscribe((result: any) => {
-        this.totalRecords = result.Count;
+        this.events = result;
       })
   }
 
@@ -179,6 +126,30 @@ export class EventListComponent implements OnInit {
         }
       })
     }    
+  }
+
+  changeStatus(eventID: any, newValue: string, i: string) {
+    
+    let data = {
+      eventID: eventID,
+      status: newValue
+    }
+    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
+      
+      if(res == false) {
+        let result = await this.getOldStatus(eventID)
+        this.events[i].status = result[0].status;
+        this.toastr.error('Please select valid status');
+      } else {
+        this.toastr.success('Status updated successfully');
+      }
+    });
+
+  }
+
+  async getOldStatus(eventID: string) {
+    return await this.safetyService.getData('critical-events/' + eventID).toPromise();
+    
   }
 
   searchSelectedDriver(data) {
@@ -218,6 +189,7 @@ export class EventListComponent implements OnInit {
     this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
+        
       });
   }
 }

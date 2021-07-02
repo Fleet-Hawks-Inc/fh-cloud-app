@@ -232,8 +232,7 @@
                                  </div>
 
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver <span
-                                          class="text-1 optional-label-color">(optional)</span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver
                                     </label>
                                     <ng-select class="form-control populate" id="main_driver" name="driverID"
                                        [(ngModel)]="driverID" placeholder="Select driver to assign to vehicle"
@@ -255,6 +254,7 @@
                                        title="Refresh driver data" class="btn cus-btn-padd btn-success"><i
                                           class="fas fa-sync"></i></a>
                                  </div>
+
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team <span
                                           class="text-1 optional-label-color">(If any)</span>
@@ -314,9 +314,9 @@
                                        </div>
                                     </div>
                                  </div> -->
+
                                     <div class="mt-3">
-                                       <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo &nbsp;
-                                          <span class="text-1 optional-label-color">(optional)</span>
+                                       <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
                                           <input (change)="selectDocuments($event, 'uploadedPhotos')"
                                              class="hidden_input1 w-100" name="uploadedPhotos" type="file" multiple>
                                        </div>
@@ -342,7 +342,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Service Program
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <ng-select class="form-control populate" name="servicePrograms" [multiple]="true"
                                        [(ngModel)]="servicePrograms" placeholder="Select service program for vehicle"
                                        multiple>
@@ -419,8 +419,7 @@
                                     </div>
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Group <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Group</label>
                                     <ng-select [(ngModel)]="groupID" name="groupID" style="width: 100%;"
                                        placeholder="Select group for the vehicle">
                                        <optgroup label="Select Group">
@@ -439,8 +438,7 @@
                            <div class="col-lg-5 mb-1 offset-lg-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Ownership <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
                                     <ng-select class="form-control populate" name="ownership" [(ngModel)]="ownership"
                                        placeholder="Select vehicle ownership">
                                        <ng-option value="owned">Owned</ng-option>
@@ -491,8 +489,7 @@
                                     </div>
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right">Vehicle Color <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right">Vehicle Color</label>
                                     <input type="text" class="form-control" name="vehicleColor"
                                        [(ngModel)]="vehicleColor" placeholder="eg. Red">
                                     <!-- <div *ngIf="vColor.invalid && (vColor.dirty || vColor.touched)" class="text-danger w100">
@@ -504,8 +501,7 @@
                                  </div>
 
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right">Add Document <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right">Add Document</label>
                                     <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs"
                                        type="file" multiple class="form-control border-0 p-0">
                                  </div>
@@ -648,7 +644,7 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in
                                        Years
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Estimated service life in years - Number of years vehicle is expected to be in fleet service."></i>
                                     </label>
@@ -659,7 +655,7 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in
                                        Months
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Estimated service life in months - Number of months vehicle is expected to be in fleet service."></i>
                                     </label>
@@ -673,7 +669,7 @@
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in
                                        Miles
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."></i>
                                     </label>
@@ -684,7 +680,7 @@
 
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Depreciation Value
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Amount expected to be recuperated after retirement and sale/disposal"></i>
                                     </label>
@@ -712,7 +708,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Date
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Date vehicle was retired from fleet service"></i>
                                     </label>
@@ -726,7 +722,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service
-                                       Odometer in Miles <span class="text-1 optional-label-color">(optional) </span>
+                                       Odometer in Miles
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Final odometer reading on out-of-service date"></i>
                                     </label>
@@ -751,7 +747,7 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height <span class="text-1 optional-label-color"> (optional) </span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" placeholder="eg. 4.15 meters"
@@ -789,7 +785,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" placeholder="eg. 5,10" class="form-control" min="0"
@@ -824,8 +820,7 @@
                            <div class="col-lg-5 pb-3 mb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Tare Weight <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Tare Weight
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Weight of vehicle with std options including single driver and fuel"></i>
                                     </label>
@@ -850,8 +845,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle
-                                       Weight
-                                       Rating <span class="text-1 optional-label-color">(optional) </span>
+                                       Weight Rating
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Combination of weight of vehicle and towing capacity."></i>
                                     </label>
@@ -892,15 +886,14 @@
                            <div class="col-lg-5">
                               <div class="row">
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
                                     <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfIssue"
                                        [(ngModel)]="insurance.dateOfIssue" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="insurance.premiumAmount"
@@ -922,8 +915,7 @@
                            <div class="col-lg-5 offset-lg-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Vendor <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
                                     <ng-select placeholder="Select Vendor" name="insurance.vendorID"
                                        [(ngModel)]="insurance.vendorID">
                                        <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
@@ -945,14 +937,14 @@
                               <div class="row">
                                  <div class="col-lg-5 pb-3 mb-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="insurance.dateOfExpiry"
                                        [(ngModel)]="insurance.dateOfExpiry" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5 pb-3 mb-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Every
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" placeholder="eg. 1,2,3"
@@ -976,13 +968,13 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Policy#
-                                       &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                       </label>
                                     <input type="text" class="form-control" name="insurance.policyNumber"
                                        [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
-                                       Amount <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       Amount</label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="insurance.amount" min="0"
@@ -1015,7 +1007,7 @@
                            <div class="col-lg-5 mb-2 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type <span class="text-1 optional-label-color"> (optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type
                                     </label>
                                     <ng-select class="form-control populate" placeholder="Select Fuel Type"
                                        name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" >
@@ -1037,7 +1029,6 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                                        Capacity
-                                       <span class="text-1 optional-label-color"> (optional) </span>
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
@@ -1072,8 +1063,7 @@
                                  </div>
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2
-                                       Capacity
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       Capacity</label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" class="form-control" name="fluid.fuelTankTwoCapacity"
@@ -1108,7 +1098,7 @@
                            <div class="col-lg-5 mb-3 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity <span class="text-1 optional-label-color"> (optional) </span>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
@@ -1143,7 +1133,7 @@
                               <div class="row">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust
-                                       Fluid) Capacity <span class="text-1 optional-label-color"> (optional) </span>
+                                       Fluid) Capacity
                                     </label>
                                     <div class="row">
                                        <div class="col-lg-6">
@@ -1196,7 +1186,7 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Number of Tires
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Number of tires"></i>
                                     </label>
@@ -1208,8 +1198,7 @@
                            <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                               <div class="row">
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Wheels powered by engine"></i>
                                     </label>
@@ -1217,8 +1206,7 @@
                                        [(ngModel)]="wheelsAndTyres.driveType" placeholder="eg. 4x4">
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Brake System <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Brake System
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Brake Type"></i>
                                     </label>
@@ -1243,7 +1231,7 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Engine Summary
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Basic engine summary"></i>
                                     </label>
@@ -1251,8 +1239,7 @@
                                        [(ngModel)]="engine.engineSummary" placeholder="eg. 5.0L">
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Engine Brand <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Engine Brand
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Brand specific engine name"></i>
                                     </label>
@@ -1265,8 +1252,7 @@
                            <div class="col-lg-5 offset-lg-1 mb-2 pb6">
                               <div class="row">
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Number of cylinders in the engine."></i>
                                     </label>
@@ -1274,8 +1260,7 @@
                                        [(ngModel)]="engine.cylinders" placeholder="eg. 4,8 ">
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Stroke <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Stroke
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Piston distance during combustion cycle."></i>
                                     </label>
@@ -1283,8 +1268,7 @@
                                        [(ngModel)]="engine.stroke" placeholder="eg. 3.45">
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Valves <span
-                                          class="text-1 optional-label-color">(optional) </span>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Valves
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Total number of valves in the engine."></i>
                                     </label>
@@ -1311,7 +1295,7 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Transmission
                                        Summary
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Basic transmission summary."></i>
                                     </label>
@@ -1325,14 +1309,14 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Type
-                                       <span class="text-1 optional-label-color">(optional) </span> </label>
+                                       </label>
                                     <input type="text" class="form-control" name="engine.transmissionType"
                                        [(ngModel)]="engine.transmissionType"
                                        placeholder="eg. Automatic, Continuously Variable">
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Gears
-                                       <span class="text-1 optional-label-color">(optional) </span>
+                                       
                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                                           title="Number of gears available."></i>
                                     </label>
@@ -1360,7 +1344,7 @@
                               <div class="d-flex">
                                  <div class="col-lg-10 pl-0">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Vendor
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                    </label>
                                     <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID"
                                        [(ngModel)]="purchase.purchaseVendorID" placeholder="Select purchase vendor">
                                        <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
@@ -1377,7 +1361,7 @@
                               <div class="row pr-3">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Price
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <input class="form-control" name="purchase.purchasePrice" type="number" min="0"
                                        [(ngModel)]="purchase.purchasePrice" placeholder="eg. 10000 ">
                                  </div>
@@ -1393,15 +1377,14 @@
                               </div>
 
                               <div class="col-lg-10 pl-0">
-                                 <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Date <span
-                                       class="text-1 optional-label-color">(optional)</span> </label>
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Date</label>
                                  <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control"
                                     Placeholder="yyyy/mm/dd" name="purchase.purchaseDate"
                                     [(ngModel)]="purchase.purchaseDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                               </div>
                               <div class="col-lg-10 pl-0">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer in Miles
-                                    <span class="text-1 optional-label-color">(optional)</span> </label>
+                                    </label>
                                  <input type="text" class="form-control" name="purchase.purchaseOdometer"
                                     [(ngModel)]="purchase.purchaseOdometer" placeholder="eg. 4500">
                               </div>
@@ -1411,7 +1394,7 @@
                               <div class="d-flex">
                                  <div class="col-lg-7 pl-0">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration
-                                       Date <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       Date</label>
                                     <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="purchase.warrantyExpirationDate"
                                        [(ngModel)]="purchase.warrantyExpirationDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
@@ -1430,13 +1413,13 @@
                               <div class="col-lg-10 pl-0 pr-1">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration
                                     Meter
-                                    <span class="text-1 optional-label-color">(optional)</span> </label>
+                                    </label>
                                  <input type="number" class="form-control" name="purchase.warrantyExpirationMeter"
                                     min="0" [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="eg. 100 , 200">
                               </div>
                               <div class="col-lg-10 pl-0 pr-1">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Comments
-                                    <span class="text-1 optional-label-color">(optional)</span> </label>
+                                    </label>
                                  <textarea type="text" rows="3" class="form-control heighta"
                                     name="purchase.purchaseComments" [(ngModel)]="purchase.purchaseComments"
                                     placeholder="Add comments about vehicle purchase" #pComments="ngModel"
@@ -1468,8 +1451,7 @@
                            <div class="col-lg-5 mb-3 pb-1">
                               <div class="row">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor <span
-                                          class="text-1 optional-label-color">(optional)</span></label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
                                     <ng-select placeholder="Select Vendor" name="loan.loanVendorID"
                                        [(ngModel)]="loan.loanVendorID">
                                        <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
@@ -1486,7 +1468,7 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Amount of Loan
-                                       <span class="text-1 optional-label-color">(optional)</span></label>
+                                       </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" class="form-control" name="loan.amountOfLoan"
@@ -1505,15 +1487,13 @@
 
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Annual % Rate <span
-                                          class="text-1 optional-label-color">(optional)</span></label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Annual % Rate</label>
                                     <input type="number" min="0" class="form-control" name="loan.annualPercentageRate"
                                        [(ngModel)]="loan.annualPercentageRate" placeholder="eg. 2,3">
                                  </div>
 
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment <span
-                                          class="text-1 optional-label-color">(optional)</span></label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" class="form-control" name="loan.downPayment"
@@ -1532,14 +1512,12 @@
                                  </div>
 
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan <span
-                                          class="text-1 optional-label-color">(optional)</span></label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan</label>
                                     <input (click)="d8.toggle()" ngbDatepicker #d8="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date</label>
                                     <input (click)="d9.toggle()" ngbDatepicker #d9="ngbDatepicker" class="form-control"
                                        Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                  </div>
@@ -1549,14 +1527,14 @@
                               <div class="row">
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <input type="number" min="0" class="form-control" name="loan.numberOfPayments"
                                        [(ngModel)]="loan.numberOfPayments" placeholder="eg. 10,20">
                                  </div>
 
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Monthly Payment
-                                       <span class="text-1 optional-label-color">(optional)</span> </label>
+                                       </label>
                                     <div class="row">
                                        <div class="col-lg-6">
                                           <input type="number" min="0" class="form-control" name="loan.monthlyPayment"
@@ -1574,8 +1552,7 @@
                                     </div>
                                  </div>
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Notes <span
-                                          class="text-1 optional-label-color">(optional)</span> </label>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
                                     <textarea class="form-control heighta" rows="3" name="loan.notes"
                                        [(ngModel)]="loan.notes" placeholder="Enter notes about the loan of vehicle"
                                        #notes3="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
@@ -1687,8 +1664,7 @@
                   </div>
                   <div class="form-row mt-2">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold">Vehicle Group Members&nbsp;<span
-                              class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold">Vehicle Group Members</label>
                         <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
                            placeholder="Select vehicle group members" style="width: 100%;">
                            <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
@@ -1697,11 +1673,11 @@
                         </ng-select>
                      </div>
                   </div>
+
                   <div class="form-row mt-2">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
-                              class="text-1 optional-label-color">(optional)</span></label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
+                        <label class="control-label font-weight-bold text-lg-right">Description</label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control heighta" rows="4"
                            id="comment" placeholder="Enter description of the group" #aNotes226="ngModel"
                            pattern="^[\s\S]{1,500}$"></textarea>
                         <div *ngIf="aNotes226.invalid && (aNotes226.dirty || aNotes226.touched)" class="text-danger">
