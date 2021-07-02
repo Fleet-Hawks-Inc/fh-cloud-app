@@ -220,10 +220,8 @@ export class AddEventComponent implements OnInit {
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' ||
         this.event.eventType == '' || this.event.createdBy == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
         || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0) {
-            console.log('true')
             return true
         } else {
-            console.log('false')
             return false;
         }
     }
@@ -282,8 +280,7 @@ export class AddEventComponent implements OnInit {
                 this.uploadedVideos.push(files[i])
             }
         }
-        console.log('this.uploadedPhotos', this.uploadedPhotos);
-        console.log('this.uploadedVideos', this.uploadedVideos);
+       
     }
 
 }
