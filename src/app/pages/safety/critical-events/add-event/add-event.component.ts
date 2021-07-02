@@ -91,8 +91,7 @@ export class AddEventComponent implements OnInit {
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
-    uploadedVideos = [];
-    uploadedDocs = [];
+    
     currentUser: any;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
@@ -113,7 +112,6 @@ export class AddEventComponent implements OnInit {
         let result = (await Auth.currentSession()).getIdToken().payload;
         this.currentUser = `${result.firstName} ${result.lastName}`;
         this.event.createdBy = this.currentUser;
-        console.log('currentUser', this.currentUser);
     }
 
     fetchVehicles() {
@@ -134,7 +132,6 @@ export class AddEventComponent implements OnInit {
                     this.drivers.push(element);
                 }
             }
-            console.log('this.drivers', this.drivers);
         })
     }
 
@@ -169,22 +166,8 @@ export class AddEventComponent implements OnInit {
         // this.event.documentID = this.uploadedDocs;
         // this.event.incidentVideodocumentID = this.uploadedVideos;
         console.log('critical', this.event)
-        // create form data instance
-        const formData = new FormData();
-
-        // append videos if any
-        for (let i = 0; i < this.uploadedVideos.length; i++){
-            formData.append('uploadedVideos', this.uploadedVideos[i]);
-        }
-
-        // append docs if any
-        for (let j = 0; j < this.uploadedDocs.length; j++){
-            formData.append('uploadedDocs', this.uploadedDocs[j]);
-        }
-
-        // append other fields
-        formData.append('data', JSON.stringify(this.event));
-
+        
+        
         this.safetyService.postData('critical-events', this.event).subscribe({
             complete: () => {},
             error: (err: any) => {
@@ -260,21 +243,5 @@ export class AddEventComponent implements OnInit {
         $('div').removeClass('show-search__result');
     }
 
-    /*
-    * Selecting files before uploading
-    */
-    selectDocuments(event, obj) {
-        let files = [...event.target.files];
-        if (obj === 'uploadedDocs') {
-            this.uploadedDocs = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i]);
-            }
-        } else {
-            this.uploadedVideos = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i]);
-            }
-        }
-    }
+    
 }
