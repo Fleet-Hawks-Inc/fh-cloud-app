@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from '../../../../services';
 
 @Component({
   selector: 'app-chart-of-accounts-details',
@@ -9,19 +9,18 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
 
-  carrierID = '560';
   actID = '';
-  account =  {
+  account = {
     actName: '',
-  actType: '',
-  actNo: 0,
-  actDesc: '',
-  opnBal: 0,
-  opnBalCurrency: '',
-  actDash: false,
-  actDate: '',
-  closingAmt: 0,
-  transactionLog: [],
+    actType: '',
+    actNo: 0,
+    actDesc: '',
+    opnBal: 0,
+    opnBalCurrency: '',
+    actDash: false,
+    actDate: '',
+    closingAmt: 0,
+    transactionLog: [],
   };
   constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
@@ -32,10 +31,9 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     }
   }
 fetchAccount() {
-  this.accountService.getData(`chartAc/${this.carrierID}/${this.actID}`).subscribe((res) => {
-    this.account = res[0];
-    console.log('res', res);
-    console.log('this.account', this.account);
+  this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
+    this.account = res;
+
     });
-}
+  }
 }

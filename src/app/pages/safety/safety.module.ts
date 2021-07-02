@@ -15,7 +15,6 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { SafetyOverviewComponent } from './home/safety-overview/safety-overview.component';
 import { EventListComponent } from './critical-events/event-list/event-list.component';
 import { AddEventComponent } from './critical-events/add-event/add-event.component';
-import { EditEventComponent } from './critical-events/edit-event/edit-event.component';
 import { EventDetailComponent } from './critical-events/event-detail/event-detail.component';
 import { IncidentListComponent } from './incidents/incident-list/incident-list.component';
 import { AddIncidentComponent } from './incidents/add-incident/add-incident.component';
@@ -26,7 +25,7 @@ import { HosDetailComponent } from './hos-violation/hos-detail/hos-detail.compon
 import { ScorecardListComponent } from './driver-scorecard/scorecard-list/scorecard-list.component';
 import { ScorecardDetailComponent } from './driver-scorecard/scorecard-detail/scorecard-detail.component';
 
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 
 /**
@@ -85,7 +84,6 @@ import { ScorecardDetailComponent } from './driver-scorecard/scorecard-detail/sc
     SafetyOverviewComponent, 
     EventListComponent, 
     AddEventComponent, 
-    EditEventComponent, 
     EventDetailComponent, IncidentListComponent, AddIncidentComponent, EditIncidentComponent, IncidentDetailComponent, HosListComponent, HosDetailComponent, ScorecardListComponent, ScorecardDetailComponent
   ],
   imports: [
@@ -95,6 +93,7 @@ import { ScorecardDetailComponent } from './driver-scorecard/scorecard-detail/sc
     ReactiveFormsModule,
     SafetyRoutingModule, 
     NgSelectModule,
+    SlickCarouselModule,
     NgbModule,
     NgxMaterialTimepickerModule,
     FullCalendarModule,
