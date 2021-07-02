@@ -1,7 +1,6 @@
-import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
+import { AccountService, ListService } from '../../../../services';
+import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/services/account.service';
-import { ListService } from 'src/app/services/list.service';
 declare var $: any;
 @Component({
   selector: 'app-chart-of-accounts',
@@ -11,16 +10,17 @@ declare var $: any;
 export class ChartOfAccountsComponent implements OnInit {
   modalTitle = 'Add Account';
   accounts: any = [];
-  carrierID = '560';
+  carrierID = '100';
   // receivedActID = '1uLSjFBJ3QUebg8vhjAAzL572JI';
   parentMessage: '';
-  constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService,) { }
+  constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
    // this.trxFn(); // test function to call debit credit api
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     console.log('this.accounts', this.accounts);
+
   }
  // debit/credit test function
 // trxFn() {
@@ -37,6 +37,12 @@ export class ChartOfAccountsComponent implements OnInit {
 //   this.accountService.putData(`chartAc/trx/${this.carrierID}/${this.receivedActID}`, data).subscribe((res) => {
 //   });
 // }
+preAccounts() {
+  console.log('hello accounts');
+  this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
+    console.log('predefined accounts  function');
+  });
+}
 deleteAccount(actID: string) {
   this.accountService.deleteData(`chartAc/${this.carrierID}/${actID}`).subscribe((res) => {
     this.toaster.success('Account Deleted Successfully.');

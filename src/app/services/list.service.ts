@@ -222,7 +222,6 @@ fetchReceivers() {
   // fetch accounts of chart of accounts
   fetchChartAccounts() {
     this.accountService.getData('chartAc').subscribe((res: any) => {
-      console.log('res',res);
       this.accountsDataSource.next(res);
       });
   }
