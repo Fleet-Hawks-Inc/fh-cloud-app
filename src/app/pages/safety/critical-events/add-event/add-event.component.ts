@@ -4,11 +4,10 @@ import { from, Subject, throwError  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from 'aws-amplify';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
 import { Router} from '@angular/router';
 import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
-import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, catchError, map } from 'rxjs/operators';
 import { SafetyService } from 'src/app/services/safety.service';
 
 declare var $: any;
@@ -22,7 +21,7 @@ export class AddEventComponent implements OnInit {
 
     errors = {};
     event = {
-        driverUsername: null,
+        driverID: null,
         vehicleID: null,
         eventDate: '',
         eventTime: '',
@@ -31,7 +30,7 @@ export class AddEventComponent implements OnInit {
         createdBy: '',
         location: '',
         notes: '',
-        status: 'Open',
+        status: 'open',
     };
     uploadedPhotos = [];
     uploadedVideos = [];
@@ -88,6 +87,7 @@ export class AddEventComponent implements OnInit {
     users = [];
     trips = [];
 
+  
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
@@ -104,6 +104,7 @@ export class AddEventComponent implements OnInit {
         this.fetchVehicles();
         this.fetchDrivers();
         // this.fetchUsers();
+        this.disabledButton();
         this.fetchTrips();
         this.searchLocation();
         this.getCurrentuser();
@@ -123,15 +124,9 @@ export class AddEventComponent implements OnInit {
     }
 
     fetchDrivers() {
-        this.apiService.getData('drivers')
+        this.apiService.getData('drivers/safety')
         .subscribe((result: any) => {
-            // result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if(element.isDeleted === 0) {
-                    this.drivers.push(element);
-                }
-            }
+            this.drivers =  result.Items;
         })
     }
 
@@ -181,7 +176,7 @@ export class AddEventComponent implements OnInit {
 
         // append other fields
         formData.append('data', JSON.stringify(this.event));
-
+        
         this.safetyService.postData('critical-events', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
@@ -220,6 +215,19 @@ export class AddEventComponent implements OnInit {
           });
     }
 
+    disabledButton() {
+        
+        if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' ||
+        this.event.eventType == '' || this.event.createdBy == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
+        || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0) {
+            console.log('true')
+            return true
+        } else {
+            console.log('false')
+            return false;
+        }
+    }
+
     hideErrors() {
         from(Object.keys(this.errors))
           .subscribe((v) => {
@@ -234,7 +242,6 @@ export class AddEventComponent implements OnInit {
     public searchLocation() {
         this.searchTerm.pipe(
           map((e: any) => {
-            $('.map-search__results').hide();
             $(e.target).closest('div').addClass('show-search__result');
             return e.target.value;
           }),
@@ -269,12 +276,14 @@ export class AddEventComponent implements OnInit {
                 this.uploadedPhotos.push(files[i])
             }
         } else {
+            
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
                 this.uploadedVideos.push(files[i])
             }
         }
-   
+        console.log('this.uploadedPhotos', this.uploadedPhotos);
+        console.log('this.uploadedVideos', this.uploadedVideos);
     }
 
 }
