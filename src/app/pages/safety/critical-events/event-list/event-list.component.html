@@ -85,7 +85,7 @@
                                             <td>{{ data.createdBy }}</td>
                                             <td>{{ data.location }}</td>
                                             <td style="width: 180px;" >
-                                                <ng-select class="form-control" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
+                                                <ng-select [clearable]="false" class="form-control" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
                                                     <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
                                                 </ng-select>
                                             </td>

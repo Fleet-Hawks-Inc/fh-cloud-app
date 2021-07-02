@@ -7,7 +7,6 @@ import {AddInspectionComponent} from '../compliance/dvir/inspection/add-inspecti
 import { SafetyOverviewComponent } from './home/safety-overview/safety-overview.component';
 import { EventListComponent } from './critical-events/event-list/event-list.component';
 import { AddEventComponent } from './critical-events/add-event/add-event.component';
-import { EditEventComponent } from './critical-events/edit-event/edit-event.component';
 import { EventDetailComponent } from './critical-events/event-detail/event-detail.component';
 import { IncidentListComponent } from './incidents/incident-list/incident-list.component';
 import { AddIncidentComponent } from './incidents/add-incident/add-incident.component';
@@ -31,7 +30,6 @@ const routes: Routes = [
       { path: '', component: EventListComponent},
       { path: 'add-event', component: AddEventComponent},
       { path: 'event-details/:eventID', component: EventDetailComponent},
-      { path: 'edit-event/:eventID', component: EditEventComponent},
     ]
   },
   {
