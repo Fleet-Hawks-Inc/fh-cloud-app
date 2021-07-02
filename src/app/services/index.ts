@@ -7,3 +7,4 @@ export * from './http-loading.service';
 export * from './leaflet-map.service';
 export * from './event-activities.service';
 export * from './list.service';
+export * from './account.service';
