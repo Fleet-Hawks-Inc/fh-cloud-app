@@ -1,5 +1,8 @@
+import { ApiService, AccountService, ListService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
-
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -7,9 +10,234 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddInvoiceComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(
+    private accountService: AccountService,
+    private listService: ListService,
+    private apiService: ApiService,
+    private toaster: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router) { }
+    pageTitle = 'Add Invoice';
+  invoiceData = {
+    invNo: '',
+    invDate: null,
+    invRef: '',
+    invDueDate: null,
+    invPayTerms: '',
+    invCustomerID: null,
+    invSalesman: null,
+    invSubject: '',
+    details: [{
+      commodityService: '',
+      qtyHours: '',
+      priceRate: '',
+      amount: 0,
+      amtCur: null,
+      accountID: null,
+    }],
+    remarks: '',
+    discount: 0,
+    discountUnit: '%',
+    invStateProvince: null,
+    invStatus: 'OPEN',
+    invType: 'manual',
+    subTotal: 0,
+    taxesInfo: [],
+    totalAmount: 0,
+    taxAmount: 0
+  };
+  midAmt = 0; // midAmt is sum of all the amount values in details table
+  totalAmount: any = 0;
+  /**
+   *Customer related properties
+   */
+  customers: any = [];
+  customerSelected = {
+    additionalContact: [],
+    address: [],
+    officeAddr: false,
+    email: '',
+    phone: ''
+  };
+  notOfficeAddress = false;
+  /**
+   *Accounts
+   *
+   */
+  accounts: any = [];
+  /**
+   * Taxes part
+   */
+  tax: any = 0;
+  stateTaxes = [];
+  stateTaxID = '';
+  newTaxes = [
+    {
+      type: '',
+      amount: 0,
+      taxAmount: 0
+    }
+  ];
+  invID: string;
   ngOnInit() {
+    this.listService.fetchCustomers();
+    this.customers = this.listService.customersList;
+    this.listService.fetchChartAccounts();
+    this.accounts = this.listService.accountsList;
+    this.fetchStateTaxes();
+    this.invID = this.route.snapshot.params[`invID`];
+    if (this.invID) {
+      this.pageTitle = 'Edit Invoice';
+      this.fetchInvoice();
+    } else {
+      this.pageTitle = 'Add Invoice';
+    }
+  }
+  selectedCustomer(customerID: any) {
+    this.apiService
+      .getData(`contacts/detail/${customerID}`)
+      .subscribe((result: any) => {
+        if (result.Items.length > 0) {
+          this.customerSelected = result.Items[0];
+          for (let i = 0; i < this.customerSelected.address.length; i++) {
+            const element = this.customerSelected.address[i];
+            if (element.addressType === 'Office') {
+              this.notOfficeAddress = false;
+              this.customerSelected.officeAddr = true;
+              this.customerSelected.email = result.Items[0].workEmail;
+              this.customerSelected.phone = result.Items[0].workPhone;
+            } else {
+              this.notOfficeAddress = true;
+            }
+          }
+        }
+
+      });
+  }
+  async stateSelectChange() {
+    const selected: any = this.stateTaxes.find(o => o.stateTaxID === this.invoiceData.invStateProvince);
+    this.invoiceData.taxesInfo = [];
+
+    this.invoiceData.taxesInfo = [
+      {
+        name: 'GST',
+        amount: selected.GST,
+      },
+      {
+        name: 'HST',
+        amount: selected.HST,
+      },
+      {
+        name: 'PST',
+        amount: selected.PST,
+      },
+    ];
+    this.tax = (parseInt(selected.GST) ? selected.GST : 0) + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
+    console.log('this.tax', this.tax);
+    await this.calculateAmount();
   }
 
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData(`stateTaxes`).toPromise();
+    this.stateTaxes = result.Items;
+    this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
+    this.stateTaxes.map((v: any) => {
+      if (this.invoiceData.invStateProvince === v.stateTaxID) {
+        this.invoiceData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: result.Items[0].GST,
+          },
+          {
+            name: 'HST',
+            amount: result.Items[0].HST,
+          },
+          {
+            name: 'PST',
+            amount: result.Items[0].PST,
+          },
+        ];
+      }
+    });
+    this.newTaxes = this.invoiceData.taxesInfo;
+    if (this.invoiceData.subTotal > 0) {
+      for (let i = 0; i < this.newTaxes.length; i++) {
+        const element = this.newTaxes[i];
+        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+      }
+    }
+  }
+
+  addDetails() {
+    this.invoiceData.details.push({
+      commodityService: '',
+      qtyHours: '',
+      priceRate: '',
+      amount: 0,
+      amtCur: null,
+      accountID: null,
+    });
+  }
+
+  deleteDetail(amount: number, d: number) {
+    console.log('amount', amount);
+    this.invoiceData.details.splice(d, 1);
+  }
+
+  addInvoice() {
+    console.log('input', this.invoiceData);
+    this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
+      console.log('res', res);
+      this.toaster.success('Invoice Added Successfully.');
+      this.router.navigateByUrl('/accounts/invoices/list');
+    });
+  }
+
+  async calculateAmount() {
+    this.midAmt = 0;
+    for (let i = 0; i < this.invoiceData.details.length; i++) {
+      console.log('this.invoiceData.details[i].amount', this.invoiceData.details[i].amount);
+      this.midAmt += Number(this.invoiceData.details[i].amount);
+    }
+    this.invoiceData.subTotal = this.midAmt;
+    if (this.invoiceData.discountUnit === '%') {
+      this.invoiceData.subTotal = this.midAmt - ((this.invoiceData.discount * this.midAmt) / 100);
+    } else if (this.invoiceData.discountUnit === 'CAD') {
+      this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
+    } else {
+      this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
+    }
+    this.totalAmount = (this.invoiceData.subTotal).toFixed(0);
+    const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
+    const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
+    const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
+    const totalTax = parseInt(gst)  + parseInt(pst) + parseInt(hst);
+    const taxAmount =  parseInt(this.totalAmount) * totalTax / 100;
+    this.invoiceData.taxAmount = taxAmount;
+    const final = parseInt(this.totalAmount) + taxAmount;
+
+    this.invoiceData.totalAmount = final;
+    this.newTaxes = this.invoiceData.taxesInfo;
+    if (this.invoiceData.subTotal > 0) {
+      for (let i = 0; i < this.newTaxes.length; i++) {
+        const element = this.newTaxes[i];
+        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+      }
+    }
+  }
+
+  fetchInvoice() {
+    this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
+      console.log('fetched invoice', res);
+      this.invoiceData = res[0];
+      this.invoiceData.details = res[0].details;
+      });
+  }
+  updateInvoice() {
+    console.log('input update', this.invoiceData);
+    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
+      this.toaster.success('Invoice Updated Successfully.');
+      this.router.navigateByUrl('/accounts/invoices/list');
+    });
+  }
 }
