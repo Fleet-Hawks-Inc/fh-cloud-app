@@ -237,30 +237,31 @@
                                                 <td>{{vendorsData.companyName}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="40%" class="back-color-gray">Account Number:</th>
+                                                <th width="40%" class="back-color-gray">Account#:</th>
                                                 <td>{{vendorsData.accountNumber ? vendorsData.accountNumber : '-'}}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th width="40%" class="back-color-gray">Vendor Name:</th>
                                                 <td>{{vendorsData.firstName}} {{vendorsData.lastName}}</td>
-                                            </tr>
+                                            </tr> -->
                                             <tr>
-                                                <th width="40%" class="back-color-gray">Work Phone:</th>
+                                                <th width="40%" class="back-color-gray"> Phone:</th>
                                                 <td>{{vendorsData.workPhone}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="40%" class="back-color-gray">Work Email:</th>
+                                                <th width="40%" class="back-color-gray"> Email:</th>
                                                 <td>{{vendorsData.workEmail}}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th width="40%" class="back-color-gray">Prefered Vendor:</th>
                                                 <td>{{vendorsData.preferedVendor ? 'Yes' : 'No'}}</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
                         <div id="vndrAddressDetails" class="tab-pane" *ngIf="!vendorTextStatus">
                             <table style="float: left;" class="table table-bordered mb-3 mt-1 pt-1">
                                 <tbody *ngFor="let item of vendorAddress;">
@@ -273,7 +274,7 @@
                                         <td>{{item.countryName}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
-                                        <th width="40%" class="back-color-gray">State:</th>
+                                        <th width="40%" class="back-color-gray">Province/State:</th>
                                         <td>{{item.stateName}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
