@@ -9,7 +9,6 @@ import { AccountService } from '../../../../services';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
 
-
   actID = '';
   account = {
     actName: '',
@@ -31,9 +30,10 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       this.fetchAccount();
     }
   }
-  fetchAccount() {
-    this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
-      this.account = res;
+fetchAccount() {
+  this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
+    this.account = res;
+
     });
   }
 }
