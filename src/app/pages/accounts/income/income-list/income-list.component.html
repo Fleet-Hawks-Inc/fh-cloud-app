@@ -1,123 +1,103 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <form class="form-horizontal" method="get">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">
 
-          <div class="row px-4" style="padding-top:10px;">
-            <div class="col-md-2 col-lg-2">
-              <div class="input-group input-group-md mb-3">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3">
-              <div class="input-daterange input-group" data-plugin-datepicker>
-                <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span>
-                </span>
-                <input type="text" class="form-control" name="start">
-                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                  to
-                </span>
-                <input type="text" class="form-control" name="end">
-              </div>
-            </div>
-            <div class="col-md-2  col-lg-2">
-              <div class="input-group input-group-md mb-3">
-                <select data-plugin-selectTwo class="form-control pull-left form-control-sm mb-3">
-                  <option>Select Income Category</option>
-                  <option>Accessorial Income</option>
-                  <option>Advance</option>
-                  <option>Fuel Surcharge</option>
-                  <option>Income from Sales</option>
-                  <option>Income Reimbursement</option>
-                  <option>Interest Income</option>
-                  <option>Lease Income</option>
-                  <option>Mileage Income</option>
-                  <option>Miscellaneous Income</option>
-                  <option>Other Income</option>
-                  <option>Tarp</option>
-                  <option>Tax Collected</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-1  col-lg-1">
-              <button type="submit" class="btn btn-sm btn-success">Search</button>
-            </div>
-            <div class="col-md-4  col-lg-4 text-right">
-              <a routerLink="/accounts/income/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
-                  class="fas fa-plus"></i> Add Income </a>
-            </div>
-          </div>
-        </form>
-      </header>
-      <div class="row">
-        <div class="col pr-0">
-          <section class="card">
-            <div class="card-body">
-              <table class="table table-bordered table-striped mb-0">
-                <thead>
-                  <tr class="bgcol2">
-                    <th class="text-2">Income Date</th>
-                    <th class="text-2">Invoice#</th>
-                    <th class="text-2">Customer</th>
-                    <th class="text-2">Income Category</th>
-                    <th class="text-2">Payment Mode</th>
-                    <th class="text-2">Description</th>
-                    <th class="text-2">Amount</th>
-                    <th class="text-2">Balance</th>
-                    <th class="text-2">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr routerLink="/accounts/income/detail">
-                    <td>05/29/2020</td>
-                    <td>RCP013676000002</td>
-                    <td>Manjot</td>
-                    <td>Advance</td>
-                    <td>Credit Card</td>
-                    <td>From Majha for LTL-Load001</td>
-                    <td>$10.00</td>
-                    <td>$0.00</td>
-                    <td>
-                      <div class="btn-group flex-wrap">
-                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                            class="fas fa-ellipsis-v"></i></button>
-                        <div class="dropdown-menu" role="menu">
-                          <a class="dropdown-item text-1" href="#">Edit</a>
-                          <a class="dropdown-item text-1" href="#">Delete</a>
+                    <div class="row px-4" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr routerLink="/accounts/income/detail">
-                    <td>05/29/2020</td>
-                    <td>RCP013676000001</td>
-                    <td>Harwinder</td>
-                    <td>Advance</td>
-                    <td>Check</td>
-                    <td>From Majha for LTL-Load001</td>
-                    <td>50.00</td>
-                    <td>0.00</td>
-                    <td>
-                      <div class="btn-group flex-wrap">
-                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                            class="fas fa-ellipsis-v"></i></button>
-                        <div class="dropdown-menu" role="menu">
-                          <a class="dropdown-item text-1" href="#">Edit</a>
-                          <a class="dropdown-item text-1" href="#">Delete</a>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="input-daterange input-group" data-plugin-datepicker>
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" name="start">
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input type="text" class="form-control" name="end">
+                            </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                        <div class="col-md-2  col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <select data-plugin-selectTwo class="form-control pull-left form-control-sm mb-3">
+                                    <option>Select Income Category</option>
+                                    <option>Accessorial Income</option>
+                                    <option>Advance</option>
+                                    <option>Fuel Surcharge</option>
+                                    <option>Income from Sales</option>
+                                    <option>Income Reimbursement</option>
+                                    <option>Interest Income</option>
+                                    <option>Lease Income</option>
+                                    <option>Mileage Income</option>
+                                    <option>Miscellaneous Income</option>
+                                    <option>Other Income</option>
+                                    <option>Tarp</option>
+                                    <option>Tax Collected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1  col-lg-1">
+                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        </div>
+                        <div class="col-md-4  col-lg-4 text-right">
+                            <a routerLink="/accounts/income/add" class="btn btn-success btn-sm ml-2"
+                                style="color:white;"><i class="fas fa-plus"></i> Add Income </a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr class="bgcol2">
+                                        <th class="text-2">Income Date</th>
+                                        <th class="text-2">Invoice#</th>
+                                        <th class="text-2">Customer</th>
+                                        <th class="text-2">Income Category</th>
+                                        <th class="text-2">Payment Mode</th>
+                                        <th class="text-2">Description</th>
+                                        <th class="text-2">Amount</th>
+                                        <th class="text-2">Balance</th>
+                                        <th class="text-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of incomeAccounts">
+                                        <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.incomeDate | date:'yyyy/MM/dd' }}</td>
+                                        <td>{{ data.invoiceID }}</td>
+                                        <td>{{ customers[data.customerID] }}</td>
+                                        <td>{{ categories[data.categoryID] }}</td>
+                                        <td>{{ data.paymentMode }}</td>
+                                        <td>{{ data.description }}</td>
+                                        <td>{{ data.recAmount }} {{ data.recCurr }}</td>
+                                        <td>-</td>
+                                        <td>
+                                            <div class="btn-group flex-wrap">
+                                                <button type="button" class="mb-1 mt-1 mr-1 btn"
+                                                    data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a class="dropdown-item text-1" routerLink="/accounts/income/edit/{{ data.incomeID }}">Edit</a>
+                                                    <a class="dropdown-item text-1" (click)="deleteIncome(data.incomeID)">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
-          </section>
-        </div>
-      </div>
-    </section>
-  </div>
+        </section>
+    </div>
 </section>
