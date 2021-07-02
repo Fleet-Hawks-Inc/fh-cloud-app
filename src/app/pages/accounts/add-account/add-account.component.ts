@@ -23,6 +23,7 @@ export class AddAccountComponent implements OnInit {
   actDate: '';
   closingAmt: number;
   transactionLog = [];
+  internalActID = '';
   constructor(
     private ngbCalendar: NgbCalendar,
     private router: Router,
@@ -44,6 +45,7 @@ export class AddAccountComponent implements OnInit {
       this.actDash = false;
       this.actDate = '';
       this.closingAmt = null;
+      this.internalActID = '';
     }
   }
   ngOnChanges() {
@@ -60,6 +62,7 @@ export class AddAccountComponent implements OnInit {
       this.actDash = false;
       this.actDate = '';
       this.closingAmt = null;
+      this.internalActID = '';
     }
   }
   addAccount() {
@@ -74,13 +77,13 @@ export class AddAccountComponent implements OnInit {
       actDate: this.actDate,
       transactionLog: [],
       closingAmt: 0,
+      internalActID : '',
     };
     console.log('data', data);
     this.accountService.postData(`chartAc`, data).subscribe((res: any) => {
       this.toaster.success('Account Added Successfully.');
       $('#addAccountModal').modal('hide');
       this.listService.fetchChartAccounts();
-      this.router.navigateByUrl('/accounts/chart-accounts/list');
       this.actName = '';
       this.actType = '';
       this.actNo = null;
@@ -91,6 +94,7 @@ export class AddAccountComponent implements OnInit {
       this.actDate = '';
       this.closingAmt = null;
       this.transactionLog = [];
+      this.internalActID = '';
     });
   }
   fetchAccount() {
@@ -104,6 +108,7 @@ export class AddAccountComponent implements OnInit {
       this.actDash = res.actDash;
       this.actDate = res.actDate;
       this.closingAmt = res.closingAmt;
+      this.internalActID = res.internalActID;
     });
   }
   updateAccount() {
@@ -120,12 +125,12 @@ export class AddAccountComponent implements OnInit {
       actDate: this.actDate,
       transactionLog: [],
       closingAmt: this.closingAmt,
+      internalActID: this.internalActID,
     };
     console.log('data', data);
     this.accountService.putData(`chartAc/update/${this.receivedActID}`, data).subscribe((res: any) => {
       this.toaster.success('Account Updated Successfully.');
       this.listService.fetchChartAccounts();
-      this.router.navigateByUrl('/accounts/chart-accounts/list');
       $('#addAccountModal').modal('hide');
 
     });

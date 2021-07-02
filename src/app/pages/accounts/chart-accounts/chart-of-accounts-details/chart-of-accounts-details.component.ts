@@ -8,8 +8,6 @@ import { AccountService } from '../../../../services';
   styleUrls: ['./chart-of-accounts-details.component.css']
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
-
-
   actID = '';
   account =  {
     actName: '',
