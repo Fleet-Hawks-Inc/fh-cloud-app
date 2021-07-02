@@ -240,7 +240,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
                           Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required #bCountry="ngModel"
+                        <ng-select [(ngModel)]="bizCountry" name="bizCountry" required #bCountry="ngModel" [disabled]=true
                           placeholder="Select business operating country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States of America</ng-option>
