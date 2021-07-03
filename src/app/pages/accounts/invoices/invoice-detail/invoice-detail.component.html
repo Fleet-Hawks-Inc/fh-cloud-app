@@ -12,7 +12,7 @@
       <div class="row mb-3">
         <div class="col-lg-12">
           <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-            <h4 class="m-0 font-weight-bold">Invoice# - 24556FH5 <span class="badge badge-dark p-1">OPEN</span></h4> </div>
+            <h4 class="m-0 font-weight-bold">Invoice# - {{invoice.invNo}} <span class="badge badge-dark p-1">{{invoice.invStatus}}</span></h4> </div>
         </div>
       </div>
       <div class="row mb-3">
@@ -23,7 +23,7 @@
                 <div id="vehicle-details" class="">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Customer:</div>
-                    <div class="col-lg-8 p-2">James</div>
+                    <div class="col-lg-8 p-2">{{customersObjects[invoice.invCustomerID]}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Address:</div>
@@ -55,19 +55,19 @@
                 <div id="vehicle-details" class="">
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Reference#/Order#:</div>
-                    <div class="col-lg-8 p-2 border-box">4545645623154</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invRef}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Creation Date:</div>
-                    <div class="col-lg-8 p-2 border-box">06/10/2020 </div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invDate}} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Due Date:</div>
-                    <div class="col-lg-8 p-2 border-box">06/11/2020</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invDueDate}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Total Amount:</div>
-                    <div class="col-lg-8 p-2 border-box">6050 CAD</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.totalAmount}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount Received:</div>
@@ -75,15 +75,15 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Balance:</div>
-                    <div class="col-lg-8 p-2 border-box">6050 CAD</div>
+                    <div class="col-lg-8 p-2 border-box"> - </div>
                   </div>
                     <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Salesperson:</div>
-                    <div class="col-lg-8 p-2 border-box">ABC</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invSalesman}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Subject:</div>
-                    <div class="col-lg-8 p-2 border-box">Rent Invoice</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invSubject}}</div>
                   </div>
                 </div>
               </div>
@@ -106,12 +106,12 @@
                                          </span>
                         <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Charges</h2> </div>
                       <div class="widgetlinfo">
-                        <div class="col-lg-2 pull-left"> <img src="img/icon-cur.png" class="img-fluid" alt="shipper"> </div>
+                        <div class="col-lg-2 pull-left">  </div>
                         <div class="col-lg-10 pull-left">
-                          <p class="mb-0 text-dark">Discount <span class="pull-right">0.00 CAD</span></p>
-                          <p class="mb-0 text-dark">Subtotal<span class="pull-right">6000 CAD</span></p>
-                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">50.00 CAD</span></p>
-                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">6050.00 CAD</span></p>
+                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}</span></p>
+                          <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}</span></p>
+                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">{{invoice.taxAmount}} CAD</span></p>
+                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}</span></p>
                         </div>
                       </div>
                     </div>
@@ -131,24 +131,39 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Account1(a/c selected in form)</td>
-                        <td>Customer Name</td>
+                      <tr *ngFor="let dt of invoice.details">
+                        <td>{{accountsObjects[dt.accountID]}}</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
                         <td>Invoice Income</td>
                         <td>0.00</td>
-                        <td>6050 CAD</td>
+                        <td>{{dt.amount}} &nbsp; {{dt.amtCur}}</td>
                       </tr>
                       <tr>
-                        <td>Accounts Receivables</td>
-                        <td>Customer Name</td>
+                        <td>Sales/Fees Discounts</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
+                        <td>Invoice Discount</td>
+                        <td>{{invoice.discountAmount}} CAD</td>
+                        <td>0.00</td>
+
+                      </tr>
+                      <tr>
+                        <td>Other Taxes Expense</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
+                        <td>Invoice Tax</td>
+                        <td>0.00</td>
+                        <td>{{invoice.taxAmount}} CAD</td>
+                      </tr>
+                      <tr>
+                        <td>Accounts Receivable</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
                         <td>Invoice Income</td>
-                        <td>6050 CAD</td>
+                        <td>{{invoice.totalAmount}} CAD</td>
                         <td>0.00</td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>6050 CAD</td>
-                        <td>6050 CAD</td>
+                        <td>{{total}} CAD</td>
+                        <td>{{total}} CAD</td>
                       </tr>
                     </tbody>
                   </table>

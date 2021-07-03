@@ -18,28 +18,7 @@ export class EventListComponent implements OnInit {
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
-  coachingStatus = [
-    {
-      value:'open',
-      name: 'Open'
-    },
-    {
-      value:'closed',
-      name: 'Closed'
-    },
-    {
-      value:'underReview',
-      name: 'Under Review'
-    },
-    {
-      value:'coaching',
-      name: 'Coaching'
-    },
-    {
-      value:'investigating',
-      name: 'Investigating'
-    },
-  ];
+ 
   vehicles  = [];
   vehicleID = '';
   filterValue = {
@@ -50,77 +29,23 @@ export class EventListComponent implements OnInit {
     driverName: '',
     vehicleID:null
   };
+  
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
+
+  status_values: any = ["open", "investigating", "coaching", "closed"];
   
-  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
-    this.fetchevents();
+    this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
-    this.initDataTable();
   }
 
-  getEventDetail(arrValues) {
-    this.events = [];
-    for (let i = 0; i < arrValues.length; i++) {
-      const element = arrValues[i];
-
-      element.driverName = '';
-      element.vehicleName = '';
-      if(element.criticalityType == 'harshBrake') {
-        element.criticalityType = 'Harsh Brake';
-      } else if(element.criticalityType == 'harshAcceleration') {
-        element.criticalityType = 'Harsh Acceleration';
-      } else if(element.criticalityType == 'overSpeeding') {
-        element.criticalityType = 'Over Speeding';
-      } else if(element.criticalityType == 'overSpeedingStart') {
-        element.criticalityType = 'Over Speeding Start';
-      } else if(element.criticalityType == 'overSpeedingEnd') {
-        element.criticalityType = 'Over Speeding End';
-      }
-      this.events.push(element);
-    }
-  }
-
-  initDataTable() {
-  }
-
-  deleteEvent(eventID) {
-    let current = this;
-    this.spinner.show();
-    this.apiService.getData('safety/eventLogs/delete/' + eventID + '/1').subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        // current.initDataTable();
-        current.spinner.hide();
-        current.toastr.success('Event deleted successfully');
-      }
-    })
-  }
-
-  changeCoachingStatus(event, eventID) {
-    let current = this;
-    current.spinner.show();
-    let updateData = {
-      eventID: eventID,
-      coachingStatus: event.target.value
-    }
-
-    this.apiService.putData('safety/eventLogs/update-status', updateData).subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        current.spinner.hide();
-        current.toastr.success('Event updated successfully');
-      }
-    })
-  }
 
   fetchVehicles() {
     this.apiService.getData('vehicles')
@@ -153,10 +78,9 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  fetchevents() {
+  fetchEvents() {
     this.safetyService.getData('critical-events')
       .subscribe((result: any) => {
-        console.log('result', result)
         this.events = result;
       })
   }
@@ -182,6 +106,24 @@ export class EventListComponent implements OnInit {
       })
     }    
   }
+
+  changeStatus(eventID: any, newValue: string, i: string) {
+    
+    let data = {
+      eventID: eventID,
+      status: newValue
+    }
+    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
+      if(res.status == false) {
+        this.events[i].status = res.oldStatus;
+        this.toaster.error('Please select valid status');
+      } else {
+        this.toaster.success('Status updated successfully');
+      }
+    });
+
+  }
+
 
   searchSelectedDriver(data) {
     this.filterValue.driverID = data.userName;
@@ -217,10 +159,9 @@ export class EventListComponent implements OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/username-list')
+    this.apiService.getData('drivers/get/list')
       .subscribe((result: any) => {
         this.driversObject = result;
-        console.log("this.driversObject", this.driversObject)
       });
   }
 }

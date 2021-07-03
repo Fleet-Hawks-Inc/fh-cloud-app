@@ -240,10 +240,10 @@
                                                 <th width="40%" class="back-color-gray">Account#:</th>
                                                 <td>{{vendorsData.accountNumber ? vendorsData.accountNumber : '-'}}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th width="40%" class="back-color-gray">Vendor Name:</th>
                                                 <td>{{vendorsData.firstName}} {{vendorsData.lastName}}</td>
-                                            </tr>
+                                            </tr> -->
                                             <tr>
                                                 <th width="40%" class="back-color-gray"> Phone:</th>
                                                 <td>{{vendorsData.workPhone}}</td>
@@ -252,15 +252,16 @@
                                                 <th width="40%" class="back-color-gray"> Email:</th>
                                                 <td>{{vendorsData.workEmail}}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th width="40%" class="back-color-gray">Prefered Vendor:</th>
                                                 <td>{{vendorsData.preferedVendor ? 'Yes' : 'No'}}</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
                         <div id="vndrAddressDetails" class="tab-pane" *ngIf="!vendorTextStatus">
                             <table style="float: left;" class="table table-bordered mb-3 mt-1 pt-1">
                                 <tbody *ngFor="let item of vendorAddress;">
