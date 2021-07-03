@@ -64,7 +64,9 @@
           <div class="row">
             <p *ngIf="hasError" class="text text-danger ml-5" >{{Error}}</p>
           </div>
-          
+          <div class="d-flex flex-row-reverse text-dark">
+            <a  [routerLink]="['/forgotPassword']" ><span class="text-dark font-weight-semibold">Forgot Password?</span></a>
+          </div>
           <div class="row">
             <div class="col-sm-12 pl-signin text-center">
               <button *ngIf="!loginForm.form.valid" type="button" [disabled]="!loginForm.form.valid" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">Sign In</button>
@@ -72,9 +74,7 @@
             </div>
 
             <div class="col-sm-12 mt-2 ml-3 mr-3 pt-1 text-center">
-              <div>
-              <a [routerLink]="['/forgotPassword']" class="font-weight-semibold"><span class="text-4 text-underline text-info">Forgot Password?</span></a>
-            </div>
+
               <a [routerLink]="['/onboard']" class="font-weight-semibold">Do not have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
 
             </div>

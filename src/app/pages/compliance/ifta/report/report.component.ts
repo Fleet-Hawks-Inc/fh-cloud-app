@@ -1,6 +1,7 @@
 import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from 'src/app/services/api.service'
+import Constants from '../../../fleet/constants';
 
 
 
@@ -12,6 +13,8 @@ import {ApiService} from 'src/app/services/api.service'
 export class ReportComponent implements OnInit {
 
   public allQuarters:any;
+  
+  public dataMessage=''
   public quarters={
     '1':"JAN - MAR",
     '2':"APR - JUN",
@@ -29,7 +32,14 @@ export class ReportComponent implements OnInit {
   fetchQuarter(){
     this.apiService.getData('ifta/quarters').subscribe(result=>{
       
-      this.allQuarters=result;
+      // if(Object.keys(result).length == 0){
+
+      //   this.dataMessage=Constants.NO_RECORDS_FOUND;
+      // }
+      // else{
+        this.allQuarters=result;
+      // }
+      
     });
   }
 
