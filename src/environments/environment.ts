@@ -6,10 +6,12 @@ export const environment = {
   production: false,
   isFeatureEnabled: true,
 
- // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+
+  //BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   BaseUrl: 'http://localhost:3000/api/v1/',
   AccountServiceUrl: 'http://localhost:4002/api/v1/',
   SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+
 
   isFleetEnabled: true,
   isDispatchEnabled: true,
@@ -19,6 +21,7 @@ export const environment = {
   isAccountsEnabled: true,
 
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
+  safetyURL: 'http://localhost:4000/api/v1/',
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
