@@ -44,7 +44,6 @@ export class InvoiceListComponent implements OnInit {
 
   changeStatus(invID: string) {
     this.invID = invID;
-    console.log('invID', invID);
     $('#updateStatusModal').modal('show');
   }
 
