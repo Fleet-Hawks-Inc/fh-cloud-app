@@ -5,6 +5,7 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ListService } from 'src/app/services/list.service';
+import { DomSanitizer } from '@angular/platform-browser';
 declare var $: any;
 
 @Component({
@@ -29,7 +30,8 @@ export class AddIncomeComponent implements OnInit {
     customerID: null,
     recAmount: 0,
     recCurr: null,
-    description: ''
+    description: '',
+    attachments: []
   }
 
   paymentMode = [
@@ -90,9 +92,15 @@ export class AddIncomeComponent implements OnInit {
   categoryData = {
     categoryName:'',
     categoryDescription:''
-  }
+  };
+  uploadedDocs = [];
+  existingDocs = [];
+  documentSlides = [];
+  Asseturl = this.apiService.AssetUrl;
+  carrierID = '';
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
-  constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService) { }
+  constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.incomeID = this.route.snapshot.params['incomeID'];
@@ -131,13 +139,35 @@ export class AddIncomeComponent implements OnInit {
     }
   }
 
+  /*
+    * Selecting files before uploading
+    */
+  selectDocuments(event) {
+    let files = [...event.target.files];
+    
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedDocs.push(files[i])
+    }
+  }
+
   addRecord() {
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
-    this.hasSuccess = false;
+    this.hasSuccess = false; 
 
-    this.accountService.postData('income', this.incomeData).subscribe({
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.incomeData));
+
+    this.accountService.postData('income', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -173,6 +203,18 @@ export class AddIncomeComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.incomeData = result[0];
+          this.existingDocs = result[0].attachments;
+          this.carrierID = result[0].carrierID;
+
+          if (result[0].attachments != undefined && result[0].attachments.length > 0) {
+            result[0].attachments.map((x) => {
+              let obj = {
+                name: x,
+                path: `${this.Asseturl}/${this.carrierID}/${x}`
+              }
+              this.documentSlides.push(obj);
+            })
+          }
         }
       })
   }
@@ -191,8 +233,20 @@ export class AddIncomeComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
+    this.incomeData.attachments = this.existingDocs;
 
-    this.accountService.putData(`income/${this.incomeID}`, this.incomeData).subscribe({
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.incomeData));
+
+    this.accountService.putData(`income/${this.incomeID}`, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -271,5 +325,24 @@ export class AddIncomeComponent implements OnInit {
         this.toaster.success('Income category added successfully.');
       },
     });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = '';
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.accountService.deleteData(`income/uploadDelete/${this.incomeID}/${name}`).subscribe((result: any) => {
+      this.existingDocs.splice(index, 1);
+      this.documentSlides.splice(index, 1);
+      this.toaster.success('Attachment deleted successfully.');
+    }); 
   }
 }
