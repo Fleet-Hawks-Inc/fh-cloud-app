@@ -43,8 +43,10 @@ import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
-
+import { NgxCaptchaModule} from 'ngx-captcha';
 import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
+import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
+
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -64,6 +66,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ErrorComponent,
     UnsavedChangesComponent,
     AddAccountComponent,
+    ForgotPasswordComponent
 
   ],
   imports: [
@@ -86,8 +89,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     SlickCarouselModule,
     NgxSpinnerModule,
     NgSelectModule,
+    NgxCaptchaModule,
+    
   ],
-  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy,InvokeHeaderFnService],
-  bootstrap: [AppComponent],
+  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy,InvokeHeaderFnService  ],
+  bootstrap: [AppComponent  ],
 })
 export class AppModule { }

@@ -4,117 +4,28 @@
       <header class="page-header">
         <form class="form-horizontal" method="get">
           <div class="row px-4" style="padding-top: 10px;" id="vehicle-summary-header" *ngIf="activeTab === 'vehicle'">
-            <div class="col-lg-3 col-md-3">
-              <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span> </span>
-                <input type="text" class="form-control" name="start"> <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0">
-                  to
-                </span>
-                <input type="text" class="form-control" name="end"> </div>
-            </div>
+            
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-md mb-3">
-                <select class="form-control populate">
-                  <optgroup label="">
-                    <option value="1">Vehicle 1</option>
-                    <option value="2">Vehicle 2</option>
-                    <option value="2">Vehicle 3</option>
-                    <option value="2">Vehicle 4</option>
-                    <option value="2">Vehicle 5</option>
-                  </optgroup>
-                </select>
+                <ng-select class="form-control populate" [(ngModel)]="filterVehicle" name="filterVehicle" placeholder="Select Vehicle">
+                  <ng-option *ngFor="let vehicle of vehicleList;" value="{{vehicle.vehicleIdentification}}">{{vehicle.vehicleIdentification}}</ng-option>
+                </ng-select>
               </div>
             </div>
             <div class="col-lg-2">
-              <select data-plugin-selectTwo class="form-control populate">
-                <optgroup label="">
-                  <option value="1">Select Fuel Type</option>
-                  <option value="1">Gasoline</option>
-                  <option value="2">Propane</option>
-                  <option value="2">Diesel</option>
-                  <option value="2">Methanol</option>
-                  <option value="1">Liquid Natural Gas</option>
-                  <option value="2">Compressed Natural Gas</option>
-                  <option value="2">Ethanol</option>
-                  <option value="2">E-85</option>
-                  <option value="2">M-85</option>
-                  <option value="2">A55</option>
-                  <option value="2">Biodiesel</option>
-                  <option value="2">Other</option>
-                </optgroup>
-              </select>
+              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="filterFuel" name="filterFuel" placeholder="Select Fuel Type">
+                <ng-option *ngFor="let fuelType of fuelList" value="{{fuelType}}">{{fuelType}}</ng-option>
+              </ng-select>
             </div>
-            <div class="col-lg-2">
-              <select data-plugin-selectTwo class="form-control populate">
-                <optgroup label="">
-                  <option value="1">Select State/Province</option>
-                  <option value="1">Alberta</option>
-                  <option value="2">British Columbia</option>
-                  <option value="2">Ontario</option>
-                  <option value="2">California</option>
-                  <option value="2">New York</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="col-md-3  col-lg-3 text-right pr-5">
-
-              <!-- <a [routerLink]="['/fleet', 'expenses', 'fuel', 'add']" class="btn btn-success btn-sm ml-2 text-light"><i
-                  class="fas fa-plus"></i> Add Fuel Entry</a> -->
-            </div>
+            <div class="col-md-2 col-lg-2">
+              <button type="button" class="btn btn-sm btn-success mr-3" (click)="filterRecords()">Search</button>
+              <button type="button" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
           </div>
-          <div class="row px-4" style="padding-top: 10px;" id="jurisdiction-summary-header"
-            *ngIf="activeTab === 'jurisdiction'">
-            <div class="col-lg-3 col-md-3">
-              <div class="input-daterange input-group" data-plugin-datepicker=""> <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span> </span>
-                <input type="text" class="form-control" name="start"> <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0">
-                  to
-                </span>
-                <input type="text" class="form-control" name="end"> </div>
-            </div>
-            <div class="col-lg-2">
-              <select data-plugin-selectTwo class="form-control populate">
-                <optgroup label="">
-                  <option value="1">Select Fuel Type</option>
-                  <option value="1">Gasoline</option>
-                  <option value="2">Propane</option>
-                  <option value="2">Diesel</option>
-                  <option value="2">Methanol</option>
-                  <option value="1">Liquid Natural Gas</option>
-                  <option value="2">Compressed Natural Gas</option>
-                  <option value="2">Ethanol</option>
-                  <option value="2">E-85</option>
-                  <option value="2">M-85</option>
-                  <option value="2">A55</option>
-                  <option value="2">Biodiesel</option>
-                  <option value="2">Other</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="col-lg-2">
-              <select data-plugin-selectTwo class="form-control populate">
-                <optgroup label="">
-                  <option value="1">Select State/Province</option>
-                  <option value="1">Alberta</option>
-                  <option value="2">British Columbia</option>
-                  <option value="2">Ontario</option>
-                  <option value="2">California</option>
-                  <option value="2">New York</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="col-md-5  col-lg-5 text-right pr-5">
-             
-              <a [routerLink]="['/compliance','ifta','new-quarterly-report']" class="btn btn-success btn-sm ml-2"
-                style="color:white;"><i class="fas fa-plus"></i> Generate Quarterly IFTA Report</a>
-            </div>
+          <div class="col-md-5 col-lg-5 text-right pr-1">
+            <a (click)="generatePDF()" class="btn btn-success btn-sm ml-2" style="color:#fff;"><i class="fas fa-plus"></i> Generate IFTA Report</a>
+         </div>
           </div>
+         
         </form>
       </header>
       <div class="row">
@@ -123,104 +34,188 @@
             <div class="card-body">
               <div class=" ">
                 <ul class="nav nav-tabs top-tabs pl-3" style="background-color:white;">
-                  <li class="nav-item active"> <a class="nav-link active" href="#iftaJurisdiction" data-toggle="tab"
-                      (click)="activeTab = 'jurisdiction'">Jurisdiction Summary</a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="#iftaVehicle" data-toggle="tab"
-                      (click)="activeTab = 'vehicle'">Vehicle Summary</a> </li>
+                  <li class="nav-item active"> <a class="nav-link active" href="#iftaVehicle" data-toggle="tab"
+                      (click)="fetchVehicleSumary()">Vehicle Summary</a> </li>
+                  <li class="nav-item "> <a class="nav-link " href="#iftaJurisdiction" data-toggle="tab"
+                      (click)="fetchJurisdictionSumary()">Jurisdiction Summary</a> </li>
+
                 </ul>
                 <div class="tab-content mt-3" style="box-shadow:none;border:none;">
-                  <div id="iftaJurisdiction" class="tab-pane active">
-                    <div class="row pr-2 text-center">
-                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
-                        <div class="safetytile border">
-                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
-                                class="fas fa-gas-pump"></i></span>
-                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Miles (All States)
-                            </h2>
-                          </div>
-                          <div class="">
-                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">{{(quarterReport.totalMilesCA+quarterReport.totalMilesUS).toFixed(2)}}</h1>
-                          </div>
+                  <div class="row pr-2 text-center">
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas fa-gas-pump"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Miles (All States)
+                          </h2>
                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
-                        <div class="safetytile border">
-                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
-                                class="fas fa-prescription-bottle"></i></span>
-                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Gallons</h2>
-                          </div>
-                          <div class="">
-                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">{{quarterReport.totalQuantityGallons}}</h1>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 col-md-12 pr-1 mb-2">
-                        <div class="safetytile border">
-                          <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
-                                class="fas fa-gas-pump"></i></span>
-                            <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Litres
-                            </h2>
-                          </div>
-                          <div class="">
-                            <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">{{quarterReport.totalQuantityLitres}}</h1>
-                          </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{(quarterReport.totalMilesCA+quarterReport.totalMilesUS).toFixed(2)}}</h1>
                         </div>
                       </div>
                     </div>
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas fa-prescription-bottle"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Gallons</h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalQuantityGallons}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas fa-gas-pump"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Litres
+                          </h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalQuantityLitres}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas  fa-usd"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Amount USD
+                          </h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalAmountUSD | currency:'USD':'symbol'}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas  fa-usd"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Amount CAD 
+                          </h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalAmountCAD |currency:'CAD':'symbol'}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas  fa-usd"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Discount USD</h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalDiscountUSD| currency:'USD':'symbol'}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 pr-1 mb-2">
+                      <div class="safetytile border">
+                        <div class="driverbar"> <span class="pull-right text-10 text-dark"><i
+                              class="fas  fa-usd"></i></span>
+                          <h2 class="pull-left mt-0 text-5 font-weight-semibold text-dark">Total Discount CAD
+                          </h2>
+                        </div>
+                        <div class="">
+                          <h1 class="text-5 font-weight-bold pull-left mb-0 mt-0 text-dark">
+                            {{quarterReport.totalDiscountCAD | currency:'CAD':'symbol'}}</h1>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                  </div>
+                  <div id="iftaJurisdiction" class="tab-pane ">
+
                     <div class="row">
                       <div class="col-lg-12">
-                        <table class="table table-responsive-lg mb-0 table-bordered table-striped simple-table">
+                        <table id="ifta" class="table table-responsive-lg mb-0 table-bordered table-striped simple-table">
                           <thead>
                             <tr>
                               <th>Jurisdiction</th>
-                              <th>Vehicle</th>
                               <th>Distance</th>
                               <th>Fuel Quantity</th>
-                              <th>Fuel Unit</th>
+                              
                               <th>Fuel Type</th>
+                              <th>Fuel Cost</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor = "let item of records"> 
-                              <td>{{item.jurisdiction}}</td>
-                              <td>{{item.vehicle}}</td>
+                            <tr *ngIf="!jurisdictionReport" class="text-center">
+                              <td colspan="12">{{ dataMessage }}</td>
+                          </tr>
+                            <tr *ngFor="let item of jurisdictionReport">
+                              <td>
+                                <span *ngIf="canadianStates[item.jurisdiction]">{{canadianStates[item.jurisdiction]}}</span>
+                                <span *ngIf="usStates[item.jurisdiction]">{{usStates[item.jurisdiction]}}</span>
+
+                              </td>
                               <td>{{item.totalMiles}}</td>
-                              <td>{{item.quantity}}</td>
-                              <td>{{item.fuelUnit}}</td>
+                              <td>{{item.quantity}} {{item.fuelUnit}}</td>
                               <td>{{item.fuelType}}</td>
+                              <td>{{item.actualAmount | currency:item.currency : 'symbol' }}</td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
                     </div>
                   </div>
-                  
-                  <div id="iftaVehicle" class="tab-pane">
+
+                  <div id="iftaVehicle" class="tab-pane active">
                     <div>
-                      <table class="table table-bordered  table-responsive-lg table-striped mb-0" id="datatable-default">
+                      <table class="table table-bordered  table-responsive-lg table-striped mb-0"
+                        id="datatable-default">
                         <thead>
                           <tr>
-                            <th>Vehicle/Reefer Number</th>
+                            <th>Vehicle Number</th>
                             <th>Jurisdiction</th>
                             <th>Miles</th>
                             <th>Fuel</th>
-                            <th>Unit</th>
                             <th>Fuel Type</th>
-                            
+
                           </tr>
                         </thead>
-                         <tbody>
-                          <tr *ngFor = "let item of records">                           
+                        <tbody>
+                          <tr *ngIf="!isRecords" class="text-center">
+                            <td colspan="12">{{ dataMessage }}</td>
+                        </tr>
+                          <tr *ngFor="let item of records">
                             <td>{{item.vehicle}}</td>
-                            <td>{{item.jurisdiction}}</td>
+                            <td>
+                              <span *ngIf="canadianStates[item.jurisdiction]">{{canadianStates[item.jurisdiction]}}</span>
+                              <span *ngIf="usStates[item.jurisdiction]">{{usStates[item.jurisdiction]}}</span>
+
+                            </td>
                             <td>{{item.totalMiles}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.fuelUnit}}</td>
+                            <td>{{item.quantity}}  {{item.fuelUnit}}</td>
+                           
                             <td>{{item.fuelType}}</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
+                    <div class="row mt-3 dtPaginate" *ngIf="isRecords">
+                      <div  class="col-6">
+                        Showing {{ recordStartPoint }} to {{ recordEndPoint }} of {{ recordCount }} enteries
+                      </div>
+                      <div  class="col-6 text-right">
+                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                          [disabled]="recordPrev">Prev</button>
+                        <button type="button" class="btn btn-default" (click)="nextResults()"
+                          [disabled]="recordNext">Next</button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -231,5 +226,3 @@
     </section>
   </div>
 </section>
-
-

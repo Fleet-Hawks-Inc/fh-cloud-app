@@ -86,14 +86,6 @@ export class OrdersListComponent implements OnInit {
       name: "Invoiced",
       value: 'invoiced'
     },
-    {
-      name: "Partially Paid",
-      value: 'partiallyPaid'
-    },
-    {
-      name: "Delivered",
-      value: 'delivered'
-    },
   ]
   records = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };

@@ -190,25 +190,26 @@
             
                <div class="row">
                   <div class="col-lg-12">
-                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name <span
+                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type <span
                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                      <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
-                        placeholder="Enter renewal type name" #Rname="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                        placeholder="Enter renewal type " #Rname="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
                         <div *ngIf="Rname.invalid && (Rname.dirty || Rname.touched)" class="text-danger">
                            <div *ngIf="Rname.errors.required">
-                             Renewal name is required.
+                             Renewal type is required.
                            </div>     
                            <div *ngIf="Rname.errors.pattern">
-                                  Renewal name must contain alphanumeric characters.
+                                  Renewal type must contain alphanumeric characters.
                            </div>
                          </div>
                   </div>
                </div>
+
                <div class="row mt-2">
                   <div class="col-lg-12">
                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type
-                        Description&nbsp;<span class="text-1 optional-label-color">(optional)</span></label>
-                     <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"
+                        Description</label>
+                     <textarea class="form-control heighta" rows="3" [(ngModel)]="serviceTask.description" name="description"
                         placeholder="Enter description of the renewal type"  #aNotes228="ngModel"
                         pattern="^[\s\S]{1,500}$" ></textarea>
                         <div *ngIf="aNotes228.invalid && (aNotes228.dirty || aNotes228.touched)" class="text-danger">
