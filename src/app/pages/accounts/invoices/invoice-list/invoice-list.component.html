@@ -164,8 +164,8 @@
                               <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">CAD 600</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
@@ -177,121 +177,6 @@
                                        <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
                                        <a class="dropdown-item text-1" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">234</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">05/25/2020 07:41 AM</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">ABC Co.</td>
-                              <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 20325</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 325</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 600</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 56568</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 23000</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">CAD 900</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail">3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">234</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">05/25/2020 07:41 AM</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">ABC Co.</td>
-                              <td class="loadid cursorpoint"   routerLink="/accounts/invoices/detail"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 20325</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 325</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 600</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 56568</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 23000</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">CAD 900</td>
-                              <td class="cursorpoint"   routerLink="/accounts/invoices/detail">3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                              <td>   <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
                                     </div>
                                  </div>
                               </td>

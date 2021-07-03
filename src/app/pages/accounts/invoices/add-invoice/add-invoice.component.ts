@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -44,10 +45,13 @@ export class AddInvoiceComponent implements OnInit {
     subTotal: 0,
     taxesInfo: [],
     totalAmount: 0,
-    taxAmount: 0
+    taxAmount: 0,
+    transactionLog: [],
+    discountAmount: 0
   };
   midAmt = 0; // midAmt is sum of all the amount values in details table
   totalAmount: any = 0;
+  customersObjects = {};
   /**
    *Customer related properties
    */
@@ -92,6 +96,7 @@ export class AddInvoiceComponent implements OnInit {
     } else {
       this.pageTitle = 'Add Invoice';
     }
+    this.fetchCustomersByIDs();
   }
   selectedCustomer(customerID: any) {
     this.apiService
@@ -138,27 +143,49 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   async fetchStateTaxes() {
-    let result = await this.apiService.getData(`stateTaxes`).toPromise();
+    const result = await this.apiService.getData(`stateTaxes`).toPromise();
     this.stateTaxes = result.Items;
     this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
-    this.stateTaxes.map((v: any) => {
-      if (this.invoiceData.invStateProvince === v.stateTaxID) {
-        this.invoiceData.taxesInfo = [
-          {
-            name: 'GST',
-            amount: result.Items[0].GST,
-          },
-          {
-            name: 'HST',
-            amount: result.Items[0].HST,
-          },
-          {
-            name: 'PST',
-            amount: result.Items[0].PST,
-          },
-        ];
+
+    if (!this.invID) {
+      this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
+      this.invoiceData.taxesInfo = [
+        {
+          name: 'GST',
+          amount: result.Items[0].GST,
+        },
+        {
+          name: 'HST',
+          amount: result.Items[0].HST,
+        },
+        {
+          name: 'PST',
+          amount: result.Items[0].PST,
+        },
+      ];
+    }
+      else {
+        console.log('else part of invoice');
+        this.stateTaxes.map((v: any) => {
+          if (this.invoiceData.invStateProvince === v.stateTaxID) {
+            this.invoiceData.taxesInfo = [
+              {
+                name: 'GST',
+                amount: v.GST,
+              },
+              {
+                name: 'HST',
+                amount: v.HST,
+              },
+              {
+                name: 'PST',
+                amount: v.PST,
+              },
+            ];
+          }
+        });
       }
-    });
+
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (let i = 0; i < this.newTaxes.length; i++) {
@@ -185,10 +212,26 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
-    console.log('input', this.invoiceData);
+    // this.invoiceData.transactionLog[];
+    // const obj = {
+    //   {
+    //       trxDate: moment().format('YYYY-MM-DD'),
+    //       name: customerName,
+    //       trxType: 'credit', // It can be debit or credit
+    //       type: 'invoice', // Type means either it's from invoice, bill etc.
+    //       amount: this.invoiceData.totalAmount,
+    //       currency: 'CAD',
+    //       trxRunTotal: 0,
+    //       desc: `Invoice is created for ${customerName}`
+    //     }
+    // }
+    console.log('invoice input data', this.invoiceData);
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
-      console.log('res', res);
       this.toaster.success('Invoice Added Successfully.');
+      this.acRecDebitFn();
+      this.acCreditFn();
+      this.acTaxFn();
+      this.acDiscountFn();
       this.router.navigateByUrl('/accounts/invoices/list');
     });
   }
@@ -202,10 +245,13 @@ export class AddInvoiceComponent implements OnInit {
     this.invoiceData.subTotal = this.midAmt;
     if (this.invoiceData.discountUnit === '%') {
       this.invoiceData.subTotal = this.midAmt - ((this.invoiceData.discount * this.midAmt) / 100);
+      this.invoiceData.discountAmount = (this.invoiceData.discount * this.midAmt) / 100;
     } else if (this.invoiceData.discountUnit === 'CAD') {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
+      this.invoiceData.discountAmount = this.invoiceData.discount;
     } else {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
+      this.invoiceData.discountAmount = this.invoiceData.discount;
     }
     this.totalAmount = (this.invoiceData.subTotal).toFixed(0);
     const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
@@ -237,7 +283,85 @@ export class AddInvoiceComponent implements OnInit {
     console.log('input update', this.invoiceData);
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
+      this.acRecDebitFn();
+      this.acCreditFn();
+      this.acTaxFn();
+      this.acDiscountFn();
       this.router.navigateByUrl('/accounts/invoices/list');
     });
   }
+  acDiscountFn() {
+    const internalID = 'ACT29';
+    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
+    const data = {
+      trxDate: moment().format('YYYY-MM-DD'),
+      name: customerName,
+      trxType: 'debit', // It can be debit or credit
+      type: 'invoice discount', // Type means either it's from invoice, bill etc.
+      amount: this.invoiceData.discount,
+      currency: 'CAD',
+      trxRunTotal: 0,
+      desc: `Invoice is created for ${customerName}`
+    };
+    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
+  }
+  acTaxFn() {
+    const internalID = 'ACT38';
+    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
+    const data = {
+      trxDate: moment().format('YYYY-MM-DD'),
+      name: customerName,
+      trxType: 'credit', // It can be debit or credit
+      type: 'invoice tax', // Type means either it's from invoice, bill etc.
+      amount: this.invoiceData.taxAmount,
+      currency: 'CAD',
+      trxRunTotal: 0,
+      desc: `Invoice is created for ${customerName}`
+    };
+    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
+  }
+  acRecDebitFn() {
+    const internalID = 'ACT2';
+    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
+    const data = {
+      trxDate: moment().format('YYYY-MM-DD'),
+      name: customerName,
+      trxType: 'debit', // It can be debit or credit
+      type: 'invoice', // Type means either it's from invoice, bill etc.
+      amount: this.invoiceData.totalAmount,
+      currency: 'CAD',
+      trxRunTotal: 0,
+      desc: `Invoice is created for ${customerName}`
+    };
+    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
+  }
+  acCreditFn() {
+    try {
+      for(let i=0; i < this.invoiceData.details.length; i++) {
+        const customerName = this.customersObjects[this.invoiceData.invCustomerID];
+        const data = {
+          trxDate: moment().format('YYYY-MM-DD'),
+          name: customerName,
+          trxType: 'credit', // It can be debit or credit
+          type: 'invoice', // Type means either it's from invoice, bill etc.
+          amount: this.invoiceData.totalAmount,
+          currency: 'CAD',
+          trxRunTotal: 0,
+          desc: `Invoice is created for ${customerName}`
+        };
+        this.accountService.putData(`chartAc/trx/${this.invoiceData.details[i].accountID}`, data).subscribe();
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+
+  }
+    /*
+   * Get all customers's IDs of names from api
+   */
+    fetchCustomersByIDs() {
+      this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+        this.customersObjects = result;
+      });
+    }
 }

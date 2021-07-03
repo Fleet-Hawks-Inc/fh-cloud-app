@@ -13,6 +13,7 @@ export const environment = {
   SafetyServiceUrl: 'https://safety.us-east-2.fleethawks.com/api/v1/',
 
 
+
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',

@@ -131,24 +131,39 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Account1(a/c selected in form)</td>
-                        <td>Customer Name</td>
+                      <tr *ngFor="let dt of invoice.details">
+                        <td>{{accountsObjects[dt.accountID]}}</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
                         <td>Invoice Income</td>
                         <td>0.00</td>
-                        <td>6050 CAD</td>
+                        <td>{{dt.amount}} &nbsp; {{dt.amtCur}}</td>
+                      </tr>
+                      <tr>
+                        <td>Sales/Fees Discounts</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
+                        <td>Invoice Discount</td>
+                        <td>{{invoice.discountAmount}} CAD</td>
+                        <td>0.00</td>
+
+                      </tr>
+                      <tr>
+                        <td>Other Taxes Expense</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
+                        <td>Invoice Tax</td>
+                        <td>0.00</td>
+                        <td>{{invoice.taxAmount}} CAD</td>
                       </tr>
                       <tr>
                         <td>Accounts Receivable</td>
-                        <td>Customer Name</td>
+                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
                         <td>Invoice Income</td>
-                        <td>6050 CAD</td>
+                        <td>{{invoice.totalAmount}} CAD</td>
                         <td>0.00</td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>6050 CAD</td>
-                        <td>6050 CAD</td>
+                        <td>{{invoice.totalAmount}} CAD</td>
+                        <td>{{invoice.totalAmount}} CAD</td>
                       </tr>
                     </tbody>
                   </table>

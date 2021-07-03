@@ -16,27 +16,28 @@ export class ChartOfAccountsComponent implements OnInit {
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
-   // this.trxFn(); // test function to call debit credit api
+    // this.trxFn(); // test function to call debit credit api
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     console.log('this.accounts', this.accounts);
 
   }
  // debit/credit test function
-// trxFn() {
-//   const data = {
-//     trxDate: '2021-06-06',
-//     name: 'hello world',
-//     trxType: 'debit', // It can be debit or credit
-//     type: 'invoice', // Type means either it's from invoice, bill etc.
-//     amount: 200,
-//     currency: 'CAD',
-//     trxRunTotal: 0,
-//     desc: 'test desc'
-//   };
-//   this.accountService.putData(`chartAc/trx/${this.carrierID}/${this.receivedActID}`, data).subscribe((res) => {
-//   });
-// }
+trxFn() {
+  let internalID = 'ACT35';
+  const data = {
+    trxDate: '2021-06-06',
+    name: 'hello world',
+    trxType: 'credit', // It can be debit or credit
+    type: 'invoice', // Type means either it's from invoice, bill etc.
+    amount: 500,
+    currency: 'CAD',
+    trxRunTotal: 0,
+    desc: 'test desc'
+  };
+  this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe((res) => {
+  });
+}
 preAccounts() {
   console.log('hello accounts');
   this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
