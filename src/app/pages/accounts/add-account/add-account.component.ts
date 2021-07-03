@@ -24,6 +24,7 @@ export class AddAccountComponent implements OnInit {
   closingAmt: number;
   transactionLog = [];
   internalActID = '';
+
   constructor(
     private ngbCalendar: NgbCalendar,
     private router: Router,
@@ -63,6 +64,7 @@ export class AddAccountComponent implements OnInit {
       this.actDate = '';
       this.closingAmt = null;
       this.internalActID = '';
+
     }
   }
   addAccount() {
@@ -95,6 +97,7 @@ export class AddAccountComponent implements OnInit {
       this.closingAmt = null;
       this.transactionLog = [];
       this.internalActID = '';
+
     });
   }
   fetchAccount() {
@@ -109,6 +112,7 @@ export class AddAccountComponent implements OnInit {
       this.actDate = res.actDate;
       this.closingAmt = res.closingAmt;
       this.internalActID = res.internalActID;
+
     });
   }
   updateAccount() {

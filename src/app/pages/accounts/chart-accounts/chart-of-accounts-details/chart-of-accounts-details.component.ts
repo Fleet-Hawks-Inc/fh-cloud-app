@@ -33,7 +33,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
 fetchAccount() {
   this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
     this.account = res;
-
     });
   }
 }
