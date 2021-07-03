@@ -155,14 +155,14 @@ export class EditComponent implements OnInit, OnDestroy {
       });
 
     // this.sharedData$.subscribe((result) => {
-    //   
+    //
     //
     //   for (let i = 0; i < result.length; i++) {
     //     for (const key in result[i]) {
     //       if (result[i].hasOwnProperty(key)) {
     //         //add event list localy
     //         //this.eventList = result[i][key].eventList;
-    //         
+    //
     //         //Add duty status data
     //         this.refineDutyStatusData(result[i][key].dutyCycleChanges);
     //
@@ -180,7 +180,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
        // map((result) =>  result.time ) )
       //.subscribe((result: any) => {
-      //  
+      //
 
 
 
@@ -189,7 +189,7 @@ export class EditComponent implements OnInit, OnDestroy {
         //     if (result[i].hasOwnProperty(key)) {
         //       //add event list localy
         //       this.eventList = result[i][key].eventList;
-        //       
+        //
         //       //Add duty status data
         //       this.refineDutyStatusData(result[i][key].dutyCycleChanges);
         //
@@ -209,7 +209,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
   isTimeClashes_() {
     this.timeClash = false;
-    
+
     this.eventType = $('#eventType').val();
     this.fromTime = $('#fromTime').val();
     this.toTime = $('#toTime').val();
@@ -244,13 +244,13 @@ export class EditComponent implements OnInit, OnDestroy {
     //  * If The Dates Are Valid From The User
     //  */
     // if (!tt.isBetween(iTt, eFt) || !ft.isBetween(iTt, eFt)) {
-    //   
+    //
     // }
     // /**
     //  * If The Dates Are InValid From The User
     //  */
     // else {
-    //   
+    //
     // }
     //
     // /*********************************/

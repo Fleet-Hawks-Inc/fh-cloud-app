@@ -37,6 +37,7 @@ export class InvoiceDetailComponent implements OnInit {
     totalAmount: 0
   };
   customersObjects = {};
+  accountsObjects = {};
   constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,) { }
 
   ngOnInit() {
@@ -46,6 +47,7 @@ export class InvoiceDetailComponent implements OnInit {
       this.fetchInvoice();
     }
     this.fetchCustomersByIDs();
+    this.fetchAccountsByIDs();
   }
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
@@ -60,6 +62,12 @@ export class InvoiceDetailComponent implements OnInit {
     fetchCustomersByIDs() {
       this.apiService.getData('contacts/get/list').subscribe((result: any) => {
         this.customersObjects = result;
+      });
+    }
+
+    fetchAccountsByIDs() {
+      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+        this.accountsObjects = result;
       });
     }
 }

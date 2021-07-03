@@ -12,7 +12,6 @@ declare var $: any;
 export class AddAccountComponent implements OnInit {
    @Input() childMessage: string;
   receivedActID = '';
-  carrierID = '100';
   actName: '';
   actType: '';
   actNo: number;
@@ -113,7 +112,6 @@ export class AddAccountComponent implements OnInit {
   }
   updateAccount() {
     const data = {
-      pk: this.carrierID,
       actID: this.receivedActID,
       actName: this.actName,
       actType: this.actType,
