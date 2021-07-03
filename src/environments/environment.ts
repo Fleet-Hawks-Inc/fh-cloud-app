@@ -11,6 +11,7 @@ export const environment = {
   AccountServiceUrl: 'http://localhost:4002/api/v1/',
   SafetyServiceUrl: 'http://localhost:4000/api/v1/',
 
+
   isFleetEnabled: true,
   isDispatchEnabled: true,
   isComplianceEnabled: true,

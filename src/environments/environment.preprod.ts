@@ -11,6 +11,7 @@ export const environment = {
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
   AccountServiceUrl: 'https://accounts.us-east-2.fleethawks.com/api/v1/healthcheck',
   SafetyServiceUrl: 'https://safety.us-east-2.fleethawks.com/',
+
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
