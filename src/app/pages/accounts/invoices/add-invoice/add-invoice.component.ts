@@ -145,8 +145,6 @@ export class AddInvoiceComponent implements OnInit {
   async fetchStateTaxes() {
     const result = await this.apiService.getData(`stateTaxes`).toPromise();
     this.stateTaxes = result.Items;
-    this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
-
     if (!this.invID) {
       this.invoiceData.invStateProvince = this.stateTaxes[0].stateTaxID;
       this.invoiceData.taxesInfo = [
@@ -163,10 +161,8 @@ export class AddInvoiceComponent implements OnInit {
           amount: result.Items[0].PST,
         },
       ];
-    }
-      else {
-        console.log('else part of invoice');
-        this.stateTaxes.map((v: any) => {
+    } else {
+         this.stateTaxes.map((v: any) => {
           if (this.invoiceData.invStateProvince === v.stateTaxID) {
             this.invoiceData.taxesInfo = [
               {
@@ -207,25 +203,10 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   deleteDetail(amount: number, d: number) {
-    console.log('amount', amount);
     this.invoiceData.details.splice(d, 1);
   }
 
   addInvoice() {
-    // this.invoiceData.transactionLog[];
-    // const obj = {
-    //   {
-    //       trxDate: moment().format('YYYY-MM-DD'),
-    //       name: customerName,
-    //       trxType: 'credit', // It can be debit or credit
-    //       type: 'invoice', // Type means either it's from invoice, bill etc.
-    //       amount: this.invoiceData.totalAmount,
-    //       currency: 'CAD',
-    //       trxRunTotal: 0,
-    //       desc: `Invoice is created for ${customerName}`
-    //     }
-    // }
-    console.log('invoice input data', this.invoiceData);
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Added Successfully.');
       this.acRecDebitFn();
@@ -239,7 +220,6 @@ export class AddInvoiceComponent implements OnInit {
   async calculateAmount() {
     this.midAmt = 0;
     for (let i = 0; i < this.invoiceData.details.length; i++) {
-      console.log('this.invoiceData.details[i].amount', this.invoiceData.details[i].amount);
       this.midAmt += Number(this.invoiceData.details[i].amount);
     }
     this.invoiceData.subTotal = this.midAmt;
@@ -274,13 +254,29 @@ export class AddInvoiceComponent implements OnInit {
 
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
-      console.log('fetched invoice', res);
       this.invoiceData = res[0];
+      this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
+      this.fetchStateTaxes();
       this.invoiceData.details = res[0].details;
+      const state = this.stateTaxes.find(o => o.stateTaxID === res[0].invStateProvince);
+
+      this.invoiceData.taxesInfo = [
+        {
+          name: 'GST',
+          amount: (state) ? state.GST : '',
+        },
+        {
+          name: 'HST',
+          amount: (state) ? state.HST : '',
+        },
+        {
+          name: 'PST',
+          amount: (state) ? state.PST : '',
+        },
+      ];
       });
   }
   updateInvoice() {
-    console.log('input update', this.invoiceData);
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
       this.acRecDebitFn();
