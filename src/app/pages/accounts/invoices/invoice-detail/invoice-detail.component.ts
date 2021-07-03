@@ -37,13 +37,13 @@ export class InvoiceDetailComponent implements OnInit {
     discountAmount: 0,
     taxAmount: 0,
   };
+  total = 0;
   customersObjects = {};
   accountsObjects = {};
   constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,) { }
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
-    console.log('this.invID', this.invID);
     if (this.invID) {
       this.fetchInvoice();
     }
@@ -52,9 +52,8 @@ export class InvoiceDetailComponent implements OnInit {
   }
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
-      console.log('res', res);
       this.invoice = res[0];
-      console.log('this.invoice', this.invoice);
+      this.total = Number(this.invoice.totalAmount) + Number(this.invoice.discount);
       });
   }
     /*

@@ -75,7 +75,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Balance:</div>
-                    <div class="col-lg-8 p-2 border-box">6050 CAD</div>
+                    <div class="col-lg-8 p-2 border-box"> - </div>
                   </div>
                     <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Salesperson:</div>
@@ -106,11 +106,11 @@
                                          </span>
                         <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Charges</h2> </div>
                       <div class="widgetlinfo">
-                        <div class="col-lg-2 pull-left"> <img src="img/icon-cur.png" class="img-fluid" alt="shipper"> </div>
+                        <div class="col-lg-2 pull-left">  </div>
                         <div class="col-lg-10 pull-left">
-                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discount}}{{invoice.discountUnit}}</span></p>
+                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}</span></p>
                           <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}</span></p>
-                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">50.00 CAD</span></p>
+                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">{{invoice.taxAmount}} CAD</span></p>
                           <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}</span></p>
                         </div>
                       </div>
@@ -162,8 +162,8 @@
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>{{invoice.totalAmount}} CAD</td>
-                        <td>{{invoice.totalAmount}} CAD</td>
+                        <td>{{total}} CAD</td>
+                        <td>{{total}} CAD</td>
                       </tr>
                     </tbody>
                   </table>
