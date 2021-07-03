@@ -7,7 +7,6 @@ import { AccountService, ApiService } from '../../../../services';
   styleUrls: ['./invoice-detail.component.css']
 })
 export class InvoiceDetailComponent implements OnInit {
-  carrierID = '100';
   invID = '';
   invoice = {
     invNo: '',
@@ -34,7 +33,9 @@ export class InvoiceDetailComponent implements OnInit {
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
-    totalAmount: 0
+    totalAmount: 0,
+    discountAmount: 0,
+    taxAmount: 0,
   };
   customersObjects = {};
   accountsObjects = {};

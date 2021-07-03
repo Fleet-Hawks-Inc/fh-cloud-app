@@ -164,21 +164,22 @@ export class AddInvoiceComponent implements OnInit {
         },
       ];
     }
-      else{
+      else {
+        console.log('else part of invoice');
         this.stateTaxes.map((v: any) => {
           if (this.invoiceData.invStateProvince === v.stateTaxID) {
             this.invoiceData.taxesInfo = [
               {
                 name: 'GST',
-                amount: result.Items[0].GST,
+                amount: v.GST,
               },
               {
                 name: 'HST',
-                amount: result.Items[0].HST,
+                amount: v.HST,
               },
               {
                 name: 'PST',
-                amount: result.Items[0].PST,
+                amount: v.PST,
               },
             ];
           }
