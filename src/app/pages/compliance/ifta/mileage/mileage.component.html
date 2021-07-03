@@ -204,14 +204,14 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="row mt-3 dtPaginate" *ngIf="isRecords && active == 'all'">
+                    <div class="row mt-3 dtPaginate" *ngIf="isRecords">
                       <div  class="col-6">
-                        Showing {{ recordStartPoint }} to {{ recordEndPoint }} of {{ totalRecords }} enteries
+                        Showing {{ recordStartPoint }} to {{ recordEndPoint }} of {{ recordCount }} enteries
                       </div>
                       <div  class="col-6 text-right">
-                        <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')"
+                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
                           [disabled]="recordPrev">Prev</button>
-                        <button type="button" class="btn btn-default" (click)="nextResults('all')"
+                        <button type="button" class="btn btn-default" (click)="nextResults()"
                           [disabled]="recordNext">Next</button>
                       </div>
                     </div>

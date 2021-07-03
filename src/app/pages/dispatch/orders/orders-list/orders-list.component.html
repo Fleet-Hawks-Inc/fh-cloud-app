@@ -24,7 +24,7 @@
                                 <ng-option *ngFor="let data of statusData" value="{{ data.value }}"> {{ data.name }}</ng-option>
                             </ng-select>
 
-                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order Mode" *ngIf="orderFiltr.category == 'orderType'">
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order Type" *ngIf="orderFiltr.category == 'orderType'">
                                 <ng-option value="FTL"> FTL</ng-option>
                                 <ng-option value="LTL"> LTL</ng-option>
                             </ng-select>

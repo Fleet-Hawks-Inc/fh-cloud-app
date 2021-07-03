@@ -9,19 +9,18 @@ import { AccountService } from '../../../../services';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
 
-
   actID = '';
-  account =  {
+  account = {
     actName: '',
-  actType: '',
-  actNo: 0,
-  actDesc: '',
-  opnBal: 0,
-  opnBalCurrency: '',
-  actDash: false,
-  actDate: '',
-  closingAmt: 0,
-  transactionLog: [],
+    actType: '',
+    actNo: 0,
+    actDesc: '',
+    opnBal: 0,
+    opnBalCurrency: '',
+    actDash: false,
+    actDate: '',
+    closingAmt: 0,
+    transactionLog: [],
   };
   constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
@@ -35,5 +34,5 @@ fetchAccount() {
   this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
     this.account = res;
     });
-}
+  }
 }
