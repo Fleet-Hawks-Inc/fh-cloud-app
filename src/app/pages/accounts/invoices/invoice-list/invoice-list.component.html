@@ -175,7 +175,7 @@
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
                                        <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
-                                       <a class="dropdown-item text-1" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                       <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'PAID'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
                                     </div>
                                  </div>
