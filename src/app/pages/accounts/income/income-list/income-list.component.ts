@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService, ApiService } from 'src/app/services';
 import { Router } from '@angular/router';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-income-list',
@@ -12,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class IncomeListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   incomeAccounts = [];
   customers = [];
   categories = [];
@@ -27,6 +27,9 @@ export class IncomeListComponent implements OnInit {
     this.accountService.getData(`income`)
       .subscribe((result: any) => {
         if (result[0] != undefined) {
+          if(result.length == 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
           this.incomeAccounts = result;
           this.incomeAccounts.map((v) => {
             if(v.paymentMode === 'creditCard') {
@@ -57,8 +60,9 @@ export class IncomeListComponent implements OnInit {
   deleteIncome(incomeID) {
     this.accountService.getData(`income/delete/${incomeID}`)
       .subscribe((result: any) => {
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchAccounts();
-        this.toaster.success('Manual income deleted successfully.');
+        this.toaster.success('Income transaction deleted successfully.');
       })
   }
 

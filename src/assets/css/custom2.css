@@ -876,3 +876,7 @@
   {
       margin-top: 30px !important;
   }
+
+ .safety-slider .slick-prev::before, .safety-slider .slick-next::before {
+    color: #000;
+}
