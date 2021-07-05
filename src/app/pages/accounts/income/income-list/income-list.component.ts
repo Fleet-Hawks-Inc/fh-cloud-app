@@ -15,12 +15,14 @@ export class IncomeListComponent implements OnInit {
   incomeAccounts = [];
   customers = [];
   categories = [];
+  invoices = [];
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
     this.fetchAccounts();
     this.fetchCustomers();
     this.fetchIncomeCategories();
+    this.fetchInvoices();
   }
 
   fetchAccounts() {
@@ -71,6 +73,12 @@ export class IncomeListComponent implements OnInit {
       .subscribe((result: any) => {
         this.categories = result;
       })
+  }
+
+  fetchInvoices() {
+    this.accountService.getData('invoices/get/list').subscribe((res: any) => {
+      this.invoices = res;
+    });
   }
 
 }

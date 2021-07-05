@@ -61,25 +61,12 @@ export class AddIncomeComponent implements OnInit {
     },
   ];
   
-  invoices = [
-    {
-      invID: '1',
-      invNo : '1001'
-    },
-    {
-      invID: '2',
-      invNo : '1002'
-    },
-    {
-      invID: '3',
-      invNo : '1003'
-    }
-  ];
+  invoices = [];
 
   categories = [];
   incomeAccounts;
   depositAccounts;
-  customers = [];
+  customers;
   paymentLabel = '';
   errors = {};
   response: any = '';
@@ -108,19 +95,12 @@ export class AddIncomeComponent implements OnInit {
       this.fetchIncomeByID();
     }
     this.listService.fetchChartAccounts();
+    this.listService.fetchCustomers();
     this.incomeAccounts = this.listService.accountsList;
     this.depositAccounts = this.listService.accountsList;
-    this.fetchCustomers();
+    this.customers = this.listService.customersList;
     this.fetchIncomeCategories();
-  }
-
-  fetchCustomers() {
-    this.apiService.getData(`contacts/get/type/customer`)
-      .subscribe((result: any) => {
-        if (result[0] != undefined) {
-          this.customers = result;
-        }
-      })
+    this.fetchInvoices();
   }
 
   showPaymentFields(type) {
@@ -129,7 +109,7 @@ export class AddIncomeComponent implements OnInit {
     } else if(type === 'debitCard') {
       this.paymentLabel = 'Debit Card';
     } else if(type === 'demandDraft') {
-      this.paymentLabel = 'Demand Card';
+      this.paymentLabel = 'Demand Draft';
     } else if(type === 'eft') {
       this.paymentLabel = 'EFT';
     } else if(type === 'cash') {
@@ -137,6 +117,8 @@ export class AddIncomeComponent implements OnInit {
     } else if(type === 'cheque') {
       this.paymentLabel = 'Cheque';
     }
+    this.incomeData.paymentModeNo = '';
+    this.incomeData.paymentModeDate = null;
   }
 
   /*
@@ -344,5 +326,17 @@ export class AddIncomeComponent implements OnInit {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
     }); 
+  }
+
+  changeDepAcc(val) {
+    if(val === this.incomeData.depositAccID) {
+      this.incomeData.depositAccID = null;
+    }
+  }
+
+  fetchInvoices() {
+    this.accountService.getData('invoices').subscribe((res: any) => {
+      this.invoices = res;
+    });
   }
 }

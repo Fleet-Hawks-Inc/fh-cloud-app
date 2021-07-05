@@ -39,7 +39,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Invoice#</td>
-                                                        <td>{{ incomeData.invoiceID }}</td>
+                                                        <td>{{ invoices[incomeData.invoiceID] }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Customer</td>
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="row">
+                                    <div class="row mb-2" *ngIf="documentSlides.length > 0">
                                         <div class="col-lg-12">
                                             <div class="vehicle-common-box p-3">
                                                 <div class="row">
@@ -80,9 +80,8 @@
                                                         <label
                                                             class="control-label font-weight-bold text-3">Documents(s)</label>
                                                     </div>
-                                                    <!-- <div class="col-lg-6 text-right"><div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div></div> -->
                                                 </div>
-                                                <hr class="solid mt-3" *ngIf="documentSlides.length > 0">
+                                                <hr class="solid mt-3">
                                                 <div class="row" *ngFor="let item of documentSlides;let d= index">
                                                     <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
                                                         data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
@@ -97,7 +96,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
+                                    <div class="row">
                                         <div class="col-lg-12">
                                             <table class="table table-bordered simple-table">
                                                 <thead>
@@ -137,3 +136,32 @@
         </section>
     </div>
 </section>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="form-row">
+               <div class="form-group col-md-12">
+                  <div>
+                     <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
+
+                  </div>
+               </div>
+            </div>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>
