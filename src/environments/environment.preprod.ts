@@ -5,7 +5,7 @@ export const environment = {
   isDispatchEnabled: true,
   isComplianceEnabled: true,
   isManageEnabled: true,
-  isSafetyEnabled: false,
+  isSafetyEnabled: true,
   isAccountsEnabled: false,
   BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
