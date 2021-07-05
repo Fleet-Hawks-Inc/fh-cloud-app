@@ -7,7 +7,6 @@ import { AccountService, ApiService } from '../../../../services';
   styleUrls: ['./invoice-detail.component.css']
 })
 export class InvoiceDetailComponent implements OnInit {
-  carrierID = '100';
   invID = '';
   invoice = {
     invNo: '',
@@ -34,24 +33,27 @@ export class InvoiceDetailComponent implements OnInit {
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
-    totalAmount: 0
+    totalAmount: 0,
+    discountAmount: 0,
+    taxAmount: 0,
   };
+  total = 0;
   customersObjects = {};
+  accountsObjects = {};
   constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,) { }
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
-    console.log('this.invID', this.invID);
     if (this.invID) {
       this.fetchInvoice();
     }
     this.fetchCustomersByIDs();
+    this.fetchAccountsByIDs();
   }
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
-      console.log('res', res);
       this.invoice = res[0];
-      console.log('this.invoice', this.invoice);
+      this.total = Number(this.invoice.totalAmount) + Number(this.invoice.discount);
       });
   }
     /*
@@ -60,6 +62,12 @@ export class InvoiceDetailComponent implements OnInit {
     fetchCustomersByIDs() {
       this.apiService.getData('contacts/get/list').subscribe((result: any) => {
         this.customersObjects = result;
+      });
+    }
+
+    fetchAccountsByIDs() {
+      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+        this.accountsObjects = result;
       });
     }
 }

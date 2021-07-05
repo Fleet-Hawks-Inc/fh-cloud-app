@@ -149,8 +149,8 @@ export class DispatchOverviewComponent implements OnInit {
         }
         this.getStartandEndVal();
         result.Items.map((k)=> {
-          k.eventParams.message = k.eventParams.message.replace('shippers','consigner');
-          k.eventParams.message = k.eventParams.message.replace('receivers','consignee');
+          k.eventParams.message = k.eventParams.message.replace('consigner','shippers');
+          k.eventParams.message = k.eventParams.message.replace('consignee','receivers');
         })
         if(this.pageload){
           result.Items.map((v)=> {
