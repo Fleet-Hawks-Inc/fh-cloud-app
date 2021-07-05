@@ -83,8 +83,8 @@ export class OrdersListComponent implements OnInit {
       value: 'cancelled'
     },
     {
-      name: "Invoiced",
-      value: 'invoiced'
+      name: "Delivered",
+      value: 'delivered'
     },
   ]
   records = false;
