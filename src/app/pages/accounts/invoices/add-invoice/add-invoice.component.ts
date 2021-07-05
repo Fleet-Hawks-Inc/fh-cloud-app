@@ -138,7 +138,7 @@ export class AddInvoiceComponent implements OnInit {
       },
     ];
     this.tax = (parseInt(selected.GST) ? selected.GST : 0) + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
-    console.log('this.tax', this.tax);
+
     await this.calculateAmount();
   }
 
@@ -279,10 +279,6 @@ export class AddInvoiceComponent implements OnInit {
   updateInvoice() {
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
-      this.acRecDebitFn();
-      this.acCreditFn();
-      this.acTaxFn();
-      this.acDiscountFn();
       this.router.navigateByUrl('/accounts/invoices/list');
     });
   }
@@ -317,7 +313,7 @@ export class AddInvoiceComponent implements OnInit {
     this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
   }
   acRecDebitFn() {
-    const internalID = 'ACT2';
+    const internalID = 'ACT2'; // Accounts receivable internal account id
     const customerName = this.customersObjects[this.invoiceData.invCustomerID];
     const data = {
       trxDate: moment().format('YYYY-MM-DD'),
