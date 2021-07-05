@@ -4,8 +4,8 @@ describe('Driver Tests', function () {
   afterEach(() => {
 
     if (authToken && driverID) {
-
       const serviceUrl = Cypress.env('SERVICE_URL') + '/drivers/record/cypress/delete/' + driverID;
+      ;
 
       cy.request({
         method: 'DELETE',
@@ -13,13 +13,10 @@ describe('Driver Tests', function () {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           "Content-type": "application/json"
-
         }
       }).then(response => {
-
       })
     }
-
   });
   it('should allow users to add driver with all required fields.', function () {
 
@@ -32,15 +29,15 @@ describe('Driver Tests', function () {
     cy.get('fleet-sidebar > ul > li:nth-of-type(2) > .nav-link').click();
     cy.get('.col-md-6 > .btn-success').click();
     cy.get('.content-body > #driverForm > .m-2 > :nth-child(1) > .col-12 > .bg-white > .form-group > :nth-child(2) > :nth-child(1) > #employeeIDDiv > .row > .ng-star-inserted > .input-group > .form-control').clear();
-    cy.get('.content-body > #driverForm > .m-2 > :nth-child(1) > .col-12 > .bg-white > .form-group > :nth-child(2) > :nth-child(1) > #employeeIDDiv > .row > .ng-star-inserted > .input-group > .form-control').type('7861');//emp id
+    cy.get('.content-body > #driverForm > .m-2 > :nth-child(1) > .col-12 > .bg-white > .form-group > :nth-child(2) > :nth-child(1) > #employeeIDDiv > .row > .ng-star-inserted > .input-group > .form-control').type('1755');//emp id
     cy.get('.justify-content-between [class="col-lg-6 mb-1"]:nth-of-type(2) [role="combobox"]').first().click();
     cy.get('div:nth-of-type(1) > .ng-option-label.ng-star-inserted').last().click();//status
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="userName"]').clear();
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="userName"]').type('nameet.473');//username
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="userName"]').type('naman.0903');//username
     cy.get('input#birth').first().click();
     cy.get('div:nth-of-type(2) > div:nth-of-type(2) > .btn-light.ng-star-inserted').last().click();//birthdate
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="firstName"]').clear();
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="firstName"]').type('kevin');//first name
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="firstName"]').type('kailashh');//first name
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="lastName"]').clear();
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="lastName"]').type('smith');//last name
 
@@ -52,7 +49,7 @@ describe('Driver Tests', function () {
     cy.get('.adddriverpl [name="phone"]').clear();
     cy.get('.adddriverpl [name="phone"]').type('8968831455');//phone
     cy.get('.adddriverpl [name="email"]').clear();
-    cy.get('.adddriverpl [name="email"]').type('kevinsmithh@gmail.in');//email
+    cy.get('.adddriverpl [name="email"]').type('shamshersingh1976@gmail.in');//email
     cy.get('.adddriverpl [name="startDate"]').first().click();
     cy.get('div:nth-of-type(2) > div:nth-of-type(2) > .btn-light.ng-star-inserted').last().click();//start date
     cy.get('div:nth-of-type(9) > ng-select[role="listbox"] input[role="combobox"]').first().click();
@@ -63,7 +60,7 @@ describe('Driver Tests', function () {
     cy.get('[class="col-lg-5 mar-top-37"] [type]').attachFile(file2);
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').clear();
 
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').type('000496545');//cdl
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').type('132532702');//cdl
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="licenceDetails.licenceExpiry"]').first().click();
     cy.get('div:nth-of-type(6) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();//expiration date
     cy.get('[name] [class="row mb-3"]:nth-of-type(5) [class="col-lg-5"]:nth-of-type(3) [role="combobox"]').first().click();
@@ -71,7 +68,7 @@ describe('Driver Tests', function () {
     cy.get('div:nth-of-type(5) > .col-lg-12 > .bg-white.p-3 > .adddriverpl.form-group.row.text-dark > div:nth-of-type(3) > .row > div:nth-of-type(4) > ng-select[role="listbox"] input[role="combobox"]').first().click();
     cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();//province/state
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').clear();
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').type('000654000');//sin
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').type('998877000');//sin
     cy.get('div:nth-of-type(7) > .col-lg-12 > .bg-white.p-3 > .adddriverpl.form-group.row.text-dark > .col-lg-6.mb-1 > .row > div:nth-of-type(1) > ng-select[role="listbox"] input[role="combobox"]').first().click();
     cy.get('div:nth-of-type(2) > .ng-option-label.ng-star-inserted').last().click();//status exempt
     cy.get(':nth-child(7) > .col-lg-12 > .bg-white > .form-group > :nth-child(3) > .row > :nth-child(2) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
@@ -82,7 +79,6 @@ describe('Driver Tests', function () {
     cy.get('.col-lg-11.pb-1.pr-2.pt-1.text-right > .btn.btn-success.cus-btn-padd.ng-star-inserted').click();
     cy.wait(4000);
     Cypress.on('uncaught:exception', (err, runnable) => {
-
       return false
     })
 
@@ -164,7 +160,7 @@ describe('Driver Tests', function () {
       return false
     })
   });
-  it('should allow user to edit driver', function () {
+  it.only('should allow user to edit driver', function () {
 
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -176,8 +172,9 @@ describe('Driver Tests', function () {
     cy.get('tr:nth-of-type(1) > .border-0  .bg-transparent.border-0 > .fa-ellipsis-v.fas').click();
     cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();
     cy.url().then(url => {
-      ;
+
       let newUrl = url.split('/');
+
 
       // cy.get('.editor-toolbar-actions-save').click();
       // cy.url().should('not.eq', url);
@@ -192,8 +189,9 @@ describe('Driver Tests', function () {
       return false
     })
 
+
   });
-  it('should allow user to delete driver', function () {
+  it.only('should allow user to delete driver', function () {
 
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -204,9 +202,10 @@ describe('Driver Tests', function () {
     cy.get('fleet-sidebar > ul > li:nth-of-type(2) > .nav-link').click();
     cy.get('tr:nth-of-type(1) > .border-0  .bg-transparent.border-0 > .fa-ellipsis-v.fas').click();
     cy.get('.dropdown-menu.show > a:nth-of-type(2)').click();
-    cy.get('.col-lg-11.pb-1.pr-2.pt-1.text-right > .btn.btn-success.cus-btn-padd.ng-star-inserted').click();
+
     cy.getLocalStorage('congnitoAT').then((data) => {
       authToken = data;
+
     });
     Cypress.on('uncaught:exception', (err, runnable) => {
 
@@ -265,12 +264,12 @@ describe('Driver Tests', function () {
 
 
 
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').type('456496565');//cdl
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').type('450496565');//cdl
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="CDL_Number"]').clear();
     cy.get('div:nth-of-type(3) > .row > div:nth-of-type(1) > .text-danger > div').contains('CDL# is required.');
 
 
-    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').type('789655666');//sin
+    cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').type('789650666');//sin
     cy.get('section[role="main"] > form#driverForm > .m-2 input[name="SIN"]').clear();
     cy.get('div:nth-of-type(2) > .row > div:nth-of-type(2) > .text-danger > div').contains('SIN is required.');
 
