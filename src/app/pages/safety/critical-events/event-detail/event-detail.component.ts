@@ -51,11 +51,12 @@ export class EventDetailComponent implements OnInit {
   newNotes: string;
 
   slideConfig = {
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1,
     dots: true,
     infinite: true,
     autoplay: true,
+    variableWidth: true,
     autoplaySpeed: 1500,
   };
 
@@ -68,7 +69,6 @@ export class EventDetailComponent implements OnInit {
     autoplaySpeed: 1500,
   };  
 
-  showSlider = false;
 
   vehiclesObject: any = {};
   driversObject: any = {};
@@ -92,7 +92,7 @@ export class EventDetailComponent implements OnInit {
         this.vehicle = result.vehicleID;
         this.eventDate = result.eventDate;
         this.eventSource = result.eventSource;
-        this.eventTime =  result.eventTime;;
+        this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
         this.eventType = result.eventType;
         this.location = result.location;
@@ -108,15 +108,25 @@ export class EventDetailComponent implements OnInit {
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
           this.eventVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
-
+        
         this.createdBy = result.createdBy;
         this.safetyNotes = result.safetyNotes;
-        console.log('this.eventImages', this.eventImages);
-        console.log('this.eventVideos', this.eventVideos);
-        // this.fetchDriverDetail(this.driver)
+        
       })
   }
   
+  convertTimeFormat (time: any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+
   mapShow() {
     
     setTimeout(() => {
@@ -125,6 +135,9 @@ export class EventDetailComponent implements OnInit {
     }, 100);
   }
 
+  slickInit(event) {
+    console.log('event', event);
+  }
 
   setMarker = async (value: any) => {
     
@@ -142,10 +155,6 @@ export class EventDetailComponent implements OnInit {
     
   }
   
-  initSlider(){
-    $('.slider-slider').slick('slick');
-    
-  }
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
