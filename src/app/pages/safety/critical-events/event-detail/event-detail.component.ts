@@ -7,6 +7,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from 'moment';
 import { SafetyService } from 'src/app/services/safety.service';
 declare var H: any;
+declare var $: any;
 
 @Component({
   selector: 'app-event-detail',
@@ -55,6 +56,7 @@ export class EventDetailComponent implements OnInit {
     dots: true,
     infinite: true,
     autoplay: true,
+    variableWidth: true,
     autoplaySpeed: 1500,
   };
 
@@ -65,13 +67,19 @@ export class EventDetailComponent implements OnInit {
     infinite: true,
     autoplay: true,
     autoplaySpeed: 1500,
-  };
+  };  
+
+
+  vehiclesObject: any = {};
+  driversObject: any = {};
 
   ngOnInit() {
     this.platform=this.hereMap.mapSetAPI();
     this.map = this.hereMap.mapInit();
     this.eventID = this.route.snapshot.params['eventID'];
     this.fetchEventDetail();
+    this.fetchAllDriverIDs();
+    this.fetchAllVehiclesIDs();
     this.mapShow();
   }
 
@@ -80,11 +88,11 @@ export class EventDetailComponent implements OnInit {
       .subscribe(async (res: any) => {
         
         let result = res[0];
-        this.driver = result.driverUsername;
+        this.driver = result.driverID;
         this.vehicle = result.vehicleID;
         this.eventDate = result.eventDate;
         this.eventSource = result.eventSource;
-        this.eventTime =  result.eventTime;;
+        this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
         this.eventType = result.eventType;
         this.location = result.location;
@@ -100,15 +108,25 @@ export class EventDetailComponent implements OnInit {
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
           this.eventVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
-
+        
         this.createdBy = result.createdBy;
         this.safetyNotes = result.safetyNotes;
-        console.log('this.eventImages', this.eventImages);
-        console.log('this.eventVideos', this.eventVideos);
-        // this.fetchDriverDetail(this.driver)
+        
       })
   }
   
+  convertTimeFormat (time: any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+
   mapShow() {
     
     setTimeout(() => {
@@ -117,6 +135,9 @@ export class EventDetailComponent implements OnInit {
     }, 100);
   }
 
+  slickInit(event) {
+    console.log('event', event);
+  }
 
   setMarker = async (value: any) => {
     
@@ -124,24 +145,28 @@ export class EventDetailComponent implements OnInit {
     const result = await service.geocode({ q: value });
     
     const positionFound = result.items[0].position;
+    const startIcon=new H.map.Icon("/assets/img/mapIcon/dest.png",{ size: { w: 30, h: 30 } })
     this.map.setCenter({
       lat: positionFound.lat,
       lng: positionFound.lng
     });
-    const currentLoc = new H.map.Marker({ lat: positionFound.lat, lng: positionFound.lng });
+    const currentLoc = new H.map.Marker({ lat: positionFound.lat, lng: positionFound.lng }, { icon: startIcon });
     this.map.addObject(currentLoc);
     
   }
+  
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
 
-
-  async fetchDriverDetail(driverUserName) {
-    let result = await this.apiService.getData('drivers/userName/' + driverUserName).toPromise();
-      // .subscribe((result: any) => {
-        
-        if (result.Items[0].firstName != undefined) {
-          return result.Items[0].firstName + ' ' + result.Items[0].lastName;
-        }
-      // })
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
   }
 
   

@@ -40,7 +40,7 @@
                         </a>
                     </div>
                     <div class="col-md-4 col-lg-4 pr-1 text-right">
-                        <a href="#fetchEventModal" class="modal-with-form btn btn-success btn-sm mx-2 "
+                        <a href="javascript:;" class="modal-with-form btn btn-success btn-sm mx-2 "
                             style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
 
                         
@@ -75,44 +75,20 @@
                                     </thead>
                                     <tbody *ngIf="events.length > 0">
                                         <tr class="cursorpoint" *ngFor="let data of events; let i= index">
-                                            <td routerLink="/safety/critical-events/event-details/{{data.eventID}}">
-                                                {{ driversObject[data.driverUsername] }}</td>
-                                            <td> {{ vehiclesObject[data.vehicleID] }} </td>
-                                            <td>{{ data.eventDate | date: 'dd-MM-yyyy' }}</td>
-                                            <td>{{ data.eventTime }}</td>
-                                            <td>{{ data.eventType }}</td>
-                                            <td>{{ data.eventSource }}</td>
-                                            <td>{{ data.createdBy }}</td>
-                                            <td>{{ data.location }}</td>
+                                            <td class="text-capitalize" routerLink="/safety/critical-events/event-details/{{data.eventID}}">
+                                                {{ driversObject[data.driverID] }}</td>
+                                            <td class="text-capitalize"> {{ vehiclesObject[data.vehicleID] }} </td>
+                                            <td class="text-capitalize">{{ data.eventDate | date: 'yyyy-MM-dd' }}</td>
+                                            <td class="text-capitalize">{{ convertTimeFormat(data.eventTime) }}</td>
+                                            <td class="text-capitalize">{{ data.eventType }}</td>
+                                            <td class="text-capitalize">{{ data.eventSource }}</td>
+                                            <td class="text-capitalize">{{ data.createdBy }}</td>
+                                            <td class="text-capitalize">{{ data.location }}</td>
                                             <td style="width: 180px;" >
-                                                <ng-select [clearable]="false" class="form-control" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
+                                                <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
                                                     <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
                                                 </ng-select>
                                             </td>
-                                            <!-- <td>
-                                                <select class="form-control" name="coachingStatus"
-                                                    [(ngModel)]="data.coachingStatus"
-                                                    (change)="changeCoachingStatus($event, data.eventID)">
-                                                    <option *ngFor="let stat of coachingStatus"
-                                                        value="{{ stat.value }}">{{ stat.name }}</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown dropright">
-                                                    <button class="bg-transparent border-0" type="button"
-                                                        id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu"
-                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                        <a class="dropdown-item"
-                                                            routerLink="/safety/critical-events/edit-event/{{data.eventID}}">Edit</a>
-                                                        <a class="dropdown-item" href="javascript:;"
-                                                            (click)="deleteEvent(data.eventID)">Delete</a>
-                                                    </div>
-                                                </div>
-                                            </td> -->
                                         </tr>
                                     </tbody>
 

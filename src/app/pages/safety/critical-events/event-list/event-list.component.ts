@@ -18,28 +18,7 @@ export class EventListComponent implements OnInit {
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
-  coachingStatus = [
-    {
-      value:'open',
-      name: 'Open'
-    },
-    {
-      value:'closed',
-      name: 'Closed'
-    },
-    {
-      value:'underReview',
-      name: 'Under Review'
-    },
-    {
-      value:'coaching',
-      name: 'Coaching'
-    },
-    {
-      value:'investigating',
-      name: 'Investigating'
-    },
-  ];
+ 
   vehicles  = [];
   vehicleID = '';
   filterValue = {
@@ -57,11 +36,11 @@ export class EventListComponent implements OnInit {
 
   status_values: any = ["open", "investigating", "coaching", "closed"];
   
-  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
-    this.fetchevents();
+    this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
@@ -99,7 +78,7 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  fetchevents() {
+  fetchEvents() {
     this.safetyService.getData('critical-events')
       .subscribe((result: any) => {
         this.events = result;
@@ -135,22 +114,16 @@ export class EventListComponent implements OnInit {
       status: newValue
     }
     this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
-      
-      if(res == false) {
-        let result = await this.getOldStatus(eventID)
-        this.events[i].status = result[0].status;
-        this.toastr.error('Please select valid status');
+      if(res.status == false) {
+        this.events[i].status = res.oldStatus;
+        this.toaster.error('Please select valid status');
       } else {
-        this.toastr.success('Status updated successfully');
+        this.toaster.success('Status updated successfully');
       }
     });
 
   }
 
-  async getOldStatus(eventID: string) {
-    return await this.safetyService.getData('critical-events/' + eventID).toPromise();
-    
-  }
 
   searchSelectedDriver(data) {
     this.filterValue.driverID = data.userName;
@@ -186,10 +159,22 @@ export class EventListComponent implements OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/username-list')
+    this.apiService.getData('drivers/get/list')
       .subscribe((result: any) => {
         this.driversObject = result;
-        
       });
   }
+
+  convertTimeFormat (time: any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+  
 }
