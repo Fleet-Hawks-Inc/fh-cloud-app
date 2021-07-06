@@ -82,21 +82,16 @@
                                                     </div>
                                                     <!-- <div class="col-lg-6 text-right"><div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div></div> -->
                                                 </div>
-                                                <hr class="solid mt-3">
-                                                <div class="row">
-                                                    <div class="col-lg-9">Name of the Document</div>
+                                                <hr class="solid mt-3" *ngIf="documentSlides.length > 0">
+                                                <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                        data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                                        {{d+1}}</a> </div>
                                                     <div class="col-lg-3 text-right">
-                                                        <div class="btn-group flex-wrap mx-2">
-                                                            <button type="button"
-                                                                class="btn btn-default btn-xs dropdown-toggle"
-                                                                data-toggle="dropdown" aria-expanded="false"><span
-                                                                    class="caret"></span></button>
-                                                            <div class="dropdown-menu" role="menu"
-                                                                x-placement="bottom-start"
-                                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                                <a class="modal-with-form dropdown-item text-1"
-                                                                    href="#deleteModal">Delete</a> </div>
-                                                        </div>
+                                                        <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                                           data-toggle="modal" data-target="#viewDocModal"></i>
+                                                        <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                                           class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

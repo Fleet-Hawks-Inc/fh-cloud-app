@@ -94,6 +94,7 @@ export class AddEventComponent implements OnInit {
     
     uploadedDocs = [];
     currentUser: any;
+    disableButton = false;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
@@ -151,7 +152,7 @@ export class AddEventComponent implements OnInit {
     }
 
     addEvent() {
-        this.spinner.show();
+        this.disableButton = true;
         this.hideErrors();
         let timestamp;
         const fdate = this.event.eventDate.split('-');
@@ -189,10 +190,11 @@ export class AddEventComponent implements OnInit {
                     )
                     .subscribe({
                         complete: () => {
-                            this.spinner.hide();
+                            this.disableButton = false;
                             this.throwErrors();
                         },
                         error: () => {
+                            this.disableButton = false;
                         },
                         next: () => {
                         },
