@@ -11,10 +11,6 @@ jobs:
       - name: Install a project with a clean slate
         run: |
           npm install
-          npm ci
-          $(npm bin)/cypress cache path
-          $(npm bin)/cypress cache list
-          $(npm bin)/cypress verify
   
 
       - name: Cypress run
