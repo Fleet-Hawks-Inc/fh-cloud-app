@@ -15,6 +15,7 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
+        run: npm run cypress
         with:
           record: true
         env:
