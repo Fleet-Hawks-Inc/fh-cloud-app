@@ -124,7 +124,7 @@ describe("Assets Test", function () {
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
 
         cy.get('#dropdownMenuButton-1 > .fas').click();
-        cy.get('[href="\#\/fleet\/assets\/edit\/1ukNRrLIdEn5knoMOlLHQlXFOou"]').click();//edit
+        cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();//edit
         //cy.get('.col-11 > .btn-success').click();//update
         cy.url().then(url => {
             console.log('url', url);
