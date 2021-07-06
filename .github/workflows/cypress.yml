@@ -1,27 +1,16 @@
-name: Cypress tests
-on: [push]
-jobs:
-  cypress-run:
-    name: Cypress run
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install a project with a clean slate
-        run: |
-          npm ci
-          $(npm bin)/cypress cache path
-          $(npm bin)/cypress cache list
-          $(npm bin)/cypress verify
-  
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-        env:
-          # pass the Dashboard record key as an environment variable
-          CYPRESS_RECORD_KEY: 8ccc33e8-a1ba-4d67-a192-bf12c9a89fe6
-          # pass GitHub token to allow accurately detecting a build vs a re-run build
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ name: Pre-Merge E2E tests
+ on: [push]
+ jobs:
+   cypress-run:
+     runs-on: ubuntu-latest
+     strategy:
+       matrix:
+         node: [12]
+     timeout-minutes: 15
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v2
+       # Install NPM dependencies, cache them correctly
+       # and run all Cypress tests
+       - name: Cypress run
+         uses: cypress-io/github-action@v2
