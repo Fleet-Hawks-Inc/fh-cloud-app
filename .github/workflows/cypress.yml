@@ -1,14 +1,16 @@
-
-name: End-to-end tests
-on: [push]
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          build: npm run cypress
+ name: Pre-Merge E2E tests
+ on: [push]
+ jobs:
+   cypress-run:
+     runs-on: ubuntu-latest
+     strategy:
+       matrix:
+         node: [12]
+     timeout-minutes: 15
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v2
+       # Install NPM dependencies, cache them correctly
+       # and run all Cypress tests
+       - name: Cypress run
+         uses: cypress-io/github-action@v2
