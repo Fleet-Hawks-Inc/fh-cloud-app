@@ -31,7 +31,7 @@ export class ReportComponent implements OnInit {
   }
   fetchQuarter(){
     this.apiService.getData('ifta/quarters').subscribe(result=>{
-      
+
       // if(Object.keys(result).length == 0){
 
       //   this.dataMessage=Constants.NO_RECORDS_FOUND;

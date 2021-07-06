@@ -16,11 +16,12 @@ export class ChartOfAccountsComponent implements OnInit {
   ngOnInit() {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
-
   }
 preAccounts() {
   this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
    this.toaster.success('Predefined  Accounts Created.');
+   this.listService.fetchChartAccounts();
+   this.accounts = this.listService.accountsList;
   });
 }
 deleteAccount(actID: string) {

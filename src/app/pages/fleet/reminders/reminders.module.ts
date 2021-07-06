@@ -16,7 +16,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ChartsModule } from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
-import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -102,7 +101,6 @@ const routes: Routes = [
     VehicleRenewAddComponent,
     AddContactRenewComponent,
     ListContactRenewComponent,
-    AbsoluteValuePipe
   ],
   imports: [
     CommonModule,
