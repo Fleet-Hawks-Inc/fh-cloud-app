@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
+declare var $: any;
 
 @Component({
   selector: 'app-add-journal',
@@ -27,14 +28,18 @@ export class AddJournalComponent implements OnInit {
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     },
     {
       accountID: null,
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     }],
     debitTotalAmount: 0,
     creditTotalAmount: 0,
@@ -78,7 +83,9 @@ export class AddJournalComponent implements OnInit {
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     };
     this.journal.details.push(obj)
   }
@@ -163,6 +170,16 @@ export class AddJournalComponent implements OnInit {
 
           this.existingDocs = result[0].attachments;
           this.carrierID = result[0].carrierID;
+
+          this.journal.details.map((k, index) => {
+            let type= '';
+            if(k.debit === 0) {
+              type='credit';
+            } else {
+              type='debit'
+            }
+            this.disableOtherField(type, index);
+          })
 
           if (result[0].attachments != undefined && result[0].attachments.length > 0) {
             result[0].attachments.map((x) => {
@@ -279,6 +296,24 @@ export class AddJournalComponent implements OnInit {
     
     for (let i = 0; i < files.length; i++) {
       this.uploadedDocs.push(files[i])
+    }
+  }
+
+  disableOtherField(type, index) {
+    if(type === 'debit') {
+      if(this.journal.details[index].debit > 0) {
+        this.journal.details[index].credit = 0;
+        this.journal.details[index].creditDisabled = true;
+      } else {
+        this.journal.details[index].creditDisabled = false;
+      }
+    } else if (type === 'credit') {
+      if(this.journal.details[index].credit > 0) {
+        this.journal.details[index].debit = 0;
+        this.journal.details[index].debitDisabled = true;
+      } else {
+        this.journal.details[index].debitDisabled = false;
+      }
     }
   }
 }

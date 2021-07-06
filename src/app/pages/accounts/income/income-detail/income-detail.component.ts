@@ -34,6 +34,7 @@ export class IncomeDetailComponent implements OnInit {
   carrierID = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   documentSlides = [];
+  invoices = [];
 
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private route: ActivatedRoute, private domSanitizer: DomSanitizer, private toaster: ToastrService) { }
 
@@ -43,6 +44,7 @@ export class IncomeDetailComponent implements OnInit {
     this.fetchCustomers();
     this.fetchAccounts();
     this.fetchIncomeCategories();
+    this.fetchInvoices();
   }
 
   fetchIncomeByID() {
@@ -54,7 +56,7 @@ export class IncomeDetailComponent implements OnInit {
             result[0].attachments.map((x) => {
               let obj = {
                 name: x,
-                path: `${this.Asseturl}/${this.carrierID}/${x}`
+                path: `${this.Asseturl}/${result[0].carrierID}/${x}`
               }
               this.documentSlides.push(obj);
             })
@@ -117,5 +119,11 @@ export class IncomeDetailComponent implements OnInit {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
     }); 
+  }
+
+  fetchInvoices() {
+    this.accountService.getData('invoices/get/list').subscribe((res: any) => {
+      this.invoices = res;
+    });
   }
 }
