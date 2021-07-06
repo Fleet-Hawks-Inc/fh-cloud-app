@@ -78,8 +78,8 @@
                                             <td class="text-capitalize" routerLink="/safety/critical-events/event-details/{{data.eventID}}">
                                                 {{ driversObject[data.driverID] }}</td>
                                             <td class="text-capitalize"> {{ vehiclesObject[data.vehicleID] }} </td>
-                                            <td class="text-capitalize">{{ data.eventDate | date: 'dd-MM-yyyy' }}</td>
-                                            <td class="text-capitalize">{{ data.eventTime }}</td>
+                                            <td class="text-capitalize">{{ data.eventDate | date: 'yyyy-MM-dd' }}</td>
+                                            <td class="text-capitalize">{{ convertTimeFormat(data.eventTime) }}</td>
                                             <td class="text-capitalize">{{ data.eventType }}</td>
                                             <td class="text-capitalize">{{ data.eventSource }}</td>
                                             <td class="text-capitalize">{{ data.createdBy }}</td>
