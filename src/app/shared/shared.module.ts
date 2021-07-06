@@ -21,6 +21,7 @@ import { ɵs } from '@ng-select/ng-select';
 import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
 import { AllCarriersComponent } from './all-carriers/all-carriers.component';
 import { MustMatchDirective } from '../directives/must-match.directive';
+import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
 
 
 /**
@@ -97,7 +98,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddVehicleNewComponent,
     SharedModalsComponent,
     AllCarriersComponent,
-    MustMatchDirective
+    MustMatchDirective,
+    AbsoluteValuePipe
 
   ],
   exports: [
@@ -111,7 +113,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     HeaderComponent,
     SidebarComponent,
     FixedRightSidebarComponent,
-    MustMatchDirective
+    MustMatchDirective,
+    AbsoluteValuePipe
 
   ],
   providers: [NgSelectConfig, ɵs,

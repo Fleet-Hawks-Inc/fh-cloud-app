@@ -107,7 +107,7 @@
                                               <div class="widgetlinfo pb-1">
                                                  <div class="row">
                                                   <div class="col-lg-12 text-center p-5">
-                                                     <a href="javascript:;" (click)="initSlider()" data-target="#viewImagesModal" data-toggle="modal" class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i class="fas fa-eye"></i> View Critical Event Photo</a>
+                                                     <a href="javascript:;" data-target="#viewImagesModal" data-toggle="modal" class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i class="fas fa-eye"></i> View Critical Event Photo</a>
                                                      <a href="javascript:;" data-target="#viewVideosModal" data-toggle="modal"  class="modal-with-form btn btn-success btn-block mb-1 btn-sm"><i class="fas fa-eye"></i> View Critical Event Video</a>
                                                   </div>
                                                   
@@ -164,7 +164,7 @@
                    <div class="col-6">
                       <div class="bg-white p-3 text-dark">
                          <div class="form-group row justify-content-between pl-2 pr-2">
-                             <div id="map" style="height: 520px"></div>
+                             <div id="map" style="height: 520px; overflow: hidden;"></div>
                          </div>
                       </div>
                    </div>
@@ -193,18 +193,16 @@
          <div class="col-lg-12">
             <div class="mb-3">
                <div class="row">
-                  <!-- <ngx-slick-carousel class="carousel" 
+                  <div class="col-12">
+                     <ngx-slick-carousel class="carousel safety-slider" 
                      #slickModal="slick-carousel" 
-                     [config]="slideConfig" 
+                     [config]="slideConfig"
                      >
                      <div ngxSlickItem *ngFor="let item of eventImages; let i=index;" class="slide">
-                        <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                        <img [src]="item.path"class="img-fluid" alt="" style="height: 400px; object-fit: cover;">
                      </div>
-                  </ngx-slick-carousel> -->
-                  <div class="col-lg-6 mb-2" *ngFor="let item of eventImages; let i=index;">
-                     <div class="vehicle-photo-box">
-                        <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                     </div>
+                  </ngx-slick-carousel>
+                  
                   </div>
                </div>
             </div>
@@ -234,11 +232,24 @@
          <div class="col-lg-12" *ngIf="eventVideos?.length > 0">
             <div class="mb-3">
                <div class="row">
-                  <div class="col-lg-12" *ngFor="let item of eventVideos; let i=index;">
+                  <div class="col-12">
+                     <ngx-slick-carousel class="carousel safety-slider" 
+                     #slickModal="slick-carousel" 
+                     [config]="slideConfig"
+                     >
+                     <div ngxSlickItem *ngFor="let item of eventVideos; let i=index;" class="slide">
+                        <video id="clip" controls preload=auto width=530 height=264 data-setup="{}">
+                           <source [src]="item.path" type='video/mp4'/>        
+                        </video>
+                     </div>
+                  </ngx-slick-carousel>
+                  
+                  </div>
+                  <!-- <div class="col-lg-12" *ngFor="let item of eventVideos; let i=index;">
                      <video id="clip" controls preload=auto width=530 height=264 data-setup="{}">
                         <source [src]="item.path" type='video/mp4'/>        
                      </video>
-                  </div>
+                  </div> -->
                </div>
             </div>
          </div>

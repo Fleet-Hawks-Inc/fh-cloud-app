@@ -53,21 +53,28 @@ export class InvoiceDetailComponent implements OnInit {
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
       this.invoice = res[0];
-      this.total = Number(this.invoice.totalAmount) + Number(this.invoice.discount);
-      });
+      this.calculateTotal();
+    });
   }
-    /*
-   * Get all customers's IDs of names from api
-   */
-    fetchCustomersByIDs() {
-      this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-        this.customersObjects = result;
-      });
-    }
+  /*
+ * Get all customers's IDs of names from api
+ */
+  fetchCustomersByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
+  }
 
-    fetchAccountsByIDs() {
-      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
+  fetchAccountsByIDs() {
+    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+      this.accountsObjects = result;
+    });
+  }
+  calculateTotal() {
+    let midTotal = 0;
+    for (let i = 0; i < this.invoice.details.length; i++) {
+      midTotal += Number(this.invoice.details[i].amount);
     }
+    this.total = Number(midTotal) + Number(this.invoice.taxAmount);
+  }
 }

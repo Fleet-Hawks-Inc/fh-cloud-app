@@ -154,7 +154,7 @@
                               <div class="col-lg-11 text-right">
                                  <button type="button" class="btn btn-default mt-4 mr-3"
                                     routerLink="safety/critical-events">Cancel</button>
-                                 <button [disabled]="disabledButton()" (click)="addEvent()"
+                                 <button [disabled]="disableButton || disabledButton()" (click)="addEvent()"
                                     class="btn btn-success mt-4 modal-confirm">Save</button>
                               </div>
                            </div>
