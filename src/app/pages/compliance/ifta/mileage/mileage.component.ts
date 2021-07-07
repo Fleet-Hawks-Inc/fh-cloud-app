@@ -43,6 +43,7 @@ export class MileageComponent implements OnInit {
   public fuelList=[]
   public filterFuel=""
   public filterVehicle=""
+  public average
   constructor(private apiService: ApiService, private spinner: NgxSpinnerService,private route: ActivatedRoute, private listService: ListService, private httpClient: HttpClient) { }
 
   ngOnInit() {
@@ -113,27 +114,63 @@ this.fuelList=["Diesel","Gasoline","Propane"]
   }
   fetchQuarterRreport(){
     this.apiService.getData('ifta/quarter/'+this.quarter).subscribe(result=>{
-      this.quarterReport.totalMilesCA=result[0].totalMilesCA
-      this.quarterReport.totalMilesUS=result[0].totalMilesUS
-      this.quarterReport.totalQuantityGallons=result[0].totalQuantityGallons
-      this.quarterReport.totalQuantityLitres=result[0].totalQuantityLitres
-      this.quarterReport.totalAmountCAD=result[0].totalAmountCAD
-      this.quarterReport.totalAmountUSD=result[0].totalAmountUSD
-      this.quarterReport.totalDiscountUSD=result[0].totalDiscountUS
-      this.quarterReport.totalDiscountCAD=result[0].totalDiscountCA
+      
+      this.quarterReport.totalMiles=result[0].totalMiles
+      this.quarterReport.iftaDistance=result[0].iftaDistance
+      this.quarterReport.nonIftaDistance=result[0].nonIftaDistance
+      this.quarterReport.quantityUnit=result[0].quantityUnit
+      this.quarterReport.distanceUnit=result[0].distanceUnit
+      this.quarterReport.quarter=result[0].quarter
+      this.quarterReport.totalQuantity=result[0].totalQuantity
+      this.quarterReport.totalYear=result[0].totalYear
+
+      this.average=(this.quarterReport.totalMiles/this.quarterReport.totalQuantity).toFixed(2)
+      
     })
+    
 
   }
 
    generatePDF(){
     
     if(this.jurisdictionReport){
-    const doc=new jsPDF();
+    const doc=new jsPDF({orientation:"p",unit:'mm',format:'a4'});
+    
+    doc.setFontSize(20)
+    doc.text('IFTA Report',15, 15 )
+    doc.setFontSize(10)
+    doc.text('Internation Fuel Tax Agreement Report',15,20,)
+    doc.line(15,25,200,25)
+    
+    doc.setFontSize(10)
+    
+    doc.text("Carrier Name",15,35)
+    doc.setFontSize(11)
+    doc.text("DOT Logistics",15,40)
+    doc.setFontSize(10)
+    doc.text("Quarter/ Year",160,35)
+    doc.setFontSize(11)
+    doc.text("3rd Qtr(April-June 2021)",160,40)
+    doc.setFontSize(10)
+    doc.text("Created Date",15,50)
+    doc.setFontSize(11)
+    doc.text("July 1st",15,55)
+    doc.setFontSize(10)
+    doc.text("Created By",40,50)
+    doc.setFontSize(11)
+    doc.text("July 1st",40,55)
+    doc.setFontSize(10)
+    doc.text("IFTA Report #",160,50)
+    doc.setFontSize(11)
+    doc.text("123456",160,55)
+
+
+
     // doc.setFontSize(20);
     // doc.addImage('assets/img/logo.png',10,20,50,25)
     // doc.text("IFTA Report",25,75)
     
-    autoTable(doc, { html: '#ifta' })
+    // autoTable(doc, { html: '#ifta' })
     doc.save(`ifta ${this.quarter}.pdf`)
     }
   }

@@ -72,9 +72,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr *ngIf="incomeAccounts.length === 0" class="text-center">
+                                        <td colspan="9">{{ dataMessage }}</td>
+                                    </tr>
                                     <tr *ngFor="let data of incomeAccounts">
                                         <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.incomeDate | date:'yyyy/MM/dd' }}</td>
-                                        <td>{{ data.invoiceID }}</td>
+                                        <td>{{ invoices[data.invoiceID] }}</td>
                                         <td>{{ customers[data.customerID] }}</td>
                                         <td>{{ categories[data.categoryID] }}</td>
                                         <td>{{ data.paymentMode }}</td>
