@@ -9,7 +9,7 @@
     "requestTimeout": 8000,
     "pageLoadTimeout": 80000,
     "video":false,
-    "projectId": "d7vrw2",
+    "projectId": "bzbn1g",
     "env": {
         "SERVICE_URL": "https://fleetservice.ap-south-1.fleethawks.com/api/v1/"
     }
