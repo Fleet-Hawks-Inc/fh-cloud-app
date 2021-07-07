@@ -6,6 +6,7 @@ import Constants from 'src/app/pages/fleet/constants';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-add-receipt',
@@ -14,6 +15,7 @@ declare var $: any;
 })
 export class AddReceiptComponent implements OnInit {
   pageTitle = 'Add Receipt';
+  public recID: string;
   dataMessage: string = Constants.NO_RECORDS_FOUND;
   customers: any = [];
   customersObjects = {};
@@ -25,12 +27,14 @@ export class AddReceiptComponent implements OnInit {
   receiptData = {
     customerID: null,
     recDate: null,
+    recNo: null,
     recAmount: 0,
     recAmountCur: null,
     accountID: null,
     paymentMode: null,
     paymentModeNo: null,
-    paymentModeDate: null
+    paymentModeDate: null,
+    paidInvoices: []
   };
   paymentMode = [
     {
@@ -71,29 +75,28 @@ export class AddReceiptComponent implements OnInit {
     private accountService: AccountService,
     private toastr: ToastrService,
     private apiService: ApiService,
-    private router: Router) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.listService.fetchCustomers();
     this.customers = this.listService.customersList;
-    console.log('this.customers', this.customers);
     this.fetchCustomersByIDs();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
-  }
-  getInvoices() {
-    this.accountService.getData(`invoices/Customer/${this.receiptData.customerID}`).subscribe((res) => {
-      console.log('res', res);
-      this.invoices = res;
-      this.setAmountField();
-    });
-  }
-  setAmountField() {
-    for(let i=0; i < this.invoices.length; i++) {
-      this.invoices[i][`fullPayment`] = false;
-      this.invoices[i][`amountReceived`] = 0;
+    this.recID = this.route.snapshot.params[`recID`];
+    console.log('this.recID', this.recID);
+    if (this.recID) {
+      this.pageTitle = 'Edit Receipt';
+      this.fetchReceipt();
+    } else {
+      this.pageTitle = 'Add Receipt';
     }
-    console.log('this.invoices', this.invoices);
+  }
+ async getInvoices() {
+    this.accountService.getData(`invoices/Customer/${this.receiptData.customerID}`).subscribe((res) => {
+      this.invoices = res;
+    });
   }
   /*
   * Get all customers's IDs of names from api
@@ -132,9 +135,9 @@ export class AddReceiptComponent implements OnInit {
           }
   }
  async getPaidInvoices() {
-    let paidInvoices = [];
+    const paidInvoices = [];
     for(let i=0; i<this.invoices.length; i++) {
-      if (this.invoices[i].amountReceived !== 0) {
+      if (this.invoices[i].amountReceived !== 0 && this.invoices[i].amountReceived !== undefined) {
         const obj = {
           invID: this.invoices[i].invID,
           invNo: this.invoices[i].invNo,
@@ -144,7 +147,6 @@ export class AddReceiptComponent implements OnInit {
         paidInvoices.push(obj);
       }
     }
-    console.log('paidInvoices', paidInvoices);
     this.receiptData[`paidInvoices`] = paidInvoices;
   }
  async addReceipt() {
@@ -153,7 +155,6 @@ export class AddReceiptComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     await this.getPaidInvoices();
-    console.log('receipt data', this.receiptData);
     this.accountService.postData('receipts', this.receiptData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -180,8 +181,33 @@ export class AddReceiptComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Receipt added successfully.');
-        this.router.navigateByUrl('/accounts/receipts/list');
+       // this.router.navigateByUrl('/accounts/receipts/list');
       },
+    });
+  }
+ async fetchReceipt() {
+    this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
+      console.log('res909009', res);
+      this.receiptData = res;
+      console.log('this.receiptData', this.receiptData);
+    });
+  }
+  async fetchPaidInvoices() {
+    console.log('this.invoices paid function', this.invoices);
+    console.log('this.receiptData.paidInvoices', this.receiptData.paidInvoices);
+    // for(let i = 0; i < this.receiptData.paidInvoices.length; i++){
+    //    let newinvoices = this.invoices.filter(async (e: any) => {
+    //      e.invID === this.receiptData.paidInvoices[i].invID;
+    //    });
+    //    console.log('newinvoices', newinvoices);
+    // }
+
+  }
+  async updateReceipt() {
+    await this.fetchPaidInvoices();
+    this.accountService.putData(`receipts/update/${this.recID}`, this.receiptData).subscribe((res) => {
+      this.toastr.success('Receipt updated successfully.');
+        // this.router.navigateByUrl('/accounts/receipts/list');
     });
   }
 }

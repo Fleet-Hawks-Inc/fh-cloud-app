@@ -32,8 +32,8 @@
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
                                   Date</label>
-                                <input type="date" [(ngModel)]="receiptData.recDate" name="recDate" class="form-control"
-                                  placeholder="mm/dd/yyyy">
+                                  <input [(ngModel)]="receiptData.recDate" name="recDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                  ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" >
                               </div>
                             </div>
                           </div>
@@ -97,7 +97,7 @@
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.invDate}}</td>
                             <td>{{customersObjects[inv.invCustomerID]}}</td>
-                            <td class="loadid"><span class="LTLload">LTL</span> <a href="#">-</a></td>
+                            <td>-</td>
                             <td>-</td>
                             <td>-</td>
                             <td>{{inv.taxAmount}}</td>
@@ -106,7 +106,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>3 days left</td>
-                            <td><span class="badge badge-dark p-1">{{inv.invStatus}}</span></td>
+                            <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
                                 name="fullPayment{{i}}" (change)="getAmount(i)">
@@ -214,7 +214,8 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                      <button type="button" class="btn btn-success" (click)="addReceipt()">Save</button>
+                      <button type="button" class="btn btn-success" *ngIf="!recID" (click)="addReceipt()">Save</button>
+                      <button type="button" class="btn btn-success" *ngIf="recID" (click)="updateReceipt()">Update</button>
                     </div>
                   </div>
                 </form>

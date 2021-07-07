@@ -28,6 +28,9 @@ export class AddInvoiceComponent implements OnInit {
     invCustomerID: null,
     invSalesman: null,
     invSubject: '',
+    amountReceived: 0,
+    fullPayment: false,
+    balance: 0,
     details: [{
       commodityService: '',
       qtyHours: '',
@@ -40,7 +43,7 @@ export class AddInvoiceComponent implements OnInit {
     discount: 0,
     discountUnit: '%',
     invStateProvince: null,
-    invStatus: 'OPEN',
+    invStatus: 'open',
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
@@ -207,6 +210,8 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
+    console.log('this.invoiceData', this.invoiceData);
+    this.invoiceData.balance = this.invoiceData.totalAmount;
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Added Successfully.');
       this.acRecDebitFn();
@@ -277,6 +282,7 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   updateInvoice() {
+    this.invoiceData.balance = this.invoiceData.totalAmount;
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
       this.router.navigateByUrl('/accounts/invoices/list');

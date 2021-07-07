@@ -55,19 +55,19 @@
                       </thead>
                       <tbody>
                          <tr *ngFor="let rec of receipts">
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">{{rec.recDate}}</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">234</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">{{rec.customerID}}</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">{{rec.paymentMode}}</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">{{rec.accountID}}</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">-</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">{{rec.amountReceived}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recDate}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.customerID}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.accountID}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
                             <td><div class="btn-group flex-wrap">
                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                   <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
+                                     <a class="dropdown-item text-1" routerLink="/accounts/receipts/edit/{{rec.recID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteReceipt(rec.recID)">Delete</button>
                                   </div>
                                </div></td>
                          </tr>
