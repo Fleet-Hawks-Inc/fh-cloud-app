@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { SafetyService } from 'src/app/services/safety.service';
+import { Auth } from 'aws-amplify';
 declare var $: any;
 @Component({
   selector: 'app-add-incident',
@@ -19,22 +21,22 @@ export class AddIncidentComponent implements OnInit {
     errors = {};
     event = {
         eventDate: '',
-        date: '',
         eventTime: '',
-        location: '',
-        documentID: [],
+        driverID: '',
         vehicleID: '',
         tripID: '',
-        incidentVideodocumentID: [],
-        eventType: 'incident',
-        modeOfOrign: 'manual',
-        coachingStatus: 'open',
-        driverUsername: '',
+        assigned: '',
+        incidentType: '',
+        eventSource: 'manual',
         severity: '',
-        criticalityType: '',
-        remarks: '',
-        assignedUsername: ''
+        location: '',
+        notes: '',
+        status: 'open',
     };
+    uploadedVideos = [];
+    uploadedDocs = [];
+    uploadedPhotos = [];
+
     carrierID = '';
     selectedFiles: FileList;
     selectedFileNames: Map<any, any>;
@@ -71,14 +73,16 @@ export class AddIncidentComponent implements OnInit {
     drivers  = [];
     users = [];
     trips = [];
+    safetyManagers = [];
+    disableButton = false;
+    currentUser: string;
 
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
-    uploadedVideos = [];
-    uploadedDocs = [];
+    
 
-    constructor(private apiService: ApiService, private toastr: ToastrService,
+    constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService,
                 private router: Router, private hereMap: HereMapService) {
                 this.selectedFileNames = new Map<any, any>();
@@ -87,11 +91,30 @@ export class AddIncidentComponent implements OnInit {
     ngOnInit() {
         this.fetchVehicles();
         this.fetchDrivers();
-        this.fetchUsers();
         this.fetchTrips();
         this.searchLocation();
+        this.getCurrentUser();
+        this.disabledButton();
     }
 
+    getCurrentUser = async () => {
+        let result = (await Auth.currentSession()).getIdToken().payload;
+        this.currentUser = `${result.firstName} ${result.lastName}`;
+        this.safetyManagers.push(this.currentUser);
+    }
+
+    disabledButton() {
+        
+        if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
+            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventTime == '' || 
+        this.event.assigned == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
+        || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.uploadedDocs.length == 0  || this.event.notes.length > 500) {
+            return true
+        } else {
+            return false;
+        }
+    }
+    
     fetchVehicles() {
         this.apiService.getData('vehicles')
         .subscribe((result: any) => {
@@ -100,67 +123,52 @@ export class AddIncidentComponent implements OnInit {
     }
 
     fetchDrivers() {
-        this.apiService.getData('drivers')
+        this.apiService.getData('drivers/safety')
         .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if (element.isDeleted === 0) {
-                    this.drivers.push(element);
-                }
-            }
-        })
-    }
-
-    fetchUsers() {
-        this.apiService.getData('users/fetch/records')
-        .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            this.users = result.Items;
+            this.drivers =  result.Items;
         })
     }
 
     fetchTrips() {
-        this.apiService.getData('trips')
+        this.apiService.getData('trips/safety/active')
         .subscribe((result: any) => {
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if(element.isDeleted === 0) {
-                    this.trips.push(element);
-                }
-            }
+            this.trips = result.Items;
+            console.log('trips', result)
+            // for (let i = 0; i < result.Items.length; i++) {
+            //     const element = result.Items[i];
+            //     if(element.isDeleted === 0) {
+            //         this.trips.push(element);
+            //     }
+            // }
         })
     }
 
     addEvent() {
-        this.spinner.show();
+        this.disableButton = true;
         this.hideErrors();
-        let timestamp;
-        const fdate = this.event.eventDate.split('-');
-        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
-        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
-        this.event.date = (timestamp * 1000).toString();
-
-        this.event.documentID = this.uploadedDocs;
-        this.event.incidentVideodocumentID = this.uploadedVideos;
-
+        
         // create form data instance
         const formData = new FormData();
 
         // append videos if any
-        for(let i = 0; i < this.uploadedVideos.length; i++){
+        for (let i = 0; i < this.uploadedVideos.length; i++){
             formData.append('uploadedVideos', this.uploadedVideos[i]);
         }
 
+        // append photos if any
+        for (let j = 0; j < this.uploadedPhotos.length; j++){
+            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
+        }
+
         // append docs if any
-        for(let j = 0; j < this.uploadedDocs.length; j++){
+        for (let j = 0; j < this.uploadedDocs.length; j++){
             formData.append('uploadedDocs', this.uploadedDocs[j]);
         }
 
         // append other fields
         formData.append('data', JSON.stringify(this.event));
-
-        this.apiService.postData('safety/eventLogs', formData, true).subscribe({
+        
+        this.safetyService.postData('incidents', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
                 from(err.error)
@@ -168,14 +176,16 @@ export class AddIncidentComponent implements OnInit {
                         map((val: any) => {
                             val.message = val.message.replace(/".*"/, 'This Field');
                             this.errors[val.context.key] = val.message;
+                            this.disableButton = false;
                         })
                     )
                     .subscribe({
                         complete: () => {
-                            this.spinner.hide();
+                            this.disableButton = false;
                             this.throwErrors();
                         },
                         error: () => {
+                            this.disableButton = false;
                         },
                         next: () => {
                         },
@@ -183,7 +193,7 @@ export class AddIncidentComponent implements OnInit {
             },
             next: (res) => {
                 this.spinner.hide();
-                this.toastr.success('Incident added successfully');
+                this.toastr.success('Incidents added successfully');
                 this.router.navigateByUrl('/safety/incidents');
             },
         });
@@ -235,22 +245,35 @@ export class AddIncidentComponent implements OnInit {
         $('div').removeClass('show-search__result');
     }
 
-    /*
+     /*
     * Selecting files before uploading
     */
-    selectDocuments(event, obj) {
+     selectDocuments(event, obj) {
         let files = [...event.target.files];
 
-        if (obj === 'uploadedDocs') {
+        if (obj === 'uploadedPhotos') {
+            this.uploadedPhotos = [];
+            for (let i = 0; i < files.length; i++) {
+                this.uploadedPhotos.push(files[i])
+            }
+        } else if(obj === 'uploadedDocs') {
+            
             this.uploadedDocs = [];
             for (let i = 0; i < files.length; i++) {
                 this.uploadedDocs.push(files[i])
             }
         } else {
+            
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
                 this.uploadedVideos.push(files[i])
             }
         }
+        console.log('uploadedPhotos', this.uploadedPhotos)
+        console.log('uploadedDocs', this.uploadedDocs)
+        console.log('uploadedVideos', this.uploadedVideos)
+       
     }
+
+    
 }
