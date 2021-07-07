@@ -80,7 +80,6 @@ export class AddAccountComponent implements OnInit {
       closingAmt: 0,
       internalActID : '',
     };
-    console.log('data', data);
     this.accountService.postData(`chartAc`, data).subscribe((res: any) => {
       this.toaster.success('Account Added Successfully.');
       $('#addAccountModal').modal('hide');
@@ -129,7 +128,6 @@ export class AddAccountComponent implements OnInit {
       closingAmt: this.closingAmt,
       internalActID: this.internalActID,
     };
-    console.log('data', data);
     this.accountService.putData(`chartAc/update/${this.receivedActID}`, data).subscribe((res: any) => {
       this.toaster.success('Account Updated Successfully.');
       this.listService.fetchChartAccounts();

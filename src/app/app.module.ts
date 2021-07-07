@@ -66,8 +66,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ErrorComponent,
     UnsavedChangesComponent,
     AddAccountComponent,
-    ForgotPasswordComponent
-
+    ForgotPasswordComponent,
   ],
   imports: [
     AmplifyAngularModule,
@@ -90,7 +89,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelectModule,
     NgxCaptchaModule,
-    
+
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy,InvokeHeaderFnService  ],
   bootstrap: [AppComponent  ],
