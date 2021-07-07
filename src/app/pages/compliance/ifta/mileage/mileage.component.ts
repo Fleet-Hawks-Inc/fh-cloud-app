@@ -56,6 +56,12 @@ export class MileageComponent implements OnInit {
     this.fetchQuarterRreport();
     this.getCanadaStates();
     this.getUSStates();
+    this.groupByFuelType();
+  }
+  groupByFuelType(){
+    this.apiService.getData(`ifta/groupFuelType/${this.quarter}`).subscribe((result:any)=>{
+      console.log(result)
+    })
   }
   fetchWexFuelCode(){
     let fuelList=[]
@@ -141,7 +147,7 @@ this.fuelList=["Diesel","Gasoline","Propane"]
     doc.setFontSize(10)
     doc.text('Internation Fuel Tax Agreement Report',15,20,)
     doc.line(15,25,200,25)
-    
+     doc.addImage('assets/img/fh.png',160, 5, 25, 25)
     doc.setFontSize(10)
     
     doc.text("Carrier Name",15,35)
@@ -163,12 +169,34 @@ this.fuelList=["Diesel","Gasoline","Propane"]
     doc.text("IFTA Report #",160,50)
     doc.setFontSize(11)
     doc.text("123456",160,55)
+    autoTable(doc,{
+      styles: { },
+      columnStyles: {  }, // Cells in first column centered and green
+      margin: { top: 60 },
+      theme: 'grid',
+      body: [
+        ['Total Distance: 59646.71 Km', 'Total Fuel Quantity: 95273.85 Litres'],
+        ['Total IFTA Distance: 52536.61 Km', 'Total Non IFTA Distance: 7110.10km'],
+        ['Fuel Type: Diesel', 'Average KM/Litres: 17.3km/litres'],
+      ],
+    })
+
+    autoTable(doc,{
+      styles: { },
+      columnStyles: {  }, // Cells in first column centered and green
+      margin: { top: 100 },
+      theme: 'striped',
+      
+      body: [
+        ['Total Distance: 59646.71 Km', 'Total Fuel Quantity: 95273.85 Litres'],
+        ['Total IFTA Distance: 52536.61 Km', 'Total Non IFTA Distance: 7110.10km'],
+        ['Fuel Type: Diesel', 'Average KM/Litres: 17.3km/litres'],
+      ],
+    })
 
 
 
-    // doc.setFontSize(20);
-    // doc.addImage('assets/img/logo.png',10,20,50,25)
-    // doc.text("IFTA Report",25,75)
+    
     
     // autoTable(doc, { html: '#ifta' })
     doc.save(`ifta ${this.quarter}.pdf`)
