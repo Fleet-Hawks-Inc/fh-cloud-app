@@ -8,6 +8,7 @@ import {NgxSpinnerService} from 'ngx-spinner'
 import { HttpClient} from '@angular/common/http'
 import {jsPDF} from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import * as moment from 'moment'
 
 declare var $: any;
 @Component({
@@ -44,10 +45,20 @@ export class MileageComponent implements OnInit {
   public filterFuel=""
   public filterVehicle=""
   public average
+  public fuelGroup
+  public quarters={
+    '1':"JAN - MAR",
+    '2':"APR - JUN",
+    '3':"JUL - SEP",
+    '4':"OCT - DEC"
+  }
+  public carrierName="";
+  public username=""
   constructor(private apiService: ApiService, private spinner: NgxSpinnerService,private route: ActivatedRoute, private listService: ListService, private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.quarter=this.route.snapshot.params['quarter']
+    this.quarter
     this.fetchJurisdiction();
     this.fetchCountries();
     this.fetchCount();
@@ -56,6 +67,21 @@ export class MileageComponent implements OnInit {
     this.fetchQuarterRreport();
     this.getCanadaStates();
     this.getUSStates();
+    this.groupByFuelType();
+    this.fetchCarrierData();
+    
+  }
+  fetchCarrierData(){
+    this.apiService.getData(`carriers/getCarrier`).subscribe(result=>{
+      this.carrierName=result.Items[0].carrierName
+      this.username=result.Items[0].userName
+    })
+  }
+  groupByFuelType(){
+    this.apiService.getData(`ifta/groupFuelType/${this.quarter}`).subscribe((result:any)=>{
+      
+      this.fuelGroup=result
+    })
   }
   fetchWexFuelCode(){
     let fuelList=[]
@@ -130,49 +156,98 @@ this.fuelList=["Diesel","Gasoline","Propane"]
     
 
   }
+  getPDF(element){
+    let quart=this.quarter.split("-")
+    let today=moment().format("MMMM Do YYYY")
+    if(this.jurisdictionReport){
+      const doc=new jsPDF({orientation:"p",unit:'mm',format:'a4'});
+      
+      
+      let data = this.jurisdictionReport.filter(el=>el.fuelType==element.fuelType)
+      let filteredData=[]
+      data.forEach(e=>{
+        let d={
+          jurisdiction:e.jurisdiction,
+          quantity:e.quantity,
+          totalMiles:e.totalMiles
+        }
+        filteredData.push(d)
+      })
+      let dataArray=[]
+      filteredData.forEach(ele=>{
+        dataArray.push(Object.values(ele))
+      })
+      
+      autoTable(doc,{
+        styles: { },
+        columnStyles: {  }, 
+        margin: { top: 100 },
+        theme: 'striped',
+        headStyles: {
+          fillColor: [0, 0, 0],
+          
+        },
+        head:[
+          { jurisdiction: 'Jurisdiction', quantity: `Quantity(${this.quarterReport.quantityUnit})`, distance: `Distance(${this.quarterReport.distanceUnit})`},
+        ],
+        body: dataArray,
+        didDrawPage:(data)=>{
+          
+      doc.setFontSize(20)
+      doc.text('IFTA Report',15, 15 )
+      doc.setFontSize(10)
+      doc.text('Internation Fuel Tax Agreement Report',15,20,)
+      doc.line(15,25,200,25)
+      //  doc.addImage('assets/img/logologin.png',160, 5, 73, 14)
+      doc.setFontSize(10)
+      
+      doc.text("Carrier Name",15,35)  
+      doc.setFontSize(11)
+      doc.text(this.carrierName,15,40)
+      doc.setFontSize(10)
+      doc.text("Quarter/ Year",160,35)
+      doc.setFontSize(11)
+      doc.text(`${this.quarters[quart[0]]}`,160,40)
+      doc.setFontSize(10)
+      doc.text("Created Date",15,50)
+      doc.setFontSize(11)
+      doc.text(`${today}`,15,55)
+      doc.setFontSize(10)
+      doc.text("Created By",160,50)
+      doc.setFontSize(11)
+      doc.text(this.username,160,55)
+      doc.setFontSize(10)
+      // doc.text("IFTA Report #",160,50)
+      // doc.setFontSize(11)
+      // doc.text("123456",160,55)
+      autoTable(doc,{
+        styles: { },
+        columnStyles: {  }, // Cells in first column centered and green
+        margin: { top: 60 },
+        theme: 'grid',
+        body: [
+          [`Total Distance: ${element.totalDistance} ${this.quarterReport.distanceUnit}`, `Total Fuel Quantity: ${element.totalQuantity} ${this.quarterReport.distanceUnit}`],
+          [`Total IFTA Distance: ${element.totalIftaDistance} ${this.quarterReport.distanceUnit}`, `Total Non IFTA Distance: ${element.nonIftaDistance} ${this.quarterReport.distanceUnit}`],
+          [`Fuel Type: ${element.fuelType}`, `Average ${this.quarterReport.distanceUnit}/${element.quantityUnit}:${(element.totalDistance/element.totalQuantity).toFixed(2)} ${this.quarterReport.distanceUnit}/${element.quantityUnit}`],
+        ],
+      })
+
+        },
+      })
+      
+     doc.save(`ifta ${this.quarter}-${element.fuelType}.pdf`)
+
+  }
+}
 
    generatePDF(){
-    
-    if(this.jurisdictionReport){
-    const doc=new jsPDF({orientation:"p",unit:'mm',format:'a4'});
-    
-    doc.setFontSize(20)
-    doc.text('IFTA Report',15, 15 )
-    doc.setFontSize(10)
-    doc.text('Internation Fuel Tax Agreement Report',15,20,)
-    doc.line(15,25,200,25)
-    
-    doc.setFontSize(10)
-    
-    doc.text("Carrier Name",15,35)
-    doc.setFontSize(11)
-    doc.text("DOT Logistics",15,40)
-    doc.setFontSize(10)
-    doc.text("Quarter/ Year",160,35)
-    doc.setFontSize(11)
-    doc.text("3rd Qtr(April-June 2021)",160,40)
-    doc.setFontSize(10)
-    doc.text("Created Date",15,50)
-    doc.setFontSize(11)
-    doc.text("July 1st",15,55)
-    doc.setFontSize(10)
-    doc.text("Created By",40,50)
-    doc.setFontSize(11)
-    doc.text("July 1st",40,55)
-    doc.setFontSize(10)
-    doc.text("IFTA Report #",160,50)
-    doc.setFontSize(11)
-    doc.text("123456",160,55)
+    this.groupByFuelType();
 
-
-
-    // doc.setFontSize(20);
-    // doc.addImage('assets/img/logo.png',10,20,50,25)
-    // doc.text("IFTA Report",25,75)
+    this.fuelGroup.forEach(element => {
+      this.getPDF(element)  
+    });
     
-    // autoTable(doc, { html: '#ifta' })
-    doc.save(`ifta ${this.quarter}.pdf`)
-    }
+    
   }
 
 

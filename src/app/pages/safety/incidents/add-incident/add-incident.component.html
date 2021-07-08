@@ -26,16 +26,98 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Date</label>
                                                     <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
                                                         placeholder="Enter event date" (click)="d.toggle()"
-                                                        ngbDatepicker #d="ngbDatepicker" class="form-control" readonly>
+                                                        ngbDatepicker #d="ngbDatepicker" class="form-control">
 
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Time</label>
-                                                    <input type="text" class="form-control" [ngxTimepicker]="timep"
-                                                        [format]="24" readonly [(ngModel)]="event.eventTime"
+                                                    <input type="time" class="form-control"
+                                                        [(ngModel)]="event.eventTime"
                                                         name="eventTime" placeholder="Enter event time">
-                                                    <ngx-material-timepicker #timep></ngx-material-timepicker>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Driver
+                                                        Name
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.driverID"
+                                                        name="driverID" placeholder="Select driver name">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let data of drivers" value="{{data.driverID}}">{{data.firstName}} {{data.lastName}}</ng-option>
+                                                    </ng-select>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Trip ID</label>
+                                                        <ng-select [(ngModel)]="event.tripID"
+                                                        name="tripID" placeholder="Select driver name">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let data of trips" value="{{data.tripID}}">{{data.tripNo}}</ng-option>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Vehicle
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.vehicleID" name="vehicleID"
+                                                        placeholder="Select vehicle">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let vehicle of vehicles"
+                                                            value="{{ vehicle.vehicleID }}">{{
+                                                            vehicle.vehicleIdentification }}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </div>
+
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Assigned To
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.assigned" name="assigned"
+                                                        placeholder="Select vehicle">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let item of safetyManagers"
+                                                            value="{{ item }}">{{
+                                                                item }}
+                                                        </ng-option>
+                                                    </ng-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Incident
+                                                        Type
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.incidentType"
+                                                        name="incidentType" placeholder="Select Incident Type">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let data of incidentType" value="{{ data.value }}">
+                                                            {{ data.name }}</ng-option>
+                                                    </ng-select>
+                                                </div>
+
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Severity
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.severity" name="severity"
+                                                        placeholder="Select Severity">
+                                                        <ng-option class="text-capitalize" *ngFor="let data of severity"
+                                                            value="{{ data.value }}">{{ data.name }}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -58,116 +140,40 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Driver
-                                                        Name
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.driverUsername"
-                                                        name="driverUsername" placeholder="Select driver name">
-                                                        <ng-option class="text-capitalize"
-                                                            *ngFor="let data of drivers" value="{{data.userName}}">{{data.fullName}}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Vehicle
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.vehicleID" name="vehicleID"
-                                                        placeholder="Select vehicle">
-                                                        <ng-option class="text-capitalize"
-                                                            *ngFor="let vehicle of vehicles"
-                                                            value="{{ vehicle.vehicleID }}">{{
-                                                            vehicle.vehicleIdentification }}
-                                                        </ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Severity
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.severity" name="severity"
-                                                        placeholder="Select Severity">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of severity"
-                                                            value="{{ data.value }}">{{ data.name }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Incident
-                                                        Type
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.criticalityType"
-                                                        name="criticalityType" placeholder="Select Incident Type">
-                                                        <ng-option class="text-capitalize"
-                                                            *ngFor="let data of incidentType" value="{{ data.value }}">
-                                                            {{ data.name }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
 
                                         <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Trip
-                                                        ID
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.tripID" name="tripID"
-                                                        placeholder="Select trip ID">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of trips"
-                                                            value="{{ data.tripID }}">{{ data.tripNo }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Assigned
-                                                        To
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.assignedUsername"
-                                                        name="assignedUsername" placeholder="Select assigned user">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of users"
-                                                            value="{{ data.userName }}">{{ data.fullName }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label
 
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Upload
-                                                        Documents
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Attach Documents 
                                                         &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                     </label>
-                                                    <input type="file" class="form-control p-0" name="upload-doc"
+                                                    <input type="file" class="form-control p-0" multiple name="upload-doc"
                                                         (change)="selectDocuments($event, 'uploadedDocs')">
 
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
 
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Add
-                                                        Incident Video
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo
                                                         &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                     </label>
-                                                    <input type="file" class="form-control p-0" name="add_vid"
+                                                    <input type="file" class="form-control p-0" multiple name="add_vid"
+                                                        (change)="selectDocuments($event, 'uploadedPhotos')">
+
+                                                </div>
+
+                                                <div class="col-lg-5">
+
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Video
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
+                                                    <input type="file" class="form-control p-0" multiple name="add_vid"
                                                         (change)="selectDocuments($event, 'uploadedVideos')">
 
                                                 </div>
@@ -175,19 +181,19 @@
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Remarks
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes
                                                         &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                     </label>
-                                                    <textarea class="form-control" rows="3" placeholder="Enter Remarks"
-                                                        name="remarks" [(ngModel)]="event.remarks"></textarea>
+                                                    <textarea class="form-control h-auto" rows="3" placeholder="Enter Remarks"
+                                                        name="notes" [(ngModel)]="event.notes"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-11 text-right">
                                             <button type="button" class="btn btn-default mt-4 mr-3"
                                                 routerLink="/safety/incidents">Cancel</button>
-                                            <a href="javascript:;" (click)="addEvent()"
-                                                class="btn btn-success mt-4 modal-confirm">Submit</a>
+                                            <button [disabled]="disabledButton()" (click)="addEvent()"
+                                                class="btn btn-success mt-4 modal-confirm">Save</button>
                                         </div>
                                     </div>
                                 </form>
