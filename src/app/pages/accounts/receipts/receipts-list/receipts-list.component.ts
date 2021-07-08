@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import { AccountService } from './../../../../services';
+import { AccountService, ApiService } from './../../../../services';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-receipts-list',
@@ -11,11 +11,14 @@ import { ToastrService } from 'ngx-toastr';
 export class ReceiptsListComponent implements OnInit {
   dataMessage: string;
   receipts = [];
-  constructor(private accountService: AccountService, private toastr: ToastrService, ) {}
+  customersObjects: any = {};
+  accountsObject: any = {};
+  constructor(private accountService: AccountService, private toastr: ToastrService, private apiService: ApiService, ) {}
 
   ngOnInit() {
     this.fetchReceipts();
     this.fetchCustomersByIDs();
+    this.fetchAccounts();
   }
 
   fetchReceipts() {
@@ -35,8 +38,14 @@ export class ReceiptsListComponent implements OnInit {
    * Get all customers's IDs of names from api
    */
     fetchCustomersByIDs() {
-      // this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      //   this.customersObjects = result;
-      // });
+      this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+        this.customersObjects = result;
+      });
+    }
+    fetchAccounts() {
+      this.accountService.getData(`chartAc/get/list/all`)
+        .subscribe((result: any) => {
+          this.accountsObject = result;
+        });
     }
 }

@@ -58,9 +58,9 @@
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recDate}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.customerID}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID]}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode}}</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.accountID}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID]}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
                             <td><div class="btn-group flex-wrap">
@@ -69,12 +69,11 @@
                                      <a class="dropdown-item text-1" routerLink="/accounts/receipts/edit/{{rec.recID}}">Edit</a>
                                      <button type="button" class="dropdown-item text-1" (click)="deleteReceipt(rec.recID)">Delete</button>
                                   </div>
-                               </div></td>
+                               </div>
+                            </td>
                          </tr>
-
                       </tbody>
                    </table>
-
                 </div>
              </section>
           </div>

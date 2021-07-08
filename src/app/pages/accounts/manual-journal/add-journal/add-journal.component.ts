@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ListService } from "../../../../services";
-import { AccountService } from '../../../../services';
+import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
+declare var $: any;
 
 @Component({
   selector: 'app-add-journal',
@@ -26,17 +28,22 @@ export class AddJournalComponent implements OnInit {
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     },
     {
       accountID: null,
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     }],
     debitTotalAmount: 0,
     creditTotalAmount: 0,
+    attachments: []
   };
   difference = 0;
   accounts = [];
@@ -50,8 +57,14 @@ export class AddJournalComponent implements OnInit {
   Success: string = '';
   submitDisabled = true;
   journalID;
+  Asseturl = this.apiService.AssetUrl;
+  carrierID = '';
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  existingDocs = [];
+  documentSlides = [];
+  uploadedDocs = [];
 
-  constructor(private listService: ListService,private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService) { }
+  constructor(private listService: ListService,private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params['journalID'];
@@ -70,7 +83,9 @@ export class AddJournalComponent implements OnInit {
       description: '',
       contactID: null,
       debit: 0,
-      credit: 0
+      credit: 0,
+      creditDisabled: false,
+      debitDisabled: false
     };
     this.journal.details.push(obj)
   }
@@ -105,7 +120,18 @@ export class AddJournalComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
-    this.accountService.postData('journal', this.journal).subscribe({
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.journal));
+
+    this.accountService.postData('journal', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -140,13 +166,30 @@ export class AddJournalComponent implements OnInit {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
         if(result[0] != undefined) {
-          delete result[0].created;
-          delete result[0].accountSK;
-          delete result[0].journalID;
-          delete result[0].carrierID;
-          delete result[0]._type;
-          delete result[0].isDeleted;
           this.journal = result[0];
+
+          this.existingDocs = result[0].attachments;
+          this.carrierID = result[0].carrierID;
+
+          this.journal.details.map((k, index) => {
+            let type= '';
+            if(k.debit === 0) {
+              type='credit';
+            } else {
+              type='debit'
+            }
+            this.disableOtherField(type, index);
+          })
+
+          if (result[0].attachments != undefined && result[0].attachments.length > 0) {
+            result[0].attachments.map((x) => {
+              let obj = {
+                name: x,
+                path: `${this.Asseturl}/${result[0].carrierID}/${x}`
+              }
+              this.documentSlides.push(obj);
+            })
+          }
         }
       })
   }
@@ -156,7 +199,20 @@ export class AddJournalComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.accountService.putData(`journal/${this.journalID}`, this.journal).subscribe({
+    this.journal.attachments = this.existingDocs;
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.journal));
+
+    this.accountService.putData(`journal/${this.journalID}`, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -210,6 +266,54 @@ export class AddJournalComponent implements OnInit {
       });
       this.toaster.error('This bank account is already selected.');
       return false;
+    }
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = '';
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.accountService.deleteData(`journal/uploadDelete/${this.journalID}/${name}`).subscribe((result: any) => {
+      this.existingDocs.splice(index, 1);
+      this.documentSlides.splice(index, 1);
+      this.toaster.success('Attachment deleted successfully.');
+    }); 
+  }
+
+  /*
+    * Selecting files before uploading
+    */
+  selectDocuments(event) {
+    let files = [...event.target.files];
+    
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedDocs.push(files[i])
+    }
+  }
+
+  disableOtherField(type, index) {
+    if(type === 'debit') {
+      if(this.journal.details[index].debit > 0) {
+        this.journal.details[index].credit = 0;
+        this.journal.details[index].creditDisabled = true;
+      } else {
+        this.journal.details[index].creditDisabled = false;
+      }
+    } else if (type === 'credit') {
+      if(this.journal.details[index].credit > 0) {
+        this.journal.details[index].debit = 0;
+        this.journal.details[index].debitDisabled = true;
+      } else {
+        this.journal.details[index].debitDisabled = false;
+      }
     }
   }
 }

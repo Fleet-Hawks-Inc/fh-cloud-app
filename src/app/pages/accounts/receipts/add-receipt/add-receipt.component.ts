@@ -31,6 +31,8 @@ export class AddReceiptComponent implements OnInit {
     recAmount: 0,
     recAmountCur: null,
     accountID: null,
+    advAmt: 0,
+    advAmtCur: null,
     paymentMode: null,
     paymentModeNo: null,
     paymentModeDate: null,
@@ -85,7 +87,6 @@ export class AddReceiptComponent implements OnInit {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     this.recID = this.route.snapshot.params[`recID`];
-    console.log('this.recID', this.recID);
     if (this.recID) {
       this.pageTitle = 'Edit Receipt';
       this.fetchReceipt();
@@ -128,7 +129,11 @@ export class AddReceiptComponent implements OnInit {
           console.log('this.invoices[i]', this.invoices[i]);
           if (this.invoices[i].fullPayment === true) {
             this.invoices[i].amountReceived = this.invoices[i].totalAmount;
-          } else {
+          }
+          //  else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
+          //   this.invoices[i].amountReceived = this.invoices[i].balance;
+          // }
+          else {
             this.invoices[i].amountReceived = 0;
           }
         }
@@ -181,33 +186,54 @@ export class AddReceiptComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Receipt added successfully.');
-       // this.router.navigateByUrl('/accounts/receipts/list');
+        this.router.navigateByUrl('/accounts/receipts/list');
       },
     });
   }
  async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
-      console.log('res909009', res);
-      this.receiptData = res;
+      this.receiptData = res[0];
       console.log('this.receiptData', this.receiptData);
+      this.invoices = this.receiptData[`fetchedInvoices`];
+      console.log('this.invoices', this.invoices);
     });
   }
-  async fetchPaidInvoices() {
-    console.log('this.invoices paid function', this.invoices);
-    console.log('this.receiptData.paidInvoices', this.receiptData.paidInvoices);
-    // for(let i = 0; i < this.receiptData.paidInvoices.length; i++){
-    //    let newinvoices = this.invoices.filter(async (e: any) => {
-    //      e.invID === this.receiptData.paidInvoices[i].invID;
-    //    });
-    //    console.log('newinvoices', newinvoices);
-    // }
 
-  }
   async updateReceipt() {
-    await this.fetchPaidInvoices();
-    this.accountService.putData(`receipts/update/${this.recID}`, this.receiptData).subscribe((res) => {
-      this.toastr.success('Receipt updated successfully.');
-        // this.router.navigateByUrl('/accounts/receipts/list');
+    this.submitDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    await this.getPaidInvoices();
+    console.log('this.receiptData', this.receiptData);
+    this.accountService.putData(`receipts/update/${this.recID}`, this.receiptData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toastr.success('Receipt updated successfully.');
+        this.router.navigateByUrl('/accounts/receipts/list');
+      },
     });
   }
 }

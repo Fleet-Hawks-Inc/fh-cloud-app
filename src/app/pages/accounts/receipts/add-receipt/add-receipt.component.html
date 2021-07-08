@@ -19,17 +19,17 @@
                     <div class="col-lg-12">
                       <form class="form-horizontal" method="get">
                         <div class=" row">
-                          <div class="col-lg-5">
+                          <div class="col-lg-5 offset-lg-1">
                             <div class="row">
-                              <div class="col-lg-10">
+                              <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#</label>
-                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="invNo">
+                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo">
                               </div>
                             </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
                             <div class="row">
-                              <div class="col-lg-10">
+                              <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
                                   Date</label>
                                   <input [(ngModel)]="receiptData.recDate" name="recDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
@@ -38,27 +38,32 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row mt-4" >
-                          <div class="col-md-2 col-lg-2">
-                            <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
-                              placeholder="Select Customer" class="form-control">
-                              <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
-                                {{customer.companyName}}
-                              </ng-option>
-                            </ng-select>
+                       <div class="row">
+                         <div class="col-lg-10 offset-lg-1">
+                          <div class="row mt-4" >
+                            <div class="col-md-5 col-lg-5">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer</label>
+                              <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
+                                placeholder="Select Customer" class="form-control">
+                                <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
+                                  {{customer.companyName}}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <!-- <div class="col-lg-3 col-md-3">
+                              <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
+                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
+                                <input type="text" class="form-control" name="start">
+                                                       <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
+                                <input type="text" class="form-control" name="end"> </div>
+                            </div> -->
+                            <div class="col-md-2  col-lg-2 mar-top-37">
+                              <button type="button" class="btn btn-sm btn-success" (click)="getInvoices()">Search
+                                Invoice(s)</button>
+                            </div>
                           </div>
-                          <!-- <div class="col-lg-3 col-md-3">
-                            <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
-                                                   <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
-                              <input type="text" class="form-control" name="start">
-                                                     <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
-                              <input type="text" class="form-control" name="end"> </div>
-                          </div> -->
-                          <div class="col-md-2  col-lg-2">
-                            <button type="button" class="btn btn-sm btn-success" (click)="getInvoices()">Search
-                              Invoice(s)</button>
-                          </div>
-                        </div>
+                         </div>
+                       </div>
                       </form>
                     </div>
                   </div>
@@ -68,7 +73,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-10 offset-lg-1">
                       <table class="table table-bordered table-responsive-sm table-striped mb-0 simple-table">
                         <thead>
                           <tr class="bgcol2">
@@ -104,7 +109,7 @@
                             <td>{{inv.totalAmount}}</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>-</td>
+                            <td>{{inv.balance}}</td>
                             <td>3 days left</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
@@ -127,32 +132,27 @@
                     </div>
                   </div>
                   <div class="row pt-2">
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Advance Received</label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" class="form-control">
+                              <input type="number" class="form-control" [(ngModel)]="receiptData.advAmt"
+                              name="advAmt">
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup>
-                                  <option value="1">USD</option>
-                                  <option value="2">CAD</option>
-                                </optgroup>
-                              </select>
+                              <ng-select class="form-control populate" [(ngModel)]="receiptData.advAmtCur"
+                              name="advAmtCur">
+                                  <ng-option value="USD">USD</ng-option>
+                                  <ng-option value="CAD">CAD</ng-option>
+                              </ng-select>
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5"> </div>
                       </div>
                       <div class="row">
-                        <!-- <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Receipt Date</label>
-                          <input [(ngModel)]="receiptData.recDate" name="recDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
-                                                            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" >
-                         </div> -->
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Received Amount</label>
                           <div class="row">
