@@ -54,95 +54,26 @@
                          </tr>
                       </thead>
                       <tbody>
-                         <tr>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">05/25/2020</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">234</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">114</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Manjot</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Cheque</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Account 1</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">-</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">CAD 20325</td>
+                         <tr *ngFor="let rec of receipts">
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recDate}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID]}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID]}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
                             <td><div class="btn-group flex-wrap">
                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                   <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
+                                     <a class="dropdown-item text-1" routerLink="/accounts/receipts/edit/{{rec.recID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteReceipt(rec.recID)">Delete</button>
                                   </div>
-                               </div></td>
+                               </div>
+                            </td>
                          </tr>
-                         <tr>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">05/25/2020</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">234</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">114</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">Jaskaran</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">Cheque</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">Account 1</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">FC1 Inc.</td>
-                            <td class="cursorpoint" onclick="window.location='customer-receipt-FC-details.php'">CAD 20325</td>
-                            <td><div class="btn-group flex-wrap">
-                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                  <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
-                                  </div>
-                               </div></td>
-                         </tr>
-                         <tr>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">05/25/2020</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">234</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">114</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Meet</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Cheque</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Account 1</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">-</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">CAD 20325</td>
-                            <td><div class="btn-group flex-wrap">
-                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                  <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
-                                  </div>
-                               </div></td>
-                         </tr>
-                         <tr>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">05/25/2020</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">234</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">114</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Herat</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Cheque</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Account 1</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">-</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">CAD 20325</td>
-                            <td><div class="btn-group flex-wrap">
-                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                  <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
-                                  </div>
-                               </div></td>
-                         </tr>
-                         <tr>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">05/25/2020</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">234</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">114</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Manjot</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Cheque</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">Account 1</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">-</td>
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail">CAD 20325</td>
-                            <td><div class="btn-group flex-wrap">
-                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                  <div class="dropdown-menu" role="menu">
-                                     <a class="dropdown-item text-1" href="#">Edit</a>
-                                     <a class="dropdown-item text-1" href="#">Delete</a>
-                                  </div>
-                               </div></td>
-                         </tr>
-
                       </tbody>
                    </table>
-
                 </div>
              </section>
           </div>

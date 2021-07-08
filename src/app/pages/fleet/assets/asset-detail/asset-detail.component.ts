@@ -208,10 +208,10 @@ export class AssetDetailComponent implements OnInit {
           this.year =  result.assetDetails.year;
           this.manufacturer =  result.assetDetails.manufacturer;
           this.model =  result.assetDetails.model;
-          this.length = result.assetDetails.length; 
-          this.height = result.assetDetails.height; 
+          this.length = result.assetDetails.length;
+          this.height = result.assetDetails.height;
           this.lengthUnit = result.assetDetails.lengthUnit;
-          this.heightUnit=result.assetDetails.heightUnit;
+          this.heightUnit = result.assetDetails.heightUnit;
           this.axle = result.assetDetails.axle;
           this.GAWR = result.assetDetails.GAWR;
           this.GAWR_Unit = result.assetDetails.GAWR_Unit;
