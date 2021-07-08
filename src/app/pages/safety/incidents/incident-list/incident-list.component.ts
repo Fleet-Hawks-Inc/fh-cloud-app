@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as moment from "moment";
+import { SafetyService } from 'src/app/services/safety.service';
 declare var $: any;
 
 @Component({
@@ -56,18 +57,43 @@ export class IncidentListComponent implements OnInit {
   vehiclesObject: any = {};
   driversObject: any = {};
   usersObject: any = {};
-  
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
+  status_values: any = ["open", "investigating", "coaching", "closed"];
+
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
-    this.fetchevents();
+    this.fetchEvents();
     this.fetchVehicles();
     this.initDataTable('all');
 
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
     this.fetchAllUsersIDs();
+  }
+
+  changeStatus(eventID: any, newValue: string, i: string) {
+    
+    let data = {
+      eventID: eventID,
+      status: newValue
+    }
+    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
+      if(res.status == false) {
+        this.events[i].status = res.oldStatus;
+        this.toaster.error('Please select valid status');
+      } else {
+        this.toaster.success('Status updated successfully');
+      }
+    });
+
+  }
+
+  fetchEvents() {
+    this.safetyService.getData('incidents')
+      .subscribe((result: any) => {
+        this.events = result;
+      })
   }
 
   // ngAfterViewInit(): void {
@@ -165,7 +191,7 @@ export class IncidentListComponent implements OnInit {
         // current.rerender();
         current.initDataTable('all');
         current.spinner.hide();
-        current.toastr.success('Event deleted successfully');
+        current.toaster.success('Event deleted successfully');
       }
     })
   }
@@ -183,7 +209,7 @@ export class IncidentListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         current.spinner.hide();
-        current.toastr.success('Event updated successfully');
+        current.toaster.success('Event updated successfully');
       }
     })
   }
@@ -215,13 +241,13 @@ export class IncidentListComponent implements OnInit {
     }
   }
 
-  fetchevents() {
-    this.apiService.getData('safety/eventLogs/fetch?event=incident')
-      .subscribe((result: any) => {
+  // fetchevents() {
+  //   this.apiService.getData('safety/eventLogs/fetch?event=incident')
+  //     .subscribe((result: any) => {
        
-        this.totalRecords = result.Count;
-      })
-  }
+  //       this.totalRecords = result.Count;
+  //     })
+  // }
 
   fetchTabData(tabType) {
     let current = this;
@@ -314,5 +340,17 @@ export class IncidentListComponent implements OnInit {
       .subscribe((result: any) => {
         this.usersObject = result;
       });
+  }
+
+  convertTimeFormat (time: any) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
   }
 }
