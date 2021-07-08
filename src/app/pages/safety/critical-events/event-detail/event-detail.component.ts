@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services/here-map.service';
-import * as moment from 'moment';
 import { SafetyService } from 'src/app/services/safety.service';
 declare var H: any;
 declare var $: any;
@@ -39,12 +38,14 @@ export class EventDetailComponent implements OnInit {
 
   driver: string;
   vehicle: string;
+  trip: string;
   eventDate: string;
   eventTime: string;
   eventType: string;
   location: string;
   createdBy: string;
   eventSource: string;
+  assigned: string;
 
   eventID = '';
   safetyNotes = [];
@@ -90,12 +91,14 @@ export class EventDetailComponent implements OnInit {
         let result = res[0];
         this.driver = result.driverID;
         this.vehicle = result.vehicleID;
+        this.trip = result.tripID;
+        this.assigned = result.assigned;
         this.eventDate = result.eventDate;
         this.eventSource = result.eventSource;
         this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
         this.eventType = result.eventType;
-        this.location = result.location;
+        this.location = await result.location;
         await this.setMarker(this.location);
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
@@ -106,7 +109,10 @@ export class EventDetailComponent implements OnInit {
         }
 
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
-          this.eventVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+          this.eventVideos = result.uploadedVideos.map(x => ({
+            path: `${this.asseturl}/${result.pk}/${x}`, 
+            name: x
+          }));
         }
         
         this.createdBy = result.createdBy;

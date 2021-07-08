@@ -28,8 +28,8 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Driver Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        </label>
                                        <ng-select [(ngModel)]="event.driverID" name="driverID"
-                                          placeholder="Select driver name"  #dName="ngModel" required>
-                                          <ng-option class="text-capitalize" *ngFor="let driver of drivers"
+                                          placeholder="Select driver name" class="text-capitalize"  #dName="ngModel" required>
+                                          <ng-option *ngFor="let driver of drivers"
                                              value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
                                        </ng-select>
                                        <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
@@ -42,8 +42,8 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        </label>
                                        <ng-select [(ngModel)]="event.vehicleID" name="vehicleID"
-                                          placeholder="Select vehicle" #vehicle="ngModel" required>
-                                          <ng-option class="text-capitalize" *ngFor="let vehicle of vehicles"
+                                          placeholder="Select vehicle" class="text-capitalize"  #vehicle="ngModel" required>
+                                          <ng-option *ngFor="let vehicle of vehicles"
                                              value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}
                                           </ng-option>
                                        </ng-select>
@@ -56,24 +56,24 @@
                                  </div>
                                  <div class="row">
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Event Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
-                                          placeholder="Enter event date" (click)="d.toggle()" ngbDatepicker
-                                          #d="ngbDatepicker" #date="ngModel" required class="form-control">
+                                          placeholder=" yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
+                                          #d="ngbDatepicker" #date="ngModel" [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" required class="form-control">
                                        <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                           <div *ngIf="date.errors.required">
-                                             Date is required.
+                                             Event date is required.
                                           </div>
                                        </div>
                                     </div>
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Time <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Event Time <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="time" class="form-control"
                                           [(ngModel)]="event.eventTime" name="eventTime"
                                           placeholder="Enter event time"  #time="ngModel" required>
                                        <div *ngIf="time.invalid && (time.dirty || time.touched)" class="text-danger">
                                           <div *ngIf="time.errors.required">
-                                             Time is required.
+                                             Event time is required.
                                           </div>
                                        </div>
                                     </div>
@@ -82,10 +82,10 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Event Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="event.eventType" name="eventType"
-                                          placeholder="Select vehicle"  #evType="ngModel" required>
-                                          <ng-option value="Distracted Driving">Distracted Driving</ng-option>
-                                          <ng-option value="Mobile Phone Use">Mobile Phone Use</ng-option>
-                                          <ng-option value="Tailgating">Tailgating</ng-option>
+                                          placeholder="Select event type"  #evType="ngModel" required>
+                                          <ng-option value="distractedDriving">Distracted Driving</ng-option>
+                                          <ng-option value="mobilePhoneUse">Mobile Phone Use</ng-option>
+                                          <ng-option value="tailgating">Tailgating</ng-option>
                                        </ng-select>
                                        <div *ngIf="evType.invalid && (evType.dirty || evType.touched)" class="text-danger">
                                           <div *ngIf="evType.errors.required">
@@ -106,7 +106,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" class="form-control" (keyup)="searchTerm.next($event);"
                                           [(ngModel)]="event.location" #loc="ngModel" required  name="location"
-                                          placeholder="Start typing to get location suggestions" autocomplete="off">
+                                          placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada" autocomplete="off">
                                        <div *ngIf="loc.invalid && (loc.dirty || loc.touched)" class="text-danger">
                                           <div *ngIf="loc.errors.required">
                                              Location is required.
@@ -141,19 +141,22 @@
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                       <textarea class="form-control h-auto" #note="ngModel" required  rows="3" placeholder="Enter Remarks"
+                                       <textarea class="form-control h-auto" #note="ngModel" required  rows="3" placeholder="Enter notes for the Safety Manager"
                                           name="notes" [(ngModel)]="event.notes"></textarea>
                                        <div *ngIf="note.invalid && (note.dirty || note.touched)" class="text-danger">
                                           <div *ngIf="note.errors.required">
-                                             Notes is required.
+                                             Notes are required.
                                           </div>
                                        </div>
+                                       <div *ngIf="event.notes?.length > 500" class="text-danger">
+                                          Only 500 characters are allowed.
+                                        </div>
                                     </div>
                                  </div>
                               </div>
                               <div class="col-lg-11 text-right">
                                  <button type="button" class="btn btn-default mt-4 mr-3"
-                                    routerLink="safety/critical-events">Cancel</button>
+                                 routerLink="/safety/critical-events">Cancel</button>
                                  <button [disabled]="disableButton || disabledButton()" (click)="addEvent()"
                                     class="btn btn-success mt-4 modal-confirm">Save</button>
                               </div>
