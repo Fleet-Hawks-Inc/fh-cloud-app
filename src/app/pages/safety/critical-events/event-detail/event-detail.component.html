@@ -50,12 +50,12 @@
                                       <div class="w100 pull-left"><hr class="solid mt-2 mb-2"></div>
                                       <div class="driverbar w100">
                                          <span class="pull-right pt-1 text-4 text-capitalize font-weight-bold text-dark">{{eventDate | date : 'yyyy-MM-dd'}}</span>
-                                         <h2 class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">Date</h2>
+                                         <h2 class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">Event Date</h2>
                                       </div>
                                       <div class="w100 pull-left"><hr class="solid mt-2 mb-2"></div>
                                       <div class="driverbar">
                                          <span class="pull-right pt-1 text-4 text-capitalize font-weight-bold text-dark">{{eventTime}}</span>
-                                         <h2 class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">Time</h2>
+                                         <h2 class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">Event Time</h2>
                                       </div>
                                       
                                    </div>
@@ -242,9 +242,12 @@
                      [config]="slideConfig"
                      >
                      <div ngxSlickItem *ngFor="let item of eventVideos; let i=index;" class="slide">
-                        <video id="clip" controls preload=auto width=530 height=264 data-setup="{}">
-                           <source [src]="item.path" type='video/mp4'/>        
-                        </video>
+                        <div>
+                           <video id="clip" controls disablepictureinpicture controlsList="nodownload" width=530 height=264>
+                              <source [src]="item.path" >        
+                           </video>
+                        </div>
+                        <a href="{{item.path}}" target="_blank">Download this video</a>
                      </div>
                   </ngx-slick-carousel>
                   
