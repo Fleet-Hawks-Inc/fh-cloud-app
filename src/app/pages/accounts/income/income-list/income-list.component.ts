@@ -28,10 +28,10 @@ export class IncomeListComponent implements OnInit {
   fetchAccounts() {
     this.accountService.getData(`income`)
       .subscribe((result: any) => {
+        if(result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
         if (result[0] != undefined) {
-          if(result.length == 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-          }
           this.incomeAccounts = result;
           this.incomeAccounts.map((v) => {
             if(v.paymentMode === 'creditCard') {

@@ -46,6 +46,8 @@
                     </div>
                     
                     <div class="col-4 text-right pr-1">
+                        <a href="javascript:;" class="modal-with-form btn btn-success btn-sm mx-2 "
+                            style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
                         <a href="javascript:;" routerLink="/safety/incidents/add-incident"
                             class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add
                             Incident</a>
@@ -68,10 +70,10 @@
                                         <a class="nav-link navtabs" id="assigned-tab" href="javascript:;" (click)="fetchTabData('assigned')">Assigned</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('underReview')">Under-review</a>
+                                        <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('investigating')">Investigating</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Resolved</a>
+                                        <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Closed</a>
                                     </li>
                                 </ul>
                             </div>
@@ -84,55 +86,42 @@
                                             <thead>
                                                 <tr>
                                                     <th>Driver Name</th>
-                                                    <th>Date &amp; Time</th>
-                                                    <th>Location</th>
                                                     <th>Vehicle</th>
+                                                    <th>Event Date</th>
+                                                    <th>Event Time</th>
+                                                    <th>Event Source</th>
+                                                    <th>Location</th>
+                                                    
                                                     <th>Severity</th>
                                                     <th>Assigned</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="events.length > 0">
-                                                <tr *ngFor="let data of events; let i= index">
-                                                    <td class="cursorpoint"
-                                                        routerLink="/safety/incidents/incident-details/{{data.eventID}}">
-                                                        {{ driversObject[data.driverUsername] }}</td>
-                                                    <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>
-                                                    <td>{{ data.location }}</td>
-                                                    <td>{{ vehiclesObject[data.vehicleID] }}</td>
-                                                    <td>{{ data.severity }}</td>
-                                                    <td>{{ usersObject[data.username] }}</td>
-                                                    <td>
-                                                        <select class="form-control" name="coachingStatus"
-                                                            [(ngModel)]="data.coachingStatus"
-                                                            (change)="changeCoachingStatus($event, data.eventID)">
-                                                            <option *ngFor="let stat of coachingStatus"
-                                                                value="{{ stat.value }}">{{ stat.name }}</option>
-                                                        </select>
+                                                <tr class="cursorpoint" *ngFor="let data of events; let i= index">
+                                                    <td class="cursorpoint" class="text-capitalize"
+                                                        routerLink="/safety/incidents/incident-details/{{data.incidentID}}">
+                                                        {{ driversObject[data.driverID] }}</td>
+                                                        <td class="text-capitalize">{{ vehiclesObject[data.vehicleID] }}</td>
+                                                    <td class="text-capitalize">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
+                                                    <td class="text-capitalize">{{convertTimeFormat(data.eventTime)}}</td>
+                                                    <td class="text-capitalize">{{data.eventSource}}</td>
+                                                    <td class="text-capitalize">{{ data.location }}</td>
+                                                    
+                                                    <td class="text-capitalize">{{ data.severity }}</td>
+                                                    <td class="text-capitalize">{{ data.assigned }}</td>
+                                                    <td style="width: 180px;" >
+                                                        <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.incidentID, $event, i);" [(ngModel)]="data.status">
+                                                            <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
+                                                        </ng-select>
                                                     </td>
-                                                    <td>
-                                                        <div class="dropdown dropright">
-                                                            <button class="bg-transparent border-0" type="button"
-                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
-                                                                <i class="fas fa-ellipsis-v"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu"
-                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item"
-                                                                    routerLink="/safety/incidents/edit-incident/{{data.eventID}}">Edit</a>
-                                                                <a class="dropdown-item" href="javascript:;"
-                                                                    (click)="deleteEvent(data.eventID)">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
+                                                    
                                                 </tr>
 
                                             </tbody>
                                             <tbody *ngIf="events.length == 0">
                                                 <tr>
-                                                    <td colspan="8" class="no-data-available">No record(s) found</td>
+                                                    <td colspan="9" class="no-data-available">No record(s) found</td>
                                                 </tr>
                                             <tbody>
                                         </table>
