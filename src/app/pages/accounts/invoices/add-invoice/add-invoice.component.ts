@@ -28,6 +28,9 @@ export class AddInvoiceComponent implements OnInit {
     invCustomerID: null,
     invSalesman: null,
     invSubject: '',
+    amountReceived: 0,
+    fullPayment: false,
+    balance: 0,
     details: [{
       commodityService: '',
       qtyHours: '',
@@ -40,7 +43,7 @@ export class AddInvoiceComponent implements OnInit {
     discount: 0,
     discountUnit: '%',
     invStateProvince: null,
-    invStatus: 'OPEN',
+    invStatus: 'open',
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
@@ -207,6 +210,7 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
+    this.invoiceData.balance = this.invoiceData.totalAmount;
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Added Successfully.');
       this.acRecDebitFn();
@@ -277,6 +281,7 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   updateInvoice() {
+    this.invoiceData.balance = this.invoiceData.totalAmount;
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
       this.router.navigateByUrl('/accounts/invoices/list');
@@ -284,46 +289,43 @@ export class AddInvoiceComponent implements OnInit {
   }
   acDiscountFn() {
     const internalID = 'ACT29';
-    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
     const data = {
       trxDate: moment().format('YYYY-MM-DD'),
-      name: customerName,
+      name: this.invoiceData.invCustomerID,
       trxType: 'debit', // It can be debit or credit
       type: 'invoice discount', // Type means either it's from invoice, bill etc.
       amount: this.invoiceData.discount,
       currency: 'CAD',
       trxRunTotal: 0,
-      desc: `Invoice is created for ${customerName}`
+      desc: `Invoice is created`
     };
     this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
   }
   acTaxFn() {
     const internalID = 'ACT38';
-    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
     const data = {
       trxDate: moment().format('YYYY-MM-DD'),
-      name: customerName,
+      name: this.invoiceData.invCustomerID,
       trxType: 'credit', // It can be debit or credit
       type: 'invoice tax', // Type means either it's from invoice, bill etc.
       amount: this.invoiceData.taxAmount,
       currency: 'CAD',
       trxRunTotal: 0,
-      desc: `Invoice is created for ${customerName}`
+      desc: `Invoice is created`
     };
     this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
   }
   acRecDebitFn() {
     const internalID = 'ACT2'; // Accounts receivable internal account id
-    const customerName = this.customersObjects[this.invoiceData.invCustomerID];
     const data = {
       trxDate: moment().format('YYYY-MM-DD'),
-      name: customerName,
+      name: this.invoiceData.invCustomerID,
       trxType: 'debit', // It can be debit or credit
       type: 'invoice', // Type means either it's from invoice, bill etc.
       amount: this.invoiceData.totalAmount,
       currency: 'CAD',
       trxRunTotal: 0,
-      desc: `Invoice is created for ${customerName}`
+      desc: `Invoice is created`
     };
     this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
   }
@@ -339,7 +341,7 @@ export class AddInvoiceComponent implements OnInit {
           amount: this.invoiceData.totalAmount,
           currency: 'CAD',
           trxRunTotal: 0,
-          desc: `Invoice is created for ${customerName}`
+          desc: `Invoice is created`
         };
         this.accountService.putData(`chartAc/trx/${this.invoiceData.details[i].accountID}`, data).subscribe();
       }

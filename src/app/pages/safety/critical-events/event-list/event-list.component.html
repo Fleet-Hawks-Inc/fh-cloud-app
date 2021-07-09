@@ -8,7 +8,7 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input [(ngModel)]="filterValue.date" name="date" type="text"
-                                placeholder="Search By Event Date" (click)="from.toggle()" ngbDatepicker
+                                placeholder=" yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                 #from="ngbDatepicker" class="form-control" autocomplete="off"
                                 (ngModelChange)="searchFilter($event, 'date' , '')">
                         </div>
@@ -64,8 +64,8 @@
                                         <tr>
                                             <th>Driver Name</th>
                                             <th>Vehicle</th>
-                                            <th>Date </th>
-                                            <th>Time</th>
+                                            <th>Event Date </th>
+                                            <th>Event Time</th>
                                             <th>Event Type</th>
                                             <th>Event Source</th>
                                             <th>Created By</th>
@@ -78,9 +78,13 @@
                                             <td class="text-capitalize" routerLink="/safety/critical-events/event-details/{{data.eventID}}">
                                                 {{ driversObject[data.driverID] }}</td>
                                             <td class="text-capitalize"> {{ vehiclesObject[data.vehicleID] }} </td>
-                                            <td class="text-capitalize">{{ data.eventDate | date: 'yyyy-MM-dd' }}</td>
+                                            <td class="text-capitalize">{{ data.eventDate | date: 'yyyy/MM/dd' }}</td>
                                             <td class="text-capitalize">{{ convertTimeFormat(data.eventTime) }}</td>
-                                            <td class="text-capitalize">{{ data.eventType }}</td>
+                                            <td class="text-capitalize">
+                                                <span *ngIf="data.eventType == 'distractedDriving'">Distracted Driving</span>
+                                                <span *ngIf="data.eventType == 'mobilePhoneUse'">Mobile Phone Use</span>
+                                                <span *ngIf="data.eventType == 'tailgating'">Tailgating</span>
+                                            </td>
                                             <td class="text-capitalize">{{ data.eventSource }}</td>
                                             <td class="text-capitalize">{{ data.createdBy }}</td>
                                             <td class="text-capitalize">{{ data.location }}</td>

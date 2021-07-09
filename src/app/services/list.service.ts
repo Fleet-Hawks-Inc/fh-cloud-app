@@ -71,7 +71,7 @@ export class ListService {
   constructor(private apiService: ApiService,private accountService: AccountService,) {}
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
       this.vendorDataSource.next(result);
     });
   }
@@ -165,10 +165,6 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    // this.apiService.getData(`customers`).subscribe((result: any) => {
-    //   this.customersDataSource.next(result.Items);
-    // });
-
     this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
       this.customersDataSource.next(result);
     });
