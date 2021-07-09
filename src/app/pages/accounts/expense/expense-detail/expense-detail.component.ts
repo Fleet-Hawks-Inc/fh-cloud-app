@@ -51,7 +51,8 @@ export class ExpenseDetailComponent implements OnInit {
     customerID: null,
     invoiceID: null,
     documents: [],
-    notes: ''
+    notes: '', 
+    finalTotal: ''
   };
   Asseturl = this.apiService.AssetUrl;
   documentSlides = [];
