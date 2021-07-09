@@ -68,7 +68,7 @@ describe(" Issue tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(7) > .nav-link > .fas').click();
     cy.get('[name="unitID"] input').clear();
-    cy.get('[name="unitID"] input').type('tesla {enter}');
+    cy.get('[name="unitID"] input').type('mandatory {enter}');
     cy.get(':nth-child(3) > .input-group > .form-control').clear();
     cy.get(':nth-child(3) > .input-group > .form-control').type('brake issue');
     cy.get('.page-header > .row > :nth-child(4) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
