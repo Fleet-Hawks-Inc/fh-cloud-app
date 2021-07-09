@@ -86,7 +86,8 @@ export class AddEventComponent implements OnInit {
     drivers  = [];
     users = [];
     trips = [];
-
+    photoSizeError = '';
+    videoSizeError = '';
   
     public searchResults: any;
     private readonly search: any;
@@ -270,20 +271,55 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-
+        let filesSize = 0;
+        
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];
+            
             for (let i = 0; i < files.length; i++) {
-                this.uploadedPhotos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+                if(filesSize > 10) {
+                    this.toastr.error('files size limit exceeded');
+                    this.photoSizeError = 'Please select file which have size below 10 MB';
+                    return;
+                } else {
+                    this.photoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        this.uploadedPhotos.push(files[i])
+                    } else {
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed';
+                    }
+                    
+                }
+                
             }
         } else {
             
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 30) {
+                    this.toastr.error('files size limit exceeded');
+                    this.videoSizeError = 'Please select file which have size below 30 MB';
+                    return;
+                } else {
+                    this.videoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'mp4' || ext == 'mov') {
+                        this.uploadedVideos.push(files[i])
+                    } else {
+                        this.videoSizeError = 'Only .mp4 and .mov files allowed';
+                    }
+                    
+                }
+                
             }
         }
-       
+        
     }
 
 }

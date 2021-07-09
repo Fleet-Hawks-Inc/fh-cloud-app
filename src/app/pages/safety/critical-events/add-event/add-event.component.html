@@ -130,11 +130,17 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple="" class="form-control p-0">
+                                       <span *ngIf="photoSizeError != ''" class="text-danger">
+                                          {{photoSizeError}}
+                                       </span>
                                     </div>
                             
-                            <div class="col-lg-5">
+                                    <div class="col-lg-5">
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedVideos')" name="uploadedVideos" multiple="" class="form-control p-0"> 
+                                       <span *ngIf="videoSizeError != ''" class="text-danger">
+                                          {{videoSizeError}}
+                                       </span>
                                     </div>
                                  </div>
                                  
