@@ -22,6 +22,9 @@ export class InvoiceListComponent implements OnInit {
    this.accountService.getData('invoices').subscribe((res: any) => {
     console.log('invoices response', res);
     this.invoices = res;
+    this.invoices.map((v: any) => {
+      v.invStatus = v.invStatus.replace('_', ' ');
+    });
    });
  }
   /*

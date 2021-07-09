@@ -66,7 +66,8 @@ export class EventDetailComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
+    variableWidth: true,
     autoplaySpeed: 1500,
   };  
 
@@ -177,15 +178,19 @@ export class EventDetailComponent implements OnInit {
 
   
   addNotes() {
-    let data = {
-        notes: this.newNotes,
-        eventID: this.eventID,
+    if(this.newNotes.trim().length > 0) {
+      let data = {
+          notes: this.newNotes,
+          eventID: this.eventID,
+      }
+      
+      this.safetyService.postData('critical-events/notes', data).subscribe(res => {
+        this.fetchEventDetail();
+        this.toastr.success('Notes added successfully');
+        this.newNotes = '';
+      });
     }
     
-    this.safetyService.postData('critical-events/notes', data).subscribe(res => {
-      this.fetchEventDetail();
-      this.toastr.success('Notes added successfully!');
-      this.newNotes = '';
-    });
   }
+
 }

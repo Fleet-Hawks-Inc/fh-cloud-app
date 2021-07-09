@@ -166,16 +166,16 @@
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
-                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus}}</span></td>
+                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                              <td>
                                  <div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
                                        <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
-                                       <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'PAID'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                       <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
                                     </div>
                                  </div>
@@ -1023,11 +1023,11 @@
           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
             Select Status</label>
           <ng-select class="form-control populate" [(ngModel)]="invNewStatus" name="invNewStatus">
-              <ng-option value="OPEN">OPEN</ng-option>
-              <ng-option value="PAID">PAID</ng-option>
-              <ng-option value="PARTIALLY PAID">PARTIALLY PAID</ng-option>
-              <ng-option value="EMAILED">EMAILED</ng-option>
-              <ng-option value="VOIDED">VOIDED</ng-option>
+              <ng-option value="open">OPEN</ng-option>
+              <ng-option value="paid">PAID</ng-option>
+              <ng-option value="partially_paid">PARTIALLY PAID</ng-option>
+              <ng-option value="emailed">EMAILED</ng-option>
+              <ng-option value="voided">VOIDED</ng-option>
           </ng-select>
         </div>
       </div>
