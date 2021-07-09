@@ -25,7 +25,7 @@ import { ScorecardListComponent } from './driver-scorecard/scorecard-list/scorec
 import { ScorecardDetailComponent } from './driver-scorecard/scorecard-detail/scorecard-detail.component';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -96,7 +96,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     NgbModule,
     NgxMaterialTimepickerModule,
     FullCalendarModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

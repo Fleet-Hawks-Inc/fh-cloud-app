@@ -35,7 +35,7 @@ export class EventListComponent implements OnInit {
   driversObject: any = {};
 
   status_values: any = ["open", "investigating", "coaching", "closed"];
-  
+  lastItemSK: string = '';
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
@@ -79,9 +79,16 @@ export class EventListComponent implements OnInit {
   }
 
   fetchEvents() {
-    this.safetyService.getData('critical-events')
+    
+    this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
-        this.events = result;
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          this.events.push(element);
+          
+        }
+        this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+        console.log('this.events', this.events)
       })
   }
 
@@ -175,6 +182,11 @@ export class EventListComponent implements OnInit {
       time[0] = +time[0] % 12 || 12; // Adjust hours
     }
     return time.join (''); // return adjusted time or original string
+  }
+
+  onScroll() {
+    console.log('scrolled down')
+    this.fetchEvents();
   }
   
 }

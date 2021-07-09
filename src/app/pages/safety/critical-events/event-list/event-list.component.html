@@ -1,3 +1,4 @@
+
 <section class="body">
     <div class="inner-wrapper">
         
@@ -5,14 +6,7 @@
             <header class="page-header">
                 <div class="row" style="padding-top:10px;">
 
-                    <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <input [(ngModel)]="filterValue.date" name="date" type="text"
-                                placeholder=" yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
-                                #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                (ngModelChange)="searchFilter($event, 'date' , '')">
-                        </div>
-                    </div>
+                    
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" class="form-control" [(ngModel)]="filterValue.driverName"
@@ -30,7 +24,14 @@
                                 value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}</ng-option>
                         </ng-select>
                     </div>
-
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input [(ngModel)]="filterValue.date" name="date" type="text"
+                                placeholder=" yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
+                                #from="ngbDatepicker" class="form-control" autocomplete="off"
+                                (ngModelChange)="searchFilter($event, 'date' , '')">
+                        </div>
+                    </div>
                     <div class="col-md-2  col-lg-2">
                         <a href="javascript:;" (click)="searchEvents()" class="btn btn-success btn-sm mr-1"
                             style="color:white;"> Search
@@ -56,54 +57,64 @@
             <div class="row m-2">
                 <div class="col-lg-12 p-0">
                     <section class="card">
-                        <div class="card-body" style="display: block;">
-                            <div class="table-responsive" style=" overflow: visible">
+                        <div class="main-panel">
+                            <div infiniteScroll
+                            [infiniteScrollDistance]="1"
+                            [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5"
+                            (scrolled)="onScroll()">
+                            <div class="card-body" style="display: block;" >
+                            <div class="main-panel">
                                 <table
-                                    class="row-border hover table table-bordered table-striped mb-0 ">
-                                    <thead>
-                                        <tr>
-                                            <th>Driver Name</th>
-                                            <th>Vehicle</th>
-                                            <th>Event Date </th>
-                                            <th>Event Time</th>
-                                            <th>Event Type</th>
-                                            <th>Event Source</th>
-                                            <th>Created By</th>
-                                            <th>Location</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngIf="events.length > 0">
-                                        <tr class="cursorpoint" *ngFor="let data of events; let i= index">
-                                            <td class="text-capitalize" routerLink="/safety/critical-events/event-details/{{data.eventID}}">
-                                                {{ driversObject[data.driverID] }}</td>
-                                            <td class="text-capitalize"> {{ vehiclesObject[data.vehicleID] }} </td>
-                                            <td class="text-capitalize">{{ data.eventDate | date: 'yyyy/MM/dd' }}</td>
-                                            <td class="text-capitalize">{{ convertTimeFormat(data.eventTime) }}</td>
-                                            <td class="text-capitalize">
-                                                <span *ngIf="data.eventType == 'distractedDriving'">Distracted Driving</span>
-                                                <span *ngIf="data.eventType == 'mobilePhoneUse'">Mobile Phone Use</span>
-                                                <span *ngIf="data.eventType == 'tailgating'">Tailgating</span>
-                                            </td>
-                                            <td class="text-capitalize">{{ data.eventSource }}</td>
-                                            <td class="text-capitalize">{{ data.createdBy }}</td>
-                                            <td class="text-capitalize">{{ data.location }}</td>
-                                            <td style="width: 180px;" >
-                                                <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
-                                                    <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
-                                                </ng-select>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                class="row-border hover table table-bordered table-striped mb-0 ">
+                                <thead>
+                                    <tr>
+                                        <th>Driver Name</th>
+                                        <th>Vehicle</th>
+                                        <th>Event Date </th>
+                                        <th>Event Time</th>
+                                        <th>Event Type</th>
+                                        <th>Event Source</th>
+                                        <th>Created By</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="events.length > 0">
+                                    <tr class="cursorpoint" *ngFor="let data of events; let i= index">
+                                        <td class="text-capitalize" routerLink="/safety/critical-events/event-details/{{data.eventID}}">
+                                            {{ driversObject[data.driverID] }}</td>
+                                        <td class="text-capitalize"> {{ vehiclesObject[data.vehicleID] }} </td>
+                                        <td class="text-capitalize">{{ data.eventDate | date: 'yyyy/MM/dd' }}</td>
+                                        <td class="text-capitalize">{{ convertTimeFormat(data.eventTime) }}</td>
+                                        <td class="text-capitalize">
+                                            <span *ngIf="data.eventType == 'distractedDriving'">Distracted Driving</span>
+                                            <span *ngIf="data.eventType == 'mobilePhoneUse'">Mobile Phone Use</span>
+                                            <span *ngIf="data.eventType == 'tailgating'">Tailgating</span>
+                                        </td>
+                                        <td class="text-capitalize">{{ data.eventSource }}</td>
+                                        <td class="text-capitalize">{{ data.createdBy }}</td>
+                                        <td class="text-capitalize">{{ data.location }}</td>
+                                        <td style="width: 180px;" >
+                                            <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.eventID, $event, i);" [(ngModel)]="data.status">
+                                                <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
+                                            </ng-select>
+                                        </td>
+                                    </tr>
+                                </tbody>
 
-                                    <tbody *ngIf="events.length == 0">
-                                        <tr>
-                                            <td colspan="9" class="no-data-available">No record(s) found</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <tbody *ngIf="events.length == 0">
+                                    <tr>
+                                        <td colspan="9" class="no-data-available">No record(s) found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             </div>
+                            
                         </div>
+                        </div>
+                        </div>
+                        
                     </section>
                 </div>
             </div>
