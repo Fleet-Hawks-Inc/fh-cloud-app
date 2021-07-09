@@ -41,7 +41,7 @@
                                           date: 'yyyy/MM/dd'}}</span>
                                        <h2
                                           class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                          Date</h2>
+                                          Event Date</h2>
                                     </div>
                                     <div class="w100 pull-left">
                                        <hr class="solid mt-2 mb-2">
@@ -51,7 +51,7 @@
                                           class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{eventTime}}</span>
                                        <h2
                                           class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                          Time</h2>
+                                          Event Time</h2>
                                     </div>
                                     <div class="w100 pull-left">
                                        <hr class="solid mt-2 mb-2">
@@ -219,7 +219,7 @@
                         </div>
 
                         <div class="w100 mt-3">
-                           <textarea [(ngModel)]="newNotes" name="newNotes" class="form-control heighta"
+                           <textarea [(ngModel)]="newNotes" ng-trim="false" name="newNotes" class="form-control heighta"
                               placeholder=" Enter Safety Manager Internal Notes" rows="2"></textarea>
                         </div>
                         <div class="w100 mt-2 text-right">
@@ -305,12 +305,15 @@
                <div class="mb-3">
                   <div class="row">
                      <div class="col-12">
-                        <ngx-slick-carousel class="carousel safety-slider" #slickModal="slick-carousel"
+                        <ngx-slick-carousel class="carousel safety-slider " #slickModal="slick-carousel"
                            [config]="slideConfig">
                            <div ngxSlickItem *ngFor="let item of incidentVideos; let i=index;" class="slide">
-                              <video id="clip" controls preload=auto width=530 height=264 data-setup="{}">
-                                 <source [src]="item.path" type='video/mp4' />
-                              </video>
+                              <div>
+                                 <video id="clip" controls disablepictureinpicture controlsList="nodownload" width=530 height=264>
+                                    <source [src]="item.path" type='video/mp4' />
+                                 </video>
+                              </div>
+                              <a href="{{item.path}}" target="_blank">Download this video</a>
                            </div>
                         </ngx-slick-carousel>
 
