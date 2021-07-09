@@ -257,8 +257,8 @@ export class AddIncidentComponent implements OnInit {
             for (let i = 0; i < files.length; i++) {
                 filesSize += files[i].size / 1024 / 1024;
                 if(filesSize > 10) {
-                    this.toastr.error('files size limit exceeded');
-                    this.photoSizeError = 'Please select file which have size below 10 MB';
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.photoSizeError = 'Please select file which have size below 10 MB.';
                     return;
                 } else {
                     this.photoSizeError = '';
@@ -267,7 +267,7 @@ export class AddIncidentComponent implements OnInit {
                     if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
                         this.uploadedPhotos.push(files[i])
                     } else {
-                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed';
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed.';
                     }
                     
                 }
@@ -280,8 +280,8 @@ export class AddIncidentComponent implements OnInit {
                 filesSize += files[i].size / 1024 / 1024;
 
                 if(filesSize > 10) {
-                    this.toastr.error('files size limit exceeded');
-                    this.docSizeError = 'Please select file which have size below 10 MB';
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.docSizeError = 'Please select file which have size below 10 MB.';
                     return;
                 } else {
                     this.docSizeError = '';
@@ -290,7 +290,7 @@ export class AddIncidentComponent implements OnInit {
                     if(ext == 'doc' || ext == 'docx' || ext == 'pdf') {
                         this.uploadedDocs.push(files[i])
                     } else {
-                        this.docSizeError = 'Only .doc, .docx and .pdf files allowed';
+                        this.docSizeError = 'Only .doc, .docx and .pdf files allowed.';
                     }
                     
                 }
