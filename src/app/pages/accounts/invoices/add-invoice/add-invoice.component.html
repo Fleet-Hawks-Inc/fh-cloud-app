@@ -13,24 +13,34 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="post" #invForm="ngForm" id="invoiceForm" >
                   <div class=" row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice#</label>
-                          <input type="text" class="form-control" [(ngModel)]="invoiceData.invNo" name="invNo">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" [(ngModel)]="invoiceData.invNo" name="invNo" #invoiceNumber="ngModel" required>
+                          <div *ngIf="invoiceNumber.invalid && (invoiceNumber.dirty || invoiceNumber.touched)" class="text-danger">
+                            <div *ngIf="invoiceNumber.errors.required">
+                              Invoice number is required.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
-                            Date</label>
-                          <input type="date" [(ngModel)]="invoiceData.invDate" name="invDate" class="form-control"
-                            placeholder="mm/dd/yyyy">
+                            Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <input [(ngModel)]="invoiceData.invDate" name="invDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" #invoiceDate="ngModel" required>
+                            <div *ngIf="invoiceDate.invalid && (invoiceDate.dirty || invoiceDate.touched)" class="text-danger">
+                              <div *ngIf="invoiceDate.errors.required">
+                                Invoice date is required.
+                              </div>
+                            </div>
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer</label>
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="invoiceData.invCustomerID" name="invCustomerID"
                             (change)="selectedCustomer($event)" placeholder="Select Customer" class="form-control">
                             <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
@@ -61,7 +71,6 @@
                              </div>
                              <div class="row pl-3 pr-3">
                                 <div class="col-lg-12">
-
                                    <div class="" *ngFor="let address of customerSelected.address">
                                       <div class="row" *ngIf="address.addressType =='Office'">
                                          <div class="col-lg-6">
@@ -92,12 +101,8 @@
                                                {{customerSelected.email}}</label>
                                          </div>
                                       </div>
-
                                    </div>
-
-
                                 </div>
-
                              </div>
                           </div>
                        </div>
@@ -105,27 +110,40 @@
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
-                        <div class="col-lg-10">
+                        <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                             Reference#/Order#</label>
                           <input type="text" class="form-control" [(ngModel)]="invoiceData.invRef" name="invRef"
                             placeholder="Enter Unique Reference Number">
                         </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Invoice Currency<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <ng-select class="form-control populate" [(ngModel)]="invoiceData.invCur" name="invCur" placeholder="Select Currency" #invoiceCur="ngModel" required>
+                              <ng-option value="CAD">CAD</ng-option>
+                              <ng-option value="USD">USD</ng-option>
+                          </ng-select>
+                          <div *ngIf="invoiceCur.invalid && (invoiceCur.dirty || invoiceCur.touched)" class="text-danger">
+                            <div *ngIf="invoiceCur.errors.required">
+                              Invoice currency is required.
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
-                          <input type="date" class="form-control" [(ngModel)]="invoiceData.invDueDate" name="invDueDate">
+                          <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()"
+                          ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off">
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
                             Terms</label>
                           <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms">
-                              <ng-option value="1">15 Days</ng-option>
-                              <ng-option value="2">30 Days</ng-option>
-                              <ng-option value="2">45 Days</ng-option>
-                              <ng-option value="2">Due On Receipt</ng-option>
-                              <ng-option value="2">Due End Of The Month</ng-option>
+                              <ng-option value="15">15 Days</ng-option>
+                              <ng-option value="30">30 Days</ng-option>
+                              <ng-option value="45">45 Days</ng-option>
+                              <ng-option value="dueReceipt">Due On Receipt</ng-option>
+                              <ng-option value="dueEnd">Due End Of The Month</ng-option>
                           </ng-select>
                         </div>
                       </div>
@@ -134,13 +152,8 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                             Salesperson</label>
                           <ng-select class="form-control populate" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
-                            <optgroup label="Select">
-                              <ng-option value="Salesman 1">Salesman 1</ng-option>
-                              <ng-option value="Salesman 2">Salesman 2</ng-option>
-                              <ng-option value="Salesman 3">Salesman 3</ng-option>
-                              <ng-option value="Salesman 4">Salesman 4</ng-option>
-                              <ng-option value="Salesman 5">Salesman 5</ng-option>
-                            </optgroup>
+                            <ng-option *ngFor="let user of users" value="{{user.contactID}}">
+                              {{user.firstName}} {{user.lastName}}</ng-option>
                           </ng-select>
                         </div>
                       </div>
@@ -196,14 +209,8 @@
                               </td>
                               <td>
                                 <div class="row">
-                                  <div class="col-lg-6 pr-0">
+                                  <div class="col-lg-12">
                                     <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="amount{{d}}" (change)="calculateAmount()">
-                                  </div>
-                                  <div class="col-lg-6 pl-0">
-                                    <ng-select class="form-control populate" [(ngModel)]="dt.amtCur" name="amtCur{{d}}">
-                                        <ng-option value="CAD">CAD</ng-option>
-                                        <ng-option value="USD">USD</ng-option>
-                                    </ng-select>
                                   </div>
                                 </div>
                               </td>
@@ -353,9 +360,9 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button type="button" class="btn btn-default mr-2" onclick="goBack()">Cancel</button>
-                      <button class="btn btn-success mr-2" type="button" *ngIf="!invID" (click)="addInvoice()">Save</button>
-                      <button class="btn btn-success mr-2" type="button" *ngIf="invID" (click)="updateInvoice()">Update</button>
+                      <a class="btn btn-default mr-2" routerLink="/accounts/invoices/list">Cancel</a>
+                      <button class="btn btn-success mr-2" type="button" *ngIf="!invID" [disabled]="!invForm.form.valid" (click)="addInvoice()">Save</button>
+                      <button class="btn btn-success mr-2" type="button" *ngIf="invID" [disabled]="!invForm.form.valid" (click)="updateInvoice()">Update</button>
                       <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a> -->
                     </div>
                   </div>

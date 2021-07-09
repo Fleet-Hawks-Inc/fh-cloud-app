@@ -12,6 +12,7 @@ export class InvoiceDetailComponent implements OnInit {
     invNo: '',
     invDate: null,
     invRef: '',
+    invCur: '',
     invDueDate: null,
     invPayTerms: '',
     invCustomerID: null,
@@ -29,17 +30,30 @@ export class InvoiceDetailComponent implements OnInit {
     discount: 0,
     discountUnit: '%',
     invStateProvince: null,
-    invStatus: 'OPEN',
+    invStatus: 'open',
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
+    transactionLog: [],
     totalAmount: 0,
     discountAmount: 0,
     taxAmount: 0,
+    amountReceived: 0,
+    fullPayment: false,
+    balance: 0,
   };
+  customerName = '';
+  customerAddress = '';
+  customerCityName = '';
+  customerStateName = '';
+  customerCountryName = '';
+  customerPhone = '';
+  customerEmail = '';
+  customerfax = '';
   total = 0;
   customersObjects = {};
   accountsObjects = {};
+  accountsIntObjects = {};
   constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,) { }
 
   ngOnInit() {
@@ -49,11 +63,13 @@ export class InvoiceDetailComponent implements OnInit {
     }
     this.fetchCustomersByIDs();
     this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
   }
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
       this.invoice = res[0];
       this.invoice.invStatus = this.invoice.invStatus.replace('_', ' ');
+      this.fetchCustomersDetail();
       this.calculateTotal();
     });
   }
@@ -71,11 +87,38 @@ export class InvoiceDetailComponent implements OnInit {
       this.accountsObjects = result;
     });
   }
+  fetchAccountsByInternalIDs() {
+    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+      this.accountsIntObjects = result;
+    });
+  }
   calculateTotal() {
     let midTotal = 0;
     for (let i = 0; i < this.invoice.details.length; i++) {
       midTotal += Number(this.invoice.details[i].amount);
     }
     this.total = Number(midTotal) + Number(this.invoice.taxAmount);
+  }
+  fetchCustomersDetail() {
+    this.apiService.getData(`contacts/detail/${this.invoice.invCustomerID}`).subscribe((result: any) => {
+      result = result.Items[0];
+      this.customerName = `${result.companyName}`;
+      if (result.address.length > 0) {
+        for(let i=0; i < result.address.length; i++) {
+            if (result.address[i].addressType === 'Office') {
+              if (result.address[i].manual) {
+                this.customerAddress = result.address[i].address1;
+              } else {
+                this.customerAddress = result.address[i].userLocation;
+              }
+              this.customerCityName = result.address[i].cityName;
+              this.customerStateName = result.address[i].stateName;
+              this.customerCountryName = result.address[i].countryName;
+              this.customerPhone = result.workPhone;
+              this.customerEmail = result.workEmail;
+            }
+        }
+      }
+    });
   }
 }

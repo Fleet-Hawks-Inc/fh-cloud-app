@@ -5,7 +5,7 @@ import { ReceiptDetailComponent } from './receipt-detail/receipt-detail.componen
 import { ReceiptsListComponent } from './receipts-list/receipts-list.component';
 import { Routes, Router, RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -88,6 +88,7 @@ const routes: Routes = [
     FormsModule,
     NgbModule,
     AddAccountModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
   providers: [
