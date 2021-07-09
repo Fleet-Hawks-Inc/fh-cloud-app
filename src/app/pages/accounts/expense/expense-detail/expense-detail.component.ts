@@ -28,7 +28,7 @@ export class ExpenseDetailComponent implements OnInit {
       endDate: null,
       interval: null,
     },
-    expDate: null,
+    txnDate: null,
     unitType: null,
     unitID: null,
     vendorID: null,

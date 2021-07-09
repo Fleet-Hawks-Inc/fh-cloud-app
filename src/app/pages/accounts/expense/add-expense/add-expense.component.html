@@ -51,7 +51,7 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense
                                                 Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="expenseData.expAccountID" name="expAccountID"
-                                                placeholder="Select Expense Account" #expAccount="ngModel" required>
+                                                placeholder="Select Expense Account" #expAccount="ngModel" required (change)="changeDepAcc($event)">
                                                 <ng-option value="{{ data.actID }}"
                                                     *ngFor="let data of expenseAccounts | async">{{ data.actName }} - {{
                                                     data.actNo }}</ng-option>
@@ -140,17 +140,11 @@
                                             <div class="col-lg-5">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="expenseData.expDate" name="expDate"
+                                                <input [(ngModel)]="expenseData.txnDate" name="txnDate"
                                                     type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
                                                     ngbDatepicker #custexp="ngbDatepicker" class="form-control"
                                                     autocomplete="off" [minDate]="dateMinLimit"
-                                                    [maxDate]="futureDatesLimit" #recDate="ngModel">
-
-                                                <div *ngIf="recDate.invalid && (recDate.dirty || recDate.touched)" class="text-danger">
-                                                    <div *ngIf="!expenseData.recurring.status">
-                                                        Date is required.
-                                                    </div>
-                                                </div>
+                                                    [maxDate]="futureDatesLimit">
                                             </div>
                                         </div>
                                     </div>
@@ -160,22 +154,16 @@
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Start
                                                     Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="expenseData.recurring.startDate" name="startDate"
+                                                <input [(ngModel)]="expenseData.txnDate" name="txnDate"
                                                     type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
                                                     ngbDatepicker #startDate="ngbDatepicker" class="form-control"
                                                     autocomplete="off" [minDate]="dateMinLimit"
-                                                    [maxDate]="futureDatesLimit" #startDatee="ngModel">
-
-                                                <div *ngIf="startDatee.invalid && (startDatee.dirty || startDatee.touched)" class="text-danger">
-                                                    <div *ngIf="expenseData.recurring.status">
-                                                        Start date is required.
-                                                    </div>
-                                                </div>
+                                                    [maxDate]="futureDatesLimit">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">End
-                                                    Date</label>
+                                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="expenseData.recurring.endDate" name="endDate"
                                                     type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
                                                     ngbDatepicker #endDate="ngbDatepicker" class="form-control"

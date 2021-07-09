@@ -30,7 +30,7 @@
                                                     <tr>
                                                         <td width="40%" class="back-color-gray font-weight-bold">Income
                                                             Date</td>
-                                                        <td width="60%">{{ incomeData.incomeDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td width="60%">{{ incomeData.txnDate | date:"yyyy/MM/dd" }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td width="40%" class="back-color-gray font-weight-bold">Income
@@ -39,11 +39,11 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Invoice#</td>
-                                                        <td>{{ invoices[incomeData.invoiceID] }}</td>
+                                                        <td>{{ (incomeData.invoiceID) ? invoices[incomeData.invoiceID]: '-' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Customer</td>
-                                                        <td>{{ customers[incomeData.customerID] }}</td>
+                                                        <td>{{ (incomeData.customerID) ? customers[incomeData.customerID]: '-' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Received Amount
@@ -64,7 +64,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Description</td>
-                                                        <td>{{ incomeData.description }}</td>
+                                                        <td>{{ (incomeData.description) ? incomeData.description: '-' }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
