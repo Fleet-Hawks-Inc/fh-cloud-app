@@ -22,13 +22,13 @@ export class AddIncomeComponent implements OnInit {
     categoryID: null,
     incomeAccID: null,
     depositAccID: null,
-    incomeDate: null,
+    txnDate: null,
     invoiceID: null,
     paymentMode: null,
     paymentModeNo: null,
     paymentModeDate: null,
     customerID: null,
-    recAmount: 0,
+    recAmount: null,
     recCurr: null,
     description: '',
     attachments: []
@@ -137,6 +137,7 @@ export class AddIncomeComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false; 
+    this.incomeData.recAmount = parseFloat(this.incomeData.recAmount);
 
     // create form data instance
     const formData = new FormData();
@@ -215,6 +216,7 @@ export class AddIncomeComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
+    this.incomeData.recAmount = parseFloat(this.incomeData.recAmount);
     this.incomeData.attachments = this.existingDocs;
 
     // create form data instance

@@ -18,7 +18,6 @@ import { AddEventComponent } from './critical-events/add-event/add-event.compone
 import { EventDetailComponent } from './critical-events/event-detail/event-detail.component';
 import { IncidentListComponent } from './incidents/incident-list/incident-list.component';
 import { AddIncidentComponent } from './incidents/add-incident/add-incident.component';
-import { EditIncidentComponent } from './incidents/edit-incident/edit-incident.component';
 import { IncidentDetailComponent } from './incidents/incident-detail/incident-detail.component';
 import { HosListComponent } from './hos-violation/hos-list/hos-list.component';
 import { HosDetailComponent } from './hos-violation/hos-detail/hos-detail.component';
@@ -84,7 +83,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     SafetyOverviewComponent, 
     EventListComponent, 
     AddEventComponent, 
-    EventDetailComponent, IncidentListComponent, AddIncidentComponent, EditIncidentComponent, IncidentDetailComponent, HosListComponent, HosDetailComponent, ScorecardListComponent, ScorecardDetailComponent
+    EventDetailComponent, IncidentListComponent, AddIncidentComponent, IncidentDetailComponent, HosListComponent, HosDetailComponent, ScorecardListComponent, ScorecardDetailComponent
   ],
   imports: [
     CommonModule,

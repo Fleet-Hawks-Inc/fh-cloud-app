@@ -19,7 +19,7 @@ export class AddJournalComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   journal = {
-    date: null,
+    txnDate: null,
     referenceNo: '',
     currency: null,
     notes: '',

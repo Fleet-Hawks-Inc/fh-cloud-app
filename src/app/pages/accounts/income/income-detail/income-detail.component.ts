@@ -16,7 +16,7 @@ export class IncomeDetailComponent implements OnInit {
     categoryID: null,
     incomeAccID: null,
     depositAccID: null,
-    incomeDate: null,
+    txnDate: null,
     invoiceID: null,
     paymentMode: null,
     paymentModeNo: null,

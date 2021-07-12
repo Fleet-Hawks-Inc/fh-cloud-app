@@ -1,269 +1,372 @@
 <style>
-    #map_view {
-        display: inline-block;
-        height: 450px;
-        width: 100%;
-    }
+   #map_view {
+      display: inline-block;
+      height: 450px;
+      width: 100%;
+   }
 </style>
 <section class="body">
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pl-0 pt-0 pr-0">
+         <header class="page-header">
+            <div class="row " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  Incident Details
+               </div>
+               <div class="col-md-8  col-lg-8 text-right">
+                  <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
 
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
+                  <a href="javascript:;" routerLink="/safety/incidents" class="btn btn-sm btn-default mr-2"><i
+                        class="fas fa-list"></i> Incident
+                     List</a>
+                  <a href="javascript:;" routerLink="/safety/incidents/add-incident" class="btn btn-success btn-sm"><i
+                        class="fas fa-plus"></i> Add
+                     Incident</a>
+               </div>
+            </div>
+         </header>
+         <section class="m-2">
+            <div class="row mb-3">
+               <div class="col-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row justify-content-between pl-2 pr-2">
 
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
+                        <div class="col-xl-9 col-12 pl-0 pr-0">
+                           <div class="row pl-3 pr-3">
+                              <div class="col-xl-6 col-6 pl-0">
+                                 <div class="safetytile p-4 border">
+                                    
+                                    <div class="driverbar w100">
+                                       <span class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{eventDate |
+                                          date: 'yyyy/MM/dd'}}</span>
+                                       <h2
+                                          class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Event Date</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{eventTime}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Event Time</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{driversObject[driver]}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Driver</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar w100">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{vehiclesObject[vehicle]}}</span>
+                                       <h2
+                                          class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Vehicle</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{tripsObject[trip]}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Trip ID</h2>
+                                    </div>
 
-        <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header">
-                <div class="row pr-5 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        Incident Details
-                    </div>
-                    <div class="col-md-8  col-lg-8 text-right pr-4">
-                        <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
 
-                        <a href="javascript:;" routerLink = "/safety/incidents" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Incident
-                            List</a>
-                        <div class="btn-group flex-wrap mr-2">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Actions<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="javascript:;" routerLink="/safety/incidents/edit-incident/{{eventID}}">Edit</a>
-                                <a class="modal-with-form dropdown-item text-1" href="javascript:;"
-                                data-toggle="modal" data-target="#deleteModal">Delete</a>
-                            </div>
+                                 </div>
+                              </div>
+
+                              <div class="col-xl-6 col-6 pr-0">
+                                 <div class="safetytile p-4 border">
+                                    
+                                    <div class="driverbar w100">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{assigned}}</span>
+                                       <h2
+                                          class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Assigned To</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar w100">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{eventSource}}</span>
+                                       <h2
+                                          class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Event Source</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">
+                                          <span *ngIf="incidentType == 'majorAccident'">Major Accident</span>
+                                          <span *ngIf="incidentType == 'minorAccident'">Minor Accident</span>
+                                          <span *ngIf="incidentType == 'overSpeeding'">Over Speeding</span>
+                                       </span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Incident Type</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{severity}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Severity</h2>
+                                    </div>
+                                    <div class="w100 pull-left">
+                                       <hr class="solid mt-2 mb-2">
+                                    </div>
+                                    <div class="driverbar">
+                                       <span
+                                          class="pull-right pt-1 text-4 font-weight-bold text-dark w-50 text-right">{{location}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Location</h2>
+                                    </div>
+
+
+                                 </div>
+                              </div>
+
+                           </div>
                         </div>
-                        <a href="javascript:;" routerLink="/safety/incidents/add-incident" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
-                            Incident</a>
-                    </div>
-                </div>
-            </header>
-            
-            <div class="safety-deails">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row cmaindiv mb-3">
-                           <div class="col cerbor ">
-                              <div class="text-center p-4 ">
-                              <i class="fa fa-user text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.driverName }}</p>
-                              <p class="mb-0">DRIVER NAME</p>
-                              </div>
-                           </div>
 
-                           <div class="col cerbor">
-                              <div class="text-center p-4">
-                              <i class="far fa-calendar-check text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.location }}</p>
-                              <p class="mb-0">Location</p>
-                              </div>
-                           </div>
 
-                           <div class="col cerbor">
-                              <div class="text-center p-4">
-                              <i class="far fa-calendar-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.vehicleName }}</p>
-                              <p class="mb-0">Vehicle</p>
-                              </div>
-                           </div>
+                        <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
+                           <div class="col-xl-12 col-12 mb-3">
+                              <div class="vehicle-common-box maindisbox w100 pull-left">
+                                 <div class="widgetload">
+                                    <div class="widgettbload">
+                                       <span class="pull-right text-3 mt-2 text-dark">
 
-                           <div class="col cerbor">
-                              <div class="text-center p-4">
-                              <i class="fas fa-map-marker-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.eventDate }}, {{ event.eventTime }}</p>
-                              <p class="mb-0">Date &amp; Time</p>
-                              </div>
-                           </div>
-                           <div class="col cerbor">
-                              <div class="text-center p-4">
-                              <i class="fas fa-map-marker-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.severity }}</p>
-                              <p class="mb-0">Serverity</p>
-                              </div>
-                           </div>
-                           <div class="col cerbor">
-                              <div class="text-center p-4">
-                              <i class="fas fa-map-marker-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.AsigneeName }}</p>
-                              <p class="mb-0">Assigned</p>
-                              </div>
-                           </div>
-                           <div class="col">
-                              <div class="text-center p-4">
-                              <i class="fas fa-map-marker-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.tripNo }}</p>
-                              <p class="mb-0">Trip ID</p>
-                              </div>
-                           </div>
-                        </div>
+                                       </span>
 
-                        <div class="row my-4">
-                             <div class="col-md-6">
-                                <div class="safety-deails__map">
-                                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/y4lX98Ch-gI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-                                </div>
-                            </div>
-                            <!-- <div class="col-md-6">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray" width="30%">Driver Name:</td>
-                                                <td style="border:none!important;">John Smith</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Location:</td>
-                                                <td>Alberta</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Vehicle:</td>
-                                                <td>06123</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Date & Time:</td>
-                                                <td>June 23, 2020 12:00 PM</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Serverity:</td>
-                                                <td>Rolling Stop</td>
-                                            </tr>
-                                           
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Assigned:</td>
-                                                <td>Chris Parker</td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <td class="font-weight-bold text-4 text-left back-color-gray">Trip ID:</td>
-                                                <td>524</td>
-                                            </tr>
-                                    </tbody>
-                                </table>
-                            </div> -->
-                            <div class="col-md-6">
-                                 <div class="safety-deails__map">
-                                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xRiUfQi8gaE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mapclass" id="map_view">
-                                    <div id="map" class=""></div>
-                                </div>
-                            </div>
-                            <div class="col-6 pl-1">
-                                <div class="bg-white ">
-                                 <p class="mb-2 text-4 font-weight-bold text-dark">Safety Manager Internal Notes</p>
-                                 <div class="timeline dispatch-timeline timeline-simple changelog pb-3" style="max-height: 370px;overflow-x: auto;">
-                                    <div class="tm-body text-dark py-0">
-                                       <ol class="tm-items">
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:10 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                      <b class="text-success">Mike</b> is on the way.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:16 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                     <b class="text-success">Mike</b> reached at the spot.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:40 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                      <b class="text-success">Mike</b> Solved the case.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
+                                       <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                             class="fas fa-box"></i> Attachments</h2>
+                                    </div>
 
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:10 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                      <b class="text-success">Mike</b> is on the way.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:16 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                     <b class="text-success">Mike</b> reached at the spot.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
-                                          <li>
-                                             <div class="tm-box">
-                                                <span class="release-date">31 Aug 2020 04:40 PM</span>
-                                                <ul class="list-unstyled">
-                                                   <li>
-                                                      <b class="text-success">Mike</b> Solved the case.
-                                                   </li>
-                                                </ul>
-                                             </div>
-                                          </li>
-                                          
-                                       </ol>
+                                    <div class="widgetlinfo pb-1">
+                                       <div class="row">
+                                          <div class="col-lg-12 text-center p-5">
+                                             <a href="javascript:;" data-target="#viewDocsModal" data-toggle="modal"
+                                                class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i
+                                                   class="fas fa-eye"></i> View Incident Document</a>
+                                             <a href="javascript:;" data-target="#viewImagesModal" data-toggle="modal"
+                                                class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i
+                                                   class="fas fa-eye"></i> View Incident Photo</a>
+                                             <a href="javascript:;" data-target="#viewVideosModal" data-toggle="modal"
+                                                class="modal-with-form btn btn-success btn-block mb-1 btn-sm"><i
+                                                   class="fas fa-eye"></i> View Incident Video</a>
+                                          </div>
+
+                                       </div>
+
+
+
                                     </div>
                                  </div>
-                                 <div class="send-field d-flex">
-                                    <input type="text" class="form-control" placeholder="Enter your message" name="">
-                                    <a href="javascript:;" class="btn btn-success btn-sm">Send</a>
-                                 </div>
-                                </div>
-                            </div>
+                              </div>
+                           </div>
                         </div>
-                    </div>
-                </div>
+
+                     </div>
+                  </div>
+               </div>
             </div>
-        </section>
-    </div>
+
+            <div class="row mb-3">
+               <div class="col-6">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row justify-content-between pl-2 pr-2">
+
+                        <p class="mb-2 text-4 font-weight-bold text-dark">Safety Manager Internal Notes</p>
+                        <div class="timeline w100 dispatch-timeline timeline-simple changelog pb-3"
+                           style="min-height: 370px;overflow-x: auto; max-height: 370px;">
+                           <div class="tm-body text-dark py-0">
+                              <ol class="tm-items">
+                                 <li *ngFor="let item of safetyNotes;">
+                                    <div class="tm-box">
+                                       <span class="release-date">{{item.created | date: 'yyyy/MM/dd hh:mm a'}}</span>
+                                       <ul class="list-unstyled">
+                                          <li>
+                                             {{item.notes}}
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </li>
+
+
+                              </ol>
+                           </div>
+                        </div>
+
+                        <div class="w100 mt-3">
+                           <textarea [(ngModel)]="newNotes" ng-trim="false" name="newNotes" class="form-control heighta"
+                              placeholder=" Enter Safety Manager Internal Notes" rows="2"></textarea>
+                        </div>
+                        <div class="w100 mt-2 text-right">
+                           <a (click)="addNotes()" href="javascript:;" class="btn btn-success btn-sm">Send</a>
+                        </div>
+
+
+
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-6">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row justify-content-between pl-2 pr-2">
+                        <div id="map" style="height: 520px; overflow: hidden;"></div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+
+
+
+         </section>
+
+      </section>
+   </div>
 </section>
 
-<div class="modal fade" id="deleteModal" role="dialog">
-    <div class="modal-dialog" style="max-width: 600px;">
-      <!-- Modal content-->
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewImagesModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Confirm Action</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this record?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="deleteEvent()">Delete</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Incident Gallery</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="col-lg-12" *ngIf="incidentImages?.length > 0">
+               <div class="mb-3">
+                  <div class="row">
+                     <div class="col-12">
+                        <ngx-slick-carousel class="carousel safety-slider" #slickModal="slick-carousel"
+                           [config]="slideConfig">
+                           <div ngxSlickItem *ngFor="let item of incidentImages; let i=index;" class="slide">
+                              <img [src]="item.path" class="img-fluid" alt="" style="height: 400px; object-fit: cover;">
+                           </div>
+                        </ngx-slick-carousel>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-12" *ngIf="incidentImages?.length == 0">
+               <span>No Data Found</span>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
       </div>
-      
-    </div>
+   </div>
 </div>
+
+<!-- VIEW Videos MODAL -->
+<div class="modal fade" id="viewVideosModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Incident Videos</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="col-lg-12" *ngIf="incidentVideos?.length > 0">
+               <div class="mb-3">
+                  <div class="row">
+                     <div class="col-12">
+                        <ngx-slick-carousel class="carousel safety-slider " #slickModal="slick-carousel"
+                           [config]="slideConfig">
+                           <div ngxSlickItem *ngFor="let item of incidentVideos; let i=index;" class="slide">
+                              <div>
+                                 <video id="clip" controls disablepictureinpicture controlsList="nodownload" width=530 height=264>
+                                    <source [src]="item.path" type='video/mp4' />
+                                 </video>
+                              </div>
+                              <a href="{{item.path}}" target="_blank">Download this video</a>
+                           </div>
+                        </ngx-slick-carousel>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div  class="col-lg-12" *ngIf="incidentVideos?.length == 0">
+               <span>No Data Found</span>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- VIEW Documents MODAL -->
+<div class="modal fade" id="viewDocsModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 700px;" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Incident Documents</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="col-lg-12" *ngIf="incidentDocs?.length > 0">
+               <div class="mb-3">
+                  <div class="row">
+                     <div class="col-12">
+                        <ngx-slick-carousel class="carousel safety-slider" #slickModal="slick-carousel"
+                           [config]="slideConfig1">
+                           <div ngxSlickItem *ngFor="let item of incidentDocs; let i=index;" class="slide">
+                              <iframe width="100%" height="500" frameborder="0" [src]="item.path"></iframe>
+                           </div>
+                        </ngx-slick-carousel>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div  class="col-lg-12" *ngIf="incidentDocs?.length == 0">
+               <span>No Data Found</span>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>
+

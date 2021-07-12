@@ -2,44 +2,93 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top:10px;">
-            <div class="col-md-2 col-lg-2">
-              <select data-plugin-selectTwo class="form-control populate">
-                <optgroup label="Select Customer">
-                  <option value="1">Customer 1</option>
-                  <option value="2">Customer 2</option>
-                  <option value="2">Customer 3</option>
-                  <option value="2">Customer 4</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="col-lg-3 col-md-3">
-              <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
-                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
-                <input type="text" class="form-control" name="start">
-                                       <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
-                <input type="text" class="form-control" name="end"> </div>
-            </div>
-            <div class="col-md-2  col-lg-2">
-              <button type="submit" class="btn btn-sm btn-success">Search Invoice(s)</button>
-            </div>
-            <div class="col-md-5  col-lg-5 text-right pr-5"> <a routerLink="/accounts/receipts/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i>All Customer Receipts</a> </div>
-          </div>
-        </form>
+        <div class="row pr-5 " style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{ pageTitle }}</div>
+          <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/receipts/list"
+              class="btn btn-default"><i class="fas fa-list"></i> All Receipts</a> </div>
+        </div>
+
       </header>
       <section class="card mt-0 mb-4">
         <div class="card-body">
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="POST"  #recForm="ngForm" id="receiptForm">
                   <div class="row">
                     <div class="col-lg-12">
-                      <h4>Invoice Details</h4> </div>
+
+                        <div class=" row">
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <div class="col-lg-5">
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo" #receiptNo="ngModel" required>
+                                <div *ngIf="receiptNo.invalid && (receiptNo.dirty || receiptNo.touched)" class="text-danger">
+                                  <div *ngIf="receiptNo.errors.required">
+                                    Receipt# is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <div class="col-lg-5">
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
+                                  Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                  <input [(ngModel)]="receiptData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                  ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" #receiptDate="ngModel" required>
+                                  <div *ngIf="receiptDate.invalid && (receiptDate.dirty || receiptDate.touched)" class="text-danger">
+                                    <div *ngIf="receiptDate.errors.required">
+                                      Receipt date is required.
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                       <div class="row">
+                         <div class="col-lg-10 offset-lg-1">
+                          <div class="row mt-4" >
+                            <div class="col-md-5 col-lg-5">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
+                                placeholder="Select Customer" class="form-control" #receiptCustomer="ngModel" required>
+                                <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
+                                  {{customer.companyName}}
+                                </ng-option>
+                              </ng-select>
+                              <div *ngIf="receiptCustomer.invalid && (receiptCustomer.dirty || receiptCustomer.touched)" class="text-danger">
+                                <div *ngIf="receiptCustomer.errors.required">
+                                  Customer is required.
+                                </div>
+                              </div>
+                            </div>
+                            <!-- <div class="col-lg-3 col-md-3">
+                              <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
+                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
+                                <input type="text" class="form-control" name="start">
+                                                       <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
+                                <input type="text" class="form-control" name="end"> </div>
+                            </div> -->
+                            <div class="col-md-2  col-lg-2 mar-top-37">
+                              <button type="button" class="btn btn-sm btn-success" (click)="getInvoices()">Search
+                                Invoice(s)</button>
+                            </div>
+                          </div>
+                         </div>
+                       </div>
+
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-12">
+                      <h4>Invoice Details</h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
                       <table class="table table-bordered table-responsive-sm table-striped mb-0 simple-table">
                         <thead>
                           <tr class="bgcol2">
@@ -52,55 +101,39 @@
                             <th class="text-2">Tax</th>
                             <th class="text-2">Total Amount</th>
                             <th class="text-2">Factoring Comp.</th>
-                            <th class="text-2">Factoring Company Charges</th>
+                            <th class="text-2">Factoring Comp. Charges</th>
                             <th class="text-2">Invoice Balance</th>
                             <th class="text-2">Due Days</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
-                            <th class="text-2" width="5%">Amount Received</th>
+                            <th class="text-2" width="7%">Amount Received</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>234</td>
-                            <td>05/25/2020</td>
-                            <td>ABC Co.</td>
-                            <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                            <td>200 CAD</td>
-                            <td>25 CAD</td>
-                            <td>25 CAD</td>
-                            <td>250 CAD</td>
-                            <td>FC1 Co.</td>
-                            <td>50 CAD</td>
-                            <td>200 CAD</td>
-                            <td>3 days left</td>
-                            <td><span class="badge badge-dark p-1">OPEN</span></td>
-                            <td class="text-center">
-                              <input type="checkbox">
-                            </td>
-                            <td>
-                              <input type="text" class="form-control input-sm">
-                            </td>
+                          <tr *ngIf="invoices.length == 0" class="text-center">
+                            <td colspan="15">{{dataMessage}}</td>
                           </tr>
-                          <tr>
-                            <td>789</td>
-                            <td>06/12/2020</td>
-                            <td>ERT Co.</td>
-                            <td class="loadid"><span class="FTLload">FTL</span> <a href="#">5867</a></td>
-                            <td>1200 CAD</td>
-                            <td>250 CAD</td>
-                            <td>250 CAD</td>
-                            <td>1700 CAD</td>
+                          <tr *ngFor="let inv of invoices; let i= index;">
+                            <td>{{inv.invNo}}</td>
+                            <td>{{inv.invDate}}</td>
+                            <td>{{customersObjects[inv.invCustomerID]}}</td>
                             <td>-</td>
-                            <td>0.00 CAD</td>
-                            <td>1700 CAD</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>{{inv.taxAmount}}</td>
+                            <td>{{inv.totalAmount}}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>{{inv.balance}}</td>
                             <td>3 days left</td>
-                            <td><span class="badge badge-dark p-1">OPEN</span></td>
+                            <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
-                              <input type="checkbox">
+                              <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
+                                name="fullPayment{{i}}" (change)="getAmount(i)">
                             </td>
                             <td>
-                              <input type="text" class="form-control input-sm">
+                              <input type="number" [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                                class="form-control input-sm">
                             </td>
                           </tr>
                         </tbody>
@@ -109,7 +142,8 @@
                   </div>
                   <div class="row pt-2">
                     <div class="col-lg-12">
-                      <h4>Record Payment</h4> </div>
+                      <h4>Record Payment</h4>
+                    </div>
                   </div>
                   <div class="row pt-2">
                     <div class="col-lg-5 offset-lg-1">
@@ -118,15 +152,15 @@
                           <label class="control-label font-weight-bold">Advance Received</label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" class="form-control">
+                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.advAmt"
+                              name="advAmt">
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup>
-                                  <option value="1">USD</option>
-                                  <option value="2">CAD</option>
-                                </optgroup>
-                              </select>
+                              <ng-select class="form-control populate" [(ngModel)]="receiptData.advAmtCur"
+                              name="advAmtCur">
+                                  <ng-option value="USD">USD</ng-option>
+                                  <ng-option value="CAD">CAD</ng-option>
+                              </ng-select>
                             </div>
                           </div>
                         </div>
@@ -134,112 +168,99 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Receipt Date</label>
-                          <input type="date" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Received Amount</label>
+                          <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" class="form-control">
+                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
+                                name="recAmount" #receiptAmt="ngModel" required>
+                                <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
+                                  <div *ngIf="receiptAmt.errors.required">
+                                    Received amount is required.
+                                  </div>
+                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <select data-plugin-selectTwo class="form-control populate">
-                                <optgroup>
-                                  <option value="1">USD</option>
-                                  <option value="2">CAD</option>
-                                </optgroup>
-                              </select>
+                              <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
+                                class="form-control populate" #receiptAmtCur="ngModel" required>
+                                <ng-option value="USD">USD</ng-option>
+                                <ng-option value="CAD">CAD</ng-option>
+                              </ng-select>
+                              <div *ngIf="receiptAmtCur.invalid && (receiptAmtCur.dirty || receiptAmtCur.touched)" class="text-danger">
+                                <div *ngIf="receiptAmtCur.errors.required">
+                                  Received amount currency is required.
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Select Account</label>
-                          <select data-plugin-selectTwo class="form-control populate">
-                            <optgroup>
-                              <option value="1">Account 1</option>
-                              <option value="2">Account 2</option>
-                              <option value="2">Account 3</option>
-                            </optgroup>
-                          </select>
+                          <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
+                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
+                              {{ item.actName }}</ng-option>
+                          </ng-select>
+                          <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
+                            <div *ngIf="receiptAct.errors.required">
+                              Account is required.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-2" style="margin-top: 32px;">
-                          <!-- <a href="#addAccountModal" class="btn btn-success btn-sm modal-with-form"><i class="fas fa-plus"></i></a> --></div>
+                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                            class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i></button>
+                        </div>
                       </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row pt-1">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Payment Mode</label>
-                          <select data-plugin-selectTwo class="form-control populate" id="paymentModeList" onchange="paymentMode()">
-                            <optgroup>
-                              <option value="select">Select</option>
-                              <option value="Cash">Cash</option>
-                              <option value="Cheque">Cheque</option>
-                              <option value="EFT">EFT</option>
-                              <option value="creditCard">Credit Card</option>
-                              <option value="debitCard">Debit Card</option>
-                              <option value="demandDraft">Demand Draft</option>
-                            </optgroup>
-                          </select>
+                          <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
+                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required>
+                            <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
+                            </ng-option>
+                          </ng-select>
+                          <div *ngIf="receiptPay.invalid && (receiptPay.dirty || receiptPay.touched)" class="text-danger">
+                            <div *ngIf="receiptPay.errors.required">
+                              Payment mode is required.
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="row pt-1" id="chequeDiv" style="display: none;">
+                      <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Cheque Number</label>
-                          <input type="text" class="form-control"> </div>
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required
+                            class="form-control">
+                            <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
+                              <div *ngIf="receiptPayNo.errors.required">
+                                Payment number is required.
+                              </div>
+                            </div>
+                        </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Cheque Date</label>
-                          <input type="date" class="form-control"> </div>
-                      </div>
-                      <div class="row pt-1" id="cashDiv" style="display: none;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Cash Reference Number</label>
-                          <input type="text" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Cash Date</label>
-                          <input type="date" class="form-control"> </div>
-                      </div>
-                      <div class="row pt-1" id="eftDiv" style="display: none;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">EFT Number</label>
-                          <input type="text" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">EFT Date</label>
-                          <input type="date" class="form-control"> </div>
-                      </div>
-                      <div class="row pt-1" id="creditCardDiv" style="display: none;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Credit Card Number</label>
-                          <input type="text" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Credit Card Date</label>
-                          <input type="date" class="form-control"> </div>
-                      </div>
-                      <div class="row pt-1" id="debitCardDiv" style="display: none;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Debit Card Number</label>
-                          <input type="text" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Debit Card Date</label>
-                          <input type="date" class="form-control"> </div>
-                      </div>
-                      <div class="row pt-1" id="demandDraftDiv" style="display: none;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Demand Draft Number</label>
-                          <input type="text" class="form-control"> </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Demand Draft Date</label>
-                          <input type="date" class="form-control"> </div>
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="receiptData.paymentModeDate" name="paymentModeDate" type="text" #receiptPayDate="ngModel" required
+                            placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker"
+                            class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                            [maxDate]="futureDatesLimit">
+                            <div *ngIf="receiptPayDate.invalid && (receiptPayDate.dirty || receiptPayDate.touched)" class="text-danger">
+                              <div *ngIf="receiptPayDate.errors.required">
+                                Payment date is required.
+                              </div>
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                       <button class="btn btn-success">Save</button>
-                       </div>
+                      <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="addReceipt()">Save</button>
+                      <button type="button" class="btn btn-success" *ngIf="recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="updateReceipt()">Update</button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -250,3 +271,19 @@
     </section>
   </div>
 </section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <app-add-account></app-add-account>
+      </div>
+    </div>
+  </div>
+</div>

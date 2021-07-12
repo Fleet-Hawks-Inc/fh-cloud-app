@@ -27,7 +27,7 @@ describe("Vehicle Reminders tests", () => {
     cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
     cy.get('.col-md-4 > .btn').click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('vehicle{enter}');
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Testing Renewal');
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
@@ -53,7 +53,7 @@ describe("Vehicle Reminders tests", () => {
     cy.get(':nth-child(6) > .nav-link > .fas').first().click();
     cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('vehicle{enter}');
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
@@ -140,7 +140,7 @@ describe("Vehicle Reminders tests", () => {
     cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
     cy.get('.col-md-4 > .btn').click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('vehicle {enter}');
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Testing Renewal');
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
@@ -150,7 +150,6 @@ describe("Vehicle Reminders tests", () => {
     cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
     cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click();
     Cypress.on('uncaught:exception', (err, runnable) => {
-
       return false
     });
   });

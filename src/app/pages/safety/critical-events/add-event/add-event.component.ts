@@ -86,7 +86,8 @@ export class AddEventComponent implements OnInit {
     drivers  = [];
     users = [];
     trips = [];
-
+    photoSizeError = '';
+    videoSizeError = '';
   
     public searchResults: any;
     private readonly search: any;
@@ -95,10 +96,15 @@ export class AddEventComponent implements OnInit {
     uploadedDocs = [];
     currentUser: any;
     disableButton = false;
+    birthDateMinLimit: any;
+    birthDateMaxLimit: any;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
                 this.selectedFileNames = new Map<any, any>();
+                const date = new Date();
+                this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+                this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
     }
 
     ngOnInit() {
@@ -154,13 +160,6 @@ export class AddEventComponent implements OnInit {
     addEvent() {
         this.disableButton = true;
         this.hideErrors();
-        let timestamp;
-        const fdate = this.event.eventDate.split('-');
-        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
-        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
-        // this.event.date = (timestamp * 1000).toString();
-        // this.event.documentID = this.uploadedDocs;
-        // this.event.incidentVideodocumentID = this.uploadedVideos;
         
         // create form data instance
         const formData = new FormData();
@@ -181,11 +180,13 @@ export class AddEventComponent implements OnInit {
         this.safetyService.postData('critical-events', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
+                this.disableButton = false;
                 from(err.error)
                     .pipe(
                         map((val: any) => {
                             val.message = val.message.replace(/".*"/, 'This Field');
                             this.errors[val.context.key] = val.message;
+                            this.disableButton = false;
                         })
                     )
                     .subscribe({
@@ -205,6 +206,7 @@ export class AddEventComponent implements OnInit {
                 this.toastr.success('Critical event added successfully');
                 this.router.navigateByUrl('/safety/critical-events');
             },
+
         });
     }
 
@@ -221,7 +223,7 @@ export class AddEventComponent implements OnInit {
         
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' ||
         this.event.eventType == '' || this.event.createdBy == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
-        || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0) {
+        || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.event.notes.length > 500) {
             return true
         } else {
             return false;
@@ -269,20 +271,55 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-
+        let filesSize = 0;
+        
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];
+            
             for (let i = 0; i < files.length; i++) {
-                this.uploadedPhotos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+                if(filesSize > 10) {
+                    this.toastr.error('files size limit exceeded');
+                    this.photoSizeError = 'Please select file which have size below 10 MB';
+                    return;
+                } else {
+                    this.photoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        this.uploadedPhotos.push(files[i])
+                    } else {
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed';
+                    }
+                    
+                }
+                
             }
         } else {
             
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 30) {
+                    this.toastr.error('files size limit exceeded');
+                    this.videoSizeError = 'Please select file which have size below 30 MB';
+                    return;
+                } else {
+                    this.videoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'mp4' || ext == 'mov') {
+                        this.uploadedVideos.push(files[i])
+                    } else {
+                        this.videoSizeError = 'Only .mp4 and .mov files allowed';
+                    }
+                    
+                }
+                
             }
         }
-       
+        
     }
 
 }

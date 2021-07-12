@@ -45,7 +45,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Total Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">1450</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{total}}</h1>
                            </div>
                         </div>
                      </div>
@@ -56,7 +56,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Open Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">1300</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{openTotal}}</h1>
                            </div>
                         </div>
                      </div>
@@ -67,7 +67,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Paid Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">100</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{paidTotal}}</h1>
                            </div>
                         </div>
                      </div>
@@ -78,7 +78,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Partially Paid Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">25</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{partiallyPaidTotal}}</h1>
                            </div>
                         </div>
                      </div>
@@ -89,7 +89,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Emailed Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">13</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{emailedTotal}}</h1>
                            </div>
                         </div>
                      </div>
@@ -100,7 +100,7 @@
                               <h3 class="pull-left mt-0 text-4 font-weight-semibold text-dark">Voided Invoices</h3>
                            </div>
                            <div class="">
-                              <h1 class="lbwheading mt-0 mb-0">12</h1>
+                              <h1 class="lbwheading mt-0 mb-0">{{voidedTotal}}</h1>
                            </div>
                         </div>
                      </div>
@@ -157,25 +157,28 @@
                            </tr>
                         </thead>
                         <tbody>
+                          <tr *ngIf="invoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
                            <tr *ngFor="let inv of invoices; let i = index;">
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                               <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
-                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus}}</span></td>
+                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                              <td>
                                  <div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
                                        <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
-                                       <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'PAID'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                       <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                                        <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
                                     </div>
                                  </div>
@@ -205,144 +208,33 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">OPEN</span></td> <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                          <tr *ngIf="openInvoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
+                          <tr *ngFor="let inv of openInvoices; let i = index;">
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                            <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td>
+                               <div class="btn-group flex-wrap">
+                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                  <div class="dropdown-menu" role="menu">
+                                     <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
+                                     <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                                  </div>
+                               </div>
+                            </td>
+                         </tr>
                         </tbody>
                      </table>
                   </div>
@@ -367,149 +259,33 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>        <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                             <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                             <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                             <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                             <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                             <td><span class="badge badge-dark p-1">PAID</span></td>
-                             <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                          <tr *ngIf="paidInvoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
+                          <tr *ngFor="let inv of paidInvoices; let i = index;">
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                            <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td>
+                               <div class="btn-group flex-wrap">
+                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                  <div class="dropdown-menu" role="menu">
+                                     <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
+                                     <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                                  </div>
+                               </div>
+                            </td>
+                         </tr>
                         </tbody>
                      </table>
                   </div>
@@ -533,144 +309,33 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><a href="#receivePaymentModal" class="modal-with-form"><span class="badge badge-dark p-1">PARTIALLY PAID</span></a></td>  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                          <tr *ngIf="partiallyPaidInvoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
+                          <tr *ngFor="let inv of partiallyPaidInvoices; let i = index;">
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                            <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td>
+                               <div class="btn-group flex-wrap">
+                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                  <div class="dropdown-menu" role="menu">
+                                     <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
+                                     <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                                  </div>
+                               </div>
+                            </td>
+                         </tr>
                         </tbody>
                      </table>
                   </div>
@@ -695,145 +360,33 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>
-                                <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">EMAILED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                          <tr *ngIf="emailedInvoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
+                          <tr *ngFor="let inv of emailedInvoices; let i = index;">
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                            <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td>
+                               <div class="btn-group flex-wrap">
+                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                  <div class="dropdown-menu" role="menu">
+                                     <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
+                                     <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                                  </div>
+                               </div>
+                            </td>
+                         </tr>
                         </tbody>
                      </table>
                   </div>
@@ -857,146 +410,33 @@
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>
-                                                                  <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>
-                                                                   <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="LTLload">LTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td>234</td>
-                              <td>05/25/2020 07:41 AM</td>
-                              <td>ABC Co.</td>
-                              <td class="loadid"><span class="FTLload">FTL</span> <a href="#">19005</a></td>
-                              <td>CAD 20325</td>
-                              <td>CAD 325</td>
-                              <td>CAD 600</td>
-                              <td>CAD 56568</td>
-                              <td>CAD 23000</td>
-                              <td>CAD 900</td>
-                              <td>3 days left</td>
-                              <td><span class="badge badge-dark p-1">VOIDED</span></td>                                      <td>
-                                 <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1 modal-with-form" href="#changeStatusModal">Change Status</a>
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
+                          <tr *ngIf="voidedInvoices.length == 0" class="text-center">
+                            <td colspan="13">{{ noInvoicesMsg }}</td>
+                        </tr>
+                           <tr *ngFor="let inv of voidedInvoices; let i = index;">
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
+                            <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td>
+                               <div class="btn-group flex-wrap">
+                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                  <div class="dropdown-menu" role="menu">
+                                     <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change Status</button>
+                                     <a class="dropdown-item text-1" *ngIf="inv.invStatus !== 'paid'" routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
+                                     <button type="button" class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                                  </div>
+                               </div>
+                            </td>
+                         </tr>
                         </tbody>
                      </table>
                   </div>
@@ -1023,11 +463,11 @@
           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
             Select Status</label>
           <ng-select class="form-control populate" [(ngModel)]="invNewStatus" name="invNewStatus">
-              <ng-option value="OPEN">OPEN</ng-option>
-              <ng-option value="PAID">PAID</ng-option>
-              <ng-option value="PARTIALLY PAID">PARTIALLY PAID</ng-option>
-              <ng-option value="EMAILED">EMAILED</ng-option>
-              <ng-option value="VOIDED">VOIDED</ng-option>
+              <ng-option value="open">OPEN</ng-option>
+              <ng-option value="paid">PAID</ng-option>
+              <ng-option value="partially_paid">PARTIALLY PAID</ng-option>
+              <ng-option value="emailed">EMAILED</ng-option>
+              <ng-option value="voided">VOIDED</ng-option>
           </ng-select>
         </div>
       </div>

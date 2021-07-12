@@ -40,25 +40,15 @@ const routes: Routes = [
     component: ManagemainComponent
   },
   {
-    path: 'reports',
+    path: 'allreport',
     component: AllReportsComponent
   },
+
   {
-    path: 'fleet',
-    loadChildren: () => import('./reports/fleet/manage-fleet-reports.module').then((m) => m.ManageFleetReportsModule) ,
-  },
-  {
-    path: 'dispatch',
-    loadChildren: () => import('./reports/dispatch/manage-dispatch-reports.module').then((m) => m.ManageDispatchReportsModule) ,
-  },
-  {
-    path: 'safety',
-    loadChildren: () => import('./reports/safety/manage-safety-reports.module').then((m) => m.ManageSafetyReportsModule) ,
-  },
-  {
-    path: 'compliance',
-    loadChildren: () => import('./reports/compliance-reports/manage-compliance-reports.module').then((m) => m.ManageComplianceReportsModule) ,
+    path: 'reports',
+    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
   }
+  
   
 ];
 
