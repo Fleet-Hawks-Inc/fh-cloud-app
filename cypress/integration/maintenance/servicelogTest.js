@@ -2,12 +2,8 @@ describe(" Maintenance tests", () => {
   let authToken;
   let logID;
   afterEach(() => {
-
     if (authToken && logID) {
-
       const serviceUrl = Cypress.env('SERVICE_URL') + '/serviceLogs/record/cypress/delete/' + logID;
-
-
       cy.request({
         method: 'DELETE',
         url: serviceUrl,
@@ -21,7 +17,6 @@ describe(" Maintenance tests", () => {
     }
   })
   it('should allow users to add service log with all required fields', function () {
-
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
@@ -32,7 +27,7 @@ describe(" Maintenance tests", () => {
     cy.get('.col-md-4 > .btn').click();
     cy.wait(2000);
     cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('mandatory{enter}');
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').clear();
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').type('1000');
     cy.get(':nth-child(4) > .col-lg-10 > .form-control').first().click();
@@ -40,13 +35,10 @@ describe(" Maintenance tests", () => {
     cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
 
-    cy.get('[class="col-11 pr-0"] #nextBtn').click();
+    cy.get('[class="col-11 pr-0"] #nextBtn').click();//save
     Cypress.on('uncaught:exception', (err, runnable) => {
-
       return false
     });
-
-
   });
   it('should not allow users to add service log with all optional fields', function () {
 
@@ -59,7 +51,7 @@ describe(" Maintenance tests", () => {
     cy.get(':nth-child(8) > .nav-link > .fas').click();
     cy.get('.col-md-4 > .btn').click();
     cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('mandatory{enter}');
     cy.get('.m-2 > form[method="get"] textarea[name="description"]').type('Service log is working');
     cy.get('input[name="selected0"]').click();
     cy.get('[bindlabel="taskName"] input').first().click();
@@ -85,7 +77,7 @@ describe(" Maintenance tests", () => {
     cy.get(':nth-child(8) > .nav-link > .fas').click();
     cy.get('[name="vehicleID"] input').clear();
 
-    cy.get('[name="vehicleID"] input').type('tes{enter}');
+    cy.get('[name="vehicleID"] input').type('mandatory{enter}');
     cy.get('[name="taskID"] input').clear();
     cy.get('[name="taskID"] input').type('testing{enter}');
     cy.get('.page-header [type="submit"]').click();
@@ -183,7 +175,7 @@ describe(" Maintenance tests", () => {
     cy.get('.col-md-4 > .btn').click();
     cy.wait(2000);
     cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tes{enter}');
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('mandatory{enter}');
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').clear();
     cy.get('.pt-2.ng-star-inserted > .col-lg-10 > .form-control').type('1000');
     cy.get(':nth-child(4) > .col-lg-10 > .form-control').first().click();

@@ -34,7 +34,7 @@ describe(" Contact reminders tests", () => {
     cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
     cy.get('input[name="dueDate"]').first().click();
     cy.get('div:nth-of-type(2) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();
-    cy.get('.col-lg-12.text-right .btn.btn-success.ng-star-inserted').first().click();
+   // cy.get('.col-lg-12.text-right .btn.btn-success.ng-star-inserted').first().click();
     cy.wait(4000);
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false
@@ -64,7 +64,7 @@ describe(" Contact reminders tests", () => {
     });
 
   });
-  it.only('should allow users to edit contact reminders.', function () {
+  it('should allow users to edit contact reminders.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
