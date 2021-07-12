@@ -388,11 +388,11 @@
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
-                                                          </div>
+                                                         </div>
                                                       </div>
                                                       <div class="row mt-3">
 
-                                                         <div class="col-lg-12 col-md-12">
+                                                         <div class="col-lg-11 col-md-11">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
@@ -407,8 +407,8 @@
 
                                                                    Pickup location is required.
 
-                                                              </div>
-
+                                                               </div>
+                                                               
                                                             <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
                                                                <ul class="p-0 m-0 text-left">
                                                                   <li *ngFor="let item of searchResults;">
@@ -420,94 +420,24 @@
 
 
                                                          </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pick Date and Time <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
+                                                         <div class="col-lg-1 mar-top-37  pl-0">
+                                                            <a data-toggle="modal" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
+                                                               <em class="fas fa-plus"></em>
+                                                            </a>
                                                          </div>
-                                                         <div class="col-lg-6">
-
-
-                                                            <div class="input-group">
-
-                                                                  <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate_{{i}}" type="text"
-                                                                  placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
-                                                                  class="form-control" autocomplete="off" #orderDate1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
-
+                                                         <div class="col-lg-4 text-center">
+                                                            <div class="checkbox-custom checkbox-default">
+                                                               <input type="checkbox" id="locationaddBtn">
+                                                               <label class="control-label mt-2 font-weight-bold" for="locationaddBtn"> Type Manually</label>
                                                             </div>
-                                                            <div *ngIf="orderDate1.touched && (shippersReceivers[0].shippers.pickupDate == null || shippersReceivers[0].shippers.pickupDate == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-
-                                                                Pickup date required.
-
-                                                           </div>
-
                                                          </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.shippers.pickupTime"
-                                                                  name="pickupTime" type="time" class="timepicker form-control" placeholder=""
-                                                                  #pickupTime="ngModel" required pickupTime
-                                                                  />
-                                                               <!-- <input [(ngModel)]="item.pickupTime"
-                                                               name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                                         <div class="col-lg-6 text-center">
+                                                            <div class="checkbox-custom checkbox-default">
+                                                               <input type="checkbox" id="locationaddBtn3">
+                                                               <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
                                                             </div>
-                                                            <div *ngIf="pickupTime.touched && (shippersReceivers[0].shippers.pickupTime == null || shippersReceivers[0].shippers.pickupTime == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-
-                                                               Pickup time is required.
-
-                                                          </div>
                                                          </div>
-                                                         <!-- <div class="col-lg-3 mt-1">
-                                                         </div> -->
                                                       </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Instruction</label>
-
-                                                            <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
-                                                               name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
-                                                               ></textarea>
-
-                                                         </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Pickup
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                            </label>
-
-                                                            <input placeholder="eg. John Smith" [(ngModel)]="item.shippers.contactPerson"
-                                                               name="shippers.contactPerson_{{i}}" type="text" class="form-control"
-                                                               id="inputDefault" >
-
-                                                         </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                            </label>
-
-                                                            <input placeholder="eg. 2234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
-                                                               type="text" class="form-control" id="inputDefault" >
-
-                                                         </div>
-
-                                                      </div>
-
-
                                                       <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
                                                          <div class="row mt-3">
                                                             <div class="col-lg-12">
@@ -612,6 +542,93 @@
 
                                                          </div>
                                                       </div>
+                                                      <div class="row mt-3">
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                               for="inputDefault">Pick Date and Time <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                            </label>
+                                                         </div>
+                                                         <div class="col-lg-6">
+
+
+                                                            <div class="input-group">
+
+                                                                  <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate_{{i}}" type="text"
+                                                                  placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
+                                                                  class="form-control" autocomplete="off" #orderDate1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+
+
+                                                            </div>
+                                                            <div *ngIf="orderDate1.touched && (shippersReceivers[0].shippers.pickupDate == null || shippersReceivers[0].shippers.pickupDate == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
+
+                                                                Pickup date required.
+
+                                                           </div>
+
+                                                         </div>
+                                                         <div class="col-lg-6">
+                                                            <div class="input-group">
+                                                               <input [(ngModel)]="item.shippers.pickupTime"
+                                                                  name="pickupTime" type="time" class="timepicker form-control" placeholder=""
+                                                                  #pickupTime="ngModel" required pickupTime
+                                                                  />
+                                                               <!-- <input [(ngModel)]="item.pickupTime"
+                                                               name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                                            </div>
+                                                            <div *ngIf="pickupTime.touched && (shippersReceivers[0].shippers.pickupTime == null || shippersReceivers[0].shippers.pickupTime == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
+
+                                                               Pickup time is required.
+
+                                                          </div>
+                                                         </div>
+                                                         <!-- <div class="col-lg-3 mt-1">
+                                                         </div> -->
+                                                      </div>
+                                                      <div class="row mt-3">
+
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                               for="inputDefault">Pickup Instruction</label>
+
+                                                            <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
+                                                               name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                               ></textarea>
+
+                                                         </div>
+
+                                                      </div>
+                                                      <div class="row mt-3">
+
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                               for="inputDefault">Contact Person at Pickup
+                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                            </label>
+
+                                                            <input placeholder="eg. John Smith" [(ngModel)]="item.shippers.contactPerson"
+                                                               name="shippers.contactPerson_{{i}}" type="text" class="form-control"
+                                                               id="inputDefault" >
+
+                                                         </div>
+
+                                                      </div>
+                                                      <div class="row mt-3">
+
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                               for="inputDefault">Phone
+                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                            </label>
+
+                                                            <input placeholder="eg. 2234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
+                                                               type="text" class="form-control" id="inputDefault" >
+
+                                                         </div>
+
+                                                      </div>
+
+
+                                                     
 
 
                                                       <div class="row mt-3">
