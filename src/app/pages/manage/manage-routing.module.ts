@@ -10,9 +10,6 @@ import {
 } from './index';
 import { ManagemainComponent } from './managemain/managemain.component';
 
-import {SettingsComponent} from './settings/settings.component';
-
-
 const routes: Routes = [
   {
     path: 'users',
@@ -31,10 +28,10 @@ const routes: Routes = [
 
     ],
   },
-  {
-    path: 'settings',
-    component: SettingsComponent
-  },
+  // {
+  //   path: 'settings',
+  //   component: SettingsComponent
+  // },
   {
     path: 'overview',
     component: ManagemainComponent
@@ -47,7 +44,12 @@ const routes: Routes = [
   {
     path: 'reports',
     loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/manage-settings.module').then((m) => m.ManageSettingsModule) ,
   }
+
   
   
 ];
