@@ -17,6 +17,8 @@ declare var $: any;
 export class IncidentListComponent implements OnInit {
 
   events = [];
+  newEvents = [];
+
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
@@ -72,13 +74,13 @@ export class IncidentListComponent implements OnInit {
     this.fetchAllUsersIDs();
   }
 
-  changeStatus(eventID: any, newValue: string, i: string) {
+  changeStatus(incidentID: any, newValue: string, i: string) {
     
     let data = {
-      eventID: eventID,
+      incidentID: incidentID,
       status: newValue
     }
-    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
+    this.safetyService.putData('incidents', data).subscribe(async (res: any)=> { 
       if(res.status == false) {
         this.events[i].status = res.oldStatus;
         this.toaster.error('Please select valid status');
@@ -93,6 +95,7 @@ export class IncidentListComponent implements OnInit {
     this.safetyService.getData('incidents')
       .subscribe((result: any) => {
         this.events = result;
+        this.newEvents = this.events;
       })
   }
 
@@ -241,33 +244,26 @@ export class IncidentListComponent implements OnInit {
     }
   }
 
-  // fetchevents() {
-  //   this.apiService.getData('safety/eventLogs/fetch?event=incident')
-  //     .subscribe((result: any) => {
-       
-  //       this.totalRecords = result.Count;
-  //     })
-  // }
 
   fetchTabData(tabType) {
     let current = this;
+    this.events = this.newEvents;
     $(".navtabs").removeClass('active');
 
     if (tabType === 'all') {
-      $("#allSafetyIncidents-tab").addClass('active');
-      // this.totalRecords = this.allTripsCount;
+      this.events = this.newEvents;
 
     } else if (tabType === 'assigned') {
       $("#assigned-tab").addClass('active');
-      // this.totalRecords = this.plannedTripsCount;
+      this.events = this.events.filter(element => { return element.status != 'assigned'})
 
-    } else if (tabType === 'underReview') {
+    } else if (tabType === 'investigating') {
       $("#under-review-tab").addClass('active');
-      // this.totalRecords = this.dispatchedTripsCount;
+      this.events = this.events.filter(element => { return element.status == 'investigating'})
 
     } else if (tabType === 'closed') {
       $("#resolved-tab").addClass('active');
-      // this.totalRecords = this.startedTripsCount;
+      this.events = this.events.filter(element => { return element.status == 'closed'})
 
     }
 

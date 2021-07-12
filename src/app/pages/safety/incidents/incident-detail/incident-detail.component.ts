@@ -66,6 +66,7 @@ export class IncidentDetailComponent implements OnInit {
     autoplaySpeed: 1500,
   };  
 
+  
   ngOnInit() {
     this.incidentID = this.route.snapshot.params['incidentID'];
     this.platform=this.hereMap.mapSetAPI();
@@ -105,9 +106,18 @@ export class IncidentDetailComponent implements OnInit {
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
           this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
-
+        
         if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-          this.incidentDocs = result.uploadedDocs.map(x => ({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.asseturl}/${result.pk}/${x}`), name: x}));
+           result.uploadedDocs.map(x => {
+            let name = x.split('.');
+            let ext = name[name.length - 1].toLowerCase();
+            if(ext == 'doc' || ext == 'docx') {
+              this.incidentDocs.push({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.asseturl}/${result.pk}/${x}&embedded=true`), name: x})
+            } else {
+              this.incidentDocs.push({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.asseturl}/${result.pk}/${x}`), name: x})
+            }
+          });
+         
         }
         
         this.createdBy = result.createdBy;
@@ -168,16 +178,19 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   addNotes() {
-    let data = {
-        notes: this.newNotes,
-        incidentID: this.incidentID,
+    if(this.newNotes.trim().length > 0) {
+      let data = {
+          notes: this.newNotes,
+          incidentID: this.incidentID,
+      }
+      
+      this.safetyService.postData('incidents/notes', data).subscribe(res => {
+        this.fetchEventDetail();
+        this.toastr.success('Notes added successfully');
+        this.newNotes = '';
+      });
     }
     
-    this.safetyService.postData('incidents/notes', data).subscribe(res => {
-      this.fetchEventDetail();
-      this.toastr.success('Notes added successfully!');
-      this.newNotes = '';
-    });
   }
 
   fetchTripsByIDs() {

@@ -22,13 +22,13 @@ export class AddIncidentComponent implements OnInit {
     event = {
         eventDate: '',
         eventTime: '',
-        driverID: '',
-        vehicleID: '',
-        tripID: '',
-        assigned: '',
-        incidentType: '',
+        driverID: null,
+        vehicleID: null,
+        tripID: null,
+        assigned: null,
+        incidentType: null,
         eventSource: 'manual',
-        severity: '',
+        severity: null,
         location: '',
         notes: '',
         status: 'open',
@@ -76,6 +76,9 @@ export class AddIncidentComponent implements OnInit {
     safetyManagers = [];
     disableButton = false;
     currentUser: string;
+    photoSizeError = '';
+    videoSizeError = '';
+    docSizeError = '';
 
     public searchResults: any;
     private readonly search: any;
@@ -107,7 +110,8 @@ export class AddIncidentComponent implements OnInit {
         
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
             this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventTime == '' || 
-        this.event.assigned == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
+        this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
+            this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
         || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.uploadedDocs.length == 0  || this.event.notes.length > 500) {
             return true
         } else {
@@ -134,12 +138,7 @@ export class AddIncidentComponent implements OnInit {
         .subscribe((result: any) => {
             this.trips = result.Items;
             console.log('trips', result)
-            // for (let i = 0; i < result.Items.length; i++) {
-            //     const element = result.Items[i];
-            //     if(element.isDeleted === 0) {
-            //         this.trips.push(element);
-            //     }
-            // }
+            
         })
     }
 
@@ -171,6 +170,7 @@ export class AddIncidentComponent implements OnInit {
         this.safetyService.postData('incidents', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
+                this.disableButton = false;
                 from(err.error)
                     .pipe(
                         map((val: any) => {
@@ -250,28 +250,76 @@ export class AddIncidentComponent implements OnInit {
     */
      selectDocuments(event, obj) {
         let files = [...event.target.files];
+        let filesSize = 0;
 
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedPhotos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+                if(filesSize > 10) {
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.photoSizeError = 'Please select file which have size below 10 MB.';
+                    return;
+                } else {
+                    this.photoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        this.uploadedPhotos.push(files[i])
+                    } else {
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed.';
+                    }
+                    
+                }
             }
         } else if(obj === 'uploadedDocs') {
             
             this.uploadedDocs = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i])
+                
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 10) {
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.docSizeError = 'Please select file which have size below 10 MB.';
+                    return;
+                } else {
+                    this.docSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'doc' || ext == 'docx' || ext == 'pdf') {
+                        this.uploadedDocs.push(files[i])
+                    } else {
+                        this.docSizeError = 'Only .doc, .docx and .pdf files allowed.';
+                    }
+                    
+                }
             }
         } else {
             
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i])
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 30) {
+                    this.toastr.error('files size limit exceeded');
+                    this.videoSizeError = 'Please select file which have size below 30 MB';
+                    return;
+                } else {
+                    this.videoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'mp4' || ext == 'mov') {
+                        this.uploadedVideos.push(files[i])
+                    } else {
+                        this.videoSizeError = 'Only .mp4 and .mov files allowed';
+                    }
+                    
+                }
+                
             }
         }
-        console.log('uploadedPhotos', this.uploadedPhotos)
-        console.log('uploadedDocs', this.uploadedDocs)
-        console.log('uploadedVideos', this.uploadedVideos)
+        
        
     }
 
