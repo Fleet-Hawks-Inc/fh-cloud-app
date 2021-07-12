@@ -14,16 +14,21 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="POST"  #recForm="ngForm" id="receiptForm">
                   <div class="row">
                     <div class="col-lg-12">
-                      <form class="form-horizontal" method="get">
+
                         <div class=" row">
                           <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-5">
-                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#</label>
-                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo">
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo" #receiptNo="ngModel" required>
+                                <div *ngIf="receiptNo.invalid && (receiptNo.dirty || receiptNo.touched)" class="text-danger">
+                                  <div *ngIf="receiptNo.errors.required">
+                                    Receipt# is required.
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -31,9 +36,14 @@
                             <div class="row">
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
-                                  Date</label>
-                                  <input [(ngModel)]="receiptData.recDate" name="recDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
-                                  ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" >
+                                  Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                  <input [(ngModel)]="receiptData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                  ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" #receiptDate="ngModel" required>
+                                  <div *ngIf="receiptDate.invalid && (receiptDate.dirty || receiptDate.touched)" class="text-danger">
+                                    <div *ngIf="receiptDate.errors.required">
+                                      Receipt date is required.
+                                    </div>
+                                  </div>
                               </div>
                             </div>
                           </div>
@@ -42,13 +52,18 @@
                          <div class="col-lg-10 offset-lg-1">
                           <div class="row mt-4" >
                             <div class="col-md-5 col-lg-5">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer</label>
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
-                                placeholder="Select Customer" class="form-control">
+                                placeholder="Select Customer" class="form-control" #receiptCustomer="ngModel" required>
                                 <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
                                   {{customer.companyName}}
                                 </ng-option>
                               </ng-select>
+                              <div *ngIf="receiptCustomer.invalid && (receiptCustomer.dirty || receiptCustomer.touched)" class="text-danger">
+                                <div *ngIf="receiptCustomer.errors.required">
+                                  Customer is required.
+                                </div>
+                              </div>
                             </div>
                             <!-- <div class="col-lg-3 col-md-3">
                               <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
@@ -64,7 +79,7 @@
                           </div>
                          </div>
                        </div>
-                      </form>
+
                     </div>
                   </div>
                   <div class="row">
@@ -86,12 +101,12 @@
                             <th class="text-2">Tax</th>
                             <th class="text-2">Total Amount</th>
                             <th class="text-2">Factoring Comp.</th>
-                            <th class="text-2">Factoring Company Charges</th>
+                            <th class="text-2">Factoring Comp. Charges</th>
                             <th class="text-2">Invoice Balance</th>
                             <th class="text-2">Due Days</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
-                            <th class="text-2" width="5%">Amount Received</th>
+                            <th class="text-2" width="7%">Amount Received</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -115,7 +130,6 @@
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
                                 name="fullPayment{{i}}" (change)="getAmount(i)">
-
                             </td>
                             <td>
                               <input type="number" [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
@@ -138,7 +152,7 @@
                           <label class="control-label font-weight-bold">Advance Received</label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" class="form-control" [(ngModel)]="receiptData.advAmt"
+                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.advAmt"
                               name="advAmt">
                             </div>
                             <div class="col-lg-6 pl-0">
@@ -154,29 +168,44 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Received Amount</label>
+                          <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" class="form-control" [(ngModel)]="receiptData.recAmount"
-                                name="recAmount">
+                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
+                                name="recAmount" #receiptAmt="ngModel" required>
+                                <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
+                                  <div *ngIf="receiptAmt.errors.required">
+                                    Received amount is required.
+                                  </div>
+                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
-                                class="form-control populate">
+                                class="form-control populate" #receiptAmtCur="ngModel" required>
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
                               </ng-select>
+                              <div *ngIf="receiptAmtCur.invalid && (receiptAmtCur.dirty || receiptAmtCur.touched)" class="text-danger">
+                                <div *ngIf="receiptAmtCur.errors.required">
+                                  Received amount currency is required.
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Select Account</label>
-                          <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account">
+                          <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
                             <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
                               {{ item.actName }}</ng-option>
                           </ng-select>
+                          <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
+                            <div *ngIf="receiptAct.errors.required">
+                              Account is required.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-2" style="margin-top: 32px;">
                           <button type="button" data-target="#addAccountModal" data-toggle="modal"
@@ -187,26 +216,41 @@
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row pt-1">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Payment Mode</label>
+                          <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
-                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)">
+                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required>
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
                             </ng-option>
                           </ng-select>
+                          <div *ngIf="receiptPay.invalid && (receiptPay.dirty || receiptPay.touched)" class="text-danger">
+                            <div *ngIf="receiptPay.errors.required">
+                              Payment mode is required.
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number</label>
-                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo"
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required
                             class="form-control">
+                            <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
+                              <div *ngIf="receiptPayNo.errors.required">
+                                Payment number is required.
+                              </div>
+                            </div>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Date</label>
-                          <input [(ngModel)]="receiptData.paymentModeDate" name="paymentModeDate" type="text"
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="receiptData.paymentModeDate" name="paymentModeDate" type="text" #receiptPayDate="ngModel" required
                             placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker"
                             class="form-control" autocomplete="off" [minDate]="dateMinLimit"
                             [maxDate]="futureDatesLimit">
+                            <div *ngIf="receiptPayDate.invalid && (receiptPayDate.dirty || receiptPayDate.touched)" class="text-danger">
+                              <div *ngIf="receiptPayDate.errors.required">
+                                Payment date is required.
+                              </div>
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -214,8 +258,8 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                      <button type="button" class="btn btn-success" *ngIf="!recID" (click)="addReceipt()">Save</button>
-                      <button type="button" class="btn btn-success" *ngIf="recID" (click)="updateReceipt()">Update</button>
+                      <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="addReceipt()">Save</button>
+                      <button type="button" class="btn btn-success" *ngIf="recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="updateReceipt()">Update</button>
                     </div>
                   </div>
                 </form>

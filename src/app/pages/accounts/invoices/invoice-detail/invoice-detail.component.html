@@ -27,27 +27,23 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Address:</div>
-                    <div class="col-lg-8 p-2">100 Street, Olympic Park</div>
+                    <div class="col-lg-8 p-2">{{customerAddress}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">City, Province or State:</div>
-                    <div class="col-lg-8 p-2">Calagary, AB</div>
+                    <div class="col-lg-8 p-2">{{customerCityName}}, {{customerStateName}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Country:</div>
-                    <div class="col-lg-8 p-2">Canada</div>
+                    <div class="col-lg-8 p-2">{{customerCountryName}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Phone:</div>
-                    <div class="col-lg-8 p-2">(103) 069-1461</div>
+                    <div class="col-lg-8 p-2">{{ customerPhone }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Email:</div>
-                    <div class="col-lg-8 p-2">info@fleetinc.ca</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Fax:</div>
-                    <div class="col-lg-8 p-2">(103) 069-1465</div>
+                    <div class="col-lg-8 p-2">{{ customerEmail }}</div>
                   </div>
                 </div>
               </div>
@@ -59,7 +55,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Creation Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invDate}} </div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.txnDate}} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Due Date:</div>
@@ -67,19 +63,19 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Total Amount:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.totalAmount}}</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.totalAmount}}{{invoice.invCur}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount Received:</div>
-                    <div class="col-lg-8 p-2 border-box">0.00</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.amountReceived}}{{invoice.invCur}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Balance:</div>
-                    <div class="col-lg-8 p-2 border-box"> - </div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.balance}}{{invoice.invCur}}</div>
                   </div>
                     <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Salesperson:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invSalesman}}</div>
+                    <div class="col-lg-8 p-2 border-box">{{customersObjects[invoice.invSalesman]}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Subject:</div>
@@ -92,7 +88,48 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-lg-12"> </div>
+        <div class="col-lg-12">
+          <div class="bg-white p-3">
+            <div class="row">
+              <div class="col-lg-12">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th width="25%">Commodity/Service</th>
+                      <th width="15%">Quantity/Hours</th>
+                      <th width="10%">Price/Rate</th>
+                      <th width="20%">Amount</th>
+                      <th width="30%">Account</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dt of invoice.details; let d = index;">
+                      <td>
+                        {{dt.commodityService}}
+                      </td>
+                      <td>
+                            {{dt.qtyHours}}
+
+                      </td>
+                      <td>
+                            {{dt.priceRate}}
+
+                      </td>
+                      <td>
+                            {{dt.amount}} {{invoice.invCur}}
+
+                      </td>
+                      <td>
+                            {{accountsObjects[dt.accountID]}}
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row mb-3">
         <div class="col-lg-12">
@@ -108,10 +145,10 @@
                       <div class="widgetlinfo">
                         <div class="col-lg-2 pull-left">  </div>
                         <div class="col-lg-10 pull-left">
-                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}</span></p>
-                          <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}</span></p>
-                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">{{invoice.taxAmount}} CAD</span></p>
-                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}</span></p>
+                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}{{invoice.invCur}}</span></p>
+                          <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}{{invoice.invCur}}</span></p>
+                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">{{invoice.taxAmount}} {{invoice.invCur}}</span></p>
+                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}{{invoice.invCur}}</span></p>
                         </div>
                       </div>
                     </div>
@@ -131,39 +168,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let dt of invoice.details">
-                        <td>{{accountsObjects[dt.accountID]}}</td>
-                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
-                        <td>Invoice Income</td>
-                        <td>0.00</td>
-                        <td>{{dt.amount}} &nbsp; {{dt.amtCur}}</td>
-                      </tr>
-                      <tr>
-                        <td>Sales/Fees Discounts</td>
-                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
-                        <td>Invoice Discount</td>
-                        <td>{{invoice.discountAmount}} CAD</td>
-                        <td>0.00</td>
-
-                      </tr>
-                      <tr>
-                        <td>Other Taxes Expense</td>
-                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
-                        <td>Invoice Tax</td>
-                        <td>0.00</td>
-                        <td>{{invoice.taxAmount}} CAD</td>
-                      </tr>
-                      <tr>
-                        <td>Accounts Receivable</td>
-                        <td>{{customersObjects[invoice.invCustomerID]}}</td>
-                        <td>Invoice Income</td>
-                        <td>{{invoice.totalAmount}} CAD</td>
-                        <td>0.00</td>
+                      <tr *ngFor="let dt of invoice.transactionLog">
+                        <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]}}</span>
+                           <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]}}</span></td>
+                        <td>{{customersObjects[dt.name]}}</td>
+                        <td>{{dt.type}}</td>
+                        <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                        <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>{{total}} CAD</td>
-                        <td>{{total}} CAD</td>
+                        <td>{{total}} {{invoice.invCur}}</td>
+                        <td>{{total}} {{invoice.invCur}}</td>
                       </tr>
                     </tbody>
                   </table>
