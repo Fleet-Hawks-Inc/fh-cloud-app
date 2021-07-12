@@ -162,7 +162,7 @@
                         </tr>
                            <tr *ngFor="let inv of invoices; let i = index;">
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                               <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
@@ -213,7 +213,7 @@
                         </tr>
                           <tr *ngFor="let inv of openInvoices; let i = index;">
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
@@ -264,7 +264,7 @@
                         </tr>
                           <tr *ngFor="let inv of paidInvoices; let i = index;">
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
@@ -314,7 +314,7 @@
                         </tr>
                           <tr *ngFor="let inv of partiallyPaidInvoices; let i = index;">
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
@@ -365,7 +365,7 @@
                         </tr>
                           <tr *ngFor="let inv of emailedInvoices; let i = index;">
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
@@ -415,7 +415,7 @@
                         </tr>
                            <tr *ngFor="let inv of voidedInvoices; let i = index;">
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invNo}}</td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.invDate}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.txnDate}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{customersObjects[inv.invCustomerID]}}</td>
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>

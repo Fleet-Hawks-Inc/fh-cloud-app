@@ -10,7 +10,7 @@ export class InvoiceDetailComponent implements OnInit {
   invID = '';
   invoice = {
     invNo: '',
-    invDate: null,
+    txnDate: null,
     invRef: '',
     invCur: '',
     invDueDate: null,
@@ -94,8 +94,8 @@ export class InvoiceDetailComponent implements OnInit {
   }
   calculateTotal() {
     let midTotal = 0;
-    for (let i = 0; i < this.invoice.details.length; i++) {
-      midTotal += Number(this.invoice.details[i].amount);
+    for (const element of this.invoice.details) {
+      midTotal += Number(element.amount);
     }
     this.total = Number(midTotal) + Number(this.invoice.taxAmount);
   }
@@ -104,19 +104,19 @@ export class InvoiceDetailComponent implements OnInit {
       result = result.Items[0];
       this.customerName = `${result.companyName}`;
       if (result.address.length > 0) {
-        for(let i=0; i < result.address.length; i++) {
-            if (result.address[i].addressType === 'Office') {
-              if (result.address[i].manual) {
-                this.customerAddress = result.address[i].address1;
-              } else {
-                this.customerAddress = result.address[i].userLocation;
-              }
-              this.customerCityName = result.address[i].cityName;
-              this.customerStateName = result.address[i].stateName;
-              this.customerCountryName = result.address[i].countryName;
-              this.customerPhone = result.workPhone;
-              this.customerEmail = result.workEmail;
+        for (const element of result.address) {
+          if (element.addressType === 'Office') {
+            if (element.manual) {
+              this.customerAddress = element.address1;
+            } else {
+              this.customerAddress = element.userLocation;
             }
+            this.customerCityName = element.cityName;
+            this.customerStateName = element.stateName;
+            this.customerCountryName = element.countryName;
+            this.customerPhone = result.workPhone;
+            this.customerEmail = result.workEmail;
+          }
         }
       }
     });

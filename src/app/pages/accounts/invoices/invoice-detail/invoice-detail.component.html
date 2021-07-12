@@ -55,7 +55,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Creation Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invDate}} </div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.txnDate}} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Due Date:</div>
@@ -88,7 +88,48 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-lg-12"> </div>
+        <div class="col-lg-12">
+          <div class="bg-white p-3">
+            <div class="row">
+              <div class="col-lg-12">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th width="25%">Commodity/Service</th>
+                      <th width="15%">Quantity/Hours</th>
+                      <th width="10%">Price/Rate</th>
+                      <th width="20%">Amount</th>
+                      <th width="30%">Account</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dt of invoice.details; let d = index;">
+                      <td>
+                        {{dt.commodityService}}
+                      </td>
+                      <td>
+                            {{dt.qtyHours}}
+
+                      </td>
+                      <td>
+                            {{dt.priceRate}}
+
+                      </td>
+                      <td>
+                            {{dt.amount}} {{invoice.invCur}}
+
+                      </td>
+                      <td>
+                            {{accountsObjects[dt.accountID]}}
+
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row mb-3">
         <div class="col-lg-12">

@@ -37,7 +37,7 @@
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
                                   Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                  <input [(ngModel)]="receiptData.recDate" name="recDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                  <input [(ngModel)]="receiptData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
                                   ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" #receiptDate="ngModel" required>
                                   <div *ngIf="receiptDate.invalid && (receiptDate.dirty || receiptDate.touched)" class="text-danger">
                                     <div *ngIf="receiptDate.errors.required">
