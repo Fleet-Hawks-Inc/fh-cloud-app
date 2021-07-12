@@ -42,32 +42,31 @@ export class InvoiceListComponent implements OnInit {
  }
  categorizeInvoices() {
    if (this.invoices.length > 0) {
-      for(let i=0; i<this.invoices.length; i++){
-        const element = this.invoices[i];
-        if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + element.totalAmount;
-          this.openTotal = +(this.openTotal).toFixed(2);
-          this.openInvoices.push(element);
-        } else if (element.invStatus === 'paid') {
-          this.paidTotal = this.paidTotal + element.totalAmount;
-          this.paidTotal = +(this.paidTotal).toFixed(2);
-          this.paidInvoices.push(element);
-        } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + element.totalAmount;
-          this.emailedTotal = +(this.emailedTotal).toFixed(2);
-          this.emailedInvoices.push(element);
-        } else if (element.invStatus === 'partially_paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + element.totalAmount;
-          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
-          this.partiallyPaidInvoices.push(element);
-        } else if (element.invStatus === 'voided') {
-          this.voidedTotal = this.voidedTotal + element.totalAmount;
-          this.voidedTotal = +(this.voidedTotal).toFixed(2);
-          this.voidedInvoices.push(element);
-        }
+     for (const element of this.invoices) {
+      if (element.invStatus === 'open') {
+        this.openTotal = this.openTotal + element.totalAmount;
+        this.openTotal = +(this.openTotal).toFixed(2);
+        this.openInvoices.push(element);
+      } else if (element.invStatus === 'paid') {
+        this.paidTotal = this.paidTotal + element.totalAmount;
+        this.paidTotal = +(this.paidTotal).toFixed(2);
+        this.paidInvoices.push(element);
+      } else if (element.invStatus === 'emailed') {
+        this.emailedTotal = this.emailedTotal + element.totalAmount;
+        this.emailedTotal = +(this.emailedTotal).toFixed(2);
+        this.emailedInvoices.push(element);
+      } else if (element.invStatus === 'partially_paid') {
+        this.partiallyPaidTotal = this.partiallyPaidTotal + element.totalAmount;
+        this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+        this.partiallyPaidInvoices.push(element);
+      } else if (element.invStatus === 'voided') {
+        this.voidedTotal = this.voidedTotal + element.totalAmount;
+        this.voidedTotal = +(this.voidedTotal).toFixed(2);
+        this.voidedInvoices.push(element);
       }
-      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
-      this.total = +(this.total).toFixed(2);
+     }
+     this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
+     this.total = +(this.total).toFixed(2);
    }
  }
   /*
