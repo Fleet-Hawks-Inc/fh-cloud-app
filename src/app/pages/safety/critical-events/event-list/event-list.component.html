@@ -8,28 +8,23 @@
 
                     
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" [(ngModel)]="filterValue.driverName"
-                                name="searchedDriverName" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search Driver Name">
-                        </div>
-                        <div *ngFor="let data of suggestions" style="cursor: pointer"
-                            (click)="searchSelectedDriver(data)">
-                            {{ data.name }}
-                        </div>
+                        <ng-select [(ngModel)]="filter.driverID" class="text-capitalize" name="driverID" placeholder="Search by Driver">
+                            <ng-option *ngFor="let driver of drivers"
+                                value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                        </ng-select>
                     </div>
                     <div class="col-md-2  col-lg-2">
-                        <ng-select [(ngModel)]="filterValue.vehicleID" name="vehicleID" placeholder="Search by Vehicle">
-                            <ng-option class="text-capitalize" *ngFor="let vehicle of vehicles"
+                        <ng-select [(ngModel)]="filter.vehicleID" class="text-capitalize" name="vehicleID" placeholder="Search by Vehicle">
+                            <ng-option  *ngFor="let vehicle of vehicles"
                                 value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}</ng-option>
                         </ng-select>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input [(ngModel)]="filterValue.date" name="date" type="text"
+                            <input [(ngModel)]="filter.date" name="date" type="text"
                                 placeholder=" yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                 #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                (ngModelChange)="searchFilter($event, 'date' , '')">
+                               >
                         </div>
                     </div>
                     <div class="col-md-2  col-lg-2">

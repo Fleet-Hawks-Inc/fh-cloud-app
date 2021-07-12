@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { SafetyService } from 'src/app/services/safety.service';
