@@ -1,4 +1,3 @@
-
 describe("Assets Test", function () {
     let authToken;
     let assetID;
@@ -43,7 +42,7 @@ describe("Assets Test", function () {
         cy.get('div:nth-of-type(5) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
         cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();//inspection form
         cy.get('[class="col-11 pr-0"] #nextBtn').first().click(); //save
-        cy.wait(5000);
+        cy.wait(4000);
         Cypress.on('uncaught:exception', (err, runnable) => {
             return false
         })
@@ -99,7 +98,7 @@ describe("Assets Test", function () {
         cy.get("#btnsubmit").click();
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
         cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').first().click();
-        cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').last().type("Cacadia 1566");
+        cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').last().type("Boxer Asset");
         cy.get('.form-horizontal > .row > .pl-0 > .form-control > .ng-select-container > .ng-value-container').first().click();
         cy.get('div:nth-of-type(2) > .ng-option-label.ng-star-inserted').last().click();//select type
         cy.get(".btn.btn-sm.btn-success.mr-2").first().click(); //search asset type
@@ -123,7 +122,7 @@ describe("Assets Test", function () {
 
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
 
-        cy.get('#dropdownMenuButton-1 > .fas').click();
+        cy.get('#dropdownMenuButton-0 > .fas').click();
         cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();//edit
         //cy.get('.col-11 > .btn-success').click();//update
         cy.url().then(url => {

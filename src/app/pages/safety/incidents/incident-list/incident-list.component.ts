@@ -142,7 +142,6 @@ export class IncidentListComponent implements OnInit {
     $(".navtabs").removeClass('active');
 
     if (tabType === 'all') {
-      console.log('this.events', this.events)
       this.events = this.newEvents;
 
     } else if (tabType === 'assigned') {

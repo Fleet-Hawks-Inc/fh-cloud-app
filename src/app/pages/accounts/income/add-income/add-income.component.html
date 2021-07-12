@@ -92,7 +92,7 @@
                                                             <label
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Income
                                                                 Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                                <input [(ngModel)]="incomeData.incomeDate" name="incomeDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                                                <input [(ngModel)]="incomeData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
                                                                 ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #incDate="ngModel" required>
 
                                                                 <div *ngIf="incDate.invalid && (incDate.dirty || incDate.touched)" class="text-danger">

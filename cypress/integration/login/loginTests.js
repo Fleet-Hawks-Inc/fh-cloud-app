@@ -35,6 +35,7 @@ describe('Login Tests', function () {
             return false
         })
     });
+   
     it('should login first and then logout the existing carrier ', function () {
         cy.visit('/#/Login');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();

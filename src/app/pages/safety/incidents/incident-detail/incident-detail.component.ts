@@ -117,7 +117,7 @@ export class IncidentDetailComponent implements OnInit {
               this.incidentDocs.push({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.asseturl}/${result.pk}/${x}`), name: x})
             }
           });
-          console.log('this.incidentDocs', this.incidentDocs)
+         
         }
         
         this.createdBy = result.createdBy;

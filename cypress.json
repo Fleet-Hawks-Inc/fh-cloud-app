@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://localhost:4200",
+    "baseUrl": "https://devapp.fleethawks.com",
     "experimentalStudio": true,
     "viewportHeight": 1080,
     "viewportWidth": 1920,
@@ -8,10 +8,10 @@
     "defaultCommandTimeout": 60000,
     "requestTimeout": 8000,
     "pageLoadTimeout": 80000,
-    "video":false,
-    "projectId": "d7vrw2",
+    "video":true,
+    "projectId": "bzbn1g",
     "env": {
-        "SERVICE_URL": "http://localhost:3000/api/v1"
+        "SERVICE_URL": "https://fleetservice.ap-south-1.fleethawks.com/api/v1"
     }
    
 }
