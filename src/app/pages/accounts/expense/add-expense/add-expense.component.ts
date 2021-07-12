@@ -27,11 +27,10 @@ export class AddExpenseComponent implements OnInit {
     currency: null,
     recurring: {
       status: false,
-      startDate: moment().format('YYYY-MM-DD'),
       endDate: null,
       interval: null,
     },
-    expDate: moment().format('YYYY-MM-DD'),
+    txnDate: moment().format('YYYY-MM-DD'),
     unitType: null,
     unitID: null,
     vendorID: null,
@@ -150,10 +149,14 @@ export class AddExpenseComponent implements OnInit {
     this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.expenseData.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
 
-    let selected:any = this.stateTaxes.filter(o => o.stateCode == stateCode);
-    this.expenseData.taxes.gstPercent = selected[0].GST;
-    this.expenseData.taxes.pstPercent = selected[0].PST;
-    this.expenseData.taxes.hstpercent = selected[0].HST;
+    if(stateCode != undefined && stateCode != null) {
+      let selected:any = this.stateTaxes.filter(o => o.stateCode == stateCode);
+      this.expenseData.taxes.gstPercent = selected[0].GST;
+      this.expenseData.taxes.pstPercent = selected[0].PST;
+      this.expenseData.taxes.hstpercent = selected[0].HST;
+
+      this.calculateFinalTotal();
+    }
   }
 
   fetchStateTaxes() {
@@ -185,6 +188,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false; 
 
+    this.expenseData.amount = parseFloat(this.expenseData.amount);
     // create form data instance
     const formData = new FormData();
 
@@ -234,6 +238,8 @@ export class AddExpenseComponent implements OnInit {
           this.expenseData = result[0];
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
+          this.states = CountryStateCity.GetStatesByCountryCode([result[0].countryCode]);
+          this.cities = CountryStateCity.GetCitiesByStateCodes(result[0].countryCode, result[0].stateCode);
 
           if (result[0].documents != undefined && result[0].documents.length > 0) {
             result[0].documents.map((x) => {
@@ -264,6 +270,7 @@ export class AddExpenseComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false; 
+    this.expenseData.amount = parseFloat(this.expenseData.amount);
 
     // create form data instance
     const formData = new FormData();
@@ -359,7 +366,6 @@ export class AddExpenseComponent implements OnInit {
   }
 
   deleteDocument(name: string, index: number) {
-    console.log('this.expenseID', this.expenseID);
     this.accountService.deleteData(`expense/uploadDelete/${this.expenseID}/${name}`).subscribe((result: any) => {
       this.existingDocs.splice(index, 1);
       this.documentSlides.splice(index, 1);
@@ -380,6 +386,12 @@ export class AddExpenseComponent implements OnInit {
     if(this.expenseData.taxes.pstPercent != null && this.expenseData.taxes.includePST) {
       this.expenseData.taxes.pstAmount = (this.expenseData.amount*this.expenseData.taxes.pstPercent)/100;
       this.expenseData.finalTotal += +this.expenseData.taxes.pstAmount;
+    }
+  }
+
+  changeDepAcc(val) {
+    if(val === this.expenseData.paidAccountID) {
+      this.expenseData.paidAccountID = null;
     }
   }
 }

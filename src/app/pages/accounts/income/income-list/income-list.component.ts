@@ -16,6 +16,16 @@ export class IncomeListComponent implements OnInit {
   customers = [];
   categories = [];
   invoices = [];
+  filter = {
+    amount: '',
+    startDate: null,
+    endDate: null,
+    categoryID: null,
+  };
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -26,29 +36,27 @@ export class IncomeListComponent implements OnInit {
   }
 
   fetchAccounts() {
-    this.accountService.getData(`income`)
+    this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}`)
       .subscribe((result: any) => {
         if(result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if (result[0] != undefined) {
-          this.incomeAccounts = result;
-          this.incomeAccounts.map((v) => {
-            if(v.paymentMode === 'creditCard') {
-              v.paymentMode = 'Credit Card';
-            } else if(v.paymentMode === 'debitCard') {
-              v.paymentMode = 'Debit Card';
-            } else if(v.paymentMode === 'demandDraft') {
-              v.paymentMode = 'Demand Card';
-            } else if(v.paymentMode === 'eft') {
-              v.paymentMode = 'EFT';
-            } else if(v.paymentMode === 'cash') {
-              v.paymentMode = 'Cash';
-            } else if(v.paymentMode === 'cheque') {
-              v.paymentMode = 'Cheque';
-            }
-          })
-        }
+        this.incomeAccounts = result;
+        this.incomeAccounts.map((v) => {
+          if(v.paymentMode === 'creditCard') {
+            v.paymentMode = 'Credit Card';
+          } else if(v.paymentMode === 'debitCard') {
+            v.paymentMode = 'Debit Card';
+          } else if(v.paymentMode === 'demandDraft') {
+            v.paymentMode = 'Demand Card';
+          } else if(v.paymentMode === 'eft') {
+            v.paymentMode = 'EFT';
+          } else if(v.paymentMode === 'cash') {
+            v.paymentMode = 'Cash';
+          } else if(v.paymentMode === 'cheque') {
+            v.paymentMode = 'Cheque';
+          }
+        })
       })
   }
 
@@ -79,6 +87,24 @@ export class IncomeListComponent implements OnInit {
     this.accountService.getData('invoices/get/list').subscribe((res: any) => {
       this.invoices = res;
     });
+  }
+
+  searchFilter() {
+    if(this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchAccounts();
+    }
+  }
+
+  resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      amount: '',
+      startDate: null,
+      endDate: null,
+      categoryID: null,
+    }
+    this.fetchAccounts();
   }
 
 }
