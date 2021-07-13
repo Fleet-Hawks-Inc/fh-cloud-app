@@ -7,7 +7,7 @@
                     <div class="row px-4" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
@@ -17,36 +17,31 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input type="text" class="form-control" name="start">
+                                <input [(ngModel)]="filter.startDate" name="startDate"
+                                        type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                                        ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit"
+                                        [maxDate]="futureDatesLimit">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input type="text" class="form-control" name="end">
+                                <input [(ngModel)]="filter.endDate" name="endDate"
+                                        type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                                        ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit"
+                                        [maxDate]="futureDatesLimit">
                             </div>
                         </div>
-                        <div class="col-md-2  col-lg-2">
-                            <div class="input-group input-group-md mb-3">
-                                <select data-plugin-selectTwo class="form-control pull-left form-control-sm mb-3">
-                                    <option>Select Income Category</option>
-                                    <option>Accessorial Income</option>
-                                    <option>Advance</option>
-                                    <option>Fuel Surcharge</option>
-                                    <option>Income from Sales</option>
-                                    <option>Income Reimbursement</option>
-                                    <option>Interest Income</option>
-                                    <option>Lease Income</option>
-                                    <option>Mileage Income</option>
-                                    <option>Miscellaneous Income</option>
-                                    <option>Other Income</option>
-                                    <option>Tarp</option>
-                                    <option>Tax Collected</option>
-                                </select>
-                            </div>
+                        <div class="col-md-2 col-lg-2">
+                            <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.categoryID">
+                                <ng-option *ngFor="let data of categories | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                            </ng-select>
                         </div>
-                        <div class="col-md-1  col-lg-1">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
-                        <div class="col-md-4  col-lg-4 text-right">
+                        <div class="col-md-3 col-lg-3 text-right">
                             <a routerLink="/accounts/income/add" class="btn btn-success btn-sm ml-2"
                                 style="color:white;"><i class="fas fa-plus"></i> Add Income </a>
                         </div>
@@ -76,12 +71,12 @@
                                         <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr *ngFor="let data of incomeAccounts">
-                                        <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.incomeDate | date:'yyyy/MM/dd' }}</td>
-                                        <td>{{ invoices[data.invoiceID] }}</td>
-                                        <td>{{ customers[data.customerID] }}</td>
-                                        <td>{{ categories[data.categoryID] }}</td>
+                                        <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
+                                        <td>{{ (data.invoiceID) ? invoices[data.invoiceID] : '-' }}</td>
+                                        <td>{{ (data.customerID) ? customers[data.customerID] : '-' }}</td>
+                                        <td>{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
                                         <td>{{ data.paymentMode }}</td>
-                                        <td>{{ data.description }}</td>
+                                        <td>{{ (data.description) ? data.description : '-' }}</td>
                                         <td>{{ data.recAmount }} {{ data.recCurr }}</td>
                                         <td>-</td>
                                         <td>

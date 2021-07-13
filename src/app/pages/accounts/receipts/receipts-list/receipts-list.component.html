@@ -55,7 +55,7 @@
                       </thead>
                       <tbody>
                          <tr *ngFor="let rec of receipts">
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recDate}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID]}}</td>

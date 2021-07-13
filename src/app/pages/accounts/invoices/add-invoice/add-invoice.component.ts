@@ -19,10 +19,15 @@ export class AddInvoiceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) { }
     pageTitle = 'Add Invoice';
+    dateMinLimit = { year: 1950, month: 1, day: 1 };
+    date = new Date();
+    futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+    users: any = [];
   invoiceData = {
     invNo: '',
-    invDate: null,
+    txnDate: null,
     invRef: '',
+    invCur: null,
     invDueDate: null,
     invPayTerms: '',
     invCustomerID: null,
@@ -36,7 +41,6 @@ export class AddInvoiceComponent implements OnInit {
       qtyHours: '',
       priceRate: '',
       amount: 0,
-      amtCur: null,
       accountID: null,
     }],
     remarks: '',
@@ -56,7 +60,7 @@ export class AddInvoiceComponent implements OnInit {
   totalAmount: any = 0;
   customersObjects = {};
   /**
-   *Customer related properties
+   * Customer related properties
    */
   customers: any = [];
   customerSelected = {
@@ -68,7 +72,7 @@ export class AddInvoiceComponent implements OnInit {
   };
   notOfficeAddress = false;
   /**
-   *Accounts
+   * Accounts
    *
    */
   accounts: any = [];
@@ -92,6 +96,7 @@ export class AddInvoiceComponent implements OnInit {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     this.fetchStateTaxes();
+    this.fetchUsers();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
       this.pageTitle = 'Edit Invoice';
@@ -101,14 +106,17 @@ export class AddInvoiceComponent implements OnInit {
     }
     this.fetchCustomersByIDs();
   }
+  fetchUsers() {
+    this.apiService.getData('contacts/get/type/employee').subscribe((result: any) => {
+      this.users = result;
+    });
+  }
   selectedCustomer(customerID: any) {
     this.apiService
-      .getData(`contacts/detail/${customerID}`)
-      .subscribe((result: any) => {
+      .getData(`contacts/detail/${customerID}`)      .subscribe((result: any) => {
         if (result.Items.length > 0) {
           this.customerSelected = result.Items[0];
-          for (let i = 0; i < this.customerSelected.address.length; i++) {
-            const element = this.customerSelected.address[i];
+          for (const element of this.customerSelected.address) {
             if (element.addressType === 'Office') {
               this.notOfficeAddress = false;
               this.customerSelected.officeAddr = true;
@@ -119,7 +127,6 @@ export class AddInvoiceComponent implements OnInit {
             }
           }
         }
-
       });
   }
   async stateSelectChange() {
@@ -140,8 +147,8 @@ export class AddInvoiceComponent implements OnInit {
         amount: selected.PST,
       },
     ];
-    this.tax = (parseInt(selected.GST) ? selected.GST : 0) + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
-
+    this.tax = (Number(selected.GST) ? selected.GST : 0)
+             + (Number(selected.HST) ? selected.HST : 0) + (Number(selected.PST) ? selected.PST : 0);
     await this.calculateAmount();
   }
 
@@ -187,9 +194,8 @@ export class AddInvoiceComponent implements OnInit {
 
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
-      for (let i = 0; i < this.newTaxes.length; i++) {
-        const element = this.newTaxes[i];
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+      for (const element of this.newTaxes) {
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -200,7 +206,6 @@ export class AddInvoiceComponent implements OnInit {
       qtyHours: '',
       priceRate: '',
       amount: 0,
-      amtCur: null,
       accountID: null,
     });
   }
@@ -213,22 +218,18 @@ export class AddInvoiceComponent implements OnInit {
     this.invoiceData.balance = this.invoiceData.totalAmount;
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Added Successfully.');
-      this.acRecDebitFn();
-      this.acCreditFn();
-      this.acTaxFn();
-      this.acDiscountFn();
       this.router.navigateByUrl('/accounts/invoices/list');
     });
   }
 
   async calculateAmount() {
     this.midAmt = 0;
-    for (let i = 0; i < this.invoiceData.details.length; i++) {
-      this.midAmt += Number(this.invoiceData.details[i].amount);
+    for (const element of this.invoiceData.details) {
+      this.midAmt += Number(element.amount);
     }
     this.invoiceData.subTotal = this.midAmt;
     if (this.invoiceData.discountUnit === '%') {
-      this.invoiceData.subTotal = this.midAmt - ((this.invoiceData.discount * this.midAmt) / 100);
+      this.invoiceData.subTotal = this.midAmt - (this.invoiceData.discount * this.midAmt) / 100;
       this.invoiceData.discountAmount = (this.invoiceData.discount * this.midAmt) / 100;
     } else if (this.invoiceData.discountUnit === 'CAD') {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
@@ -241,16 +242,15 @@ export class AddInvoiceComponent implements OnInit {
     const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
     const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
     const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
-    const totalTax = parseInt(gst)  + parseInt(pst) + parseInt(hst);
-    const taxAmount =  parseInt(this.totalAmount) * totalTax / 100;
+    const totalTax = Number(gst)  + Number(pst) + Number(hst);
+    const taxAmount =  Number(this.totalAmount) * totalTax / 100;
     this.invoiceData.taxAmount = taxAmount;
-    const final = parseInt(this.totalAmount) + taxAmount;
+    const final = Number(this.totalAmount) + taxAmount;
 
     this.invoiceData.totalAmount = final;
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
-      for (let i = 0; i < this.newTaxes.length; i++) {
-        const element = this.newTaxes[i];
+      for (const element of this.newTaxes) {
         element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
       }
     }
@@ -262,6 +262,8 @@ export class AddInvoiceComponent implements OnInit {
       this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
       this.fetchStateTaxes();
       this.invoiceData.details = res[0].details;
+      this.invoiceData.transactionLog = res[0].transactionLog;
+      this.calculateAmount();
       const state = this.stateTaxes.find(o => o.stateTaxID === res[0].invStateProvince);
 
       this.invoiceData.taxesInfo = [
@@ -278,6 +280,7 @@ export class AddInvoiceComponent implements OnInit {
           amount: (state) ? state.PST : '',
         },
       ];
+
       });
   }
   updateInvoice() {
@@ -286,69 +289,6 @@ export class AddInvoiceComponent implements OnInit {
       this.toaster.success('Invoice Updated Successfully.');
       this.router.navigateByUrl('/accounts/invoices/list');
     });
-  }
-  acDiscountFn() {
-    const internalID = 'ACT29';
-    const data = {
-      trxDate: moment().format('YYYY-MM-DD'),
-      name: this.invoiceData.invCustomerID,
-      trxType: 'debit', // It can be debit or credit
-      type: 'invoice discount', // Type means either it's from invoice, bill etc.
-      amount: this.invoiceData.discount,
-      currency: 'CAD',
-      trxRunTotal: 0,
-      desc: `Invoice is created`
-    };
-    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
-  }
-  acTaxFn() {
-    const internalID = 'ACT38';
-    const data = {
-      trxDate: moment().format('YYYY-MM-DD'),
-      name: this.invoiceData.invCustomerID,
-      trxType: 'credit', // It can be debit or credit
-      type: 'invoice tax', // Type means either it's from invoice, bill etc.
-      amount: this.invoiceData.taxAmount,
-      currency: 'CAD',
-      trxRunTotal: 0,
-      desc: `Invoice is created`
-    };
-    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
-  }
-  acRecDebitFn() {
-    const internalID = 'ACT2'; // Accounts receivable internal account id
-    const data = {
-      trxDate: moment().format('YYYY-MM-DD'),
-      name: this.invoiceData.invCustomerID,
-      trxType: 'debit', // It can be debit or credit
-      type: 'invoice', // Type means either it's from invoice, bill etc.
-      amount: this.invoiceData.totalAmount,
-      currency: 'CAD',
-      trxRunTotal: 0,
-      desc: `Invoice is created`
-    };
-    this.accountService.putData(`chartAc/internalActID/${internalID}`, data).subscribe();
-  }
-  acCreditFn() {
-    try {
-      for(let i=0; i < this.invoiceData.details.length; i++) {
-        const customerName = this.customersObjects[this.invoiceData.invCustomerID];
-        const data = {
-          trxDate: moment().format('YYYY-MM-DD'),
-          name: customerName,
-          trxType: 'credit', // It can be debit or credit
-          type: 'invoice', // Type means either it's from invoice, bill etc.
-          amount: this.invoiceData.totalAmount,
-          currency: 'CAD',
-          trxRunTotal: 0,
-          desc: `Invoice is created`
-        };
-        this.accountService.putData(`chartAc/trx/${this.invoiceData.details[i].accountID}`, data).subscribe();
-      }
-    } catch (error) {
-      throw new Error(error);
-    }
-
   }
     /*
    * Get all customers's IDs of names from api

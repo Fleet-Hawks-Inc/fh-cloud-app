@@ -26,7 +26,7 @@ export class AddReceiptComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   receiptData = {
     customerID: null,
-    recDate: null,
+    txnDate: null,
     recNo: null,
     recAmount: 0,
     recAmountCur: null,
@@ -36,7 +36,8 @@ export class AddReceiptComponent implements OnInit {
     paymentMode: null,
     paymentModeNo: null,
     paymentModeDate: null,
-    paidInvoices: []
+    paidInvoices: [],
+    transactionLog: []
   };
   paymentMode = [
     {
@@ -126,14 +127,13 @@ export class AddReceiptComponent implements OnInit {
 
     for (let i = 0; i < this.invoices.length; i++) {
         if (i === j) {
-          console.log('this.invoices[i]', this.invoices[i]);
           if (this.invoices[i].fullPayment === true) {
             this.invoices[i].amountReceived = this.invoices[i].totalAmount;
           }
           //  else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
           //   this.invoices[i].amountReceived = this.invoices[i].balance;
           // }
-          else {
+            else {
             this.invoices[i].amountReceived = 0;
           }
         }
@@ -141,13 +141,13 @@ export class AddReceiptComponent implements OnInit {
   }
  async getPaidInvoices() {
     const paidInvoices = [];
-    for(let i=0; i<this.invoices.length; i++) {
-      if (this.invoices[i].amountReceived !== 0 && this.invoices[i].amountReceived !== undefined) {
+    for(const element of this.invoices) {
+      if (element.amountReceived !== 0 && element.amountReceived !== undefined) {
         const obj = {
-          invID: this.invoices[i].invID,
-          invNo: this.invoices[i].invNo,
-          amountReceived: this.invoices[i].amountReceived,
-          fullPayment: this.invoices[i].fullPayment
+          invID: element.invID,
+          invNo: element.invNo,
+          amountReceived: element.amountReceived,
+          fullPayment: element.fullPayment
         };
         paidInvoices.push(obj);
       }
@@ -193,9 +193,8 @@ export class AddReceiptComponent implements OnInit {
  async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
       this.receiptData = res[0];
-      console.log('this.receiptData', this.receiptData);
+      this.receiptData.transactionLog = res[0].transactionLog;
       this.invoices = this.receiptData[`fetchedInvoices`];
-      console.log('this.invoices', this.invoices);
     });
   }
 
@@ -205,7 +204,6 @@ export class AddReceiptComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     await this.getPaidInvoices();
-    console.log('this.receiptData', this.receiptData);
     this.accountService.putData(`receipts/update/${this.recID}`, this.receiptData).subscribe({
       complete: () => { },
       error: (err: any) => {
