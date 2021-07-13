@@ -15,6 +15,7 @@ describe(" Reminders tests", () => {
       })
     }
   });
+ 
   it('should allow users to add reminders with all required fields.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -26,8 +27,8 @@ describe(" Reminders tests", () => {
     cy.get('.col-md-4 > .btn').first().click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz');
-    cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(1)').click();
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type(' mandatory vehicle');
+    cy.get('div:nth-of-type(1) [role="option"]:nth-of-type(1)').click();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Task Sevrice');
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
     cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");
@@ -49,7 +50,7 @@ describe(" Reminders tests", () => {
     cy.get(':nth-child(6) > .nav-link > .fas').click();
     cy.get('.input-group.input-group-md.mb-3 > ng-select[role="listbox"] input[role="combobox"]').first().click();
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
-    cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+    cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('mandatory {enter}');
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('[name="searchServiceTask"] input').first().click();
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
@@ -62,7 +63,7 @@ describe(" Reminders tests", () => {
     });
   });
 
-  it.only('should allow users to edit reminders.', function () {
+  it('should allow users to edit reminders.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
@@ -71,9 +72,10 @@ describe(" Reminders tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(6) > .nav-link > .fas').click();
     cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').first().click();
-    cy.get('.mb-0.row-border.table.table-bordered.table-striped div[role="menu"] > a:nth-of-type(3)').click();
-    cy.get('.adddriverpl.form-group.row .btn.btn-success.ng-star-inserted').click();//update button
+    cy.get('.btn-group.flex-wrap.show > div[role="menu"] > a:nth-of-type(3)').click();//edit
+  //  cy.get('.adddriverpl.form-group.row .btn.btn-success.ng-star-inserted').click();//update button
     cy.url().then(url => {
+      
       let newUrl = url.split('/');
       serviceReminderID = newUrl[newUrl.length - 1];
       cy.setLocalStorage('serviceReminderID', serviceReminderID);
@@ -133,8 +135,8 @@ describe(" Reminders tests", () => {
     cy.get('.col-md-4 > .btn').first().click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz');
-    cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(1)').click();
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('mandatory vehicle');
+    cy.get('div:nth-of-type(1) [role="option"]:nth-of-type(1)').click();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Task Sevrice');
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').click();
     cy.get('input[name="subscribers"]').type("hellouser@maliniator.in");

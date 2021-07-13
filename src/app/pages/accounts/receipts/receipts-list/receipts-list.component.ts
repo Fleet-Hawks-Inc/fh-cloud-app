@@ -24,7 +24,6 @@ export class ReceiptsListComponent implements OnInit {
   fetchReceipts() {
     this.accountService.getData('receipts').subscribe((res) => {
     this.receipts = res;
-    console.log('this.receipts', this.receipts);
     });
   }
 

@@ -9,10 +9,11 @@ import { AccountService, ApiService } from './../../../../services';
 export class ReceiptDetailComponent implements OnInit {
   public recID: string;
   customersObject: any = {};
-  accountsObject: any = {};
+  accountsObjects = {};
+  accountsIntObjects = {};
   receiptData = {
     customerID: null,
-    recDate: null,
+    txnDate: null,
     recNo: null,
     recAmount: 0,
     recAmountCur: null,
@@ -21,17 +22,19 @@ export class ReceiptDetailComponent implements OnInit {
     paymentModeNo: null,
     paymentModeDate: null,
     paidInvoices: [],
-    fetchedInvoices: []
+    fetchedInvoices: [],
+    transactionLog: []
   };
   constructor(private accountService: AccountService, private apiService: ApiService, private route: ActivatedRoute ) {}
 
   ngOnInit() {
     this.recID = this.route.snapshot.params[`recID`];
-    if(this.recID){
+    if (this.recID) {
       this.fetchReceipt();
     }
     this.fetchCustomersByIDs();
-    this.fetchAccounts();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
   } /*
   * Get all customers's IDs of names from api
   */
@@ -40,16 +43,19 @@ export class ReceiptDetailComponent implements OnInit {
        this.customersObject = result;
      });
    }
-   fetchAccounts() {
-     this.accountService.getData(`chartAc/get/list/all`)
-       .subscribe((result: any) => {
-         this.accountsObject = result;
-       });
-   }
+   fetchAccountsByIDs() {
+    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+      this.accountsObjects = result;
+    });
+  }
+  fetchAccountsByInternalIDs() {
+    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+      this.accountsIntObjects = result;
+    });
+  }
    async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
       this.receiptData = res[0];
-      console.log(' this.receiptData',  this.receiptData);
     });
   }
 }

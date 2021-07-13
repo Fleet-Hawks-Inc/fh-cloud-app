@@ -23,7 +23,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.recDate}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.txnDate}}</p>
                         <p class="mb-0">DATE</p>
                       </div>
                     </div>
@@ -31,7 +31,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="fa fa-user text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{customersObject[receiptData.customerID]}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{customersObject[receiptData.customerID] | uppercase}}</p>
                         <p class="mb-0">CUSTOMER</p>
                       </div>
                     </div>
@@ -91,8 +91,8 @@
                         <tbody>
                           <tr *ngFor="let inv of receiptData.fetchedInvoices">
                             <td>{{inv.invNo}}</td>
-                            <td>{{inv.totalAmount}}</td>
-                            <td>{{inv.amountReceived}}</td>
+                            <td>{{inv.totalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.amountReceived}} {{inv.invCur}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -111,32 +111,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>{{accountsObject[receiptData.accountID]}}</td>
-                        <td>{{customersObject[receiptData.customerID]}}</td>
-                        <td>Invoice Income</td>
-                        <td>{{receiptData.recAmount}}{{receiptData.recAmountCur}}</td>
-                        <td>0.00</td>
-                      </tr>
-                      <tr>
-                        <td>Advance Payment Account</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>800 CAD</td>
-                        <td>0.00</td>
-
-                      </tr>
-                      <tr>
-                        <td>Accounts Receivable</td>
-                        <td>{{customersObject[receiptData.customerID]}}</td>
-                        <td>Invoice Income</td>
-                        <td>0.00</td>
-                        <td>{{receiptData.recAmount}}{{receiptData.recAmountCur}}</td>
+                      <tr *ngFor="let dt of receiptData.transactionLog">
+                        <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]}}</span>
+                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]}}</span></td>
+                       <td>{{customersObject[dt.name]}}</td>
+                       <td>{{dt.type}}</td>
+                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>{{receiptData.recAmount}}{{receiptData.recAmountCur}}</td>
-                        <td>{{receiptData.recAmount}}{{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
                       </tr>
                     </tbody>
                   </table>

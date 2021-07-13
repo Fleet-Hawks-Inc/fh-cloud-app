@@ -1,6 +1,7 @@
 import { AccountService, ApiService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import Constants from 'src/app/pages/fleet/constants';
 declare var $: any;
 @Component({
   selector: 'app-invoice-list',
@@ -8,10 +9,22 @@ declare var $: any;
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements OnInit {
+  noInvoicesMsg = Constants.NO_RECORDS_FOUND;
  invoices = [];
  customersObjects = {};
  invNewStatus: string;
  invID: string;
+ total = 0;
+ openInvoices = [];
+ openTotal = 0;
+ paidInvoices = [];
+ paidTotal = 0;
+ emailedInvoices = [];
+ emailedTotal = 0;
+ partiallyPaidInvoices = [];
+ partiallyPaidTotal = 0;
+ voidedInvoices = [];
+ voidedTotal = 0;
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, ) { }
 
   ngOnInit() {
@@ -20,12 +33,41 @@ export class InvoiceListComponent implements OnInit {
   }
  fetchInvoices() {
    this.accountService.getData('invoices').subscribe((res: any) => {
-    console.log('invoices response', res);
     this.invoices = res;
     this.invoices.map((v: any) => {
       v.invStatus = v.invStatus.replace('_', ' ');
     });
+    this.categorizeInvoices();
    });
+ }
+ categorizeInvoices() {
+   if (this.invoices.length > 0) {
+     for (const element of this.invoices) {
+      if (element.invStatus === 'open') {
+        this.openTotal = this.openTotal + element.totalAmount;
+        this.openTotal = +(this.openTotal).toFixed(2);
+        this.openInvoices.push(element);
+      } else if (element.invStatus === 'paid') {
+        this.paidTotal = this.paidTotal + element.totalAmount;
+        this.paidTotal = +(this.paidTotal).toFixed(2);
+        this.paidInvoices.push(element);
+      } else if (element.invStatus === 'emailed') {
+        this.emailedTotal = this.emailedTotal + element.totalAmount;
+        this.emailedTotal = +(this.emailedTotal).toFixed(2);
+        this.emailedInvoices.push(element);
+      } else if (element.invStatus === 'partially_paid') {
+        this.partiallyPaidTotal = this.partiallyPaidTotal + element.totalAmount;
+        this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+        this.partiallyPaidInvoices.push(element);
+      } else if (element.invStatus === 'voided') {
+        this.voidedTotal = this.voidedTotal + element.totalAmount;
+        this.voidedTotal = +(this.voidedTotal).toFixed(2);
+        this.voidedInvoices.push(element);
+      }
+     }
+     this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
+     this.total = +(this.total).toFixed(2);
+   }
  }
   /*
    * Get all customers's IDs of names from api
@@ -37,8 +79,6 @@ export class InvoiceListComponent implements OnInit {
   }
 
   deleteInvoice(invID: string) {
-    console.log('invoice delete');
-    console.log('invID', invID);
     this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
       this.toaster.success('Invoice Deleted Successfully.');
       this.fetchInvoices();
@@ -51,8 +91,6 @@ export class InvoiceListComponent implements OnInit {
   }
 
   updateInvStatus() {
-    console.log('this.invID', this.invID);
-    console.log('updated status', this.invNewStatus);
     this.accountService.getData(`invoices/status/${this.invID}/${this.invNewStatus}`).subscribe(() => {
       this.toaster.success('Invoice Status Updated Successfully.');
       $('#updateStatusModal').modal('hide');
