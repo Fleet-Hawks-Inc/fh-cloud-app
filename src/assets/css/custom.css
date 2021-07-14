@@ -1777,6 +1777,9 @@ text-decoration: underline;
 
   .green1{color: #1eb54f;}
 
+  /* overflow x*/
+  .overflowxv{overflow-x: visible;}
+
 
   /* bg color */
   .bgcol1{background: #f0f0f0;}
