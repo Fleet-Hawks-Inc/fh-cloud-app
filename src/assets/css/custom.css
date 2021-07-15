@@ -2500,3 +2500,14 @@ input.placeholder-lowercase {
 @media (min-width: 1640px) {
 	.onboardwidth {width: 75% !important;	}
 }
+
+.addsr-scroll-y {
+  display: block;
+}
+
+.addsr-scrollbar {
+  position: relative;
+  height: 720px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

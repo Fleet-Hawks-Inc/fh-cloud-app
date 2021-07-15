@@ -7,3 +7,24 @@
 a[aria-expanded='false'] > .expand_caret {
     transform: scale(1.6) rotate(-90deg);
 }
+.invoice-wrapper {
+    background: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #e2e2e2;
+    border-radius: .25rem;
+    font-size: 14px;
+    box-shadow: 0 0px 18px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-bottom: 14px;
+    font-family: 'Open Sans', sans-serif;
+}
+.invoice-iner__wrapper {
+    border: 1px dashed #8d8d8d;
+    padding: 10px;
+    background-color: #fff; 
+}
+.table-striped > tbody td,
+.table-striped > thead td,
+.table-striped > tfoot th {
+    padding: 5px;
+}

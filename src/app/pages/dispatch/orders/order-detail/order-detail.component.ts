@@ -138,6 +138,7 @@ export class OrderDetailComponent implements OnInit {
   totalCharges: any = 0;
   advances = 0;
   balance = 0;
+  newOrderData: any;
 
   assetTypes = {};
   milesArr = [];
@@ -162,6 +163,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
+          this.newOrderData = result;
           result = result.Items[0];
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
@@ -186,20 +188,20 @@ export class OrderDetailComponent implements OnInit {
 
           for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
             const element = this.shipperReceiversInfos[u];
-              for (let k = 0; k < element.shippers.length; k++) {
-                const element1 = element.shippers[k];
-                element1.date = '';
-                element1.time = '';
+              // for (let k = 0; k < element.shippers.length; k++) {
+              //   const element1 = element.shippers[k];
+              //   element1.date = '';
+              //   element1.time = '';
 
-                let datetime = element1.dateAndTime.split(' ');
-                if(datetime[0] != undefined) {
-                  element1.date = datetime[0];
-                }
-                if(datetime[1] != undefined) {
-                  element1.time = datetime[1];
-                }
+              //   let datetime = element1.dateAndTime.split(' ');
+              //   if(datetime[0] != undefined) {
+              //     element1.date = datetime[0];
+              //   }
+              //   if(datetime[1] != undefined) {
+              //     element1.time = datetime[1];
+              //   }
 
-              }
+              // }
 
               
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
@@ -217,20 +219,20 @@ export class OrderDetailComponent implements OnInit {
               
 
           this.milesArr = [];
-          for (let k = 0; k < element.receivers.length; k++) {
-            const element2 = element.receivers[k];
-            element2.date = '';
-            element2.time = '';
+          // for (let k = 0; k < element.receivers.length; k++) {
+          //   const element2 = element.receivers[k];
+          //   element2.date = '';
+          //   element2.time = '';
 
-            let datetime = element2.dateAndTime.split(' ');
-            if(datetime[0] != undefined) {
-              element2.date = datetime[0];
-            }
-            if(datetime[1] != undefined) {
-              element2.time = datetime[1];
-            }
+          //   let datetime = element2.dateAndTime.split(' ');
+          //   if(datetime[0] != undefined) {
+          //     element2.date = datetime[0];
+          //   }
+          //   if(datetime[1] != undefined) {
+          //     element2.time = datetime[1];
+          //   }
 
-          }
+          // }
       }
       for(let i = 0; i < this.taxesInfo.length; i++){
         if(this.taxesInfo[i].amount){
@@ -255,6 +257,7 @@ export class OrderDetailComponent implements OnInit {
             })
 
             this.milesArr.push(newArr);
+            
           })
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
@@ -555,6 +558,11 @@ export class OrderDetailComponent implements OnInit {
       $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-right')
       $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
     }
+  }
+
+
+  genInvoice() {
+    
   }
 
   
