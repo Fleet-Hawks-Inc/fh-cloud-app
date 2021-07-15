@@ -1,0 +1,575 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body">
+               <header class="page-header pr-5">
+                  
+                  <div class="row pr-4 pl-2">
+                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                       <h2 class="font-weight-bold">MyAccount</h2>
+                     </div>
+                     <div class="col-md-8 col-lg-8 text-right pt-2">
+                        <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                     </div>
+                  </div>
+				  
+               </header>
+               <!-- <section class="card mb-4">
+                  <div class="card-body">
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Add Load</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Dispatch</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Invoice</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Contact</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Company</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Income</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Expense</a>
+                     <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"><i class="fas fa-plus"></i> Equipment</a>
+                     <div class="pull-right">
+                        <a href="#" class="mb-1 mt-1 mr-1 btn btn-success"><i class="fas fa-plus"></i> Create Your Widget</a>
+                     </div>
+                  </div>
+               </section> -->
+               <div class="routing-overview__wrapper m-3">
+                  <div class="row">
+                     <div class="col-lg-12 col-xl-12 mb-4">
+							<div class=" ">
+                                    <ul class="nav nav-tabs top-tabs pl-3">
+                                       <li class="nav-item active">
+                                          <a class="nav-link active" href="#changeactinfo" data-toggle="tab">Change Account Info</a>
+                                       </li>
+                                       <li class="nav-item">
+                                          <a class="nav-link" href="#changepass" data-toggle="tab">Change Password</a>
+                                       </li>
+                                       <li class="nav-item">
+                                          <a class="nav-link" href="#changetz" data-toggle="tab">Change Time Zone</a>
+                                       </li>
+                                       <li class="nav-item">
+                                          <a class="nav-link" href="#myact" data-toggle="tab">My Activities</a>
+                                       </li>
+                                       
+									   <li class="nav-item">
+                                          <a class="nav-link" href="#mobcon" data-toggle="tab">Mobile Connectivity</a>
+                                       </li>
+									  
+                                    </ul>
+                                    <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                                        <div id="changeactinfo" class="tab-pane active">
+											<div class="row">
+												<div class="col-12">
+													<p class="text-4 text-dark">Please enter your most up-to-date contact information so that we can better inform and assist you with your TruckLogics account.</p>
+												</div>
+												
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Contact Name:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<input type="text" value="Hardeep" class="form-control">
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Phone:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<input type="text" value="(306) 914-3104" class="form-control"> 
+												</div>
+												<div class="col-1 mb-4 text-left">
+													<label class="control-label font-weight-bold">
+													X <input type="text" style="width:50px; float:right;" value="362" class="ml-2 form-control"></label>
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">Existing Email:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<p class="mb-0">manjitmatharu158@gmail.com</p>
+												</div>
+												<div class="col-5 mb-4">
+													<a href="#" class="btn btn-default btn-sm">Change</a>
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Existing Password:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-lock"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*New Email:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-envelope"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Confirm Email:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-envelope"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												
+												<div class="col-12 text-center">
+													<a href="#" class="btn btn-default btn-lg btn-sm">Cancel</a>
+													<a href="#" class="btn btn-success btn-lg btn-sm" style="color:white;">Save</a>
+												 </div>
+											</div>
+	  
+                                       </div>
+									   
+                                       <!-- Accessorials -->
+                                       <div id="changepass" class="tab-pane">
+											<div class="row pt-3">
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Current Password:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-lock"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*New Password:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-lock"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Confirm New Password:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-lock"></i>
+															</span>
+														</span>
+														<input type="text" class="form-control" placeholder="Email">
+													</div>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-12 text-center">
+													<a href="#" class="btn btn-success btn-lg btn-sm" style="color:white;">Change Password</a>
+												 </div>
+												 
+											</div>
+                                          
+                                       </div>
+									   
+                                       <!-- Load Charges -->
+                                       <div id="changetz" class="tab-pane">
+                                          <div class="row pt-3">
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Country:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+													<option value="">Select</option>
+													   <option selected="selected" value="1">Canada</option>
+													   <option value="2">USA</option>
+													   <option value="3">Mexico</option>
+													</select>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Time Zone:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+													   <option value="">Select</option>
+														<option value="1">(GMT-04:00) Atlantic Time</option>
+														<option selected="selected" value="2">(GMT-05:00) Eastern Time</option>
+														<option value="3">(GMT-06:00) Central Time</option>
+														<option value="4">(GMT-07:00) Mountain Time</option>
+														<option value="6">(GMT-08:00) Pacific Time</option>
+														<option value="7">(GMT-09:00) Alaska</option>
+														<option value="8">(GMT-10:00) Hawaii</option>
+														<option value="9">(GMT-03:30) Newfoundland Time</option>
+													</select>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-5 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Time Format:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+													   <option value="">12 Hours</option>
+														<option value="1">24 Hours</option>
+													</select>
+												</div>
+												<div class="col-5 mb-4">
+													
+												</div>
+												
+												<div class="col-12 text-center">
+													<a href="#" class="btn btn-success btn-lg btn-sm" style="color:white;">Submit</a>
+												 </div>
+												 
+											</div>
+                                       </div>
+                                       
+									   
+                                       <!-- miles -->
+                                       <div id="myact" class="tab-pane">
+                                           <div class="row">
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">Category:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+														<option value="All">All</option>
+														<option value="ACCOUNTS">Accounts</option>
+														<option value="ACTIVITIES">Activities</option>
+														<option value="ADDRESSBOOK">Address book</option>
+														<option value="BILLING">Billing</option>
+														<option value="DISPATCH">Dispatch</option>
+														<option value="EQUIPMENT">Equipment</option>
+														<option value="IFTA">IFTA</option>
+														<option value="MAINTENANCE">Maintenance</option>
+														<option value="ORDER">Load</option>
+														<option value="SETTINGS">Settings</option>
+													</select>
+												</div>
+												
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">Activity from:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+														<option value="All">All</option>
+														<option value="ADMIN">User</option>
+														<option value="DRIVER">Driver</option>
+														<option value="OFFICEMANAGER">Office Manager</option>
+														<option value="DISPATCHERWITHLOAD">Dispatcher(Can Create Load)</option>
+														<option value="DISPATCHERWITHOUTLOAD">Dispatcher(Cannot Create Load)</option>
+													</select>
+												</div>
+												
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">*Name:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+														<option value="0">Hardeep</option>
+														<option value="1">Rahul</option>
+														<option value="2">Manjit</option>
+														<option value="3">Gaurav</option>
+														<option value="4">Daljit</option>
+													</select>
+												</div>
+												
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">Platform:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<select class="form-control">
+														<option value="All">All</option>
+														<option value="1">Web</option>
+														<option value="2">iPad</option>
+														<option value="3">iPhone</option>
+														<option value="4">Tablet</option>
+														<option value="5">Smartphone</option>
+														<option value="6">Mobile Browser</option>
+													</select>
+												</div>
+												
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">*From Date:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-calendar-alt"></i>
+															</span>
+														</span>
+														<input type="text" data-plugin-datepicker="" class="form-control">
+													</div>
+												</div>
+												
+												<div class="col-3 mb-4 text-right">
+													<label class="control-label font-weight-bold">To Date:</label>
+												</div>
+												
+												<div class="col-2 mb-4">
+													<div class="input-group">
+														<span class="input-group-prepend">
+															<span class="input-group-text">
+																<i class="fas fa-calendar-alt"></i>
+															</span>
+														</span>
+														<input type="text" data-plugin-datepicker="" class="form-control">
+													</div>
+												</div>
+												
+												<div class="col-12 mb-4 text-center">
+													<a href="#" class="btn btn-success btn-lg btn-sm">Search</a>
+												 </div>
+												 
+												
+												
+												 
+												<div class="col-12">
+													<table class="table table-striped table-bordered simple-table">
+														<thead>
+														   <tr style="background-color:#ccc;">
+															  <th>Date</th>
+															  <th>Category</th>
+															  <th>Activity From</th>
+															  <th>Name</th>
+															  <th>Description</th>
+															  <th>Platform</th>
+															  <th>Browse/Device</th>
+															  <th>IP Address/IMEI. No</th>
+														   </tr>
+														</thead>
+														<tbody>
+														   <tr>
+															  <td>10/06/2020 08:32 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>106.78.78.150</td>
+														   </tr>
+														   <tr>
+															 <td>10/06/2020 04:56 AM</td>
+															  <td>Billing</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>Plan changed from Large Fleet - Premium to Large Fleet - Premium</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>106.78.93.147</td>
+														   </tr>
+														   <tr>
+															  <td>0/06/2020 03:17 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>27.255.243.191</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 06:38 AM</td>
+															  <td>Load</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>Shipper cal001 added for load <a href="#">LOAD-10005</a></td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>157.39.128.55</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 06:38 AM</td>
+															  <td>Load</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>Load <a href="#">LOAD-10005</a> created successfully</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>157.39.128.55</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 06:38 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>157.39.128.55</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 06:30 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>27.255.243.191</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 03:37 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>27.255.240.79</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 12:54 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>27.255.240.79</td>
+														   </tr>
+														   <tr>
+															  <td>10/05/2020 12:20 AM</td>
+															  <td>Activities</td>
+															  <td>Admin</td>
+															  <td>Hardeep</td>
+															  <td>User signed in</td>
+															  <td>Web</td>
+															  <td>Chrome85</td>
+															  <td>157.39.132.231</td>
+														   </tr>
+														   
+														  
+														</tbody>
+													 </table>
+													 
+													 <!-- delete fee popup -->
+													  <div id="defaultcharg2" class="modal-block modal-block-primary mfp-hide">
+														 <section class="card">
+															<header class="card-header">
+															   <h2 class="card-title">Confirm</h2>
+															</header>
+															<div class="card-body text-dark">
+															   <form>
+																  
+																  <div class="form-row">
+																	<div class="col-lg-12">
+																		 <label class="control-label font-weight-bold text-lg-right"><i class="fas fa-exclamation-triangle text-dark text-7"></i> Are you sure you want to make this default?</label>
+																	  </div>
+																  </div>
+																
+															   </form>
+															</div>
+															<footer class="card-footer">
+															   <div class="row">
+																  <div class="col-md-12 text-right">
+																	 <button class="btn btn-success modal-confirm">Yes</button>
+																	 <button class="btn btn-default modal-dismiss">No</button>
+																  </div>
+															   </div>
+															</footer>
+														 </section>
+													  </div>
+													  
+												</div>
+												
+											
+											</div>
+                                       </div>
+                                       
+									    <!-- load board -->
+									   <div id="mobcon" class="tab-pane">
+                                          <div class="row">
+												<div class="col-12 text-center">
+													<p class="text-4 text-dark">No mobile devices associated with this account</p>
+													<br><br><br><br><br>
+												</div>
+											</div>
+                                       </div>
+                                       
+									   
+									   
+									  
+									   
+									   
+                                    </div>
+                                 </div>
+						</div>
+						
+                     
+                  </div>
+                  
+                  
+
+               </div>
+               
+            </section>
+    </div>
+</section>    

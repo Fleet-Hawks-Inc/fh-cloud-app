@@ -1777,6 +1777,9 @@ text-decoration: underline;
 
   .green1{color: #1eb54f;}
 
+  /* overflow x*/
+  .overflowxv{overflow-x: visible;}
+
 
   /* bg color */
   .bgcol1{background: #f0f0f0;}
@@ -2499,4 +2502,66 @@ input.placeholder-lowercase {
 .onboardwidth {width: 95% !important;	}
 @media (min-width: 1640px) {
 	.onboardwidth {width: 75% !important;	}
+}
+
+/* toggle switch */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderbtn {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderbtn:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 26px;
+  left: 6px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderbtn {
+  background-color: #47a447;
+}
+
+input:focus + .sliderbtn {
+  box-shadow: 0 0 1px #797979;
+}
+
+input:checked + .sliderbtn:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderbtn.round {
+  border-radius: 34px;
+}
+
+.sliderbtn.round:before {
+  border-radius: 50%;
 }
