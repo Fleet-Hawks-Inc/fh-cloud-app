@@ -720,7 +720,7 @@ export class AddressBookComponent implements OnInit {
     $('.modal').modal('hide');
     // this.userDetailTitle = data.firstName;
     this.userDetailTitle = data.companyName;
-    this.modalService.open(targetModal);
+    this.modalService.open(targetModal, { windowClass: 'modal-dialog-lgdetail'});
     this.userDetailData = data;
     this.detailTab = type;
   }
