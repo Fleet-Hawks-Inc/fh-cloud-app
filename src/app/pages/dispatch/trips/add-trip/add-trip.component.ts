@@ -68,6 +68,7 @@ export class AddTripComponent implements OnInit {
         driverIDs: [],
         vehicleIDs: [],
         assetIDs: [],
+        stlStatus: [],
         loc: '',
         mapFrom: 'order',
         iftaMiles: []
@@ -273,9 +274,7 @@ export class AddTripComponent implements OnInit {
 
                 if(this.trips.length > 0) {
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat'];
-                    console.log('endingPoint===', endingPoint);
                     this.getSingleRowMiles(endingPoint, this.trips.length);
-                    console.log('hello')
                 }
 
                 
@@ -746,13 +745,11 @@ export class AddTripComponent implements OnInit {
                
                 // this.textFieldValues.miles = result;
                 this.trips[tripLength].miles = result;
-                console.log('this.textFieldValues.miles', this.textFieldValues.miles);
                 this.calculateActualMiles(result);
                 this.getStateWiseMiles();
             });
         }
         catch (error) {
-            console.error(error)
             throw new Error(error);
         }
     }
@@ -903,18 +900,19 @@ export class AddTripComponent implements OnInit {
             if(addType == 'populate') {
                 for (let l = 0; l < this.trips.length; l++) {
                     const element = this.trips[l];
-                    
-                    element.vehicleName = this.tempTextFieldValues.vehicleName;
-                    element.vehicleID = this.tempTextFieldValues.vehicleID;
-                    element.trailer = this.tempTextFieldValues.trailer;
-                    element.driverName = this.tempTextFieldValues.driverName;
-                    element.driverUsername = this.tempTextFieldValues.driverUsername;
-                    element.coDriverName = this.tempTextFieldValues.coDriverName;
-                    element.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
-                    element.trailerName = this.tempTextFieldValues.trailerName;
-                    element.driverID = this.tempTextFieldValues.driverID;
-                    element.coDriverID = this.tempTextFieldValues.coDriverID;
-                    element.trailerID = this.informationAsset;
+                    if(element.carrierID == '') {
+                        element.vehicleName = this.tempTextFieldValues.vehicleName;
+                        element.vehicleID = this.tempTextFieldValues.vehicleID;
+                        element.trailer = this.tempTextFieldValues.trailer;
+                        element.driverName = this.tempTextFieldValues.driverName;
+                        element.driverUsername = this.tempTextFieldValues.driverUsername;
+                        element.coDriverName = this.tempTextFieldValues.coDriverName;
+                        element.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
+                        element.trailerName = this.tempTextFieldValues.trailerName;
+                        element.driverID = this.tempTextFieldValues.driverID;
+                        element.coDriverID = this.tempTextFieldValues.coDriverID;
+                        element.trailerID = this.informationAsset;
+                    }
                 }
 
                 $("#assignConfirmationModal").modal('hide');
@@ -1082,6 +1080,7 @@ export class AddTripComponent implements OnInit {
         let selectedVehicles = [];
         let selectedAssets = [];
         let selectedLocations = '';
+        let stlStatus = [];
         if (planData.length >= 2) {
             let addedPlan = planData.map(function (v) { return v.type; });
 
@@ -1135,12 +1134,16 @@ export class AddTripComponent implements OnInit {
                 if(element.driverID != '' && element.driverID != undefined) {
                     if(!selectedDriverids.includes(element.driverID)) {
                         selectedDriverids.push(element.driverID);
+                        let driverStatus = element.driverID + ':false';
+                        stlStatus.push(driverStatus);
                     }
                 }
 
                 if(element.coDriverID != '' && element.coDriverID != undefined) {
                     if(!selectedDriverids.includes(element.coDriverID)) {
                         selectedDriverids.push(element.coDriverID);
+                        let driverStatus = element.driverID + ':false';
+                        stlStatus.push(driverStatus);
                     }
                 }
 
@@ -1178,6 +1181,7 @@ export class AddTripComponent implements OnInit {
         this.tripData.vehicleIDs = await selectedVehicles;
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
+        this.tripData.stlStatus = await stlStatus;
         this.spinner.show();
         this.errors = {};
         this.hasError = false;
@@ -1393,6 +1397,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['createdDate'] = result.createdDate;
                 this.tripData['createdTime'] = result.createdTime;
                 this.tripData['mapFrom'] = result.mapFrom;
+                this.tripData['settlmnt'] = result.settlmnt;
                 this.dateCreated = result.dateCreated;
                 this.orderNo = ''; 
                 
@@ -1522,6 +1527,7 @@ export class AddTripComponent implements OnInit {
         let selectedVehicles = [];
         let selectedLocations = '';
         let selectedAssets = [];
+        let stlStatus = [];
 
         for (let i = 0; i < planData.length; i++) {
 
@@ -1588,12 +1594,16 @@ export class AddTripComponent implements OnInit {
             if(element.driverID != '' && element.driverID != undefined) {
                 if(!selectedDriverids.includes(element.driverID)) {
                     selectedDriverids.push(element.driverID);
+                    let driverStatus = element.driverID + ':false';
+                    stlStatus.push(driverStatus);
                 }
             }
 
             if(element.coDriverID != '' && element.coDriverID != undefined) {
                 if(!selectedDriverids.includes(element.coDriverID)) {
                     selectedDriverids.push(element.coDriverID);
+                    let driverStatus = element.coDriverID + ':false';
+                    stlStatus.push(driverStatus);
                 }
             }
 
@@ -1616,12 +1626,12 @@ export class AddTripComponent implements OnInit {
         this.tripData.vehicleIDs = await selectedVehicles;
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
+        this.tripData.stlStatus = await stlStatus;
 
         // this.spinner.show();
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-        console.log('this.tripData updateeeeeeeee', this.tripData);
         this.updateOrderStatusToConfirmed();
         this.apiService.putData('trips', this.tripData).subscribe({
             complete: () => {
