@@ -81,7 +81,7 @@
     "stream": "0.0.2",
     "tesseract.js": "^2.1.4",
     "tesseract.ts": "^1.1.2",
-    "tslib": "1.10.0",
+    "tslib": "1.14.1",
     "uuid": "^8.3.1",
     "zone.js": "0.11.4"
   },
