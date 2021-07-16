@@ -53,7 +53,7 @@
     "url": "https://datatables.net/forums"
   },
   "dependencies": {
-    "datatables.net": "1.10.19",
+    "datatables.net": "1.10.25",
     "jquery": ">=1.7"
   },
   "description": "DataTables for jQuery with styling for [Bootstrap 4](http://getbootstrap.com/)",
