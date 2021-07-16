@@ -10,6 +10,9 @@ import { AssetsSettingComponent } from './assets-setting/assets-setting.componen
 import { FuelSettingComponent } from './fuel-setting/fuel-setting.component';
 import { RemindersSettingComponent } from './reminders-setting/reminders-setting.component';
 import { IssueSettingComponent } from './issue-setting/issue-setting.component';
+import { DispatchSettingComponent } from './dispatch-setting/dispatch-setting.component';
+import { ComplianceSettingComponent } from './compliance-setting/compliance-setting.component';
+import { SafetySettingComponent } from './safety-setting/safety-setting.component';
 
 
 const routes: Routes = [
@@ -23,7 +26,10 @@ const routes: Routes = [
   { path: 'fuel', component: FuelSettingComponent },
   { path: 'reminders', component: RemindersSettingComponent },
   { path: 'issue', component: IssueSettingComponent },
-    
+  { path: 'dispatch', component: DispatchSettingComponent },
+  { path: 'compliance', component: ComplianceSettingComponent },
+  { path: 'safety', component: SafetySettingComponent },
+  
 ]
 
 @NgModule({
@@ -35,7 +41,10 @@ const routes: Routes = [
     AssetsSettingComponent,
     FuelSettingComponent,
     RemindersSettingComponent,
-    IssueSettingComponent],
+    IssueSettingComponent,
+    DispatchSettingComponent,
+    ComplianceSettingComponent,
+    SafetySettingComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
