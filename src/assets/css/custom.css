@@ -2565,3 +2565,7 @@ input:checked + .sliderbtn:before {
 .sliderbtn.round:before {
   border-radius: 50%;
 }
+.modal-dialog-lgdetail .modal-dialog{
+  max-width: 1250px !important;
+  margin: 9.75rem auto !important;
+}
