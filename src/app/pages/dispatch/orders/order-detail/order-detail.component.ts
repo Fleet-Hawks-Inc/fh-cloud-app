@@ -562,7 +562,11 @@ export class OrderDetailComponent implements OnInit {
 
 
   genInvoice() {
-    
+    this.apiService
+      .getData(`orders/invoice/${this.orderID}`)
+      .subscribe((result: any) => {
+
+      });
   }
 
   

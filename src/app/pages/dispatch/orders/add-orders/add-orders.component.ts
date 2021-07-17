@@ -898,7 +898,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-    
+    console.log('this.mergedArray', this.mergedArray);
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.address.position.lng},${element.address.position.lat}`;
@@ -964,7 +964,9 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  addCommodity(arr, parentIndex, i) {
+  addCommodity(arr: string, parentIndex: number, i: number) {
+    console.log('comm', arr, parentIndex, i);
+    console.log(' this.shippersReceivers',  this.shippersReceivers)
     if (arr === "shipper") {
       this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
         name: '',
@@ -986,11 +988,11 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  removeCommodity(obj: string, parentIndex: number, i: number) {
+  removeCommodity(obj: string, parentIndex: number, w: number, i: number) {
     if (obj === "shipper") {
-      this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.splice(i, 1);
+      this.shippersReceivers[parentIndex].shippers.pickupPoint[w].commodity.splice(i, 1);
     } else {
-      this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.splice(i, 1);
+      this.shippersReceivers[parentIndex].receivers.dropPoint[w].commodity.splice(i, 1);
     }
   }
 
@@ -1323,7 +1325,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   editList(elem, parentIndex, i) {
-
+    console.log('edit', elem, parentIndex, i);
     let j = parentIndex; 
     
 
@@ -1960,4 +1962,14 @@ export class AddOrdersComponent implements OnInit {
     this.deletedFiles.push(record)
     this.orderAttachments.splice(index, 1);
   }
+
+  removePickUpPoint (i:number, w: number, obj: string) {
+    if(obj == 'shipper') {
+      this.shippersReceivers[i].shippers.pickupPoint.splice(w, 1)
+    } else {
+      this.shippersReceivers[i].receivers.dropPoint.splice(w, 1)
+    }
+    
+  }
+
 }

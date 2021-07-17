@@ -546,15 +546,16 @@
                                 <td>
                                   <span *ngFor="let ship of data.shippers; ">
                                     <span *ngFor="let point of ship.pickupPoint; let s=index">
-                                      <span *ngIf="point.manual">
-                                        {{s+1}}. {{ point.address.pickupLocation }}
-                                      </span>
-                                      <span *ngIf="!point.manual">
+                                      <span *ngIf="point.address.manual">
                                         {{s+1}}. {{ point.address.address }}
                                         {{s+1}}. {{ point.address.city }}
                                         {{s+1}}. {{ point.address.state }}
                                         {{s+1}}. {{ point.address.country }}
                                         {{s+1}}. {{ point.address.zipCode }}
+                                      </span>
+                                      <span *ngIf="!point.address.manual">
+                                        {{s+1}}. {{ point.address.pickupLocation }}
+                                        
                                       </span>
                                     <br>
                                     </span>
@@ -563,7 +564,22 @@
                                 </td>
                                 <td>
                                   <span *ngFor="let rec of data.receivers; let r=index">
-                                    {{r+1}}. {{ rec.dropOffLocation }}
+                                    <span *ngFor="let drop of rec.dropPoint; let s=index">
+                                      <span *ngIf="drop.address.manual">
+                                        {{s+1}}. {{ drop.address.address }}
+                                        {{s+1}}. {{ drop.address.city }}
+                                        {{s+1}}. {{ drop.address.state }}
+                                        {{s+1}}. {{ drop.address.country }}
+                                        {{s+1}}. {{ drop.address.zipCode }}
+                                      </span>
+                                      <span *ngIf="!drop.address.manual">
+                                        {{r+1}}. {{ drop.dropOffLocation }}
+                                        
+                                      </span>
+                                    <br>
+                                    </span>
+                                    
+                                    
                                     <br>
                                   </span>
                                 </td>

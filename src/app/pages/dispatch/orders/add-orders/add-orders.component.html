@@ -303,13 +303,13 @@
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let ship of list.shippers; let k = index;">
-                                                                  <td class="">
+                                                                  <td class="" style="min-width: 100px;">
                                                                      {{shippersObjects[ship.shipperID]}}
                                                                   </td>
-                                                                  <td class="p-0">
+                                                                  <td class="p-0" style=" min-width: 300px;">
                                                                      <table class="border-0 w-100">
                                                                         <tr *ngFor="let point of ship.pickupPoint;">
-                                                                           <td class="border-left-0 border-top-0 border-bottom">
+                                                                           <td class="border-left-0 border-top-0 border-bottom" style=" min-width: 250px;max-width: 250px;">
                                                                               <span *ngIf="!point.address.manual">{{point.address.pickupLocation}}</span>
                                                                               <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
                                                                            </td>
@@ -320,9 +320,9 @@
                                                                         </tr>
                                                                      </table>
                                                                   </td>
-                                                                  <td>
-                                                                     <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
-                                                                     <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
+                                                                  <td style="min-width: 70px;">
+                                                                     <i (click)="editList('shipper', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                     <i (click)="removeList('shipper', i, k)" class="fa fa-trash fa-fw"></i>
                                                                   </td>
                                                                </tr>
                                                             </tbody>
@@ -347,13 +347,13 @@
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let receive of list.receivers; let k = index;">
-                                                                  <td class="">
+                                                                  <td class=""  style="min-width: 100px;">
                                                                      {{receiversObjects[receive.receiverID]}}
                                                                   </td>
-                                                                  <td class="p-0">
+                                                                  <td class="p-0"  style="min-width: 300px;">
                                                                      <table class="border-0 w-100">
                                                                         <tr *ngFor="let point of receive.dropPoint;">
-                                                                           <td class="border-left-0 border-top-0 border-bottom">
+                                                                           <td class="border-left-0 border-top-0 border-bottom"  style="min-width: 250px; max-width: 250px;">
                                                                               <span *ngIf="!point.address.manual">{{point.address.dropOffLocation}}</span>
                                                                               <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
                                                                            </td>
@@ -364,9 +364,9 @@
                                                                         </tr>
                                                                      </table>
                                                                   </td>
-                                                                  <td>
-                                                                     <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
-                                                                     <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
+                                                                  <td style="min-width: 70px;">
+                                                                     <i (click)="editList('receiver', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                     <i (click)="removeList('receiver', i, k)" class="fa fa-trash fa-fw"></i>
                                                                   </td>
                                                                </tr>
                                                             </tbody>
@@ -467,14 +467,14 @@
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input type="checkbox" [(ngModel)]="pick.address.manual"
                                                                      name="manual_{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')"  id="locationaddBtn">
-                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn"> Type Manually</label>
+                                                                     <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn"> Type Manually</label>
                                                                   </div>
                                                                </div>
                                                                <div class="col-lg-6 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input [(ngModel)]="pick.unit"
                                                                      name="unit_{w}}" type="checkbox" id="locationaddBtn3">
-                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                                     <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn3"> Type Unit Number Manually</label>
                                                                   </div>
                                                                </div>
                                                             </div>
@@ -630,8 +630,8 @@
       
                                                                   </div>
                                                                   <div class="col-lg-1 text-right mt-1 pl-0">
-                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a>
-                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, z)"><i class="fas fa-plus"></i></a>
+                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
                                                                   </div>
                                                                </div>
       
@@ -960,7 +960,7 @@
       
                                                                   </div>
                                                                   <div class="col-lg-1 text-right mt-1 pl-0">
-                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, y, z)"><i class="fas fa-minus"></i> </a>
                                                                      <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('receiver', i, y)"><i class="fas fa-plus"></i></a>
       
       
