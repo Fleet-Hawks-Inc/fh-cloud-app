@@ -14,20 +14,26 @@
                     <div class="row">
                         <div class="col pr-0">
                             <div class="card-body text-dark">
-                                <form class="form-horizontal form-bordered" method="get">
+                                <form class="form-horizontal form-bordered" method="get" #settlementForm="ngForm">
                                     <div class="row">
                                         <div class="col-lg-5 offset-lg-1">
                                             <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
-                                                        For </label>
+                                                        For <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.type" name="SettlementType"
-                                                        placeholder="Select Settlement For">
+                                                        placeholder="Select Settlement For" (change)="resetFormValues()" #stlmntFor="ngModel" required>
                                                         <ng-option value="driver">Driver</ng-option>
                                                         <ng-option value="carrier">Carrier</ng-option>
-                                                        <ng-option value="ownerOperator">Owner Operator</ng-option>
+                                                        <ng-option value="owner_operator">Owner Operator</ng-option>
                                                     </ng-select>
+
+                                                    <div *ngIf="stlmntFor.invalid && (stlmntFor.dirty || stlmntFor.touched)" class="text-danger">
+                                                        <div *ngIf="stlmntFor.errors.required">
+                                                            Settlement is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -35,20 +41,32 @@
                                             <div class="row">
                                                 <div class="col-lg-5">
                                                     <label
-                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement#</label>
+                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input type="text" class="form-control" name="setNo"
                                                         [(ngModel)]="settlementData.setNo"
-                                                        placeholder="Enter Settlement#">
+                                                        placeholder="Enter Settlement#" #stlmntNo="ngModel" required>
+
+                                                    <div *ngIf="stlmntNo.invalid && (stlmntNo.dirty || stlmntNo.touched)" class="text-danger">
+                                                        <div *ngIf="stlmntNo.errors.required">
+                                                            Settlement# is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
-                                                        Date </label>
-                                                    <input [(ngModel)]="settlementData.setDate" name="setDate"
+                                                        Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    <input [(ngModel)]="settlementData.txnDate" name="setDate"
                                                         type="text" placeholder="yyyy/mm/dd" (click)="setDate.toggle()"
                                                         ngbDatepicker #setDate="ngbDatepicker" class="form-control"
                                                         autocomplete="off" [minDate]="dateMinLimit"
-                                                        [maxDate]="futureDatesLimit">
+                                                        [maxDate]="futureDatesLimit" #setDt="ngModel" required>
+
+                                                    <div *ngIf="setDt.invalid && (setDt.dirty || setDt.touched)" class="text-danger">
+                                                        <div *ngIf="setDt.errors.required">
+                                                            Settlement date is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,13 +77,19 @@
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Driver</label>
+                                                        Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event)">
+                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event)" #driverID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of drivers | keyvalue">{{ data.value }}
                                                         </ng-option>
                                                     </ng-select>
+
+                                                    <div *ngIf="driverID.invalid && (driverID.dirty || driverID.touched)" class="text-danger">
+                                                        <div *ngIf="driverID.errors.required">
+                                                            Driver is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row" id="carrierListDiv"
@@ -73,27 +97,39 @@
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Carrier</label>
+                                                        Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Carrier">
+                                                        placeholder="Select Carrier" (change)="fetchCarrierDetails($event)" #carrierID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of carriers | keyvalue">{{ data.value }}
                                                         </ng-option>
                                                     </ng-select>
+
+                                                    <div *ngIf="carrierID.invalid && (carrierID.dirty || carrierID.touched)" class="text-danger">
+                                                        <div *ngIf="carrierID.errors.required">
+                                                            Carrier is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row" id="ownerOperatorListDiv"
-                                                *ngIf="settlementData.type == 'ownerOperator'">
+                                                *ngIf="settlementData.type == 'owner_operator'">
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Owner Operator</label>
+                                                        Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Owner Operator">
+                                                        placeholder="Select Owner Operator" #ownerID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
                                                         </ng-option>
                                                     </ng-select>
+
+                                                    <div *ngIf="ownerID.invalid && (ownerID.dirty || ownerID.touched)" class="text-danger">
+                                                        <div *ngIf="ownerID.errors.required">
+                                                            Owner operator is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +148,7 @@
                                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                         </div>
                                         <div class="col-lg-2">
-                                            <button class="btn btn-success mar-top-37" (click)="fetchTrips()">Search</button>
+                                            <button class="btn btn-success mar-top-37" (click)="searchFnc()">Search</button>
                                         </div>
                                     </div>
                                     <div class="row" *ngIf="settlementID">
@@ -282,7 +318,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="totalMiles" [(ngModel)]="settlementData.miles.tripsTotal">
+                                                        <input type="text" class="form-control" name="totalMiles" [(ngModel)]="settlementData.miles.tripsTotal" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -291,7 +327,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="driverTotal" [(ngModel)]="settlementData.miles.driverTotal">
+                                                        <input type="text" class="form-control" name="driverTotal" [(ngModel)]="settlementData.miles.driverTotal" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -302,7 +338,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="tripsLoaded" [(ngModel)]="settlementData.miles.tripsLoaded">
+                                                        <input type="text" class="form-control" name="tripsLoaded" [(ngModel)]="settlementData.miles.tripsLoaded" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -311,7 +347,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="driverLoaded" [(ngModel)]="settlementData.miles.driverLoaded">
+                                                        <input type="text" class="form-control" name="driverLoaded" [(ngModel)]="settlementData.miles.driverLoaded" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +357,7 @@
                                                         <label class="control-label font-weight-bold">Empty Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="tripsEmpty" [(ngModel)]="settlementData.miles.tripsEmpty">
+                                                        <input type="text" class="form-control" name="tripsEmpty" [(ngModel)]="settlementData.miles.tripsEmpty" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -329,7 +365,7 @@
                                                         <label class="control-label font-weight-bold">Driver Empty Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="driverEmpty" [(ngModel)]="settlementData.miles.driverEmpty">
+                                                        <input type="text" class="form-control" name="driverEmpty" [(ngModel)]="settlementData.miles.driverEmpty" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,7 +375,7 @@
                                                         <label class="control-label font-weight-bold">Total Hours</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="totalHours" [(ngModel)]="settlementData.miles.totalHours">
+                                                        <input type="text" class="form-control" name="totalHours" [(ngModel)]="settlementData.miles.totalHours" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -347,7 +383,7 @@
                                                         <label class="control-label font-weight-bold">Driver Total Hours</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="driverHours" [(ngModel)]="settlementData.miles.driverHours">
+                                                        <input type="text" class="form-control" name="driverHours" [(ngModel)]="settlementData.miles.driverHours" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -357,7 +393,7 @@
                                                         <label class="control-label font-weight-bold">Team Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="tripsTeam" [(ngModel)]="settlementData.miles.tripsTeam">
+                                                        <input type="text" class="form-control" name="tripsTeam" [(ngModel)]="settlementData.miles.tripsTeam" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -365,7 +401,7 @@
                                                         <label class="control-label font-weight-bold">Team Hours</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" name="teamHours" [(ngModel)]="settlementData.miles.teamHours">
+                                                        <input type="text" class="form-control" name="teamHours" [(ngModel)]="settlementData.miles.teamHours" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -378,7 +414,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="carrTotalMiles" [(ngModel)]="settlementData.miles.tripsTotal" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -387,7 +423,7 @@
                                                             Hours</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="carrTotalHours" [(ngModel)]="settlementData.miles.totalHours" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +434,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="carrLoadedMiles" [(ngModel)]="settlementData.miles.tripsLoaded" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-2">
@@ -407,12 +443,12 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="5">
+                                                        <input type="text" class="form-control" name="carrEmptyMiles" [(ngModel)]="settlementData.miles.tripsEmpty" disabled>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row pt-2" *ngIf="settlementData.type == 'ownerOperator'">
+                                        <div class="row pt-2" *ngIf="settlementData.type == 'owner_operator'">
                                             <div class="col-lg-2 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-6 text-right">
@@ -420,7 +456,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="oprTotalMiles" [(ngModel)]="settlementData.miles.tripsTotal" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -431,7 +467,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="oprLoadedMiles" [(ngModel)]="settlementData.miles.tripsLoaded" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -442,7 +478,7 @@
                                                             Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="5">
+                                                        <input type="text" class="form-control" name="oprEmptyMiles" [(ngModel)]="settlementData.miles.tripsEmpty" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -453,101 +489,56 @@
                                                             Hours</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                        <input type="text" class="form-control" name="oprTotalHours" [(ngModel)]="settlementData.miles.totalHours" disabled>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- DRIVER 1  -->
-                                        <div class="row pt-2" *ngIf="settlementData.type == 'ownerOperator'">
-                                            <div class="col-lg-2 offset-lg-1">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Driver 1
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Loaded
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                        <div *ngIf="settlementData.type == 'owner_operator'">
+                                            <div class="row pt-2" *ngFor="let data of settlementData.miles.drivers; let d=index;">
+                                                <div class="col-lg-2 offset-lg-1">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 text-right">
+                                                            <label class="control-label font-weight-bold mt-1">{{ drivers[data.driverID] }} 's
+                                                                Miles</label>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" name="drvTotal{{d}}" [(ngModel)]="data.total" disabled>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Empty
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="5">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Total
-                                                            Hours</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                <div class="col-lg-2">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 text-right">
+                                                            <label class="control-label font-weight-bold mt-1">Loaded
+                                                                Miles</label>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" name="drvLoadedTotal{{d}}" [(ngModel)]="data.loaded" disabled>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <!-- DRIVER 2  -->
-                                        <div class="row pt-2" *ngIf="settlementData.type == 'ownerOperator'">
-                                            <div class="col-lg-2 offset-lg-1">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Driver 2
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                <div class="col-lg-2">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 text-right">
+                                                            <label class="control-label font-weight-bold mt-1">Empty
+                                                                Miles</label>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" name="drvEmptyTotal{{d}}" [(ngModel)]="data.empty" disabled>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Loaded
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Empty
-                                                            Miles</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="5">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold mt-1">Total
-                                                            Hours</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="number" class="form-control" value="345">
+                                                <div class="col-lg-2">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 text-right">
+                                                            <label class="control-label font-weight-bold mt-1">Total
+                                                                Hours</label>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <input type="text" class="form-control" name="drvTotalHous{{d}}" [(ngModel)]="data.hours" disabled>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -748,7 +739,7 @@
                                                             Total</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.finalTotal" name="finalTotal">
+                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.finalTotal" name="finalTotal" #finalttl="ngModel" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -758,8 +749,8 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
                                             <button class="btn btn-default mr-2">Cancel</button>
-                                            <button class="btn btn-success" *ngIf="!settlementID" (click)="addRecord()">Save</button>
-                                            <button class="btn btn-success" *ngIf="settlementID" (click)="updateRecord()">Update</button>
+                                            <button class="btn btn-success" *ngIf="!settlementID" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="addRecord()">Save</button>
+                                            <button class="btn btn-success" *ngIf="settlementID" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="updateRecord()">Update</button>
                                         </div>
                                     </div>
                                 </form>

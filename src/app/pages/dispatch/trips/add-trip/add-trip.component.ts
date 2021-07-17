@@ -69,6 +69,7 @@ export class AddTripComponent implements OnInit {
         vehicleIDs: [],
         assetIDs: [],
         stlStatus: [],
+        carrierIDs: [],
         loc: '',
         mapFrom: 'order',
         iftaMiles: []
@@ -1077,6 +1078,7 @@ export class AddTripComponent implements OnInit {
         }
 
         let selectedDriverids = [];
+        let selectedCarrierids = [];
         let selectedVehicles = [];
         let selectedAssets = [];
         let selectedLocations = '';
@@ -1158,6 +1160,14 @@ export class AddTripComponent implements OnInit {
                     selectedLocations += element.locationName.toLowerCase() + '|';
                 }
 
+                if(element.carrierID != '' && element.carrierID != undefined) {
+                    if(!selectedCarrierids.includes(element.carrierID)) {
+                        selectedCarrierids.push(element.carrierID);
+                        let carrStatus = element.carrierID + ':false';
+                        stlStatus.push(carrStatus);
+                    }
+                }
+
                 if (element.trailer != '' && element.trailer != undefined) {
                     for (let j = 0; j < element.trailer.length; j++) {
                         const element1 = element.trailer[j];
@@ -1182,6 +1192,7 @@ export class AddTripComponent implements OnInit {
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
         this.tripData.stlStatus = await stlStatus;
+        this.tripData.carrierIDs = await selectedCarrierids;
         this.spinner.show();
         this.errors = {};
         this.hasError = false;
@@ -1522,7 +1533,7 @@ export class AddTripComponent implements OnInit {
             }
         }
 
-        
+        let selectedCarrierids = [];
         let selectedDriverids = [];
         let selectedVehicles = [];
         let selectedLocations = '';
@@ -1612,6 +1623,14 @@ export class AddTripComponent implements OnInit {
                     selectedVehicles.push(element.vehicleID);
                 }
             }
+
+            if(element.carrierID != '' && element.carrierID != undefined) {
+                if(!selectedCarrierids.includes(element.carrierID)) {
+                    selectedCarrierids.push(element.carrierID);
+                    let carrStatus = element.carrierID + ':false';
+                    stlStatus.push(carrStatus);
+                }
+            }
     
             if(element.locationName != '' && element.locationName != undefined) {
                 element.locationName = element.locationName.replace(/,/g, "");
@@ -1627,6 +1646,7 @@ export class AddTripComponent implements OnInit {
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
         this.tripData.stlStatus = await stlStatus;
+        this.tripData.carrierIDs = await selectedCarrierids;
 
         // this.spinner.show();
         this.errors = {};
