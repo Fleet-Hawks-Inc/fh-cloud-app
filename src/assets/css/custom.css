@@ -2504,6 +2504,16 @@ input.placeholder-lowercase {
 	.onboardwidth {width: 75% !important;	}
 }
 
+.addsr-scroll-y {
+  display: block;
+}
+
+.addsr-scrollbar {
+  position: relative;
+  height: 720px;
+  overflow-y: auto;
+  overflow-x: hidden;
+=======
 /* toggle switch */
 
 .switch {
