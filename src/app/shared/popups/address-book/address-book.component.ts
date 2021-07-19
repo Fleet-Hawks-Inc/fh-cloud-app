@@ -720,7 +720,7 @@ export class AddressBookComponent implements OnInit {
     $('.modal').modal('hide');
     // this.userDetailTitle = data.firstName;
     this.userDetailTitle = data.companyName;
-    this.modalService.open(targetModal);
+    this.modalService.open(targetModal, { windowClass: 'modal-dialog-lgdetail'});
     this.userDetailData = data;
     this.detailTab = type;
   }
@@ -2667,7 +2667,7 @@ export class AddressBookComponent implements OnInit {
   deactivateCarrier(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/carrrier/${userID}`)
+      .getData(`contacts/delete/carrier/${userID}`)
       .subscribe((result: any) => {
         this.carrierDraw = 0;
         this.lastEvaluatedKeyCarrier = '';

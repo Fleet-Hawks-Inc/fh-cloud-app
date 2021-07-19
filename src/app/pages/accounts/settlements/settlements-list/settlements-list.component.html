@@ -1,177 +1,121 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header">
-        <form class="form-horizontal" method="get">
-
-           <div class="row px-4" style="padding-top:10px;">
-              <div class="col-md-2 col-lg-2">
-                 <div class="input-group input-group-md mb-3">
-                  <input type="text" class="form-control" placeholder="Search">
-                 </div>
-              </div>
-
-              <div class="col-lg-3 col-md-3">
-                 <div class="input-daterange input-group" data-plugin-datepicker>
-                    <span class="input-group-prepend">
-                       <span class="input-group-text">
-                          <i class="fas fa-calendar-alt"></i>
-                       </span>
-                    </span>
-                    <input type="text" class="form-control" name="start">
-                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                       to
-                    </span>
-                    <input type="text" class="form-control" name="end">
-                 </div>
-                 </div>
-                             <div class="col-md-2  col-lg-2">
-                 <div class="input-group input-group-md mb-3">
-                    <select data-plugin-selectTwo class="form-control populate">
-                       <optgroup label="">
-                          <option value="1">Driver</option>
-                          <option value="2">Carrier</option>
-                          <option value="2">Owner Operator</option>
-                       </optgroup>
-                    </select>
-                 </div>
-              </div>
-              <div class="col-md-1  col-lg-1">
-                        <button type="submit" class="btn btn-sm btn-success">Search</button>
-                       </div>
-              <div class="col-md-4  col-lg-4 text-right pr-5">
-                 <a routerLink="/accounts/settlements/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Settlement </a>
-
-              </div>
-           </div>
-           </form>
-        </header>
-     <div class="row">
-        <div class="col pr-0">
-           <section class="card">
-
-              <div class="card-body">
-                 <table class="table table-bordered table-striped mb-0 simple-table">
-                    <thead>
-                       <tr class="bgcol2">
-
-                          <th class="text-2">Settlement#</th>
-                          <th class="text-2">Settlement Date</th>
-                          <th class="text-2">Settlement Type</th>
-                          <th class="text-2">Trip#</th>
-                          <th class="text-2">Truck#</th>
-                          <th class="text-2">Settled Amount</th>
-                          <th class="text-2">Paid Amount</th>
-                          <th class="text-2">Balance</th>
-                          <th class="text-2">Status</th>
-                          <th class="text-2">Action</th>
-                       </tr>
-                    </thead>
-                    <tbody>
-                       <tr>
-
-                          <td routerLink="/accounts/settlements/detail">234</td>
-                          <td routerLink="/accounts/settlements/detail">05/25/2020</td>
-                          <td routerLink="/accounts/settlements/detail">Driver: Manjot</td>
-                          <td routerLink="/accounts/settlements/detail">123<br>34556</td>
-                          <td routerLink="/accounts/settlements/detail">19005</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 20325</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 20000</td>
-                          <td routerLink="/accounts/settlements/detail"><span class="badge badge-dark p-1">PARTIALLY PAID</span></td>
-                          <td><div class="btn-group flex-wrap">
-                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                <div class="dropdown-menu" role="menu">
-                                   <a class="dropdown-item text-1" href="#">Edit</a>
-                                   <a class="dropdown-item text-1" href="#">Delete</a>
-                                </div>
-                             </div></td>
-                       </tr>
-                       <tr>
-
-                          <td  routerLink="/accounts/settlements/detail">234</td>
-                          <td  routerLink="/accounts/settlements/detail">05/25/2020</td>
-                          <td  routerLink="/accounts/settlements/detail">Carrier: Manjot</td>
-                          <td  routerLink="/accounts/settlements/detail">123<br>34556</td>
-                          <td  routerLink="/accounts/settlements/detail">19005</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 20325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 0.00</td>
-                          <td  routerLink="/accounts/settlements/detail"><span class="badge badge-dark p-1">PAID</span></td>
-                          <td><div class="btn-group flex-wrap">
-                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                <div class="dropdown-menu" role="menu">
-                                   <a class="dropdown-item text-1" href="#">Edit</a>
-                                   <a class="dropdown-item text-1" href="#">Delete</a>
-                                </div>
-                             </div></td>
-                       </tr>
-                       <tr>
-
-                          <td  routerLink="/accounts/settlements/detail">234</td>
-                          <td  routerLink="/accounts/settlements/detail">05/25/2020</td>
-                          <td  routerLink="/accounts/settlements/detail">Carrier: Manjot</td>
-                          <td  routerLink="/accounts/settlements/detail">123<br>34556</td>
-                          <td  routerLink="/accounts/settlements/detail">19005</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 20325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 0.00</td>
-                          <td  routerLink="/accounts/settlements/detail"><span class="badge badge-dark p-1">PAID</span></td>
-                          <td><div class="btn-group flex-wrap">
-                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                <div class="dropdown-menu" role="menu">
-                                   <a class="dropdown-item text-1" href="#">Edit</a>
-                                   <a class="dropdown-item text-1" href="#">Delete</a>
-                                </div>
-                             </div></td>
-                       </tr>
-                       <tr>
-
-                          <td  routerLink="/accounts/settlements/detail">234</td>
-                          <td  routerLink="/accounts/settlements/detail">05/25/2020</td>
-                          <td  routerLink="/accounts/settlements/detail">Carrier: Manjot</td>
-                          <td  routerLink="/accounts/settlements/detail">123<br>34556</td>
-                          <td  routerLink="/accounts/settlements/detail">19005</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 20325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td  routerLink="/accounts/settlements/detail">CAD 0.00</td>
-                          <td  routerLink="/accounts/settlements/detail"><span class="badge badge-dark p-1">PAID</span></td>
-                          <td><div class="btn-group flex-wrap">
-                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                <div class="dropdown-menu" role="menu">
-                                   <a class="dropdown-item text-1" href="#">Edit</a>
-                                   <a class="dropdown-item text-1" href="#">Delete</a>
-                                </div>
-                             </div></td>
-                       </tr>
-                       <tr>
-
-                          <td routerLink="/accounts/settlements/detail">234</td>
-                          <td routerLink="/accounts/settlements/detail">05/25/2020</td>
-                          <td routerLink="/accounts/settlements/detail">Owner Operator: Baljit</td>
-                          <td routerLink="/accounts/settlements/detail">123<br>34556</td>
-                          <td routerLink="/accounts/settlements/detail">19005</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 0.00</td>
-                          <td routerLink="/accounts/settlements/detail">CAD 325</td>
-                          <td routerLink="/accounts/settlements/detail"><span class="badge badge-dark p-1">UNPAID</span></td>
-                          <td><div class="btn-group flex-wrap">
-                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                <div class="dropdown-menu" role="menu">
-                                   <a class="dropdown-item text-1" href="#">Edit</a>
-                                   <a class="dropdown-item text-1" href="#">Delete</a>
-                                </div>
-                             </div></td>
-                       </tr>
-                    </tbody>
-                 </table>
-
-              </div>
-           </section>
-        </div>
-     </div>
-
-
-  </section>
-  </div>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pr-0 pl-0 pt-0">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">
+                    <div class="row px-4" style="padding-top:10px;"> 
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" class="form-control" placeholder="Search by settlement#" name="settlementNo" [(ngModel)]="filter.settlementNo">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="input-daterange input-group" data-plugin-datepicker>
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input [(ngModel)]="filter.startDate" name="startDate"
+                                type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                                ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                autocomplete="off" [minDate]="dateMinLimit"
+                                [maxDate]="futureDatesLimit">
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input [(ngModel)]="filter.endDate" name="endDate"
+                                type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                                ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                autocomplete="off" [minDate]="dateMinLimit"
+                                [maxDate]="futureDatesLimit">
+                            </div>
+                        </div>
+                        <div class="col-md-2  col-lg-2">
+                            <ng-select [(ngModel)]="filter.type" name="SettlementType" placeholder="Select type">
+                                <ng-option value="driver">Driver</ng-option>
+                                <ng-option value="carrier">Carrier</ng-option>
+                                <ng-option value="owner_operator">Owner Operator</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
+                        </div>
+                        <div class="col-md-3 col-lg-3 text-right pr-5">
+                            <a routerLink="/accounts/settlements/add" class="btn btn-success btn-sm ml-2"
+                                style="color:white;"><i class="fas fa-plus"></i> Add Settlement </a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped mb-0 simple-table">
+                                <thead>
+                                    <tr class="bgcol2">
+                                        <th class="text-2">Settlement#</th>
+                                        <th class="text-2">Settlement Date</th>
+                                        <th class="text-2">Settlement Type</th>
+                                        <th class="text-2">Trip#</th>
+                                        <th class="text-2">Truck#</th>
+                                        <th class="text-2">Settled Amount</th>
+                                        <th class="text-2">Paid Amount</th>
+                                        <th class="text-2">Balance</th>
+                                        <th class="text-2">Status</th>
+                                        <th class="text-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="settlements.length === 0" class="text-center">
+                                        <td colspan="10">{{ dataMessage }}</td>
+                                    </tr>
+                                    <tr *ngFor="let data of settlements; let i=index;">
+                                        <td routerLink="/accounts/settlements/detail/{{ data.sttlID }}">{{ data.setNo }}</td>
+                                        <td>{{ data.txnDate |
+                                            date:"yyyy/MM/dd" }}</td>
+                                        <td>{{ data.entityType }}: 
+                                            <span *ngIf="data.type === 'driver'"> {{ drivers[data.entityId] }} </span>
+                                            <span *ngIf="data.type === 'carrier'"> {{ carriers[data.entityId] }} </span>
+                                            <span *ngIf="data.type === 'owner_operator'"> {{ ownerOperators[data.entityId] }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngFor="let trp of data.tripIds; let t=index;">
+                                                {{ tripsObj[trp] }}
+                                                <span *ngIf="t < data.tripIds.length-1">,</span>
+                                            </span>
+                                        </td>
+                                        <td>-</td>
+                                        <td>{{ data.finalTotal }} CAD </td>
+                                        <td>{{ data.finalTotal }} CAD</td>
+                                        <td>-</td>
+                                        <td><span
+                                                class="badge badge-dark p-1">PARTIALLY PAID</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/accounts/settlements/edit/{{ data.sttlID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteSettlement(data.sttlID)">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
 </section>

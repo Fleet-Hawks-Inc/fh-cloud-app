@@ -1,0 +1,187 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+               <div class="row">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     <h2 class="font-weight-bold">Issues Settings</h2>
+                  </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                     <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                  </div>
+               </div>
+            </header>
+          
+            <div class="routing-overview__wrapper m-3">
+               <div class="row">
+                  <div class="col-lg-12 col-xl-12 mb-4">
+                     <div class=" ">
+                        <ul class="nav nav-tabs top-tabs">
+                           <li class="nav-item active">
+                              <a class="nav-link active" href="#enrecset" data-toggle="tab">Deleted Items</a>
+                           </li>
+                        </ul>
+                        
+                        <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                           <!-- Deleted entries -->
+						   <div id="enrecset" class="tab-pane active">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                 </div>
+								
+								
+								<div class="col-1 text-right pt-2">
+									<label class="control-label font-weight-bold">Search</label>
+								</div>
+												
+								 <div class="col-3">
+									<input type="text" placeholder="Search any entry" class="form-control">
+								</div>
+												
+												
+                                 <div class="col-12 mt-4">
+									<table class="table table-responsive-lg table-bordered table-striped mb-0" id="simple-table">
+									   <thead>
+										  <tr>
+											 
+											 <th>Vehicle/Assets</th>
+											 <th>Issue</th>
+											 <th>Reported On</th>
+											 <th>Reported By</th>
+											 <th>Assigned To</th>
+											 <th>Status</th>
+											 <th>Action</th>
+										  </tr>
+									   </thead>
+									   <tbody>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">Volvo-253698</span></td>
+											 <td class="cursorpoint" >Brakes Issue</td>
+											 <td class="cursorpoint" >Jun 5, 2020</td>
+											 <td class="cursorpoint" >Mr. Jack</td>
+											 <td class="cursorpoint" >Sandy</td>
+											 <td class="cursorpoint" >Overdue</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">B6-98</span></td>
+											 <td class="cursorpoint" >Asset Back Door Broken</td>
+											 <td class="cursorpoint" >Jun 10, 2020</td>
+											 <td class="cursorpoint" >Mr. Boby</td>
+											 <td class="cursorpoint" >Luke</td>
+											 <td class="cursorpoint" >Resolved</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">Nissan-98564</span></td>
+											 <td class="cursorpoint" >Oil Leakge</td>
+											 <td class="cursorpoint" >Jun 15, 2020</td>
+											 <td class="cursorpoint" >Mr. Jinder</td>
+											 <td class="cursorpoint" >Sandy</td>
+											 <td class="cursorpoint" >Overdue</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">Ford-558899</span></td>
+											 <td class="cursorpoint" >AC Issue</td>
+											 <td class="cursorpoint" >Jun 16, 2020</td>
+											 <td class="cursorpoint" >Mr. Kulbir</td>
+											 <td class="cursorpoint" >Clark</td>
+											 <td class="cursorpoint" >Closed</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">HMT-4040</span></td>
+											 <td class="cursorpoint" >Brakes Issue</td>
+											 <td class="cursorpoint" >Jun 22, 2020</td>
+											 <td class="cursorpoint" >Mr. Davinder Grewal</td>
+											 <td class="cursorpoint" >Baljit</td>
+											 <td class="cursorpoint" >Overdue</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+										  <tr>
+											 
+											 <td class="cursorpoint" ><span class="font-weight-bold line-height-lg">S7-8671</span></td>
+											 <td class="cursorpoint" >Assets Light Damage</td>
+											 <td class="cursorpoint" >Jun 23, 2020</td>
+											 <td class="cursorpoint" >Mr. Manvinder</td>
+											 <td class="cursorpoint" >Sandy</td>
+											 <td class="cursorpoint" >Overdue</td>
+											 <td>
+												<div class="btn-group flex-wrap">
+												   <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+												   <div class="dropdown-menu" role="menu">
+													  <a class="dropdown-item text-1" href="#">Restore</a>
+													  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+												   </div>
+												</div>
+											 </td>
+										  </tr>
+									   </tbody>
+									</table>
+                                 </div>
+								 
+								 
+								 
+                              </div>
+							  
+							  
+                           </div>
+						   
+                      
+                     
+                    
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>
