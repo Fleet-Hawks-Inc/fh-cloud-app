@@ -8,7 +8,7 @@ a[aria-expanded='false'] > .expand_caret {
     transform: scale(1.6) rotate(-90deg);
 }
 .invoice-wrapper {
-    background: #f0f0f0;
+    /* background: #f0f0f0; */
     padding: 10px;
     border: 1px solid #e2e2e2;
     border-radius: .25rem;
@@ -26,5 +26,8 @@ a[aria-expanded='false'] > .expand_caret {
 .table-striped > tbody td,
 .table-striped > thead td,
 .table-striped > tfoot th {
+    padding: 5px;
+}
+.invoice-iner__wrapper td {
     padding: 5px;
 }
