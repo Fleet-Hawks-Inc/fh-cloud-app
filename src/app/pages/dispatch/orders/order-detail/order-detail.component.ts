@@ -148,7 +148,7 @@ export class OrderDetailComponent implements OnInit {
   zeroRated = false;
   isInvoice = false;
   taxableAmount: any;
-  invoiceData = [];
+  invoiceData: any;
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
