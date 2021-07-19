@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services';
 import { ApiService } from 'src/app/services/api.service';
 import Constants from '../../../fleet/constants';
@@ -25,7 +26,7 @@ export class SettlementsListComponent implements OnInit {
         settlementNo: ''
     }
 
-    constructor(private apiService: ApiService, private accountService: AccountService) { }
+    constructor(private apiService: ApiService, private accountService: AccountService, private toaster: ToastrService) { }
 
     ngOnInit() {
         this.fetchDrivers();
@@ -80,6 +81,7 @@ export class SettlementsListComponent implements OnInit {
     searchFilter() {
         if (this.filter.type !== null || this.filter.settlementNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
             this.dataMessage = Constants.FETCHING_DATA;
+            this.settlements = [];
             this.fetchSettlements();
         }
     }
@@ -95,4 +97,11 @@ export class SettlementsListComponent implements OnInit {
         this.fetchSettlements();
     }
 
+    deleteSettlement(settlementID) {
+        this.accountService.getData(`settlement/delete/${settlementID}`)
+          .subscribe((result: any) => {
+            this.fetchSettlements();
+            this.toaster.success('Settlement deleted successfully.');
+          })
+    }
 }
