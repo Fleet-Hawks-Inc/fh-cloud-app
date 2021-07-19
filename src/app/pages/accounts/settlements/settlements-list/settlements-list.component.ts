@@ -54,7 +54,6 @@ export class SettlementsListComponent implements OnInit {
         this.apiService.getData(`contacts/get/list/ownerOperator`)
             .subscribe((result: any) => {
                 this.ownerOperators = result;
-                console.log('ownerOperators', this.ownerOperators);
             })
     }
 
@@ -98,7 +97,7 @@ export class SettlementsListComponent implements OnInit {
     }
 
     deleteSettlement(settlementID) {
-        this.accountService.getData(`settlement/delete/${settlementID}`)
+        this.accountService.deleteData(`settlement/delete/${settlementID}`)
           .subscribe((result: any) => {
             this.fetchSettlements();
             this.toaster.success('Settlement deleted successfully.');
