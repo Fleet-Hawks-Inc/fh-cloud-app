@@ -7,7 +7,7 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a (click)="genInvoice()" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2"
+            <a data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2"
               > Generate Invoice</a
             >
             <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"
@@ -872,11 +872,12 @@
   role="dialog"
   aria-labelledby="previewInvoiceModalLabel"
   aria-hidden="true"
+  *ngIf="isInvoice"
 >
   <div class="modal-dialog" style="max-width: 900px" role="document">
     <div class="modal-content">
       <div class="modal-body p-0">
-        <section class="invoice-wrapper">
+        <section class="invoice-wrapper"  id="print_wrap">
           <table width="100%">
               <tbody>
                   <tr>
@@ -884,7 +885,8 @@
                           <table width="100%">
                               <tbody><tr>
                                   <td width="60%" class="title" valign="middle" style="padding-bottom: 0;text-align: center;">
-                                      <img src="logo.png" style="width:100%; max-width:250px;margin: 0 auto">
+                                      <h4 style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">{{invoiceData.carrierData.companyName}}</h4>
+                                      <h6 style="margin-top: 15px; color: #040404;font-weight: 500;" class="m-0">{{invoiceData.carrierData.address}}</h6>
                                   </td>
                               </tr>
                           </tbody></table>
@@ -892,12 +894,50 @@
                   </tr>
                  
                   <tr>
-                      <td>
-                        <div class="invoice-iner__wrapper">
-                          <table width="100%">
+                    <td>
+                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;">
                             <tbody>
+                                <tr>
+                                    <td valign="top">
+                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                        <span style="text-transform: capitalize;"> {{invoiceData.customer.companyName}} <br></span>
+                                        {{invoiceData.customer.address}} <br>
+                                        <span *ngIf="additionalContactName != '' && additionalContactName != null ">  Contact Person: <b>{{additionalContactName}}</b> <br></span>
+                                        <span *ngIf="additionalPhone != '' && additionalPhone != null ">Phone: <b>{{additionalPhone}}</b></span>
+                                    </td>
+                                    <td align="right">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px">
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Invoice#</b> <br>
+                                                        </span> 
+                                                        {{orderNumber}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px"> 
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Invoice Date</b> <br>
+                                                        </span>  
+                                                        10/10/2021 
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px">
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Order#</b> 
+                                                        </span><br>
+                                                        {{orderNumber}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
                                  <tr>
-                                    <td style="padding-bottom: 0;">
+                                    <td>
                                         <b style="font-size: 12px;">SHIPPER:</b> <br>
                                         Diamond INC <br>
                                         2705 N. Enterprise St <br>
@@ -907,7 +947,7 @@
                                         Ship Date: <b>12 Sep, 2020</b>
                                     </td>
                                     
-                                    <td align="right" style="padding-bottom: 0;">
+                                    <td align="right">
                                         <b style="font-size: 12px;">CONSIGNEE:</b> <br>
                                         Daynight Electric INC <br>
                                         15 Hodges Mews, High Wycombe <br>
@@ -916,49 +956,7 @@
                                         Contact Person: <b>John Smith</b> <br>
                                         Delivery Date: <b>15 Sep, 2020</b>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 20px 0 0;">
-                                        <b style="font-size: 12px;">CARRIER:</b> <br>
-                                        Diamond INC <br>
-                                        2705 N. Enterprise St <br>
-                                        Orange, USA 92865 <br>
-                                        (403) 987-76567 <br>
-                                        Contact Person: <b>William B.</b> <br>
-                                        Ship Date: <b>12 Sep, 2020</b>
-                                    </td>
-                                    <td align="right" style="padding: 20px 0 0;">
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td align="right" style="padding-bottom: 10px">
-                                                        <span style="font-size: 12px;text-transform: uppercase;">
-                                                            <b>Invoice</b> <br>
-                                                        </span> 
-                                                        6545
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="right" style="padding-bottom: 10px"> 
-                                                        <span style="font-size: 12px;text-transform: uppercase;">
-                                                            <b>Invoice Date</b> <br>
-                                                        </span>  
-                                                        10 Sep, 2020 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="right" style="padding-bottom: 10px">
-                                                        <span style="font-size: 12px;text-transform: uppercase;">
-                                                            <b>Order</b> 
-                                                        </span><br>
-                                                        454667
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-
+                                </tr> 
                             </tbody>
                         </table>
                         <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
@@ -1002,57 +1000,75 @@
                                         <table class="table-striped" width="100%">
                                             <thead>
                                                 <tr style="color: #aeaeae;font-size: 12px;">
-                                                     <td>FEE METHOD</td>
-                                                    <td style="width: 70px">VALUE</td>
-                                                    <td style="width: 70px">RATE</td>
-                                                    <td style="width: 100px">AMOUNT</td>
-                                                    <td style="width: 100px">TAX</td>
+                                                    <td  colspan="6">FEE METHOD</td>
+                                                    <!-- <td style="width: 70px">VALUE</td>
+                                                    <td style="width: 70px">RATE</td> -->
+                                                    <!-- <td style="width: 100px">AMOUNT</td> -->
+                                                    <!-- <td style="width: 100px">TAX</td> -->
                                                     <td style="width: 100px" align="right">TOTAL</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="item">
-                                                    <td>Freight Fees <small>(Per Mile)</small></td>
-                                                    <td>1200 Miles</td>
-                                                    <td><small>CAD</small> 2.00</td>
-                                                    <td><small>CAD</small> 2,400</td>
-                                                    <td><small>CAD</small> 400 <small>(13.0%)</small></td>
-                                                    <td align="right"><small> CAD </small>2,800</td>
+                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}} <small>(Freight Fees)</small></td>
+                                                    <!-- <td>1200 Miles</td> -->
+                                                    <!-- <td><small>CAD</small> 2.00</td> -->
+                                                    <!-- <td><small>{{invoiceData.charges.freightFee.currency}}</small> {{invoiceData.charges.freightFee.amount}}</td> -->
+                                                    <!-- <td><small>CAD</small> 400 <small>(13.0%)</small></td> -->
+                                                    <td align="right"><small>{{invoiceData.charges.freightFee.currency}}</small> {{invoiceData.charges.freightFee.amount}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Fuel Surcharge <small>(Per Mile)</small></td>
-                                                    <td>1200 Miles</td>
-                                                    <td><small>CAD</small> 1.00</td>
-                                                    <td><small>CAD</small> 1,200</td>
-                                                    <td><small>CAD</small> 250 <small>(12.0%)</small></td>
-                                                    <td align="right"><small>CAD</small> 1,450</td>
+                                                    <td colspan="6">{{invoiceData.charges.fuelSurcharge.type}}<small> (Fuel Surcharge)</small></td>
+                                                    <!-- <td>1200 Miles</td>
+                                                    <td><small>CAD</small> 1.00</td> -->
+                                                    <!-- <td><small>{{invoiceData.charges.fuelSurcharge.currency}}</small> {{invoiceData.charges.fuelSurcharge.amount}}</td> -->
+                                                    <!-- <td><small>CAD</small> 250 <small>(12.0%)</small></td> -->
+                                                    <td align="right"><small>{{invoiceData.charges.fuelSurcharge.currency}}</small> {{invoiceData.charges.fuelSurcharge.amount}}</td>
                                                     
                                                 </tr>
-                                                <tr>
+                                                <tr *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                  <td colspan="6">{{item.type}} <small>(Fuel Surcharge)</small></td>
+                                                  <td align="right"><small>{{item.currency}}</small> {{item.amount}}</td>
+                                                  
+                                                </tr>
+                                                <tr *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                  <td colspan="6">{{item.type}} <small>(Accessorial Deduction)</small></td>
+                                                  <td align="right"><small>- {{item.currency}}</small> {{item.amount}}</td>
+                                                 
+                                                </tr>
+                                                <!-- <tr>
                                                     <td>Tarp <small>(Other Charges)</small></td>
                                                     <td>-</td>
                                                     <td><small>CAD</small> 30</td>
                                                     <td><small>CAD</small> 30</td>
                                                     <td>-</td>
                                                     <td align="right"><small>CAD</small> 30</td>
+                                                </tr> -->
+                                                <tr class="bg-transparent">
+                                                    <td align="right" colspan="6">Sub Total</td>
+                                                    <td align="right"><small>{{charges.freightFee.currency}} </small>{{invoiceData.subTotal}}</td>
                                                 </tr>
                                                 <tr class="bg-transparent">
-                                                    <td align="right" colspan="5">Sub Total</td>
-                                                    <td align="right"><small>CAD </small>6,000</td>
+                                                    <td colspan="6" align="right">Tax</td>
+                                                    <td align="right"><small>{{charges.freightFee.currency}} </small>{{invoiceData.taxesAmt}}</td>
                                                 </tr>
-                                                <tr class="bg-transparent">
-                                                    <td colspan="5" align="right">Tax</td>
-                                                    <td align="right"><small>CAD </small>4,450</td>
-                                                </tr>
-                                                <tr class="bg-transparent">
+                                                <!-- <tr class="bg-transparent">
                                                     <td align="right" colspan="5">Discount</td>
                                                     <td align="right"><small>CAD </small>450</td>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
-                                             <tfoot class="border-bottom border-1">
+                                             <tfoot class="border-1">
                                                 <tr>
-                                                    <th colspan="5" align="right">TOTAL</th>
-                                                    <th align="right"><small>CAD </small>10,000</th>
+                                                    <th colspan="6" align="right">
+                                                      <div style="text-align: right;">
+                                                        TOTAL
+                                                      </div>
+                                                    </th>
+                                                    <th align="right">
+                                                      <div style="text-align: right;">
+                                                        <small>{{charges.freightFee.currency}} </small>{{invoiceData.finalAmount}}
+                                                      </div>
+                                                    </th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -1060,11 +1076,9 @@
                                 </tr>
                             </tbody>
                         </table>
-                        </div>
-                          
-                      </td>
+                    </td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                       <td colspan="6" style="padding-top: 20px;">
                           <table>
                               <tbody><tr>
@@ -1082,9 +1096,9 @@
                               </tr>
                           </tbody></table>
                       </td>
-                  </tr>
+                  </tr> -->
   
-               <tr>
+               <!-- <tr>
                   <td colspan="6" style="padding-top: 20px;">
                       <table>
                           <tbody><tr>
@@ -1105,7 +1119,7 @@
                           </tr>
                       </tbody></table>
                   </td>
-              </tr>
+              </tr> -->
               </tbody>
           </table>
       </section>
