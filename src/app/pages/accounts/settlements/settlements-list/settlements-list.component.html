@@ -72,7 +72,7 @@
                                     <tr *ngIf="settlements.length === 0" class="text-center">
                                         <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
-                                    <tr *ngFor="let data of settlements">
+                                    <tr *ngFor="let data of settlements; let i=index;">
                                         <td routerLink="/accounts/settlements/detail/{{ data.sttlID }}">{{ data.setNo }}</td>
                                         <td>{{ data.txnDate |
                                             date:"yyyy/MM/dd" }}</td>
