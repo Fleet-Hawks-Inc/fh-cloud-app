@@ -146,7 +146,9 @@ export class OrderDetailComponent implements OnInit {
   carrierID = '';
   stateCode = '';
   zeroRated = false;
+  isInvoice = false;
   taxableAmount: any;
+  invoiceData = [];
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -154,6 +156,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
+    this.fetchInvoiceData();
   }
 
   /**
@@ -422,7 +425,7 @@ export class OrderDetailComponent implements OnInit {
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save('MYPdf.pdf'); // Generated PDF
+      pdf.save('invoice.pdf'); // Generated PDF
     });
   }
 
@@ -561,11 +564,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
 
-  genInvoice() {
+  fetchInvoiceData() {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
-
+        this.invoiceData = result[0];
+        this.isInvoice = true;
       });
   }
 
