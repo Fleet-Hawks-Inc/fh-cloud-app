@@ -167,12 +167,13 @@
                               <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}{{inv.invCur}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}{{inv.invCur}}</td>
-                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}{{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}} {{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}} {{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}} {{inv.invCur}}</td>
+                              <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}} {{inv.invCur}}</td>
                               <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
-                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span  *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span>
+                              <span  *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{inv.invStatus | uppercase}}</span></td>
                              <td>
                                  <div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -218,12 +219,13 @@
                             <td class="loadid cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td  class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"></td>
-                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}}{{inv.invCur}}</td>
+                            <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.taxAmount}} {{inv.invCur}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.totalAmount}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.amountReceived}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">{{inv.balance}}</td>
                             <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}">3 days left</td>
-                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                           <td class="cursorpoint"  routerLink="/accounts/invoices/detail/{{inv.invID}}"><span  *ngIf="inv.invStatus === 'open'" class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span>
+                            <span  *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{inv.invStatus | uppercase}}</span></td>
                            <td>
                                <div class="btn-group flex-wrap">
                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>

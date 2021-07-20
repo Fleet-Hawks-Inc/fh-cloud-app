@@ -102,11 +102,12 @@ accessorialDeductionInfo = {
   }
   ngOnInit() {
     this.fetchInvoices();
+    this.fetchInvoice();
   }
  addLoadInvoice() {
    const data = {
-    txnDate: '04/04/2021',
-    invNumber: '8979',
+    txnDate: '09/09/2021',
+    invNumber: '999999999999999',
     invType: 'orderInvoice',
     orderNumber: '678768',
     customerID: '867487',
@@ -196,8 +197,9 @@ accessorialDeductionInfo = {
     transactionLog : []
    };
    console.log('data', data);
-   this.accountService.postData('order-invoice', data).subscribe((res: any) => {
-     console.log('invoice created');
+   const invID = '1vD7jJpv2eKTgW0IanO9PRBPGR6';
+   this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe((res: any) => {
+     console.log('invoice deleted');
    });
  }
 
@@ -205,5 +207,12 @@ accessorialDeductionInfo = {
   this.accountService.getData('order-invoice').subscribe((res: any) => {
     console.log('result of invoices', res);
   });
+ }
+
+ fetchInvoice() {
+   const invID = '1vD7jJpv2eKTgW0IanO9PRBPGR6';
+   this.accountService.getData(`order-invoice/${invID}`).subscribe((res: any) => {
+console.log('result of one invoice', res);
+   });
  }
 }

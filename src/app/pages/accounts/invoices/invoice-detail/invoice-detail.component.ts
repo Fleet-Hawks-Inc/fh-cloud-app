@@ -69,6 +69,7 @@ export class InvoiceDetailComponent implements OnInit {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
       this.invoice = res[0];
       this.invoice.invStatus = this.invoice.invStatus.replace('_', ' ');
+      console.log('this.invoice', this.invoice);
       this.fetchCustomersDetail();
       this.calculateTotal();
     });

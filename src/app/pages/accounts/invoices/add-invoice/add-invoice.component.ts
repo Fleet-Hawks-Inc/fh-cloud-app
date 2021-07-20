@@ -140,6 +140,26 @@ export class AddInvoiceComponent implements OnInit {
         }
       });
   }
+  getInvDueDate(e: any) {
+ console.log('event', e);
+ if (e === '15') {
+  const test = moment().add(15, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === '30') {
+  const test = moment().add(30, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === '45') {
+  const test = moment().add(30, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === 'dueReceipt') {
+  const test = moment().add(30, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ }
+  }
   async stateSelectChange() {
     const selected: any = this.stateTaxes.find(o => o.stateTaxID === this.invoiceData.invStateProvince);
     this.invoiceData.taxesInfo = [];
