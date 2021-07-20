@@ -700,7 +700,25 @@
                                         </div>
                                         <!-- total payment -->
                                         <div class="row pt-4">
-                                            <div class="col-lg-7 offset-lg-1"></div>
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'driver' || settlementData.type == null"></div>
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'carrier'">
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Local Tax(%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Local Tax(%)" [(ngModel)]="carrLocalTax" name="carrLocalTax" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Federal Tax(%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Federal Tax(%)" disabled [(ngModel)]="carrFedTax" name="carrFedTax">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-lg-3">
                                                 <div class="row">
                                                     <div class="col-lg-6 text-right">
@@ -731,6 +749,14 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" disabled [(ngModel)]="settlementData.deductionTotal" name="deductionTotal">
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Taxes</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.taxes" name="taxes">
                                                     </div>
                                                 </div>
                                                 <div class="row pt-1">

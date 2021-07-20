@@ -42,7 +42,8 @@ export class AddSettlementComponent implements OnInit {
         additionTotal: 0,
         deductionTotal: 0,
         paymentTotal: 0,
-        taxes: 0,
+        taxes:<any> 0,
+        subTotal: 0,
         finalTotal: 0
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
@@ -86,6 +87,8 @@ export class AddSettlementComponent implements OnInit {
     contactDetail;
     operatorDrivers = '';
     operatorDriversList = [];
+    carrLocalTax = 0;
+    carrFedTax = 0;
 
     constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
@@ -254,7 +257,26 @@ export class AddSettlementComponent implements OnInit {
     }
 
     calculateFinalTotal() {
-        this.settlementData.finalTotal = this.settlementData.paymentTotal + this.settlementData.additionTotal - this.settlementData.deductionTotal;
+        this.settlementData.taxes = 0;
+        this.settlementData.subTotal = this.settlementData.paymentTotal + this.settlementData.additionTotal - this.settlementData.deductionTotal;
+        if(this.settlementData.type == 'carrier') {
+            let localAmount = 0;
+            let federalAmount = 0;
+            if(this.carrLocalTax != 0) {
+                localAmount = this.settlementData.subTotal*this.carrLocalTax/100;
+                console.log('localAmount=======', localAmount);
+            }
+            if(this.carrFedTax != 0) {
+                federalAmount = this.settlementData.subTotal*this.carrFedTax/100;
+                console.log('federalAmount=======', federalAmount);
+            }
+            this.settlementData.taxes = localAmount + federalAmount;
+            this.settlementData.taxes = this.settlementData.taxes.toFixed(2);
+            this.settlementData.finalTotal = this.settlementData.paymentTotal + parseFloat(this.settlementData.taxes);    
+        } else {
+            this.settlementData.finalTotal = this.settlementData.subTotal;
+        }
+        
         if(this.settlementData.finalTotal == 0) {
             this.submitDisabled = true;
         }
@@ -672,6 +694,9 @@ export class AddSettlementComponent implements OnInit {
         this.apiService.getData(`contacts/detail/${carrierID}`)
             .subscribe((result: any) => {
                 this.contactDetail = result.Items[0];
+
+                this.carrLocalTax = result.Items[0].paymentDetails.localTax;
+                this.carrFedTax = result.Items[0].paymentDetails.federalTax;
             })
     }
 
