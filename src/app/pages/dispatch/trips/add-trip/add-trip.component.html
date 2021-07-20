@@ -77,8 +77,14 @@
                                                         <div *ngIf="order.errors.required">
                                                             Order# is required .
                                                         </div>
+
+
                                                     </div>
+
                                                 </div>
+
+
+
                                             </div>
                                         </div>
 
@@ -151,460 +157,49 @@
                                                 <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
                                                     class="text-danger">
                                                     <div>
+
                                                         <div *ngIf="tDate.errors.required">
                                                             Trip date is required.
                                                         </div>
+
+
                                                     </div>
+
                                                 </div>
                                             </div>
-                                            <div class="row my-2">
-                                                <div class="col-lg-12">
-                                                    <h4 class="mt-0 text-dark font-weight-bold text-4">Plan Trip</h4>
-                                                    <button (click)="splitTrip()"
-                                                        class="btn btn-sm btn-success">Split</button>
-                                                    <table
-                                                        class="table table-sm table-bordered table-responsive table-striped table-hover"
-                                                        id="locationTable">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Type</th>
-                                                                <th>Date</th>
-                                                                <!-- <th>Time</th> -->
-                                                                <th>Pickup Time</th>
-                                                                <th>Drop Off Time</th>
-                                                                <th>Actual Pickup Time</th>
-                                                                <th>Actual Drop Off Time</th>
-                                                                <th>Name</th>
-                                                                <th>Location</th>
-                                                                <th>Loaded/ Empty</th>
-                                                                <th>Miles</th>
-                                                                <th>Vehicle</th>
-                                                                <th>Asset</th>
-                                                                <th>Driver</th>
-                                                                <th>Co- Driver</th>
-                                                                <th>Carrier</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="ui-sortable example-list txttt" cdkDropList
-                                                            (cdkDropListDropped)="drop($event)">
-                                                            <tr class="ui-sortable-handle" cdkDrag
-                                                                *ngFor="let trip of trips; let i= index">
-                                                                <td id="labelCell1{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.type }}</td>
-                                                                <td id="labelCell2{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.date | date:"yyyy/MM/dd" }}</td>
-                                                                <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
-                                                                <td id="labelCell13{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.pickupTime
-                                                                    }}</td>
-                                                                <td id="labelCell14{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.dropTime }}
-                                                                </td>
-                                                                <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.actualPickupTime }}</td>
-                                                                <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.actualDropTime }}</td>
+                                        </div>
 
-                                                                <td id="labelCell3{{i}}" class="labelRow{{i}}">
-                                                                    <a class="modal-with-form">{{ trip.name }}</a>
-                                                                </td>
-
-                                                                <td id="labelCell4{{i}}" class="labelRow{{i}}">
-                                                                    {{ trip.locationName }}
-                                                                </td>
-
-
-                                                                <td id="labelCell5{{i}}" class="labelRow{{i}}">
-                                                                    <span class="badge badge-dark p-1 text-uppercase"
-                                                                        title="" data-original-title="Empty Miles"
-                                                                        *ngIf="!!trip.mileType">{{
-                                                                        trip.mileType }}</span>
-                                                                </td>
-                                                                <td id="labelCell6{{i}}" class="labelRow{{i}}">{{
-                                                                    trip.miles }}
-                                                                </td>
-                                                                <td id="labelCell7{{i}}" class="labelRow{{i}}">{{
-                                                                    vehiclesObjects[trip.vehicleID]
-                                                                    }}</td>
-                                                                <td id="labelCell8{{i}}" class="labelRow{{i}}">
-                                                                    <span
-                                                                        *ngFor="let addt of trip.trailerID; let f=index;">
-                                                                        {{ assetsObjects[addt] }}
-                                                                        <span *ngIf="f>0">,</span>
-                                                                    </span>
-                                                                </td>
-                                                                <td id="labelCell9{{i}}" class="labelRow{{i}}">{{
-                                                                    driversObjects[trip.driverID] }}
-                                                                </td>
-                                                                <td id="labelCell10{{i}}" class="labelRow{{i}}">{{
-                                                                    driversObjects[trip.coDriverID]
-                                                                    }}</td>
-                                                                <td id="labelCell11{{i}}" class="labelRow{{i}}">
-                                                                    {{ trip.carrierName }}
-                                                                </td>
-                                                                <td class="labelRow{{i}}">
-                                                                    <i class="fas fa-edit mr-2" title="Edit Row"
-                                                                        (click)="showEditRow(i)"></i>
-                                                                    <i class="fas fa-trash-alt" title="Delete Row"
-                                                                        (click)="delRow(i)"></i>
-                                                                </td>
-
-                                                                <!-- text fields -->
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <!-- <input type="text" class="form-control" id="editCell1{{i}}"
-                                                          value="{{ trip.type }}"> -->
-                                                                    <select class="form-control" id="editCell1{{i}}"
-                                                                        name="">
-                                                                        <option value="">Select Type</option>
-                                                                        <option *ngFor="let type of typeOptions"
-                                                                            value="{{ type }}">
-                                                                            {{ type }}</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input id="cell2{{i}}" name="cell2" type="text"
-                                                                        placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                                        ngbDatepicker #to="ngbDatepicker"
-                                                                        [(ngModel)]="trip.date"
-                                                                        class="form-control newRow" autocomplete="off"
-                                                                        [minDate]="dateMinLimit"
-                                                                        [maxDate]="futureDatesLimit">
-
-                                                                    <!-- <input type="date" class="form-control" id="editCell2{{i}}"
-                                                          value="{{ trip.date }}"> -->
-                                                                </td>
-
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="time" class="form-control"
-                                                                        id="editCell13{{i}}" name="editCell13"
-                                                                        value="{{ trip.pickupTime }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="time" class="form-control"
-                                                                        id="editCell14{{i}}" name="editCell14"
-                                                                        value="{{ trip.dropTime }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="time" class="form-control"
-                                                                        id="editCell15{{i}}" name="editCell15"
-                                                                        value="{{ trip.actualPickupTime }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="time" class="form-control"
-                                                                        id="editCell16{{i}}" name="editCell16"
-                                                                        value="{{ trip.actualDropTime }}">
-                                                                </td>
-
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell3{{i}}" value="{{ trip.name }}">
-                                                                </td>
-
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" id="editCell4{{i}}"
-                                                                        name="editCell4{{i}}"
-                                                                        [(ngModel)]="trip.locationName"
-                                                                        class="form-control newRow" autocomplete="off"
-                                                                        (keyup)="searchTerm.next($event);"
-                                                                        placeholder="Start typing to get location suggestions">
-
-                                                                    <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
-                                                                        *ngIf="searchResults">
-                                                                        <li *ngFor="let item of searchResults;">
-                                                                            <a href="javascript:;"
-                                                                                (click)="assignLocation('editLoc', item.address.label, i)"
-                                                                                title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </td>
-
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <select class="form-control" id="editCell5{{i}}">
-                                                                        <option value="empty">EMPTY</option>
-                                                                        <option value="loaded">LOADED</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell6{{i}}" name="miles"
-                                                                        value="{{ trip.miles }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell7{{i}}"
-                                                                        (click)="showAssetModal('edit',i)"
-                                                                        value="{{ vehiclesObjects[trip.vehicleID] }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell8{{i}}"
-                                                                        (click)="showAssetModal('edit',i)"
-                                                                        value="{{ trip.trailerName }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell9{{i}}"
-                                                                        (click)="showAssetModal('edit',i)"
-                                                                        value="{{ driversObjects[trip.driverID] }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <input type="text" class="form-control"
-                                                                        id="editCell10{{i}}"
-                                                                        (click)="showAssetModal('edit',i)"
-                                                                        value="{{ driversObjects[trip.coDriverID] }}">
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <select class="form-control" name="carrierID"
-                                                                        id="editCell11{{i}}">
-                                                                        <option value="">Select Carrier </option>
-                                                                        <option *ngFor="let carrier of carriers"
-                                                                            value="{{ carrier.contactID }}">
-                                                                            {{ carrier.companyName }}
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="rowStatus textRows editRow{{i}}">
-                                                                    <i class="fas fa-check mr-2"
-                                                                        (click)="editRow(i)"></i>
-                                                                    <i class="fas fa-times"
-                                                                        (click)="closeEditRow(i)"></i>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="ui-sortable-handle">
-                                                                <td>
-                                                                    <select class="form-control newRow"
-                                                                        (change)="getNewRowValues($event,'tripType')"
-                                                                        id="cell1">
-                                                                        <option value="">Select Type</option>
-                                                                        <option *ngFor="let type of typeOptions"
-                                                                            value="{{ type }}">
-                                                                            {{ type }}</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <input id="cell2" name="cell2" type="text"
-                                                                        placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                                        ngbDatepicker #to="ngbDatepicker"
-                                                                        class="form-control newRow" autocomplete="off"
-                                                                        [minDate]="dateMinLimit"
-                                                                        [maxDate]="futureDatesLimit">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" class="form-control newRow"
-                                                                        id="cell13" name="cell13">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" class="form-control newRow"
-                                                                        id="cell14" name="cell14">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" class="form-control newRow"
-                                                                        id="cell15" name="cell15">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="time" class="form-control newRow"
-                                                                        id="cell16" name="cell16">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell3"
-                                                                        class="form-control newRow"
-                                                                        (change)="getNewRowValues($event,'name')"
-                                                                        autocomplete="off">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell4" name="cell4"
-                                                                        class="form-control newRow" autocomplete="off"
-                                                                        (keyup)="searchTerm.next($event);"
-                                                                        [(ngModel)]="textFieldValues.locationName"
-                                                                        placeholder="Start typing to get location suggestions">
-
-                                                                    <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
-                                                                        *ngIf="searchResults">
-                                                                        <li *ngFor="let item of searchResults;">
-                                                                            <a href="javascript:;"
-                                                                                (click)="assignLocation('loc', item.address.label,'')"
-                                                                                title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </td>
-                                                                <td>
-                                                                    <select class="form-control newRow"
-                                                                        (change)="getNewRowValues($event,'mileType')"
-                                                                        id="cell5">
-                                                                        <option value="">Select Mile Type</option>
-                                                                        <option value="empty">EMPTY</option>
-                                                                        <option value="loaded">LOADED</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell6"
-                                                                        class="form-control newRow"
-                                                                        (change)="getNewRowValues($event,'miles')"
-                                                                        autocomplete="off">
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell7"
-                                                                        class="form-control newRow"
-                                                                        (click)="showAssetModal('add','')"
-                                                                        value="{{ textFieldValues.vehicleName }}"
-                                                                        autocomplete="off" readonly>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell8"
-                                                                        class="form-control newRow"
-                                                                        (click)="showAssetModal('add','')"
-                                                                        value="{{ textFieldValues.trailerName}}"
-                                                                        autocomplete="off" readonly>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell9"
-                                                                        class="form-control newRow"
-                                                                        (click)="showAssetModal('add','')"
-                                                                        value="{{ textFieldValues.driverName }}"
-                                                                        autocomplete="off" readonly>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" id="cell10"
-                                                                        class="form-control newRow"
-                                                                        (click)="showAssetModal('add','')"
-                                                                        value="{{ textFieldValues.coDriverName }}"
-                                                                        autocomplete="off" readonly>
-                                                                </td>
-                                                                <td>
-                                                                    <select class="form-control newRow" name="carrierID"
-                                                                        id="cell11"
-                                                                        (change)="getNewRowValues($event,'carrier')">
-                                                                        <option value="">Select Carrier </option>
-                                                                        <option *ngFor="let carrier of carriers"
-                                                                            value="{{ carrier.contactID }}">
-                                                                            {{ carrier.companyName }}
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-sm btn-success"
-                                                                        (click)="addRow()">Add </button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                        <div class="row mb-2">
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
+                                                    Temperature </label>
                                             </div>
-
-                                            <div class="row my-2">
-                                                <div class="col-lg-12" *ngFor="let split of splitArr; let sp=index;">
-                                                    <h4 class="mt-0 text-dark font-weight-bold text-4">Sub Trip: {{
-                                                        tripData.tripNo }} - {{ sp+1 }}</h4>
-                                                    <div class="table-responsive">
-                                                        <table
-                                                            class="table table-sm table-bordered table-striped table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Type</th>
-                                                                    <th>Date</th>
-                                                                    <th>Pickup Time</th>
-                                                                    <th>Drop Off Time</th>
-                                                                    <th>Actual Pickup Time</th>
-                                                                    <th>Actual Drop Off Time</th>
-                                                                    <th>Name</th>
-                                                                    <th>Location</th>
-                                                                    <th>Loaded/ Empty</th>
-                                                                    <th>Miles</th>
-                                                                    <th>Vehicle</th>
-                                                                    <th>Asset</th>
-                                                                    <th>Driver</th>
-                                                                    <th>Co- Driver</th>
-                                                                    <th>Carrier</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="ui-sortable example-list">
-                                                                <tr class="ui-sortable-handle"
-                                                                    *ngFor="let trip of split.data; let i= index">
-                                                                    <td>{{ trip.type }}</td>
-                                                                    <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
-                                                                    <td>{{ trip.pickupTime }}</td>
-                                                                    <td>{{ trip.dropTime }} </td>
-                                                                    <td>{{ trip.actualPickupTime }}</td>
-                                                                    <td>{{ trip.actualDropTime }}</td>
-                                                                    <td>{{ trip.name }}</td>
-                                                                    <td> {{ trip.locationName }} </td>
-                                                                    <td>
-                                                                        <span
-                                                                            class="badge badge-dark p-1 text-uppercase"
-                                                                            title="" data-original-title="Empty Miles"
-                                                                            *ngIf="!!trip.mileType">{{
-                                                                            trip.mileType }}</span>
-                                                                    </td>
-                                                                    <td>{{ trip.miles }} </td>
-                                                                    <td>{{ vehiclesObjects[trip.vehicleID] }}</td>
-                                                                    <td>
-                                                                        <span
-                                                                            *ngFor="let addt of trip.trailerID; let f=index;">
-                                                                            {{ assetsObjects[addt] }}
-                                                                            <span *ngIf="f>0">,</span>
-                                                                        </span>
-                                                                    </td>
-                                                                    <td>{{ driversObjects[trip.driverID] }} </td>
-                                                                    <td>{{ driversObjects[trip.coDriverID] }}</td>
-                                                                    <td>{{ trip.carrierName }} </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                            <div class="col-lg-10 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <input type="number" class="form-control"
+                                                            name="reeferTemperature"
+                                                            [(ngModel)]="tripData.reeferTemperature"
+                                                            placeholder="eg. 10 °C or °F ">
+                                                        <!-- <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
+                                                  class="text-danger">
+                                                  <div>
+                                                      <div *ngIf="reeferTemp.errors.required">
+                                                          Reefer temperature must contains numbers only.
+                                                      </div>
+                                                  </div>
+                                              </div> -->
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    <div class="col-lg-6 pl-0">
+                                                        <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
+                                                            name="reeferTemperatureUnit"
+                                                            placeholder="Select Temperature Unit"
+                                                            #sltReeferTemp="ngModel">
+                                                            <ng-option value="C">°C</ng-option>
+                                                            <ng-option value="F">°F</ng-option>
+                                                        </ng-select>
 
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
-                                                    <div class="row">
-                                                        <div class="col-lg-4 text-center"
-                                                            *ngIf="trips.length > 0; else sourceElseBlock">
-                                                            <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">
-                                                                Source</p>
-                                                            <p class="mb-0 text-4 font-weight-semibold text-dark">{{
-                                                                trips[0].locationName }}</p>
-                                                            <p class="mb-0 text-4 font-weight-normal text-dark">{{
-                                                                trips[0].date | date:"yyyy/MM/dd" }}
-                                                                {{ trips[0].time }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2">
-                                                <div class="col-lg-12">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
-                                                        Temperature </label>
-                                                </div>
-                                                <div class="col-lg-10 col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <input type="number" class="form-control"
-                                                                name="reeferTemperature"
-                                                                [(ngModel)]="tripData.reeferTemperature"
-                                                                placeholder="eg. 10 °C or °F ">
-                                                            <!-- <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
-                                                class="text-danger">
-                                                <div>
-                                                    <div *ngIf="reeferTemp.errors.required">
-                                                        Reefer temperature must contains numbers only.
-                                                    </div>
-                                                </div>
-                                            </div> -->
-                                                        </div>
-                                                        <div class="col-lg-6 pl-0">
-                                                            <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
-                                                                name="reeferTemperatureUnit"
-                                                                placeholder="Select Temperature Unit"
-                                                                #sltReeferTemp="ngModel">
-                                                                <ng-option value="C">°C</ng-option>
-                                                                <ng-option value="F">°F</ng-option>
-                                                            </ng-select>
-
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -613,27 +208,337 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row mb-3">
-                            <div class="col-lg-12">
-                                <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row pt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Plan
-                                                Trip</label>
-                                        </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-12">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Plan
+                                            Trip</label>
+                                            <!-- <button (click)="splitTrip()" class="btn btn-sm btn-success">Split</button> -->
+                                    </div>
 
-                                        <div class="col-lg-12 mb-1">
+                                    <div class="col-lg-12 mb-1">
 
-                                            <table
-                                                class="table table-sm table-bordered table-responsive table-striped table-hover"
-                                                id="locationTable">
+                                        <table
+                                            class="table table-sm table-bordered table-responsive table-striped table-hover"
+                                            id="locationTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <!-- <th>Time</th> -->
+                                                    <th>Pickup Time</th>
+                                                    <th>Drop Off Time</th>
+                                                    <th>Actual Pickup Time</th>
+                                                    <th>Actual Drop Off Time</th>
+                                                    <th>Name</th>
+                                                    <th>Location</th>
+                                                    <th>Loaded/ Empty</th>
+                                                    <th>Miles</th>
+                                                    <th>Vehicle</th>
+                                                    <th>Asset</th>
+                                                    <th>Driver</th>
+                                                    <th>Co- Driver</th>
+                                                    <th>Carrier</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="ui-sortable example-list txttt" cdkDropList
+                                                (cdkDropListDropped)="drop($event)">
+                                                <tr class="ui-sortable-handle" cdkDrag
+                                                    *ngFor="let trip of trips; let i= index">
+                                                    <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
+                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date |
+                                                        date:"yyyy/MM/dd" }}</td>
+                                                    <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
+                                                    <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime
+                                                        }}</td>
+                                                    <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}
+                                                    </td>
+                                                    <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
+                                                        trip.actualPickupTime }}</td>
+                                                    <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
+                                                        trip.actualDropTime }}</td>
+
+                                                    <td id="labelCell3{{i}}" class="labelRow{{i}}">
+                                                        <a class="modal-with-form">{{ trip.name }}</a>
+                                                    </td>
+
+                                                    <td id="labelCell4{{i}}" class="labelRow{{i}}">
+                                                        {{ trip.locationName }}
+                                                    </td>
+
+
+                                                    <td id="labelCell5{{i}}" class="labelRow{{i}}">
+                                                        <span class="badge badge-dark p-1 text-uppercase" title=""
+                                                            data-original-title="Empty Miles" *ngIf="!!trip.mileType">{{
+                                                            trip.mileType }}</span>
+                                                    </td>
+                                                    <td id="labelCell6{{i}}" class="labelRow{{i}}">{{ trip.miles }}
+                                                    </td>
+                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}">{{
+                                                        vehiclesObjects[trip.vehicleID]
+                                                        }}</td>
+                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}">
+                                                        <span *ngFor="let addt of trip.trailerID; let f=index;">
+                                                            {{ assetsObjects[addt] }}
+                                                            <span *ngIf="f>0">,</span>
+                                                        </span>
+                                                    </td>
+                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}">{{
+                                                        driversObjects[trip.driverID] }}
+                                                    </td>
+                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}">{{
+                                                        driversObjects[trip.coDriverID]
+                                                        }}</td>
+                                                    <td id="labelCell11{{i}}" class="labelRow{{i}}">
+                                                        {{ trip.carrierName }}
+                                                    </td>
+                                                    <td class="labelRow{{i}}">
+                                                        <i class="fas fa-edit mr-2" title="Edit Row"
+                                                            (click)="showEditRow(i)"></i>
+                                                        <i class="fas fa-trash-alt" title="Delete Row"
+                                                            (click)="delRow(i)"></i>
+                                                    </td>
+
+                                                    <!-- text fields -->
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <!-- <input type="text" class="form-control" id="editCell1{{i}}"
+                                                  value="{{ trip.type }}"> -->
+                                                        <select class="form-control" id="editCell1{{i}}" name="">
+                                                            <option value="">Select Type</option>
+                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">
+                                                                {{ type }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input id="cell2{{i}}" name="cell2" type="text"
+                                                            placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker
+                                                            #to="ngbDatepicker" [(ngModel)]="trip.date"
+                                                            class="form-control newRow" autocomplete="off"
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+
+                                                        <!-- <input type="date" class="form-control" id="editCell2{{i}}"
+                                                  value="{{ trip.date }}"> -->
+                                                    </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="time" class="form-control" id="editCell13{{i}}"
+                                                            name="editCell13" value="{{ trip.pickupTime }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="time" class="form-control" id="editCell14{{i}}"
+                                                            name="editCell14" value="{{ trip.dropTime }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="time" class="form-control" id="editCell15{{i}}"
+                                                            name="editCell15" value="{{ trip.actualPickupTime }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="time" class="form-control" id="editCell16{{i}}"
+                                                            name="editCell16" value="{{ trip.actualDropTime }}">
+                                                    </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell3{{i}}"
+                                                            value="{{ trip.name }}">
+                                                    </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
+                                                            [(ngModel)]="trip.locationName" class="form-control newRow"
+                                                            autocomplete="off" (keyup)="searchTerm.next($event);"
+                                                            placeholder="Start typing to get location suggestions">
+
+                                                        <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
+                                                            *ngIf="searchResults">
+                                                            <li *ngFor="let item of searchResults;">
+                                                                <a href="javascript:;"
+                                                                    (click)="assignLocation('editLoc', item.address.label, i)"
+                                                                    title="{{item.address.label}}">{{item.address.label}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <select class="form-control" id="editCell5{{i}}">
+                                                            <option value="empty">EMPTY</option>
+                                                            <option value="loaded">LOADED</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell6{{i}}"
+                                                            name="miles" value="{{ trip.miles }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell7{{i}}"
+                                                            (click)="showAssetModal('edit',i)"
+                                                            value="{{ vehiclesObjects[trip.vehicleID] }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell8{{i}}"
+                                                            (click)="showAssetModal('edit',i)"
+                                                            value="{{ trip.trailerName }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell9{{i}}"
+                                                            (click)="showAssetModal('edit',i)"
+                                                            value="{{ driversObjects[trip.driverID] }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <input type="text" class="form-control" id="editCell10{{i}}"
+                                                            (click)="showAssetModal('edit',i)"
+                                                            value="{{ driversObjects[trip.coDriverID] }}">
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <select class="form-control" name="carrierID"
+                                                            id="editCell11{{i}}">
+                                                            <option value="">Select Carrier </option>
+                                                            <option *ngFor="let carrier of carriers"
+                                                                value="{{ carrier.contactID }}">
+                                                                {{ carrier.companyName }}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                        <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
+                                                        <i class="fas fa-times" (click)="closeEditRow(i)"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr class="ui-sortable-handle">
+                                                    <td>
+                                                        <select class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'tripType')" id="cell1">
+                                                            <option value="">Select Type</option>
+                                                            <option *ngFor="let type of typeOptions" value="{{ type }}">
+                                                                {{ type }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input id="cell2" name="cell2" type="text"
+                                                            placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker
+                                                            #to="ngbDatepicker" class="form-control newRow"
+                                                            autocomplete="off" [minDate]="dateMinLimit"
+                                                            [maxDate]="futureDatesLimit">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control newRow" id="cell13"
+                                                            name="cell13">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control newRow" id="cell14"
+                                                            name="cell14">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control newRow" id="cell15"
+                                                            name="cell15">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control newRow" id="cell16"
+                                                            name="cell16">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell3" class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'name')"
+                                                            autocomplete="off">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell4" name="cell4"
+                                                            class="form-control newRow" autocomplete="off"
+                                                            (keyup)="searchTerm.next($event);"
+                                                            [(ngModel)]="textFieldValues.locationName"
+                                                            placeholder="Start typing to get location suggestions">
+
+                                                        <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
+                                                            *ngIf="searchResults">
+                                                            <li *ngFor="let item of searchResults;">
+                                                                <a href="javascript:;"
+                                                                    (click)="assignLocation('loc', item.address.label,'')"
+                                                                    title="{{item.address.label}}">{{item.address.label}}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'mileType')" id="cell5">
+                                                            <option value="">Select Mile Type</option>
+                                                            <option value="empty">EMPTY</option>
+                                                            <option value="loaded">LOADED</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell6" class="form-control newRow"
+                                                            (change)="getNewRowValues($event,'miles')"
+                                                            autocomplete="off">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell7" class="form-control newRow"
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.vehicleName }}" autocomplete="off"
+                                                            readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell8" class="form-control newRow"
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off"
+                                                            readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell9" class="form-control newRow"
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.driverName }}" autocomplete="off"
+                                                            readonly>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="cell10" class="form-control newRow"
+                                                            (click)="showAssetModal('add','')"
+                                                            value="{{ textFieldValues.coDriverName }}"
+                                                            autocomplete="off" readonly>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control newRow" name="carrierID" id="cell11"
+                                                            (change)="getNewRowValues($event,'carrier')">
+                                                            <option value="">Select Carrier </option>
+                                                            <option *ngFor="let carrier of carriers"
+                                                                value="{{ carrier.contactID }}">
+                                                                {{ carrier.companyName }}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                            (click)="addRow()">Add </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-lg-12" *ngFor="let split of splitArr; let sp=index;">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Sub Trip: {{ tripData.tripNo }} - {{ sp+1 }}</label>
+                                    </div>
+
+                                    <div class="col-lg-12 mb-1">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-bordered table-striped table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th>Type</th>
                                                         <th>Date</th>
-                                                        <!-- <th>Time</th> -->
                                                         <th>Pickup Time</th>
                                                         <th>Drop Off Time</th>
                                                         <th>Actual Pickup Time</th>
@@ -647,286 +552,34 @@
                                                         <th>Driver</th>
                                                         <th>Co- Driver</th>
                                                         <th>Carrier</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="ui-sortable example-list txttt" cdkDropList
-                                                    (cdkDropListDropped)="drop($event)">
-                                                    <tr class="ui-sortable-handle" cdkDrag
-                                                        *ngFor="let trip of trips; let i= index">
-                                                        <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}
-                                                        </td>
-                                                        <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date |
-                                                            date:"yyyy/MM/dd" }}</td>
-                                                        <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
-                                                        <td id="labelCell13{{i}}" class="labelRow{{i}}">{{
-                                                            trip.pickupTime
-                                                            }}</td>
-                                                        <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime
-                                                            }}
-                                                        </td>
-                                                        <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
-                                                            trip.actualPickupTime }}</td>
-                                                        <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
-                                                            trip.actualDropTime }}</td>
-
-                                                        <td id="labelCell3{{i}}" class="labelRow{{i}}">
-                                                            <a class="modal-with-form">{{ trip.name }}</a>
-                                                        </td>
-
-                                                        <td id="labelCell4{{i}}" class="labelRow{{i}}">
-                                                            {{ trip.locationName }}
-                                                        </td>
-
-
-                                                        <td id="labelCell5{{i}}" class="labelRow{{i}}">
-                                                            <span class="badge badge-dark p-1 text-uppercase" title=""
-                                                                data-original-title="Empty Miles"
+                                                <tbody class="ui-sortable example-list">
+                                                    <tr class="ui-sortable-handle" *ngFor="let trip of split.data; let i= index">
+                                                        <td>{{ trip.type }}</td>
+                                                        <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
+                                                        <td>{{ trip.pickupTime }}</td>
+                                                        <td>{{ trip.dropTime }} </td>
+                                                        <td>{{ trip.actualPickupTime }}</td>
+                                                        <td>{{ trip.actualDropTime }}</td>
+                                                        <td>{{ trip.name }}</td>
+                                                        <td> {{ trip.locationName }} </td>
+                                                        <td>
+                                                            <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty Miles"
                                                                 *ngIf="!!trip.mileType">{{
                                                                 trip.mileType }}</span>
                                                         </td>
-                                                        <td id="labelCell6{{i}}" class="labelRow{{i}}">{{ trip.miles }}
-                                                        </td>
-                                                        <td id="labelCell7{{i}}" class="labelRow{{i}}">{{
-                                                            vehiclesObjects[trip.vehicleID]
-                                                            }}</td>
-                                                        <td id="labelCell8{{i}}" class="labelRow{{i}}">
+                                                        <td>{{ trip.miles }} </td>
+                                                        <td>{{ vehiclesObjects[trip.vehicleID] }}</td>
+                                                        <td>
                                                             <span *ngFor="let addt of trip.trailerID; let f=index;">
                                                                 {{ assetsObjects[addt] }}
                                                                 <span *ngIf="f>0">,</span>
                                                             </span>
                                                         </td>
-                                                        <td id="labelCell9{{i}}" class="labelRow{{i}}">{{
-                                                            driversObjects[trip.driverID] }}
-                                                        </td>
-                                                        <td id="labelCell10{{i}}" class="labelRow{{i}}">{{
-                                                            driversObjects[trip.coDriverID]
-                                                            }}</td>
-                                                        <td id="labelCell11{{i}}" class="labelRow{{i}}">
-                                                            {{ trip.carrierName }}
-                                                        </td>
-                                                        <td class="labelRow{{i}}">
-                                                            <i class="fas fa-edit mr-2" title="Edit Row"
-                                                                (click)="showEditRow(i)"></i>
-                                                            <i class="fas fa-trash-alt" title="Delete Row"
-                                                                (click)="delRow(i)"></i>
-                                                        </td>
-
-                                                        <!-- text fields -->
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <!-- <input type="text" class="form-control" id="editCell1{{i}}"
-                                                value="{{ trip.type }}"> -->
-                                                            <select class="form-control" id="editCell1{{i}}" name="">
-                                                                <option value="">Select Type</option>
-                                                                <option *ngFor="let type of typeOptions"
-                                                                    value="{{ type }}">
-                                                                    {{ type }}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input id="cell2{{i}}" name="cell2" type="text"
-                                                                placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                                ngbDatepicker #to="ngbDatepicker"
-                                                                [(ngModel)]="trip.date" class="form-control newRow"
-                                                                autocomplete="off" [minDate]="dateMinLimit"
-                                                                [maxDate]="futureDatesLimit">
-
-                                                            <!-- <input type="date" class="form-control" id="editCell2{{i}}"
-                                                value="{{ trip.date }}"> -->
-                                                        </td>
-
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="time" class="form-control" id="editCell13{{i}}"
-                                                                name="editCell13" value="{{ trip.pickupTime }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="time" class="form-control" id="editCell14{{i}}"
-                                                                name="editCell14" value="{{ trip.dropTime }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="time" class="form-control" id="editCell15{{i}}"
-                                                                name="editCell15" value="{{ trip.actualPickupTime }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="time" class="form-control" id="editCell16{{i}}"
-                                                                name="editCell16" value="{{ trip.actualDropTime }}">
-                                                        </td>
-
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell3{{i}}"
-                                                                value="{{ trip.name }}">
-                                                        </td>
-
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
-                                                                [(ngModel)]="trip.locationName"
-                                                                class="form-control newRow" autocomplete="off"
-                                                                (keyup)="searchTerm.next($event);"
-                                                                placeholder="Start typing to get location suggestions">
-
-                                                            <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
-                                                                *ngIf="searchResults">
-                                                                <li *ngFor="let item of searchResults;">
-                                                                    <a href="javascript:;"
-                                                                        (click)="assignLocation('editLoc', item.address.label, i)"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <select class="form-control" id="editCell5{{i}}">
-                                                                <option value="empty">EMPTY</option>
-                                                                <option value="loaded">LOADED</option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell6{{i}}"
-                                                                name="miles" value="{{ trip.miles }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell7{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{ vehiclesObjects[trip.vehicleID] }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell8{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{ trip.trailerName }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell9{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{ driversObjects[trip.driverID] }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <input type="text" class="form-control" id="editCell10{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{ driversObjects[trip.coDriverID] }}">
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <select class="form-control" name="carrierID"
-                                                                id="editCell11{{i}}">
-                                                                <option value="">Select Carrier </option>
-                                                                <option *ngFor="let carrier of carriers"
-                                                                    value="{{ carrier.contactID }}">
-                                                                    {{ carrier.companyName }}
-                                                                </option>
-                                                            </select>
-                                                        </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
-                                                            <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
-                                                            <i class="fas fa-times" (click)="closeEditRow(i)"></i>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="ui-sortable-handle">
-                                                        <td>
-                                                            <select class="form-control newRow"
-                                                                (change)="getNewRowValues($event,'tripType')"
-                                                                id="cell1">
-                                                                <option value="">Select Type</option>
-                                                                <option *ngFor="let type of typeOptions"
-                                                                    value="{{ type }}">
-                                                                    {{ type }}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input id="cell2" name="cell2" type="text"
-                                                                placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                                                ngbDatepicker #to="ngbDatepicker"
-                                                                class="form-control newRow" autocomplete="off"
-                                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                                        </td>
-                                                        <td>
-                                                            <input type="time" class="form-control newRow" id="cell13"
-                                                                name="cell13">
-                                                        </td>
-                                                        <td>
-                                                            <input type="time" class="form-control newRow" id="cell14"
-                                                                name="cell14">
-                                                        </td>
-                                                        <td>
-                                                            <input type="time" class="form-control newRow" id="cell15"
-                                                                name="cell15">
-                                                        </td>
-                                                        <td>
-                                                            <input type="time" class="form-control newRow" id="cell16"
-                                                                name="cell16">
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell3" class="form-control newRow"
-                                                                (change)="getNewRowValues($event,'name')"
-                                                                autocomplete="off">
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell4" name="cell4"
-                                                                class="form-control newRow" autocomplete="off"
-                                                                (keyup)="searchTerm.next($event);"
-                                                                [(ngModel)]="textFieldValues.locationName"
-                                                                placeholder="Start typing to get location suggestions">
-
-                                                            <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
-                                                                *ngIf="searchResults">
-                                                                <li *ngFor="let item of searchResults;">
-                                                                    <a href="javascript:;"
-                                                                        (click)="assignLocation('loc', item.address.label,'')"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control newRow"
-                                                                (change)="getNewRowValues($event,'mileType')"
-                                                                id="cell5">
-                                                                <option value="">Select Mile Type</option>
-                                                                <option value="empty">EMPTY</option>
-                                                                <option value="loaded">LOADED</option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell6" class="form-control newRow"
-                                                                (change)="getNewRowValues($event,'miles')"
-                                                                autocomplete="off">
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell7" class="form-control newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{ textFieldValues.vehicleName }}"
-                                                                autocomplete="off" readonly>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell8" class="form-control newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{ textFieldValues.trailerName}}"
-                                                                autocomplete="off" readonly>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell9" class="form-control newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{ textFieldValues.driverName }}"
-                                                                autocomplete="off" readonly>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="cell10" class="form-control newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{ textFieldValues.coDriverName }}"
-                                                                autocomplete="off" readonly>
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control newRow" name="carrierID"
-                                                                id="cell11"
-                                                                (change)="getNewRowValues($event,'carrier')">
-                                                                <option value="">Select Carrier </option>
-                                                                <option *ngFor="let carrier of carriers"
-                                                                    value="{{ carrier.contactID }}">
-                                                                    {{ carrier.companyName }}
-                                                                </option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-sm btn-success"
-                                                                (click)="addRow()">Add </button>
-                                                        </td>
+                                                        <td>{{ driversObjects[trip.driverID] }} </td>
+                                                        <td>{{ driversObjects[trip.coDriverID] }}</td>
+                                                        <td>{{ trip.carrierName }} </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -935,225 +588,233 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row mb-3">
-                            <div class="col-lg-12">
-                                <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row pt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Trip
-                                                Info</label>
-                                        </div>
 
-                                        <div class="col-lg-12">
+                    <div class="row mb-3">
+                        <div class="col-lg-12">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Trip
+                                            Info</label>
+                                    </div>
 
-                                            <div class="row">
-                                                <div class="col-lg-4 text-center"
-                                                    *ngIf="trips.length > 0; else sourceElseBlock">
+                                    <div class="col-lg-12">
+
+                                        <div class="row">
+                                            <div class="col-lg-4 text-center"
+                                                *ngIf="trips.length > 0; else sourceElseBlock">
+                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                    trips[0].locationName }}</p>
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date |
+                                                    date:"yyyy/MM/dd" }}
+                                                    {{ trips[0].time }}</p>
+                                            </div>
+
+                                            <ng-template #sourceElseBlock>
+                                                <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{
-                                                        trips[0].locationName }}</p>
-                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date
-                                                        | date:"yyyy/MM/dd" }}
-                                                        {{ trips[0].time }}</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark"> - </p>
                                                 </div>
-
-                                                <ng-template #sourceElseBlock>
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source
-                                                        </p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"> - </p>
-                                                    </div>
-                                                </ng-template>
-
-                                                <ng-template [ngIf]="trips.length > 1"
-                                                    [ngIfElse]="destinationElseBlock">
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"
-                                                            *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && mapOrderActive == 'active'">
-                                                            {{orderMiles.calculateBy}}: {{orderMiles.totalMiles |
-                                                            number:
-                                                            '1.0-3'}}
-                                                        </p>
-
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">Actual
-                                                            Miles(Pc Miler):
-                                                            <span
-                                                                class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles
-                                                                | number: '1.0-3' }}
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">
-                                                            Destination
-                                                        </p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{
-                                                            trips[trips.length-1].locationName }}</p>
-                                                        <p class="mb-0 text-4 font-weight-normal text-dark">{{
-                                                            trips[trips.length-1].date | date:"yyyy/MM/dd" }} {{
-                                                            trips[trips.length-1].time }}
-                                                        </p>
-                                                    </div>
-                                                </ng-template>
-
-                                                <ng-template #destinationElseBlock>
-
-                                                    <div class="col-lg-4 text-center pt-3">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">-
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">
-                                                            Destination
-                                                        </p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">-</p>
-                                                    </div>
-                                                </ng-template>
-                                            </div>
-
-                                            <div class="row mt-3 justify-content-center pl-5 pr-5">
-                                                <div class="w100 pl-3">
-                                                    <div class="tripbarn"></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="tripinfoscroll">
-                                                <div
-                                                    class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
-                                                    <div class="text-center" *ngFor="let trip of trips">
-                                                        <div class="tripcirclen" data-toggle="tooltip"
-                                                            title="{{ trip.locationName }}"></div>
-                                                        <div class="tripcontentn" data-toggle="tooltip"
-                                                            title="{{ trip.locationName }}">
-                                                            <p class="font-weight-bold text-dark text-2 line-height-xs">
-                                                                {{ trip.type}}
-                                                                <br>{{ trip.date | date: "yyyy/MM/dd" }} - {{ (trip.type
-                                                                == 'Pickup') ? trip.pickupTime : trip.dropTime }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-lg-12">
-                                <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row pt-3">
-                                        <div class="col-lg-12 mb-2">
-                                            <ng-template [ngIf]="selectedVehicleSpecs.length==0 && trips.length>1">
-                                                <p class="text-4 font-weight-normal">*Vehicle is missing. To get
-                                                    specific
-                                                    Vehicle route please select the truck</p>
                                             </ng-template>
-                                            <div class="mapclass" id="map_view">
-                                                <div id="map" class=""></div>
-                                            </div>
 
+                                            <ng-template [ngIf]="trips.length > 1" [ngIfElse]="destinationElseBlock">
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark"
+                                                        *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && mapOrderActive == 'active'">
+                                                        {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
+                                                        '1.0-3'}}
+                                                    </p>
+
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Actual
+                                                        Miles(Pc Miler):
+                                                        <span
+                                                            class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles
+                                                            | number: '1.0-3' }}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                    </p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                        trips[trips.length-1].locationName }}</p>
+                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{
+                                                        trips[trips.length-1].date | date:"yyyy/MM/dd" }} {{
+                                                        trips[trips.length-1].time }}
+                                                    </p>
+                                                </div>
+                                            </ng-template>
+
+                                            <ng-template #destinationElseBlock>
+
+                                                <div class="col-lg-4 text-center pt-3">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">-
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                    </p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">-</p>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                        <!-- <div class="wizard-progress">
+                                  <div class="steps-progress">
+                                      <div class="progress-indicator" style="width: 0%;"></div>
+                                  </div>
+                                  <ul class="wizard-steps">
+                                      <li class="" *ngFor="let trip of trips">
+                                          <a class="" href="" data-toggle="tab"><span></span>{{ trip.type}}
+                                              <br>{{ trip.locationName }}
+                                              <br>{{ trip.pickupTime }}
+                                          </a>
+                                      </li>
+                                  </ul>
+                              </div> -->
+
+                                        <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                            <div class="w100 pl-3">
+                                                <div class="tripbarn"></div>
+                                            </div>
                                         </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-lg-12">
-                                <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row pt-3">
-                                        <div class="col-lg-12">
-                                            <div class="bggreyn p-3">
-                                                <h3 class="font-weight-bold text-dark text-6 mt-0">Notifications</h3>
-                                                <div class="row">
-
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <label
-                                                            class="control-label font-weight-bold labelmt text-3 text-dark">Planned
-                                                            v/s Changed Route</label>
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" id="HazMat1" name="changeRoute"
-                                                                [(ngModel)]="tripData.notifications.changeRoute">
-                                                            <label
-                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                for="HazMat1">Notify Dispatcher about changed
-                                                                route?</label>
-                                                        </div>
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" id="HazMat2" name="pickUp"
-                                                                [(ngModel)]="tripData.notifications.pickUp">
-                                                            <label
-                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                for="HazMat2">Notify Dispatcher about pick up?</label>
-                                                        </div>
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" id="HazMat3" name="dropOff"
-                                                                [(ngModel)]="tripData.notifications.dropOff">
-                                                            <label
-                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                for="HazMat3">Notify Dispatcher about drop off?</label>
-                                                        </div>
+                                        <div class="tripinfoscroll">
+                                            <div
+                                                class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                                <div class="text-center" *ngFor="let trip of trips">
+                                                    <div class="tripcirclen" data-toggle="tooltip"
+                                                        title="{{ trip.locationName }}"></div>
+                                                    <div class="tripcontentn" data-toggle="tooltip"
+                                                        title="{{ trip.locationName }}">
+                                                        <p class="font-weight-bold text-dark text-2 line-height-xs">{{
+                                                            trip.type}}
+                                                            <br>{{ trip.date | date: "yyyy/MM/dd" }} - {{ (trip.type ==
+                                                            'Pickup') ? trip.pickupTime : trip.dropTime }}
+                                                        </p>
                                                     </div>
-
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <label
-                                                            class="control-label font-weight-bold labelmt text-3 text-dark">Trip
-                                                            Details</label>
-
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" id="HazMat4" name="tripToDriver"
-                                                                [(ngModel)]="tripData.notifications.tripToDriver">
-                                                            <label
-                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                for="HazMat4">Send trip details to the driver</label>
-                                                        </div>
-                                                        <div class="checkbox-custom checkbox-default">
-                                                            <input type="checkbox" id="HazMat5" name="tripToDispatcher"
-                                                                [(ngModel)]="tripData.notifications.tripToDispatcher">
-                                                            <label
-                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                for="HazMat5">Send trip details to the
-                                                                dispatcher</label>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-lg-12">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12 mb-2">
+                                        <ng-template [ngIf]="selectedVehicleSpecs.length==0 && trips.length>1">
+                                            <p class="text-4 font-weight-normal">*Vehicle is missing. To get specific
+                                                Vehicle route please select the truck</p>
+                                        </ng-template>
+                                        <div class="mapclass" id="map_view">
+                                            <div id="map" class=""></div>
+                                        </div>
 
                                     </div>
 
-                                    <div class="form-group row text-right mt-3">
-                                        <div class="col-lg-12 pr-3">
-                                            <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
-                                                routerLink="/dispatch/trips/trip-list">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                            <!-- if there is some error in validation  -->
-                                            <!-- <button *ngIf="!tripID && !tripForm.form.valid" class="btn btn-success mt-1"
-                                [disabled]="!tripForm.form.valid">Create Trip</button> -->
+                    <div class="row mb-3">
+                        <div class="col-lg-12">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12">
+                                        <div class="bggreyn p-3">
+                                            <h3 class="font-weight-bold text-dark text-6 mt-0">Notifications</h3>
+                                            <div class="row">
 
-                                            <!-- if validations are ok and now the button will disable on submit click  -->
-                                            <button (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1"
-                                                [disabled]="!tripForm.form.valid || submitDisabled">Create Trip</button>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <label
+                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Planned
+                                                        v/s Changed Route</label>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat1" name="changeRoute"
+                                                            [(ngModel)]="tripData.notifications.changeRoute">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat1">Notify Dispatcher about changed route?</label>
+                                                    </div>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat2" name="pickUp"
+                                                            [(ngModel)]="tripData.notifications.pickUp">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat2">Notify Dispatcher about pick up?</label>
+                                                    </div>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat3" name="dropOff"
+                                                            [(ngModel)]="tripData.notifications.dropOff">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat3">Notify Dispatcher about drop off?</label>
+                                                    </div>
+                                                </div>
 
-                                            <!-- update case -->
-                                            <!-- <button *ngIf="tripID && !tripForm.form.valid" class="btn btn-success mt-1" [disabled]="!tripForm.form.valid">
-                                Update Trip</button> -->
+                                                <div class="col-lg-6 col-md-6">
+                                                    <label
+                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Trip
+                                                        Details</label>
 
-                                            <button (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1"
-                                                [disabled]="!tripForm.form.valid || submitDisabled">Update Trip</button>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat4" name="tripToDriver"
+                                                            [(ngModel)]="tripData.notifications.tripToDriver">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat4">Send trip details to the driver</label>
+                                                    </div>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat5" name="tripToDispatcher"
+                                                            [(ngModel)]="tripData.notifications.tripToDispatcher">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat5">Send trip details to the dispatcher</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group row text-right mt-3">
+                                    <div class="col-lg-12 pr-3">
+                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
+                                            routerLink="/dispatch/trips/trip-list">Cancel</a>
+
+                                        <!-- if there is some error in validation  -->
+                                        <!-- <button *ngIf="!tripID && !tripForm.form.valid" class="btn btn-success mt-1"
+                                  [disabled]="!tripForm.form.valid">Create Trip</button> -->
+
+                                        <!-- if validations are ok and now the button will disable on submit click  -->
+                                        <button (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1"
+                                            [disabled]="submitDisabled">Create Trip</button>
+
+                                        <!-- update case -->
+                                        <!-- <button *ngIf="tripID && !tripForm.form.valid" class="btn btn-success mt-1" [disabled]="!tripForm.form.valid">
+                                  Update Trip</button> -->
+
+                                        <button (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1"
+                                            [disabled]="submitDisabled">Update Trip</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
                 </section>
