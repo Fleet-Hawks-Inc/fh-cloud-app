@@ -260,6 +260,7 @@ export class OrderDetailComponent implements OnInit {
             })
 
             this.milesArr.push(newArr);
+            console.log('milesArr', this.milesArr)
             
           })
 
