@@ -50,7 +50,7 @@ export class ListInspectionComponent implements OnInit {
 
   deleteForm(id) {
     if (confirm('Are you sure you want to delete')) {
-      this.apiService.getData('inspectionForms/delete/form/' + id).subscribe((result) => {
+      this.apiService.deleteData('inspectionForms/delete/form/' + id).subscribe((result) => {
         this.inspectionForms = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.inspectionDraw = 0;
