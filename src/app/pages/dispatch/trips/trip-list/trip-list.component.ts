@@ -298,7 +298,7 @@ export class TripListComponent implements OnInit {
         status: eventData.tripStatus,
         stl: eventData.settlmnt
       }
-      this.apiService.postData('trips/delete', record).subscribe({
+      this.apiService.deleteData(`trips/delete/${eventData.tripID}/${eventData.settlmnt}/${eventData.tripStatus}`).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {

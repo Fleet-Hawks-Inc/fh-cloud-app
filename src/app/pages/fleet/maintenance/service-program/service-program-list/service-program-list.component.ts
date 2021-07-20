@@ -128,7 +128,7 @@ export class ServiceProgramListComponent implements  OnInit {
   deleteProgram(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`servicePrograms/isDeleted/${entryID}/`+1)
+      .deleteData(`servicePrograms/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.programs = [];
         this.serviceProgramDraw = 0;
