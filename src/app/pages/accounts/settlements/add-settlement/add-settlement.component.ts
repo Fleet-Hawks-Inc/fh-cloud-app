@@ -41,6 +41,9 @@ export class AddSettlementComponent implements OnInit {
         deduction: [],
         additionTotal: 0,
         deductionTotal: 0,
+        gstPrcnt: '',
+        pstPrcnt: '',
+        hstPrcnt: '',
         paymentTotal: 0,
         taxes:<any> 0,
         subTotal: 0,
@@ -264,15 +267,15 @@ export class AddSettlementComponent implements OnInit {
             let federalAmount = 0;
             if(this.carrLocalTax != 0) {
                 localAmount = this.settlementData.subTotal*this.carrLocalTax/100;
-                console.log('localAmount=======', localAmount);
             }
             if(this.carrFedTax != 0) {
                 federalAmount = this.settlementData.subTotal*this.carrFedTax/100;
-                console.log('federalAmount=======', federalAmount);
             }
             this.settlementData.taxes = localAmount + federalAmount;
             this.settlementData.taxes = this.settlementData.taxes.toFixed(2);
             this.settlementData.finalTotal = this.settlementData.paymentTotal + parseFloat(this.settlementData.taxes);    
+        } else if(this.settlementData.type == 'owner_operator') {
+
         } else {
             this.settlementData.finalTotal = this.settlementData.subTotal;
         }
@@ -439,8 +442,10 @@ export class AddSettlementComponent implements OnInit {
                                 }
                             }
                         }
+                        oprElement.payment = drvrPay;
                         this.settlementData.paymentTotal += drvrPay;
                     }
+                    console.log('this.settlementData', this.settlementData);
                 }
 
 
