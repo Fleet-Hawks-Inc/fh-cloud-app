@@ -265,13 +265,13 @@ export class VehicleListComponent implements OnInit {
 
   deleteVehicle(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.vehicleID,
-        status: eventData.currentStatus
-      }
-      this.apiService.postData('vehicles/delete', record).subscribe((result: any) => {
+      // let record = {
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.vehicleID,
+      //   status: eventData.currentStatus
+      // }
+      this.apiService.deleteData(`vehicles/delete/${eventData.vehicleID}`).subscribe((result: any) => {
 
         this.vehicles = [];
         this.vehicleDraw = 0;
