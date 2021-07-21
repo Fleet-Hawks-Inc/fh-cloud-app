@@ -8,7 +8,7 @@
   aria-labelledby="allContactsModal"
   aria-hidden="true"
 >
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header py-3">
         <div class="d-flex justify-content-between align-items-center w-100">
@@ -132,109 +132,50 @@
             <div class="mb-3">
               <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                 <li class="nav-item">
-                  <a
-                    class="nav-link active"
+                  <a class="nav-link active"
                     id="broker-tab"
-                    data-toggle="tab"
-                    href="#broker"
-                    role="tab"
-                    aria-controls="broker"
-                    aria-selected="false"
+                    data-toggle="tab" href="#broker" role="tab" aria-controls="broker" aria-selected="false"
                     (click)="setActiveDiv('broker')"
-                    >Broker</a
-                  >
+                    >Broker</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="carrier-tab"
-                    data-toggle="tab"
-                    href="#carrier"
-                    role="tab"
-                    aria-controls="carrier"
-                    aria-selected="false"
+                  <a class="nav-link" id="carrier-tab" data-toggle="tab" href="#carrier"
+                    role="tab" aria-controls="carrier" aria-selected="false"
                     (click)="setActiveDiv('carrier')"
-                    >Carrier</a
-                  >
+                    >Carrier</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="consignee-tab"
-                    data-toggle="tab"
-                    href="#consignee"
-                    role="tab"
-                    aria-controls="consignee"
-                    aria-selected="false"
-                    (click)="setActiveDiv('consignee')"
-                    >Receiver</a
-                  >
+                  <a class="nav-link" id="consignee-tab" data-toggle="tab"
+                    href="#consignee" role="tab" aria-controls="consignee"
+                    aria-selected="false"  (click)="setActiveDiv('consignee')"
+                    >Receiver</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="shipper-tab"
-                    data-toggle="tab"
-                    href="#shipper"
-                    role="tab"
-                    aria-controls="shipper"
-                    aria-selected="false"
-                    (click)="setActiveDiv('shipper')"
-                    >Shipper</a
-                  >
+                  <a class="nav-link"  id="shipper-tab" data-toggle="tab" href="#shipper" role="tab"
+                    aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')"
+                    >Shipper</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="customer-tab"
-                    data-toggle="tab"
-                    href="#customer"
-                    role="tab"
-                    aria-controls="customer"
-                    aria-selected="false"
-                    (click)="setActiveDiv('customer')"
-                    >Customer</a
-                  >
+                  <a class="nav-link" id="customer-tab" data-toggle="tab"
+                    href="#customer" role="tab" aria-controls="customer"
+                    aria-selected="false" (click)="setActiveDiv('customer')"
+                    >Customer</a>
                 </li>
                 <!-- <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li> -->
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="fc-tab"
-                    data-toggle="tab"
-                    href="#fc"
-                    role="tab"
-                    aria-controls="fc"
-                    aria-selected="false"
-                    (click)="setActiveDiv('company')"
-                    >Factoring Company</a
-                  >
+                  <a class="nav-link" id="fc-tab" data-toggle="tab"
+                    href="#fc" role="tab" aria-controls="fc" aria-selected="false"
+                    (click)="setActiveDiv('company')" >Factoring Company</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="ownerOperator-tab"
-                    data-toggle="tab"
-                    href="#ownerOperator"
-                    role="tab"
-                    aria-controls="ownerOperator"
-                    aria-selected="false"
-                    (click)="setActiveDiv('operator')"
-                    >Owner Operator</a
-                  >
+                  <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator"
+                    role="tab" aria-controls="ownerOperator" aria-selected="false"
+                    (click)="setActiveDiv('operator')" >Owner Operator</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="vendor-tab"
-                    data-toggle="tab"
-                    href="#vendor"
-                    role="tab"
-                    aria-controls="vendor"
-                    aria-selected="false"
-                    (click)="setActiveDiv('vendor')"
-                    >Vendor</a
-                  >
+                  <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab"
+                    aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')"
+                    >Vendor</a>
                 </li>
               </ul>
             </div>
@@ -9919,89 +9860,50 @@
   </div>
 </div>
 
-<ng-template #content let-modal>
+
+<!-- Detail Page Coding Starting from here -->
+
+<ng-template #content let-modal class="abc">
   <div class="modal-header">
     <h5 class="modal-title">{{ userDetailTitle }}'s Details</h5>
-    <button
-      type="button"
+    <button type="button"
       (click)="modal.dismiss()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+      class="close" data-dismiss="modal" aria-label="Close">
       <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
     </button>
   </div>
   <div class="modal-body text-dark">
-    <div class="card-body text-dark p-0">
-      <ul class="nav top-tabs nav-tabs wizard-steps">
+    <div class="card-body text-dark addressbook-scrollbar addressbook-scroll-y">
+      <!-- <ul class="nav top-tabs nav-tabs wizard-steps">
         <li class="nav-item active">
-          <a
-            href="#customerBasicDetails"
-            data-toggle="tab"
-            class="nav-link text-center active"
-          >
-            Basic Details
-          </a>
+          <a href="#customerBasicDetails" data-toggle="tab" class="nav-link text-center active">Basic Details</a>
         </li>
         <li class="nav-item" *ngIf="userDetailData.paymentDetails">
-          <a
-            href="#customPaymentDetails"
-            data-toggle="tab"
-            class="nav-link text-center"
-          >
-            Payment
-          </a>
+          <a href="#customPaymentDetails" data-toggle="tab" class="nav-link text-center" >Payment</a>
         </li>
         <li class="nav-item">
-          <a
-            href="#customerAddressDetails"
-            data-toggle="tab"
-            class="nav-link text-center"
-          >
-            Address
-          </a>
+          <a href="#customerAddressDetails" data-toggle="tab" class="nav-link text-center">Address</a>
         </li>
         <li class="nav-item" *ngIf="userDetailData.userAccount">
-          <a
-            href="#customerUserAccount"
-            data-toggle="tab"
-            class="nav-link text-center"
-          >
-            User Account
-          </a>
+          <a href="#customerUserAccount" data-toggle="tab" class="nav-link text-center">User Account</a>
         </li>
-        <li class="nav-item" *ngIf="userDetailData.additionalContact">
-          <a
-            href="#customerAdditionalContact"
-            data-toggle="tab"
-            class="nav-link text-center"
-          >
-            Additional Contact
-          </a>
+         <li class="nav-item" *ngIf="userDetailData.additionalContact">
+          <a href="#customerAdditionalContact" data-toggle="tab" class="nav-link text-center">Additional Contact</a>
         </li>
         <li class="nav-item" *ngIf="userDetailData.fcDetails">
-          <a
-            href="#customerFactoringDetails"
-            data-toggle="tab"
-            class="nav-link text-center"
-          >
-            Factoring Details
-          </a>
+          <a href="#customerFactoringDetails" data-toggle="tab" class="nav-link text-center">Factoring Details</a>
         </li>
-      </ul>
-      <div class="tab-content shadow-none border-0">
-        <div id="customerBasicDetails" class="tab-pane active">
+      </ul> -->
+      <div class="">
+        <div class="">
+          
+          <!-- Basic Details Start -->
           <div class="row">
-            <div class="col-lg-12">
-              <div class="thumb-info text-center mb-3">
-                <img
-                  [src]="detailImgPath"
-                  class="rounded img-fluid"
-                  alt="John Doe"
-                  style="max-width: 200px"
-                />
-              </div>
+            <div class="col-lg-10 mb-2">
+              <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
+           </div>
+           <div class="col-lg-2 pt-1 text-right">
+						  <a href="#" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</a>
             </div>
             <div class="col-lg-6">
               <table class="table table-bordered m-0">
@@ -10059,10 +9961,7 @@
                     <th width="40%" class="back-color-gray">DOT#:</th>
                     <td>{{ userDetailData.dot ? userDetailData.dot : "-" }}</td>
                   </tr>
-                  <tr *ngIf="detailTab == 'Customer' || detailTab == 'Broker'">
-                    <th width="40%" class="back-color-gray">EIN:</th>
-                    <td>{{ userDetailData.ein ? userDetailData.ein : "-" }}</td>
-                  </tr>
+                  
                   <tr *ngIf="detailTab == 'Customer'">
                     <th width="40%" class="back-color-gray">FAST Card#:</th>
                     <td>
@@ -10086,6 +9985,11 @@
             <div class="col-lg-6">
               <table class="table table-bordered m-0">
                 <tbody>
+                  <tr *ngIf="detailTab == 'Customer' || detailTab == 'Broker'">
+                    <th width="40%" class="back-color-gray">EIN:</th>
+                    <td>{{ userDetailData.ein ? userDetailData.ein : "-" }}</td>
+                  </tr>
+
                   <tr
                     *ngIf="
                       detailTab == 'Customer' ||
@@ -10138,30 +10042,43 @@
               </table>
             </div>
           </div>
-        </div>
-        <div id="customerAddressDetails" class="tab-pane">
-          <table
-            style="float: left"
+          <!-- Basic Details end -->
+
+          <!-- Address Start -->
+          <div class="row">
+            <div class="col-lg-12 mb-2 mt-2">
+              <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Address</label>
+           </div>
+           <div class="col-lg-6">
+            <table style="float: left" class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
+              <tbody>
+                <tr>
+                  <th width="40%" class="back-color-gray">Address Type:</th>
+                  <td>{{ item.addressType ? item.addressType : "-" }}</td>
+                </tr>
+                <tr *ngIf="item.manual">
+                  <th width="40%" class="back-color-gray">Country:</th>
+                  <td>{{ item.countryName ? item.countryName : "-" }}</td>
+                </tr>
+                <tr *ngIf="item.manual">
+                  <th width="40%" class="back-color-gray">Province/State:</th>
+                  <td>{{ item.stateName ? item.stateName : "-" }}</td>
+                </tr>
+                <tr *ngIf="item.manual">
+                  <th width="40%" class="back-color-gray">City:</th>
+                  <td>{{ item.cityName ? item.cityName : "-" }}</td>
+                </tr>
+               
+              </tbody>
+            </table>
+           </div>
+           <div class="col-lg-6">
+            <table style="float: left"
             class="table table-bordered mb-2"
             *ngFor="let item of userDetailData.address"
           >
             <tbody>
-              <tr>
-                <th width="40%" class="back-color-gray">Address Type:</th>
-                <td>{{ item.addressType ? item.addressType : "-" }}</td>
-              </tr>
-              <tr *ngIf="item.manual">
-                <th width="40%" class="back-color-gray">Country:</th>
-                <td>{{ item.countryName ? item.countryName : "-" }}</td>
-              </tr>
-              <tr *ngIf="item.manual">
-                <th width="40%" class="back-color-gray">Province/State:</th>
-                <td>{{ item.stateName ? item.stateName : "-" }}</td>
-              </tr>
-              <tr *ngIf="item.manual">
-                <th width="40%" class="back-color-gray">City:</th>
-                <td>{{ item.cityName ? item.cityName : "-" }}</td>
-              </tr>
+              
               <tr *ngIf="item.manual">
                 <th width="40%" class="back-color-gray">Zip Code:</th>
                 <td>{{ item.zipCode ? item.zipCode : "-" }}</td>
@@ -10180,16 +10097,19 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
-        <div
-          id="customerAdditionalContact"
-          class="tab-pane"
-          *ngIf="userDetailData.additionalContact"
-        >
-          <table
-            class="table table-bordered m-0 mt-3"
-            *ngFor="let addCont of userDetailData.additionalContact"
-          >
+        <!-- Address End -->
+
+        <!-- Additional Start -->
+
+        <div class="row">
+          <div class="col-lg-12 mb-2">
+            <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Additional Contact</label>
+         </div>
+
+         <div class="col-lg-6">
+          <table class="table table-bordered m-0"  *ngFor="let addCont of userDetailData.additionalContact">
             <tbody>
               <tr>
                 <th width="40%" class="back-color-gray">Name:</th>
@@ -10206,6 +10126,14 @@
                 <th width="40%" class="back-color-gray">Phone:</th>
                 <td>{{ addCont.phone ? addCont.phone : "-" }}</td>
               </tr>
+              
+            </tbody>
+          </table>
+         </div>
+         <div class="col-lg-6">
+          <table class="table table-bordered m-0"  *ngFor="let addCont of userDetailData.additionalContact">
+            <tbody>
+              
               <tr>
                 <th width="40%" class="back-color-gray">Email:</th>
                 <td>{{ addCont.email ? addCont.email : "-" }}</td>
@@ -10217,260 +10145,289 @@
             </tbody>
           </table>
         </div>
-        <div
-          id="customPaymentDetails"
-          class="tab-pane"
-          *ngIf="userDetailData.paymentDetails"
-        >
-          <table class="table table-bordered m-0">
-            <tbody>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
-                <td>
-                  {{ userDetailData.paymentDetails.inBonded ? "Yes" : "No" }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">MC#:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.mc
-                      ? userDetailData.paymentDetails.mc
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">DOT#:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.dot
-                      ? userDetailData.paymentDetails.dot
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th width="40%" class="back-color-gray">FAST Card#:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.fast
-                      ? userDetailData.paymentDetails.fast
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                <td *ngIf="userDetailData.paymentDetails.fastExpiry">
-                  {{
-                    userDetailData.paymentDetails.fastExpiry
-                      | date: "yyyy/MM/dd"
-                  }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.fastExpiry">-</td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">CCC:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.ccc
-                      ? userDetailData.paymentDetails.ccc
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">SCAC:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.scac
-                      ? userDetailData.paymentDetails.scac
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">CVOR:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.cvor
-                      ? userDetailData.paymentDetails.cvor
-                      : "-"
-                  }}
-                </td>
-              </tr>
-
-              <tr>
-                <th width="40%" class="back-color-gray">Payroll Type:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.payrollType
-                      ? userDetailData.paymentDetails.payrollType
-                      : "-"
-                  }}
-                </td>
-              </tr>
-
-              <tr
-                *ngIf="
-                  userDetailData.paymentDetails.payrollType == 'Pay Per Mile'
-                "
-              >
-                <th width="40%" class="back-color-gray">Loaded Miles:</th>
-                <td *ngIf="userDetailData.paymentDetails.loadedMiles">
-                  {{ userDetailData.paymentDetails.loadedMiles }}
-                  {{ userDetailData.paymentDetails.loadedMilesCurrency }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.loadedMiles">-</td>
-              </tr>
-
-              <tr
-                *ngIf="
-                  userDetailData.paymentDetails.payrollType == 'Pay Per Mile'
-                "
-              >
-                <th width="40%" class="back-color-gray">Empty Miles:</th>
-                <td *ngIf="userDetailData.paymentDetails.emptyMiles">
-                  {{ userDetailData.paymentDetails.emptyMiles }}
-                  {{ userDetailData.paymentDetails.emptyMilesCurrency }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.emptyMiles">-</td>
-              </tr>
-
-              <tr
-                *ngIf="
-                  userDetailData.paymentDetails.payrollType == 'Percentage'
-                "
-              >
-                <th width="40%" class="back-color-gray">
-                  Payroll Load Pay Percent:
-                </th>
-                <td *ngIf="userDetailData.paymentDetails.payrollPercent">
-                  {{ userDetailData.paymentDetails.payrollPercent }}% of
-                  {{ userDetailData.paymentDetails.percentType }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.payrollPercent"></td>
-              </tr>
-
-              <tr
-                *ngIf="
-                  userDetailData.paymentDetails.payrollType == 'Pay Per Hour'
-                "
-              >
-                <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                <td *ngIf="userDetailData.paymentDetails.payrollRate">
-                  {{ userDetailData.paymentDetails.payrollRate }}
-                  {{ userDetailData.paymentDetails.payrollRateCurrency }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.payrollRate">-</td>
-              </tr>
-
-              <tr
-                *ngIf="
-                  userDetailData.paymentDetails.payrollType ==
-                  'Pay Per Delivery'
-                "
-              >
-                <th width="40%" class="back-color-gray">
-                  Payroll Delivery Rate:
-                </th>
-                <td *ngIf="userDetailData.paymentDetails.deliveryRate">
-                  {{ userDetailData.paymentDetails.deliveryRate }}
-                  {{ userDetailData.paymentDetails.deliveryRateCurrency }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.deliveryRate">-</td>
-              </tr>
-
-              <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Flat'">
-                <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                <td *ngIf="userDetailData.paymentDetails.payrollRate">
-                  {{ userDetailData.paymentDetails.payrollRate }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
-              </tr>
-              <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Hours'">
-                <th width="40%" class="back-color-gray">Payroll Rate:</th>
-                <td *ngIf="userDetailData.paymentDetails.payrollRate">
-                  {{ userDetailData.paymentDetails.payrollRate }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">
-                  Local Tax (in Percentage):
-                </th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.localTax
-                      ? userDetailData.paymentDetails.localTax
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">
-                  Federal Tax (in Percentage):
-                </th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.federalTax
-                      ? userDetailData.paymentDetails.federalTax
-                      : "-"
-                  }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">
-                  Apply Tax (on Settlement):
-                </th>
-                <td>
-                  {{ userDetailData.paymentDetails.applyTax ? "Yes" : "No" }}
-                </td>
-              </tr>
-              <tr *ngIf="detailTab == 'Carrier'">
-                <th width="40%" class="back-color-gray">WSIB:</th>
-                <td>{{ userDetailData.paymentDetails.wsib ? "Yes" : "No" }}</td>
-              </tr>
-              <tr *ngIf="userDetailData.paymentDetails.wsib">
-                <th width="40%" class="back-color-gray">WSIB Account#:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.wsibAccountNumber
-                      ? userDetailData.paymentDetails.wsibAccountNumber
-                      : "-"
-                  }}
-                </td>
-              </tr>
-
-              <tr *ngIf="userDetailData.paymentDetails.wsib">
-                <th width="40%" class="back-color-gray">WSIB Expiry:</th>
-                <td *ngIf="userDetailData.paymentDetails.wsibExpiry">
-                  {{
-                    userDetailData.paymentDetails.wsibExpiry
-                      | date: "yyyy/MM/dd"
-                  }}
-                </td>
-                <td *ngIf="!userDetailData.paymentDetails.wsibExpiry">-</td>
-              </tr>
-              <tr *ngIf="detailTab == 'Owner operator'">
-                <th width="40%" class="back-color-gray">SIN:</th>
-                <td>
-                  {{
-                    userDetailData.paymentDetails.sin
-                      ? userDetailData.paymentDetails.sin
-                      : "-"
-                  }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
-        <div
-          id="customerUserAccount"
-          class="tab-pane"
-          *ngIf="userDetailData.userAccount"
-        >
+        <!-- Additional End -->
+
+      
+
+        </div>
+        <!-- <div id="customerAddressDetails" class="tab-pane">
+         
+        </div> -->
+        <!-- <div id="customerAdditionalContact" class="tab-pane"  *ngIf="userDetailData.additionalContact">
+          
+          
+        </div> -->
+        <!-- <div id="customPaymentDetails" class="tab-pane"  *ngIf="userDetailData.paymentDetails"> -->
+          <div  *ngIf="userDetailData.paymentDetails">
+          <div class="row">
+            <div class="col-lg-12 mb-2 mt-2">
+              <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Payment</label>
+           </div>
+          
+          
+          <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+              <tbody>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
+                  <td>
+                    {{ userDetailData.paymentDetails.inBonded ? "Yes" : "No" }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">MC#:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.mc
+                        ? userDetailData.paymentDetails.mc
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">DOT#:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.dot
+                        ? userDetailData.paymentDetails.dot
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <th width="40%" class="back-color-gray">FAST Card#:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.fast
+                        ? userDetailData.paymentDetails.fast
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <th width="40%" class="back-color-gray">FAST Expiry:</th>
+                  <td *ngIf="userDetailData.paymentDetails.fastExpiry">
+                    {{
+                      userDetailData.paymentDetails.fastExpiry
+                        | date: "yyyy/MM/dd"
+                    }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.fastExpiry">-</td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">CCC:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.ccc
+                        ? userDetailData.paymentDetails.ccc
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">SCAC:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.scac
+                        ? userDetailData.paymentDetails.scac
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                
+                
+              </tbody>
+            </table>
+          </div>
+  
+          <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+              <tbody>
+               
+  
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">CVOR:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.cvor
+                        ? userDetailData.paymentDetails.cvor
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+  
+                <tr>
+                  <th width="40%" class="back-color-gray">Payroll Type:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.payrollType
+                        ? userDetailData.paymentDetails.payrollType
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+  
+                <tr
+                  *ngIf="
+                    userDetailData.paymentDetails.payrollType == 'Pay Per Mile'
+                  "
+                >
+                  <th width="40%" class="back-color-gray">Loaded Miles:</th>
+                  <td *ngIf="userDetailData.paymentDetails.loadedMiles">
+                    {{ userDetailData.paymentDetails.loadedMiles }}
+                    {{ userDetailData.paymentDetails.loadedMilesCurrency }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.loadedMiles">-</td>
+                </tr>
+  
+                <tr
+                  *ngIf="
+                    userDetailData.paymentDetails.payrollType == 'Pay Per Mile'
+                  "
+                >
+                  <th width="40%" class="back-color-gray">Empty Miles:</th>
+                  <td *ngIf="userDetailData.paymentDetails.emptyMiles">
+                    {{ userDetailData.paymentDetails.emptyMiles }}
+                    {{ userDetailData.paymentDetails.emptyMilesCurrency }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.emptyMiles">-</td>
+                </tr>
+  
+                <tr
+                  *ngIf="
+                    userDetailData.paymentDetails.payrollType == 'Percentage'
+                  "
+                >
+                  <th width="40%" class="back-color-gray">
+                    Payroll Load Pay Percent:
+                  </th>
+                  <td *ngIf="userDetailData.paymentDetails.payrollPercent">
+                    {{ userDetailData.paymentDetails.payrollPercent }}% of
+                    {{ userDetailData.paymentDetails.percentType }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.payrollPercent"></td>
+                </tr>
+  
+                <tr
+                  *ngIf="
+                    userDetailData.paymentDetails.payrollType == 'Pay Per Hour'
+                  "
+                >
+                  <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                  <td *ngIf="userDetailData.paymentDetails.payrollRate">
+                    {{ userDetailData.paymentDetails.payrollRate }}
+                    {{ userDetailData.paymentDetails.payrollRateCurrency }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.payrollRate">-</td>
+                </tr>
+  
+                <tr
+                  *ngIf="
+                    userDetailData.paymentDetails.payrollType ==
+                    'Pay Per Delivery'
+                  "
+                >
+                  <th width="40%" class="back-color-gray">
+                    Payroll Delivery Rate:
+                  </th>
+                  <td *ngIf="userDetailData.paymentDetails.deliveryRate">
+                    {{ userDetailData.paymentDetails.deliveryRate }}
+                    {{ userDetailData.paymentDetails.deliveryRateCurrency }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.deliveryRate">-</td>
+                </tr>
+  
+                <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Flat'">
+                  <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                  <td *ngIf="userDetailData.paymentDetails.payrollRate">
+                    {{ userDetailData.paymentDetails.payrollRate }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
+                </tr>
+                <tr *ngIf="userDetailData.paymentDetails.payrollType == 'Hours'">
+                  <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                  <td *ngIf="userDetailData.paymentDetails.payrollRate">
+                    {{ userDetailData.paymentDetails.payrollRate }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.payrollRate"></td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">
+                    Local Tax (in Percentage):
+                  </th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.localTax
+                        ? userDetailData.paymentDetails.localTax
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">
+                    Federal Tax (in Percentage):
+                  </th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.federalTax
+                        ? userDetailData.paymentDetails.federalTax
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">
+                    Apply Tax (on Settlement):
+                  </th>
+                  <td>
+                    {{ userDetailData.paymentDetails.applyTax ? "Yes" : "No" }}
+                  </td>
+                </tr>
+                <tr *ngIf="detailTab == 'Carrier'">
+                  <th width="40%" class="back-color-gray">WSIB:</th>
+                  <td>{{ userDetailData.paymentDetails.wsib ? "Yes" : "No" }}</td>
+                </tr>
+                <tr *ngIf="userDetailData.paymentDetails.wsib">
+                  <th width="40%" class="back-color-gray">WSIB Account#:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.wsibAccountNumber
+                        ? userDetailData.paymentDetails.wsibAccountNumber
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+  
+                <tr *ngIf="userDetailData.paymentDetails.wsib">
+                  <th width="40%" class="back-color-gray">WSIB Expiry:</th>
+                  <td *ngIf="userDetailData.paymentDetails.wsibExpiry">
+                    {{
+                      userDetailData.paymentDetails.wsibExpiry
+                        | date: "yyyy/MM/dd"
+                    }}
+                  </td>
+                  <td *ngIf="!userDetailData.paymentDetails.wsibExpiry">-</td>
+                </tr>
+                <tr *ngIf="detailTab == 'Owner operator'">
+                  <th width="40%" class="back-color-gray">SIN:</th>
+                  <td>
+                    {{
+                      userDetailData.paymentDetails.sin
+                        ? userDetailData.paymentDetails.sin
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+          
+        </div>
+        
+        <!-- <div id="customerUserAccount" class="tab-pane" *ngIf="userDetailData.userAccount"> -->
+          <div *ngIf="userDetailData.userAccount">
           <table class="table table-bordered m-0">
             <tbody>
               <tr *ngIf="userDetailData.userAccount.contractEndDate">
@@ -10511,11 +10468,8 @@
           </table>
         </div>
 
-        <div
-          id="customerFactoringDetails"
-          class="tab-pane"
-          *ngIf="userDetailData.fcDetails"
-        >
+        <!-- <div  id="customerFactoringDetails" class="tab-pane"  *ngIf="userDetailData.fcDetails"> -->
+          <div *ngIf="userDetailData.fcDetails">
           <table class="table table-bordered m-0">
             <tbody>
               <tr>
@@ -10547,11 +10501,7 @@
         </div>
         <div class="row mt-3">
           <div class="col-lg-12 text-right">
-            <button
-              type="button"
-              class="btn btn-default"
-              (click)="modal.dismiss()"
-            >
+            <button type="button" class="btn btn-default" (click)="modal.dismiss()">
               Close
             </button>
           </div>

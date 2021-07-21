@@ -81,7 +81,7 @@
                         <td>{{i+1}}</td>
                         <td>{{trx.trxDate}}</td>
                         <td>{{customersObject[trx.name]}}</td>
-                        <td>{{trx.type}}</td>
+                        <td>{{trx.type | titlecase}}</td>
                         <td>{{trx.desc}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>

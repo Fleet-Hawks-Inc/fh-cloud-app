@@ -173,13 +173,13 @@ export class AssetListComponent implements OnInit {
   deleteAsset(eventData) {;
     // }
       if (confirm('Are you sure you want to delete?') === true) {
-        let record = {
-          date: eventData.createdDate,
-          time: eventData.createdTime,
-          eventID: eventData.assetID,
-          status: eventData.currentStatus
-        }
-        this.apiService.postData('assets/delete', record).subscribe((result: any) => {
+        // let record = {
+        //   date: eventData.createdDate,
+        //   time: eventData.createdTime,
+        //   eventID: eventData.assetID,
+        //   status: eventData.currentStatus
+        // }
+        this.apiService.deleteData(`assets/delete/${eventData.assetID}`).subscribe((result: any) => {
             this.allData = [];
             this.assetDraw = 0;
             this.dataMessage = Constants.FETCHING_DATA;

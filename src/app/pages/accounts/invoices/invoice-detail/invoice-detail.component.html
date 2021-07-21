@@ -55,11 +55,18 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Creation Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.txnDate}} </div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.txnDate | date : 'yyyy/MM/dd'}} </div>
+                  </div>
+                  <div class="row  m-0">
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Payment Terms:</div>
+                    <div class="col-lg-8 p-2 border-box"><span *ngIf="invoice.invPayTerms === '15' || invoice.invPayTerms === '30' || invoice.invPayTerms === '45' ">{{invoice.invPayTerms}} Days</span>
+                      <span *ngIf="invoice.invPayTerms === 'dueReceipt' ">Due On Receipt</span>
+                      <span *ngIf="invoice.invPayTerms === 'dueEnd' ">Due End Of The Month</span>
+                      <span *ngIf="invoice.invPayTerms === 'custom' ">Custom</span></div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Due Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invDueDate}}</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.invDueDate | date : 'yyyy/MM/dd'}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Total Amount:</div>
@@ -147,7 +154,7 @@
                         <div class="col-lg-10 pull-left">
                           <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}{{invoice.invCur}}</span></p>
                           <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}{{invoice.invCur}}</span></p>
-                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">{{invoice.taxAmount}} {{invoice.invCur}}</span></p>
+                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">{{statesObjects[invoice.invStateProvince]}}</span> ) <span class="pull-right">{{invoice.taxAmount}} {{invoice.invCur}}</span></p>
                           <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}{{invoice.invCur}}</span></p>
                         </div>
                       </div>
@@ -172,7 +179,7 @@
                         <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]}}</span>
                            <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]}}</span></td>
                         <td>{{customersObjects[dt.name]}}</td>
-                        <td>{{dt.type}}</td>
+                        <td>{{dt.type | titlecase}}</td>
                         <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                         <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                       </tr>

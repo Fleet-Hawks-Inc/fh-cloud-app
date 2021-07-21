@@ -1,0 +1,408 @@
+<section class="body">
+    <div class="inner-wrapper">
+       <section role="main" class="content-body pl-1 pr-0 pt-0">
+          <header class="page-header pr27 pl18">
+             <div class="row">
+                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                   <h2 class="font-weight-bold">Safety Settings</h2>
+                </div>
+                <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                   <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                </div>
+             </div>
+          </header>
+          <div class="routing-overview__wrapper m-3">
+             <div class="row">
+                <div class="col-lg-12 col-xl-12 mb-4">
+                   <div class=" ">
+                      <ul class="nav nav-tabs top-tabs">
+                         <li class="nav-item active">
+                            <a class="nav-link active" href="#deletedset" data-toggle="tab">Deleted Entries</a>
+                         </li>
+                      </ul>
+                      <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                         <!-- driver listing -->
+                         <div id="deletedset" class="tab-pane active">
+                            <div class="row pt-2">
+                               <div class="col-lg-12">
+                                  <div class="reports-sidebar">
+                                     <div class="nav nav-pills" id="nav-tab" role="tablist">
+                                        <ul class="p-0 m-0 w-100">
+                                           <li>
+                                              <a class="nav-item nav-link active rounded-0" id="nav-logs-tab" data-toggle="tab" href="#quoteset" role="tab"><i class="fas fa-file-alt fa-fw"></i> Critical Events</a>
+                                           </li>
+                                           <li> 
+                                              <a class="nav-item nav-link rounded-0" id="nav-maintenance-tab" data-toggle="tab" href="#ordentset" role="tab"><i class="fas fa-cog fa-fw"></i> Incidents</a>
+                                           </li>
+                                           <li>
+                                              <a class="nav-item nav-link rounded-0" id="nav-inspection-tab" data-toggle="tab" href="#tripsentset" role="tab"><i class="fas fa-cog fa-fw"></i> HOS Violations</a>
+                                           </li>
+                                        </ul>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="reports-content">
+                               <div class="tab-content p-0 reports-tabs__content" id="nav-tabContent">
+                                  <div class="tab-pane fade show active" id="quoteset" role="tabpanel" aria-labelledby="nav-logs-tab">
+                                     <div class="reports-listing p-2">
+                                        <div class="row">
+                                           <div class="col-12">
+                                              <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here:</p>
+                                           </div>
+                                           <div class="col-1 text-right pt-2">
+                                              <label class="control-label font-weight-bold">Search</label>
+                                           </div>
+                                           <div class="col-3">
+                                              <input type="text" placeholder="Search any entry" class="form-control">
+                                           </div>
+                                           <div class="col-12 mt-4">
+                                              <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table safety-table">
+                                                 <thead>
+                                                    <tr>
+                                                       <th>Driver Name</th>
+                                                       <th>Date & Time</th>
+                                                       <th>Location</th>
+                                                       <th>Vehicle</th>
+                                                       <th>Type of Event</th>
+                                                       <th>Status</th>
+                                                       <th></th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="cursorpoint">
+                                                       <td>Johnny Doe</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Alberta</td>
+                                                       <td>06123</td>
+                                                       <td>Harsh Brake</td>
+                                                       <td><span class="badge badge-dark text-uppercase">Open</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Toranto</td>
+                                                       <td>06123</td>
+                                                       <td>Over Speeding</td>
+                                                       <td><span class="badge badge-dark text-uppercase ">Closed</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>Mike Brown</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Oakland</td>
+                                                       <td>06123</td>
+                                                       <td>Harsh Brake</td>
+                                                       <td><span class="badge badge-dark text-uppercase ">Open</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>David Thomas</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Washington</td>
+                                                       <td>06123</td>
+                                                       <td>Over Speeding</td>
+                                                       <td><span class="badge badge-dark text-uppercase ">Closed</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                 </tbody>
+                                              </table>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <!-- incidents deleted entries -->
+                                  <div class="tab-pane fade" id="ordentset" role="tabpanel" aria-labelledby="nav-maintenance-tab">
+                                     <div class="reports-listing p-2">
+                                        <div class="row pt-2">
+                                           <div class="col-12">
+                                              <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                           </div>
+                                           <div class="col-1 text-right pt-2">
+                                              <label class="control-label font-weight-bold">Search</label>
+                                           </div>
+                                           <div class="col-3">
+                                              <input type="text" placeholder="Search any entry" class="form-control">
+                                           </div>
+                                           <div class="col-12 mt-4">
+                                              <table class="table table-bordered table-striped mb-0 safety-table">
+                                                 <thead>
+                                                    <tr>
+                                                       <th>Driver Name</th>
+                                                       <th>Date & Time</th>
+                                                       <th>Location</th>
+                                                       <th>Vehicle</th>
+                                                       <th>Severity</th>
+                                                       <th>Assigned</th>
+                                                       <th>Status</th>
+                                                       <th></th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="cursorpoint">
+                                                       <td>John Doe</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Alberta</td>
+                                                       <td>06123</td>
+                                                       <td>Less</td>
+                                                       <td>Chris Parker</td>
+                                                       <td><span class="badge badge-dark p-1">OPEN</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Toranto</td>
+                                                       <td>06123</td>
+                                                       <td>More</td>
+                                                       <td>Chris Parker</td>
+                                                       <td><span class="badge badge-dark p-1">ASSIGNED</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>Mike Brown</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Oakland</td>
+                                                       <td>06123</td>
+                                                       <td>Less</td>
+                                                       <td>Chris Parker</td>
+                                                       <td><span class="badge badge-dark p-1">ASSIGNED</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>David Thomas</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>Washington</td>
+                                                       <td>06123</td>
+                                                       <td>More</td>
+                                                       <td>Chris Parker</td>
+                                                       <td><span class="badge badge-dark p-1">RESOLVED</span></td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                 </tbody>
+                                              </table>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <!-- HOS Violations deleted entries -->
+                                  <div class="tab-pane fade" id="tripsentset" role="tabpanel" aria-labelledby="nav-inspection-tab">
+                                     <div class="reports-listing p-2">
+                                        <div class="row pt-2">
+                                           <div class="col-12">
+                                              <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                           </div>
+                                           <div class="col-1 text-right pt-2">
+                                              <label class="control-label font-weight-bold">Search</label>
+                                           </div>
+                                           <div class="col-3">
+                                              <input type="text" placeholder="Search any entry" class="form-control">
+                                           </div>
+                                           <div class="col-12 mt-4">
+                                              <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                                                 <thead>
+                                                    <tr>
+                                                       <th>Driver ID</th>
+                                                       <th>Driver Name</th>
+                                                       <th>Date & Time</th>
+                                                       <th>Location</th>
+                                                       <th>Violation Type</th>
+                                                       <th width="15%">Status</th>
+                                                       <th></th>
+                                                    </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                    <tr class="cursorpoint">
+                                                       <td>656</td>
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>1th Street North-west</td>
+                                                       <td>30 min break violation</td>
+                                                       <td>
+                                                          <select
+                                                             class="form-control populate">
+                                                             <optgroup label="">
+                                                                <option value="">Coaching</option>
+                                                                <option value="">Open</option>
+                                                                <option value="">Under Review</option>
+                                                                <option value="">Investigating</option>
+                                                                <option value="">Closed</option>
+                                                             </optgroup>
+                                                          </select>
+                                                       </td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>656</td>
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>100a Street North-west</td>
+                                                       <td>14 hr rule violation</td>
+                                                       <td>
+                                                          <select
+                                                             class="form-control populate">
+                                                             <optgroup label="">
+                                                                <option value="">Closed</option>
+                                                                <option value="">Open</option>
+                                                                <option value="">Under Review</option>
+                                                                <option value="">Investigating</option>
+                                                                <option value="">Coaching</option>
+                                                             </optgroup>
+                                                          </select>
+                                                       </td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>656</td>
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>100a Street North-west</td>
+                                                       <td>11 hr rule violation</td>
+                                                       <td>
+                                                          <select
+                                                             class="form-control populate">
+                                                             <optgroup label="">
+                                                                <option value="">Open</option>
+                                                                <option value="">Under Review</option>
+                                                                <option value="">Investigating</option>
+                                                                <option value="">Coaching</option>
+                                                                <option value="">Closed</option>
+                                                             </optgroup>
+                                                          </select>
+                                                       </td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                    <tr class="cursorpoint">
+                                                       <td>656</td>
+                                                       <td>John Smith</td>
+                                                       <td>June 23, 2020 12:00 PM</td>
+                                                       <td>100a Street North-west</td>
+                                                       <td>30 min break violation</td>
+                                                       <td>
+                                                          <select
+                                                             class="form-control populate">
+                                                             <optgroup label="">
+                                                                <option value="">Under Review</option>
+                                                                <option value="">Open</option>
+                                                                <option value="">Investigating</option>
+                                                                <option value="">Coaching</option>
+                                                                <option value="">Closed</option>
+                                                             </optgroup>
+                                                          </select>
+                                                       </td>
+                                                       <td>
+                                                          <div class="btn-group flex-wrap">
+                                                             <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                             <div class="dropdown-menu" role="menu">
+                                                                <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                             </div>
+                                                          </div>
+                                                       </td>
+                                                    </tr>
+                                                 </tbody>
+                                              </table>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </section>
+    </div>
+ </section>
