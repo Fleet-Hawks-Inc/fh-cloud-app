@@ -1,11 +1,11 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body p-0">
-            <header class="page-header">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header pr5 pl7">
 
                 <div class="row" style="padding-top:10px;">
 
-                    <div class="col-md-2 col-lg-2">
+                    <div class="col-md-2 col-lg-2 pr-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue"
                                 name="searchValue" (input)="getSuggestions($event.target.value)" autocomplete="off"
@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-3">
+                    <div class="col-lg-3 col-md-3 pr-2">
                         <div class="input-daterange input-group">
                             <span class="input-group-prepend">
                                 <span class="input-group-text">
@@ -63,126 +63,141 @@
                 </div>
 
             </header>
-            <div class="row text-dark">
-                <div class="col">
-                    <section class="card">
-                        <div class="card-body">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">Document#</th>
-                                        <th width="10%">Trip </th>
-                                        <th width="10%">Document Type</th>
-                                        <th width="10%">Uploaded By</th>
-                                        <th width="10%">Uploaded On</th>
-                                        <th width="20%">Remarks</th>
-                                        <th width="5%">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="documents.length == 0" class="text-center">
-                                        <td colspan="8">{{dataMessage}}</td>
-                                    </tr>
-                                    <tr *ngFor="let document of documents;let i = index;">
-                                        <td>{{document.documentNumber}}</td>
-                                        <td>{{tripsObjects[document.tripID]}}</td>
-                                        <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?
-                                            document.docType+'#' : document.docType }}</td>
-                                        <!-- <td>{{document.documentName}}</td> -->
-                                        <td>{{document.uploadedBy}}</td>
-                                        <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
-                                            Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
-                                        </td>
-                                        <td>
-                                            <span *ngIf="document.description != ''">
-                                                {{ document.description | slice:0:100 }}
-                                                <a href="javascript:;" (click)="showDescModal(document.description)"
-                                                    *ngIf="document.description.length > 100"
-                                                    class="btn btn-dark btn-xs modal-with-form">Full Remarks</a>
-                                            </span>
-                                            <span *ngIf="document.description == ''">
-                                                -
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        (click)="editDocument(document.docID)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
-                                                    <a target="_blank" class="dropdown-item"
-                                                        href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download
-                                                        File</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
-                                <div class="col-6">
-                                    Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
-                                        [disabled]="docPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults()"
-                                        [disabled]="docNext">Next</button>
-                                </div>
-                            </div>
 
-                            <!---- email modal Form -->
-                            <!-- <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
-                                <section class="card">
-                                    <header class="card-header">
-                                        <h2 class="card-title">Email Document</h2>
-                                    </header>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-12">
-                                                    <label for="inputEmail4">To</label>
-                                                    <input type="email" class="form-control" id="inputEmail4">
+
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row pt-3">
+                            <div class="col-lg-12">
+                                <table class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Document#</th>
+                                            <th width="10%">Trip </th>
+                                            <th width="10%">Document Type</th>
+                                            <th width="10%">Uploaded By</th>
+                                            <th width="10%">Uploaded On</th>
+                                            <th width="20%">Remarks</th>
+                                            <th width="5%">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="documents.length == 0" class="text-center">
+                                            <td colspan="8">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let document of documents;let i = index;">
+                                            <td>{{document.documentNumber}}</td>
+                                            <td>{{tripsObjects[document.tripID]}}</td>
+                                            <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?
+                                                document.docType+'#' : document.docType }}</td>
+                                            <!-- <td>{{document.documentName}}</td> -->
+                                            <td>{{document.uploadedBy}}</td>
+                                            <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
+                                                Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="document.description != ''">
+                                                    {{ document.description | slice:0:100 }}
+                                                    <a href="javascript:;" (click)="showDescModal(document.description)"
+                                                        *ngIf="document.description.length > 100"
+                                                        class="btn btn-dark btn-xs modal-with-form">Full Remarks</a>
+                                                </span>
+                                                <span *ngIf="document.description == ''">
+                                                    -
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button"
+                                                        id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu"
+                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                        <a class="dropdown-item"
+                                                            (click)="editDocument(document.docID)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
+                                                        <a target="_blank" class="dropdown-item"
+                                                            href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download
+                                                            File</a>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-lg-12 mb-3">
-                                                    <label for="inputPassword4">Subject</label>
-                                                    <input type="text" class="form-control" id="inputPassword4">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputAddress">Body</label>
-                                                <textarea class="form-control" rows="3" id="texteditor"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="checkbox-custom">
-                                                    <input type="checkbox" name="terms" id="w1-terms">
-                                                    <label for="w1-terms">Send a copy of this email to me.</label>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <footer class="card-footer">
-                                        <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <button class="btn btn-success modal-confirm">Send</button>
-                                                <button class="btn btn-default modal-dismiss">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </footer>
-                                </section>
-                            </div> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            
+                         </div>
+
+                         <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
+                            <div class="col-6">
+                                Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                                    [disabled]="docPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults()"
+                                    [disabled]="docNext">Next</button>
+                            </div>
                         </div>
 
-                    </section>
+                        <!---- email modal Form -->
+                        <!-- <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
+                            <section class="card">
+                                <header class="card-header">
+                                    <h2 class="card-title">Email Document</h2>
+                                </header>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-12">
+                                                <label for="inputEmail4">To</label>
+                                                <input type="email" class="form-control" id="inputEmail4">
+                                            </div>
+                                            <div class="form-group col-lg-12 mb-3">
+                                                <label for="inputPassword4">Subject</label>
+                                                <input type="text" class="form-control" id="inputPassword4">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputAddress">Body</label>
+                                            <textarea class="form-control" rows="3" id="texteditor"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="checkbox-custom">
+                                                <input type="checkbox" name="terms" id="w1-terms">
+                                                <label for="w1-terms">Send a copy of this email to me.</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <footer class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-success modal-confirm">Send</button>
+                                            <button class="btn btn-default modal-dismiss">Cancel</button>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </section>
+                        </div> -->
+
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+             
+                
+             </section>
+
+
+         
         </section>
     </div>
 </section>
