@@ -77,12 +77,12 @@ export class ListService {
   }
 
 fetchShippers() {
-  this.apiService.getData("shippers").subscribe((result: any) => {
+  this.apiService.getData("contacts/get/type/consignor").subscribe((result: any) => {
     this.shipperDataSource.next(result);
   });
 }
 fetchReceivers() {
-  this.apiService.getData("receivers").subscribe((result: any) => {
+  this.apiService.getData("contacts/get/type/consignee").subscribe((result: any) => {
     this.receiverDataSource.next(result);
   });
 }
@@ -124,7 +124,7 @@ fetchReceivers() {
 
   fetchOwnerOperators() {
     this.apiService
-      .getData(`ownerOperators`)
+      .getData(`contacts/get/type/ownerOperator`)
       .subscribe((result: any) => {
         this.ownerOperatorDataSource.next(result);
       });
