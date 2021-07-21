@@ -112,7 +112,7 @@ export class ListingComponent implements OnInit {
         eventID: eventData.reminderID,
         type: eventData.type
       }
-      this.apiService.postData('reminders/delete', record).subscribe((result: any) => {
+      this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
           this.remindersData = [];
           this.serviceDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;

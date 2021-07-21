@@ -325,13 +325,13 @@ export class OrdersListComponent implements OnInit {
 
   deactivateOrder(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      let record = { 
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.orderID,
-        status: eventData.orderStatus
-      }
-      this.apiService.postData(`orders/delete`, record).subscribe((result: any) => {
+      // let record = { 
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.orderID,
+      //   status: eventData.orderStatus
+      // }
+      this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderStatus}`).subscribe((result: any) => {
           this.orders = [];
           this.confirmOrders = [];
           this.dispatchOrders = [];

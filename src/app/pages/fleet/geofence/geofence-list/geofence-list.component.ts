@@ -175,7 +175,7 @@ export class GeofenceListComponent implements OnInit {
   deactivateGeofence(value, geofenceID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`geofences/isDeleted/${geofenceID}/${value}`)
+      .deleteData(`geofences/isDeleted/${geofenceID}/${value}`)
       .subscribe((result: any) => {
         this.geofences = [];
         this.geoDraw = 0;

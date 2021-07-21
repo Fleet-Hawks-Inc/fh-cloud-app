@@ -345,10 +345,10 @@ export class AddInventoryComponent implements OnInit {
     });
   }
  deleteRequiredItem(requiredItem : any) {
-      let record = {
-        eventID: requiredItem
-      }
-      this.apiService.postData('items/delete/required/item', record).subscribe((result: any) => {
+      // let record = {
+      //   eventID: requiredItem
+      // }
+      this.apiService.deleteData(`items/delete/required/item/${requiredItem}`).subscribe((result: any) => {
         this.toastr.success('Required Inventory Item Deleted Successfully!');
       });
  }
