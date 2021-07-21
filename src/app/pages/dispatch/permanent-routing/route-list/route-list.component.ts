@@ -62,7 +62,7 @@ export class RouteListComponent implements OnInit {
 
   deleteRoute(routeID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService.getData('routes/delete/' + routeID).subscribe({
+      this.apiService.deleteData('routes/delete/' + routeID).subscribe({
         complete: () => {},
         error: () => {},
         next: (result: any) => {

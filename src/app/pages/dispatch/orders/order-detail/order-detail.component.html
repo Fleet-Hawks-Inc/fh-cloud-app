@@ -7,6 +7,9 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right">
+            <a data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2"
+              > Generate Invoice</a
+            >
             <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"
               ><i class="fas fa-pencil-alt"></i> Edit Order</a
             >
@@ -541,14 +544,42 @@
                               </tr>
                               <tr *ngFor="let data of milesArr">
                                 <td>
-                                  <span *ngFor="let shipp of data.shippers; let s=index">
-                                    {{s+1}}. {{ shipp.pickupLocation }}
+                                  <span *ngFor="let ship of data.shippers; ">
+                                    <span *ngFor="let point of ship.pickupPoint; let s=index">
+                                      <span *ngIf="point.address.manual">
+                                        {{s+1}}. {{ point.address.address }}
+                                        {{s+1}}. {{ point.address.city }}
+                                        {{s+1}}. {{ point.address.state }}
+                                        {{s+1}}. {{ point.address.country }}
+                                        {{s+1}}. {{ point.address.zipCode }}
+                                      </span>
+                                      <span *ngIf="!point.address.manual">
+                                        {{s+1}}. {{ point.address.pickupLocation }}
+                                        
+                                      </span>
                                     <br>
+                                    </span>
+                                    
                                   </span>
                                 </td>
                                 <td>
                                   <span *ngFor="let rec of data.receivers; let r=index">
-                                    {{r+1}}. {{ rec.dropOffLocation }}
+                                    <span *ngFor="let drop of rec.dropPoint; let s=index">
+                                      <span *ngIf="drop.address.manual">
+                                        {{s+1}}. {{ drop.address.address }}
+                                        {{s+1}}. {{ drop.address.city }}
+                                        {{s+1}}. {{ drop.address.state }}
+                                        {{s+1}}. {{ drop.address.country }}
+                                        {{s+1}}. {{ drop.address.zipCode }}
+                                      </span>
+                                      <span *ngIf="!drop.address.manual">
+                                        {{r+1}}. {{ drop.dropOffLocation }}
+                                        
+                                      </span>
+                                    <br>
+                                    </span>
+                                    
+                                    
                                     <br>
                                   </span>
                                 </td>
@@ -841,369 +872,257 @@
   role="dialog"
   aria-labelledby="previewInvoiceModalLabel"
   aria-hidden="true"
+  *ngIf="isInvoice"
 >
-  <div class="modal-dialog" style="max-width: 1200px" role="document">
+  <div class="modal-dialog" style="max-width: 900px" role="document">
     <div class="modal-content">
-      <div class="modal-body">
-        <div class="print-invoice__wrapper">
-          <div class="container-fluid invoice-wrapper" id="print_wrap">
-            <!-- Header -->
-            <header>
-              <div class="row align-items-center">
-                <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
-                  <img
-                    id="logo"
-                    src="assets/img/logo.png"
-                    title="FleetHawks"
-                    alt="FleetHawks"
-                  />
-                </div>
-                <div class="col-sm-5 text-center text-sm-right">
-                  <h4 class="text-7 mb-0">Invoice</h4>
-                </div>
-              </div>
-              <hr />
-            </header>
-
-            <!-- Main Content -->
-            <main>
-              <div class="row align-items-center">
-                <div class="col-sm-6">
-                  <strong>Invoice No:</strong> <span>16835</span> <br /><strong
-                    >Invoice Date:</strong
-                  >
-                  <span>05/12/2020</span>
-                </div>
-                <div class="col-sm-6 text-sm-right">
-                  <strong>Order:</strong> <span> 52415 </span>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-6">
-                  <strong>Carrier:</strong>
-                  <address>
-                    iLoad Trucking Ltd<br />
-                    245-7337 120th Street,<br />
-                    Canada 67R67 <br />
-                    (403) 635-6352 <br />
-                    <b>Contact Person:</b> Baljit Singh
-                  </address>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-6 text-sm-right order-sm-1">
-                  <div *ngFor="let item of consineeData">
-                    <strong>Consignee:</strong>
-                    <address>
-                      {{ item.receiverName }}<br />
-                      {{ item.dropOffLocation }}<br />
-                      {{ item.phone }} <br />
-                      <b>Contact Person:</b> {{ item.contactPerson }}
-                    </address>
-                    <strong>Expected Date:</strong
-                    ><span> {{ item.locationDateTime }}</span>
-                  </div>
-                </div>
-                <div class="col-sm-6 order-sm-0">
-                  <div *ngFor="let item of shipperData">
-                    <strong>Shipper:</strong>
-                    <address>
-                      {{ item.shipperName }}<br /><br />
-                      {{ item.pickupLocation }}<br />
-                      {{ item.phone }} <br />
-                      <b>Contact:</b> {{ item.contactPerson }}
-                    </address>
-                    <strong>Expected Date:</strong
-                    ><span> {{ item.locationDateTime }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- <hr class="mb-2"> -->
-              <!-- <div class="row pb-2">
-                      <div class="col-4"><strong>Driver:</strong> <span>John Smith</span></div>
-                      <div class="col-4 text-center"> <strong>Truck:</strong> <span>54152</span></div>
-                      <div class="col-4 text-right"> <strong>Trailer:</strong> <span>#525114</span></div>
-                    </div> -->
-              <div class="card mt-2">
-                <div class="card-header px-2 py-0" style="background: #333">
-                  <table class="table mb-0">
-                    <thead>
-                      <tr style="color: #fff">
-                        <td style="width: 65%" class="border-0">
-                          <strong>commodity </strong>
-                        </td>
-                        <td style="width: 80px" class="text-center border-0">
-                          <strong>Weight</strong>
-                        </td>
-                        <td style="width: 75px" class="text-center border-0">
-                          <strong>QTY</strong>
-                        </td>
-                        <td style="width: 90px" class="text-right border-0">
-                          <strong>Amount</strong>
-                        </td>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="card-body py-0 px-2">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <tbody>
-                        <tr>
-                          <td style="width: 65%" class="border-0">
-                            ABC commodity
-                          </td>
-                          <!-- <td class="col-4 text-1 border-0"></td> -->
-                          <td style="width: 80px" class="text-center border-0">
-                            100 KG
-                          </td>
-                          <td style="width: 75px" class="text-center border-0">
-                            10
-                          </td>
-                          <td style="width: 90px" class="text-right border-0">
-                            <small>CAD </small>500.00
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card mt-3">
-                <div class="card-header px-2 py-0" style="background: #333">
-                  <table class="table mb-0">
-                    <thead>
-                      <tr style="color: #fff">
-                        <td style="width: 200px" class="border-0">
-                          <strong>Fee Method</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Value</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Rate</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Amount</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Tax</strong>
-                        </td>
-                        <td style="width: 100px" class="text-right border-0">
-                          <strong>Total</strong>
-                        </td>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="card-body py-0 px-2">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <tbody>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong
-                              >Freight Fees <small>(Per Mile)</small></strong
-                            >
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            1200 Miles
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>2.00
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>2,400
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>400 <small>(13.0%)</small>
-                          </td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>2,800
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong
-                              >Fuel Surcharge
-                              <small><br />(Per Mile)</small></strong
-                            >
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            1200 Miles
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>1.00
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>1,200
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>250 <small>(12.0%)</small>
-                          </td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>1,650
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong>Tarp <small>(Other Charges)</small></strong>
-                          </td>
-                          <td style="width: 100px" class="text-center">-</td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>30
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>30
-                          </td>
-                          <td style="width: 100px" class="text-center">-</td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>30
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="4" class="bg-light-2 text-right">
-                            <strong>Total:</strong>
-                          </td>
-                          <td class="bg-light-2 text-center">
-                            <strong><small>CAD </small>650</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>4,480</strong>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="5" class="bg-light-2 text-right">
-                            <strong>Discount:</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>80</strong>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="5" class="bg-light-2 text-right">
-                            <strong>Payable Amount:</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>4,400</strong>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card-body py-0 px-2 mt-5">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                        <tr>
-                          <td class="border-0 p-0">
-                            <h4 class="m-0 text-uppercase">
-                              <b>Instructions</b>
-                            </h4>
-                          </td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="p-0 border-0">
-                            1. PLEASE ENSURE DRIVER IDENTIFIES HIMSELF AS P/U ON
-                            BEHALF OF TOTAL LOGISTICS
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            2. DRIVER MUST BE ABLE AND WILLING TO PROVIDE EITHER
-                            COMPANY PHOTO ID or ANOTHER PIECE OF SUITABLE
-                            PICTURE IDENTIFICATION UPON SHIPPER/RECEIVER REQUEST
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            3. ALL DRIVERS ARE REQUIRED TO HAVE SAFETY SHOES AND
-                            VEST
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td class="p-0 border-0 mt-2 text-uppercase">
-                            <b
-                              >NOTE: Please note that all Food Products are
-                              subject to FDA review and therefore all drivers
-                              must report to the FDA office at the time of
-                              crossing</b
-                            >
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div class="card-body py-0 px-2 mt-5">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                        <tr>
-                          <td class="border-0 p-0">
-                            <h4 class="m-0 text-uppercase">
-                              <b>Terms &amp; Conditions</b>
-                            </h4>
-                          </td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> INVOICE WITH ALL PAPERWORK HAS TO BE SENT
-                            TO APinvoice@totallogistics.com
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> TIME IN &amp; OUT REQUIRED FOR PICK-UP AND
-                            DELIVERY
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Third party billing by Total Logistics
-                            Control
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> All trailers must arrive at receiver’s
-                            sealed - FTL’s Sealed and LTL‘s sealed or Padlocked
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Fuel surcharge included in all rates
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> All trailers must be 53' in length with
-                            barn doors, FOOD GRADE, odour-free, dry and clean
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Do not mix with hazmat or toxic materials
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
+      <div class="modal-body p-0">
+        <section class="invoice-wrapper"  id="print_wrap">
+          <table width="100%">
+              <tbody>
+                  <tr>
+                      <td>
+                          <table width="100%">
+                              <tbody><tr>
+                                  <td width="60%" class="title" valign="middle" style="padding-bottom: 0;text-align: center;">
+                                      <h4 style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">{{invoiceData.carrierData.companyName}}</h4>
+                                      <h6 style="margin-top: 15px; color: #040404;font-weight: 500;" class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                  </td>
+                              </tr>
+                          </tbody></table>
+                      </td>
+                  </tr>
+                 
+                  <tr>
+                    <td>
+                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;">
+                            <tbody>
+                                <tr>
+                                    <td valign="top">
+                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                        <span style="text-transform: capitalize;"> {{invoiceData.customer.companyName}} <br></span>
+                                        {{invoiceData.customer.address}} <br>
+                                        <span *ngIf="additionalContactName != '' && additionalContactName != null ">  Contact Person: <b>{{additionalContactName}}</b> <br></span>
+                                        <span *ngIf="additionalPhone != '' && additionalPhone != null ">Phone: <b>{{additionalPhone}}</b></span>
+                                    </td>
+                                    <td align="right">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px">
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Invoice#</b> <br>
+                                                        </span> 
+                                                        {{orderNumber}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px"> 
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Invoice Date</b> <br>
+                                                        </span>  
+                                                        10/10/2021 
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right" style="padding-bottom: 10px">
+                                                        <span style="font-size: 12px;text-transform: uppercase;">
+                                                            <b>Order#</b> 
+                                                        </span><br>
+                                                        {{orderNumber}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>
+                                        <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                        Diamond INC <br>
+                                        2705 N. Enterprise St <br>
+                                        Orange, USA 92865 <br>
+                                        (403) 987-76567 <br>
+                                        Contact Person: <b>William B.</b> <br>
+                                        Ship Date: <b>12 Sep, 2020</b>
+                                    </td>
+                                    
+                                    <td align="right">
+                                        <b style="font-size: 12px;">CONSIGNEE:</b> <br>
+                                        Daynight Electric INC <br>
+                                        15 Hodges Mews, High Wycombe <br>
+                                        HP12 3JL, Canada 67R67 <br>
+                                        (403) 635-6352 <br>
+                                        Contact Person: <b>John Smith</b> <br>
+                                        Delivery Date: <b>15 Sep, 2020</b>
+                                    </td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                            <tbody>
+                                 <tr>
+                                    <td colspan="6">
+                                        <table class="table-striped" width="100%">
+                                            <thead>
+                                                <tr style="color: #aeaeae;font-size: 12px;">
+                                                    <td colspan="3">COMMODITY</td>
+                                                    <td style="width: 70px">WEIGHT</td>
+                                                    <td style="width: 70px">QTY</td>
+                                                    <td style="width: 100px" align="right">AMOUNT</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="item">
+                                                    <td colspan="3">ABC commodity</td>
+                                                    <td>100 KG</td>
+                                                    <td>10</td>
+                                                    <td align="right"><small> CAD </small>1,000</td>
+                                                </tr>
+                                                <tr class="item">
+                                                    <td colspan="3">XYZ commodity</td>
+                                                    <td>100 KG</td>
+                                                    <td>50</td>
+                                                    <td align="right"><small> CAD </small>5,000</td>
+                                                </tr>
+                                                 
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <table class="table-striped" width="100%">
+                                            <thead>
+                                                <tr style="color: #aeaeae;font-size: 12px;">
+                                                    <td  colspan="6">FEE METHOD</td>
+                                                    <!-- <td style="width: 70px">VALUE</td>
+                                                    <td style="width: 70px">RATE</td> -->
+                                                    <!-- <td style="width: 100px">AMOUNT</td> -->
+                                                    <!-- <td style="width: 100px">TAX</td> -->
+                                                    <td style="width: 100px" align="right">TOTAL</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="item">
+                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}} <small>(Freight Fees)</small></td>
+                                                    <!-- <td>1200 Miles</td> -->
+                                                    <!-- <td><small>CAD</small> 2.00</td> -->
+                                                    <!-- <td><small>{{invoiceData.charges.freightFee.currency}}</small> {{invoiceData.charges.freightFee.amount}}</td> -->
+                                                    <!-- <td><small>CAD</small> 400 <small>(13.0%)</small></td> -->
+                                                    <td align="right"><small>{{invoiceData.charges.freightFee.currency}}</small> {{invoiceData.charges.freightFee.amount}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6">{{invoiceData.charges.fuelSurcharge.type}}<small> (Fuel Surcharge)</small></td>
+                                                    <!-- <td>1200 Miles</td>
+                                                    <td><small>CAD</small> 1.00</td> -->
+                                                    <!-- <td><small>{{invoiceData.charges.fuelSurcharge.currency}}</small> {{invoiceData.charges.fuelSurcharge.amount}}</td> -->
+                                                    <!-- <td><small>CAD</small> 250 <small>(12.0%)</small></td> -->
+                                                    <td align="right"><small>{{invoiceData.charges.fuelSurcharge.currency}}</small> {{invoiceData.charges.fuelSurcharge.amount}}</td>
+                                                    
+                                                </tr>
+                                                <tr *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                  <td colspan="6">{{item.type}} <small>(Fuel Surcharge)</small></td>
+                                                  <td align="right"><small>{{item.currency}}</small> {{item.amount}}</td>
+                                                  
+                                                </tr>
+                                                <tr *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                  <td colspan="6">{{item.type}} <small>(Accessorial Deduction)</small></td>
+                                                  <td align="right"><small>- {{item.currency}}</small> {{item.amount}}</td>
+                                                 
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td>Tarp <small>(Other Charges)</small></td>
+                                                    <td>-</td>
+                                                    <td><small>CAD</small> 30</td>
+                                                    <td><small>CAD</small> 30</td>
+                                                    <td>-</td>
+                                                    <td align="right"><small>CAD</small> 30</td>
+                                                </tr> -->
+                                                <tr class="bg-transparent">
+                                                    <td align="right" colspan="6">Sub Total</td>
+                                                    <td align="right"><small>{{charges.freightFee.currency}} </small>{{invoiceData.subTotal}}</td>
+                                                </tr>
+                                                <tr class="bg-transparent">
+                                                    <td colspan="6" align="right">Tax</td>
+                                                    <td align="right"><small>{{charges.freightFee.currency}} </small>{{invoiceData.taxesAmt}}</td>
+                                                </tr>
+                                                <!-- <tr class="bg-transparent">
+                                                    <td align="right" colspan="5">Discount</td>
+                                                    <td align="right"><small>CAD </small>450</td>
+                                                </tr> -->
+                                            </tbody>
+                                             <tfoot class="border-1">
+                                                <tr>
+                                                    <th colspan="6" align="right">
+                                                      <div style="text-align: right;">
+                                                        TOTAL
+                                                      </div>
+                                                    </th>
+                                                    <th align="right">
+                                                      <div style="text-align: right;">
+                                                        <small>{{charges.freightFee.currency}} </small>{{invoiceData.finalAmount}}
+                                                      </div>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                  </tr>
+                  <!-- <tr>
+                      <td colspan="6" style="padding-top: 20px;">
+                          <table>
+                              <tbody><tr>
+                                  <td><b style="font-size: 12px;">INSTRUCTIONS:</b></td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <ol style="margin: 0; padding-left: 15px; ">
+                                          <li>Please ensure driver identifies himself as p/u on behalf of total logistics</li>
+                                          <li>Driver must be able and willing to provide either company photo id or another piece of suitable picture identification upon shipper/receiver request</li>
+                                          <li> All drivers are required to have safety shoes and vest</li>
+                                          <li>Please note that all food products are subject to fda review and therefore all drivers must report to the fda office at the time of crossing</li>
+                                      </ol>
+                                  </td>
+                              </tr>
+                          </tbody></table>
+                      </td>
+                  </tr> -->
+  
+               <!-- <tr>
+                  <td colspan="6" style="padding-top: 20px;">
+                      <table>
+                          <tbody><tr>
+                              <td><b style="font-size: 12px;">TERMS:</b></td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <ol style="margin: 0; padding-left: 15px; ">
+                                      <li>Invoice with all paperwork has to be sent to apinvoice@totallogistics.Com</li>
+                                      <li>Time in &amp; out required for pick-up and delivery</li>
+                                      <li>Third party billing by total logistics control</li>
+                                      <li>All trailers must arrive at receiver’s sealed - ftl’s sealed and ltl‘s sealed or padlocked</li>
+                                      <li>Fuel surcharge included in all rates</li>
+                                      <li>All trailers must be 53' in length with barn doors, food grade, odour-free, dry and clean</li>
+                                      <li>Do not mix with hazmat or toxic materials</li>
+                                  </ol>
+                              </td>
+                          </tr>
+                      </tbody></table>
+                  </td>
+              </tr> -->
+              </tbody>
+          </table>
+      </section>
       </div>
       <div class="modal-footer">
         <button class="btn btn-default" data-dismiss="modal">Cancel</button>

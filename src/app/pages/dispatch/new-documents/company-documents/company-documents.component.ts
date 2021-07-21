@@ -328,7 +328,7 @@ export class CompanyDocumentsComponent implements OnInit {
   deactivateAsset(value, docID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-        .getData(`documents/isDeleted/${docID}/${value}`)
+        .deleteData(`documents/isDeleted/${docID}/${value}`)
         .subscribe((result: any) => {
           this.documents = [];
           this.docDraw = 0;

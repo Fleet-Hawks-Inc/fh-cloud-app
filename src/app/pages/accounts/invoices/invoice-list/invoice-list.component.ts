@@ -84,6 +84,7 @@ export class InvoiceListComponent implements OnInit {
 
     }
   }
+
   /*
    * Get all customers's IDs of names from api
    */

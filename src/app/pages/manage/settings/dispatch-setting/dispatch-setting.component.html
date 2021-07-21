@@ -1,0 +1,939 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+               <div class="row">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     <h2 class="font-weight-bold">Routing & Dispatch Settings</h2>
+                  </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                     <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                  </div>
+               </div>
+            </header>
+            
+            <div class="routing-overview__wrapper m-3">
+               <div class="row">
+                  <div class="col-lg-12 col-xl-12 mb-4">
+                     <div class=" ">
+                        <ul class="nav nav-tabs top-tabs">
+                           <li class="nav-item active">
+                              <a class="nav-link active" href="#deletedset" data-toggle="tab">Deleted Entries</a>
+                           </li>
+                          
+                        </ul>
+                        <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                           <!-- driver listing -->
+                           <div id="deletedset" class="tab-pane active">
+                              <div class="row pt-2">
+                                 <div class="col-lg-12">
+                                    <div class="reports-sidebar">
+                                       <div class="nav nav-pills" id="nav-tab" role="tablist">
+                                          <ul class="p-0 m-0 w-100">
+                                             <li>
+                                                <a class="nav-item nav-link active rounded-0" id="nav-logs-tab" data-toggle="tab" href="#quoteset" role="tab"><i class="fas fa-file-alt fa-fw"></i> Quotes</a>
+                                             </li>
+                                             <li> 
+                                                <a class="nav-item nav-link rounded-0" id="nav-maintenance-tab" data-toggle="tab" href="#ordentset" role="tab"><i class="fas fa-cog fa-fw"></i> Orders</a>
+                                             </li>
+                                             <li>
+                                                <a class="nav-item nav-link rounded-0" id="nav-inspection-tab" data-toggle="tab" href="#tripsentset" role="tab"><i class="fas fa-cog fa-fw"></i> Trips</a>
+                                             </li>
+											 <li>
+                                                <a class="nav-item nav-link rounded-0" id="nav-inspection-tab" data-toggle="tab" href="#routesentset" role="tab"><i class="fas fa-cog fa-fw"></i> Routes</a>
+                                             </li>
+                                          </ul>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="reports-content">
+                                 <div class="tab-content p-0 reports-tabs__content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="quoteset" role="tabpanel" aria-labelledby="nav-logs-tab">
+                                       <div class="reports-listing p-2">
+                                          <div class="row">
+                                             <div class="col-12">
+                                                <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here:</p>
+                                             </div>
+                                             <div class="col-1 text-right pt-2">
+                                                <label class="control-label font-weight-bold">Search</label>
+                                             </div>
+                                             <div class="col-3">
+                                                <input type="text" placeholder="Search any entry" class="form-control">
+                                             </div>
+                                             <div class="col-12 mt-4">
+                                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
+													 <thead>
+														<tr>
+														   <th >Estimate</th>
+														   <th >Date</th>
+														   <th >Reference No.</th>
+														   <th >Expiry Date</th>
+														   <th >Customer</th>
+														   <th >Pickup</th>
+														   <th >Deliver</th>
+														   <th >Created By</th>
+														   <th >Estimated Miles</th>
+														   <th >Amount</th>
+														   <th >Status</th>
+														   <th></th>
+														</tr>
+													 </thead>
+													 <tbody>
+														<tr>
+														   
+														   <td class="cursorpoint">34523</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 6/02/2020 05:25 AM<br>
+															  Location: Regina, SK
+														   </td>
+														   <td >Date: 06/10/2020 05:20 PM<br>
+															  Location: Winnipeg, YT
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+														   
+														   <td class="cursorpoint">5689</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 13/03/2020 04:20 AM<br>
+															  Location: Toronto, ON
+														   </td>
+														   <td >Date: 06/10/2020 05:20 PM<br>
+															  Location: Delta, BC
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+														   
+														   <td class="cursorpoint">98766</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 14/04/2020 04:00 AM<br>
+															  Location: Calgary, AB
+														   </td>
+														   <td >Date: 20/05/2020 05:00 PM<br>
+															  Location: Perth, ON
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+														   
+														   <td class="cursorpoint">225890</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 14/06/2020 04:00 AM<br>
+															  Location: Calgary, AB
+														   </td>
+														   <td >Date: 20/07/2020 05:00 PM<br>
+															  Location: Vancouver, BC
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+														   
+														   <td class="cursorpoint">34523</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 6/02/2020 05:25 AM<br>
+															  Location: Regina, SK
+														   </td>
+														   <td >Date: 06/10/2020 05:20 PM<br>
+															  Location: Winnipeg, YT
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+														   
+														   <td class="cursorpoint">5689</td>
+														   <td>09/25/2020</td>
+														   <td>456456</td>
+														   <td>10/05/2020</td>
+														   <td>Neesham</td>
+														   <td >Date: 13/03/2020 04:20 AM<br>
+															  Location: Toronto, ON
+														   </td>
+														   <td >Date: 06/10/2020 05:20 PM<br>
+															  Location: Delta, BC
+														   </td>
+														   <td>Admin</td>
+														   <td>150 Miles</td>
+														   <td >Estimated Amt: CAD 1500.00<br>
+															  Frieght Fees CAD 20.00<br>
+															  Fuel Surcharge: CAD 380.00<br>
+															  Taxes: CAD 50.00
+														   </td>
+														   <td><span class="badge badge-dark p-1">SENT</span></td>
+														   <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+													 </tbody>
+												  </table>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- orders deleted entries -->
+                                    <div class="tab-pane fade" id="ordentset" role="tabpanel" aria-labelledby="nav-maintenance-tab">
+                                       <div class="reports-listing p-2">
+                                          <div class="row pt-2">
+                                             <div class="col-12">
+                                                <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                             </div>
+                                             <div class="col-1 text-right pt-2">
+                                                <label class="control-label font-weight-bold">Search</label>
+                                             </div>
+                                             <div class="col-3">
+                                                <input type="text" placeholder="Search any entry" class="form-control">
+                                             </div>
+                                             <div class="col-12 mt-4">
+                                                <table class="table table-bordered table-responsive-lg table-striped mb-0">
+												   <thead>
+													  <tr>
+														 <th >Order</th>
+														 <th >Type</th>
+														 <th >Pickup</th>
+														 <th >Deliver</th>
+														 <th >Commodity</th>
+														 <th >Amount</th>
+														 <th >Status</th>
+														 <th ></th>
+													  </tr>
+												   </thead>
+												   <tbody>
+													  <tr>
+														 
+														 <td class="cursorpoint">34523</td>
+														 <td>LTL</td>
+														 <td >Date: 6/02/2020 05:25 AM<br>
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Name: Cricket Bats<br>
+															Qty: 1500 Pieces<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1500.00<br>
+															Received: CAD 1200.00<br>
+															Balance: CAD 300.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">5689</td>
+														 <td>FTL</td>
+														 <td >Date: 13/03/2020 04:20 AM<br>
+															Location: Toronto, ON
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Delta, BC
+														 </td>
+														 <td >Name: Food<br>
+															Qty: 1500 Packets<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1100.00<br>
+															Received: CAD 900.00<br>
+															Balance: CAD 200.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">98766</td>
+														 <td>LTL</td>
+														 <td >Date: 14/04/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/05/2020 05:00 PM<br>
+															Location: Perth, ON
+														 </td>
+														 <td >Name: Beverage<br>
+															Qty: 2500 Bottle<br>
+															Rate: 1/piece
+														 </td>
+														 <td >T Amt: CAD 2500.00<br>
+															Received: CAD 1000.00<br>
+															Balance: CAD 1500.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">QUOTED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">225890</td>
+														 <td>LTL</td>
+														 <td >Date: 14/06/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/07/2020 05:00 PM<br>
+															Location: Vancouver, BC
+														 </td>
+														 <td >Name: Fruits<br>
+															Qty: 750 Bags<br>
+															Rate: 20/bag
+														 </td>
+														 <td >T Amt: CAD 3000.00<br>
+															Received: CAD 2000.00<br>
+															Balance: CAD 1000.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">34523</td>
+														 <td>LTL</td>
+														 <td >Date: 6/02/2020 05:25 AM<br>
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Name: Cricket Bats<br>
+															Qty: 1500 Pieces<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1500.00<br>
+															Received: CAD 1200.00<br>
+															Balance: CAD 300.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">INVOICED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">5689</td>
+														 <td>FTL</td>
+														 <td >Date: 13/03/2020 04:20 AM<br>
+															Location: Toronto, ON
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Delta, BC
+														 </td>
+														 <td >Name: Food<br>
+															Qty: 1500 Packets<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1100.00<br>
+															Received: CAD 900.00<br>
+															Balance: CAD 200.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">98766</td>
+														 <td>LTL</td>
+														 <td >Date: 14/04/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/05/2020 05:00 PM<br>
+															Location: Perth, ON
+														 </td>
+														 <td >Name: Beverage<br>
+															Qty: 2500 Bottle<br>
+															Rate: 1/piece
+														 </td>
+														 <td >T Amt: CAD 2500.00<br>
+															Received: CAD 1000.00<br>
+															Balance: CAD 1500.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">225890</td>
+														 <td>LTL</td>
+														 <td >Date: 14/06/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/07/2020 05:00 PM<br>
+															Location: Vancouver, BC
+														 </td>
+														 <td >Name: Fruits<br>
+															Qty: 750 Bags<br>
+															Rate: 20/bag
+														 </td>
+														 <td >T Amt: CAD 3000.00<br>
+															Received: CAD 2000.00<br>
+															Balance: CAD 1000.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">CANCEL DISPATCHED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">34523</td>
+														 <td>LTL</td>
+														 <td >Date: 6/02/2020 05:25 AM<br>
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Name: Cricket Bats<br>
+															Qty: 1500 Pieces<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1500.00<br>
+															Received: CAD 1200.00<br>
+															Balance: CAD 300.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">5689</td>
+														 <td>FTL</td>
+														 <td >Date: 13/03/2020 04:20 AM<br>
+															Location: Toronto, ON
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM<br>
+															Location: Delta, BC
+														 </td>
+														 <td >Name: Food<br>
+															Qty: 1500 Packets<br>
+															Rate: 0.5/piece
+														 </td>
+														 <td >T Amt: CAD 1100.00<br>
+															Received: CAD 900.00<br>
+															Balance: CAD 200.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">98766</td>
+														 <td>LTL</td>
+														 <td >Date: 14/04/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/05/2020 05:00 PM<br>
+															Location: Perth, ON
+														 </td>
+														 <td >Name: Beverage<br>
+															Qty: 2500 Bottle<br>
+															Rate: 1/piece
+														 </td>
+														 <td >T Amt: CAD 2500.00<br>
+															Received: CAD 1000.00<br>
+															Balance: CAD 1500.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">INVOICED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">225890</td>
+														 <td>LTL</td>
+														 <td >Date: 14/06/2020 04:00 AM<br>
+															Location: Calgary, AB
+														 </td>
+														 <td >Date: 20/07/2020 05:00 PM<br>
+															Location: Vancouver, BC
+														 </td>
+														 <td >Name: Fruits<br>
+															Qty: 750 Bags<br>
+															Rate: 20/bag
+														 </td>
+														 <td >T Amt: CAD 3000.00<br>
+															Received: CAD 2000.00<br>
+															Balance: CAD 1000.00
+														 </td>
+														 <td><span class="badge badge-dark p-1">QUOTED</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+												   </tbody>
+												</table>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <!-- trips deleted entries -->
+                                    <div class="tab-pane fade" id="tripsentset" role="tabpanel" aria-labelledby="nav-inspection-tab">
+                                       <div class="reports-listing p-2">
+                                          <div class="row pt-2">
+                                             <div class="col-12">
+                                                <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                             </div>
+                                             <div class="col-1 text-right pt-2">
+                                                <label class="control-label font-weight-bold">Search</label>
+                                             </div>
+                                             <div class="col-3">
+                                                <input type="text" placeholder="Search any entry" class="form-control">
+                                             </div>
+                                             <div class="col-12 mt-4">
+                                                <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+												   <thead>
+													  <tr>
+														 <th >Trip</th>
+														 <th >Type</th>
+														 <th >Date</th>
+														 <th >Order No.</th>
+														 <th >Pick-up</th>
+														 <th >Delivery</th>
+														 <th >Driver</th>
+														 <th >Vehicle</th>
+														 <th >Assets</th>
+														 <th >Carrier</th>
+														 <th >Status</th>
+														 <th></th>
+													  </tr>
+												   </thead>
+												   <tbody>
+													  <tr>
+														 
+														 <td class="cursorpoint">1249870</td>
+														 <td>Regular</td>
+														 <td>1231</td>
+														 <td >22120</td>
+														 <td >Date: 6/02/2020 05:25 AM
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Mike</td>
+														 <td >5320</td>
+														 <td >2205</td>
+														 <td >T11320</td>
+														 <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">2348</td>
+														 <td>Regular</td>
+														 <td>1231</td>
+														 <td >22120</td>
+														 <td >Date: 6/02/2020 05:25 AM
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Mike</td>
+														 <td >5320</td>
+														 <td >119856</td>
+														 <td >T11320</td>
+														 <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  
+													  
+													  <tr>
+														 
+														 <td class="cursorpoint">5689</td>
+														 <td>Regular</td>
+														 <td>1231</td>
+														 <td >22120</td>
+														 <td >Date: 6/02/2020 05:25 AM
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Mike</td>
+														 <td >5320</td>
+														 <td >ACV552</td>
+														 <td >T11320</td>
+														 <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+													  <tr>
+														 
+														 <td class="cursorpoint">5689</td>
+														 <td>Regular</td>
+														 <td>1231</td>
+														 <td >22120</td>
+														 <td >Date: 6/02/2020 05:25 AM
+															Location: Regina, SK
+														 </td>
+														 <td >Date: 06/10/2020 05:20 PM
+															Location: Winnipeg, YT
+														 </td>
+														 <td >Mike</td>
+														 <td >5320</td>
+														 <td >3389567</td>
+														 <td >T11320</td>
+														 <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+														 <td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+													  </tr>
+												   </tbody>
+												</table>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+									
+									<!-- routes deleted entries -->
+                                    <div class="tab-pane fade" id="routesentset" role="tabpanel" aria-labelledby="nav-inspection-tab">
+                                       <div class="reports-listing p-2">
+                                          <div class="row pt-2">
+                                             <div class="col-12">
+                                                <p class="text-4 font-weight-bold text-dark">Choose what happens to your deleted entries from here.</p>
+                                             </div>
+                                             <div class="col-1 text-right pt-2">
+                                                <label class="control-label font-weight-bold">Search</label>
+                                             </div>
+                                             <div class="col-3">
+                                                <input type="text" placeholder="Search any entry" class="form-control">
+                                             </div>
+                                             <div class="col-12 mt-4">
+                                                <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+													<thead>
+														<tr>
+															<th>Route Name</th>
+															<th>Source</th>
+															<th>Destination</th>
+															<th>Distance</th>
+															<th>Recurring</th>
+															<th>Stops</th>
+															<th>Notes</th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															
+															<td class="cursorpoint">Warehouse1 to Wallmart</td>
+															<td>100 street, Kings Town, Alberta</td>                                                
+															<td>200 street, Kings Town, Alberta</td>
+															<td>51 miles</td>
+															<td>Weekly</td>
+															<td>150 street, Kings Town, Alberta<br>
+															180 street, Kings Town, Alberta</td>
+															<td>Test notes about route</td>
+															<td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+															
+															<td class="cursorpoint">Warehouse1 to Wallmart</td>
+															<td>100 street, Kings Town, Alberta</td>                                                
+															<td>200 street, Kings Town, Alberta</td>
+															<td>51 miles</td>
+															<td>Biweekly</td>
+															<td>150 street, Kings Town, Alberta<br>
+															180 street, Kings Town, Alberta</td>
+															<td>Test notes about route</td>
+															<td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+															
+															<td class="cursorpoint">Warehouse1 to Wallmart</td>
+															<td>100 street, Kings Town, Alberta</td>                                                
+															<td>200 street, Kings Town, Alberta</td>
+															<td>51 miles</td>
+															<td>Weekly</td>
+															<td>150 street, Kings Town, Alberta<br>
+															180 street, Kings Town, Alberta</td>
+															<td>Test notes about route</td>
+															<td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														<tr>
+															
+															<td class="cursorpoint">Warehouse1 to Wallmart</td>
+															<td>100 street, Kings Town, Alberta</td>                                                
+															<td>200 street, Kings Town, Alberta</td>
+															<td>51 miles</td>
+															<td>Biweekly</td>
+															<td>150 street, Kings Town, Alberta<br>
+															180 street, Kings Town, Alberta</td>
+															<td>Test notes about route</td>
+															<td>
+                                                            <div class="btn-group flex-wrap">
+                                                               <button type="button" class="btn p-0" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+                                                               <div class="dropdown-menu" role="menu">
+                                                                  <a class="dropdown-item text-1" href="#">Restore</a>
+                                                                  <a class="dropdown-item text-1" href="#">Delete Permanently</a>
+                                                               </div>
+                                                            </div>
+                                                         </td>
+														</tr>
+														
+														
+													</tbody>
+												</table>
+									
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+									
+									
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        
+                       
+                     
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

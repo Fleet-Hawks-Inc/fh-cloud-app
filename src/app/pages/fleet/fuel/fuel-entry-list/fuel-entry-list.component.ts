@@ -236,12 +236,12 @@ export class FuelEntryListComponent implements OnInit {
   // }
   deleteFuelEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.fuelID
-      }
-      this.apiService.postData('fuelEntries/delete', record).subscribe((result: any) => {
+      // let record = {
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.fuelID
+      // }
+      this.apiService.deleteData(`fuelEntries/delete/${eventData.fuelID}`).subscribe((result: any) => {
 
         this.fuelList = [];
         this.fuelDraw = 0;
