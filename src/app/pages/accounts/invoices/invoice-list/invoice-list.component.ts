@@ -71,14 +71,11 @@ export class InvoiceListComponent implements OnInit {
       this.total = +(this.total).toFixed(2);
     }
   }
-  findOverDueInvoice(openInvoices: any) {
-    for (const operator of openInvoices) {
-      const invDate = Date.parse(operator.txnDate);
+  findOverDueInvoice(invoices: any) {
+    for (const operator of invoices) {
+      const curDate = new Date().getTime();
       const dueDate = Date.parse(operator.invDueDate);
-      console.log('invDate', invDate);
-      console.log('dueDate', dueDate);
-      console.log('operator.invStatus', operator.invStatus);
-      if (dueDate >= invDate) {
+      if (curDate >= dueDate) {
         delete operator.invStatus;
         operator[`invStatus`] = 'overdue';
       } else {
