@@ -1,8 +1,7 @@
 
-/* === Test Created with Cypress Studio === */
+
 it('added inspection form with required fields with no default form', function() {
-  /* ==== Generated with Cypress Studio ==== */
-  cy.visit('http://localhost:4200/');
+  cy.visit('/#/Login');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
   cy.get(':nth-child(1) > .input-group > .form-control').type('sixteen.may');
   cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -15,19 +14,16 @@ it('added inspection form with required fields with no default form', function()
   cy.get('.col-lg-9 > .row > :nth-child(1) > .form-control').type('new form today for vehicle ');
   cy.get('.col-lg-9 > .row > :nth-child(2) > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').click();
   cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(1)').click();
-  cy.get(':nth-child(6) > .btn > .fas').click();
-  cy.get('.row > :nth-child(1) > :nth-child(7) > .form-control').clear();
-  cy.get('.row > :nth-child(1) > :nth-child(7) > .form-control').type('lights');
-  cy.get(':nth-child(7) > .btn > .fas').click();
+  cy.get('.row > :nth-child(1) > .col-lg-12 > .form-control').clear();
+  cy.get('.row > :nth-child(1) > .col-lg-12 > .form-control').type('lights');
 //   cy.get('.col-lg-11 > .btn-success').click();
 cy.get('.col-lg-11 > .mb-1').click();
-cy.get(':nth-child(1) > [style="width: 1250.4px;"]').click();
-  /* ==== End Cypress Studio ==== */
+cy.wait(8000);
+ 
 });
 
 it('validation errors', function() {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+  cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('sixteen.may');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -50,14 +46,13 @@ it('validation errors', function() {
     // cy.get(':nth-child(7) > .btn > .fas').click();
   //   cy.get('.col-lg-11 > .btn-success').click();
   cy.get('.col-lg-11 > .mb-1').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
 
 
 
   it('user should be able to edit the inspection form', function() {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('sixteen.may');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -65,19 +60,19 @@ it('validation errors', function() {
     cy.get('#btnsubmit').click();
     cy.get('nav > .nav > :nth-child(2) > .nav-link').click();
     cy.get(':nth-child(7) > .nav-link > span').click();
-    cy.get('#dropdownMenuButton-0 > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(3) > .dropdown > .dropdown-menu > [ng-reflect-router-link="/compliance/dvir/inspection-ad"]').click();
+    cy.get('#dropdownMenuButton-3 > .fas').click();
+    cy.get('[href="#/compliance/dvir/inspection-add/1vQeP0aIKLN1Muu3ZBpnJub3Zpp"]').click();
     cy.wait(8000);
     cy.get('.col-lg-9 > .row > :nth-child(1) > .form-control').clear(); 
     cy.get('.col-lg-9 > .row > :nth-child(1) > .form-control').type('new  today for vehicle ');
     // cy.get('.col-lg-11 > .btn-success').click();
     cy.get('.col-lg-11 > .mb-1').click();
+    cy.wait(8000);
 });
 
-/* === Test Created with Cypress Studio === */
+
 it.only('added inspection form (asset) with required fields with  default form', function() {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+  cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('sixteen.may');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -96,7 +91,4 @@ it.only('added inspection form (asset) with required fields with  default form',
     cy.get('#defaultCheckbox').click();
     // cy.get('.col-lg-11 > .btn-success').click();
     cy.get('.col-lg-11 > .mb-1').click();
-    cy.get(':nth-child(1) > [style="width: 1250.4px;"]').click();
-
-
 });

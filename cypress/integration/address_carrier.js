@@ -1,7 +1,6 @@
 
 it('added carrier with required optional fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -76,13 +75,11 @@ it('added carrier with required optional fields ', function () {
     cy.get('#addCarrierModal > .modal-dialog > .modal-content > .modal-footer > .btn-default').click();
     cy.get('.address-book-icon > .far').click();
     cy.get('#carrier-tab').click();
-    /* ==== End Cypress Studio ==== */
 });
 
 
 it('added carrier with required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -107,13 +104,12 @@ it('added carrier with required  fields ', function () {
     cy.get('#addCarrierModal > .modal-dialog > .modal-content > .modal-footer > .btn-default').click();
     cy.get('.address-book-icon > .far').click();
     cy.get('#carrier-tab').click();
-    /* ==== End Cypress Studio ==== */
+    
 });
 
 
 it('user should be able to search ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -133,8 +129,7 @@ it('user should be able to search ', function () {
 
 
 it('user should be able to edit ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -143,8 +138,8 @@ it('user should be able to edit ', function () {
     cy.get('.address-book-icon > .far').click();
     cy.get('#carrier-tab').click();
     cy.wait(8000);
-    cy.get(':nth-child(2) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(2) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
+    cy.get('#carrierTable > tbody > :nth-child(2) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
+    cy.get('#carrierTable > tbody > :nth-child(2) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
     cy.wait(8000);
     cy.get('#carrierForm > :nth-child(1) > :nth-child(1) > .col-lg-5.offset-lg-1 > .row > :nth-child(2) > .form-control').clear();
     cy.get('#carrierForm > :nth-child(1) > :nth-child(1) > .col-lg-5.offset-lg-1 > .row > :nth-child(2) > .form-control').type('bookstoreee ');
@@ -171,8 +166,7 @@ it('user should be able to edit ', function () {
 });
 
 it('user should be able to delete ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -187,9 +181,8 @@ it('user should be able to delete ', function () {
     cy.wait(8000);
 });
 
-it.only('validation error on required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+it('validation error on required  fields ', function () {
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();

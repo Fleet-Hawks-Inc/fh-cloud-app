@@ -1,8 +1,7 @@
 
 
 it('added shipper with required optional fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -57,8 +56,7 @@ it('added shipper with required optional fields ', function () {
 
 
 it('added shipper with required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -78,8 +76,7 @@ it('added shipper with required  fields ', function () {
 });
 
 it('user should be able to edit ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -87,8 +84,8 @@ it('user should be able to edit ', function () {
     cy.get('#btnsubmit').click();
     cy.get('.address-book-icon > .far').click();
     cy.get('#shipper-tab').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
+    cy.get('#shipperTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
+    cy.get('#shipperTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
     cy.wait(8000);
     cy.get('.pt-1 > .form-control').clear();
     cy.get('.pt-1 > .form-control').type('234567');
@@ -102,8 +99,7 @@ it('user should be able to edit ', function () {
 });
 
 it('validation error on required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -125,8 +121,7 @@ it('validation error on required  fields ', function () {
 });
 
 it('user should be able to search ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -144,8 +139,7 @@ it('user should be able to search ', function () {
 });
 
 it('user should be able to delete ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();

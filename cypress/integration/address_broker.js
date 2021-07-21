@@ -1,8 +1,7 @@
 
 
 it('added broker with required optional fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -47,12 +46,11 @@ it('added broker with required optional fields ', function () {
     //   cy.get('#addBrokerModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
     cy.get('#addBrokerModal > .modal-dialog > .modal-content > .modal-footer > .btn-default').click();
     cy.get('.address-book-icon').click();
-    /* ==== End Cypress Studio ==== */
+    
 });
 
 it('added broker with required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -71,8 +69,7 @@ it('added broker with required  fields ', function () {
 });
 
 it('user be able to serach', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -90,8 +87,7 @@ it('user be able to serach', function () {
 });
 
 it('user be able to edit', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -99,8 +95,8 @@ it('user be able to edit', function () {
     cy.get('#btnsubmit').click();
     cy.get('.address-book-icon').click();
     cy.wait(8000);
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
+    cy.get('#brokerTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
+    cy.get('#brokerTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
     cy.wait(8000);
     cy.get('#brokerForm > :nth-child(1) > :nth-child(1) > .col-lg-5.offset-lg-1 > :nth-child(1) > :nth-child(3) > .form-control').clear();
     cy.get('#brokerForm > :nth-child(1) > :nth-child(1) > .col-lg-5.offset-lg-1 > :nth-child(1) > :nth-child(3) > .form-control').type('bookstore');
@@ -115,8 +111,7 @@ it('user be able to edit', function () {
 });
 
 it('validation error on required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -139,9 +134,8 @@ it('validation error on required  fields ', function () {
     cy.get('.address-book-icon').click();
 });
 
-it.only('user be able to delete', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/#');
+it('user be able to delete', function () {
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();

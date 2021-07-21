@@ -1,8 +1,7 @@
 
 
 it('added receiver with required optional fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -65,8 +64,7 @@ it('added receiver with required optional fields ', function () {
 
 
 it('user should able to search ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -86,8 +84,7 @@ it('user should able to search ', function () {
 
 
 it('added receiver with required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -108,8 +105,7 @@ it('added receiver with required  fields ', function () {
 
 
 it('user should able to edit ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -118,9 +114,8 @@ it('user should able to edit ', function () {
     cy.get('.address-book-icon > .far').click();
     cy.get('#consignee-tab').click();
     cy.wait(8000);
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas')
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
+    cy.get('#consigneeTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
+    cy.get('#consigneeTable > tbody > :nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
     cy.wait(8000);
     cy.get('#consigneeForm > :nth-child(1) > :nth-child(1) > :nth-child(4) > .row > :nth-child(3) > .form-control').type('8903456789');
     cy.get('#consigneeForm > :nth-child(1) > :nth-child(1) > :nth-child(4) > .row > :nth-child(4) > .form-control').clear();
@@ -133,8 +128,7 @@ it('user should able to edit ', function () {
 
 
 it('user should able to delete ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -151,8 +145,7 @@ it('user should able to delete ', function () {
 
 
 it('validation error on  required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress123');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();

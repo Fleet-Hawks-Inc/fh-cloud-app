@@ -1,8 +1,7 @@
 
-/* === Test Created with Cypress Studio === */
+
 it('added vendor with required optional fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -34,14 +33,13 @@ it('added vendor with required optional fields ', function () {
     cy.get('#addVendorModal > .modal-dialog > .modal-content > .modal-footer > .btn-default').click();
     cy.get('.address-book-icon > .far').click();
     cy.get('#vendor-tab').click();
-    /* ==== End Cypress Studio ==== */
+    
 });
 
 
 
 it('added vendor with required  fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -66,8 +64,7 @@ it('added vendor with required  fields ', function () {
 
 
 it('user should be able to edit the vendor  ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -78,8 +75,8 @@ it('user should be able to edit the vendor  ', function () {
     cy.get('.address-book-icon > .far').click();
     cy.get('#vendor-tab').click();
     cy.wait(8000);
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
+    cy.get('#vendorTable > tbody > :nth-child(2) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
+    cy.get('#vendorTable > tbody > :nth-child(2) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(1)').click();
     cy.wait(8000);
     cy.get('#vendorForm > :nth-child(1) > :nth-child(1) > :nth-child(4) > .row > :nth-child(2) > .form-control').clear();
     cy.get('#vendorForm > :nth-child(1) > :nth-child(1) > :nth-child(4) > .row > :nth-child(2) > .form-control').type('9855584907');
@@ -93,8 +90,8 @@ it('user should be able to edit the vendor  ', function () {
 
 
 it('validation error on required fields ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+    
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -120,8 +117,8 @@ it('validation error on required fields ', function () {
 
 
 it('user should be able to search the vendor  ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+   
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -143,9 +140,9 @@ it('user should be able to search the vendor  ', function () {
 });
 
 
-it.only('user should be able to edit the vendor  ', function () {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit('http://localhost:4200/');
+it('user should be able to delete the vendor  ', function () {
+   
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('rashmi.cypress');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
