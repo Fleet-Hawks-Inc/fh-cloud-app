@@ -26,8 +26,8 @@
                     <div class="col-3 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Route#</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ routeNo }}</h3>
+                                <h4 class="m-0 text-4">Route#</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ routeNo }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-route fa-fw text-dark" style="font-size:20px;"></i>
@@ -37,8 +37,8 @@
                     <div class="col-3 pl-2 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Route Name</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ routeName }}</h3>
+                                <h4 class="m-0 text-4">Route Name</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ routeName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
@@ -49,8 +49,8 @@
                     <div class="col-3 pr-2 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Recurring</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ recurringType }}
+                                <h4 class="m-0 text-4">Recurring</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ recurringType }}
                                     <span class="text-1" *ngIf="recurringDate != ''">{{ recurringDate | date:'yyyy/MM/dd'}}</span>
                                 </h3>
                             </div>
@@ -76,8 +76,8 @@
                     <div class="col-3 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Vehicle</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ VehicleName }}</h3>
+                                <h4 class="m-0 text-4">Vehicle</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ VehicleName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-truck fa-fw text-dark" style="font-size:20px;"></i>
@@ -87,8 +87,8 @@
                     <div class="col-3 pl-2 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Asset</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ assetName }}</h3>
+                                <h4 class="m-0 text-4">Asset</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ assetName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-box text-dark fa-fw" style="font-size:20px;"></i>
@@ -99,8 +99,8 @@
                     <div class="col-3 pr-2 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Driver</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ driverName }}</h3>
+                                <h4 class="m-0 text-4">Driver</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ driverName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
@@ -110,8 +110,8 @@
                     <div class="col-3 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Co-Driver</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ coDriverName }}</h3>
+                                <h4 class="m-0 text-4">Co-Driver</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ coDriverName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
@@ -127,8 +127,8 @@
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Source Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
+                                <h4 class="m-0 text-4">Source Details</h4>
+                                <h3 class="mt-1 mb-0 text-4 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
                                     '+sourceStateName+' '+sourceCountryName+' '+sourceZipcode }}</h3>
 
                                 <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="sourceNotes != ''">{{ sourceNotes | slice:0:100}} <a href="javascript:;" *ngIf="sourceNotes.length > 100" (click)="openDetailModal(sourceNotes)" class="modal-with-form">See All</a></p>
@@ -144,8 +144,8 @@
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Destination Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ destinationAddress+'
+                                <h4 class="m-0 text-4">Destination Details</h4>
+                                <h3 class="mt-1 mb-0 text-4 font-weight-semibold">{{ destinationAddress+'
                                     '+destinationCityName+' '+destinationStateName+' '+destinationCountryName+'
                                     '+destinationZipcode }}</h3>
 
@@ -162,7 +162,7 @@
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Miles</h4>
+                                <h4 class="m-0 text-4">Miles</h4>
                                 <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ miles }}</h3>
                             </div>
 

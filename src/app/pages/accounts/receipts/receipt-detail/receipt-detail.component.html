@@ -115,7 +115,7 @@
                         <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]}}</span>
                           <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]}}</span></td>
                        <td>{{customersObject[dt.name]}}</td>
-                       <td>{{dt.type}}</td>
+                       <td>{{dt.type | titlecase}}</td>
                        <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                        <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                       </tr>
