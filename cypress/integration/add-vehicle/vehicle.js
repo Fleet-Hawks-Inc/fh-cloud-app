@@ -66,8 +66,8 @@ describe('vehicle Test', function () {
     cy.get('#btnsubmit').click();
     cy.get('fleet-sidebar > ul > li:nth-of-type(3) > .nav-link').click();
     cy.get('.col-md-6 > .btn-success').click();
-    cy.get('[name="driverID"] input').first().click();
-    cy.get('.ng-option-label.ng-star-inserted').last().click();//assign driver
+    // cy.get('[name="driverID"] input').first().click();
+    // cy.get('.ng-option-label.ng-star-inserted').last().click();//assign driver
     // cy.get('[name='teamDriverID'] input').first().click();
     // cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(2)').last().click();//assign driver
     cy.get('[name="servicePrograms"] input').first().click();

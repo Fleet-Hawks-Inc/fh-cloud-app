@@ -32,7 +32,7 @@ describe(" Maintenance tests", () => {
     cy.get(':nth-child(1) > .row > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('div[role="option"] > .ng-option-label').type('task{enter}');
     cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').clear();
-    cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').type('tesla{enter}');
+    cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').type('mandatory{enter}');
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-5 > .form-control').clear();
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-5 > .form-control').type('2');
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-7 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();
@@ -97,9 +97,7 @@ describe(" Maintenance tests", () => {
 
     cy.get('#dropdownMenuButton-0 > .fas').click();
     cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();//edit
-    cy.get('.col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').clear();
-    cy.get('.col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').type('7500');
-    cy.get('.col-11 > .btn-success').click();
+    //cy.get('.col-11 > .btn-success').click();
     cy.url().then(url => {
      
       let newUrl = url.split('/');
@@ -188,7 +186,7 @@ describe(" Maintenance tests", () => {
     cy.get('div[role="option"] > .ng-option-label').type('task{enter}');
 
     cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').clear();
-    cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').type('tesla{enter}');
+    cy.get('div:nth-of-type(3) > .col-lg-12 > .bg-white.p-3.text-dark > div:nth-of-type(1) ng-select[role="listbox"] input[role="combobox"]').type('mandatory{enter}');
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-5 > .form-control').clear();
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-5 > .form-control').type('2');
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .col-lg-7 > .form-control > .ng-select-container > .ng-value-container > .ng-input > input').clear();

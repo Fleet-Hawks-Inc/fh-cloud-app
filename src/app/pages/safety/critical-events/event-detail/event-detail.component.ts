@@ -86,7 +86,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   async fetchEventDetail() {
-    this.safetyService.getData('critical-events/' + this.eventID)
+    this.safetyService.getData('critical-events/detail/' + this.eventID)
       .subscribe(async (res: any) => {
         
         let result = res[0];

@@ -116,7 +116,7 @@ export class AddInvoiceComponent implements OnInit {
       .getData(`contacts/detail/${customerID}`)      .subscribe((result: any) => {
         if (result.Items.length > 0) {
           this.customerSelected = result.Items[0];
-          for(const element of this.customerSelected.address) {
+          for (const element of this.customerSelected.address) {
             if (element.addressType === 'Office') {
               this.notOfficeAddress = false;
               this.customerSelected.officeAddr = true;
@@ -126,17 +126,6 @@ export class AddInvoiceComponent implements OnInit {
               this.notOfficeAddress = true;
             }
           }
-          // for (let i = 0; i < this.customerSelected.address.length; i++) {
-          //   const element = this.customerSelected.address[i];
-          //   if (element.addressType === 'Office') {
-          //     this.notOfficeAddress = false;
-          //     this.customerSelected.officeAddr = true;
-          //     this.customerSelected.email = result.Items[0].workEmail;
-          //     this.customerSelected.phone = result.Items[0].workPhone;
-          //   } else {
-          //     this.notOfficeAddress = true;
-          //   }
-          // }
         }
       });
   }
@@ -238,10 +227,6 @@ export class AddInvoiceComponent implements OnInit {
       for (const element of this.newTaxes) {
         element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
-      // for (let i = 0; i < this.newTaxes.length; i++) {
-      //   const element = this.newTaxes[i];
-      //   element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
-      // }
     }
   }
 
@@ -298,10 +283,6 @@ export class AddInvoiceComponent implements OnInit {
       for (const element of this.newTaxes) {
         element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
       }
-      // for (let i = 0; i < this.newTaxes.length; i++) {
-      //   const element = this.newTaxes[i];
-      //   element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
-      // }
     }
   }
 

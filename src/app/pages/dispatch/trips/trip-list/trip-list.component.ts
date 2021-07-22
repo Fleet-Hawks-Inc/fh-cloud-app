@@ -156,6 +156,7 @@ export class TripListComponent implements OnInit {
     draw:0,
     status: false
   }
+  settlement;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -294,9 +295,10 @@ export class TripListComponent implements OnInit {
     if (confirm('Are you sure you want to delete?') === true) {
       let record = {
         eventID: eventData.tripID,
-        status: eventData.tripStatus
+        status: eventData.tripStatus,
+        stl: eventData.settlmnt
       }
-      this.apiService.postData('trips/delete', record).subscribe({
+      this.apiService.deleteData(`trips/delete/${eventData.tripID}/${eventData.settlmnt}/${eventData.tripStatus}`).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
@@ -330,6 +332,7 @@ export class TripListComponent implements OnInit {
         this.bolNumber = result.bol;
         this.tripDate = result.createdDate;
         this.tripTime = result.createdTime;
+        this.settlement = result.settlmnt;
 
         $("#tripStatusModal").modal('show');
       })
@@ -379,7 +382,8 @@ export class TripListComponent implements OnInit {
 
     let tripObj = {
       entryID : this.tripID,
-      status: this.tripStatus
+      status: this.tripStatus,
+      settlement: this.settlement,
     }
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => { 
       if(result) {

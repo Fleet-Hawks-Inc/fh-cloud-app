@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import * as moment from "moment";
 import { SafetyService } from 'src/app/services/safety.service';
+import Constants from 'src/app/pages/fleet/constants';
 
 @Component({
   selector: 'app-event-list',
@@ -21,21 +22,21 @@ export class EventListComponent implements OnInit {
  
   vehicles  = [];
   vehicleID = '';
-  filterValue = {
-    date: '',
-    driverID: '',
-    filterDateStart: <any> '',
-    filterDateEnd: <any> '',
-    driverName: '',
-    vehicleID:null
+  filter = {
+    driverID: null,
+    vehicleID: null,
+    date: null
+
   };
   
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
+  drivers = [];
+  dataMessage: any;
 
   status_values: any = ["open", "investigating", "coaching", "closed"];
-  
+  lastItemSK: string = '';
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
@@ -44,6 +45,7 @@ export class EventListComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
+    this.fetchDrivers();
   }
 
 
@@ -54,36 +56,65 @@ export class EventListComponent implements OnInit {
     })
   }
 
-  searchFilter(event, type, vehicleID) {
-    if(type === 'vehicle') {
-      this.filterValue.vehicleID = vehicleID;
+  // searchFilter(event, type, vehicleID) {
+  //   if(type === 'vehicle') {
+  //     this.filterValue.vehicleID = vehicleID;
       
-      $("#searchVehicle").text(event.target.innerText);
-    } 
-    if(type === 'date') {
-      if(this.filterValue.date !== '') {
-        let date = this.filterValue.date;
-        let newdate = date.split('-').reverse().join('-');
-        this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
-        this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
-        this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
-        this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
-      }
-    }
-  }
+  //     $("#searchVehicle").text(event.target.innerText);
+  //   } 
+  //   if(type === 'date') {
+  //     if(this.filterValue.date !== '') {
+  //       let date = this.filterValue.date;
+  //       let newdate = date.split('-').reverse().join('-');
+  //       this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
+  //       this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
+  //       this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
+  //       this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
+  //     }
+  //   }
+  // }
 
   searchEvents() {
-    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
+    
+    this.safetyService.getData(`critical-events/paging?driverID=${this.filter.driverID}&vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
+      .subscribe((result: any) => {
+        console.log('result', result)
+        if(result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.events = result;
+      })
+    
+    // if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
       
-    }
+    // }
   }
 
   fetchEvents() {
-    this.safetyService.getData('critical-events')
+    if(this.lastItemSK != 'end') {
+      this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
-        this.events = result;
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          this.events.push(element);
+          
+        }
+        if(this.events[this.events.length - 1].sk != undefined) {
+          this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+        } else {
+          this.lastItemSK = 'end';
+        }
       })
+    }
+   
   }
+
+  fetchDrivers() {
+    this.apiService.getData('drivers/safety')
+    .subscribe((result: any) => {
+        this.drivers =  result.Items;
+    })
+}
 
   getSuggestions(searchvalue='') {
     if(searchvalue !== '') {
@@ -125,26 +156,21 @@ export class EventListComponent implements OnInit {
   }
 
 
-  searchSelectedDriver(data) {
-    this.filterValue.driverID = data.userName;
-    this.filterValue.driverName = data.name;
-    this.suggestions = [];
-  }
+  // searchSelectedDriver(data) {
+  //   this.filterValue.driverID = data.userName;
+  //   this.filterValue.driverName = data.name;
+  //   this.suggestions = [];
+  // }
 
   resetFilter() {
-    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
-      this.spinner.show();
-      this.filterValue = {
-        date: '',
-        driverID: '',
-        filterDateStart: '',
-        filterDateEnd: '',
+    if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.driverID !== null || this.filter.vehicleID !== '' || this.filter.vehicleID !== null) {
+      
+      this.filter = {
+        driverID: null,
         vehicleID: null,
-        driverName: ''
+        date: ''
       };
-      this.suggestions = [];
-      $("#searchVehicle").text('Search by vehicle');
-      this.spinner.hide();
+      this.fetchEvents();
     } else {
       return false;
     }
@@ -175,6 +201,10 @@ export class EventListComponent implements OnInit {
       time[0] = +time[0] % 12 || 12; // Adjust hours
     }
     return time.join (''); // return adjusted time or original string
+  }
+
+  onScroll() {
+    this.fetchEvents();
   }
   
 }

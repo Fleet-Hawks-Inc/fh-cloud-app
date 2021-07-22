@@ -10,9 +10,6 @@ import {
 } from './index';
 import { ManagemainComponent } from './managemain/managemain.component';
 
-import {SettingsComponent} from './settings/settings.component';
-
-
 const routes: Routes = [
   {
     path: 'users',
@@ -31,34 +28,29 @@ const routes: Routes = [
 
     ],
   },
-  {
-    path: 'settings',
-    component: SettingsComponent
-  },
+  // {
+  //   path: 'settings',
+  //   component: SettingsComponent
+  // },
   {
     path: 'overview',
     component: ManagemainComponent
   },
   {
-    path: 'reports',
+    path: 'allreport',
     component: AllReportsComponent
   },
+
   {
-    path: 'fleet',
-    loadChildren: () => import('./reports/fleet/manage-fleet-reports.module').then((m) => m.ManageFleetReportsModule) ,
+    path: 'reports',
+    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
   },
   {
-    path: 'dispatch',
-    loadChildren: () => import('./reports/dispatch/manage-dispatch-reports.module').then((m) => m.ManageDispatchReportsModule) ,
-  },
-  {
-    path: 'safety',
-    loadChildren: () => import('./reports/safety/manage-safety-reports.module').then((m) => m.ManageSafetyReportsModule) ,
-  },
-  {
-    path: 'compliance',
-    loadChildren: () => import('./reports/compliance-reports/manage-compliance-reports.module').then((m) => m.ManageComplianceReportsModule) ,
+    path: 'settings',
+    loadChildren: () => import('./settings/manage-settings.module').then((m) => m.ManageSettingsModule) ,
   }
+
+  
   
 ];
 

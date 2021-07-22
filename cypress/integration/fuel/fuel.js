@@ -14,7 +14,7 @@ describe("Fuel Test", function () {
       }).then(response => {
       })
     }
-  })
+  });
   it('should allow users to add fuel with all required fields.', function () {
     cy.visit('/#/Login');
    cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -108,7 +108,7 @@ describe("Fuel Test", function () {
     });
 
   });
-  it.only('should allow users to edit fuel.', function () {
+  it('should allow users to edit fuel.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
@@ -129,7 +129,7 @@ describe("Fuel Test", function () {
       return false
     });
   });
-  it.only('should allow users to delete fuel.', function () {
+  it('should allow users to delete fuel.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));

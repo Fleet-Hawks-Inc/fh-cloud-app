@@ -123,7 +123,7 @@ export class IssueListComponent implements OnInit {
   deleteIssue(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`issues/isDeleted/${entryID}/` + 1)
+      .deleteData(`issues/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
         this.issuesDraw = 0;
         this.lastEvaluatedKey = '';
