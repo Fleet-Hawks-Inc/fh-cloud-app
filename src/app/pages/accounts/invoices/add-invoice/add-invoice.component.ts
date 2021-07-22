@@ -164,8 +164,10 @@ export class AddInvoiceComponent implements OnInit {
   calculateDetailAmt(e: number, d: number, type: string) {
     if (type === 'price') {
       this.invoiceData.details[d].amount = this.invoiceData.details[d].qtyHours * e;
+      this.calculateAmount();
     } else {
       this.invoiceData.details[d].amount = this.invoiceData.details[d].priceRate * e;
+      this.calculateAmount();
     }
   }
   async stateSelectChange() {
