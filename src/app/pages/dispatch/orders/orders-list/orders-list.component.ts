@@ -176,6 +176,7 @@ export class OrdersListComponent implements OnInit {
       // }
 
       if(element.orderStatus == 'confirmed') {
+        
         this.confirmOrders.push(element);
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
