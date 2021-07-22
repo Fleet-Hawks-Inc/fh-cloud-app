@@ -103,7 +103,7 @@
                             <th class="text-2">Factoring Comp.</th>
                             <th class="text-2">Factoring Comp. Charges</th>
                             <th class="text-2">Invoice Balance</th>
-                            <th class="text-2">Due Days</th>
+                            <th class="text-2">Due Date</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
                             <th class="text-2" width="7%">Amount Received</th>
@@ -125,7 +125,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>{{inv.balance}}</td>
-                            <td>3 days left</td>
+                            <td>{{inv.invDueDate}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
