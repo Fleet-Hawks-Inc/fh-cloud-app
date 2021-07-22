@@ -336,7 +336,7 @@ export class ManageSidebarComponent extends CommonSideBarComponent {}
 
 @Component({
   selector: 'report-sidebar',
-  templateUrl: './report-sidebar.component.html',
+  templateUrl: './module-report-sidebar.component.html',
 })
 export class ReportsSidebarComponent extends CommonSideBarComponent {}
 
