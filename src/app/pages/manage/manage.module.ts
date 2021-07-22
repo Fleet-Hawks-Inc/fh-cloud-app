@@ -16,6 +16,8 @@ import {
 import { ManagemainComponent } from './managemain/managemain.component';
 import { AllReportsComponent } from './all-reports/all-reports.component';
 
+import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
+
 
 const COMPONENTS = [
   AddUserComponent,
@@ -81,6 +83,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ...COMPONENTS,
     ManagemainComponent,
     AllReportsComponent,
+    
+    AlertsListComponent,
 
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
