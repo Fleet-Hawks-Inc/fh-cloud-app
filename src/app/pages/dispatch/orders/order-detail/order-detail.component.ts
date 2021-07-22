@@ -246,28 +246,9 @@ export class OrderDetailComponent implements OnInit {
           this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
       }
-          // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
-          //   const element = result.shippersReceiversInfo[p];
-
-          // }
-          this.milesArr = result.shippersReceiversInfo;
-          // result.shippersReceiversInfo.map((v) => {
-          //   let newArr = [];
-          //   newArr['receivers'] = [];
-          //   newArr['shippers'] = [];
-          //   v.receivers.map((rec) =>{
-          //     newArr['receivers'].push(rec);
-          //   })
-
-          //   v.shippers.map((ship) =>{
-          //     newArr['shippers'].push(ship);
-          //   })
-
-          //   this.milesArr.push(newArr);
-          // })
           
-          console.log('result.shippersReceiversInfo', result.shippersReceiversInfo)
-          console.log('milesArr', this.milesArr)
+          this.milesArr = result.shippersReceiversInfo;
+          
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -440,34 +421,6 @@ export class OrderDetailComponent implements OnInit {
     });
     
    
-    // html2canvas(data).then(canvas => {
-    //   // Few necessary setting options
-      
-    //   var imgData = canvas.toDataURL('image/png');
-    //   var imgWidth = 210; 
-    //   var pageHeight = 295;  
-    //   var imgHeight = canvas.height * imgWidth / canvas.width;
-    //   var heightLeft = imgHeight;
-    //   var doc = new jspdf('p', 'mm', 'a4');
-    //   var position = 0; // give some top padding to first page
-
-    //   doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //   heightLeft -= pageHeight;
-
-    //   while (heightLeft >= 0) {
-    //     position += heightLeft - imgHeight; // top padding for other pages
-    //     doc.addPage();
-    //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //     heightLeft -= pageHeight;
-    //   }
-    //   for (let index = 0; index < this.invoiceData.data.length; index++) {
-    //     const element = this.invoiceData.data[index];
-    //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    //     doc.addPage("a4", "p");
-    //   }
-    //   doc.save( 'invoice.pdf');
-
-    // });
   }
 
   previewModal() {
