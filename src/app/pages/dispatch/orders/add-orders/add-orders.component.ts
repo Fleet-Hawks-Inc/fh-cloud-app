@@ -418,8 +418,8 @@ export class AddOrdersComponent implements OnInit {
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.searchLocation();
-    this.fetchShippersByIDs();
-    this.fetchReceiversByIDs();
+    this.listService.fetchShippersByIDs();
+    this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
     this.disableButton();
@@ -436,13 +436,23 @@ export class AddOrdersComponent implements OnInit {
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
       this.packagingUnitsList = data;
     });
-
+    
     this.customers = this.listService.customersList;
     this.shippers = this.listService.shipperList;
     this.receivers = this.listService.receiverList;
+    
+    this.listService.receiverObjectList.subscribe(res => {
+      this.receiversObjects = res;
+    });
+
+    this.listService.shipperObjectList.subscribe(res => {
+      this.shippersObjects = res;
+    });
+
+   
+   
   }
-
-
+  
   async fetchStateTaxes() {
     
     let result = await this.apiService
@@ -653,6 +663,30 @@ export class AddOrdersComponent implements OnInit {
   }
   async saveReceiver(i) {
     // this.isReceiverSubmit = true;
+    if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
+      if (
+        !this.shippersReceivers[i].receivers.receiverID || 
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.city ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.state ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.country ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime 
+      ){
+        this.toastr.error("Please fill required fields.");
+        return false;
+      }
+    } else if(
+      !this.shippersReceivers[i].receivers.receiverID ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].address.dropOffLocation ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime 
+    ){
+      this.toastr.error("Please fill required fields.");
+      return false;
+    }
+
     if(this.shippersReceivers[i].receivers.update == true) {
       this.shippersReceivers[i].receivers.update == false;
       this.shippersReceivers[i].receivers.save == true;
@@ -805,23 +839,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
 
-  /*
-   * Get all customers from api
-   */
-  // fetchCustomers() {
-  //   this.apiService.getData("/fetch/order/customers").subscribe((result: any) => {
-  //     this.customers = result.Items;
-  //   });
-  // }
-
-  /*
-   * Get all shippers's IDs of names from api
-   */
-  fetchShippersByIDs() {
-    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
-      this.shippersObjects = result;
-    });
-  }
+ 
   /*
    * Get all Shippers from api
    */
@@ -831,14 +849,6 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  /*
-   * Get all receivers's IDs of names from api
-   */
-  fetchReceiversByIDs() {
-    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
-      this.receiversObjects = result;
-    });
-  }
 
   /*
    * Get all Receivers from api
@@ -898,7 +908,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.orderData.milesInfo["calculateBy"] = value;
-    console.log('this.mergedArray', this.mergedArray);
+    
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
         let cords = `${element.address.position.lng},${element.address.position.lat}`;
@@ -965,8 +975,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addCommodity(arr: string, parentIndex: number, i: number) {
-    console.log('comm', arr, parentIndex, i);
-    console.log(' this.shippersReceivers',  this.shippersReceivers)
+    
     if (arr === "shipper") {
       this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
         name: '',
@@ -1325,7 +1334,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   editList(elem, parentIndex, i) {
-    console.log('edit', elem, parentIndex, i);
+    
     let j = parentIndex; 
     
 

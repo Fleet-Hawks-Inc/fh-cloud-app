@@ -19,7 +19,7 @@ a[aria-expanded='false'] > .expand_caret {
     font-family: 'Open Sans', sans-serif;
 }
 .invoice-iner__wrapper {
-    border: 1px dashed #8d8d8d;
+    /* border: 1px dashed #8d8d8d; */
     padding: 10px;
     background-color: #fff; 
 }

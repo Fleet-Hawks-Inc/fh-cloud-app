@@ -13,6 +13,12 @@ export class ListService {
   shipperDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperList = this.shipperDataSource.asObservable();
 
+  shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  shipperObjectList = this.shipperObjectDataSource.asObservable();
+
+  receiverObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  receiverObjectList = this.receiverObjectDataSource.asObservable();
+
   receiverDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   receiverList = this.receiverDataSource.asObservable();
 
@@ -220,5 +226,17 @@ fetchReceivers() {
     this.accountService.getData('chartAc').subscribe((res: any) => {
       this.accountsDataSource.next(res);
       });
+  }
+
+  fetchShippersByIDs() {
+    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
+      this.shipperObjectDataSource.next(result);
+    });
+  }
+
+  fetchReceiversByIDs() {
+    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
+      this.receiverObjectDataSource.next(result);
+    });
   }
 }
