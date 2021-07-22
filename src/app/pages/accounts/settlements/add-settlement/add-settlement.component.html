@@ -700,7 +700,111 @@
                                         </div>
                                         <!-- total payment -->
                                         <div class="row pt-4">
-                                            <div class="col-lg-7 offset-lg-1"></div>
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'driver' || settlementData.type == null"></div>
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'carrier'">
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Local Tax(%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Local Tax(%)" [(ngModel)]="carrLocalTax" name="carrLocalTax" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Federal Tax(%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Federal Tax(%)" disabled [(ngModel)]="carrFedTax" name="carrFedTax">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'">
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Driver 1 Payment</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" value="342">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label class="font-weight-bold">
+                                                            <input type="checkbox"> Deduct from Owner Operator</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">Driver 2 Payment</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" value="34">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label class="font-weight-bold">
+                                                            <input type="checkbox"> Deduct from Owner Operator</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">GST (%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" value="GST">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Value">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="358" tabindex="-1" aria-hidden="true">
+                                                            <optgroup>
+                                                                <option value="1" data-select2-id="360">%</option>
+                                                                <option value="2">CAD</option>
+                                                                <option value="2">USD</option>
+                                                            </optgroup>
+                                                        </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="359" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-r2no-container"><span class="select2-selection__rendered" id="select2-r2no-container" role="textbox" aria-readonly="true" title="%">%</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">PST (%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" value="PST">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Value">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="361" tabindex="-1" aria-hidden="true">
+                                                            <optgroup>
+                                                                <option value="1" data-select2-id="363">%</option>
+                                                                <option value="2">CAD</option>
+                                                                <option value="2">USD</option>
+                                                            </optgroup>
+                                                        </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="362" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-1uxs-container"><span class="select2-selection__rendered" id="select2-1uxs-container" role="textbox" aria-readonly="true" title="%">%</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-3 text-right">
+                                                        <label class="control-label font-weight-bold">HST (%)</label>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" value="HST">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" placeholder="Value">
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="364" tabindex="-1" aria-hidden="true">
+                                                            <optgroup>
+                                                                <option value="1" data-select2-id="366">%</option>
+                                                                <option value="2">CAD</option>
+                                                                <option value="2">USD</option>
+                                                            </optgroup>
+                                                        </select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="365" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-xgpq-container"><span class="select2-selection__rendered" id="select2-xgpq-container" role="textbox" aria-readonly="true" title="%">%</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-lg-3">
                                                 <div class="row">
                                                     <div class="col-lg-6 text-right">
@@ -731,6 +835,14 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" disabled [(ngModel)]="settlementData.deductionTotal" name="deductionTotal">
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1" *ngIf="settlementData.type == 'carrier' || settlementData.type == 'owner_operator'">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Taxes</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.taxes" name="taxes">
                                                     </div>
                                                 </div>
                                                 <div class="row pt-1">

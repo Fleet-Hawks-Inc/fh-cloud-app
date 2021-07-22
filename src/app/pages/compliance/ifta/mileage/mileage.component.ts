@@ -198,7 +198,7 @@ this.fuelList=["Diesel","Gasoline","Propane"]
       doc.setFontSize(10)
       doc.text('Internation Fuel Tax Agreement Report',15,20,)
       doc.line(15,25,200,25)
-      //  doc.addImage('assets/img/logologin.png',160, 5, 73, 14)
+        doc.addImage('assets/img/fhLogo.png',160, 5, 40, 14)
       doc.setFontSize(10)
       
       doc.text("Carrier Name",15,35)  

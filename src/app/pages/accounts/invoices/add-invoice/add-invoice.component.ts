@@ -38,8 +38,8 @@ export class AddInvoiceComponent implements OnInit {
     balance: 0,
     details: [{
       commodityService: '',
-      qtyHours: '',
-      priceRate: '',
+      qtyHours: 0,
+      priceRate: 0,
       amount: 0,
       accountID: null,
     }],
@@ -129,6 +129,34 @@ export class AddInvoiceComponent implements OnInit {
         }
       });
   }
+  getInvDueDate(e: any) {
+ if (e === '15') {
+  const test = moment().add(15, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === '30') {
+  const test = moment().add(30, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === '45') {
+  const test = moment().add(45, 'd');
+  const test1 = moment(test).format('YYYY-MM-DD');
+  this.invoiceData.invDueDate = test1;
+ } else if (e === 'dueReceipt') {
+  this.invoiceData.invDueDate = moment().format('YYYY-MM-DD');
+ } else if (e === 'dueEnd') {
+  this.invoiceData.invDueDate   = moment().endOf('month').format('YYYY-MM-DD');
+ } else {
+  this.invoiceData.invDueDate   = null;
+ }
+  }
+  calculateDetailAmt(e: number, d: number, type: string) {
+    if (type === 'price') {
+      this.invoiceData.details[d].amount = this.invoiceData.details[d].qtyHours * e;
+    } else {
+      this.invoiceData.details[d].amount = this.invoiceData.details[d].priceRate * e;
+    }
+  }
   async stateSelectChange() {
     const selected: any = this.stateTaxes.find(o => o.stateTaxID === this.invoiceData.invStateProvince);
     this.invoiceData.taxesInfo = [];
@@ -203,8 +231,8 @@ export class AddInvoiceComponent implements OnInit {
   addDetails() {
     this.invoiceData.details.push({
       commodityService: '',
-      qtyHours: '',
-      priceRate: '',
+      qtyHours: 0,
+      priceRate: 0,
       amount: 0,
       accountID: null,
     });

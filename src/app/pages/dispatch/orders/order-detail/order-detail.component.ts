@@ -479,14 +479,14 @@ export class OrderDetailComponent implements OnInit {
 
   // delete uploaded images and documents
   async delete(type: string, name: string, index) {
-    let record = {
-      eventID: this.orderID,
-      type: type,
-      name: name,
-      date: this.createdDate,
-      time: this.createdTime
-    }
-    await this.apiService.postData(`orders/uploadDelete`, record).toPromise();
+    // let record = {
+    //   eventID: this.orderID,
+    //   type: type,
+    //   name: name,
+    //   date: this.createdDate,
+    //   time: this.createdTime
+    // }
+    await this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`).toPromise();
     if(type == 'attachment') {
       this.attachments.splice(index, 1);
     } else {
