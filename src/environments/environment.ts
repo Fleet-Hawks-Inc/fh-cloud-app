@@ -19,6 +19,7 @@ export const environment = {
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,
+  isReportsEnabled: true,
 
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
   safetyURL: 'http://localhost:4000/api/v1/',
