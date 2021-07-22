@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
+import pdfMake from "pdfmake/build/pdfmake";  
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
 declare var $: any;
@@ -149,7 +150,10 @@ export class OrderDetailComponent implements OnInit {
   isInvoice = false;
   taxableAmount: any;
   invoiceData: any;
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
+  today: any;
+  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+    this.today = new Date();
+   }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
@@ -242,26 +246,9 @@ export class OrderDetailComponent implements OnInit {
           this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
       }
-          // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
-          //   const element = result.shippersReceiversInfo[p];
-
-          // }
-
-          result.shippersReceiversInfo.map((v) => {
-            let newArr = [];
-            newArr['receivers'] = [];
-            newArr['shippers'] = [];
-            v.receivers.map((rec) =>{
-              newArr['receivers'].push(rec);
-            })
-
-            v.shippers.map((ship) =>{
-              newArr['shippers'].push(ship);
-            })
-
-            this.milesArr.push(newArr);
-            
-          })
+          
+          this.milesArr = result.shippersReceiversInfo;
+          
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -415,18 +402,25 @@ export class OrderDetailComponent implements OnInit {
   generatePDF() {
     var data = document.getElementById('print_wrap');
     html2canvas(data).then(canvas => {
-      // Few necessary setting options
-      var imgWidth = 208;
-      var pageHeight = 295;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
-
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save('invoice.pdf'); // Generated PDF
+      var imgData = canvas.toDataURL();
+      var docDefinition = {
+        
+        pageSize: 'A4',
+        pageOrientation: 'portrait',
+        pageBreak: 'after',
+        margin: 0,
+        content: [{
+          image: imgData,
+          width: 500,
+        }],
+        pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+          return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
+        }
+      };
+      pdfMake.createPdf(docDefinition).download("invoice.pdf");
     });
+    
+   
   }
 
   previewModal() {
