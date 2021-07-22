@@ -1,115 +1,136 @@
 <section class="body">
 
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0">
+    
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
       <header class="page-header">
-        <div class="row pr-5 " style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            {{device.deviceType}} {{device.deviceSerialNo}} 
-            <ng-template [ngIf]="device.deviceStatus=='Active'" [ngIfElse]="inactive">
-            <span class="badge badge-success text-3">Active</span>
-        </ng-template>
-        <ng-template #inactive>
-            <span class="badge badge-danzer text-3">Inactive</span>
-        </ng-template>
-          </div>
-          <div class="col-md-8  col-lg-8 text-right">
-            <!-- <a href="sensors.php" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Sensors List</a> -->
-
-            <div class="btn-group flex-wrap">
-              <!-- <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">Actions<span class="caret"></span></button> -->
-              <!-- <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                <a class="dropdown-item text-1" href="edit-sensor.php">Edit </a>
-                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a> -->
-              <!-- </div> -->
+         <div class="row pr-5 " style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+               Device #6454  <span class="badge badge-dark p-1">ACTIVE</span>
             </div>
-              <a routerLink="/fleet/devices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Devices
-                List</a>
-            
-            <!-- <a routerLink="/fleet/devices/list" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> All Device</a> -->
-          </div>
-        </div>
+            <div class="col-md-8  col-lg-8 text-right pr-4">
+               <a href="#" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Devices List</a>  
+              
+               <div class="btn-group flex-wrap">
+                  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                     <a class="dropdown-item text-1" href="add-device1.php">Edit </a>
+                     <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                  </div>
+               </div>
+            </div>
+         </div>
       </header>
       <div class="row">
-        <div class="col">
-          <div class="card-body text-dark">
-            <form class="form-horizontal form-bordered" method="get">
-              <div class=" row">
+         <div class="col pr-0">
+            <div class="card-body text-dark">
+               <form class="form-horizontal form-bordered" method="get">
+                  <div class=" row">
+                    
+                     <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Device Details</label>
 
-                <div class="col-lg-6">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
-                        <tbody>
-                          <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">Device Name</td>
-                            <td width="60%">{{device.deviceName}}1 </td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Status</td>
-                            <td> <ng-template [ngIf]="device.deviceStatus=='Active'" [ngIfElse]="inactive">
-                                <span class="badge badge-success text-3">Active</span>
-                            </ng-template>
-                            <ng-template #inactive>
-                                <span class="badge badge-danzer text-3">Inactive</span>
-                            </ng-template></td>
-                          </tr>
-                          
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Serial Number</td>
-                            <td>{{device.deviceSerialNo}}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Vehicle Name</td>
-                            <td>{{device.vehicle.vehicleIdentification}}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Description</td>
-                            <td>{{device.description}} </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                          </div>
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-responsive-lg">
+                                 <tbody>
+                                    <tr>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Device Serial</td>
+                                       <td  width="60%">Test EM21 </td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Device Name</td>
+                                       <td>Device Name</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Status</td>
+                                       <td><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                    </tr>
+        
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Device Type</td>
+                                       <td>Door</td>
+                                    </tr>
+            
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Description</td>
+                                       <td>This is about the door sensors.</td>
+                                    </tr>
+              <tr>
+                                       <td class="back-color-gray font-weight-bold">Date Added</td>
+                                       <td>2021/05/01</td>
+                                    </tr>
+              <tr>
+                                       <td class="back-color-gray font-weight-bold">Date Removed</td>
+                                       <td>2021/07/01</td>
+                                    </tr>
+              
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                      
+                       
+                     </div>
+                     <div class="col-lg-6">
+                        <div class="row">
+                          <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Assciated Vehicle/Asset Details</label>
+
+                          </div>
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-responsive-lg">
+                                 <tbody>
+                                    <tr>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Associated With</td>
+                                       <td  width="60%">Vehicle</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Name</td>
+                                       <td><a class="text-info" href="vehicle-details2.php">Vehicle Name</a></td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+         
+                        </div>
+                      
+                       
+                     </div>
                   </div>
-
-
-                </div>
-                <div class="col-lg-6">
-
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <!-- Delete MODAL -->
-          <!-- <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
-            <section class="card">
-              <header class="card-header">
-                <h2 class="card-title">Corfirm Action</h2>
-              </header>
-              <div class="card-body text-dark">
-                <form>
-                  <div class="form-row">
-                    <div class="form-group col-md-12">
-                      <label for="inputEmail4">Are you sure?</label>
-                    </div>
+               </form>
+            </div>
+           
+            <!-- Delete MODAL -->
+            <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
+               <section class="card">
+                  <header class="card-header">
+                     <h2 class="card-title">Corfirm Action</h2>
+                  </header>
+                  <div class="card-body text-dark">
+                     <form>
+                        <div class="form-row">
+                           <div class="form-group col-md-12">
+                              <label for="inputEmail4">Are you sure?</label>
+                           </div>
+                        </div>
+                     </form>
                   </div>
-                </form>
-              </div>
-              <footer class="card-footer">
-                <div class="row">
-                  <div class="col-md-12 text-right">
-                    <button class="btn btn-danger modal-confirm">OK</button>
-                    <button class="btn btn-default modal-dismiss">Cancel</button>
-                  </div>
-                </div>
-              </footer>
-            </section>
-          </div> -->
-        </div>
+                  <footer class="card-footer">
+                     <div class="row">
+                        <div class="col-md-12 text-right">
+                           <button class="btn btn-danger modal-confirm">OK</button>
+                           <button class="btn btn-default modal-dismiss">Cancel</button>
+                        </div>
+                     </div>
+                  </footer>
+               </section>
+            </div>
+         </div>
       </div>
-    </section>
+   </section>
+
   </div>
 </section>
