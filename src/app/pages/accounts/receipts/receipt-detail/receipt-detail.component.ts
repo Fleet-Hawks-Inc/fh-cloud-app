@@ -56,6 +56,9 @@ export class ReceiptDetailComponent implements OnInit {
    async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
       this.receiptData = res[0];
+      this.receiptData.transactionLog.map((v: any) => {
+        v.type = v.type.replace('_', ' ');
+      });
     });
   }
 }

@@ -132,8 +132,8 @@ export class EventListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.filter.date !== '' || this.filter.driverID !== '' || this.filter.vehicleID !== '') {
-
+    if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.driverID !== null || this.filter.vehicleID !== '' || this.filter.vehicleID !== null) {
+      
       this.filter = {
         driverID: null,
         vehicleID: null,
@@ -168,7 +168,6 @@ export class EventListComponent implements OnInit {
   }
 
   onScroll() {
-   
     this.fetchEvents();
   }
 

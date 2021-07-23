@@ -334,6 +334,12 @@ export class SafetySidebarComponent extends CommonSideBarComponent {}
 })
 export class ManageSidebarComponent extends CommonSideBarComponent {}
 
+@Component({
+  selector: 'report-sidebar',
+  templateUrl: './module-report-sidebar.component.html',
+})
+export class ReportsSidebarComponent extends CommonSideBarComponent {}
+
 export const MultiSidebarComponents = [
   FleetSidebarComponent,
   ComplianceSidebarComponent,
@@ -343,4 +349,5 @@ export const MultiSidebarComponents = [
   AccountsSidebarComponent,
   SafetySidebarComponent,
   ManageSidebarComponent,
+  ReportsSidebarComponent,
 ];

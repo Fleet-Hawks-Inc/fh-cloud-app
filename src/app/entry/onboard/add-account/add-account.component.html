@@ -195,8 +195,7 @@
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? <span
-                            class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? </label>
                         <ng-select class="form-control populate" [(ngModel)]="findingWay"
                           placeholder="Select way how did u find us?" name="findingWay">
                           <ng-option value="Google">Google</ng-option>
@@ -292,8 +291,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo <span
-                            class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo </label>
                         <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo" type="file"
                           class="form-control p-0">
                       </div>
@@ -306,7 +304,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name &nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Doing Business As"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="text" class="form-control" placeholder="eg. Bookstore" [(ngModel)]="DBAName"
                           name="DBAName" #dba="ngModel">
                         <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
@@ -321,7 +319,7 @@
                             title="Employer Identification Number (EIN) is a unique 9 digit identification number that is assigned to a business
                                         entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
                                         for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN"
                           name="EIN" #ein="ngModel">
 
@@ -392,7 +390,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">CCC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel"
                           placeholder="eg. 1234">
                         <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
@@ -405,7 +403,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                         </label>
                         <input type="text" class="form-control" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
                           #scac="ngModel">
                         <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
@@ -419,13 +417,12 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Liability Insurance#&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="text" class="form-control" [(ngModel)]="liabilityInsurance"
                           placeholder="Enter liability insurance number" name="liabilityInsurance">
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; </label>
                         <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance"
                           placeholder="Enter cargo insurance number">
                       </div>
@@ -638,7 +635,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                         </label>
                         <input type="text" class="form-control" [(ngModel)]="bank.branchName"
                           [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}" #bName="ngModel"
                           pattern="^[a-zA-Z0-9\s]{2,30}$" placeholder="eg. Bank of Nova Scotia">
@@ -652,7 +649,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber"
                           [ngModelOptions]="{standalone: true}" placeholder="eg. 12123456701"
                           [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel">
@@ -671,7 +668,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                         </label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber"
                           [ngModelOptions]="{standalone: true}" [attr.name]="'banks['+b+'].routingNumber'"
                           #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
@@ -690,7 +687,7 @@
                             title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry.
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"
                           [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
                           placeholder="eg. 12345789">
@@ -707,7 +704,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber"
                           [ngModelOptions]="{standalone: true}" #ins="ngModel" placeholder="eg. 219"
                           [attr.name]="'banks['+b+'].institutionNumber'">

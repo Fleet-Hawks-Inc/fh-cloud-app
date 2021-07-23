@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   isManageEnabled = environment.isManageEnabled;
   isSafetyEnabled = environment.isSafetyEnabled;
   isAccountsEnabled = environment.isAccountsEnabled;
+  isReportsEnabled = environment.isReportsEnabled;
 
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();

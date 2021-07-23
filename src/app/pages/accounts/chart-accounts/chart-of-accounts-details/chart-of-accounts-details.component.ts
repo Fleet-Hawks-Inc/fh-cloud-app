@@ -22,7 +22,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     closingAmt: 0,
     transactionLog: [],
   };
-  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService ) { }
+  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchCustomersByIDs();
@@ -31,9 +31,12 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       this.fetchAccount();
     }
   }
-fetchAccount() {
-  this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
-    this.account = res;
+  fetchAccount() {
+    this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
+      this.account = res;
+      for (const element of this.account.transactionLog) {
+        element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
+      }
     });
   }
   /*

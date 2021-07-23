@@ -268,7 +268,7 @@ export class InventoryListComponent implements OnInit {
         time: eventData.createdTime,
         eventID: eventData.itemID
       }
-      this.apiService.postData('items/delete/item', record).subscribe((result: any) => {
+      this.apiService.deleteData(`items/delete/item/${eventData.itemID}` ).subscribe((result: any) => {
 
         this.items = [];
         this.inventoryDraw = 0;
@@ -479,7 +479,7 @@ export class InventoryListComponent implements OnInit {
         // time: eventData.createdTime,
         eventID: eventData.itemID
       }
-      this.apiService.postData('items/delete/required/item', record).subscribe((result: any) => {
+      this.apiService.deleteData(`items/delete/required/item/${eventData.itemID}`).subscribe((result: any) => {
 
         this.requiredItems = [];
         this.requiredInventoryDraw = 0;
