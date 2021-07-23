@@ -23,7 +23,7 @@ export class SettlementsDetailComponent implements OnInit {
         type: null,
         entityId: null,
         setNo: '',
-        setDate: null,
+        txnDate: null,
         fromDate: null,
         toDate: null,
         tripIds: [],
