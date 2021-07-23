@@ -1747,6 +1747,7 @@ text-decoration: underline;
 
   /* padding left */
   .pl4{padding-left:4px !important;}
+  .pl7{padding-left:7px !important;}
   .pl11{padding-left:11px !important;}
   .pl13{padding-left:13px !important;}
   .pl18{padding-left:18px !important;}
@@ -2504,6 +2505,16 @@ input.placeholder-lowercase {
 	.onboardwidth {width: 75% !important;	}
 }
 
+.addsr-scroll-y {
+  display: block;
+}
+
+.addsr-scrollbar {
+  position: relative;
+  height: 720px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 /* toggle switch */
 
 .switch {

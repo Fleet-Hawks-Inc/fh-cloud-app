@@ -243,7 +243,7 @@ export class ServiceListComponent implements OnInit {
         eventID: eventData.logID,
         entityID: eventData.unitID
       }
-      this.apiService.postData('serviceLogs/delete', record).subscribe((result: any) => {
+      this.apiService.deleteData(`serviceLogs/delete/${eventData.logID}`).subscribe((result: any) => {
         this.logs = [];
         this.serviceLogDraw = 0;
         this.lastEvaluatedKey = '';
