@@ -1,123 +1,123 @@
 <section class="body">
-<div class="inner-wrapper">
-  <section role="main" class="content-body pl-0 pr-0 pt-0">
-    <header class="page-header">
-       <div class="row pr-5 " style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-             Advance Payment# - 1279430   <span class="badge badge-dark p-1">NOT DEDUCTED</span>
-          </div>
-          <div class="col-md-8  col-lg-8 text-right pr-4">
-          <a routerLink="/accounts/payments/advance-payments/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Advance Payments</a>
-          </div>
-       </div>
-    </header>
-    <div class="row">
-       <div class="col pr-0">
-          <div class="card-body text-dark">
-             <form class="form-horizontal form-bordered" method="get">
-                <div class=" row">
-                   <div class="col-lg-12 mb-4">
-                      <div class="row cmaindiv">
-                         <div class="col-md-4 col-lg-4">
-                            <div class="text-center p-4 cerbor">
-                               <i class="far fa-calendar-alt text-7"></i>
-                               <br>
-                               <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020</p>
-                               <p class="mb-0">DATE</p>
-                            </div>
-                         </div>
-                         <div class="col-md-4 col-lg-4">
-                            <div class="text-center p-4 cerbor">
-                               <i class="fa fa-user text-7"></i>
-                               <br>
-                               <p class="mb-0 text-5 font-weight-bold text-dark">MANJOT SINGH</p>
-                               <p class="mb-0">DRIVER</p>
-                            </div>
-                         </div>
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+         <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  Advance Payment# - {{ paymentData.paymentNo }} <span class="badge badge-dark p-1 text-uppercase">{{ paymentData.status }}</span>
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <a routerLink="/accounts/payments/advance-payments/list" class="btn btn-sm btn-default"><i
+                        class="fas fa-list"></i> All Advance Payments</a>
+               </div>
+            </div>
+         </header>
+         <div class="row">
+            <div class="col pr-0">
+               <div class="card-body text-dark">
+                  <form class="form-horizontal form-bordered" method="get">
+                     <div class=" row">
+                        <div class="col-lg-12 mb-4">
+                           <div class="row cmaindiv">
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="far fa-calendar-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate | date: "yyyy/MM/dd" }}</p>
+                                    <p class="mb-0">DATE</p>
+                                 </div>
+                              </div>
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="fa fa-user text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ entityName }}</p>
+                                    <p class="mb-0">{{ paymentData.paymentTo }}</p>
+                                 </div>
+                              </div>
 
-                         <div class="col-md-4 col-lg-4">
-                            <div class="text-center p-4 cerbor">
-                               <i class="fas fa-money-bill-wave text-7"></i>
-                               <br>
-                               <p class="mb-0 text-5 font-weight-bold text-dark">1000 CAD</p>
-                               <p class="mb-0">AMOUNT</p>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6 pr-0">
-                      <div class="row">
-                         <div class="col-lg-12">
-                         <table class="table table-bordered table-responsive-lg">
-                               <tbody>
-                                  <tr>
-                                     <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                     <td width="60%">Cheque</td>
-                                  </tr>
-                                  <tr>
-                                     <td width="40%" class="back-color-gray font-weight-bold">Cheque#</td>
-                                     <td width="60%">7886778</td>
-                                  </tr>
-                                  <tr>
-                                     <td class="back-color-gray font-weight-bold">Reference#</td>
-                                     <td>5767</td>
-                                  </tr>
-                                  <tr>
-                                     <td class="back-color-gray font-weight-bold">RNotes</td>
-                                     <td>Notes</td>
-                                  </tr>
-                               </tbody>
-                            </table>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="col-lg-6 pl-0">
-                      <div class="row">
-                         <div class="col-lg-12">
-                         <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th>Account Name</th>
-                                  <th>Name</th>
-                                  <th>Type</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Advance Payment Account</td>
-                                  <td>Customer Name</td>
-                                  <td>Advance Payment</td>
-                                                <td>1000 CAD</td>
-                    <td>0.00</td>
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="fas fa-money-bill-wave text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.amount }} {{ paymentData.currency }}</p>
+                                    <p class="mb-0">AMOUNT</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6 pr-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
+                                          <td width="60%">{{ payModeLabel }}</td>
+                                       </tr>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">{{ payModeLabel }}#</td>
+                                          <td width="60%">{{ paymentData.payModeNo }}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">Reference#</td>
+                                          <td>{{ paymentData.referenceNo }}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">RNotes</td>
+                                          <td>{{ paymentData.notes }}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered table-hover">
+                                    <thead>
+                                       <tr>
+                                          <th>Account Name</th>
+                                          <th>Name</th>
+                                          <th>Type</th>
+                                          <th>Debit</th>
+                                          <th>Credit</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td>Advance Payment Account</td>
+                                          <td>{{ entityName }}</td>
+                                          <td>Advance Payment</td>
+                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
+                                          <td>0.00</td>
+                                       </tr>
+                                       <tr>
+                                          <td>{{ accountName }}</td>
+                                          <td>{{ entityName }}</td>
+                                          <td>Advance Payment</td>
+                                          <td>0.00</td>
+                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
 
-                  </tr>
-                  <tr>
-                    <td>Bank Account</td>
-                                  <td>Customer Name</td>
-                                  <td>Advance Payment</td>
-                    <td>0.00</td>
-                                                <td>1000 CAD</td>
-
-                  </tr>
-                  <tr>
-                               <td colspan="3" class="font-weight-bold text-right">Total</td>
-                    <td>1000 CAD</td>
-                    <td>1000 CAD</td>
-                  </tr>
-                </tbody>
-              </table>
-                         </div>
-                      </div>
-                   </div>
-                </div>
+                                       </tr>
+                                       <tr>
+                                          <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
+                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
 
 
-             </form>
-          </div>
-       </div>
-    </div>
- </section>
-</div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
 </section>
