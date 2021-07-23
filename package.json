@@ -79,6 +79,7 @@
     "rxjs": "6.6.7",
     "select2": "^4.0.13",
     "slick-carousel": "^1.8.1",
+    "spacetime": "6.16.2",
     "stream": "0.0.2",
     "tesseract.js": "^2.1.4",
     "tesseract.ts": "^1.1.2",

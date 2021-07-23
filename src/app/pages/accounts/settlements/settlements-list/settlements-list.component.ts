@@ -66,6 +66,9 @@ export class SettlementsListComponent implements OnInit {
                 this.settlements = result;
                 this.settlements.map((v) => {
                     v.entityType = v.type.replace('_', ' ');
+                    if(v.status == undefined) {
+                        v.status = 'unpaid';
+                    }
                 })
             })
     }
