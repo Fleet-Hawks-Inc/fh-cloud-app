@@ -35,6 +35,7 @@ export class EventDetailComponent implements OnInit {
   public eventImages = [];
   public eventVideos = [];
 
+  showMap: boolean = true;
   deviceSerialNo: string;
   vehicle: string;
   trip: string;
@@ -160,13 +161,19 @@ export class EventDetailComponent implements OnInit {
         if (location && location.items.length > 0) {
           return location.items[0].title;
         } else {
+          this.showMap = false;
           return 'NA';
+
         }
       } else {
+        this.showMap = false;
         return 'NA';
+
       }
     } catch (error) {
+      this.showMap = false;
       return 'NA';
+
     }
 
   }
@@ -224,6 +231,7 @@ export class EventDetailComponent implements OnInit {
   async fetchEvidence() {
 
     try {
+      this.eventVideos=[];
       const eventStartDate = spacetime(this.eventStartDateTime).format('numeric-cn');
       const eventEndDate = spacetime(this.eventEndDateTime).format('numeric-cn');
       const body = {
@@ -233,9 +241,9 @@ export class EventDetailComponent implements OnInit {
         deviceEventId: this.deviceEventId
       }
       const response: any = await this.safetyService.postData('critical-events/fetchEvent', body).toPromise()
-      console.log(response)
+
       if (response && response.alarmFiles && response.alarmFiles.length > 0) {
-        console.log(response.alarmFiles);
+
         for (const video of response.alarmFiles) {
           const params = {
             path: video.videoUrl,
@@ -244,7 +252,6 @@ export class EventDetailComponent implements OnInit {
           }
           this.eventVideos.push(params)
         }
-        console.log(this.eventVideos);
 
       } else {
         this.toastr.error('Event Video not available. Please try again.')
