@@ -93,16 +93,16 @@
                                 <a class="nav-link navtabs" id="dispatched-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'dispatched'}"
                                     (click)="fetchTabData('dispatched')">Dispatched : {{ dispatchOrders.length }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="delivered-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'delivered'}"
-                                    (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrders.length }}</a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="cancelledDispatch-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'cancelled'}"
                                     (click)="fetchTabData('cancelled')">Cancelled Dispatch :
                                     {{ cancelledOrders.length }}</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="delivered-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'delivered'}"
+                                    (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrders.length }}</a>
+                            </li>
                             <!-- <li class="nav-item">
                                 <a class="nav-link navtabs" id="invoiced-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'invoiced'}"
                                     (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrders.length }}</a>
@@ -140,7 +140,7 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                             Location: 
@@ -236,24 +236,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
-                                       </td>
-                                        <td> {{order.totalAmount}}<br>
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
+                                        </td>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -301,24 +321,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
-                                       </td>
-                                        <td> {{order.totalAmount}}<br>
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
+                                        </td>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -366,24 +406,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
-                                       </td>
-                                        <td> {{order.totalAmount}}<br>
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
+                                        </td>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -431,24 +491,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
                                         </td>
-                                        <td>{{order.totalAmount}}<br>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -496,24 +576,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
                                         </td>
-                                        <td>{{order.totalAmount}}<br>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -561,24 +661,44 @@
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
                                         <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
+                                        <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
                                         <td> 
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].shippers[0].time }}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: 
+                                            <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                             </span>
                                         </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].date | date:"yyyy/MM/dd" }} - {{order.shippersReceiversInfo[0].receivers[0].time }}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                            Location: - 
+                                            <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                            </span>
+                                            <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                            </span>
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                             </span>
                                         </td>
-                                        <td>{{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit : ''}} 
+                                        <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                             {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}} 
                                         </td>
-                                        <td>{{order.totalAmount}}<br>
+                                        <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
