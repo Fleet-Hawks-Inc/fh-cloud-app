@@ -16,8 +16,6 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
-
             <a
               routerLink="/safety/critical-events"
               class="btn btn-sm btn-default mr-2"
@@ -50,12 +48,42 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ vehiclesObject[vehicle] }}</span
+                            >{{ driversObject[driver] }}</span
                           >
                           <h2
                             class="
                               pull-left
                               line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Driver
+                          </h2>
+                        </div>
+
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ vehiclesObject[vehicle] }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
                               mb-0
                               mt-0
                               text-4
