@@ -1,0 +1,24 @@
+[{
+    "freightliner": ["cascadia", "columbia", "coronado", "sprinter2500", "sprinter3500"]
+  },
+  {
+    "volvo": ["vhd","vnl","vnm","vnr","vnx","vn","vah"]
+  },
+  {
+    "mercedes-Benz": []
+  },
+  {
+    "international": []
+  },
+  {
+    "Kenworth": []
+  },
+  {
+    "Peterbilt": []
+  },
+  {
+    "Mack": []
+  }
+
+
+]

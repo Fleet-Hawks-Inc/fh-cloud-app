@@ -149,9 +149,9 @@
                                        [(ngModel)]="manufacturerID" placeholder="Select vehicle make"
                                        (change)="resetModel()" required #make="ngModel" required>
                                        <optgroup label="">
-                                          <ng-option *ngFor="let manufacturer of manufacturers | async"
-                                             value="{{manufacturer.manufacturerID}}">
-                                             {{manufacturer.manufacturerName}}</ng-option>
+                                          <ng-option *ngFor="let manufacturer of manufacturerDataSource"
+                                             value="{{manufacturer}}">
+                                             {{manufacturer}}</ng-option>
                                        </optgroup>
                                     </ng-select>
                                     <div *ngIf="make.invalid && (make.dirty || make.touched)" class="text-danger">
@@ -168,12 +168,12 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Model <span
                                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID"
+                                    <ng-select (change)="fetchModels()" class="form-control populate" name="modelID" [(ngModel)]="modelID"
                                        placeholder="Select vehicle model" id="vehicleSelect" #model="ngModel" required>
                                        <optgroup label="">
-                                          <ng-container *ngFor="let model of models | async">
-                                             <ng-option *ngIf="model.manufacturerID == manufacturerID"
-                                                value="{{model.modelID}}">{{model.modelName}}
+                                          <ng-container *ngFor="let model of modals">
+                                             <ng-option 
+                                                value="{{model}}">{{model}}
                                              </ng-option>
                                           </ng-container>
                                        </optgroup>
