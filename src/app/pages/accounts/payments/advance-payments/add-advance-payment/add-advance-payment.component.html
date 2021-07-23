@@ -60,7 +60,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'driver'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Driver" #driverID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Driver" #driverID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of drivers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -77,7 +77,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'carrier'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Carrier" #carrierID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Carrier" #carrierID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of carriers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -93,7 +93,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'owner_operator'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Owner Operator" #operatorID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner Operator" #operatorID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -109,7 +109,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'employee'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Employee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Employee" #employeeID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Employee" #employeeID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of employees | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -125,7 +125,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'vendor'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Vendor" #vendorID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Vendor" #vendorID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of vendors | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -141,7 +141,7 @@
                                                 <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'customer'">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityID" name="type" placeholder="Select Customer" #customerID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Customer" #customerID="ngModel" required>
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of customers | keyvalue">{{ data.value }}
                                                         </ng-option>

@@ -14,7 +14,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   paymentData = {
     paymentNo: "",
     paymentTo: null,
-    entityID: null,
+    entityId: null,
     amount: "",
     currency: null,
     payMode: null,
@@ -54,9 +54,9 @@ export class AdvancePaymentsDetailComponent implements OnInit {
         
         this.changePaymentMode(this.paymentData.payMode);
         if (this.paymentData.paymentTo === "driver") {
-          this.fetchDriverDetail(this.paymentData.entityID);
+          this.fetchDriverDetail(this.paymentData.entityId);
         } else {
-          this.fetchContact(this.paymentData.entityID);
+          this.fetchContact(this.paymentData.entityId);
         }
         this.fetchAcounts(this.paymentData.accountID);
       });

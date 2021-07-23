@@ -14,7 +14,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   paymentData = {
     paymentNo: "",
     paymentTo: null,
-    entityID: null,
+    entityId: null,
     amount: "",
     currency: null,
     payMode: null,
@@ -209,6 +209,6 @@ export class AddAdvancePaymentComponent implements OnInit {
   }
 
   resetEntityVal() {
-    this.paymentData.entityID = null;
+    this.paymentData.entityId = null;
   }
 }

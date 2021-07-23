@@ -32,7 +32,7 @@
                                     <i class="fa fa-user text-7"></i>
                                     <br>
                                     <p class="mb-0 text-5 font-weight-bold text-dark">{{ entityName }}</p>
-                                    <p class="mb-0">{{ paymentData.paymentTo }}</p>
+                                    <p class="mb-0 text-uppercase">{{ paymentData.paymentTo }}</p>
                                  </div>
                               </div>
 
@@ -53,19 +53,19 @@
                                     <tbody>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                          <td width="60%">{{ payModeLabel }}</td>
+                                          <td width="60%">{{ (payModeLabel) ? payModeLabel : '-' }}</td>
                                        </tr>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">{{ payModeLabel }}#</td>
-                                          <td width="60%">{{ paymentData.payModeNo }}</td>
+                                          <td width="60%">{{ (paymentData.payModeNo) ? paymentData.payModeNo : '-' }}</td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reference#</td>
-                                          <td>{{ paymentData.referenceNo }}</td>
+                                          <td>{{ (paymentData.referenceNo) ? paymentData.referenceNo : '-' }}</td>
                                        </tr>
                                        <tr>
-                                          <td class="back-color-gray font-weight-bold">RNotes</td>
-                                          <td>{{ paymentData.notes }}</td>
+                                          <td class="back-color-gray font-weight-bold">Notes</td>
+                                          <td>{{ (paymentData.notes) ? paymentData.notes : '-' }}</td>
                                        </tr>
                                     </tbody>
                                  </table>
