@@ -352,7 +352,12 @@
                                 Video</a
                               >
 
-                              <div *ngIf="eventVideos?.length > 0 && eventSource == 'Automatic'">
+                              <div
+                                *ngIf="
+                                  eventVideos?.length > 0 &&
+                                  eventSource == 'Automatic'
+                                "
+                              >
                                 <a
                                   *ngFor="
                                     let item of eventVideos;
@@ -555,7 +560,7 @@
                         <source [src]="item.path" />
                       </video>
                     </div>
-                    <a 
+                    <a
                       style="text-align: center"
                       href="{{ item.path }}"
                       target="_blank"
