@@ -48,7 +48,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ driversObject[driver] }}</span
+                            >{{ deviceSerialNo }}</span
                           >
                           <h2
                             class="
@@ -61,7 +61,7 @@
                               text-dark
                             "
                           >
-                            Driver
+                            Device Serial No.
                           </h2>
                         </div>
 
@@ -311,6 +311,20 @@
                           <div class="row">
                             <div class="col-lg-12 text-center p-5">
                               <a
+                                *ngIf="eventSource == 'Automatic'"
+                                href="javascript:;"
+                                (click)="fetchEvidence()"
+                                class="
+                                  modal-with-form
+                                  btn btn-success btn-block
+                                  mb-2
+                                  btn-sm
+                                "
+                                ><i class="fas fa-eye"></i> Fetch Evidence
+                                Video(s)</a
+                              >
+                              <a
+                                *ngIf="eventSource == 'manual'"
                                 href="javascript:;"
                                 data-target="#viewImagesModal"
                                 data-toggle="modal"
@@ -324,6 +338,7 @@
                                 Photo</a
                               >
                               <a
+                                *ngIf="eventSource == 'manual'"
                                 href="javascript:;"
                                 data-target="#viewVideosModal"
                                 data-toggle="modal"
@@ -335,6 +350,21 @@
                                 "
                                 ><i class="fas fa-eye"></i> View Critical Event
                                 Video</a
+                              >
+
+                              <a
+                                *ngIf="eventVideos.length > 0 && eventSource== 'Automatic'"
+                                href="javascript:;"
+                                data-target="#viewEvidencModal"
+                                data-toggle="modal"
+                                class="
+                                  modal-with-form
+                                  btn btn-success btn-block
+                                  mb-1
+                                  btn-sm
+                                "
+                                ><i class="fas fa-eye"></i> View Critical Event
+                                Video(s)</a
                               >
                             </div>
                           </div>
@@ -479,7 +509,7 @@
   </div>
 </div>
 
-<!-- VIEW DOCUMENT MODAL -->
+<!-- VIEW Video MODAL -->
 <div
   class="modal fade"
   id="viewVideosModal"
@@ -528,7 +558,76 @@
                         <source [src]="item.path" />
                       </video>
                     </div>
-                    <a href="{{ item.path }}" target="_blank"
+                    <a style="text-align: center;" href="{{ item.path }}" target="_blank"
+                      >Download this video</a
+                    >
+                  </div>
+                </ngx-slick-carousel>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fetch Evidence Video Modal -->
+
+<div
+  class="modal fade"
+  id="viewEvidencModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="viewDocModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" style="max-width: 600px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDocModalLabel">View Incident Videos</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-lg-12" *ngIf="eventVideos?.length > 0">
+          <div class="mb-3">
+            <div class="row">
+              <div class="col-12">
+                <ngx-slick-carousel
+                  class="carousel safety-slider"
+                  #slickModal="slick-carousel"
+                  [config]="slideConfig"
+                >
+                  <div
+                    ngxSlickItem
+                    *ngFor="let item of eventVideos; let i = index"
+                    class="slide"
+                  >
+                    <div>
+                      <video
+                        id="clip"
+                        controls
+                        disablepictureinpicture
+                        controlsList="nodownload"
+                        width="530"
+                        height="264"
+                      >
+                        <source [src]="item.path" />
+                      </video>
+                    </div>
+                    <a  style="text-align: center;" href="{{ item.path }}" target="_blank"
                       >Download this video</a
                     >
                   </div>

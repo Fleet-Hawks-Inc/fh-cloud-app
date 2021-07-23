@@ -44,25 +44,28 @@ export class EventListComponent implements OnInit {
     this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
-    await this.getLocation('18.696509030038285, 73.75418115438664');
   }
 
   async getLocation(location: string) {
-    const cords = location.split(',');
-    if (cords.length == 2) {
-      const params = {
-        lat: cords[0].trim(),
-        lng: cords[1].trim()
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
 
-      }
-      const location = await this.hereMapService.revGeoCode(params);
-      console.log(location);
-      if (location && location.items.length > 0) {
-        return location.items[0].title;
+        }
+        const location = await this.hereMapService.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          return 'NA';
+        }
       } else {
         return 'NA';
       }
-    } else {
+    } catch (error) {
       return 'NA';
     }
 
@@ -77,7 +80,7 @@ export class EventListComponent implements OnInit {
   searchEvents() {
     this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
       .subscribe((result: any) => {
-        console.log('result', result)
+
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -165,7 +168,7 @@ export class EventListComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('scrolled down')
+   
     this.fetchEvents();
   }
 
