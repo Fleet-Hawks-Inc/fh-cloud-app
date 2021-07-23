@@ -7,6 +7,8 @@ export const environment = {
   isManageEnabled: true,
   isSafetyEnabled: false,
   isAccountsEnabled: false,
+  isReportsEnabled: false,
+
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads-ue1.s3.us-east-1.amazonaws.com',
   AccountServiceUrl: 'http://localhost:4002/api/v1/',
