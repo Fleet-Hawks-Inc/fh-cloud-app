@@ -99,6 +99,8 @@ export class EventDetailComponent implements OnInit {
         this.assigned = result.assigned;
         this.eventDate = result.eventDate;
         this.eventSource = result.eventSource;
+        this.eventStartDateTime = result.eventStartDateTime;
+        this.eventEndDateTime = result.eventEndDateTime;
         this.eventTime = await this.convertTimeFormat(result.eventTime);
         this.createdBy = result.createdBy;
         this.eventType = result.eventType;
@@ -231,7 +233,7 @@ export class EventDetailComponent implements OnInit {
   async fetchEvidence() {
 
     try {
-      this.eventVideos=[];
+      this.eventVideos = [];
       const eventStartDate = spacetime(this.eventStartDateTime).format('numeric-cn');
       const eventEndDate = spacetime(this.eventEndDateTime).format('numeric-cn');
       const body = {
