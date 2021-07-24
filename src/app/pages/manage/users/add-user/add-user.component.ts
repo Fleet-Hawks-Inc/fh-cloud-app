@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HighlightSpanKind } from 'typescript';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { passwordStrength } from 'check-password-strength'
+import {HttpClient} from '@angular/common/http'
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -77,7 +78,7 @@ export class AddUserComponent implements OnInit {
     currentStatus: 'active',
     userLoginData: {
       userName: '',
-      userType: '',
+      roles: '',
       password: '',
       confirmPassword: ''
     }
@@ -124,6 +125,7 @@ export class AddUserComponent implements OnInit {
   }
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  userRoles:any=[]
 
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -138,6 +140,7 @@ export class AddUserComponent implements OnInit {
     } else {
       this.title = 'Add User';
     }
+    this.fetchUserRoles();
     this.getCurrentuser();
     this.searchLocation();
   }
@@ -147,7 +150,17 @@ export class AddUserComponent implements OnInit {
     private HereMap: HereMapService,
     private location: Location,
     private route: ActivatedRoute,
+    private httpClient:HttpClient
   ) { }
+
+  fetchUserRoles(){
+    this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
+      this.userRoles=data
+      console.log(this.userRoles)
+        }
+    );
+
+  }
   getCurrentuser = async () => {
     this.isCarrierID = localStorage.getItem('carrierID');
     if (this.isCarrierID === undefined || this.isCarrierID === null) {
@@ -309,7 +322,6 @@ export class AddUserComponent implements OnInit {
     // append other fields
     formData.append('data', JSON.stringify(this.userData));
     // this.lastEvaluatedKeyStaff = '';
-
     this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
@@ -397,7 +409,7 @@ export class AddUserComponent implements OnInit {
         },
         userLoginData: {
           userName: result.userLoginData.userName,
-          userType: result.userLoginData.userType,
+          roles: result.userLoginData.roles,
           password: '',
           confirmPassword: ''
         }
