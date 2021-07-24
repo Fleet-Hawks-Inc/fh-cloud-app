@@ -270,6 +270,10 @@
                                                                                             background: #f3f3f3;
                                                                                             margin-bottom: 10px;"
                                                                                             *ngFor="let pick of shipper.pickupPoint">
+                                                                                            <p *ngIf="pick.unit" class="mb-0 text-dark">
+                                                                                                <strong>Unit Number:</strong>
+                                                                                                {{pick.unitNumber }}
+                                                                                            </p>
                                                                                             <p class="mb-0 text-dark">
                                                                                                 <strong>Pickup Location:</strong>
                                                                                                 <span class="mb-0 text-dark"
@@ -384,6 +388,10 @@
                                                                                     background: #f3f3f3;
                                                                                     margin-bottom: 10px;"
                                                                                         *ngFor="let drop of receiver.dropPoint">
+                                                                                        <p *ngIf="drop.unit" class="mb-0 text-dark">
+                                                                                            <strong>Unit Number:</strong>
+                                                                                            {{drop.unitNumber }}
+                                                                                        </p>
                                                                                         <p class="mb-0 text-dark">
                                                                                             <strong>Drop Location:</strong>
                                                                                             <span class="mb-0 text-dark"
@@ -1031,14 +1039,14 @@
                                                     </td>
     
                                                     <td valign="top" align="right" style="width: 50%;">
-                                                        <div *ngFor="let receive of ship.receivers;let i = index;" style="    border: 1px dashed #8d8d8d;
+                                                        <div *ngFor="let receive of ship.receivers;" style="    border: 1px dashed #8d8d8d;
                                                         padding: 10px;">
                                                             <b style="font-size: 12px;">RECEIVER:</b> <br>
                                                             <span class="text-capitalize">{{receive.companyName}}</span> <br>
                                                             {{receive.receiverAddress}}
     
                                                             <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Drop: {{i + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
                                                                 
                                                                 <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
                                                                     {{ drop.address.address }}
@@ -1132,14 +1140,23 @@
                                                                         <small>{{item.currency}}</small></td>
     
                                                                 </tr>
-                                                                <tr
-                                                                    *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
-                                                                    <td colspan="6">{{item.type}} <small>(Accessorial
-                                                                            Deduction)</small></td>
-                                                                    <td align="right">- {{item.amount}}
-                                                                        <small>{{item.currency}}</small></td>
-    
+                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction">
+                                                                    <td colspan="6">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                                                <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                        Deduction)</small></td>
+                                                                                <td align="right">- {{item.amount}}
+                                                                                    <small>{{item.currency}}</small></td>
+                
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
                                                                 </tr>
+                                                                
                                                                 
                                                                 <tr class="bg-transparent">
                                                                     <td align="right" colspan="6">Sub Total</td>

@@ -326,7 +326,7 @@ export class AddOrdersComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  ifStatus = '';
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -647,8 +647,8 @@ export class AddOrdersComponent implements OnInit {
     
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    this.toastr.success("Shipper Added.");
-    await this.emptyShipperReceiver(i);
+    this.toastr.success("Shipper added successfully.");
+    await this.emptyShipper(i);
   }
 
   async getCords(value){
@@ -723,9 +723,9 @@ export class AddOrdersComponent implements OnInit {
 
     
     await this.shipperReceiverMerge();
-    this.toastr.success("Receiver Added.");
+    this.toastr.success("Receiver added successfully.");
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    await this.emptyShipperReceiver(i);
+    await this.emptyReceiver(i);
    
 }
 
@@ -752,89 +752,81 @@ export class AddOrdersComponent implements OnInit {
     
     
   }
+  
+  async emptyReceiver(i) {
+    this.shippersReceivers[i].receivers.receiverID = null;
+    this.shippersReceivers[i].receivers.dropPoint = [{
+      unit: false,
+      unitNumber: '',
+      address: {
+        address: '',
+        manual: false,
+        dropOffLocation: '',
+        city: '',
+        state: '',
+        country: '',
+        zipCode: '',
+        position: {}
+      },
+      dropOffDate: "",
+      dropOffTime: "",
+      dropOffInstruction: "",
+      contactPerson: "",
+      phone: "",
+    
+      commodity: [
+        {
+          name: "",
+          quantity: "",
+          quantityUnit: null,
+          weight: "",
+          weightUnit: null,
+          del: ""
+        },
+      ],
+    }];
+    this.shippersReceivers[i].receivers.driverUnload = false,
+    this.shippersReceivers[i].receivers.save = true,
+    this.shippersReceivers[i].receivers.update = false
+  }
 
-  async emptyShipperReceiver(i) {
-    this.shippersReceivers[i] = 
-      {
-        shippers: {
-          shipperID: null,
-          pickupPoint: [
-            {
-              unit: false,
-              unitNumber: '',
-              address: {
-                address: '',
-                manual: false,
-                pickupLocation: '',
-                city: '',
-                state: '',
-                country: '',
-                zipCode: '',
-                position: {}
-              },
-              pickupDate: "",
-              pickupTime: "",
-              pickupInstruction: "",
-              contactPerson: "",
-              phone: "",
-            
-              commodity: [
-                {
-                  name: "",
-                  quantity: "",
-                  quantityUnit: null,
-                  weight: "",
-                  weightUnit: null,
-                  pu: ""
-                },
-              ],
-            }
-          ],
-          driverLoad: false,
-          save: true,
-          update: false
-          
+
+  async emptyShipper(i) {
+    this.shippersReceivers[i].shippers.shipperID = null;
+    this.shippersReceivers[i].shippers.pickupPoint = [{
+      unit: false,
+      unitNumber: '',
+      address: {
+        address: '',
+        manual: false,
+        pickupLocation: '',
+        city: '',
+        state: '',
+        country: '',
+        zipCode: '',
+        position: {}
+      },
+      pickupDate: "",
+      pickupTime: "",
+      pickupInstruction: "",
+      contactPerson: "",
+      phone: "",
+    
+      commodity: [
+        {
+          name: "",
+          quantity: "",
+          quantityUnit: null,
+          weight: "",
+          weightUnit: null,
+          pu: ""
         },
-        receivers: {
-          receiverID: null,
-          dropPoint: [
-            {
-              
-              unit: false,
-              unitNumber: '',
-              address: {
-                address: '',
-                manual: false,
-                dropOffLocation: '',
-                city:  '',
-                state: '',
-                country: '',
-                zipCode: '',
-                position: {}
-              },
-              dropOffDate: '',
-              dropOffTime: '',
-              dropOffInstruction: '',
-              contactPerson: '',
-              phone: '',
-              commodity: [
-                {
-                  name: '',
-                  quantity: '',
-                  quantityUnit: null,
-                  weight: '',
-                  weightUnit: null,
-                  del: ''
-                },
-              ],
-            }
-          ],
-          
-          driverUnload: false,
-          save: true,
-          update: false
-        },
-      }
+      ],
+    }];
+    this.shippersReceivers[i].shippers.driverLoad = false,
+    this.shippersReceivers[i].shippers.save = true,
+    this.shippersReceivers[i].shippers.update = false
+    
     
   }
 
@@ -1049,7 +1041,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.isSubmit = true;
+    this.submitDisabled = true;
     // if (!this.checkFormErrors()) return false;
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
@@ -1105,11 +1097,12 @@ export class AddOrdersComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
-    this.submitDisabled = true;
+    
 
     this.apiService.postData("orders", formData, true).subscribe({
       complete: () => {},
       error: (err) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -1416,7 +1409,7 @@ export class AddOrdersComponent implements OnInit {
       data.update = false;
       
       this.toastr.success('Shipper Updated');
-      
+      this.emptyShipper(i);
     } else {
       let data = this.shippersReceivers[i].receivers;
       
@@ -1460,9 +1453,10 @@ export class AddOrdersComponent implements OnInit {
       data.save = true;
       data.update = false;
       this.toastr.success('Receiver Updated');
-      
+      this.emptyReceiver(i);
     }
-    this.emptyShipperReceiver(i);
+    
+   
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
@@ -1518,7 +1512,7 @@ export class AddOrdersComponent implements OnInit {
           this.orderAttachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         this.orderData["attachments"] = result.attachments;
-        this.orderData["orderStatus"] = result.orderStatus;
+        this.ifStatus = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
