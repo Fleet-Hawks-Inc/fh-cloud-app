@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import pdfMake from "pdfmake/build/pdfmake";  
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
+import * as html2pdf from 'html2pdf.js';
 declare var $: any;
 
 @Component({
@@ -401,24 +402,35 @@ export class OrderDetailComponent implements OnInit {
 
   generatePDF() {
     var data = document.getElementById('print_wrap');
-    html2canvas(data).then(canvas => {
-      var imgData = canvas.toDataURL();
-      var docDefinition = {
+
+ html2pdf(data, {
+  margin:       10,
+  filename:     'myfile.pdf',
+  image:        { type: 'jpeg', quality: 0.98 },
+  html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+  jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  pageBreakBefore: function(currentNode) {
+    return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
+  }
+});
+    // html2canvas(data).then(canvas => {
+    //   var imgData = canvas.toDataURL();
+    //   var docDefinition = {
         
-        pageSize: 'A4',
-        pageOrientation: 'portrait',
-        pageBreak: 'after',
-        margin: 0,
-        content: [{
-          image: imgData,
-          width: 500,
-        }],
-        pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
-          return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
-        }
-      };
-      pdfMake.createPdf(docDefinition).download("invoice.pdf");
-    });
+    //     pageSize: 'A4',
+    //     pageOrientation: 'portrait',
+    //     pageBreak: 'after',
+    //     margin: 0,
+    //     content: [{
+    //       image: imgData,
+    //       width: 500,
+    //     }],
+    //     pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+    //       return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
+    //     }
+    //   };
+    //   pdfMake.createPdf(docDefinition).download("invoice.pdf");
+    // });
     
    
   }

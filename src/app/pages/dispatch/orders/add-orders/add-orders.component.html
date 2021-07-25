@@ -178,7 +178,7 @@
                                  </div>
                               </div>
 
-                              <div class="col-lg-11 mt-4" *ngIf="customerSelected.officeAddr">
+                              <div class="col-lg-11 mt-4" *ngIf="customerSelected">
                                  <div class=""  *ngIf="orderData.customerID" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
 
                                     <div class="row pl-3 pr-3">
@@ -193,8 +193,17 @@
                                        <div class="col-lg-12" >
                                           
 
-                                          <div *ngFor="let address of customerSelected.address">
-                                             <div class="row" *ngIf="address.addressType =='Office'">
+                                          <div *ngFor="let item of customerSelected">
+                                             <div class="col-lg-6 p-0">
+                                                <label class="control-label"><span class=" font-weight-bold">Email:</span>
+                                                   {{item.workEmail}}</label>
+                                             </div>
+                                             <div class="col-lg-6 p-0">
+                                                <label class="control-label"><span class=" font-weight-bold">Phone:</span>
+                                                   {{item.workPhone}}</label>
+                                             </div>
+                                            
+                                             <div class="row" *ngFor="let address of item.address">
                                                 <div class="col-lg-6">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
                                                       {{address.address1}}
@@ -203,9 +212,7 @@
                                                    <label class="control-label" *ngIf="!address.manual"><span class=" font-weight-bold">Address:</span>
                                                       {{address.userLocation}}</label>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                   <label class="control-label"><span class=" font-weight-bold">Phone:</span> {{customerSelected.phone}}</label>
-                                                </div>
+                                                
                                                 <div class="col-lg-6">
                                                    <label class="control-label"><span class=" font-weight-bold">City:</span>
                                                       {{address.cityName}}</label>
@@ -219,10 +226,12 @@
                                                       {{address.countryName}}</label>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                   <label class="control-label"><span class=" font-weight-bold">Email:</span>
-                                                      {{customerSelected.email}}</label>
+                                                   <label class="control-label"></label>
+                                                   <input type="radio" name="select" [value]="address.addressType"  [(ngModel)]="radioSelected">
                                                 </div>
+                                                {{radioSelected}}
                                              </div>
+                                             
 
                                           </div>
 
@@ -254,7 +263,7 @@
 
                                  <ng-select [(ngModel)]="orderData.additionalContact" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
-                                    <ng-option value="{{ data.fullName }}" *ngFor="let data of customerSelected.additionalContact">{{ data.fullName }}</ng-option>
+                                    <!-- <ng-option value="{{ data.fullName }}" *ngFor="let data of customerSelected.additionalContact">{{ data.fullName }}</ng-option> -->
                                  </ng-select>
 
                               </div>
@@ -507,18 +516,56 @@
                                                             
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">City</label>
-                                                                  <input [(ngModel)]="pick.address.city"
-                                                                  name="city_{{w}}" type="text" class="form-control" placeholder="toronto">
+                                                                  <!-- <input [(ngModel)]="pick.address.city"
+                                                                  name="city_{{w}}" type="text" class="form-control" placeholder="toronto"> -->
+                                                                  <ng-select
+                                                                     [(ngModel)]="pick.address.cityName"
+                                                                     name="cityID_{{w}}"
+                                                                     class="form-control populate address_city"
+                                                                     placeholder="Select City"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let city of pick.address.cities"
+                                                                     value="{{ city.cityName }}"
+                                                                     >{{ city.cityName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">State</label>
-                                                                  <input [(ngModel)]="pick.address.state"
-                                                                  name="state_{{w}}" type="text" class="form-control" placeholder="ON">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Province/State</label>
+                                                                  <!-- <input [(ngModel)]="pick.address.state"
+                                                                  name="state_{{w}}" type="text" class="form-control" placeholder="ON"> -->
+                                                                  <ng-select
+                                                                     (change)="getCities($event, i, w)"
+                                                                     [(ngModel)]="pick.address.stateCode"
+                                                                     name="stateID_{{w}}"
+                                                                     class="form-control populate address_state"
+                                                                     placeholder="Select province/state"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let state of pick.address.states"
+                                                                     value="{{ state.stateCode }}"
+                                                                     >{{ state.stateName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Country</label>
-                                                                  <input [(ngModel)]="pick.address.country"
-                                                                  name="country_{{w}}" type="text" class="form-control" placeholder="canada">
+                                                                  <!-- <input [(ngModel)]="pick.address.country"
+                                                                  name="country_{{w}}" type="text" class="form-control" placeholder="canada"> -->
+                                                                  <ng-select
+                                                                  (change)="getStates($event, i, w)"
+                                                                  [(ngModel)]="pick.address.countryCode"
+                                                                  name="countryID_{{w}}"
+                                                                  class="form-control populate address_country"
+                                                                  placeholder="Select Country"
+                                                                >
+                                                                  <ng-option
+                                                                    *ngFor="let country of countries"
+                                                                    value="{{ country.countryCode }}"
+                                                                    >{{ country.countryName }}</ng-option
+                                                                  >
+                                                                </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code</label>

@@ -23,6 +23,7 @@ import { PdfAutomationService } from "../../pdf-automation/pdf-automation.servic
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { DomSanitizer} from '@angular/platform-browser';
+import { CountryStateCity } from "src/app/shared/utilities/countryStateCities";
 
 declare var $: any;
 declare var H: any;
@@ -67,14 +68,12 @@ export class AddOrdersComponent implements OnInit {
   assetTypes = [];
   form;
   visibleIndex = 0;
-  customerSelected = {
-    additionalContact : [],
-    address:[],
-    officeAddr: false,
-    email: '',
-    phone: ''
-  };
+  customerSelected: [];
   orderMode: string = "FTL";
+  radioSelected: any;
+  countries;
+  states;
+  cities;
 
   getOrderNumber: string;
   orderData = {
@@ -201,13 +200,31 @@ export class AddOrdersComponent implements OnInit {
             unit: false,
             unitNumber: '',
             address: {
-              address: '',
-              manual: false,
-              pickupLocation: '',
-              city: '',
-              state: '',
-              country: '',
+              countryName: '',
+              stateName: '',
+              cityName: null,
               zipCode: '',
+              address: '',
+              // geoCords: {
+              //   lat: '',
+              //   lng: ''
+              // },
+              pickupLocation: '',
+              manual: false,
+              countryCode: null,
+              stateCode: null,
+              states: [],
+              cities: [],
+              // address: '',
+              // manual: false,
+              // pickupLocation: '',
+              // city: '',
+              // state: '',
+              // states: [],
+              // cities: [],
+              // countryID: '',
+              // countryName: '',
+              // zipCode: '',
               position: {}
             },
             pickupDate: "",
@@ -449,6 +466,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersObjects = res;
     });
 
+    this.fetchCountries();
    
    
   }
@@ -560,9 +578,9 @@ export class AddOrdersComponent implements OnInit {
         this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = ''
       } else {
         this.shippersReceivers[i].shippers.pickupPoint[w].address.address= '';
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.city = '';
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.state = ''
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.country = ''
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = '';
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = ''
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = ''
         this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = ''
         this.shippersReceivers[i].shippers.pickupPoint[w].address.position = {};
       }
@@ -589,9 +607,9 @@ export class AddOrdersComponent implements OnInit {
       if (
         !this.shippersReceivers[i].shippers.shipperID || 
         !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.city ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.state ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.country ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.countryCode ||
         !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
         !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
         !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime 
@@ -624,8 +642,8 @@ export class AddOrdersComponent implements OnInit {
       if(element.address.manual == false) {
         location = element.address.pickupLocation;
       } else {
-        location = `${element.address.address},${element.address.city}, ${element.address.state},
-                  ${element.address.country} ${element.address.zipCode}`
+        location = `${element.address.address},${element.address.cityName}, ${element.address.stateName},
+                  ${element.address.countryName} ${element.address.zipCode}`
       }
       
       let result = await this.getCords(location);
@@ -800,9 +818,13 @@ export class AddOrdersComponent implements OnInit {
         address: '',
         manual: false,
         pickupLocation: '',
-        city: '',
-        state: '',
-        country: '',
+        cityName: '',
+        stateCode: '',
+        stateName: '',
+        countryName: '',
+        countryCode: '',
+        cities: [],
+        states: [],
         zipCode: '',
         position: {}
       },
@@ -939,32 +961,34 @@ export class AddOrdersComponent implements OnInit {
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
         if(result.Items.length > 0) {
-          this.customerSelected = result.Items[0];
-          for (let i = 0; i < this.customerSelected.address.length; i++) {
-            const element = this.customerSelected.address[i];
-            if(element.addressType == 'Office') {
-              this.notOfficeAddress = false;
-              this.customerSelected.officeAddr = true;
-              this.customerSelected.email = result.Items[0].workEmail;
-              this.customerSelected.phone = result.Items[0].workPhone;
-            } else {
-              this.notOfficeAddress = true;
-            }
-          }
+          this.customerSelected = result.Items;
+
+         //  for (let i = 0; i < this.customerSelected.address.length; i++) {
+            // const element = this.customerSelected.address[i];
+             //element.isChecked = false;
+            // if(element.addressType == 'Office') {
+            //   this.notOfficeAddress = false;
+            //   this.customerSelected.officeAddr = true;
+            //   this.customerSelected.email = result.Items[0].workEmail;
+            //   this.customerSelected.phone = result.Items[0].workPhone;
+            // } else {
+            //   this.notOfficeAddress = true;
+            // }
+          // }
         }
         
       });
   }
 
-  setAdditionalContact(event) {
-    for (let i = 0; i < this.customerSelected.additionalContact.length; i++) {
-      const element = this.customerSelected.additionalContact[i];
-      if(element.fullName == event) {
-        this.orderData.phone = element.phone;
-        this.orderData.email = element.email;
-      }
-    }
-  }
+  // setAdditionalContact(event) {
+  //   for (let i = 0; i < this.customerSelected.additionalContact.length; i++) {
+  //     const element = this.customerSelected.additionalContact[i];
+  //     if(element.fullName == event) {
+  //       this.orderData.phone = element.phone;
+  //       this.orderData.email = element.email;
+  //     }
+  //   }
+  // }
 
   addCommodity(arr: string, parentIndex: number, i: number) {
     
@@ -1269,10 +1293,14 @@ export class AddOrdersComponent implements OnInit {
           address: '',
           manual: false,
           pickupLocation: '',
-          city: '',
-          state: '',
-          country: '',
+          cityName: '',
+          stateName: '',
+          stateCode: '',
+          countryName: '',
+          countryCode: '',
           zipCode: '',
+          cities: [],
+          states: [],
           position: {}
         },
         pickupDate: "",
@@ -1390,8 +1418,8 @@ export class AddOrdersComponent implements OnInit {
         if(element.address.manual == false) {
           location = element.address.pickupLocation;
         } else {
-          location = `${element.address.address},${element.address.city}, ${element.address.state},
-                    ${element.address.country} ${element.address.zipCode}`
+          location = `${element.address.address},${element.address.cityName}, ${element.address.stateName},
+                    ${element.address.countryName} ${element.address.zipCode}`
         }
         
         let result = await this.getCords(location);
@@ -1754,10 +1782,14 @@ export class AddOrdersComponent implements OnInit {
               address: '',
               manual: false,
               pickupLocation: '',
-              city: '',
-              state: '',
-              country: '',
+              cityName: '',
+              stateCode: '',
+              stateName: '',
+              countryCode: '',
+              countryName: '',
               zipCode: '',
+              cities: [],
+              states: [],
               position: {}
             },
             pickupDate: "",
@@ -1975,4 +2007,26 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
+   /*
+   * Get all countries from api
+   */
+   fetchCountries() {
+    this.countries = CountryStateCity.GetAllCountries();
+  }
+
+  getStates(countryCode, i: number, w: number) {
+    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    console.log('states', states);
+    let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName= countryName;
+    this.shippersReceivers[i].shippers.pickupPoint[w].address.states = states;
+  }
+
+  getCities(stateCode, i: number, w: number) {
+    let countryCode = this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode;
+    let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName= stateResult;
+    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.shippersReceivers[i].shippers.pickupPoint[w].address.cities = cities;
+  }
 }
