@@ -1682,6 +1682,7 @@ export class AddressBookComponent implements OnInit {
           $('#addShipperModal').modal('hide');
           this.listService.fetchCustomers();
           this.listService.fetchShippers();
+          this.listService.fetchShippersByIDs();
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
@@ -1844,12 +1845,15 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           this.dataMessageConsignee = Constants.FETCHING_DATA;
           $('#addConsigneeModal').modal('hide');
+          
           this.listService.fetchReceivers();
           this.listService.fetchCustomers();
+          this.fetchConsigneeCount();
+          this.listService.fetchReceiversByIDs();
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
-          this.fetchConsigneeCount();
+         
           this.toastr.success('Receiver Added Successfully');
         }
       });

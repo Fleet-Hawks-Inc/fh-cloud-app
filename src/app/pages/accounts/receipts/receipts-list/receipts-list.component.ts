@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./receipts-list.component.css']
 })
 export class ReceiptsListComponent implements OnInit {
+  noReceiptsMsg = 'No Data Found';
   dataMessage: string;
   receipts = [];
   customersObjects: any = {};

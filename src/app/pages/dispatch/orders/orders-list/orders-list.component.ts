@@ -176,6 +176,7 @@ export class OrdersListComponent implements OnInit {
       // }
 
       if(element.orderStatus == 'confirmed') {
+        
         this.confirmOrders.push(element);
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
@@ -250,6 +251,11 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
+    if(this.orderFiltr.category == null || this.orderFiltr.category == '') {
+      this.toastr.error('Please select category');
+      return false;
+    }
+    
     if(this.orderFiltr.startDate===null) this.orderFiltr.startDate=''
     if(this.orderFiltr.endDate===null) this.orderFiltr.endDate=''
     if (this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== ''

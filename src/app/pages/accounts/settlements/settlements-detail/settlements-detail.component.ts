@@ -23,7 +23,7 @@ export class SettlementsDetailComponent implements OnInit {
         type: null,
         entityId: null,
         setNo: '',
-        setDate: null,
+        txnDate: null,
         fromDate: null,
         toDate: null,
         tripIds: [],
@@ -46,24 +46,38 @@ export class SettlementsDetailComponent implements OnInit {
         deductionTotal: 0,
         paymentTotal: 0,
         taxes: 0,
-        finalTotal: 0
+        finalTotal: 0,
+        transactionLog: [],
     }
     tripsObj = [];
+    accounts = [];
+    operatorDetail = {
+        companyName: '',
+        paymentDetails:{
+            payrollType: ''
+        }
+    };
+
+    entityName = "";
+    entityPaymentType = "";
+
     constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
 
     ngOnInit() {
         this.settlementID = this.route.snapshot.params['settlementID'];
         this.fetchSettlementDetail();
         this.fetchTrips();
+        this.fetchAccounts();
     }
 
     fetchSettlementDetail() {
         this.accountService.getData(`settlement/detail/${this.settlementID}`)
             .subscribe((result: any) => {
                 this.settlementData = result[0];
-                console.log('this.settlementData', this.settlementData);
                 if (this.settlementData.type === 'driver') {
                     this.fetchDriverDetail(this.settlementData.entityId);
+                } else {
+                    this.fetchContact(this.settlementData.entityId);
                 }
             })
     }
@@ -72,7 +86,17 @@ export class SettlementsDetailComponent implements OnInit {
         this.apiService.getData(`drivers/${driverID}`)
             .subscribe((result: any) => {
                 this.driverDetail = result.Items[0];
-                console.log('this.driverDetail', this.driverDetail);
+                this.entityName  = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
+                this.entityPaymentType = this.driverDetail.paymentDetails.paymentType;
+            })
+    }
+
+    fetchContact(contactID) {
+        this.apiService.getData(`contacts/detail/${contactID}`)
+            .subscribe((result: any) => {
+                this.operatorDetail = result.Items[0];
+                this.entityName  = this.operatorDetail.companyName;
+                this.entityPaymentType = this.operatorDetail.paymentDetails.payrollType;
             })
     }
 
@@ -82,5 +106,12 @@ export class SettlementsDetailComponent implements OnInit {
                 this.tripsObj = result;
             })
     }
+
+    fetchAccounts() {
+        this.accountService.getData(`chartAc/get/internalID/list/all`)
+          .subscribe((result: any) => {
+            this.accounts = result;
+          })
+      }
 
 }

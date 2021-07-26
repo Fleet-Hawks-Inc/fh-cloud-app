@@ -1,3 +1,4 @@
+const ct = require('countries-and-timezones');
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
@@ -394,7 +395,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     });
   }
   fetchTimezones() {
-    const ct = require('countries-and-timezones');
+    
     const UStimezones = ct.getTimezonesForCountry('US');
     UStimezones.forEach((element: any) => {
       const obj: any = {

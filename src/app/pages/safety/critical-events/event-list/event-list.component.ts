@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, HereMapService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,8 +19,8 @@ export class EventListComponent implements OnInit {
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
- 
-  vehicles  = [];
+
+  vehicles = [];
   vehicleID = '';
   filter = {
     driverID: null,
@@ -28,7 +28,7 @@ export class EventListComponent implements OnInit {
     date: null
 
   };
-  
+
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
@@ -38,114 +38,90 @@ export class EventListComponent implements OnInit {
   status_values: any = ["open", "investigating", "coaching", "closed"];
   lastItemSK: string = '';
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    private spinner: NgxSpinnerService,) { }
+    private spinner: NgxSpinnerService, private hereMapService: HereMapService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
-    this.fetchAllDriverIDs();
-    this.fetchDrivers();
   }
 
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
 
+        }
+        const location = await this.hereMapService.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          return 'NA';
+        }
+      } else {
+        return 'NA';
+      }
+    } catch (error) {
+      return 'NA';
+    }
+
+  }
   fetchVehicles() {
     this.apiService.getData('vehicles')
-    .subscribe((result: any) => {
+      .subscribe((result: any) => {
         this.vehicles = result.Items;
-    })
+      })
   }
 
-  // searchFilter(event, type, vehicleID) {
-  //   if(type === 'vehicle') {
-  //     this.filterValue.vehicleID = vehicleID;
-      
-  //     $("#searchVehicle").text(event.target.innerText);
-  //   } 
-  //   if(type === 'date') {
-  //     if(this.filterValue.date !== '') {
-  //       let date = this.filterValue.date;
-  //       let newdate = date.split('-').reverse().join('-');
-  //       this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
-  //       this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
-  //       this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
-  //       this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
-  //     }
-  //   }
-  // }
-
   searchEvents() {
-    
-    this.safetyService.getData(`critical-events/paging?driverID=${this.filter.driverID}&vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
+    this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
       .subscribe((result: any) => {
-        console.log('result', result)
-        if(result.length == 0) {
+
+        if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.events = result;
       })
-    
-    // if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
-      
-    // }
   }
 
-  fetchEvents() {
-    if(this.lastItemSK != 'end') {
-      this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
-      .subscribe((result: any) => {
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          this.events.push(element);
-          
-        }
-        if(this.events[this.events.length - 1].sk != undefined) {
-          this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
-        } else {
-          this.lastItemSK = 'end';
-        }
-      })
+  async fetchEvents(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.events = [];
     }
-   
-  }
+    if (this.lastItemSK != 'end') {
+      this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
+        .subscribe(async (result: any) => {
+          for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            const location = await this.getLocation(element.location);
+            element.location = location;
+            this.events.push(element);
 
-  fetchDrivers() {
-    this.apiService.getData('drivers/safety')
-    .subscribe((result: any) => {
-        this.drivers =  result.Items;
-    })
-}
-
-  getSuggestions(searchvalue='') {
-    if(searchvalue !== '') {
-      searchvalue = searchvalue.toLowerCase();
-      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
-        complete: () => {},
-        error: () => { },
-        next: (result: any) => {
-          this.suggestions = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-  
-            let obj = {
-              userName: element.userName,
-              name: element.firstName + ' ' + element.lastName
-            };
-            this.suggestions.push(obj)
           }
-        }
-      })
-    }    
+          if (this.events[this.events.length - 1].sk != undefined) {
+            this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+        })
+    }
+
   }
+
 
   changeStatus(eventID: any, newValue: string, i: string) {
-    
+
     let data = {
       eventID: eventID,
       status: newValue
     }
-    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
-      if(res.status == false) {
+    this.safetyService.putData('critical-events', data).subscribe(async (res: any) => {
+      if (res.status == false) {
         this.events[i].status = res.oldStatus;
         this.toaster.error('Please select valid status');
       } else {
@@ -154,13 +130,6 @@ export class EventListComponent implements OnInit {
     });
 
   }
-
-
-  // searchSelectedDriver(data) {
-  //   this.filterValue.driverID = data.userName;
-  //   this.filterValue.driverName = data.name;
-  //   this.suggestions = [];
-  // }
 
   resetFilter() {
     if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.driverID !== null || this.filter.vehicleID !== '' || this.filter.vehicleID !== null) {
@@ -174,7 +143,7 @@ export class EventListComponent implements OnInit {
     } else {
       return false;
     }
-    
+
   }
 
   fetchAllVehiclesIDs() {
@@ -184,27 +153,22 @@ export class EventListComponent implements OnInit {
       });
   }
 
-  fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/list')
-      .subscribe((result: any) => {
-        this.driversObject = result;
-      });
-  }
 
-  convertTimeFormat (time: any) {
+
+  convertTimeFormat(time: any) {
     // Check correct time format and split into components
-    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-  
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
     if (time.length > 1) { // If time format correct
-      time = time.slice (1);  // Remove full string match value
+      time = time.slice(1);  // Remove full string match value
       time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
       time[0] = +time[0] % 12 || 12; // Adjust hours
     }
-    return time.join (''); // return adjusted time or original string
+    return time.join(''); // return adjusted time or original string
   }
 
   onScroll() {
     this.fetchEvents();
   }
-  
+
 }
