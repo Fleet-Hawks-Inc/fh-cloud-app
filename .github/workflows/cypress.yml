@@ -1,5 +1,5 @@
 name: Cypress tests
-on: [push]
+on: workflow_dispatch
 jobs:
   cypress-run:
     name: Cypress run
