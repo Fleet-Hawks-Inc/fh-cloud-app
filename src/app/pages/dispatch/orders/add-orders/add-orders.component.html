@@ -145,7 +145,7 @@
                                     class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                  </label>
-                                 <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
+                                 <ng-select [clearable]="false" (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
 
                                     name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control" #customer="ngModel" required>
                                     <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
@@ -170,14 +170,17 @@
                                        class="fas fa-plus"></i>
                                  </a>
                               </div>
-                              <div class="col-11"  *ngIf="notOfficeAddress">
+
+                              <div class="col-11"  *ngIf="notOfficeAddress && orderData.customerID">
+
                                  <div class="rounded p-2 mt-2" style="background-color:#e1e2e3;">
                                     There is no office address of this customer
                                  </div>
                               </div>
 
                               <div class="col-lg-11 mt-4" *ngIf="customerSelected.officeAddr">
-                                 <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
+                                 <div class=""  *ngIf="orderData.customerID" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
+
                                     <div class="row pl-3 pr-3">
                                        <div class="col-lg-6" style="background-color:#e1e2e3;">
                                           <h5 class=" font-weight-bold">Details</h5>
@@ -187,9 +190,10 @@
                                        </div>
                                     </div>
                                     <div class="row pl-3 pr-3">
-                                       <div class="col-lg-12">
+                                       <div class="col-lg-12" >
+                                          
 
-                                          <div class="" *ngFor="let address of customerSelected.address">
+                                          <div *ngFor="let address of customerSelected.address">
                                              <div class="row" *ngIf="address.addressType =='Office'">
                                                 <div class="col-lg-6">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
@@ -298,20 +302,39 @@
                                              <table class="table table-bordered">
                                                 <tbody>
 
-                                                   <tr *ngFor="let list of finalShippersReceivers[i].shippers; let j = index;">
-                                                      <td class="">
-                                                         {{shippersObjects[list.shipperID]}}
+                                                   <tr *ngFor="let list of finalShippersReceivers; let j = index;">
+                                                      <td class="p-0 border-0">
+                                                         <table class="border-0 w-100">
+                                                            <tbody>
+                                                               <tr *ngFor="let ship of list.shippers; let k = index;">
+                                                                  <td class="" style="min-width: 100px;">
+                                                                     {{shippersObjects[ship.shipperID]}}
+                                                                  </td>
+                                                                  <td class="p-0" style=" min-width: 300px;">
+                                                                     <table class="border-0 w-100">
+                                                                        <tr *ngFor="let point of ship.pickupPoint;">
+                                                                           <td class="border-left-0 border-top-0 border-bottom" style=" min-width: 250px;max-width: 250px;">
+                                                                              <span *ngIf="!point.address.manual">{{point.address.pickupLocation}}</span>
+                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
+                                                                           </td>
+                                                                           <td class="border-top-0 border-bottom border-left-0 border-right-0">
+                                                                              {{point.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
+                                                                           </td>
+                                                                           
+                                                                        </tr>
+                                                                     </table>
+                                                                  </td>
+                                                                  <td style="min-width: 70px;">
+                                                                     <i (click)="editList('shipper', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                     <i (click)="removeList('shipper', i, k)" class="fa fa-trash fa-fw"></i>
+                                                                  </td>
+                                                               </tr>
+                                                            </tbody>
+                                                         </table>
                                                       </td>
-                                                      <td>
-                                                         {{list.pickupLocation}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
-                                                      </td>
-                                                      <td class="">
-                                                         <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
-                                                         <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
-                                                      </td>
+                                                      
+                                                      
+                                                      
                                                    </tr>
 
                                                 </tbody>
@@ -323,22 +346,38 @@
                                              <h4 class="mt-0 text-dark font-weight-bold text-4 px-2 mb-0" style="background-color: #999896;">Receiver </h4>
                                              <table class="table table-bordered">
                                                 <tbody>
-
-                                                   <tr *ngFor="let list of finalShippersReceivers[i].receivers; let j = index;">
-                                                      <td class="">
-                                                         {{receiversObjects[list.receiverID]}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dropOffLocation}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
-                                                      </td>
-                                                      <td class="">
-                                                         <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
-                                                         <i (click)="removeList('receiver', i, j)" class="fa fa-trash fa-fw"></i>
+                                                   <tr *ngFor="let list of finalShippersReceivers; let j = index;">
+                                                      <td class="p-0 border-0">
+                                                         <table class="border-0 w-100">
+                                                            <tbody>
+                                                               <tr *ngFor="let receive of list.receivers; let k = index;">
+                                                                  <td class=""  style="min-width: 100px;">
+                                                                     {{receiversObjects[receive.receiverID]}}
+                                                                  </td>
+                                                                  <td class="p-0"  style="min-width: 300px;">
+                                                                     <table class="border-0 w-100">
+                                                                        <tr *ngFor="let point of receive.dropPoint;">
+                                                                           <td class="border-left-0 border-top-0 border-bottom"  style="min-width: 250px; max-width: 250px;">
+                                                                              <span *ngIf="!point.address.manual">{{point.address.dropOffLocation}}</span>
+                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
+                                                                           </td>
+                                                                           <td class="border-top-0 border-bottom border-left-0 border-right-0">
+                                                                              {{point.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
+                                                                           </td>
+                                                                           
+                                                                        </tr>
+                                                                     </table>
+                                                                  </td>
+                                                                  <td style="min-width: 70px;">
+                                                                     <i (click)="editList('receiver', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                     <i (click)="removeList('receiver', i, k)" class="fa fa-trash fa-fw"></i>
+                                                                  </td>
+                                                               </tr>
+                                                            </tbody>
+                                                         </table>
                                                       </td>
                                                    </tr>
+                                                  
 
                                                 </tbody>
                                              </table>
@@ -364,7 +403,7 @@
                                              <div class="">
                                                 <section>
                                                    <div id="collapseShipperArea-{{i}}" class="collapse show">
-                                                      <div class="row">
+                                                      <div class="row mr-4">
 
                                                          <div class="col-lg-11 col-md-12">
                                                             <label
@@ -390,247 +429,302 @@
                                                            </a>
                                                          </div>
                                                       </div>
-                                                      <div class="row mt-3">
+                                                      <div class="addsr-scrollbar addsr-scroll-y pickup-location__main">
+                                                         <div *ngFor="let pick of item.shippers.pickupPoint; let w = index;" [ngClass]="{'p-3 bg-grey mt-2': w != 0}">
+                                                            <div class="row mt-3 mr-4">
 
-                                                         <div class="col-lg-11 col-md-11">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
-
-                                                            <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.shippers.pickupLocation"
-                                                               name="pickupLocation_{{i}}" (keyup)="searchTerm.next($event);"
-                                                               class="form-control " #pickupLocation="ngModel" required
-                                                               pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                               #location="ngModel" required>
-
-                                                               <div *ngIf="pickupLocation.touched && shippersReceivers[0].shippers.pickupLocation == '' && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-
-                                                                   Pickup location is required.
-
+                                                               <div class="col-lg-11 col-md-11">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
+                                                                     name="pickupLocation_{{w}}" (keyup)="searchTerm.next($event);"
+                                                                     class="form-control " #pickupLocation="ngModel" required
+                                                                     pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
+                                                                     #location="ngModel" required>
+      
+                                                                     <!-- <div *ngIf="pickupLocation.touched && shippersReceivers[0].shippers.pickupLocation == '' && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
+      
+                                                                         Pickup location is required.
+      
+                                                                     </div> -->
+                                                                     
+                                                                  <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
+                                                                     <ul class="p-0 m-0 text-left">
+                                                                        <li *ngFor="let item of searchResults;">
+                                                                           <a href="javascript:;" (click)="assignLocation(i, w, 'shipper', item.address.label)"
+                                                                              title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        </li>
+                                                                     </ul>
+                                                                  </div>
                                                                </div>
-                                                               
-                                                            <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
-                                                               <ul class="p-0 m-0 text-left">
-                                                                  <li *ngFor="let item of searchResults;">
-                                                                     <a href="javascript:;" (click)="assignLocation(i, 'shipper', item.address.label)"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                  </li>
-                                                               </ul>
+                                                               <div class="col-lg-1 mar-top-37  pl-0">
+                                                                  <a (click)="addPickUpPoint(i, 'shipper')" *ngIf="w == 0" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
+                                                                     <em class="fas fa-plus"></em>
+                                                                  </a>
+                                                                  <a (click)="removePickUpPoint(i, w, 'shipper')" *ngIf="w != 0" href="javascript:;" class="modal-with-form btn btn-sm btn-danger">
+                                                                     <em class="fas fa-minus"></em>
+                                                                  </a>
+                                                               </div>
+                                                               <div class="col-lg-4 text-center">
+                                                                  <div class="checkbox-custom checkbox-default pl-0">
+                                                                     <input type="checkbox" [(ngModel)]="pick.address.manual"
+                                                                     name="manual_{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')"  id="locationaddBtn">
+                                                                     <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn"> Type Manually</label>
+                                                                  </div>
+                                                               </div>
+                                                               <div class="col-lg-6 text-center">
+                                                                  <div class="checkbox-custom checkbox-default pl-0">
+                                                                     <input [(ngModel)]="pick.unit"
+                                                                     name="unit_{w}}" type="checkbox" id="locationaddBtn3">
+                                                                     <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                                  </div>
+                                                               </div>
                                                             </div>
-
-
-                                                         </div>
-                                                         <div class="col-lg-1 mar-top-37  pl-0">
-                                                            <a data-toggle="modal" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
-                                                               <em class="fas fa-plus"></em>
-                                                            </a>
-                                                         </div>
-                                                         <div class="col-lg-4 text-center">
-                                                            <div class="checkbox-custom checkbox-default">
-                                                               <input type="checkbox" id="locationaddBtn">
-                                                               <label class="control-label mt-2 font-weight-bold" for="locationaddBtn"> Type Manually</label>
+                                                            <div class="row mt-3 mr-4" *ngIf="pick.unit">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Unit Number</label>
+                                                                  <input [(ngModel)]="pick.unitNumber"
+                                                                  name="unitNumber_{{w}}" type="text" class="form-control" placeholder="Unit Number">
+                                                               </div>
+                                                            
+                                                               <div class="col-12 pl-4 pr-4">
+                                                                  <div class="row">
+                                                                     <div class="col-12 bordbtm">
+                                                                        &nbsp;
+                                                                     </div>
+                                                                  </div>
+                                                               </div>
+                                                            
                                                             </div>
-                                                         </div>
-                                                         <div class="col-lg-6 text-center">
-                                                            <div class="checkbox-custom checkbox-default">
-                                                               <input type="checkbox" id="locationaddBtn3">
-                                                               <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                            <div class="row mt-3 mr-4" *ngIf="pick.address.manual">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address</label>
+                                                                  <input [(ngModel)]="pick.address.address"
+                                                                  name="address_{{w}}" type="text"  class="form-control" placeholder="type address">
+                                                               </div>
+                                                            
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City</label>
+                                                                  <input [(ngModel)]="pick.address.city"
+                                                                  name="city_{{w}}" type="text" class="form-control" placeholder="toronto">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">State</label>
+                                                                  <input [(ngModel)]="pick.address.state"
+                                                                  name="state_{{w}}" type="text" class="form-control" placeholder="ON">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country</label>
+                                                                  <input [(ngModel)]="pick.address.country"
+                                                                  name="country_{{w}}" type="text" class="form-control" placeholder="canada">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code</label>
+                                                                  <input [(ngModel)]="pick.address.zipCode"
+                                                                  name="zipCode_{{w}}" type="text" class="form-control" placeholder="V6C 1Z6">
+                                                               </div>
+                                                               <div class="col-12 pl-4 pr-4 pull-left">
+                                                                  <div class="row">
+                                                                     <div class="col-12 bordbtm">
+                                                                        &nbsp;
+                                                                     </div>
+                                                                  </div>
+                                                               </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="row mt-3 mr-4">
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Pick Date and Time <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                  </label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+      
+      
+                                                                  <div class="input-group">
+      
+                                                                        <input [(ngModel)]="pick.pickupDate" name="pickupDate_{{w}}" type="text"
+                                                                        placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
+                                                                        class="form-control" autocomplete="off" #orderDate1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+      
+      
+                                                                  </div>
+                                                                  <!-- <div *ngIf="orderDate1.touched && (shippersReceivers[0].shippers.pickupDate == null || shippersReceivers[0].shippers.pickupDate == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
+      
+                                                                      Pickup date required.
+      
+                                                                 </div> -->
+      
+                                                               </div>
+                                                               <div class="col-lg-6">
+                                                                  <div class="input-group">
+                                                                     <input [(ngModel)]="pick.pickupTime"
+                                                                        name="pickupTime_{{w}}" type="time" class="timepicker form-control" placeholder=""
+                                                                        #pickupTime="ngModel" required pickupTime
+                                                                        />
+                                                                     <!-- <input [(ngModel)]="item.pickupTime"
+                                                                     name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                                                  </div>
+                                                                  <!-- <div *ngIf="pickupTime.touched && (shippersReceivers[0].shippers.pickupTime == null || shippersReceivers[0].shippers.pickupTime == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
+      
+                                                                     Pickup time is required.
+      
+                                                                </div> -->
+                                                               </div>
+                                                               <!-- <div class="col-lg-3 mt-1">
+                                                               </div> -->
+                                                            </div>
+                                                            <div *ngFor="let commodity of pick.commodity; let z = index;">
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+                                                                  </div>
+      
+                                                                  <div class="col-lg-11">
+      
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{w}}{{z}}" class="form-control" >
+      
+                                                                  </div>
+                                                                  <div class="col-lg-1 text-right mt-1 pl-0">
+                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
+                                                                  </div>
+                                                               </div>
+      
+                                                               <div class="row mt-3 mr-4">
+      
+                                                                  <div class="col-lg-12 col-md-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                        >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Pickup Number"></i>
+      
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+      
+                                                                     <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
+                                                                        name="pu{{z}}" type="text" class="form-control" >
+      
+                                                                  </div>
+      
+                                                               </div>
+      
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                     <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity_{{w}}{{z}}" class="form-control" >
+      
+                                                                  </div>
+      
+      
+                                                                  <div class="col-lg-6">
+      
+                                                                     <ng-select dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit_{{w}}{{z}}" placeholder="eg. select quantity"class="form-control">
+                                                                           <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+                                                                           <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
+                                                                           <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
+                                                                           <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
+                                                                           <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
+                                                                           <ng-option value="Box" data-select2-id="289">Box</ng-option>
+                                                                           <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
+                                                                           <ng-option value="Can" data-select2-id="291">Can</ng-option>
+                                                                           <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
+                                                                           <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
+                                                                           <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                     </ng-select>
+      
+      
+                                                                  </div>
+                                                                  <div class="col-lg-3"> </div>
+                                                               </div>
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight_{{w}}{{z}}" class="form-control" >
+                                                                     <!-- <div *ngIf="oWeight.invalid && (oWeight.dirty || oWeight.touched)" class="text-danger">
+                                                                        <div *ngIf="oWeight.errors.pattern">
+                                                                       Weight must contains numbers only.
+                                                                         </div>
+                                                                    </div> -->
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
+                                                                        >
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                                  <div class="col-lg-6">
+                                                                     <ng-select dropdownPosition='top' placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit_{{w}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+      
+                                                                           <ng-option value="ton(s)">ton(s)</ng-option>
+                                                                           <ng-option value="kg">Kilograms</ng-option>
+                                                                           <ng-option value="lbs">lbs</ng-option>
+                                                                     </ng-select>
+      
+      
+                                                                  </div>
+      
+                                                               </div>
+                                                            </div>
+                                                            <div class="row mt-3 mr-4">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Pickup Instruction</label>
+      
+                                                                  <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="pick.pickupInstruction"
+                                                                     name="pickupInstruction_{{w}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                     ></textarea>
+      
+                                                               </div>
+      
+                                                            </div>
+                                                            <div class="row mt-3 mr-4">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Contact Person at Pickup
+                                                                     <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. John Smith" [(ngModel)]="pick.contactPerson"
+                                                                     name="shippers.contactPerson_{{w}}" type="text" class="form-control"
+                                                                     id="inputDefault" >
+      
+                                                               </div>
+      
+                                                            </div>
+                                                            <div class="row mt-3 mr-4">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Phone
+                                                                     <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="pick.phone" name="shippers.phone_{{w}}"
+                                                                     type="text" class="form-control" id="inputDefault" >
+      
+                                                               </div>
+      
                                                             </div>
                                                          </div>
                                                       </div>
-                                                      <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                               </label>
-                                                            </div>
-
-                                                            <div class="col-lg-11">
-
-                                                               <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" (input)="assignReceiverValue('commodity','name',$event,i,z)"  >
-
-                                                            </div>
-                                                            <div class="col-lg-1 text-right mt-1 pl-0">
-                                                               <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a>
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i></a>
-                                                            </div>
-                                                         </div>
-
-                                                         <div class="row mt-3">
-
-                                                            <div class="col-lg-12 col-md-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                  >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
-                                                                  data-placement="top"
-                                                                  title="Pickup Number"></i>
-
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                               </label>
-
-                                                               <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
-                                                                  name="pu{{z}}" type="text" class="form-control" >
-
-                                                            </div>
-
-                                                         </div>
-
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                               </label>
-                                                            </div>
-                                                            <div class="col-lg-6">
-
-                                                               <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control" (input)="assignReceiverValue('commodity','quantity',$event,i,z)" >
-
-                                                            </div>
-
-
-                                                            <div class="col-lg-6">
-
-                                                               <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" placeholder="eg. select quantity"class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" (change)="assignReceiverValue('commodity','quantityUnit',$event,i,z)" >
-                                                                     <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
-                                                                     <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
-                                                                     <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
-                                                                     <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
-                                                                     <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
-                                                                     <ng-option value="Box" data-select2-id="289">Box</ng-option>
-                                                                     <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
-                                                                     <ng-option value="Can" data-select2-id="291">Can</ng-option>
-                                                                     <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
-                                                                     <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
-                                                                     <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
-                                                               </ng-select>
-
-
-                                                            </div>
-                                                            <div class="col-lg-3"> </div>
-                                                         </div>
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                               </label>
-                                                            </div>
-                                                            <div class="col-lg-6">
-
-                                                               <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control" (input)="assignReceiverValue('commodity','weight',$event,i,z)" >
-                                                               <!-- <div *ngIf="oWeight.invalid && (oWeight.dirty || oWeight.touched)" class="text-danger">
-                                                                  <div *ngIf="oWeight.errors.pattern">
-                                                                 Weight must contains numbers only.
-                                                                   </div>
-                                                              </div> -->
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-                                                               <ng-select placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" (change)="assignReceiverValue('commodity','weightUnit',$event,i,z)" >
-
-                                                                     <ng-option value="ton(s)">ton(s)</ng-option>
-                                                                     <ng-option value="Kilograms">Kilograms</ng-option>
-                                                                     <ng-option value="lbs">lbs</ng-option>
-                                                               </ng-select>
-
-
-                                                            </div>
-
-                                                         </div>
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pick Date and Time <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
-                                                         </div>
-                                                         <div class="col-lg-6">
-
-
-                                                            <div class="input-group">
-
-                                                                  <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate_{{i}}" type="text"
-                                                                  placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
-                                                                  class="form-control" autocomplete="off" #orderDate1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
-
-                                                            </div>
-                                                            <div *ngIf="orderDate1.touched && (shippersReceivers[0].shippers.pickupDate == null || shippersReceivers[0].shippers.pickupDate == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-
-                                                                Pickup date required.
-
-                                                           </div>
-
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.shippers.pickupTime"
-                                                                  name="pickupTime" type="time" class="timepicker form-control" placeholder=""
-                                                                  #pickupTime="ngModel" required pickupTime
-                                                                  />
-                                                               <!-- <input [(ngModel)]="item.pickupTime"
-                                                               name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
-                                                            </div>
-                                                            <div *ngIf="pickupTime.touched && (shippersReceivers[0].shippers.pickupTime == null || shippersReceivers[0].shippers.pickupTime == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
-
-                                                               Pickup time is required.
-
-                                                          </div>
-                                                         </div>
-                                                         <!-- <div class="col-lg-3 mt-1">
-                                                         </div> -->
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Instruction</label>
-
-                                                            <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="item.shippers.pickupInstruction"
-                                                               name="pickupInstruction_{{i}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
-                                                               ></textarea>
-
-                                                         </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Pickup
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                            </label>
-
-                                                            <input placeholder="eg. John Smith" [(ngModel)]="item.shippers.contactPerson"
-                                                               name="shippers.contactPerson_{{i}}" type="text" class="form-control"
-                                                               id="inputDefault" >
-
-                                                         </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                            </label>
-
-                                                            <input placeholder="eg. 2234567891" [(ngModel)]="item.shippers.phone" name="shippers.phone_{{i}}"
-                                                               type="text" class="form-control" id="inputDefault" >
-
-                                                         </div>
-
-                                                      </div>
-
-
-                                                     
-
-
                                                       <div class="row mt-3">
                                                          <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
@@ -658,8 +752,6 @@
                                                                class="btn btnw90px btn-md btn-dark">Update</a></p>
                                                          </div>
                                                       </div>
-
-
                                                    </div>
                                                 </section>
                                              </div>
@@ -679,320 +771,391 @@
                                              <div>
                                                 <section>
                                                    <div id="collapseReceiverArea-{{i}}" class="collapse show">
-                                                      <div class="row">
+                                                      <div class="mr-4">
+                                                         <div class="row">
 
-                                                         <div class="col-lg-11 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Receiver <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
-
-                                                            <ng-select [(ngModel)]="item.receivers.receiverID"
-                                                               name="receiverID" #receiverID="ngModel" required
-                                                               receiverID placeholder="Select Receiver"class="form-control" data-select2-id="16"
-                                                               tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
-                                                               <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
-                                                            </ng-select>
-                                                            <div *ngIf="consignee.touched && ( shippersReceivers[0].receivers.receiverID == null || shippersReceivers[0].receivers.receiverID == '') && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
-                                                               Receiver is required.
-
-                                                           </div>
-
-                                                         </div>
-                                                         <div class="col-lg-1 mar-top-37  pl-0">
-                                                            <a data-toggle="modal" data-target="#addConsigneeModal" href="javascript:;"
-                                                               class="modal-with-form btn btn-sm btn-success">
-                                                               <em class="fas fa-plus"></em>
-                                                           </a>
-                                                          </div>
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Drop Off Location
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
-
-                                                            <input placeholder="eg. Calgary,Alberta" [(ngModel)]="item.receivers.dropOffLocation"
-                                                               name="dropOffLocation" #dropOffLocation="ngModel"
-                                                               required dropOffLocation
-                                                               (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
-                                                               tabindex="-1" aria-hidden="true" #drop="ngModel" required >
-                                                               <div *ngIf="dropOffLocation.touched && shippersReceivers[0].receivers.dropOffLocation == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
-                                                                   Drop off location is required.
-
-
-                                                              </div>
-
-                                                            <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
-                                                               <ul class="p-0 m-0 text-left">
-                                                                  <li *ngFor="let item of searchResults;">
-                                                                     <a href="javascript:;" (click)="assignLocation(i, 'receiver', item.address.label)"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                  </li>
-                                                               </ul>
-                                                            </div>
-
-
-                                                         </div>
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Date and Time
-                                                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                            </label>
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-
-                                                               <input [(ngModel)]="item.receivers.dropOffDate" name="dropOffDate" type="text"
-                                                                  placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
-                                                                  class="form-control" autocomplete="off" #delDate="ngModel" required  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
-
-                                                            </div>
-                                                            <div *ngIf="delDate.touched && shippersReceivers[0].receivers.dropOffDate == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
-
-
-                                                              Delivery date is required.
-
-                                                           </div>
-
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.receivers.dropOffTime"
-                                                                  name="dropOffTime" #dropOffTime="ngModel" required
-                                                                  dropOffTime type="time" class="timepicker form-control" placeholder=""
-                                                                  />
-                                                            </div>
-                                                            <div *ngIf="dropOffTime.touched && shippersReceivers[0].receivers.dropOffTime == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
-
-
-                                                               Delivery time is required.
-
-                                                            </div>
-                                                         </div>
-                                                         <!-- <div class="col-lg-3 mt-1">
-                                                         </div> -->
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Instruction</label>
-
-                                                            <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="item.receivers.dropOffInstruction"
-                                                               name="dropOffInstruction" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
-
-                                                               style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
-                                                               <!-- <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
-                                                                <div>
-                                                                  <div *ngIf="Deliv1.errors.pattern">
-                                                                    Only 500 characters are allowed.
-                                                                   </div>
-                                                                </div>
-                                                              </div> -->
-                                                         </div>
-
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Delivery
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                            </label>
-
-                                                            <input placeholder="eg. John Smith" [(ngModel)]="item.receivers.contactPerson"
-                                                               name="contactPerson" type="text" class="form-control"
-                                                               id="inputDefault" >
-                                                               <!-- <div *ngIf="conPickup.invalid && (conPickup.dirty || conPickup.touched)" class="text-danger">
-                                                                  <div *ngIf="conPickup.errors.pattern">
-                                                                  Contact person at  delivery must contains uppercase,lowercase and special chracters for period(space) only.
-                                                                   </div>
-                                                              </div> -->
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
-                                                               This Field is required
-                                                            </span> -->
-                                                         </div>
-
-                                                      </div>
-
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone
-                                                               <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                            </label>
-
-                                                            <input placeholder="eg. 2234567891" [(ngModel)]="item.receivers.phone" name="phone"
-                                                               type="text" class="form-control" id="inputDefault" >
-                                                               <!-- <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
-                                                                  <div *ngIf="cPhone.errors.pattern">
-                                                                   Phone must contains 10 number only eg. +12234567891.
-                                                                   </div>
-                                                              </div> -->
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
-                                                               This Field is required
-                                                            </span> -->
-                                                         </div>
-
-                                                      </div>
-                                                      <!-- <div class="row mt-3">
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label  class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                               for="inputDefault">Notes</label>
-                                                            <input [(ngModel)]="item.receivers.notes" name="notes"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                         </div>
-                                                      </div> -->
-                                                      <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                               </label>
-                                                            </div>
-                                                            <div class="col-lg-11">
-
-                                                               <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" >
-
-
-                                                            </div>
-                                                            <div class="col-lg-1 text-right mt-1 pl-0">
-                                                               <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a>
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i></a>
-
-
-                                                            </div>
-                                                         </div>
-
-                                                         <div class="row mt-3">
-
-                                                            <div class="col-lg-12 col-md-12">
+                                                            <div class="col-lg-11 col-md-12">
                                                                <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                  >DEL# &nbsp;<i
-                                                                  class="fas fa-question-circle" data-toggle="tooltip"
-                                                                  data-placement="top"
-                                                                  title="Delivery Number "></i>
-
-
-                                                                  <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-
+                                                                  for="inputDefault">Receiver <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                </label>
 
-                                                               <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{z}}"
+                                                               <ng-select [(ngModel)]="item.receivers.receiverID"
+                                                                  name="receiverID" #receiverID="ngModel" required
+                                                                  receiverID placeholder="Select Receiver"class="form-control" data-select2-id="16"
+                                                                  tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
+                                                                  <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
+                                                               </ng-select>
+                                                               <div *ngIf="consignee.touched && ( shippersReceivers[0].receivers.receiverID == null || shippersReceivers[0].receivers.receiverID == '') && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
+                                                                  Receiver is required.
 
-                                                                  type="text" class="form-control" >
-                                                                  <!-- <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
-                                                                     <div *ngIf="delNum.errors.pattern">
-                                                                   Delivery Number must contains number only.
+                                                            </div>
+
+                                                            </div>
+                                                            <div class="col-lg-1 mar-top-37  pl-0">
+                                                               <a data-toggle="modal" data-target="#addConsigneeModal" href="javascript:;"
+                                                                  class="modal-with-form btn btn-sm btn-success">
+                                                                  <em class="fas fa-plus"></em>
+                                                            </a>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <div class="addsr-scrollbar addsr-scroll-y pickup-location__main">
+                                                         
+                                                         <div *ngFor="let dropItem of item.receivers.dropPoint; let y = index;" class="mr-4" [ngClass]="{'p-3 bg-grey mt-2': y != 0}">
+                                                            <div class="row mt-3">
+
+                                                               <div class="col-lg-11 col-md-11">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Drop Off Location
+                                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
+                                                                     name="dropOffLocation_{{y}}" #dropLoc="ngModel"
+                                                                     required dropLoc
+                                                                     (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
+                                                                     tabindex="-1" aria-hidden="true" #drop="ngModel" required >
+                                                                     <!-- <div *ngIf="dropOffLocation.touched && shippersReceivers[0].receivers.dropOffLocation == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
+                                                                         Drop off location is required.
+      
+      
+                                                                    </div> -->
+      
+                                                                  <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
+                                                                     <ul class="p-0 m-0 text-left">
+                                                                        <li *ngFor="let item of searchResults;">
+                                                                           <a href="javascript:;" (click)="assignLocation(i, y, 'receiver', item.address.label)"
+                                                                              title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        </li>
+                                                                     </ul>
+                                                                  </div>
+                                                               </div>
+                                                               <div class="col-lg-1 mar-top-37  pl-0">
+                                                                  <a (click)="addPickUpPoint(i, 'receiver')" *ngIf="y == 0" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
+                                                                     <em class="fas fa-plus"></em>
+                                                                  </a>
+                                                                  <a (click)="removePickUpPoint(i, y, 'receiver')" *ngIf="y != 0" href="javascript:;" class="modal-with-form btn btn-sm btn-danger">
+                                                                     <em class="fas fa-minus"></em>
+                                                                  </a>
+                                                               </div>
+                                                               <div class="col-lg-4 text-center">
+                                                                  <div class="checkbox-custom checkbox-default pl-0">
+                                                                     <input type="checkbox" [(ngModel)]="dropItem.address.manual"
+                                                                     name="manualAddress_{{y}}" (change)="manualAddress($event.target.checked, i, y, 'receiver')"  id="locationaddBtn">
+                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn"> Type Manually</label>
+                                                                  </div>
+                                                               </div>
+                                                               <div class="col-lg-6 text-center">
+                                                                  <div class="checkbox-custom checkbox-default pl-0">
+                                                                     <input [(ngModel)]="dropItem.unit"
+                                                                     name="unit_{{y}}" type="checkbox" id="locationaddBtn3">
+                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                                  </div>
+                                                               </div>
+                                                            </div>
+                                                            <div class="row mt-3" *ngIf="dropItem.unit">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Unit Number</label>
+                                                                  <input [(ngModel)]="dropItem.unitNumber"
+                                                                  name="unitNumber_{{y}}" type="text" class="form-control" placeholder="Unit Number">
+                                                               </div>
+                                                            
+                                                               <div class="col-12 pl-4 pr-4">
+                                                                  <div class="row">
+                                                                     <div class="col-12 bordbtm">
+                                                                        &nbsp;
+                                                                     </div>
+                                                                  </div>
+                                                               </div>
+                                                            
+                                                            </div>
+                                                            <div class="row mt-3" *ngIf="dropItem.address.manual">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address</label>
+                                                                  <input type="text" [(ngModel)]="dropItem.address.address"
+                                                                  name="address_{{y}}"  class="form-control" placeholder="type address">
+                                                               </div>
+                                                            
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City</label>
+                                                                  <input [(ngModel)]="dropItem.address.city"
+                                                                  name="city_{{y}}" type="text" class="form-control" placeholder="toronto">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">State</label>
+                                                                  <input [(ngModel)]="dropItem.address.state"
+                                                                  name="state_{{y}}" type="text" class="form-control" placeholder="ON">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country</label>
+                                                                  <input [(ngModel)]="dropItem.address.country"
+                                                                  name="country_{{y}}" type="text" class="form-control" placeholder="canada">
+                                                               </div>
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code</label>
+                                                                  <input [(ngModel)]="dropItem.address.zipCode"
+                                                                  name="zipCode_{{y}}" type="text" class="form-control" placeholder="V6C 1Z6">
+                                                               </div>
+                                                               <div class="col-12 pl-4 pr-4 pull-left">
+                                                                  <div class="row">
+                                                                     <div class="col-12 bordbtm">
+                                                                        &nbsp;
+                                                                     </div>
+                                                                  </div>
+                                                               </div>
+                                                            
+                                                            </div>
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Delivery Date and Time
+                                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                  </label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+                                                                  <div class="input-group">
+      
+                                                                     <input [(ngModel)]="dropItem.dropOffDate" name="dropOffDate_{{y}}" type="text"
+                                                                        placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
+                                                                        class="form-control" autocomplete="off" #delDate="ngModel" required  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+      
+      
+                                                                  </div>
+                                                                  <!-- <div *ngIf="delDate.touched && shippersReceivers[0].receivers.dropOffDate == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
+      
+      
+                                                                    Delivery date is required.
+      
+                                                                 </div> -->
+      
+                                                               </div>
+                                                               <div class="col-lg-6">
+                                                                  <div class="input-group">
+                                                                     <input [(ngModel)]="dropItem.dropOffTime"
+                                                                        name="dropOffTime_{{y}}" #dropOffTime="ngModel" required
+                                                                        dropOffTime type="time" class="timepicker form-control" placeholder=""
+                                                                        />
+                                                                  </div>
+                                                                  <!-- <div *ngIf="dropOffTime.touched && shippersReceivers[0].receivers.dropOffTime == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
+      
+      
+                                                                     Delivery time is required.
+      
+                                                                  </div> -->
+                                                               </div>
+                                                               <!-- <div class="col-lg-3 mt-1">
+                                                               </div> -->
+                                                            </div>
+                                                            <div *ngFor="let commodity of dropItem.commodity; let z = index;">
+                                                               <div class="row mt-3">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-11">
+      
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{y}}{{z}}" class="form-control" >
+      
+      
+                                                                  </div>
+                                                                  <div class="col-lg-1 text-right mt-1 pl-0">
+                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, y, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('receiver', i, y)"><i class="fas fa-plus"></i></a>
+      
+      
+                                                                  </div>
+                                                               </div>
+      
+                                                               <div class="row mt-3">
+      
+                                                                  <div class="col-lg-12 col-md-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                        >DEL# &nbsp;<i
+                                                                        class="fas fa-question-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Delivery Number "></i>
+      
+      
+                                                                        <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+      
+                                                                     </label>
+      
+                                                                     <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{y}}{{z}}"
+      
+                                                                        type="text" class="form-control" >
+                                                                        <!-- <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
+                                                                           <div *ngIf="delNum.errors.pattern">
+                                                                         Delivery Number must contains number only.
+                                                                            </div>
+                                                                       </div> -->
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].del == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                               </div>
+      
+                                                               <div class="row mt-3">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                  <input placeholder="eg. 20,200" type="text" [(ngModel)]="commodity.quantity" name="quantity{{y}}{{z}}" class="form-control" >
+                                                                  <!-- <div *ngIf="txtQuantity.invalid && (txtQuantity.dirty || txtQuantity.touched)" class="text-danger">
+                                                                     <div *ngIf="txtQuantity.errors.pattern">
+                                                                   Quantity must contains number only.
                                                                       </div>
                                                                  </div> -->
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].del == ''">
-                                                                  This Field is required
-                                                               </span> -->
+      
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantity == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                                  <div class="col-lg-6">
+                                                                     <ng-select placeholder="eg. select quantity" dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+                                                                        <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+                                                                           <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
+                                                                           <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
+                                                                           <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
+                                                                           <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
+                                                                           <ng-option value="Box" data-select2-id="289">Box</ng-option>
+                                                                           <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
+                                                                           <ng-option value="Can" data-select2-id="291">Can</ng-option>
+                                                                           <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
+                                                                           <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
+                                                                           <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                     </ng-select>
+                                                                     <!-- <div *ngIf="qty.invalid && (qty.dirty || qty.touched)" class="text-danger">
+                                                                        <div *ngIf="qty.errors.required">
+                                                                      Select valid quantity from the list.
+                                                                         </div>
+                                                                    </div> -->
+      
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+      
+                                                                  </div>
+      
+                                                               </div>
+                                                               <div class="row mt-3">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight{{y}}{{z}}" class="form-control" >
+                                                                     <!-- <div *ngIf="txtWeight.invalid && (txtWeight.dirty || txtWeight.touched)" class="text-danger">
+                                                                        <div *ngIf="txtWeight.errors.pattern">
+                                                                      Weight must contains numbers only.
+                                                                         </div>
+                                                                    </div> -->
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weight == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                                  <div class="col-lg-6">
+                                                                     <ng-select placeholder="eg. select weight" dropdownPosition='top' [(ngModel)]="commodity.weightUnit" name="weightUnit{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+                                                                           <ng-option value="ton(s)">ton(s)</ng-option>
+                                                                           <ng-option value="kg">Kilograms</ng-option>
+                                                                           <ng-option value="lbs">lbs</ng-option>
+                                                                     </ng-select>
+                                                                     <!-- <div *ngIf="sltWeightType.invalid && (sltWeightType.dirty || sltWeightType.touched)" class="text-danger">
+                                                                        <div *ngIf="sltWeightType.errors.required">
+                                                                      Select valid weight from the list.
+                                                                         </div>
+                                                                    </div> -->
+      
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                               </div>
                                                             </div>
-
-                                                         </div>
-
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                               </label>
+                                                            
+                                                            <div class="row mt-3">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Delivery Instruction</label>
+      
+                                                                  <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="dropItem.dropOffInstruction"
+                                                                     name="dropOffInstruction_{{y}}" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
+      
+                                                                     style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                                                     <!-- <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
+                                                                      <div>
+                                                                        <div *ngIf="Deliv1.errors.pattern">
+                                                                          Only 500 characters are allowed.
+                                                                         </div>
+                                                                      </div>
+                                                                    </div> -->
+                                                               </div>
+      
                                                             </div>
-                                                            <div class="col-lg-6">
-
-                                                            <input placeholder="eg. 20,200" type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control" >
-                                                            <!-- <div *ngIf="txtQuantity.invalid && (txtQuantity.dirty || txtQuantity.touched)" class="text-danger">
-                                                               <div *ngIf="txtQuantity.errors.pattern">
-                                                             Quantity must contains number only.
-                                                                </div>
-                                                           </div> -->
-
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantity == ''">
-                                                                  This Field is required
-                                                               </span> -->
+                                                            <div class="row mt-3">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Contact Person at Delivery
+                                                                     <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. John Smith" [(ngModel)]="dropItem.contactPerson"
+                                                                     name="contactPerson_{{y}}" type="text" class="form-control"
+                                                                     id="inputDefault" >
+                                                                     <!-- <div *ngIf="conPickup.invalid && (conPickup.dirty || conPickup.touched)" class="text-danger">
+                                                                        <div *ngIf="conPickup.errors.pattern">
+                                                                        Contact person at  delivery must contains uppercase,lowercase and special chracters for period(space) only.
+                                                                         </div>
+                                                                    </div> -->
+                                                                  <!-- <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
+                                                                     This Field is required
+                                                                  </span> -->
+                                                               </div>
+      
                                                             </div>
-
-                                                            <div class="col-lg-6">
-                                                               <ng-select placeholder="eg. select quantity" [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
-                                                                  <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
-                                                                     <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
-                                                                     <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
-                                                                     <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
-                                                                     <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
-                                                                     <ng-option value="Box" data-select2-id="289">Box</ng-option>
-                                                                     <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
-                                                                     <ng-option value="Can" data-select2-id="291">Can</ng-option>
-                                                                     <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
-                                                                     <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
-                                                                     <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
-                                                               </ng-select>
-                                                               <!-- <div *ngIf="qty.invalid && (qty.dirty || qty.touched)" class="text-danger">
-                                                                  <div *ngIf="qty.errors.required">
-                                                                Select valid quantity from the list.
-                                                                   </div>
-                                                              </div> -->
-
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
-                                                                  This Field is required
-                                                               </span> -->
-
+      
+                                                            <div class="row mt-3">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Phone
+                                                                     <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                  </label>
+      
+                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="dropItem.phone" name="phone_{{y}}"
+                                                                     type="text" class="form-control" id="inputDefault" >
+                                                                     <!-- <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
+                                                                        <div *ngIf="cPhone.errors.pattern">
+                                                                         Phone must contains 10 number only eg. +12234567891.
+                                                                         </div>
+                                                                    </div> -->
+                                                                  <!-- <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
+                                                                     This Field is required
+                                                                  </span> -->
+                                                               </div>
+      
                                                             </div>
-
-                                                         </div>
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                  <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                               </label>
-                                                            </div>
-                                                            <div class="col-lg-6">
-
-                                                               <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control" >
-                                                               <!-- <div *ngIf="txtWeight.invalid && (txtWeight.dirty || txtWeight.touched)" class="text-danger">
-                                                                  <div *ngIf="txtWeight.errors.pattern">
-                                                                Weight must contains numbers only.
-                                                                   </div>
-                                                              </div> -->
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weight == ''">
-                                                                  This Field is required
-                                                               </span> -->
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-                                                               <ng-select placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
-                                                                     <ng-option value="ton(s)">ton(s)</ng-option>
-                                                                     <ng-option value="Kilograms">Kilograms</ng-option>
-                                                                     <ng-option value="lbs">lbs</ng-option>
-                                                               </ng-select>
-                                                               <!-- <div *ngIf="sltWeightType.invalid && (sltWeightType.dirty || sltWeightType.touched)" class="text-danger">
-                                                                  <div *ngIf="sltWeightType.errors.required">
-                                                                Select valid weight from the list.
-                                                                   </div>
-                                                              </div> -->
-
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
-                                                                  This Field is required
-                                                               </span> -->
-                                                            </div>
-
                                                          </div>
                                                       </div>
-
-
+                                                     
                                                       <div class="row mt-3">
                                                          <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
@@ -1755,8 +1918,8 @@
                               <div class="col-lg-11 text-right pr-0">
                                  <a href="javascript:;" routerLink="/dispatch/orders"
                                     class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                                 <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="disableButton()" class="btn btn-success" >Save</button>
-                                 <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="disableButton()" class="btn btn-success text-white" >Update</button>
+                                 <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="disableButton() || submitDisabled" class="btn btn-success" >Save</button>
+                                 <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="disableButton() || submitDisabled || ifStatus == 'delivered'" class="btn btn-success text-white" >Update</button>
                               </div>
                            </div>
                         </div>
@@ -1811,6 +1974,7 @@
 
 <!-- Add Customer MODAL -->
 <div
+*ngIf="orderData.customerID"
   class="modal fade"
   id="addOrderCustomerModal"
   tabindex="-1"

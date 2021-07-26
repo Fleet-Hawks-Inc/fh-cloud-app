@@ -43,6 +43,12 @@
                             </a>
                         </li>
 
+                        <li class="" [class.active]="navSelected === 'reports'" *ngIf="isReportsEnabled">
+                            <a class="nav-link" [routerLink]="['/manage','allreport']" (click)="onNavSelected('reports')">
+                                Reports
+                            </a>
+                        </li>
+
                         <li class="" [class.active]="navSelected === 'manage'" *ngIf="isManageEnabled">
                             <a class="nav-link" [routerLink]="['/manage','overview']" (click)="onNavSelected('manage')">
                                 Manage

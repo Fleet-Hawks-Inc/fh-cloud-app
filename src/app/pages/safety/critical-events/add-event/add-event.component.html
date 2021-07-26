@@ -24,20 +24,7 @@
                            <div class="form-group row">
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
-                                    <div class="col-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Driver Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                       </label>
-                                       <ng-select [(ngModel)]="event.driverID" name="driverID"
-                                          placeholder="Select driver name" class="text-capitalize"  #dName="ngModel" required>
-                                          <ng-option *ngFor="let driver of drivers"
-                                             value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
-                                       </ng-select>
-                                       <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
-                                          <div *ngIf="dName.errors.required">
-                                             Driver is required.
-                                          </div>
-                                       </div>
-                                    </div>
+                                    
                                     <div class="col-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        </label>
@@ -83,9 +70,10 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Event Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="event.eventType" name="eventType"
                                           placeholder="Select event type"  #evType="ngModel" required>
-                                          <ng-option value="distractedDriving">Distracted Driving</ng-option>
-                                          <ng-option value="mobilePhoneUse">Mobile Phone Use</ng-option>
-                                          <ng-option value="tailgating">Tailgating</ng-option>
+                                          <ng-option value="harshAcceleration">Harsh Acceleration</ng-option>
+                                          <ng-option value="harshBreaking">Harsh Braking</ng-option>
+                                          <ng-option value="highSpeed">High Speed</ng-option>
+                     
                                        </ng-select>
                                        <div *ngIf="evType.invalid && (evType.dirty || evType.touched)" class="text-danger">
                                           <div *ngIf="evType.errors.required">
@@ -105,7 +93,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" class="form-control" (keyup)="searchTerm.next($event);"
-                                          [(ngModel)]="event.location" #loc="ngModel" required  name="location"
+                                          [(ngModel)]="event.locationText" #loc="ngModel" required  name="location"
                                           placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada" autocomplete="off">
                                        <div *ngIf="loc.invalid && (loc.dirty || loc.touched)" class="text-danger">
                                           <div *ngIf="loc.errors.required">
@@ -115,7 +103,7 @@
                                        <div class="map-search__results" *ngIf="searchResults">
                                           <ul class="p-0 m-0 text-left bg-white" >
                                              <li *ngFor="let item of searchResults;">
-                                                <a href="javascript:;" (click)="assignLocation(item.address.label)"
+                                                <a href="javascript:;" (click)="assignLocation(item.position,item.address.label)"
                                                    title="{{item.address.label}}">{{item.address.label}}</a>
                                              </li>
                                           </ul>

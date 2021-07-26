@@ -1716,6 +1716,7 @@ text-decoration: underline;
 
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
+  .borddas{border: dashed 1px #aaa;}
 
   /* border radius */
   .bor-radius0px{border-radius: 0px !important;}
@@ -1747,6 +1748,7 @@ text-decoration: underline;
 
   /* padding left */
   .pl4{padding-left:4px !important;}
+  .pl7{padding-left:7px !important;}
   .pl11{padding-left:11px !important;}
   .pl13{padding-left:13px !important;}
   .pl18{padding-left:18px !important;}
@@ -2185,7 +2187,7 @@ table.dataTable thead th, table.dataTable thead td {
 /* clickable button */
 
 .btn-alert {
-  color: rgb(0, 0, 0); float:left; width: 175px; margin-top:0px !important;
+  color: rgb(0, 0, 0); float:left; width: 210px; margin-top:0px !important;
   background-color: #f0f1f2; border-radius:4px; padding:12px;
   background-image: none; font-size:14px;
   border-color: #f0f1f2;
@@ -2502,4 +2504,80 @@ input.placeholder-lowercase {
 .onboardwidth {width: 95% !important;	}
 @media (min-width: 1640px) {
 	.onboardwidth {width: 75% !important;	}
+}
+
+.addsr-scroll-y {
+  display: block;
+}
+
+.addsr-scrollbar {
+  position: relative;
+  height: 720px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* toggle switch */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderbtn {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderbtn:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 26px;
+  left: 6px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderbtn {
+  background-color: #47a447;
+}
+
+input:focus + .sliderbtn {
+  box-shadow: 0 0 1px #797979;
+}
+
+input:checked + .sliderbtn:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderbtn.round {
+  border-radius: 34px;
+}
+
+.sliderbtn.round:before {
+  border-radius: 50%;
+}
+.modal-dialog-lgdetail .modal-dialog{
+  max-width: 1250px !important;
+  margin: 9.75rem auto !important;
 }

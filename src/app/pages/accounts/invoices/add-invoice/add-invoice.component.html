@@ -131,20 +131,20 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
-                          <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()"
-                          ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off">
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                            Terms</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Terms</label>
+                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
                               <ng-option value="15">15 Days</ng-option>
                               <ng-option value="30">30 Days</ng-option>
                               <ng-option value="45">45 Days</ng-option>
                               <ng-option value="dueReceipt">Due On Receipt</ng-option>
                               <ng-option value="dueEnd">Due End Of The Month</ng-option>
+                              <ng-option value="custom">Custom</ng-option>
                           </ng-select>
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
+                          <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()"
+                          ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off">
                         </div>
                       </div>
                       <div class="row pt-2">
@@ -196,21 +196,21 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control" [(ngModel)]="dt.qtyHours" name="qtyHours{{d}}">
+                                    <input type="number" class="form-control" [(ngModel)]="dt.qtyHours" min="0" name="qtyHours{{d}}" (change)="calculateDetailAmt($event.target.value,d, 'qty')">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control" [(ngModel)]="dt.priceRate" name="priceRate{{d}}">
+                                    <input type="number" class="form-control" [(ngModel)]="dt.priceRate" min="0" name="priceRate{{d}}" (change)="calculateDetailAmt($event.target.value,d,'price')">
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="amount{{d}}" (change)="calculateAmount()">
+                                    <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount" name="amount{{d}}" (change)="calculateAmount()" [disabled]="true">
                                   </div>
                                 </div>
                               </td>

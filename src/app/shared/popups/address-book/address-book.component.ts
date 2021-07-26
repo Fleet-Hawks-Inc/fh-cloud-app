@@ -720,7 +720,7 @@ export class AddressBookComponent implements OnInit {
     $('.modal').modal('hide');
     // this.userDetailTitle = data.firstName;
     this.userDetailTitle = data.companyName;
-    this.modalService.open(targetModal);
+    this.modalService.open(targetModal, { windowClass: 'modal-dialog-lgdetail'});
     this.userDetailData = data;
     this.detailTab = type;
   }
@@ -1682,6 +1682,7 @@ export class AddressBookComponent implements OnInit {
           $('#addShipperModal').modal('hide');
           this.listService.fetchCustomers();
           this.listService.fetchShippers();
+          this.listService.fetchShippersByIDs();
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
@@ -1844,12 +1845,15 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           this.dataMessageConsignee = Constants.FETCHING_DATA;
           $('#addConsigneeModal').modal('hide');
+          
           this.listService.fetchReceivers();
           this.listService.fetchCustomers();
+          this.fetchConsigneeCount();
+          this.listService.fetchReceiversByIDs();
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
-          this.fetchConsigneeCount();
+         
           this.toastr.success('Receiver Added Successfully');
         }
       });
@@ -2541,7 +2545,7 @@ export class AddressBookComponent implements OnInit {
   async deactivateCustomer(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       await this.apiService
-      .getData(`contacts/delete/customer/${userID}`)
+      .deleteData(`contacts/delete/customer/${userID}`)
       .subscribe(async(result: any) => {
         this.customerDraw = 0;
         this.lastEvaluatedKeyCustomer = '';
@@ -2556,7 +2560,7 @@ export class AddressBookComponent implements OnInit {
 
   deactivateBroker(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
-      this.apiService.getData(`contacts/delete/broker/${userID}`)
+      this.apiService.deleteData(`contacts/delete/broker/${userID}`)
       .subscribe((result: any) => {
         this.brokerDraw = 0;
         this.lastEvaluatedKeyBroker = '';
@@ -2572,7 +2576,7 @@ export class AddressBookComponent implements OnInit {
   deactivateVendor(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/vendor/${userID}`)
+      .deleteData(`contacts/delete/vendor/${userID}`)
       .subscribe((result: any) => {
         this.vendorDraw = 0;
         this.lastEvaluatedKeyVendor = '';
@@ -2588,7 +2592,7 @@ export class AddressBookComponent implements OnInit {
   deactivateShipper(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/consignor/${userID}`)
+      .deleteData(`contacts/delete/consignor/${userID}`)
       .subscribe((result: any) => {
         this.shipperDraw = 0;
         this.lastEvaluatedKeyShipper = '';
@@ -2603,7 +2607,7 @@ export class AddressBookComponent implements OnInit {
   deactivateReceiver(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/consignee/${userID}`)
+      .deleteData(`contacts/delete/consignee/${userID}`)
       .subscribe((result: any) => {
         this.consigneeDraw = 0;
         this.lastEvaluatedKeyConsignee = '';
@@ -2619,7 +2623,7 @@ export class AddressBookComponent implements OnInit {
   deactivateStaff(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/employee/${userID}`)
+      .deleteData(`contacts/delete/employee/${userID}`)
       .subscribe((result: any) => {
         this.staffDraw = 0;
         this.lastEvaluatedKeyStaff = '';
@@ -2635,7 +2639,7 @@ export class AddressBookComponent implements OnInit {
   deactivateCompany(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/factoringCompany/${userID}`)
+      .deleteData(`contacts/delete/factoringCompany/${userID}`)
       .subscribe((result: any) => {
         this.companyDraw = 0;
         this.lastEvaluatedKeyCompany = '';
@@ -2651,7 +2655,7 @@ export class AddressBookComponent implements OnInit {
   deactivateOperator(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/ownerOperator/${userID}`)
+      .deleteData(`contacts/delete/ownerOperator/${userID}`)
       .subscribe((result: any) => {
         this.ownerOperatorDraw = 0;
         this.lastEvaluatedKeyOperator = '';
@@ -2667,7 +2671,7 @@ export class AddressBookComponent implements OnInit {
   deactivateCarrier(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`contacts/delete/carrrier/${userID}`)
+      .deleteData(`contacts/delete/carrier/${userID}`)
       .subscribe((result: any) => {
         this.carrierDraw = 0;
         this.lastEvaluatedKeyCarrier = '';
