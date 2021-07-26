@@ -7,6 +7,7 @@ describe(" Maintenance tests", () => {
       cy.request({
         method: 'DELETE',
         url: serviceUrl,
+        failOnStatusCode: false,
         headers: {
           'Authorization': `Bearer ${authToken}`,
           "Content-type": "application/json"
