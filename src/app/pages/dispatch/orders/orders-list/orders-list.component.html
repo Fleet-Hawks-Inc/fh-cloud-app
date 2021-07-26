@@ -146,9 +146,9 @@
                                             Location: 
                                             <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
                                                 {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
-                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
-                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
-                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.cityName}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.stateName}},
+                                                {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.countryName}}
                                                 {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
                                             </span>
                                             <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -162,9 +162,9 @@
                                             Location: - 
                                             <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                 {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
-                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
-                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
-                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.cityName}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.stateName}},
+                                                {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.countryName}}
                                                 {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
                                             </span>
                                             <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">

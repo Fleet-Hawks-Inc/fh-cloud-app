@@ -404,14 +404,12 @@ export class OrderDetailComponent implements OnInit {
     var data = document.getElementById('print_wrap');
 
  html2pdf(data, {
-  margin:       10,
-  filename:     'myfile.pdf',
+  margin:       0,
+  filename:     'invoice.pdf',
   image:        { type: 'jpeg', quality: 0.98 },
   html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
   jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  pageBreakBefore: function(currentNode) {
-    return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
-  }
+  
 });
     // html2canvas(data).then(canvas => {
     //   var imgData = canvas.toDataURL();

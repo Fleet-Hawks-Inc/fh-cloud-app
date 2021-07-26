@@ -1113,36 +1113,62 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr class="item">
-                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
-                                                                        <small>(Freight Fees)</small></td>
-                                                                    
-                                                                    <td align="right">
-                                                                        {{invoiceData.charges.freightFee.amount}}
-                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                
+                                                                <tr *ngIf="invoiceData.charges.freightFee.type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr class="item">
+                                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
+                                                                                        <small>(Freight Fees)</small></td>
+                                                                                    
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.freightFee.amount}}
+                                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td colspan="6">
-                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
-                                                                            (Fuel Surcharge)</small></td>
-                                                                    
-                                                                    <td align="right">
-                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
-                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                <tr *ngIf="invoiceData.charges.fuelSurcharge.type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6">
+                                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
+                                                                                            (Fuel Surcharge)</small></td>
+                                                                                    
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
+                                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                                    </td>
+                    
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </td>
-    
                                                                 </tr>
-                                                                <tr
-                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
-                                                                    <td colspan="6">{{item.type}} <small>(Fuel
-                                                                            Surcharge)</small></td>
-                                                                    <td align="right">{{item.amount}}
-                                                                        <small>{{item.currency}}</small></td>
-    
+                                                                
+                                                                <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                                                    <td colspan="6">{{item.type}} <small>(Fuel
+                                                                                            Surcharge)</small></td>
+                                                                                    <td align="right">{{item.amount}}
+                                                                                        <small>{{item.currency}}</small></td>
+                    
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
                                                                 </tr>
-                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction">
-                                                                    <td colspan="6">
+                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
                                                                         <table style="width: 100%;">
                                                                             <tbody>
                                                                                 <tr
