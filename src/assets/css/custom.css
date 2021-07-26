@@ -1716,6 +1716,7 @@ text-decoration: underline;
 
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
+  .borddas{border: dashed 1px #aaa;}
 
   /* border radius */
   .bor-radius0px{border-radius: 0px !important;}
@@ -2186,7 +2187,7 @@ table.dataTable thead th, table.dataTable thead td {
 /* clickable button */
 
 .btn-alert {
-  color: rgb(0, 0, 0); float:left; width: 175px; margin-top:0px !important;
+  color: rgb(0, 0, 0); float:left; width: 210px; margin-top:0px !important;
   background-color: #f0f1f2; border-radius:4px; padding:12px;
   background-image: none; font-size:14px;
   border-color: #f0f1f2;
