@@ -38,7 +38,7 @@
     "@ng-select/ng-select": "^3.7.3",
     "@turf/turf": "5.1.6",
     "@types/jquery.validation": "1.16.6",
-    "@types/jqueryui": "1.12.10",
+    "@types/jqueryui": "1.12.16",
     "aws-amplify": "3.4.2",
     "aws-amplify-angular": "5.0.60",
     "aws-crt": "^1.6.2",
