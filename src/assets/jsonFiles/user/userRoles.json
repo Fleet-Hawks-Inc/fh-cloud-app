@@ -1,0 +1,22 @@
+[
+    {
+        "name":"Accounts",
+        "role":"role_accounts"
+    },
+    {
+        "name":"Dispatch",
+        "role":"role_dispatch"
+    },
+    {
+        "name":"Safety",
+        "role":"role_Safety"
+    },
+    {
+        "name":"Super Admin",
+        "role":"role_super_admin"
+    },
+    {
+        "name":"View Only",
+        "role":"role_view_admin"
+    }
+]
