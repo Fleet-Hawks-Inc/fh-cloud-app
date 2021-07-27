@@ -79,6 +79,7 @@ export class AddOrdersComponent implements OnInit {
   getOrderNumber: string;
   orderData = {
     stateTaxID: "",
+    invoiceGenerate: false,
     customerID: null,
     cusAddressID: '',
     orderNumber: "",
@@ -342,7 +343,7 @@ export class AddOrdersComponent implements OnInit {
   ifStatus = '';
 
   cusAdditionalContact: any = [];
-
+  isInvoiceGenerated: boolean;
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -921,7 +922,7 @@ export class AddOrdersComponent implements OnInit {
       } else {
         let name = files[i].name.split('.');
         let ext = name[name.length - 1].toLowerCase();
-        if (ext == 'doc' || ext == 'docx' || ext == 'pdf') {
+        if (ext == 'doc' || ext == 'docx' || ext == 'pdf' || ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
            this.uploadedDocs.push(files[i])
         } else {
             this.photoSizeError = 'Only .doc, .docx and .pdf files allowed.';
@@ -1008,9 +1009,35 @@ export class AddOrdersComponent implements OnInit {
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
         if(result.Items.length > 0) {
+          this.orderData.additionalContact = null;
+          this.orderData.phone = '';
+          this.orderData.email = '';
           this.customerSelected = result.Items;
+          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
+            const element = this.customerSelected[0].address[i];
+            element['isChecked'] = false;
+          }
+          this.customerSelected[0].address[0].isChecked = true;
           this.cusAdditionalContact = result.Items[0].additionalContact
-          this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
+          if(this.customerSelected[0].address.length === 1) {
+            this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
+          }
+          
+          let addressLength = this.customerSelected[0].address.length;
+          let getType = this.customerSelected[0].address[0].addressType;
+          
+          if(addressLength === 1 && (getType == '' || getType == null)) {
+            this.notOfficeAddress = true;
+          } else {
+            this.notOfficeAddress = false;
+          }
+          if(this.getOrderID) {
+            this.customerSelected[0].address.filter( elem => {
+              if(elem.addressID === this.orderData.cusAddressID) {
+                elem.isChecked = true;
+              }
+            })
+          }
         }
         
       });
@@ -1587,7 +1614,9 @@ export class AddOrdersComponent implements OnInit {
       .getData("orders/" + this.getOrderID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        this.orderData.cusAddressID = result.cusAddressID;
         await this.fetchStateTaxes();
+        
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
         
         this.orderData.taxesInfo = [
@@ -1606,7 +1635,7 @@ export class AddOrdersComponent implements OnInit {
         ];
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
-
+        
         if(result.attachments !== undefined && result.attachments.length > 0){
           this.orderAttachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
@@ -1616,6 +1645,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
+        this.isInvoiceGenerated = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -2119,9 +2149,14 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  getAddressID(value, id) {
+  getAddressID(value: boolean, i: number, id: string) {
     if(value === true) {
       this.orderData.cusAddressID = id;
+      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
+        const element = this.customerSelected[0].address[index];
+        element.isChecked = false;
+      }
+      this.customerSelected[0].address[i].isChecked = true;
     }
   }
 }
