@@ -45,7 +45,7 @@
     "aws-iot-device-sdk": "^2.2.6",
     "aws-iot-device-sdk-v2": "1.4.7",
     "aws-sdk": "2.683.0",
-    "buffer": "5.4.3",
+    "buffer": "5.7.1",
     "check-password-strength": "^2.0.3",
     "countries-and-timezones": "2.4.0",
     "country-state-city": "^2.1.0",
