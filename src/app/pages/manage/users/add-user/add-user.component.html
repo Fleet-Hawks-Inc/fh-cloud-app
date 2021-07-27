@@ -354,8 +354,8 @@
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Role <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="userData.userLoginData.roles"
-                            name="roles"  placeholder="Select User Type" #roles="ngModel" [required]="userData.loginEnabled">
+                          <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="userData.userLoginData.userRoles"
+                            name="roles"  placeholder="Select User Roles" #roles="ngModel" [required]="userData.loginEnabled">
                             <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}</ng-option>
                           </ng-select>
                           <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="text-danger">

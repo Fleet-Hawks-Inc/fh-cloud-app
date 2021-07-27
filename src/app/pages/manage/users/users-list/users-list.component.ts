@@ -4,6 +4,11 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
 import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import {map} from 'rxjs/operators'
+import {from} from 'rxjs'
+declare var $: any;
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -12,6 +17,8 @@ import * as _ from 'lodash';
 export class UsersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
  contactID = '';
+ setUsrName='';
+ setRoles=[];
  suggestedUsers = [];
   searchUserName = '';
   users: any = [];
@@ -28,7 +35,9 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  userRoles:any;
+  selectedUserData:any=''
+  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService,private httpClient:HttpClient) { }
 
   ngOnInit() {
     this.fetchUsers();
@@ -71,7 +80,57 @@ export class UsersListComponent implements OnInit {
         },
       });
   }
+  fetchUserRoles(){
+    this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
+      this.userRoles=data
+        }
+    );
 
+  }
+
+  fetchRole(user:any){
+    this.fetchUserRoles();
+    this.selectedUserData=user
+    this.setUsrName=user.userLoginData.userName
+    this.setRoles=user.userLoginData.userRoles
+    
+  }
+  cancel(){
+    $('#assignrole').modal('hide')
+    console.log($('#asdsignrole').modal('hide'))
+
+  }
+  assignRole(){
+  this.selectedUserData.userLoginData.userRoles=this.setRoles;
+
+    this.apiService.putData('contacts/assignRole',this.selectedUserData).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                //  val.message = val.message.replace(/".*"/, 'This Field');
+              })
+            )
+            .subscribe({
+              complete: () => {
+                
+              },
+              error: () => {
+                
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          // this.spinner.hide();
+          this.toastr.success('Role is updated successfully');
+          $('#assignrole').modal('hide');
+          this.fetchUsers();
+        }
+      });
+  }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('contacts/fetch/employee/records?searchValue=' + this.contactID + '&lastKey=' + this.lastEvaluatedKey)
@@ -80,6 +139,7 @@ export class UsersListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.users = result[`Items`];
+        console.log(this.users)
         if (this.contactID !== '' || this.departmentName !== '') {
           this.userStartPoint = 1;
           this.userEndPoint = this.totalRecords;

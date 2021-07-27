@@ -78,7 +78,7 @@ export class AddUserComponent implements OnInit {
     currentStatus: 'active',
     userLoginData: {
       userName: '',
-      roles: '',
+      userRoles: '',
       password: '',
       confirmPassword: ''
     }
@@ -156,7 +156,6 @@ export class AddUserComponent implements OnInit {
   fetchUserRoles(){
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
       this.userRoles=data
-      console.log(this.userRoles)
         }
     );
 
@@ -311,6 +310,7 @@ export class AddUserComponent implements OnInit {
       }
     }
     console.log('userdata', this.userData);
+    this.userData.userLoginData.userName=this.userData.userLoginData.userName.toLowerCase();
     // create form data instance
     const formData = new FormData();
 
@@ -409,7 +409,7 @@ export class AddUserComponent implements OnInit {
         },
         userLoginData: {
           userName: result.userLoginData.userName,
-          roles: result.userLoginData.roles,
+          userRoles: result.userLoginData.roles,
           password: '',
           confirmPassword: ''
         }

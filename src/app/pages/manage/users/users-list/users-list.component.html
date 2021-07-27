@@ -22,6 +22,7 @@
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
+                        
                         <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
                             style="color: white"><i class="fas fa-plus"></i> Add User</a>
                     </div>
@@ -40,7 +41,7 @@
                                            <th>Name</th>
                                            <th >Username</th>
                                            <th>Department</th>
-                                           <th>User Type</th>
+                                           <th>User Roles</th>
                                            <th>Phone</th>
                                            <th>Email</th>
                                            <!-- <th>Status</th> -->
@@ -56,13 +57,14 @@
                                             <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.firstName}}&nbsp; {{user.lastName}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.userLoginData.userName ? user.userLoginData.userName : '-'}} </td>
                                             <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.userAccount.department}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.userLoginData.userType ? user.userLoginData.userType : '-'}}</td>
+                                            <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.userLoginData.userRoles ? user.userLoginData.userRoles : '-'}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.phone}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.contactID}}">{{user.email}}</td>
                                             <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td> -->
                                             <td><div class="btn-group flex-wrap">
                                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                                   <div class="dropdown-menu" role="menu">
+                                                    <a href="javascript:;" data-toggle="modal" data-target="#assignrole" (click)="fetchRole(user)" class="dropdown-item"> Assign Roles</a> 
                                                      <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{user.contactID}}">Edit</a>
                                                       <button class="dropdown-item text-1 modal-with-form" (click)="deleteUser(user.contactID)">Delete</button>
                                                   </div>
@@ -87,4 +89,54 @@
             </div>
         </section>
     </div>
+    <div id="assignrole" style="max-width: 600px;"class="modal fade" role="dialog" aria-hidden="true" aria-labelledby="assignrole">
+        <section class="card">
+           <header class="card-header">
+              <h2 class="card-title">Assign Roles</h2>
+           </header>
+           <div class="card-body text-dark">
+              <form>
+                 <div class="form-row">
+                    <div class="col-lg-12">
+                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">User Name/Email*</label>
+                       <input type="text" class="form-control" [value]="setUsrName" disabled> 
+                    </div>
+                 </div>
+                 <div class="form-row">
+                    <div class="col-lg-12">
+                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Role</label>
+                       <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="setRoles"
+                       name="roles"  placeholder="Select User Roles" >
+                       <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}</ng-option>
+                     </ng-select>
+                    </div>
+                 </div>
+                 <!--
+                 <div class="form-row">
+                    <div class="col-lg-12">
+                       <label class="control-label font-weight-semibold labelmt text-3 text-dark">Access</label>
+                       <select data-plugin-selectTwo class="form-control populate" id="groupType" onChange="groupTypeFn()">
+                          <optgroup label="">
+                             <option value="2">Entire Organization</option>
+                             <option value="3">View Only</option>
+                             <option value="4">View & Edit Only</option>
+                             <option value="4">Full Access</option>
+                          </optgroup>
+                       </select>
+                    </div>
+                 </div>
+                 -->
+              </form>
+           </div>
+           <footer class="card-footer">
+              <div class="row">
+                 <div class="col-md-12 text-right">
+                    <button (click)="cancel()" class="btn btn-default modal-dismiss">Cancel</button>
+                    <button (click)="assignRole()" class="btn btn-success modal-confirm">Assign Role</button>
+                 </div>
+              </div>
+           </footer>
+        </section>
+     </div>
 </section>
+
