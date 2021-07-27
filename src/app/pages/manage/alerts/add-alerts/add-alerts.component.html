@@ -1,0 +1,528 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                    <h4 class="text-4 mt-0 mb-0 text-dark">Add Alert</h4>
+                </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1"> <a href="#/manage/alerts/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Alerts</a> </div>
+               </div>
+            </header>
+            <section class="m-2">
+               <div class="row mb-3">
+                  <div class="col-12">
+                     <div class="bg-white p-3 text-dark">
+                        <div class="form-group adddriverpl row pt-2 pb-3">
+                           <div class="col-lg-10">
+                              <div class="row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label text-lg-right pt-2"><strong>Overspeading:</strong> Define the maximum overspeading limits of each vehicle (Will the policy be same for all the carrier and one carrier)</label>
+                                 </div>
+                                 <div class="col-lg-5 mt-3">
+                                    <input type="text" value="Maxspeed70" class="form-control"> 
+                                 </div>
+                                 <div class="col-lg-1 mt-3">
+                                    <a href="#" class="btn btn-sm btn-dark ml-2"><i class="fas fa-pen"></i></a>
+                                 </div>
+                              </div>
+                              <div class="row mt-4">
+                                 <div class="col-lg-6">
+                                    <div class="checkbox-custom">
+                                       <input type="checkbox">
+                                       <label class="control-label pt-2">Event will be triggered when vehicle crosses the speed of</label>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-1">
+                                    <input type="text" value="55" class="form-control"> 
+                                 </div>
+                                 <div class="col-lg-1">
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <option value="1">MPH</option>
+                                       <option value="2">KMH</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="row mt-4">
+                                 <div class="col-lg-2">
+                                    <label class="control-label mt-2">Do not send alert until</label>
+                                 </div>
+                                 <div class="col-lg-1">
+                                    <input type="text" class="form-control"> 
+                                 </div>
+                                 <div class="col-lg-3">
+                                    <label class="control-label mt-2">times the event has been trigged in a</label>
+                                 </div>
+                                 <div class="col-lg-2">
+                                    <select data-plugin-selectTwo class="form-control populate">
+                                       <option value="1">Day</option>
+                                       <option value="2">Hour</option>
+                                       <option value="2">Week</option>
+                                       <option value="2">Month</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="row mt-4">
+                                 <div class="col-lg-2">
+                                    <label class="control-label pt-2">Set time periods for alerts</label>
+                                 </div>
+                                 <div class="col-lg-3">
+                                    <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control"> 
+                                 </div>
+                              </div>
+							  
+							  <div class="row mt-4">
+                                 <div class="col-lg-2">
+                                    <label class="control-label text-lg-right pt-2">Choose recipients</label>
+                                 </div>
+                                 <div class="col-lg-3">
+                                    <input type="text" value="donal@fleethawks.com" placeholder="Choose who would recieve these alerts" class="form-control"> 
+                                 </div>
+								 <div class="col-lg-1">
+									<a href="#" class="btn btn-sm btn-dark text-right"><i class="fas fa-pen"></i></a>
+								 </div>
+                              </div>
+							  
+							  
+                              <div class="row">
+                                 <div class="col-lg-8">
+                                    <hr class="solid">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-9">
+                                    <div class="checkbox-custom checkbox-default">
+                                       <input [(ngModel)]="isTiming" type="checkbox">
+                                       <label class="control-label mt-2 font-weight-bold" for="custBtn">Customize timing and frequency</label>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div id="custDiv" *ngIf="isTiming">
+                                 <div class="row p-3">
+                                    <div class="col-lg-8 borddas bggrey p-3">
+                                       <div class="row">
+                                          <div class="col-lg-8">
+                                             <div class="checkbox-custom">
+                                                <input type="checkbox">
+                                                <label class="control-label pt-2">Every day (All hours)</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-8">
+                                             <div class="checkbox-custom">
+                                                <input type="checkbox">
+                                                <label class="control-label pt-2">Weekdays only (Monday to Friday, all hours)</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-8">
+                                             <div class="checkbox-custom">
+                                                <input type="checkbox">
+                                                <label class="control-label pt-2">Weekends only (Saturday Sunday, all hours)</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-8">
+											<div class="checkbox-custom checkbox-default">
+											   <input [(ngModel)]="isCustom" type="checkbox">
+											   <label class="control-label mt-2 font-weight-bold">Custom</label>
+											</div>
+                                          </div>
+                                       </div>
+									   
+									   <div *ngIf="isCustom">
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Monday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select data-plugin-selectTwo class="form-control populate">
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select data-plugin-selectTwo class="form-control populate" id="alertTypeList">
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Tuesday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Wednesday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Thrusday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Friday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Saturday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+										   <div class="row mt-4">
+											  <div class="col-lg-2">
+												 <label class="control-label font-weight-bold mt-2">Sunday</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <label class="control-label font-weight-bold mt-2">to</label>
+											  </div>
+											  <div class="col-lg-1">
+												 <input type="text" class="form-control"> 
+											  </div>
+											  <div class="col-lg-2">
+												 <select class="form-control populate" data-plugin-selectTwo>
+													<option value="1">AM</option>
+													<option value="2">PM</option>
+												 </select>
+											  </div>
+											  <div class="col-lg-1">
+												 <a href="#" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+											  </div>
+										   </div>
+									   </div>
+									   
+                                       <div class="row mt-4">
+                                          <div class="col-lg-8">
+                                             <div class="checkbox-custom">
+                                                <input type="checkbox">
+                                                <label class="control-label pt-2">Recieve alerts at the start of the event</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-8">
+                                             <div class="checkbox-custom">
+                                                <input type="checkbox">
+                                                <label class="control-label pt-2">Send notification to every vehicle during the event</label>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-8">
+                                             <label class="control-label mt-2">Define alert limits per driver</label>
+                                          </div>
+                                          <div class="col-lg-2">
+                                             <select class="form-control populate" data-plugin-selectTwo>
+                                                <option value="1">5</option>
+                                                <option value="2">10</option>
+                                                <option value="2">20</option>
+                                                <option value="2">30</option>
+                                             </select>
+                                          </div>
+                                          <div class="col-lg-8">
+                                             <label class="control-label mt-2">Total daily limits per driver</label>
+                                          </div>
+                                          <div class="col-lg-2">
+                                             <select class="form-control populate" data-plugin-selectTwo>
+                                                <option value="1">5</option>
+                                                <option value="2">10</option>
+                                                <option value="2">20</option>
+                                                <option value="2">30</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+							  
+							  
+							  <div class="row">
+                                 <div class="col-lg-8">
+                                    <hr class="solid">
+                                 </div>
+                              </div>
+							  
+							  
+							  <div class="row">
+                                 <div class="col-lg-9">
+                                    <div class="checkbox-custom checkbox-default">
+                                       <input [(ngModel)]="isAlert" type="checkbox">
+                                       <label class="control-label mt-2 font-weight-bold" for="copyBtn">Send a copy of alert to driver</label>
+                                    </div>
+                                 </div>
+                              </div>
+							  
+							   <div class="row">
+                                 <div class="col-lg-8">
+                                    <hr class="solid">
+                                 </div>
+                              </div>
+							  
+							  <div id="copyDiv" *ngIf="isAlert">
+                              <div class="row mt-4">
+                                 <div class="col-lg-5">
+                                    <input type="text" placeholder="Search" class="form-control"> 
+                                 </div>
+                                 <div class="col-lg-6">
+                                    <div class="checkbox-custom">
+                                       <input type="checkbox">
+                                       <label class="control-label pt-2">Select All</label>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row mt-4">
+                                 <div class="col-lg-8">
+                                    <table class="table table-striped table-bordered simple-table">
+                                       <thead>
+                                          <tr style="background-color:#ccc;">
+                                             <th width="50%">Name</th>
+                                             <th width="20%">Email</th>
+                                             <th width="30%">Pop up Notification</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr>
+                                             <td>Gaurav Sharma</td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Micky</td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Harry</td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td>Methew Wade</td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                             <td>
+                                                <label class="contcheck"> 
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                </label>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+							  </div>
+							  
+							  
+							  <div class="row">
+                                 <div class="col-lg-9">
+                                    <div class="checkbox-custom checkbox-default">
+                                       <input [(ngModel)]="isEmail" type="checkbox" >
+                                       <label class="control-label mt-2 font-weight-bold" for="emailBtn">Send custom email/message</label>
+                                    </div>
+                                 </div>
+                              </div>
+							  
+							  
+							<div id="emailDiv"  *ngIf="isEmail">
+                              <div class="row mt-4">
+                                 <div class="col-lg-8">
+                                    <label class="control-label text-lg-right pt-2">Subject</label>
+                                    <input type="text" class="form-control"> 
+                                 </div>
+                              </div>
+                              <div class="row mt-4">
+                                 <div class="col-lg-8">
+                                    <label class="control-label text-lg-right pt-2">Body</label>
+                                    <textarea class="form-control heighta" rows="3"></textarea>
+                                 </div>
+                              </div>
+							  </div>
+							  
+                           </div>
+                        </div>
+                        <div class="form-group adddriverpl row pt-2 pb-3">
+                           <div class="col-lg-7 text-right">
+                              <button type="button" class="btn btn-default mr-3 mt-4" onclick="goBack()">Cancel</button>
+                              <a href="all-alerts.php" class="btn btn-success mt-4 ">Submit</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </section>
+    </div>
+</section>

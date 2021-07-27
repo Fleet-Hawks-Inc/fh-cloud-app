@@ -352,21 +352,15 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Type <span
+                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Role <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select class="form-control populate" [(ngModel)]="userData.userLoginData.userType"
-                            name="userType"  placeholder="Select User Type" #usertype="ngModel" [required]="userData.loginEnabled">
-                            <ng-option value="Super Admin">Super Admin</ng-option>
-                            <!-- <ng-option value="Full Admin">Full Admin</ng-option>
-                            <ng-option value="Read Only Admin">Read Only Admin</ng-option>
-                            <ng-option value="Dispatch">Dispatch</ng-option>
-                            <ng-option value="Maintenance">Maintenance</ng-option>
-                            <ng-option value="Safety Manager">Safety Manager</ng-option>
-                            <ng-option value="Other">Other</ng-option> -->
+                          <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="userData.userLoginData.roles"
+                            name="roles"  placeholder="Select User Type" #roles="ngModel" [required]="userData.loginEnabled">
+                            <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}</ng-option>
                           </ng-select>
-                          <div *ngIf="usertype.invalid && (usertype.dirty || usertype.touched)" class="text-danger">
-                            <div *ngIf="usertype.errors.required">
-                              User type is required.
+                          <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="text-danger">
+                            <div *ngIf="roles.errors.required">
+                              User Role is required.
                             </div>
                             
                           </div>

@@ -7,6 +7,7 @@ describe(" Issue tests", () => {
       cy.request({
         method: 'DELETE',
         url: serviceUrl,
+        failOnStatusCode: false,
         headers: {
           'Authorization': `Bearer ${authToken}`,
           "Content-type": "application/json"
@@ -81,7 +82,48 @@ describe(" Issue tests", () => {
     });
 
   });
-
+  it('check button is enabled or not.', function () {
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(7) > .nav-link > .fas').click();
+    cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
+    cy.get('[name="unitID"] input').clear();
+    cy.get('[name="unitID"] input').type('tesla {enter}');
+    cy.get('.col-lg-10 > #issueName').clear();
+    cy.get('.col-lg-10 > #issueName').type('brake issue');
+    cy.get('input[name="odometer"]').clear();
+    cy.get('input[name="odometer"]').type('10000');
+    cy.get('.inner-wrapper [class="row pt-2"]:nth-of-type(2) [role="combobox"]').first().click();
+    cy.get('div:nth-of-type(1) > .ng-option-label.ng-star-inserted').last().click();
+    cy.get('div:nth-of-type(3) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
+    cy.get('[role="option"]:nth-of-type(2) .ng-star-inserted').last().click();
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false
+    });
+  });
+  it('should give validation error messages when the required field is not provided.', function () {
+    cy.visit('/#/Login');
+    cy.get(':nth-child(1) > .input-group > .form-control').clear();
+    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
+    cy.get(':nth-child(2) > .input-group > .form-control').clear();
+    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
+    cy.get('#btnsubmit').click();
+    cy.get(':nth-child(7) > .nav-link > .fas').click();
+    cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
+    cy.get('.col-lg-10 > #issueName').type('brake issue');
+    cy.get('.col-lg-10 > #issueName').clear();
+    cy.get('.text-danger .ng-star-inserted').contains('Issue name is required.');
+    cy.get('input[name="odometer"]').type('10000');
+    cy.get('input[name="odometer"]').clear();
+    cy.get('.ng-star-inserted.pt-3.row .ng-star-inserted').contains('Odometer miles is required.');
+    Cypress.on('uncaught:exception', (err, runnable) => {
+      return false
+    });
+  });
   it('should allow users to edit issues.', function () {
     cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -120,46 +162,5 @@ describe(" Issue tests", () => {
     });
   });
 
-  it('should give validation error messages when the required field is not provided.', function () {
-    cy.visit('/#/Login');
-    cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
-    cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
-    cy.get('#btnsubmit').click();
-    cy.get(':nth-child(7) > .nav-link > .fas').click();
-    cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
-    cy.get('.col-lg-10 > #issueName').type('brake issue');
-    cy.get('.col-lg-10 > #issueName').clear();
-    cy.get('.text-danger .ng-star-inserted').contains('Issue name is required.');
-    cy.get('input[name="odometer"]').type('10000');
-    cy.get('input[name="odometer"]').clear();
-    cy.get('.ng-star-inserted.pt-3.row .ng-star-inserted').contains('Odometer miles is required.');
-    Cypress.on('uncaught:exception', (err, runnable) => {
-      return false
-    });
-  });
-  it('check button is enabled or not.', function () {
-    cy.visit('/#/Login');
-    cy.get(':nth-child(1) > .input-group > .form-control').clear();
-    cy.get(':nth-child(1) > .input-group > .form-control').type(Cypress.config('testerUserName'));
-    cy.get(':nth-child(2) > .input-group > .form-control').clear();
-    cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
-    cy.get('#btnsubmit').click();
-    cy.get(':nth-child(7) > .nav-link > .fas').click();
-    cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
-    cy.get('[name="unitID"] input').clear();
-    cy.get('[name="unitID"] input').type('tesla {enter}');
-    cy.get('.col-lg-10 > #issueName').clear();
-    cy.get('.col-lg-10 > #issueName').type('brake issue');
-    cy.get('input[name="odometer"]').clear();
-    cy.get('input[name="odometer"]').type('10000');
-    cy.get('.inner-wrapper [class="row pt-2"]:nth-of-type(2) [role="combobox"]').first().click();
-    cy.get('div:nth-of-type(1) > .ng-option-label.ng-star-inserted').last().click();
-    cy.get('div:nth-of-type(3) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
-    cy.get('[role="option"]:nth-of-type(2) .ng-star-inserted').last().click();
-    Cypress.on('uncaught:exception', (err, runnable) => {
-      return false
-    });
-  });
+   
 });
