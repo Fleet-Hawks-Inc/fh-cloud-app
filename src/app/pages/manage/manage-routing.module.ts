@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AllReportsComponent } from './all-reports/all-reports.component';
 import {
@@ -26,6 +27,7 @@ const routes: Routes = [
     path: 'alerts',
     children: [
       { path: 'list', component: AlertsListComponent},
+      { path: 'add', component: AddAlertsComponent},
       
     ],
   },

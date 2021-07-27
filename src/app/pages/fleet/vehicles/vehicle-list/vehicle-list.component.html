@@ -208,11 +208,17 @@
                                                 <td class="hand-icon" *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicleTypeObects[vehicle.vehicleType] }}
                                                 </td>
-                                                <td class="hand-icon" *ngIf="hideShow.make" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="hand-icon"  routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicleManufacturersList[vehicle.manufacturerID]}}
                                                 </td>
-                                                <td class="hand-icon" *ngIf="hideShow.model" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td *ngIf="!vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="hand-icon"  routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.manufacturerID}}
+                                                </td>
+                                                <td *ngIf="vehicleModelList[vehicle.modelID] && hideShow.model" class="hand-icon" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicleModelList[vehicle.modelID]}}
+                                                </td>
+                                                <td *ngIf="!vehicleModelList[vehicle.modelID] && hideShow.model" class="hand-icon" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.modelID}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.lastLocation" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     Ontario
