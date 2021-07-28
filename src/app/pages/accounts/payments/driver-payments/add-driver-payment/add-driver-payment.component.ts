@@ -30,6 +30,7 @@ export class AddDriverPaymentComponent implements OnInit {
     taxes:<any> 0,
     advance:<any> 0,
     finalAmount:<any> 0,
+    pendingPayment: <any> 0,
     accountID: null,
     settlData: []
   };
@@ -46,8 +47,11 @@ export class AddDriverPaymentComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  submitDisabled = false;
+  submitDisabled = true;
   paymentID;
+  searchDisabled = false;
+  taxErr = '';
+  advErr = '';
 
   constructor(
     private listService: ListService,
@@ -118,19 +122,30 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   fetchSettlements() {
-    this.accountService.getData(`settlement/entity/${this.paymentData.entityId}`).subscribe((result: any) => {
-      if(result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      this.settlements = result;
-      this.settlements.map((v) => {
-        v.selected = false;
-        v.fullPayment = false;
-        v.paidAmount = 0;
-        v.newtype = v.type.replace("_"," ");
-      })
-      console.log('this.settlements', this.settlements);
-    });
+    if(!this.paymentID && this.paymentData.entityId != null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.searchDisabled = true;
+      this.accountService.getData(`settlement/entity/${this.paymentData.entityId}`).subscribe((result: any) => {
+        if(result.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.searchDisabled = false;
+        this.settlements = result;
+        this.settlements.map((v) => {
+          v.selected = false;
+          v.fullPayment = false;
+          v.paidAmount = 0;
+          v.newtype = v.type.replace("_"," ");
+          v.paidStatus = false;
+          v.prevPaidAmount = Number(v.finalTotal) - Number(v.pendingPayment);
+          v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
+          v.status = v.status.replace("_"," ");
+          v.errText = '';
+        })
+      });
+    } else {
+      return false;
+    }
   }
 
   fetchtrips() {
@@ -138,45 +153,86 @@ export class AddDriverPaymentComponent implements OnInit {
       .getData(`trips/get/list`)
       .subscribe((result: any) => {
         this.trips = result;
-        console.log('this.trips', this.trips);
       });
   }
 
-  selectedTrip() {
+  selectedSettlements() {
     this.paymentData.settlementIds = [];
     this.paymentData.settlData = [];
+    
     for (const element of this.settlements) {
       if(element.selected) {
         if(!this.paymentData.settlementIds.includes(element.sttlID)) {
           let obj = {
             settlementId: element.sttlID,
-            fullPayment: element.fullPayment,
-            paymentStatus: element.status,
-            amount: element.paidAmount,
+            status: element.status,
+            paidAmount: (element.status === 'unpaid') ? element.paidAmount : Number(element.finalTotal) - Number(element.pendingPayment),
+            totalAmount: (element.status === 'unpaid') ? element.finalTotal : element.pendingPayment,
+            pendingAmount: element.pendingPayment
           }
           this.paymentData.settlementIds.push(element.sttlID);
           this.paymentData.settlData.push(obj);
         }
       }
     }
-    // calculation
+    
     this.paymentCalculation();
   }
 
   paymentCalculation() {
     this.paymentData.totalAmount = 0;
     this.paymentData.finalAmount = 0;
+    let selectCount = 0;
     for (const element of this.settlements) {
       if(element.selected) {
-        console.log('element.paidAmount', element);
-        this.paymentData.totalAmount += parseFloat(element.paidAmount);
+        if(element.paidAmount > 0) {
+          selectCount += 1; 
+        }
+        this.paymentData.totalAmount += Number(element.paidAmount);
+        this.paymentData.settlData.map((v) => {
+          if(element.sttlID  === v.settlementId) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+            if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+              v.status = 'paid';
+            } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+              v.status = 'partially_paid';
+            } else {
+              v.status = 'unpaid';
+            }
+
+            v.paidAmount = v.paidAmount.toFixed(2);
+          }
+        })
       }
     }
-
-    this.paymentData.finalAmount = parseFloat(this.paymentData.totalAmount) + parseFloat(this.paymentData.taxes) - parseFloat(this.paymentData.advance);
+    if(selectCount > 0) {
+      this.submitDisabled = false;
+    } else {
+      this.submitDisabled = true;
+    }
+    this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
+    this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
+    this.paymentData.totalAmount = (this.paymentData.totalAmount) ? Number(this.paymentData.totalAmount) : 0;
+    this.paymentData.pendingPayment = this.paymentData.totalAmount + this.paymentData.taxes - this.paymentData.advance;
+    this.paymentData.finalAmount = this.paymentData.totalAmount + this.paymentData.taxes;
+    this.paymentData.finalAmount = Number(this.paymentData.finalAmount);
   }
 
   addRecord() {
+    if(this.paymentData.settlementIds.length === 0) {
+      this.toaster.error("Please select settlement(s)");
+      return false;
+    }
+
+    for (const element of this.settlements) {
+      if(element.selected) {
+        if(element.paidAmount === 0) {
+          this.toaster.error("Please select settlement amount");
+          return false;
+        }
+      }
+    }
     this.submitDisabled = true;
     this.accountService.postData("driver-payments", this.paymentData).subscribe({
       complete: () => {},
@@ -217,8 +273,11 @@ export class AddDriverPaymentComponent implements OnInit {
         this.paymentData.payMode = '';
       }
       this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
-      console.log('this.paymentData', this.paymentData);
-      this.fetchSettlements();
+      let settlementIDs = [];
+      this.paymentData.settlData.map((v) => {
+        settlementIDs.push(v.settlementId);
+      });
+      this.fetchSettledData(settlementIDs);
     });
   }
 
@@ -255,13 +314,57 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   assignFullPayment(index, data) {
-    console.log('index', index);
-    console.log('data', data)
     if(data.fullPayment) {
-      this.settlements[index].paidAmount = data.finalTotal;
+      this.settlements[index].paidAmount = data.pendingPayment;
+      this.settlements[index].paidStatus = true;
     } else {
       this.settlements[index].paidAmount = 0;
+      this.settlements[index].paidStatus = false;
     }
     this.paymentCalculation();
+  }
+
+  fetchSettledData(settlementIDs) {
+    let ids = encodeURIComponent(JSON.stringify(settlementIDs));
+
+    this.accountService.getData(`settlement/get/selected?entities=${ids}`).subscribe((result: any) => {
+      this.settlements = result;
+      this.settlements.map((v) => {
+        v.paidAmount = 0;
+        v.newtype = v.type.replace("_"," ");
+        v.status = v.status.replace("_"," ");
+      })
+    });
+  }
+
+  checkInput(type, index='') {
+    if(type == 'setlAmount') {
+      let settlementAmount = this.settlements[index]['pendingPayment'];
+      let enteredAmount = this.settlements[index]['paidAmount'];
+      if(enteredAmount > settlementAmount) {
+        this.settlements[index]['errText'] = 'Please enter valid amount';
+        this.submitDisabled = true;
+      } else {
+        this.settlements[index]['errText'] = '';
+        this.submitDisabled = false;
+      }
+    } else if(type == 'tax') {
+      if(this.paymentData.taxes > this.paymentData.totalAmount) {
+        this.taxErr = 'Tax amount should be less than settlement amount';
+        this.submitDisabled = true;
+      } else {
+        this.taxErr = '';
+        this.submitDisabled = false;
+      }
+    } else if(type == 'advance') {
+      if(this.paymentData.advance > this.paymentData.totalAmount) {
+        this.advErr = 'Advance amount should be less than settlement amount';
+        this.submitDisabled = true;
+      } else {
+        this.advErr = '';
+        this.submitDisabled = false;
+      }
+    } 
+    
   }
 }

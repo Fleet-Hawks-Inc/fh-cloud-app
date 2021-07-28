@@ -55,7 +55,9 @@ export class AddSettlementComponent implements OnInit {
         taxes:<any> 0,
         subTotal: 0,
         finalTotal:<any> 0,
-        status: 'unpaid'
+        status: 'unpaid',
+        paymentLinked: false,
+        pendingPayment: 0,
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();

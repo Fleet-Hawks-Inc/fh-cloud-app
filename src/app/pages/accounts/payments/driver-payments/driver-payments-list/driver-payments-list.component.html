@@ -7,7 +7,7 @@
                <div class="row px-4" style="padding-top:10px;">
                   <div class="col-md-2 col-lg-2">
                      <div class="input-group input-group-md mb-3">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
                      </div>
                   </div>
 
@@ -18,29 +18,35 @@
                               <i class="fas fa-calendar-alt"></i>
                            </span>
                         </span>
-                        <input type="text" class="form-control" name="start">
+                        <input [(ngModel)]="filter.startDate" name="startDate"
+                           type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                           ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit"
+                           [maxDate]="futureDatesLimit">
                         <span class="input-group-text border-left-0 border-right-0 rounded-0">
                            to
                         </span>
-                        <input type="text" class="form-control" name="end">
+                        <input [(ngModel)]="filter.endDate" name="endDate"
+                           type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                           ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit"
+                           [maxDate]="futureDatesLimit">
                      </div>
                   </div>
                   <div class="col-md-2  col-lg-2">
-                     <div class="input-group input-group-md mb-3">
-                        <select data-plugin-selectTwo class="form-control populate">
-                           <optgroup label="">
-                              <option value="1">Driver</option>
-                              <option value="2">Carrier</option>
-                              <option value="2">Owner Operator</option>
-                           </optgroup>
-                        </select>
-                     </div>
+                     <ng-select [(ngModel)]="filter.type" name="type"
+                        placeholder="Select type" #paymenttTO="ngModel" required>
+                        <ng-option value="driver">Driver</ng-option>
+                        <ng-option value="carrier">Carrier</ng-option>
+                        <ng-option value="owner_operator">Owner Operator</ng-option>
+                     </ng-select>
                   </div>
 
-                  <div class="col-md-1  col-lg-1">
-                     <button type="submit" class="btn btn-sm btn-success">Search</button>
+                  <div class="col-md-2  col-lg-2">
+                     <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                     <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                   </div>
-                  <div class="col-md-4  col-lg-4 text-right pr-5">
+                  <div class="col-md-3 col-lg-3 text-right pr-5">
 
                      <div class="btn-group flex-wrap">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -77,6 +83,11 @@
                            </tr>
                         </thead>
                         <tbody>
+                           <tr class="text-center" *ngIf="payments.length === 0">
+                              <td colspan="7">
+                                 {{ dataMessage }}
+                              </td>
+                           </tr>
                            <tr *ngFor="let data of payments; let i=index;">
                               <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
                                  date:"yyyy/MM/dd" }}</td>
@@ -109,8 +120,6 @@
                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                        <a class="dropdown-item"
                                           routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
-                                       <a class="dropdown-item" href="javascript:;"
-                                          (click)="deletePayment(data.paymentID)">Delete</a>
                                     </div>
                                  </div>
                               </td>

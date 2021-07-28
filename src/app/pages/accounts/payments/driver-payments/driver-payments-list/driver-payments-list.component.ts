@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import Constants from 'src/app/pages/fleet/constants';
-import { AccountService, ApiService, ListService } from 'src/app/services';
+import { AccountService, ApiService } from 'src/app/services';
 
 @Component({
   selector: 'app-driver-payments-list',
@@ -18,11 +15,15 @@ export class DriverPaymentsListComponent implements OnInit {
   contacts = [];
   payments = [];
   settlements = [];
+  settlementIds = [];
+  filter = {
+    startDate: null,
+    endDate: null,
+    type: null,
+    amount: ''
+}
 
   constructor(
-    private listService: ListService,
-    private route: ActivatedRoute,
-    private router: Router,
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
@@ -50,8 +51,11 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   fetchDriverPayments() {
-    this.accountService.getData(`driver-payments`).subscribe((result: any) => {
+    this.accountService.getData(`driver-payments/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`).subscribe((result: any) => {
       this.payments = result;
+      if(result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
       this.payments.map((v) => {
         if(v.payMode) {
           v.payMode = v.payMode.replace("_"," ");
@@ -59,16 +63,37 @@ export class DriverPaymentsListComponent implements OnInit {
           v.payMode = '-';
         }
         v.paymentTo = v.paymentTo.replace("_", " ");
+        v.settlementIds = [];
+        v.settlData.map((k) => {
+          v.settlementIds.push(k.settlementId);
+        });
       })
-      console.log('this.payments lsts', this.payments);
     });
   }
 
   fetchSettlement() {
     this.accountService.getData(`settlement/get/list`).subscribe((result: any) => {
       this.settlements = result;
-      console.log('this.settlements lsts', this.settlements);
     });
   }
+
+  searchFilter() {
+    if (this.filter.type !== null || this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.payments = [];
+        this.fetchDriverPayments();
+    }
+}
+
+resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+        startDate: null,
+        endDate: null,
+        type: null,
+        amount: ''
+    }
+    this.fetchDriverPayments();
+}
 
 }
