@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import pdfMake from "pdfmake/build/pdfmake";  
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
+import * as html2pdf from 'html2pdf.js';
 declare var $: any;
 
 @Component({
@@ -151,7 +152,8 @@ export class OrderDetailComponent implements OnInit {
   taxableAmount: any;
   invoiceData: any;
   today: any;
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+  cusAddressID: string;
+  constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
 
@@ -184,6 +186,7 @@ export class OrderDetailComponent implements OnInit {
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
           this.fetchCustomersByID();
+          this.cusAddressID = result.cusAddressID;
           this.customerPo = result.customerPO;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
@@ -379,48 +382,61 @@ export class OrderDetailComponent implements OnInit {
    */
   fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
-      result = result.Items[0];
-      this.customerName = `${result.companyName}`;
-
-      if(result.address.length > 0) {
-        if(result.address[0].manual) {
-          this.customerAddress = result.address[0].address1;
-        } else {
-          this.customerAddress = result.address[0].userLocation;
+      
+      if(result.Items.length > 0) {
+        result = result.Items[0];
+        this.customerName = `${result.companyName}`;
+        let newCusAddress = result.address.filter((elem: any) => {
+          if(elem.addressID === this.cusAddressID){
+            return elem
+          }
+        });
+        newCusAddress = newCusAddress[0];
+        if(result.address.length > 0) {
+          if(newCusAddress.manual) {
+            this.customerAddress = newCusAddress.address1;
+          } else {
+            this.customerAddress = newCusAddress.userLocation;
+          }
+          this.customerCityName = newCusAddress.cityName;
+          this.customerStateName = newCusAddress.stateName;
+          this.customerCountryName = newCusAddress.countryName;
+          this.customerPhone = result.workPhone;
+          this.customerEmail = result.workEmail;
         }
       }
-      this.customerCityName = result.address[0].cityName;
-      this.customerStateName = result.address[0].stateName;
-      this.customerCountryName = result.address[0].countryName;
-      this.customerPhone = result.workPhone;
-      this.customerEmail = result.workEmail;
-      // this.customerfax = result.additionalContact.fax;
+     
     });
   }
 
 
   generatePDF() {
     var data = document.getElementById('print_wrap');
-    html2canvas(data).then(canvas => {
-      var imgData = canvas.toDataURL();
-      var docDefinition = {
-        
-        pageSize: 'A4',
-        pageOrientation: 'portrait',
-        pageBreak: 'after',
-        margin: 0,
-        content: [{
-          image: imgData,
-          width: 500,
-        }],
-        pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
-          return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
-        }
-      };
-      pdfMake.createPdf(docDefinition).download("invoice.pdf");
+
+    html2pdf(data, {
+      margin:       0,
+      filename:     'invoice.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      
     });
+    this.saveInvoice();
+    this.invoiceGenerated();
+    
     
    
+  }
+
+  saveInvoice(){
+    this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
+      this.toastr.success('Invoice Added Successfully.');
+    });
+  }
+
+  invoiceGenerated(){
+    
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}`).subscribe((res) => {});
   }
 
   previewModal() {
@@ -445,7 +461,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.docs.splice(index, 1);
     }
-    this.toastr.error('Document deleted successfully');
+    this.toastr.success('Document deleted successfully');
   }
 
   setPDFSrc(val) {

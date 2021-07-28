@@ -7,6 +7,7 @@ describe(" Inventory tests", () => {
       cy.request({
         method: 'DELETE',
         url: serviceUrl,
+        failOnStatusCode: false,
         headers: {
           'Authorization': `Bearer ${authToken}`,
           "Content-type": "application/json"
@@ -25,19 +26,19 @@ describe(" Inventory tests", () => {
     cy.get(':nth-child(9) > .nav-link > .fas').click();
     cy.get('[routerlink="/fleet/inventory/add"]').click();
     cy.get('[name="partNumber"]').clear();
-    cy.get('[name="partNumber"]').type('nut bolt 2020');
+    cy.get('[name="partNumber"]').type('Cypress nut 2021');
     cy.get('input[name="itemName"]').clear();
-    cy.get('input[name="itemName"]').type('tires');
+    cy.get('input[name="itemName"]').type('Wheels');
     cy.get('[name="category"] input').first().click();
     cy.get('div:nth-of-type(1) > .ng-option-label').last().click();
     cy.get('input[name="cost"]').clear();
-    cy.get('input[name="cost"]').type('5');
+    cy.get('input[name="cost"]').type('35');
     cy.get('input[name="quantity"]').clear();
     cy.get('[name="costUnitType"] input').first().click();
     cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
     cy.get('[name="costUnit"] input').first().click();
     cy.get('[role="option"]:nth-of-type(1) .ng-star-inserted').last().click();
-    cy.get('input[name="quantity"]').type('10');
+    cy.get('input[name="quantity"]').type('15');
     cy.get('[name="warehouseID"] input').first().click();
     cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();
     cy.get('[name="warehouseVendorID"] input').first().click();
@@ -112,6 +113,7 @@ describe(" Inventory tests", () => {
     cy.get('#dropdownMenuButton-0 > .fas').click();
     cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();//edit
     cy.url().then(url => {
+      console.log('url', url);
       let newUrl = url.split('/');
       inventoryID = newUrl[newUrl.length - 1];
       cy.setLocalStorage('inventoryID', inventoryID);
@@ -129,7 +131,7 @@ describe(" Inventory tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(9) > .nav-link > .fas').click();
     cy.get('#dropdownMenuButton-0 > .fas').click();
-    cy.get('[aria-labelledby] > .dropdown-item:nth-of-type(2)').click();
+    cy.get('.dropdown-menu.show > a:nth-of-type(2)').click();
     cy.getLocalStorage('congnitoAT').then((data) => {
       authToken = data;
     });

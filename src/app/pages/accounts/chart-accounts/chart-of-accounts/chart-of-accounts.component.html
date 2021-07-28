@@ -6,32 +6,30 @@
         <div class="row" style="padding-top:10px;">
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filter.actName" name="actName">
             </div>
           </div>
           <div class="col-lg-2 col-md-2">
-            <select class="form-control pull-left form-control-sm mb-0">
-              <option value="2">All</option>
-              <option value="2">Current Assets</option>
-              <option value="2">Bank</option>
-              <option value="2">Credit Card/Loan</option>
-              <option value="2">Depreciation</option>
-              <option value="2">Direct Expenses</option>
-              <option value="2">Equity</option>
-              <option value="2">Expenses</option>
-              <option value="2">Fixed Assets</option>
-              <option value="2">Future Assets</option>
-              <option value="2">Liabilities</option>
-              <option value="2">Future Liabilities</option>
-              <option value="2">Other Income</option>
-              <option value="2">Overheads</option>
-              <option value="2">Sales</option>
-            </select>
+            <ng-select class="form-control pull-left form-control-sm mb-0" [(ngModel)]="filter.actType" name="actType">
+              <ng-option value="Current_Assets">Current Assets</ng-option>
+        <ng-option value="Bank">Bank</ng-option>
+        <ng-option value="Credit_Card/Loan">Credit Card/Loan</ng-option>
+        <ng-option value="Direct_Expenses">Direct Expenses</ng-option>
+        <ng-option value="Equity">Equity</ng-option>
+        <ng-option value="Fixed_Assets">Fixed Assets</ng-option>
+        <ng-option value="Future_Assets">Future Assets</ng-option>
+        <ng-option value="Future_Liability">Future Liability</ng-option>
+        <ng-option value="Other_Income">Other Income</ng-option>
+        <ng-option value="Overheads">Overheads</ng-option>
+        <ng-option value="Sales">Sales</ng-option>
+        <ng-option value="Current_Liability">Current Liability</ng-option>
+            </ng-select>
           </div>
-          <div class="col-md-1  col-lg-1">
-            <button type="submit" class="btn btn-sm btn-success">Search</button>
+          <div class="col-md-2  col-lg-2">
+            <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+            <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
           </div>
-          <div class="col-md-7  col-lg-7 text-right">
+          <div class="col-md-6  col-lg-6 text-right">
             <button (click)="showAcModal()" class="btn btn-success btn-sm "
               style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
 
@@ -59,6 +57,9 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <tr *ngIf="accounts.length === 0" class="text-center">
+                        <td colspan="7">{{ dataMessage }}</td>
+                     </tr>
                       <tr *ngFor="let ac of accounts | async">
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>

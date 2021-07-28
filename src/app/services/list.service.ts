@@ -3,6 +3,7 @@ import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
+import { HttpClient } from "@angular/common/http"
 @Injectable({
   providedIn: "root",
 })
@@ -74,7 +75,7 @@ export class ListService {
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
-  constructor(private apiService: ApiService,private accountService: AccountService,) {}
+  constructor(private apiService: ApiService,private accountService: AccountService,private httpClient:HttpClient) {}
 
   fetchVendors() {
     this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
