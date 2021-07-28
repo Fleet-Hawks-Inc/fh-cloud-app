@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
-import pdfMake from "pdfmake/build/pdfmake";  
+import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
 import * as html2pdf from 'html2pdf.js';
@@ -213,7 +213,7 @@ export class OrderDetailComponent implements OnInit {
 
               // }
 
-              
+
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
@@ -225,8 +225,8 @@ export class OrderDetailComponent implements OnInit {
           this.taxesInfo = result.taxesInfo;
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
-          
-              
+
+
 
           this.milesArr = [];
           // for (let k = 0; k < element.receivers.length; k++) {
@@ -249,9 +249,9 @@ export class OrderDetailComponent implements OnInit {
           this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
       }
-          
+
           this.milesArr = result.shippersReceiversInfo;
-          
+
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -269,14 +269,14 @@ export class OrderDetailComponent implements OnInit {
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
-          
+
           if(result.attachments != undefined && result.attachments.length > 0){
             this.attachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
+          }
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
             this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
-          
+          }
+
           // if (
           //   result.uploadedDocs != undefined &&
           //   result.uploadedDocs.length > 0
@@ -352,7 +352,7 @@ export class OrderDetailComponent implements OnInit {
           //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
           // }
 
-          
+
 
 
       }, (err) => {
@@ -382,7 +382,7 @@ export class OrderDetailComponent implements OnInit {
    */
   fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
-      
+
       if(result.Items.length > 0) {
         result = result.Items[0];
         this.customerName = `${result.companyName}`;
@@ -405,7 +405,7 @@ export class OrderDetailComponent implements OnInit {
           this.customerEmail = result.workEmail;
         }
       }
-     
+
     });
   }
 
@@ -419,23 +419,25 @@ export class OrderDetailComponent implements OnInit {
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      
+
     });
     this.saveInvoice();
     this.invoiceGenerated();
-    
-    
-   
+
+
+
   }
 
   saveInvoice(){
+    this.invoiceData.transactionLog = [];
+    this.invoiceData.invNo = this.orderNumber;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
       this.toastr.success('Invoice Added Successfully.');
     });
   }
 
   invoiceGenerated(){
-    
+
     this.apiService.getData(`orders/invoiceStatus/${this.orderID}`).subscribe((res) => {});
   }
 
@@ -475,14 +477,14 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  
+
    /*
    * Selecting files before uploading
    */
   selectDocuments(event) {
     let files = [...event.target.files];
     let totalCount = this.docs.length+files.length;
-    
+
     if(totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
@@ -515,7 +517,7 @@ export class OrderDetailComponent implements OnInit {
       }
 
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
-        
+
         this.docs = [];
         if (result.length > 0) {
           for (let k = 0; k < result.length; k++) {
@@ -539,8 +541,8 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-                    
-            
+
+
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
@@ -583,5 +585,5 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  
+
 }

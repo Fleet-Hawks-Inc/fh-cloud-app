@@ -39,6 +39,9 @@ export class InvoiceListComponent implements OnInit {
       });
       this.categorizeInvoices();
     });
+    this.accountService.getData('order-invoice').subscribe((res: any) => {
+      console.log('res', res);
+    });
   }
   categorizeInvoices() {
     if (this.invoices.length > 0) {
