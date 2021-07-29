@@ -15,7 +15,7 @@ export class InvoiceDetailComponent implements OnInit {
     invCur: '',
     invDueDate: null,
     invPayTerms: '',
-    invCustomerID: null,
+    customerID: null,
     invSalesman: null,
     invSubject: '',
     details: [{
@@ -35,7 +35,7 @@ export class InvoiceDetailComponent implements OnInit {
     subTotal: 0,
     taxesInfo: [],
     transactionLog: [],
-    totalAmount: 0,
+    finalAmount: 0,
     discountAmount: 0,
     taxAmount: 0,
     amountReceived: 0,
@@ -110,7 +110,7 @@ export class InvoiceDetailComponent implements OnInit {
     this.total = Number(midTotal) + Number(this.invoice.taxAmount);
   }
   fetchCustomersDetail() {
-    this.apiService.getData(`contacts/detail/${this.invoice.invCustomerID}`).subscribe((result: any) => {
+    this.apiService.getData(`contacts/detail/${this.invoice.customerID}`).subscribe((result: any) => {
       result = result.Items[0];
       this.customerName = `${result.companyName}`;
       if (result.address.length > 0) {

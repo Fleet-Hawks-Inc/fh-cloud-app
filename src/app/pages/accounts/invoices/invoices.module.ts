@@ -78,7 +78,7 @@ const routes: Routes = [
   { path: 'detail/:invID', component: InvoiceDetailComponent },
   { path: 'edit/:invID', component: AddInvoiceComponent },
   { path: 'add-load-invoice', component: AddLoadInvoiceComponent },
-  { path: 'load-invoice-detail', component: LoadInvoiceDetailComponent },
+  { path: 'load-invoice-detail/:invID', component: LoadInvoiceDetailComponent },
 ];
 
 @NgModule({
