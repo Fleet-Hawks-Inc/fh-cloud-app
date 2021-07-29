@@ -30,7 +30,7 @@ export class AddInvoiceComponent implements OnInit {
     invCur: null,
     invDueDate: null,
     invPayTerms: '',
-    invCustomerID: null,
+    customerID: null,
     invSalesman: null,
     invSubject: '',
     amountReceived: 0,
@@ -51,13 +51,13 @@ export class AddInvoiceComponent implements OnInit {
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
-    totalAmount: 0,
+    finalAmount: 0,
     taxAmount: 0,
     transactionLog: [],
     discountAmount: 0
   };
   midAmt = 0; // midAmt is sum of all the amount values in details table
-  totalAmount: any = 0;
+  finalAmount: any = 0;
   customersObjects = {};
   /**
    * Customer related properties
@@ -245,7 +245,7 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
-    this.invoiceData.balance = this.invoiceData.totalAmount;
+    this.invoiceData.balance = this.invoiceData.finalAmount;
     this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Added Successfully.');
       this.router.navigateByUrl('/accounts/invoices/list');
@@ -268,16 +268,16 @@ export class AddInvoiceComponent implements OnInit {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
       this.invoiceData.discountAmount = this.invoiceData.discount;
     }
-    this.totalAmount = (this.invoiceData.subTotal).toFixed(0);
+    this.finalAmount = (this.invoiceData.subTotal).toFixed(0);
     const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
     const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
     const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
     const totalTax = Number(gst)  + Number(pst) + Number(hst);
-    const taxAmount =  Number(this.totalAmount) * totalTax / 100;
+    const taxAmount =  Number(this.finalAmount) * totalTax / 100;
     this.invoiceData.taxAmount = taxAmount;
-    const final = Number(this.totalAmount) + taxAmount;
+    const final = Number(this.finalAmount) + taxAmount;
 
-    this.invoiceData.totalAmount = final;
+    this.invoiceData.finalAmount = final;
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
@@ -314,7 +314,7 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   updateInvoice() {
-    this.invoiceData.balance = this.invoiceData.totalAmount;
+    this.invoiceData.balance = this.invoiceData.finalAmount;
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
       this.toaster.success('Invoice Updated Successfully.');
       this.router.navigateByUrl('/accounts/invoices/list');

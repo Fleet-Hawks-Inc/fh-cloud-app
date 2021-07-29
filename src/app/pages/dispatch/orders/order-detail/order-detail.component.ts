@@ -388,7 +388,7 @@ export class OrderDetailComponent implements OnInit {
         this.customerName = `${result.companyName}`;
         let newCusAddress = result.address.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
-            return elem
+            return elem;
           }
         });
         newCusAddress = newCusAddress[0];
@@ -429,16 +429,23 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveInvoice(){
-    this.invoiceData.transactionLog = [];
-    this.invoiceData.invNo = this.orderNumber;
+    this.invoiceData[`transactionLog`] = [];
+    this.invoiceData[`invNo`] = this.orderNumber;
+    this.invoiceData[`invType`] = 'orderInvoice';
+    this.invoiceData[`invStatus`] = 'open';
+    this.invoiceData[`amountReceived`] = 0;
+    this.invoiceData[`fullPayment`] = false;
+    this.invoiceData[`balance`] = 0;
+    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`orderID`] = this.orderID;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
       this.toastr.success('Invoice Added Successfully.');
     });
   }
 
-  invoiceGenerated(){
-
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}`).subscribe((res) => {});
+  invoiceGenerated() {
+    const invStatus = true;
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${invStatus}`).subscribe((res) => {});
   }
 
   previewModal() {
