@@ -174,7 +174,7 @@
                               <div class="col-11"  *ngIf="notOfficeAddress">
 
                                  <div class="rounded p-2 mt-2" style="background-color:#e1e2e3;">
-                                    There is no office address of this customer
+                                    There is no address of this customer
                                  </div>
                               </div>
 
@@ -319,7 +319,7 @@
                                                 <tbody>
 
                                                    <tr *ngFor="let list of finalShippersReceivers; let j = index;">
-                                                      <td class="p-0 border-0">
+                                                      <td class="p-0 border-0" *ngIf="i === j">
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let ship of list.shippers; let k = index;">
@@ -363,7 +363,7 @@
                                              <table class="table table-bordered">
                                                 <tbody>
                                                    <tr *ngFor="let list of finalShippersReceivers; let j = index;">
-                                                      <td class="p-0 border-0">
+                                                      <td class="p-0 border-0" *ngIf="i === j">
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let receive of list.receivers; let k = index;">
@@ -1354,7 +1354,7 @@
                                            <ng-option value="dry_van">Dry Van</ng-option>
                                            <ng-option value="over_size">Over Size</ng-option>
                                            <ng-option value="reefer">Reefer</ng-option>
-                                         <ng-option value="hazmat">Hazmat</ng-option>
+                                           <ng-option value="hazmat">Hazmat</ng-option>
                                            <ng-option value="power_only">Power Only</ng-option>
                                            <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
                                            <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
@@ -2086,25 +2086,25 @@
       <div class="modal-body">
         <ul class="customer-order__main m-0 p-0">
            <li>
-              <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addBrokerModal">Broker</a>
+              <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addBrokerModal">Broker</a>
            </li>
            <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCarrierModal">Carrier</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addCarrierModal">Carrier</a>
          </li>
            <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Receiver</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Receiver</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Shipper</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Shipper</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCustomerModal">Customer</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addCustomerModal">Customer</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addFCModal">Factoring Company</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addFCModal">Factoring Company</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addOwnerOperatorModal">Owner Operator</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addOwnerOperatorModal">Owner Operator</a>
          </li>
         </ul>
       </div>

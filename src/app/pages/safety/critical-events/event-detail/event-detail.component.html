@@ -178,6 +178,9 @@
                             <span *ngIf="eventType == 'highSpeed'"
                               >High Speed</span
                             >
+                            <span *ngIf="eventType == 'harshBreaking'">
+                              Harsh Braking
+                            </span>
                           </span>
                           <h2
                             class="
@@ -421,7 +424,7 @@
                     [(ngModel)]="newNotes"
                     name="newNotes"
                     class="form-control heighta"
-                    placeholder=" Enter Safety Manager Internal Notes"
+                    placeholder="Enter notes for the Safety Manager"
                     rows="2"
                   ></textarea>
                 </div>
