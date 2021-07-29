@@ -45,7 +45,6 @@ pipeline {
       }
       steps {
         script {
-          sh('echo kunal')
           String[] buildId =  codeBuildOutput.getBuildId().split(':')
           String latestImageVersionTag = 'build-' + buildId[1]
           def taskRevision = sh(script: "aws ecs describe-task-definition --task-definition ${AWS_ECS_TASK_DEFINITION} --region ${AWS_ECR_REGION}", returnStdout: true)
