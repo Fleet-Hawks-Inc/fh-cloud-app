@@ -104,6 +104,7 @@ export class HereMapService {
 
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
+    behavior.disable(H.mapevents.Behavior.WHEELZOOM);
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
     this.ui.getControl('mapsettings').setDisabled(false);
     this.ui.getControl('mapsettings').setAlignment('bottom-left');

@@ -626,8 +626,8 @@ export class AddTripComponent implements OnInit {
                                         driverName: '',
                                         coDriverName: '',
                                         fromOrder: 'yes',
-                                        lat:pk.address.position.lat,
-                                        lng:pk.address.position.lng
+                                        lat:pk.address.geoCords.lat,
+                                        lng:pk.address.geoCords.lng
                                     }
                                     // current.calculateActualMiles(pickupMiles)
                                     if(n.pickupLocation != '' && n.pickupLocation != undefined){
@@ -684,8 +684,8 @@ export class AddTripComponent implements OnInit {
                                         driverName: '',
                                         coDriverName: '',
                                         fromOrder: 'yes',
-                                        lat:dr.address.position.lat,
-                                        lng:dr.address.position.lng
+                                        lat:dr.address.geoCords.lat,
+                                        lng:dr.address.geoCords.lng
                                     }
                                     if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
                                         locations.push(k.dropOffLocation)
@@ -1815,8 +1815,8 @@ export class AddTripComponent implements OnInit {
                                     driverName: '',
                                     coDriverName: '',
                                     fromOrder: 'yes',
-                                    lat:pk.address.position.lat,
-                                    lng:pk.address.position.lng
+                                    lat:pk.address.geoCords.lat,
+                                    lng:pk.address.geoCords.lng
                                 }
                                 this.orderStops.push(obj);
                                 this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
@@ -1860,8 +1860,8 @@ export class AddTripComponent implements OnInit {
                                     driverName: '',
                                     coDriverName: '',
                                     fromOrder: 'yes',
-                                    lat:dr.address.position.lat,
-                                    lng:dr.address.position.lng
+                                    lat:dr.address.geoCords.lat,
+                                    lng:dr.address.geoCords.lng
                                 }
                                 
                                 this.orderStops.push(obj);
