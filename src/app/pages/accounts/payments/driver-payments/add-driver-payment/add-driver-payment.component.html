@@ -161,6 +161,11 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <tr *ngIf="settlements.length === 0" class="text-center">
+                                                            <td colspan="7">
+                                                                {{ dataMessage }}
+                                                            </td>
+                                                        </tr>
                                                         <tr *ngFor="let data of settlements; let i=index">
                                                             <td>{{ data.setNo }}</td>
                                                             <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>

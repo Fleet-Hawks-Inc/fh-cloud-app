@@ -121,31 +121,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Accounts Payable</td>
-                                                <td>Carrier Name</td>
-                                                <td>Carrier Payment</td>
-                                                <td>5000 CAD</td>
-                                                <td>0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Cash/Bank Account</td>
-                                                <td>Carrier Name</td>
-                                                <td>Carrier Payment</td>
-                                                <td>0.00</td>
-                                                <td>4000 CAD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Advance Payment Account</td>
-                                                <td>Carrier Name</td>
-                                                <td>Carrier Payment</td>
-                                                <td>0.00</td>
-                                                <td>1000 CAD</td>
+                                            <tr *ngFor="let data of paymentData.transactionLog">
+                                                <td>{{ accounts[data.accountID] }}</td>
+                                                <td>
+                                                    <span *ngIf="paymentData.paymentTo == 'driver'">
+                                                        {{ drivers[paymentData.entityId] }}
+                                                    </span>
+                                                    <span *ngIf="paymentData.paymentTo !== 'driver'">
+                                                        {{ contacts[paymentData.entityId] }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ paymentData.paymentTo }} payment</td>
+                                                <td>{{ (data.trxType === 'debit') ? data.amount + ' '+ data.currency : '0.00' }}</td>
+                                                <td>{{ (data.trxType === 'credit') ? data.amount + ' ' + data.currency : '0.00' }}</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                                <td>5000 CAD</td>
-                                                <td>5000 CAD</td>
+                                                <td>{{ paymentData.finalAmount }} CAD</td>
+                                                <td>{{ paymentData.finalAmount }} CAD</td>
                                             </tr>
                                         </tbody>
                                     </table>

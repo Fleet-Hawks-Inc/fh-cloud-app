@@ -123,9 +123,13 @@ export class AddDriverPaymentComponent implements OnInit {
 
   fetchSettlements() {
     if(!this.paymentID && this.paymentData.entityId != null) {
+      if(this.paymentData.fromDate !== null && this.paymentData.toDate == null) {
+        this.toaster.error('Please select to date');
+        return false;
+      }
       this.dataMessage = Constants.FETCHING_DATA;
       this.searchDisabled = true;
-      this.accountService.getData(`settlement/entity/${this.paymentData.entityId}`).subscribe((result: any) => {
+      this.accountService.getData(`settlement/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}`).subscribe((result: any) => {
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -326,7 +330,7 @@ export class AddDriverPaymentComponent implements OnInit {
 
   fetchSettledData(settlementIDs) {
     let ids = encodeURIComponent(JSON.stringify(settlementIDs));
-
+    this.dataMessage = Constants.FETCHING_DATA;
     this.accountService.getData(`settlement/get/selected?entities=${ids}`).subscribe((result: any) => {
       this.settlements = result;
       this.settlements.map((v) => {

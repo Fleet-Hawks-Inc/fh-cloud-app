@@ -30,8 +30,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
     finalAmount:<any> 0,
     pendingAmount:<any> 0,
     accountID: null,
-    settlData: []
+    settlData: [],
+    transactionLog: []
   };
+  accounts = [];
 
   constructor(
     private listService: ListService,
@@ -47,6 +49,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     this.fetchContactsList();
     this.fetchSettlement();
     this.fetchPaymentDetail();
+    this.fetchAllAccounts();
   }
 
   fetchDrivers() {
@@ -70,13 +73,18 @@ export class DriverPaymentsDetailComponent implements OnInit {
         this.paymentData.payMode = '';
       }
       this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
-      console.log('this.paymentData', this.paymentData);
     });
   }
 
   fetchSettlement() {
     this.accountService.getData(`settlement/get/list`).subscribe((result: any) => {
       this.settlements = result;
+    });
+  }
+
+  fetchAllAccounts() {
+    this.accountService.getData(`chartAc/get/all/list`).subscribe((result: any) => {
+      this.accounts = result;
     });
   }
 }
