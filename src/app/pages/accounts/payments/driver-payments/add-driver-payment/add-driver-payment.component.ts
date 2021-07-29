@@ -25,7 +25,6 @@ export class AddDriverPaymentComponent implements OnInit {
     payMode: null,
     payModeNo: "",
     payModeDate: null,
-    referenceNo: "",
     totalAmount:<any> 0,
     taxes:<any> 0,
     advance:<any> 0,
