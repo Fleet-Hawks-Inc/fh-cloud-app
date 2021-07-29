@@ -347,7 +347,7 @@
                                                         <label class="control-label font-weight-bold">Taxes</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.taxes" name="taxes" (input)="paymentCalculation(); checkInput('tax', i)">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.taxes" name="taxes" (input)="paymentCalculation(); checkInput('tax')">
                                                         <label class="error">{{ taxErr }}</label>
                                                     </div>
                                                 </div>
@@ -356,7 +356,7 @@
                                                         <label class="control-label font-weight-bold">Advance</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.advance" name="advance" (input)="paymentCalculation(); checkInput('advance', i)">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.advance" name="advance" (input)="paymentCalculation(); checkInput('advance')">
                                                         <label class="error">{{ advErr }}</label>
                                                     </div>
                                                 </div>
