@@ -41,7 +41,7 @@
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="invoiceData.invCustomerID" name="invCustomerID"
+                          <ng-select [(ngModel)]="invoiceData.customerID" name="customerID"
                             (change)="selectedCustomer($event)" placeholder="Select Customer" class="form-control">
                             <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
                               {{customer.companyName}}
@@ -345,7 +345,7 @@
                                           <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
                                         </div>
                                         <div class="col-lg-3 bordtop pt-1">
-                                          <p class="text-right">{{invoiceData.totalAmount}}</p>
+                                          <p class="text-right">{{invoiceData.finalAmount}}</p>
                                         </div>
                                       </div>
                                     </div>

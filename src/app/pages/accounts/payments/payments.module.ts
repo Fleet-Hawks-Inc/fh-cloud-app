@@ -88,19 +88,14 @@ const routes: Routes = [
   { path: "advance-payments/list", component: AdvancePaymentsListComponent },
   { path: "advance-payments/add", component: AddAdvancePaymentComponent },
   { path: "advance-payments/edit/:paymentID", component: AddAdvancePaymentComponent },
-  {
-    path: "advance-payments/detail/:paymentID",
-    component: AdvancePaymentsDetailComponent,
-  },
+  { path: "advance-payments/detail/:paymentID", component: AdvancePaymentsDetailComponent },
   { path: "driver-payments/list", component: DriverPaymentsListComponent },
   { path: "driver-payments/add", component: AddDriverPaymentComponent },
-  { path: "driver-payments/detail", component: DriverPaymentsDetailComponent },
+  { path: "driver-payments/edit/:paymentID", component: AddDriverPaymentComponent },
+  { path: "driver-payments/detail/:paymentID", component: DriverPaymentsDetailComponent },
   { path: "employee-payments/list", component: EmployeePaymentListComponent },
   { path: "employee-payments/add", component: AddEmployeePaymentComponent },
-  {
-    path: "employee-payments/detail",
-    component: EmployeePaymentDetailComponent,
-  },
+  { path: "employee-payments/detail", component: EmployeePaymentDetailComponent },
 ];
 
 @NgModule({
