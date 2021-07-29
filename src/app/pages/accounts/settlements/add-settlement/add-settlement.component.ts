@@ -55,7 +55,9 @@ export class AddSettlementComponent implements OnInit {
         taxes:<any> 0,
         subTotal: 0,
         finalTotal:<any> 0,
-        status: 'unpaid'
+        status: 'unpaid',
+        paymentLinked: false,
+        pendingPayment: 0,
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
@@ -521,6 +523,18 @@ export class AddSettlementComponent implements OnInit {
         this.accountService.getData(`settlement/detail/${this.settlementID}`)
             .subscribe((result: any) => {
                 this.settlementData = result[0];
+                if(result[0].taxObj == undefined) {
+                    result[0].taxObj = {
+                        gstPrcnt: 0,
+                        pstPrcnt: 0,
+                        hstPrcnt: 0,
+                        gstAmount: 0,
+                        pstAmount: 0,
+                        hstAmount: 0,
+                        carrLocalTax: 0,
+                        carrFedTax: 0,
+                    };
+                }
                 if (this.settlementData.tripIds.length > 0) {
                     this.oldTrips = this.settlementData.tripIds;
                     let stldTrips = encodeURIComponent(JSON.stringify(this.settlementData.tripIds));
