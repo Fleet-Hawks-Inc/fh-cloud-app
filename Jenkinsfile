@@ -1,8 +1,9 @@
 #!/usr/bin/env groovy
 import groovy.json.JsonSlurperClassic
-import groovy.json.JsonOutput
+import groovy.json.*
 
 def codeBuildOutput
+
 pipeline {
   agent any
   options {
@@ -14,25 +15,26 @@ pipeline {
   environment {
     AWS_ECR_REGION = 'ap-south-1'
     AWS_ECS_CLUSTER = 'fh-dev-cluster'
-    AWS_CODE_BUILD_PROJECT = 'fleet-manager-application'
-    AWS_ECS_SERVICE = 'fleet-manager-application'
-    AWS_ECS_TASK_DEFINITION = 'fleet-manager-application'
-    AWS_ECS_NEW_TASK_DEFINITION = './ecs/fleet-manager-application/new_task_definition.json'
+    AWS_CODE_BUILD_PROJECT = 'fh-manager-application'
+    AWS_ECS_SERVICE = 'fh-manager-application'
+    AWS_ECS_TASK_DEFINITION = 'fh-manager-application'
+    AWS_ECS_NEW_TASK_DEFINITION = './ecs/fh-manager-application/new_task_definition.json'
   }
 
   stages {
     stage('Lint & Build') {
       steps {
         nodejs(nodeJSInstallationName: 'nodejs12x') {
-          sh 'npm install && npm run build'
+          sh 'npm install && npm run lint && npm run build'
         }
       }
     }
+    
     stage('Build Docker Image using Code Build') {
       steps {
         script {
           codeBuildOutput = awsCodeBuild credentialsId: 'aws-code-build-groovy',
-            credentialsType: 'jenkins', projectName: "${AWS_ECS_SERVICE}",
+          credentialsType: 'jenkins', projectName: "fh-manager-application",
           region: AWS_ECR_REGION, sourceControlType: 'project'
 
           echo(codeBuildOutput.getBuildId())
@@ -95,4 +97,4 @@ pipeline {
 
 def updateFile(contents) {
   writeJSON file:AWS_ECS_NEW_TASK_DEFINITION, json: contents
-}
+}  
