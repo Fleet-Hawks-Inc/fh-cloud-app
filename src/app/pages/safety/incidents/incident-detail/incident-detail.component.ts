@@ -58,6 +58,8 @@ export class IncidentDetailComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  showMap: boolean = true;
+
   slideConfig1 = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -85,6 +87,38 @@ export class IncidentDetailComponent implements OnInit {
   });
   }
 
+
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
+
+        }
+        const location = await this.hereMap.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          this.showMap = false;
+          return 'NA';
+
+        }
+      } else {
+        this.showMap = false;
+        return 'NA';
+
+      }
+    } catch (error) {
+      this.showMap = false;
+      return 'NA';
+
+    }
+
+  }
+
   async fetchEventDetail() {
     this.safetyService.getData('incidents/detail/' + this.incidentID)
       .subscribe(async (res: any) => {
@@ -100,7 +134,8 @@ export class IncidentDetailComponent implements OnInit {
         this.eventSource = result.eventSource;
         this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
-        this.location = result.location;
+        const location = await this.getLocation(result.location);
+        this.location = location;
         await this.setMarker(this.location);
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){

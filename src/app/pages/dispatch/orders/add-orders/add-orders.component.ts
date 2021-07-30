@@ -1147,7 +1147,7 @@ export class AddOrdersComponent implements OnInit {
     this.submitDisabled = true;
     
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    console.log('orderData', this.orderData)
+    
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
