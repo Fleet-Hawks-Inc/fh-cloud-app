@@ -54,6 +54,9 @@ pipeline {
           String latestImageVersion = dockerImagePath[0] + ':' + latestImageVersionTag
           println('Latest Image Version: ' + latestImageVersion)
 
+          // Update Latest Definition Version
+          taskRevisionDefinition.taskDefinition.containerDefinitions[0].image = latestImageVersion
+          
           // Remove unwanted property for register task definiton CLI
           taskRevisionDefinition.taskDefinition.remove('taskDefinitionArn')
           taskRevisionDefinition.taskDefinition.remove('revision')

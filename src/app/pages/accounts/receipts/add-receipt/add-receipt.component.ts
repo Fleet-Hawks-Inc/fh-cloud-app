@@ -73,6 +73,7 @@ export class AddReceiptComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
+  orderInvoices = [];
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -95,9 +96,12 @@ export class AddReceiptComponent implements OnInit {
       this.pageTitle = 'Add Receipt';
     }
   }
- async getInvoices() {
-    this.accountService.getData(`invoices/Customer/${this.receiptData.customerID}`).subscribe((res) => {
-      this.invoices = res;
+  async getInvoices() {
+    this.accountService.getData(`order-invoice/customer/${this.receiptData.customerID}`).subscribe((res: any) => {
+      this.orderInvoices = res;
+    });
+    this.accountService.getData(`invoices/customer/${this.receiptData.customerID}`).subscribe((result) => {
+      this.invoices = result;
     });
   }
   /*
@@ -123,38 +127,66 @@ export class AddReceiptComponent implements OnInit {
       this.paymentLabel = 'Cheque';
     }
   }
-  getAmount(j: any) {
-
-    for (let i = 0; i < this.invoices.length; i++) {
+  getAmount(j: any, type: string) {
+    if (type === 'orderInvoice') {
+      for (let i = 0; i < this.orderInvoices.length; i++) {
+        console.log('i', i);
+        console.log('j', j);
+        if (i === j) {
+          if (this.orderInvoices[i].fullPayment === true) {
+            this.orderInvoices[i].amountReceived = this.orderInvoices[i].finalAmount;
+          } else if (this.orderInvoices[i].fullPayment === true && this.orderInvoices[i].invStatus === 'partially_paid') {
+            this.orderInvoices[i].amountReceived = this.orderInvoices[i].balance;
+          } else {
+            this.orderInvoices[i].amountReceived = 0;
+          }
+        }
+      }
+    } else {
+      console.log('type', type);
+      for (let i = 0; i < this.invoices.length; i++) {
         if (i === j) {
           if (this.invoices[i].fullPayment === true) {
-            this.invoices[i].amountReceived = this.invoices[i].totalAmount;
-          }
-          //  else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
-          //   this.invoices[i].amountReceived = this.invoices[i].balance;
-          // }
-            else {
+            this.invoices[i].amountReceived = this.invoices[i].finalAmount;
+          } else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
+            this.invoices[i].amountReceived = this.invoices[i].balance;
+          } else {
             this.invoices[i].amountReceived = 0;
           }
         }
-          }
+      }
+    }
+
   }
- async getPaidInvoices() {
+  async getPaidInvoices() {
     const paidInvoices = [];
-    for(const element of this.invoices) {
+    for (const element of this.orderInvoices) {
       if (element.amountReceived !== 0 && element.amountReceived !== undefined) {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
           amountReceived: element.amountReceived,
-          fullPayment: element.fullPayment
+          fullPayment: element.fullPayment,
+          invType: 'orderInvoice'
+        };
+        paidInvoices.push(obj);
+      }
+    }
+    for (const element of this.invoices) {
+      if (element.amountReceived !== 0 && element.amountReceived !== undefined) {
+        const obj = {
+          invID: element.invID,
+          invNo: element.invNo,
+          amountReceived: element.amountReceived,
+          fullPayment: element.fullPayment,
+          invType: 'manual'
         };
         paidInvoices.push(obj);
       }
     }
     this.receiptData[`paidInvoices`] = paidInvoices;
   }
- async addReceipt() {
+  async addReceipt() {
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
@@ -190,11 +222,21 @@ export class AddReceiptComponent implements OnInit {
       },
     });
   }
- async fetchReceipt() {
+  async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
+      console.log('fetched receipt', res);
       this.receiptData = res[0];
       this.receiptData.transactionLog = res[0].transactionLog;
-      this.invoices = this.receiptData[`fetchedInvoices`];
+      const fetchedInvoices = this.receiptData[`fetchedInvoices`];
+      fetchedInvoices.map((e) => {
+        if (e.invType === 'manual') {
+          this.invoices.push(e);
+        } else {
+          this.orderInvoices.push(e);
+        }
+      });
+      console.log('this.invoices', this.invoices);
+      console.log('this.orderInvoices', this.orderInvoices);
     });
   }
 
