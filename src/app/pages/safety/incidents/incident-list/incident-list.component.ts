@@ -55,7 +55,7 @@ export class IncidentListComponent implements OnInit {
   driversObject: any = {};
   usersObject: any = {};
   status_values: any = ["open", "investigating", "coaching", "closed"];
-  dataMessage: any;
+  dataMessage: any = Constants.FETCHING_DATA;
   drivers = [];
   lastItemSK: string = '';
   birthDateMinLimit: any;
@@ -123,19 +123,25 @@ export class IncidentListComponent implements OnInit {
     if(this.lastItemSK != 'end') {
       this.safetyService.getData(`incidents?lastKey=${this.lastItemSK}`)
       .subscribe(async (result: any) => {
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          const location = await this.getLocation(element.location);
-          element.location = location;
-          this.events.push(element);
-
+        if (result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if(this.events[this.events.length - 1].sk != undefined) {
-          this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
-        } else {
-          this.lastItemSK = 'end';
+        if(result.length > 0) {
+          for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            const location = await this.getLocation(element.location);
+            element.location = location;
+            this.events.push(element);
+  
+          }
+          if(this.events[this.events.length - 1].sk != undefined) {
+            this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+          this.newEvents = this.events;
         }
-        this.newEvents = this.events;
+        
       })
     }
    
@@ -155,14 +161,25 @@ export class IncidentListComponent implements OnInit {
 
 
   searchEvent() {
-    
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.filter.date == '' || this.filter.driverID == '') {
+      this.filter.date = 'null';
+      this.filter.driverID = 'null';
+    }
     this.safetyService.getData(`incidents/paging?driverID=${this.filter.driverID}&location=${this.filter.location}&date=${this.filter.date}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         
-        if(result.length == 0) {
+        if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.events = result;
+        this.events = [];
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          const location = await this.getLocation(element.location);
+          element.location = location;
+          this.events.push(element);
+
+        }
       })
    
   }
@@ -172,7 +189,7 @@ export class IncidentListComponent implements OnInit {
     let current = this;
     this.events = this.newEvents;
     $(".navtabs").removeClass('active');
-
+    
     if (tabType === 'all') {
       this.events = this.newEvents;
 
@@ -188,6 +205,9 @@ export class IncidentListComponent implements OnInit {
       $("#resolved-tab").addClass('active');
       this.events = this.events.filter(element => { return element.status == 'closed'})
 
+    }
+    if (this.events.length == 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
 
   }

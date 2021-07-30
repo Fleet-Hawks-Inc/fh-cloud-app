@@ -114,9 +114,9 @@ export class AddIncidentComponent implements OnInit {
     disabledButton() {
         
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
-            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventTime == '' || 
-        this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
-            this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
+            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == '' ||
+            this.event.eventTime == null || this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
+            this.event.locationText == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
         || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.uploadedDocs.length == 0  || this.event.notes.length > 500) {
             return true
         } else {
@@ -142,8 +142,6 @@ export class AddIncidentComponent implements OnInit {
         this.apiService.getData('trips/safety/active')
         .subscribe((result: any) => {
             this.trips = result.Items;
-            console.log('trips', result)
-            
         })
     }
 
@@ -226,21 +224,20 @@ export class AddIncidentComponent implements OnInit {
 
     public searchLocation() {
         this.searchTerm.pipe(
-          map((e: any) => {
-            $('.map-search__results').hide();
-            $(e.target).closest('div').addClass('show-search__result');
-            return e.target.value;
-          }),
-          debounceTime(400),
-          distinctUntilChanged(),
-          switchMap(term => {
-            return this.hereMap.searchEntries(term);
-          }),
-          catchError((e) => {
-            return throwError(e);
-          }),
+            map((e: any) => {
+                $(e.target).closest('div').addClass('show-search__result');
+                return e.target.value;
+            }),
+            debounceTime(400),
+            distinctUntilChanged(),
+            switchMap(term => {
+                return this.hereMap.searchEntries(term);
+            }),
+            catchError((e) => {
+                return throwError(e);
+            }),
         ).subscribe(res => {
-          this.searchResults = res;
+            this.searchResults = res;
         });
     }
 
