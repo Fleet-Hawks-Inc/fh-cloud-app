@@ -7,6 +7,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { SafetyService } from 'src/app/services/safety.service';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var H: any;
+declare var $: any;
 @Component({
   selector: 'app-incident-detail',
   templateUrl: './incident-detail.component.html',
@@ -76,6 +77,12 @@ export class IncidentDetailComponent implements OnInit {
     this.fetchAllDriverIDs();
     this.fetchTripsByIDs();
     this.mapShow();
+
+    $('#viewVideosModal').modal({
+      show: false
+  }).on('hidden.bs.modal', function(){
+      $(this).find('video')[0].pause();
+  });
   }
 
   async fetchEventDetail() {

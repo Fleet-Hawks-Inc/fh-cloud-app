@@ -25,6 +25,8 @@
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Event Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
+                                                        [maxDate]="birthDateMaxLimit" 
+                                                        [minDate]="birthDateMinLimit"
                                                         placeholder="yyyy/mm/dd" #date="ngModel" (click)="d.toggle()"
                                                         ngbDatepicker #d="ngbDatepicker" class="form-control" required>
                                                     <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
@@ -107,7 +109,7 @@
                                                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <ng-select [(ngModel)]="event.assigned" name="assigned"
-                                                        placeholder="Select assigned" #assigned="ngModel" required>
+                                                        placeholder="Select assigned to" #assigned="ngModel" required>
                                                         <ng-option class="text-capitalize"
                                                             *ngFor="let item of safetyManagers"
                                                             value="{{ item }}">{{
@@ -164,7 +166,7 @@
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input type="text" class="form-control"
-                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.location"
+                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.locationText"
                                                         name="location"
                                                         placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                                                         autocomplete="off" #location="ngModel" required>
@@ -173,7 +175,7 @@
                                                         *ngIf="searchResults">
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;"
-                                                                (click)="assignLocation(item.address.label)"
+                                                            (click)="assignLocation(item.position,item.address.label)"
                                                                 title="{{item.address.label}}">{{item.address.label}}</a>
                                                         </li>
                                                     </ul>
@@ -193,7 +195,7 @@
                                                 <div class="col-lg-10">
                                                     <label
 
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Attach Documents 
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document(s)
                                                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <input type="file" class="form-control p-0" multiple name="upload-doc"
@@ -206,7 +208,7 @@
                                             <div class="row">
                                                 <div class="col-lg-5">
 
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo(s)
                                                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <input type="file" class="form-control p-0" multiple name="add_vid"
@@ -218,7 +220,7 @@
 
                                                 <div class="col-lg-5">
 
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Video
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Video(s)
                                                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <input type="file" class="form-control p-0" multiple name="add_vid"
@@ -234,7 +236,7 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes
                                                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
-                                                    <textarea class="form-control h-auto" #notes="ngModel" required rows="3" placeholder="Enter Remarks"
+                                                    <textarea class="form-control h-auto" #notes="ngModel" required rows="3" placeholder="Enter notes for the Safety Manager"
                                                         name="notes" [(ngModel)]="event.notes"></textarea>
                                                     <div *ngIf="notes.invalid && (notes.dirty || notes.touched)" class="text-danger">
                                                         <div *ngIf="notes.errors.required">

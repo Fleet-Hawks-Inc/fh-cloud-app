@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, HereMapService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -58,9 +58,15 @@ export class IncidentListComponent implements OnInit {
   dataMessage: any;
   drivers = [];
   lastItemSK: string = '';
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
 
-  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    ) { }
+  constructor(private apiService: ApiService,private hereMapService: HereMapService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
+    ) { 
+      const date = new Date();
+      this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+      this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
+    }
 
   ngOnInit(): void {
     this.fetchEvents();
@@ -89,14 +95,40 @@ export class IncidentListComponent implements OnInit {
 
   }
 
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
+
+        }
+        const location = await this.hereMapService.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          return 'NA';
+        }
+      } else {
+        return 'NA';
+      }
+    } catch (error) {
+      return 'NA';
+    }
+  }
+
   fetchEvents() {
     if(this.lastItemSK != 'end') {
       this.safetyService.getData(`incidents?lastKey=${this.lastItemSK}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         for (let index = 0; index < result.length; index++) {
           const element = result[index];
+          const location = await this.getLocation(element.location);
+          element.location = location;
           this.events.push(element);
-          
+
         }
         if(this.events[this.events.length - 1].sk != undefined) {
           this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
@@ -170,12 +202,14 @@ export class IncidentListComponent implements OnInit {
 
   resetFilter() {
     if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.location !== '') {
+      this.lastItemSK = ''; 
+      this.events = [];
+      this.fetchEvents();
       this.filter = {
         date: null,
         driverID: null,
         location: null,
       };
-      this.fetchEvents();
     } else {
       return false;
     } 
