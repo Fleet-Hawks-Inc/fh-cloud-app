@@ -27,7 +27,7 @@ export class AddEventComponent implements OnInit {
         eventType: null,
         eventSource: 'manual',
         createdBy: '',
-        locationText:'',
+        locationText: '',
         location: '',
         notes: '',
         status: 'open',
@@ -39,8 +39,8 @@ export class AddEventComponent implements OnInit {
     selectedFileNames: Map<any, any>;
     criticalityType = [
         {
-            value: 'harshBraking',
-            name: 'Harsh Braking'
+            value: 'harshBrake',
+            name: 'Harsh Brake'
         },
         {
             value: 'harshAcceleration',
@@ -49,6 +49,13 @@ export class AddEventComponent implements OnInit {
         {
             value: 'highSpeed',
             name: 'High Speed'
+        },
+        {
+            value: 'highSpeed',
+            name: 'High Speed'
+        }, {
+            value: 'impactTilt',
+            name: 'Impact/Tilt'
         }
     ];
 
@@ -247,14 +254,14 @@ export class AddEventComponent implements OnInit {
         });
     }
 
-    async assignLocation(position: any,title:string) {
+    async assignLocation(position: any, title: string) {
         if (position) {
             this.event.location = `${position.lat},${position.lng}`;
-            this.event.locationText=title;
+            this.event.locationText = title;
             this.searchResults = false;
             $('div').removeClass('show-search__result');
         } else {
-            this.event.locationText=title;
+            this.event.locationText = title;
             this.event.location = '0,0';
         }
     }

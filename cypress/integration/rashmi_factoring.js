@@ -92,7 +92,7 @@ it('validation error ', function () {
     cy.get('#FCBasicDetails > :nth-child(1) > :nth-child(4) > .row > :nth-child(2) > .form-control').clear();
     cy.get('#FCBasicDetails > :nth-child(1) > :nth-child(4) > .row > :nth-child(2) > .form-control').type('factoring123@mailinator.com');
     cy.get('#FCBasicDetails > :nth-child(1) > :nth-child(4) > .row > :nth-child(2) > .form-control').clear();
-    cy.get('[ng-reflect-klass] [class="row pt-3"] [class="col-lg-5"] .ng-star-inserted .ng-star-inserted').contains('Email is required.');
+    cy.get(':nth-child(2) > .text-danger > .ng-star-inserted').contains('Email is required.');
     // cy.get('#addFCModal > .modal-dialog > .modal-content > .modal-footer > .btn-success').click();
     cy.get('div#addFCModal > div[role="document"] .btn.btn-default').click();
     cy.get('.address-book-icon > .far').click();
@@ -158,9 +158,9 @@ it('user should be able to delete ', function () {
     cy.get('.address-book-icon > .far').click();
     cy.get('#fc-tab').click();
     cy.wait(8000);
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .bg-transparent > .fas').click();
-    cy.get(':nth-child(1) > :nth-child(5) > .dropdown > .dropdown-menu > :nth-child(2)').click();
-    cy.get('#fc > .mr-1 > :nth-child(2) > [type="button"]').click();
-    cy.wait(6000);
+    cy.get('#fc > .mr-1 > .pr-1 > .input-group > .form-control').click();
+    cy.get('#fc > .mr-1 > .pr-1 > .input-group > .form-control').type('required factory');
+    cy.get('#fc > .mr-1 > :nth-child(2) > .mr-3').click();
+    cy.wait(8000);
 });
 

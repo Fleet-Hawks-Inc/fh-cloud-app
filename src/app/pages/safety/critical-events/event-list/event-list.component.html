@@ -132,11 +132,14 @@
                             <span *ngIf="data.eventType == 'harshAcceleration'"
                               >Harsh Acceleration</span
                             >
-                            <span *ngIf="data.eventType == 'harshBreaking'"
-                              >Harsh Breaking</span
+                            <span *ngIf="data.eventType == 'harshBreak'"
+                              >Harsh Brake</span
                             >
                             <span *ngIf="data.eventType == 'highSpeed'"
                               >High Speed</span
+                            >
+                            <span *ngIf="data.eventType == 'impactTilt'"
+                              >Impact/Tilt</span
                             >
                           </td>
                           <td class="text-capitalize">
