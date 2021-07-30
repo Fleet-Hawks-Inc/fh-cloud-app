@@ -211,3 +211,4 @@ pipeline {
 def updateFile(contents) {
   writeJSON file:AWS_ECS_NEW_TASK_DEFINITION, json: contents
 }
+
