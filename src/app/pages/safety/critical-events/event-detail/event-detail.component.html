@@ -107,7 +107,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventDate | date: "yyyy-MM-dd" }}</span
+                            >{{ eventDate | date: "yyyy-MM-dd" }} {{ eventTime }}</span
                           >
                           <h2
                             class="
@@ -120,7 +120,7 @@
                               text-dark
                             "
                           >
-                            Event Date
+                            Event Date Time
                           </h2>
                         </div>
                         <div class="w100 pull-left">
@@ -135,7 +135,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventTime }}</span
+                            >{{ eventSpeed | number : '1.2-2' }} km/h</span
                           >
                           <h2
                             class="
@@ -148,7 +148,7 @@
                               text-dark
                             "
                           >
-                            Event Time
+                            Speed (approx.)
                           </h2>
                         </div>
                       </div>
@@ -178,6 +178,9 @@
                             <span *ngIf="eventType == 'highSpeed'"
                               >High Speed</span
                             >
+                            <span *ngIf="eventType == 'impactTilt'"
+                            >Impact/Tilt</span
+                          >
                           </span>
                           <h2
                             class="
