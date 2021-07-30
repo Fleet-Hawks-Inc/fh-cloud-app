@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService, ListService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
-import { from, Subject, throwError } from "rxjs";
+import { BehaviorSubject, from, Subject, throwError } from "rxjs";
 import {
   NgbCalendar,
   NgbDateAdapter
@@ -35,6 +35,8 @@ declare var H: any;
 })
 export class AddOrdersComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  public isTrueDataSource = new BehaviorSubject<boolean>(false);
+  isTrueList = this.isTrueDataSource.asObservable();
   public getOrderID;
   aOrder1: NgForm;
   pageTitle = "Add Order";
@@ -678,6 +680,7 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Shipper added successfully.");
+    
     await this.emptyShipper(i);
   }
 
@@ -910,7 +913,7 @@ export class AddOrdersComponent implements OnInit {
     let filesSize = 0;
     if(files.length > 5) {
       this.toastr.error('files count limit exceeded');
-      this.photoSizeError = 'files count limit exceeded';
+      this.photoSizeError = 'files should not be more than 5';
       return;
     }
     
@@ -925,7 +928,7 @@ export class AddOrdersComponent implements OnInit {
         if (ext == 'doc' || ext == 'docx' || ext == 'pdf' || ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
            this.uploadedDocs.push(files[i])
         } else {
-            this.photoSizeError = 'Only .doc, .docx and .pdf files allowed.';
+            this.photoSizeError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     }
@@ -1005,13 +1008,16 @@ export class AddOrdersComponent implements OnInit {
   }
 
   selectedCustomer(customerID: any) {
+    
+      this.orderData.additionalContact = null;
+      this.orderData.phone = '';
+      this.orderData.email = '';
+    
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
         if(result.Items.length > 0) {
-          this.orderData.additionalContact = null;
-          this.orderData.phone = '';
-          this.orderData.email = '';
+          
           this.customerSelected = result.Items;
           for (let i = 0; i < this.customerSelected[0].address.length; i++) {
             const element = this.customerSelected[0].address[i];
@@ -1019,7 +1025,7 @@ export class AddOrdersComponent implements OnInit {
           }
           this.customerSelected[0].address[0].isChecked = true;
           this.cusAdditionalContact = result.Items[0].additionalContact
-          if(this.customerSelected[0].address.length === 1) {
+          if(this.customerSelected[0].address.length > 0) {
             this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
           }
           
@@ -1141,7 +1147,7 @@ export class AddOrdersComponent implements OnInit {
     this.submitDisabled = true;
     
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-
+    console.log('orderData', this.orderData)
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -1464,9 +1470,12 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
       for (let index = 0; index < this.shippersReceivers[j].shippers.pickupPoint.length; index++) {
         const element = this.shippersReceivers[j].shippers.pickupPoint[index];
-        let itemDateAndTime = element['dateAndTime'].split(" ");
-        element.pickupDate = itemDateAndTime[0];
-        element.pickupTime = itemDateAndTime[1];
+        if(element['dateAndTime'] != undefined || element['dateAndTime'] != '') {
+          let itemDateAndTime = element['dateAndTime'].split(" ");
+          element.pickupDate = itemDateAndTime[0];
+          element.pickupTime = itemDateAndTime[1];
+        }
+        
       }
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
@@ -1482,9 +1491,11 @@ export class AddOrdersComponent implements OnInit {
         data.dropPoint;
       for (let index = 0; index < this.shippersReceivers[j].receivers.dropPoint.length; index++) {
         const element = this.shippersReceivers[j].receivers.dropPoint[index];
-        let itemDateAndTime = element['dateAndTime'].split(" ");
-        element.dropOffDate = itemDateAndTime[0];
-        element.dropOffTime = itemDateAndTime[1];
+        if(element['dateAndTime'] != undefined || element['dateAndTime'] != '') {
+          let itemDateAndTime = element['dateAndTime'].split(" ");
+          element.dropOffDate = itemDateAndTime[0];
+          element.dropOffTime = itemDateAndTime[1];
+        }
       }
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
 
@@ -1534,7 +1545,7 @@ export class AddOrdersComponent implements OnInit {
       data.save = true;
       data.update = false;
       
-      this.toastr.success('Shipper Updated');
+      this.toastr.success('Shipper Updated successfully.');
       this.emptyShipper(i);
     } else {
       let data = this.shippersReceivers[i].receivers;
@@ -1578,7 +1589,7 @@ export class AddOrdersComponent implements OnInit {
       
       data.save = true;
       data.update = false;
-      this.toastr.success('Receiver Updated');
+      this.toastr.success('Receiver updated successfully.');
       this.emptyReceiver(i);
     }
     
@@ -2159,4 +2170,10 @@ export class AddOrdersComponent implements OnInit {
       this.customerSelected[0].address[i].isChecked = true;
     }
   }
+
+  public changeModalValue(){
+
+    this.listService.changeButton(false);
+   
+   }
 }
