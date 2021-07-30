@@ -171,7 +171,34 @@ pipeline {
         }    
       } 
     }
-  }    
+     // Verify For DEV
+    stage('DEV: Verify Service') {
+      when {
+        branch 'develop'
+      }
+      steps {
+        script {
+          println('Checking Service deployment status........')
+          def taskStatus = sh(script: "aws ecs wait services-stable --cluster ${AWS_ECS_CLUSTER_DEV} --services ${AWS_ECS_SERVICE_DEV} --region ${AWS_ECR_REGION_DEV}", returnStdout: true)
+          println("Task status ${taskStatus}")
+        }
+      }
+    }
+    
+    // Verify For PRE-PROD
+    stage('PREPROD: Verify Service') {
+      when {
+        branch 'raahatxfh-patch2'
+      }
+      steps {
+        script {
+          println('Checking Service deployment status........')
+          def taskStatus = sh(script: "aws ecs wait services-stable --cluster ${AWS_ECS_CLUSTER_PREPROD} --services ${AWS_ECS_SERVICE_PREPROD} --region ${AWS_ECR_REGION_PREPROD}", returnStdout: true)
+          println("Task status ${taskStatus}")
+        }
+      }
+    }
+  } 
 }
 
 def updateFile(contents) {
