@@ -25,6 +25,8 @@
                 type="text"
                 placeholder="yyyy/mm/dd"
                 (click)="from.toggle()"
+                [maxDate]="birthDateMaxLimit" 
+                [minDate]="birthDateMinLimit"
                 ngbDatepicker
                 #from="ngbDatepicker"
                 class="form-control"
@@ -50,7 +52,7 @@
               Reset
             </a>
           </div>
-          <div class="col-md-4 col-lg-4 pr-1 text-right">
+          <div class="col-md-6 col-lg-6 pr-1 text-right">
             <a
               (click)="fetchEvents(true)"
               href="javascript:;"
@@ -166,7 +168,7 @@
                       <tbody *ngIf="events.length == 0">
                         <tr>
                           <td colspan="9" class="no-data-available">
-                            No record(s) found
+                            Fetching Data.....
                           </td>
                         </tr>
                       </tbody>

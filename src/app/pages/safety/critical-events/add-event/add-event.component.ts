@@ -266,6 +266,16 @@ export class AddEventComponent implements OnInit {
         let files = [...event.target.files];
         let filesSize = 0;
 
+        if(files.length > 5) {
+            this.toastr.error('files count limit exceeded');
+            if (obj === 'uploadedPhotos') {
+                this.photoSizeError = 'files should not be more than 5';
+            } else {
+                this.videoSizeError = 'files should not be more than 5';
+            }
+            return;
+        }
+
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];
 

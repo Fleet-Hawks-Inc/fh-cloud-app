@@ -86,6 +86,12 @@ export class EventDetailComponent implements OnInit {
     this.fetchAllDriverIDs();
     this.fetchAllVehiclesIDs();
     this.mapShow();
+
+    $('#viewVideosModal').modal({
+        show: false
+    }).on('hidden.bs.modal', function(){
+        $(this).find('video')[0].pause();
+    });
   }
 
   async fetchEventDetail() {
