@@ -76,6 +76,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   taxErr = '';
   advErr = '';
   lastAdded = {
+    paymentNo: '',
     additionTotal: '',
     advance: '',
     deductionTotal: '',
