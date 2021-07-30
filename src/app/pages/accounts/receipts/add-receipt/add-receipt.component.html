@@ -103,37 +103,60 @@
                             <th class="text-2">Factoring Comp.</th>
                             <th class="text-2">Factoring Comp. Charges</th>
                             <th class="text-2">Invoice Balance</th>
-                            <th class="text-2">Due Date</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
                             <th class="text-2" width="7%">Amount Received</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="invoices.length == 0" class="text-center">
+                          <tr *ngIf="invoices.length === 0 && orderInvoices.length === 0" class="text-center">
                             <td colspan="15">{{dataMessage}}</td>
+                          </tr>
+                          <tr *ngFor="let inv of orderInvoices; let i= index;">
+                            <td>{{inv.invNo}}</td>
+                            <td>{{inv.txnDate}}</td>
+                            <td>{{customersObjects[inv.customerID]}}</td>
+                            <td>{{inv.invNo}}</td>
+                            <td>{{inv.charges.freightFee.amount}} {{inv.charges.freightFee.currency}}</td>
+                            <td>Add:
+                              {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}<br>
+                              Deduct:
+                              {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.finalAmount}}{{inv.charges.freightFee.currency}}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>{{inv.balance}}</td>
+                            <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                            <td class="text-center">
+                              <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
+                                name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
+                            </td>
+                            <td>
+                              <input type="number"  [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                                class="form-control input-sm p-0">
+                            </td>
                           </tr>
                           <tr *ngFor="let inv of invoices; let i= index;">
                             <td>{{inv.invNo}}</td>
-                            <td>{{inv.invDate}}</td>
-                            <td>{{customersObjects[inv.invCustomerID]}}</td>
+                            <td>{{inv.txnDate}}</td>
+                            <td>{{customersObjects[inv.customerID]}}</td>
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
                             <td>{{inv.taxAmount}}</td>
-                            <td>{{inv.totalAmount}}</td>
+                            <td>{{inv.finalAmount}}</td>
                             <td>-</td>
                             <td>-</td>
                             <td>{{inv.balance}}</td>
-                            <td>{{inv.invDueDate}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
-                                name="fullPayment{{i}}" (change)="getAmount(i)">
+                                name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
                               <input type="number" [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
-                                class="form-control input-sm">
+                                class="form-control input-sm p-0">
                             </td>
                           </tr>
                         </tbody>

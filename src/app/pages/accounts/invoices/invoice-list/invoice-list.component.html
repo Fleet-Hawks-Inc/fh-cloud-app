@@ -189,12 +189,9 @@
                         </span>
                       </td>
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                        <span *ngIf="inv.invType==='manual'">
-                          {{inv.amountReceived}} {{inv.invCur}}
-                        </span>
-                        <span *ngIf="inv.invType==='orderInvoice'">
+
                           {{inv.amountReceived}} {{inv.charges.freightFee.currency}}
-                        </span>
+
                       </td>
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                         <span *ngIf="inv.invType==='manual'">
