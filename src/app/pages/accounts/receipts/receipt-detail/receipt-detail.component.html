@@ -91,7 +91,7 @@
                         <tbody>
                           <tr *ngFor="let inv of receiptData.fetchedInvoices">
                             <td>{{inv.invNo}}</td>
-                            <td>{{inv.totalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.finalAmount}} {{inv.invCur}}</td>
                             <td>{{inv.amountReceived}} {{inv.invCur}}</td>
                           </tr>
                         </tbody>

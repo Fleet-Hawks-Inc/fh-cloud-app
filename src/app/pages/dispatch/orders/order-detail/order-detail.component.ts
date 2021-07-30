@@ -435,7 +435,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`invStatus`] = 'open';
     this.invoiceData[`amountReceived`] = 0;
     this.invoiceData[`fullPayment`] = false;
-    this.invoiceData[`balance`] = 0;
+    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
