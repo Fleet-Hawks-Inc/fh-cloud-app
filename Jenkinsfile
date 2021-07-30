@@ -53,7 +53,7 @@ pipeline {
     // Build Stage for PRE-PROD
     stage('PREPROD: Build Docker Image') {
       when {
-        branch 'raahatxfh-patch2'  
+        branch 'master'  
       }
       steps {
         script {
@@ -122,7 +122,7 @@ pipeline {
     // Deploy in PRE-PROD
     stage('PREPROD: Deployment') {
       when {
-        branch 'raahatxfh-patch2'    
+        branch 'master'    
       }
       steps {
         script {
@@ -188,7 +188,7 @@ pipeline {
     // Verify For PRE-PROD
     stage('PREPROD: Verify Service') {
       when {
-        branch 'raahatxfh-patch2'
+        branch 'master'
       }
       steps {
         script {
