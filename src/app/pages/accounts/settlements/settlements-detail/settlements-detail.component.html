@@ -20,15 +20,22 @@
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-alt text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ settlementData.setDate | date: "yyyy/MM/dd" }}</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ settlementData.txnDate | date: "yyyy/MM/dd" }}</p>
                                                 <p class="mb-0">DATE</p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-4">
                                             <div class="text-center p-4 cerbor"> <i class="fa fa-user text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ driverDetail.firstName }} {{ driverDetail.lastName }}</p>
-                                                <p class="mb-0">DRIVER</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ entityName }}</p>
+                                                <p class="mb-0">
+                                                    <span class="text-uppercase" *ngIf="settlementData.type == 'driver' || settlementData.type == 'carrier'">
+                                                        {{ settlementData.type }}
+                                                    </span>
+                                                    <span class="text-uppercase" *ngIf="settlementData.type == 'owner_operator'">
+                                                        owner operator
+                                                    </span>
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-4">
@@ -49,7 +56,7 @@
                                                     <tr>
                                                         <td width="40%" class="back-color-gray font-weight-bold">Payment
                                                             Type</td>
-                                                        <td width="60%">{{ driverDetail.paymentDetails.paymentType }}</td>
+                                                        <td width="60%">{{ entityPaymentType }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Total Miles</td>
@@ -79,14 +86,14 @@
                                                             </span>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="settlementData.type == 'driver'">
                                                         <td class="back-color-gray font-weight-bold">Individual Miles
                                                         </td>
                                                         <td>{{ settlementData.miles.driverTotal }}
                                                             &nbsp;<strong> Loaded: </strong>{{ settlementData.miles.driverLoaded }}<strong> Empty: </strong>{{ settlementData.miles.driverEmpty }}
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="settlementData.type == 'driver'">
                                                         <td class="back-color-gray font-weight-bold">Team Miles</td>
                                                         <td>{{ settlementData.miles.tripsTeam }}
                                                         </td>
@@ -176,7 +183,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" *ngIf="settlementData.transactionLog">
                                             <h5 class="font-weight-bold">Journal</h5>
                                             <table class="table table-bordered table-hover">
                                                 <thead>
@@ -189,24 +196,22 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Accounts Payable</td>
-                                                        <td>Driver Name</td>
-                                                        <td>Driver Settlement</td>
-                                                        <td>0.00</td>
-                                                        <td>5000 CAD</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Wages Account</td>
-                                                        <td>Driver Name</td>
-                                                        <td>Driver Settlement</td>
-                                                        <td>5000 CAD</td>
-                                                        <td>0.00</td>
+                                                    <tr *ngFor="let transaction of settlementData.transactionLog">
+                                                        <td>{{ accounts[transaction.accountID] }}</td>
+                                                        <td>
+                                                            <span *ngIf="settlementData.type === 'driver'">
+                                                                {{ driverDetail.firstName }} {{ driverDetail.lastName }}
+                                                            </span>
+                                                            
+                                                        </td>
+                                                        <td>{{ transaction.type }}</td>
+                                                        <td>{{ (transaction.trxType == 'debit') ? transaction.amount  : '0.00' }} {{ transaction.currency }}</td>
+                                                        <td>{{ (transaction.trxType == 'credit') ? transaction.amount : '0.00' }} {{ transaction.currency }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                                        <td>5000 CAD</td>
-                                                        <td>5000 CAD</td>
+                                                        <td>{{ settlementData.finalTotal }} CAD</td>
+                                                        <td>{{ settlementData.finalTotal }} CAD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

@@ -7,6 +7,7 @@ describe("Assets Test", function () {
             cy.request({
                 method: 'DELETE',
                 url: serviceUrl,
+                failOnStatusCode: false,
                 headers: {
                     'Authorization': `Bearer ${authToken}`,
                     "Content-type": "application/json"
@@ -24,8 +25,8 @@ describe("Assets Test", function () {
         cy.get("#btnsubmit").click();
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
         cy.get(".col-md-6 > .btn-success").first().click();
-        cy.get('.adddriverpl.form-group.pt-3.row input[name="assetIdentification"]').type("Boxer Asset"); //asset name
-        cy.get('.inner-wrapper [name="VIN"]').type("RN4DC2390LS002470"); //vin number
+        cy.get('.adddriverpl.form-group.pt-3.row input[name="assetIdentification"]').type("Asset Boxer"); //asset name
+        cy.get('.inner-wrapper [name="VIN"]').type("RN4DC2390LS002471"); //vin number
         cy.get(".inner-wrapper [class='row mb-3']:nth-of-type(2) [class='col-lg-5 mb-3'] .row:nth-child(1) [role='combobox']").first().click();
         cy.get("div:nth-of-type(2) > .ng-option-label.ng-star-inserted").last().click(); //asset type
         cy.get('.inner-wrapper [class="col-lg-5 mb-3"] [class="row mt-2"]:nth-of-type(2) [class="col-lg-5"]:nth-of-type(1) [role="combobox"]').first().click();
@@ -98,7 +99,7 @@ describe("Assets Test", function () {
         cy.get("#btnsubmit").click();
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
         cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').first().click();
-        cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').last().type("Boxer Asset");
+        cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control').last().type("Asset Boxer");
         cy.get('.form-horizontal > .row > .pl-0 > .form-control > .ng-select-container > .ng-value-container').first().click();
         cy.get('div:nth-of-type(2) > .ng-option-label.ng-star-inserted').last().click();//select type
         cy.get(".btn.btn-sm.btn-success.mr-2").first().click(); //search asset type
@@ -119,11 +120,9 @@ describe("Assets Test", function () {
         cy.get(":nth-child(2) > .input-group > .form-control").clear();
         cy.get(":nth-child(2) > .input-group > .form-control").type(Cypress.config("testerPassword"));
         cy.get("#btnsubmit").click();
-
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
-
-        cy.get('#dropdownMenuButton-0 > .fas').click();
-        cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();//edit
+        cy.get('tr:nth-of-type(1) > td:nth-of-type(8) > .dropdown.dropright > .bg-transparent.border-0 > .fa-ellipsis-v.fas').click();//doted
+        cy.get('.dropdown-menu.show > a:nth-of-type(1)').click({ waitForAnimations: false });//edit
         //cy.get('.col-11 > .btn-success').click();//update
         cy.url().then(url => {
             console.log('url', url);
@@ -146,8 +145,8 @@ describe("Assets Test", function () {
         cy.get("#btnsubmit").click();
 
         cy.get(".ng-star-inserted > .nav > :nth-child(4) > .nav-link").first().click();
-        cy.get('#dropdownMenuButton-0').click();
-        cy.get('.dropdown-menu.show > a:nth-of-type(1)').click();
+        cy.get('#dropdownMenuButton-0').click({ waitForAnimations: false });
+        cy.get('.dropdown-menu.show > a:nth-of-type(2)').click();
         cy.getLocalStorage('congnitoAT').then((data) => {
             authToken = data;
         });

@@ -145,7 +145,7 @@
                                     class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                  </label>
-                                 <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
+                                 <ng-select [clearable]="false" (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
 
                                     name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control" #customer="ngModel" required>
                                     <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
@@ -170,14 +170,17 @@
                                        class="fas fa-plus"></i>
                                  </a>
                               </div>
+
                               <div class="col-11"  *ngIf="notOfficeAddress">
+
                                  <div class="rounded p-2 mt-2" style="background-color:#e1e2e3;">
-                                    There is no office address of this customer
+                                    There is no address of this customer
                                  </div>
                               </div>
 
-                              <div class="col-lg-11 mt-4" *ngIf="customerSelected.officeAddr">
-                                 <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
+                              <div class="col-lg-11 mt-2" *ngIf="customerSelected?.length > 0 && !notOfficeAddress">
+                                 <div class=""  *ngIf="orderData.customerID" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
+
                                     <div class="row pl-3 pr-3">
                                        <div class="col-lg-6" style="background-color:#e1e2e3;">
                                           <h5 class=" font-weight-bold">Details</h5>
@@ -187,11 +190,24 @@
                                        </div>
                                     </div>
                                     <div class="row pl-3 pr-3">
-                                       <div class="col-lg-12">
+                                       <div class="col-lg-12 pr-0" >
+                                          
 
-                                          <div class="" *ngFor="let address of customerSelected.address">
-                                             <div class="row" *ngIf="address.addressType =='Office'">
+                                          <div style="max-height: 200px;overflow-y: auto; overflow-x: hidden;" 
+                                             *ngFor="let item of customerSelected">
+                                             <div class="row">
                                                 <div class="col-lg-6">
+                                                   <label class="control-label"><span class=" font-weight-bold">Email:</span>
+                                                      {{item.workEmail ? item.workEmail : '-'}}</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                   <label class="control-label"><span class=" font-weight-bold">Phone:</span>
+                                                      {{item.workPhone ? item.workPhone : '-'}}</label>
+                                                </div>
+                                             </div>
+                                            
+                                             <div class="row border-top mb-1 pt-2 pb-2 pr-3 position-relative" *ngFor="let address of item.address; let i = index;">
+                                                <div class="col-12">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
                                                       {{address.address1}}
                                                       {{address.address2}}</label>
@@ -199,26 +215,30 @@
                                                    <label class="control-label" *ngIf="!address.manual"><span class=" font-weight-bold">Address:</span>
                                                       {{address.userLocation}}</label>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                   <label class="control-label"><span class=" font-weight-bold">Phone:</span> {{customerSelected.phone}}</label>
-                                                </div>
-                                                <div class="col-lg-6">
+                                                
+                                               
+                                                <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">City:</span>
                                                       {{address.cityName}}</label>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                   <label class="control-label"><span class=" font-weight-bold">Province:</span>
+                                                <div class="col-6">
+                                                   <label class="control-label"><span class=" font-weight-bold">Province/State:</span>
                                                       {{address.stateName}}</label>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Country:</span>
                                                       {{address.countryName}}</label>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                   <label class="control-label"><span class=" font-weight-bold">Email:</span>
-                                                      {{customerSelected.email}}</label>
+                                                <div class="col-6">
+                                                   <label class="control-label"><span class=" font-weight-bold">Type:</span>
+                                                      {{address.addressType}}</label>
                                                 </div>
+                                                
+                                                <input *ngIf="item.address.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
+                                                
+                                                
                                              </div>
+                                             
 
                                           </div>
 
@@ -250,7 +270,7 @@
 
                                  <ng-select [(ngModel)]="orderData.additionalContact" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
-                                    <ng-option value="{{ data.fullName }}" *ngFor="let data of customerSelected.additionalContact">{{ data.fullName }}</ng-option>
+                                    <ng-option value="{{ data.fullName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.fullName }}</ng-option>
                                  </ng-select>
 
                               </div>
@@ -299,7 +319,7 @@
                                                 <tbody>
 
                                                    <tr *ngFor="let list of finalShippersReceivers; let j = index;">
-                                                      <td class="p-0 border-0">
+                                                      <td class="p-0 border-0" *ngIf="i === j">
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let ship of list.shippers; let k = index;">
@@ -311,7 +331,7 @@
                                                                         <tr *ngFor="let point of ship.pickupPoint;">
                                                                            <td class="border-left-0 border-top-0 border-bottom" style=" min-width: 250px;max-width: 250px;">
                                                                               <span *ngIf="!point.address.manual">{{point.address.pickupLocation}}</span>
-                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
+                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.cityName}}, {{point.address.stateName}}, {{point.address.countryName}} {{point.address.zipCode}}</span>
                                                                            </td>
                                                                            <td class="border-top-0 border-bottom border-left-0 border-right-0">
                                                                               {{point.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
@@ -343,7 +363,7 @@
                                              <table class="table table-bordered">
                                                 <tbody>
                                                    <tr *ngFor="let list of finalShippersReceivers; let j = index;">
-                                                      <td class="p-0 border-0">
+                                                      <td class="p-0 border-0" *ngIf="i === j">
                                                          <table class="border-0 w-100">
                                                             <tbody>
                                                                <tr *ngFor="let receive of list.receivers; let k = index;">
@@ -355,7 +375,7 @@
                                                                         <tr *ngFor="let point of receive.dropPoint;">
                                                                            <td class="border-left-0 border-top-0 border-bottom"  style="min-width: 250px; max-width: 250px;">
                                                                               <span *ngIf="!point.address.manual">{{point.address.dropOffLocation}}</span>
-                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.city}}, {{point.address.state}}, {{point.address.country}} {{point.address.zipCode}}</span>
+                                                                              <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.cityName}}, {{point.address.stateName}}, {{point.address.countryName}} {{point.address.zipCode}}</span>
                                                                            </td>
                                                                            <td class="border-top-0 border-bottom border-left-0 border-right-0">
                                                                               {{point.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}
@@ -416,7 +436,7 @@
                                                             <div *ngIf="conSlt1.touched && (shippersReceivers[0].shippers.shipperID == null || shippersReceivers[0].shippers.shipperID == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
                                                                Shipper is required.
                                                            </div>
-
+                                                           
                                                          </div>
                                                          <div class="col-lg-1 mar-top-37  pl-0">
                                                             <a data-toggle="modal" data-target="#addShipperModal" href="javascript:;"
@@ -466,7 +486,7 @@
                                                                <div class="col-lg-4 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input type="checkbox" [(ngModel)]="pick.address.manual"
-                                                                     name="manual_{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')"  id="locationaddBtn">
+                                                                     name="pick_manual_{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')" >
                                                                      <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn"> Type Manually</label>
                                                                   </div>
                                                                </div>
@@ -496,28 +516,66 @@
                                                             </div>
                                                             <div class="row mt-3 mr-4" *ngIf="pick.address.manual">
                                                                <div class="col-lg-12">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address</label>
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="pick.address.address"
                                                                   name="address_{{w}}" type="text"  class="form-control" placeholder="type address">
                                                                </div>
-                                                            
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City</label>
-                                                                  <input [(ngModel)]="pick.address.city"
-                                                                  name="city_{{w}}" type="text" class="form-control" placeholder="toronto">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                  <!-- <input [(ngModel)]="pick.address.country"
+                                                                  name="country_{{w}}" type="text" class="form-control" placeholder="canada"> -->
+                                                                  <ng-select
+                                                                  (change)="getStates($event, 'shipper', i, w)"
+                                                                  [(ngModel)]="pick.address.countryCode"
+                                                                  name="countryID_{{w}}"
+                                                                  class="form-control populate address_country"
+                                                                  placeholder="Select Country"
+                                                                >
+                                                                  <ng-option
+                                                                    *ngFor="let country of countries"
+                                                                    value="{{ country.countryCode }}"
+                                                                    >{{ country.countryName }}</ng-option
+                                                                  >
+                                                                </ng-select>
+                                                               </div>
+                                                               
+                                                               <div class="col-lg-6 pull-left">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Province/State <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                  <!-- <input [(ngModel)]="pick.address.state"
+                                                                  name="state_{{w}}" type="text" class="form-control" placeholder="ON"> -->
+                                                                  <ng-select
+                                                                     (change)="getCities($event, 'shipper', i, w)"
+                                                                     [(ngModel)]="pick.address.stateCode"
+                                                                     name="stateID_{{w}}"
+                                                                     class="form-control populate address_state"
+                                                                     placeholder="Select province/state"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let state of pick.address.states"
+                                                                     value="{{ state.stateCode }}"
+                                                                     >{{ state.stateName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">State</label>
-                                                                  <input [(ngModel)]="pick.address.state"
-                                                                  name="state_{{w}}" type="text" class="form-control" placeholder="ON">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                  <!-- <input [(ngModel)]="pick.address.city"
+                                                                  name="city_{{w}}" type="text" class="form-control" placeholder="toronto"> -->
+                                                                  <ng-select
+                                                                     [(ngModel)]="pick.address.cityName"
+                                                                     name="cityID_{{w}}"
+                                                                     class="form-control populate address_city"
+                                                                     placeholder="Select City"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let city of pick.address.cities"
+                                                                     value="{{ city.cityName }}"
+                                                                     >{{ city.cityName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country</label>
-                                                                  <input [(ngModel)]="pick.address.country"
-                                                                  name="country_{{w}}" type="text" class="form-control" placeholder="canada">
-                                                               </div>
-                                                               <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code</label>
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="pick.address.zipCode"
                                                                   name="zipCode_{{w}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
@@ -530,6 +588,7 @@
                                                                </div>
                                                             
                                                             </div>
+                                                            
                                                             <div class="row mt-3 mr-4">
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
@@ -571,6 +630,109 @@
                                                                </div>
                                                                <!-- <div class="col-lg-3 mt-1">
                                                                </div> -->
+                                                            </div>
+                                                            <div *ngFor="let commodity of pick.commodity; let z = index;">
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+                                                                  </div>
+      
+                                                                  <div class="col-lg-11">
+      
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{w}}{{z}}" class="form-control" >
+      
+                                                                  </div>
+                                                                  <div class="col-lg-1 text-right mt-1 pl-0">
+                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
+                                                                  </div>
+                                                               </div>
+      
+                                                               <div class="row mt-3 mr-4">
+      
+                                                                  <div class="col-lg-12 col-md-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                        >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Pickup Number"></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+      
+                                                                     </label>
+      
+                                                                     <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
+                                                                        name="pu{{z}}" type="text" class="form-control" >
+      
+                                                                  </div>
+      
+                                                               </div>
+      
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
+                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                     <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity_{{w}}{{z}}" class="form-control" >
+      
+                                                                  </div>
+      
+      
+                                                                  <div class="col-lg-6">
+      
+                                                                     <ng-select dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit_{{w}}{{z}}" placeholder="eg. select quantity"class="form-control">
+                                                                           <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+                                                                           <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
+                                                                           <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
+                                                                           <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
+                                                                           <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
+                                                                           <ng-option value="Box" data-select2-id="289">Box</ng-option>
+                                                                           <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
+                                                                           <ng-option value="Can" data-select2-id="291">Can</ng-option>
+                                                                           <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
+                                                                           <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
+                                                                           <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                     </ng-select>
+      
+      
+                                                                  </div>
+                                                                  <div class="col-lg-3"> </div>
+                                                               </div>
+                                                               <div class="row mt-3 mr-4">
+                                                                  <div class="col-lg-12">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
+                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                     
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-lg-6">
+      
+                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight_{{w}}{{z}}" class="form-control" >
+                                                                     <!-- <div *ngIf="oWeight.invalid && (oWeight.dirty || oWeight.touched)" class="text-danger">
+                                                                        <div *ngIf="oWeight.errors.pattern">
+                                                                       Weight must contains numbers only.
+                                                                         </div>
+                                                                    </div> -->
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
+                                                                        >
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+      
+                                                                  <div class="col-lg-6">
+                                                                     <ng-select dropdownPosition='top' placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit_{{w}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+      
+                                                                           <ng-option value="ton(s)">ton(s)</ng-option>
+                                                                           <ng-option value="kg">Kilograms</ng-option>
+                                                                           <ng-option value="lbs">lbs</ng-option>
+                                                                     </ng-select>
+      
+      
+                                                                  </div>
+      
+                                                               </div>
                                                             </div>
                                                             <div class="row mt-3 mr-4">
       
@@ -614,115 +776,6 @@
                                                                </div>
       
                                                             </div>
-      
-      
-                                                            <div *ngFor="let commodity of pick.commodity; let z = index;">
-                                                               <div class="row mt-3 mr-4">
-                                                                  <div class="col-lg-12">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                                     </label>
-                                                                  </div>
-      
-                                                                  <div class="col-lg-11">
-      
-                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{w}}{{z}}" class="form-control" >
-      
-                                                                  </div>
-                                                                  <div class="col-lg-1 text-right mt-1 pl-0">
-                                                                     <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
-                                                                     <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
-                                                                  </div>
-                                                               </div>
-      
-                                                               <div class="row mt-3 mr-4">
-      
-                                                                  <div class="col-lg-12 col-md-12">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                        >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Pickup Number"></i>
-      
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                                     </label>
-      
-                                                                     <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
-                                                                        name="pu{{z}}" type="text" class="form-control" >
-      
-                                                                  </div>
-      
-                                                               </div>
-      
-                                                               <div class="row mt-3 mr-4">
-                                                                  <div class="col-lg-12">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                                     </label>
-                                                                  </div>
-                                                                  <div class="col-lg-6">
-      
-                                                                     <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity_{{w}}{{z}}" class="form-control" >
-      
-                                                                  </div>
-      
-      
-                                                                  <div class="col-lg-6">
-      
-                                                                     <ng-select dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit_{{w}}{{z}}" placeholder="eg. select quantity"class="form-control">
-                                                                           <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
-                                                                           <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
-                                                                           <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
-                                                                           <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
-                                                                           <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
-                                                                           <ng-option value="Box" data-select2-id="289">Box</ng-option>
-                                                                           <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
-                                                                           <ng-option value="Can" data-select2-id="291">Can</ng-option>
-                                                                           <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
-                                                                           <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
-                                                                           <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
-                                                                     </ng-select>
-      
-      
-                                                                  </div>
-                                                                  <div class="col-lg-3"> </div>
-                                                               </div>
-                                                               <div class="row mt-3 mr-4">
-                                                                  <div class="col-lg-12">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
-                                                                     </label>
-                                                                  </div>
-                                                                  <div class="col-lg-6">
-      
-                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight_{{w}}{{z}}" class="form-control" >
-                                                                     <!-- <div *ngIf="oWeight.invalid && (oWeight.dirty || oWeight.touched)" class="text-danger">
-                                                                        <div *ngIf="oWeight.errors.pattern">
-                                                                       Weight must contains numbers only.
-                                                                         </div>
-                                                                    </div> -->
-                                                                     <!-- <span class="text-danger"
-                                                                        *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
-                                                                        >
-                                                                        This Field is required
-                                                                     </span> -->
-                                                                  </div>
-      
-                                                                  <div class="col-lg-6">
-                                                                     <ng-select dropdownPosition='top' placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit_{{w}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
-      
-                                                                           <ng-option value="ton(s)">ton(s)</ng-option>
-                                                                           <ng-option value="kg">Kilograms</ng-option>
-                                                                           <ng-option value="lbs">lbs</ng-option>
-                                                                     </ng-select>
-      
-      
-                                                                  </div>
-      
-                                                               </div>
-                                                            </div>
-      
-                                                            
-                                                            
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3">
@@ -841,8 +894,8 @@
                                                                <div class="col-lg-4 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input type="checkbox" [(ngModel)]="dropItem.address.manual"
-                                                                     name="manualAddress_{{y}}" (change)="manualAddress($event.target.checked, i, y, 'receiver')"  id="locationaddBtn">
-                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn"> Type Manually</label>
+                                                                     name="manualAddress_{{y}}" (change)="manualAddress($event.target.checked, i, y, 'receiver')" >
+                                                                     <label class="control-label mt-2 font-weight-bold"> Type Manually</label>
                                                                   </div>
                                                                </div>
                                                                <div class="col-lg-6 text-center">
@@ -871,28 +924,63 @@
                                                             </div>
                                                             <div class="row mt-3" *ngIf="dropItem.address.manual">
                                                                <div class="col-lg-12">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address</label>
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input type="text" [(ngModel)]="dropItem.address.address"
                                                                   name="address_{{y}}"  class="form-control" placeholder="type address">
                                                                </div>
                                                             
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City</label>
-                                                                  <input [(ngModel)]="dropItem.address.city"
-                                                                  name="city_{{y}}" type="text" class="form-control" placeholder="toronto">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">City <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                 
+                                                                  <ng-select
+                                                                     [(ngModel)]="dropItem.address.cityName"
+                                                                     name="cityID_{{y}}"
+                                                                     class="form-control populate address_city"
+                                                                     placeholder="Select City"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let city of dropItem.address.cities"
+                                                                     value="{{ city.cityName }}"
+                                                                     >{{ city.cityName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">State</label>
-                                                                  <input [(ngModel)]="dropItem.address.state"
-                                                                  name="state_{{y}}" type="text" class="form-control" placeholder="ON">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Province/State <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                 
+                                                                  <ng-select
+                                                                     (change)="getCities($event, 'receiver', i, y)"
+                                                                     [(ngModel)]="dropItem.address.stateCode"
+                                                                     name="stateID_{{y}}"
+                                                                     class="form-control populate address_state"
+                                                                     placeholder="Select province/state"
+                                                                  >
+                                                                     <ng-option
+                                                                     *ngFor="let state of dropItem.address.states"
+                                                                     value="{{ state.stateCode }}"
+                                                                     >{{ state.stateName }}</ng-option
+                                                                     >
+                                                                  </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country</label>
-                                                                  <input [(ngModel)]="dropItem.address.country"
-                                                                  name="country_{{y}}" type="text" class="form-control" placeholder="canada">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                                 
+                                                                  <ng-select
+                                                                  (change)="getStates($event, 'receiver', i, y)"
+                                                                  [(ngModel)]="dropItem.address.countryCode"
+                                                                  name="countryID_{{y}}"
+                                                                  class="form-control populate address_country"
+                                                                  placeholder="Select Country"
+                                                                >
+                                                                  <ng-option
+                                                                    *ngFor="let country of countries"
+                                                                    value="{{ country.countryCode }}"
+                                                                    >{{ country.countryName }}</ng-option
+                                                                  >
+                                                                </ng-select>
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code</label>
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="dropItem.address.zipCode"
                                                                   name="zipCode_{{y}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
@@ -950,7 +1038,7 @@
                                                                <div class="row mt-3">
                                                                   <div class="col-lg-12">
                                                                      <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                      </label>
                                                                   </div>
                                                                   <div class="col-lg-11">
@@ -974,10 +1062,8 @@
                                                                         >DEL# &nbsp;<i
                                                                         class="fas fa-question-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="Delivery Number "></i>
+                                                                        title="Delivery Number "></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
       
-      
-                                                                        <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
       
                                                                      </label>
       
@@ -1000,7 +1086,7 @@
                                                                <div class="row mt-3">
                                                                   <div class="col-lg-12">
                                                                      <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                     
                                                                      </label>
                                                                   </div>
                                                                   <div class="col-lg-6">
@@ -1049,7 +1135,7 @@
                                                                <div class="row mt-3">
                                                                   <div class="col-lg-12">
                                                                      <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
+                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                     
                                                                      </label>
                                                                   </div>
                                                                   <div class="col-lg-6">
@@ -1268,7 +1354,7 @@
                                            <ng-option value="dry_van">Dry Van</ng-option>
                                            <ng-option value="over_size">Over Size</ng-option>
                                            <ng-option value="reefer">Reefer</ng-option>
-                                         <ng-option value="hazmat">Hazmat</ng-option>
+                                           <ng-option value="hazmat">Hazmat</ng-option>
                                            <ng-option value="power_only">Power Only</ng-option>
                                            <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
                                            <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
@@ -1406,6 +1492,9 @@
                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Attachments Type</label>
                                        <input [(ngModel)]="orderData.additionalDetails.uploadedDocs" name="uploadedDocs"
                                           type="file" (change)="selectDocuments($event)" multiple class="form-control p-0">
+                                       <span *ngIf="photoSizeError != ''" class="text-danger">
+                                          {{photoSizeError}}
+                                       </span>
                                     </div>
                                  </div>
                                  <div class="row mt-2" *ngIf="orderAttachments?.length">
@@ -1918,8 +2007,8 @@
                               <div class="col-lg-11 text-right pr-0">
                                  <a href="javascript:;" routerLink="/dispatch/orders"
                                     class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                                 <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="disableButton()" class="btn btn-success" >Save</button>
-                                 <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="disableButton()" class="btn btn-success text-white" >Update</button>
+                                 <button *ngIf="!getOrderID" type="button" (click)="onSubmit()" [disabled]="disableButton() || submitDisabled" class="btn btn-success" >Save</button>
+                                 <button *ngIf="getOrderID" type="button" (click)="updateOrder()" [disabled]="disableButton() || submitDisabled || ifStatus == 'delivered' || isInvoiceGenerated" class="btn btn-success text-white" >Update</button>
                               </div>
                            </div>
                         </div>
@@ -1997,25 +2086,25 @@
       <div class="modal-body">
         <ul class="customer-order__main m-0 p-0">
            <li>
-              <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addBrokerModal">Broker</a>
+              <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addBrokerModal">Broker</a>
            </li>
            <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCarrierModal">Carrier</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addCarrierModal">Carrier</a>
          </li>
            <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Receiver</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addConsigneeModal">Receiver</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Shipper</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addShipperModal">Shipper</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addCustomerModal">Customer</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addCustomerModal">Customer</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addFCModal">Factoring Company</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addFCModal">Factoring Company</a>
          </li>
          <li>
-            <a href="javascript:;" data-dismiss="modal" data-toggle="modal" data-target="#addOwnerOperatorModal">Owner Operator</a>
+            <a href="javascript:;" (click)="changeModalValue()" data-dismiss="modal" data-toggle="modal" data-target="#addOwnerOperatorModal">Owner Operator</a>
          </li>
         </ul>
       </div>

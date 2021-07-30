@@ -26,6 +26,8 @@
                                 [(ngModel)]="filter.date" name="date" 
                                 type="text" 
                                 placeholder="Search By Incident Date"
+                                [maxDate]="birthDateMaxLimit" 
+                                [minDate]="birthDateMinLimit"
                                 (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                 class="form-control" autocomplete="off"> 
                         </div>

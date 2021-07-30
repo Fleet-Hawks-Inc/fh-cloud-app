@@ -23,7 +23,7 @@
                 <div id="vehicle-details" class="">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Customer:</div>
-                    <div class="col-lg-8 p-2">{{customersObjects[invoice.invCustomerID]}}</div>
+                    <div class="col-lg-8 p-2">{{customersObjects[invoice.customerID]}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Address:</div>
@@ -70,7 +70,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Total Amount:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.totalAmount}}{{invoice.invCur}}</div>
+                    <div class="col-lg-8 p-2 border-box">{{invoice.finalAmount}}{{invoice.invCur}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount Received:</div>
@@ -155,7 +155,7 @@
                           <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discountAmount}}{{invoice.invCur}}</span></p>
                           <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}{{invoice.invCur}}</span></p>
                           <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">{{statesObjects[invoice.invStateProvince]}}</span> ) <span class="pull-right">{{invoice.taxAmount}} {{invoice.invCur}}</span></p>
-                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}{{invoice.invCur}}</span></p>
+                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.finalAmount}}{{invoice.invCur}}</span></p>
                         </div>
                       </div>
                     </div>
