@@ -81,6 +81,10 @@ pipeline {
           echo(taskRevision)
           String latestImageVersion = dockerImagePath[0] + ':' + latestImageVersionTag
           println('Latest Image Version: ' + latestImageVersion)
+          
+          // Update latest definition version
+          taskRevisionDefinition.taskDefinition.containerDefinitions[0].image = latestImageVersion
+
 
           // Remove unwanted property for register task definiton CLI
           taskRevisionDefinition.taskDefinition.remove('taskDefinitionArn')
@@ -134,6 +138,9 @@ pipeline {
           echo(taskRevision)
           String latestImageVersion = dockerImagePath[0] + ':' + latestImageVersionTag
           println('Latest Image Version: ' + latestImageVersion)
+          
+          // Update latest definition version
+          taskRevisionDefinition.taskDefinition.containerDefinitions[0].image = latestImageVersion
 
           // Remove unwanted property for register task definiton CLI
           taskRevisionDefinition.taskDefinition.remove('taskDefinitionArn')
