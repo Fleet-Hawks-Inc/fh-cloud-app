@@ -135,7 +135,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventSpeed | number : '1.2-2' }} km/h</span
+                            >{{ eventSpeed || 0 | number : '1.2-2' }} km/h</span
                           >
                           <h2
                             class="
