@@ -119,7 +119,7 @@
                             {{ vehiclesObject[data.vehicleID] }}
                           </td>
                           <td class="text-capitalize">
-                            {{ data.eventDate }}
+                            {{ data.eventDate | date: 'yyyy/MM/dd' }}
                           </td>
                           <td class="text-capitalize">
                             {{ data.eventTime }}
@@ -168,7 +168,7 @@
                       <tbody *ngIf="events.length == 0">
                         <tr>
                           <td colspan="9" class="no-data-available">
-                            Fetching Data.....
+                            {{dataMessage}}
                           </td>
                         </tr>
                       </tbody>
