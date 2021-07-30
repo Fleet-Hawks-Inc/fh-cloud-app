@@ -89,8 +89,8 @@
                                         </td>
                                         <td>-</td>
                                         <td>{{ data.finalTotal }} CAD </td>
-                                        <td>{{ data.finalTotal }} CAD</td>
-                                        <td>-</td>
+                                        <td>{{ (data.paidAmount) ? data.paidAmount + ' CAD' : '-' }}</td>
+                                        <td>{{ data.pendingPayment }} CAD</td>
                                         <td><span
                                                 class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
                                         <td>
@@ -104,8 +104,6 @@
                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                     <a class="dropdown-item"
                                                         routerLink="/accounts/settlements/edit/{{ data.sttlID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteSettlement(data.sttlID)">Delete</a>
                                                 </div>
                                             </div>
                                         </td>

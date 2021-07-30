@@ -7,6 +7,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { SafetyService } from 'src/app/services/safety.service';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var H: any;
+declare var $: any;
 @Component({
   selector: 'app-incident-detail',
   templateUrl: './incident-detail.component.html',
@@ -57,6 +58,8 @@ export class IncidentDetailComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  showMap: boolean = true;
+
   slideConfig1 = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -76,6 +79,44 @@ export class IncidentDetailComponent implements OnInit {
     this.fetchAllDriverIDs();
     this.fetchTripsByIDs();
     this.mapShow();
+
+    $('#viewVideosModal').modal({
+      show: false
+  }).on('hidden.bs.modal', function(){
+      $(this).find('video')[0].pause();
+  });
+  }
+
+
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
+
+        }
+        const location = await this.hereMap.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          this.showMap = false;
+          return 'NA';
+
+        }
+      } else {
+        this.showMap = false;
+        return 'NA';
+
+      }
+    } catch (error) {
+      this.showMap = false;
+      return 'NA';
+
+    }
+
   }
 
   async fetchEventDetail() {
@@ -93,7 +134,8 @@ export class IncidentDetailComponent implements OnInit {
         this.eventSource = result.eventSource;
         this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
-        this.location = result.location;
+        const location = await this.getLocation(result.location);
+        this.location = location;
         await this.setMarker(this.location);
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){

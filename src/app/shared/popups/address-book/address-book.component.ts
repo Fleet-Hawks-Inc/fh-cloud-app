@@ -694,6 +694,12 @@ export class AddressBookComponent implements OnInit {
     this.fetchCountries();
     this.fetchBrokersCount();
     this.searchLocation();
+
+    this.listService.isTrueList.subscribe(res => {
+      this.modalTitle = 'Add';
+      this.updateButton = res;
+    });
+    
     $(document).ready(() => {
       //this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
