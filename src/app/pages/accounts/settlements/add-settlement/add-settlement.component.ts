@@ -685,6 +685,7 @@ export class AddSettlementComponent implements OnInit {
                 delete v.paymentDetails;
             })
         }
+        this.settlementData.pendingPayment = this.settlementData.finalTotal;
 
         this.accountService.putData(`settlement/update/${this.settlementID}`, this.settlementData).subscribe({
             complete: () => { },
