@@ -153,6 +153,7 @@ export class OrderDetailComponent implements OnInit {
   invoiceData: any;
   today: any;
   cusAddressID: string;
+  isInvoiced: boolean;
   constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
@@ -194,6 +195,7 @@ export class OrderDetailComponent implements OnInit {
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
+          this.isInvoiced = result.invoiceGenerate;
           this.shipperReceiversInfos = result.shippersReceiversInfo;
 
           for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
@@ -217,7 +219,7 @@ export class OrderDetailComponent implements OnInit {
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
-          this.additionalDetails.trailerType = result.additionalDetails.trailerType;
+          this.additionalDetails.trailerType = result.additionalDetails.trailerType ? result.additionalDetails.trailerType.replace('_', ' ') : '-';
           this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
           this.charges = result.charges;
           this.discount = result.discount;
@@ -422,9 +424,8 @@ export class OrderDetailComponent implements OnInit {
 
     });
     this.saveInvoice();
+    this.fetchOrder();
     this.invoiceGenerated();
-
-
 
   }
 
@@ -435,7 +436,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`invStatus`] = 'open';
     this.invoiceData[`amountReceived`] = 0;
     this.invoiceData[`fullPayment`] = false;
-    this.invoiceData[`balance`] = 0;
+    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {

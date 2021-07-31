@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -90,6 +92,13 @@ export class AddInvoiceComponent implements OnInit {
     }
   ];
   invID: string;
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  submitDisabled = false;
   ngOnInit() {
     this.listService.fetchCustomers();
     this.customers = this.listService.customersList;
@@ -242,16 +251,47 @@ export class AddInvoiceComponent implements OnInit {
 
   deleteDetail(amount: number, d: number) {
     this.invoiceData.details.splice(d, 1);
+    this.calculateAmount();
   }
 
   addInvoice() {
-    this.invoiceData.balance = this.invoiceData.finalAmount;
-    this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
-      this.toaster.success('Invoice Added Successfully.');
-      this.router.navigateByUrl('/accounts/invoices/list');
+    this.submitDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.accountService.postData(`invoices`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice Added Successfully.');
+        this.router.navigateByUrl('/accounts/invoices/list');
+      },
     });
   }
-
+ cancelFn() {
+  this.router.navigateByUrl('/accounts/invoices/list');
+ }
   async calculateAmount() {
     this.midAmt = 0;
     for (const element of this.invoiceData.details) {
@@ -314,10 +354,39 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   updateInvoice() {
-    this.invoiceData.balance = this.invoiceData.finalAmount;
-    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
-      this.toaster.success('Invoice Updated Successfully.');
-      this.router.navigateByUrl('/accounts/invoices/list');
+    this.submitDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    // this.invoiceData.balance = this.invoiceData.finalAmount;
+    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice Updated Successfully.');
+        this.router.navigateByUrl('/accounts/invoices/list');
+      },
     });
   }
     /*

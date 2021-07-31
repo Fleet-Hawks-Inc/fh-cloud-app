@@ -27,6 +27,7 @@ export class AddIncidentComponent implements OnInit {
         assigned: null,
         incidentType: null,
         eventSource: 'manual',
+        locationText:'',
         severity: null,
         location: '',
         notes: '',
@@ -83,11 +84,16 @@ export class AddIncidentComponent implements OnInit {
     private readonly search: any;
     public searchTerm = new Subject<string>();
     
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
 
     constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService,
                 private router: Router, private hereMap: HereMapService) {
                 this.selectedFileNames = new Map<any, any>();
+                const date = new Date();
+                this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+                this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
     }
 
     ngOnInit() {
@@ -108,9 +114,9 @@ export class AddIncidentComponent implements OnInit {
     disabledButton() {
         
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
-            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventTime == '' || 
-        this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
-            this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
+            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == '' ||
+            this.event.eventTime == null || this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
+            this.event.locationText == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
         || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.uploadedDocs.length == 0  || this.event.notes.length > 500) {
             return true
         } else {
@@ -136,8 +142,6 @@ export class AddIncidentComponent implements OnInit {
         this.apiService.getData('trips/safety/active')
         .subscribe((result: any) => {
             this.trips = result.Items;
-            console.log('trips', result)
-            
         })
     }
 
@@ -192,7 +196,7 @@ export class AddIncidentComponent implements OnInit {
             },
             next: (res) => {
                 this.spinner.hide();
-                this.toastr.success('Incidents added successfully');
+                this.toastr.success('Incident added successfully');
                 this.router.navigateByUrl('/safety/incidents');
             },
         });
@@ -220,28 +224,33 @@ export class AddIncidentComponent implements OnInit {
 
     public searchLocation() {
         this.searchTerm.pipe(
-          map((e: any) => {
-            $('.map-search__results').hide();
-            $(e.target).closest('div').addClass('show-search__result');
-            return e.target.value;
-          }),
-          debounceTime(400),
-          distinctUntilChanged(),
-          switchMap(term => {
-            return this.hereMap.searchEntries(term);
-          }),
-          catchError((e) => {
-            return throwError(e);
-          }),
+            map((e: any) => {
+                $(e.target).closest('div').addClass('show-search__result');
+                return e.target.value;
+            }),
+            debounceTime(400),
+            distinctUntilChanged(),
+            switchMap(term => {
+                return this.hereMap.searchEntries(term);
+            }),
+            catchError((e) => {
+                return throwError(e);
+            }),
         ).subscribe(res => {
-          this.searchResults = res;
+            this.searchResults = res;
         });
     }
 
-    async assignLocation(label) {
-        this.event.location = label;
-        this.searchResults = false;
-        $('div').removeClass('show-search__result');
+    async assignLocation(position: any,title:string) {
+        if (position) {
+            this.event.location = `${position.lat},${position.lng}`;
+            this.event.locationText=title;
+            this.searchResults = false;
+            $('div').removeClass('show-search__result');
+        } else {
+            this.event.locationText=title;
+            this.event.location = '0,0';
+        }
     }
 
      /*
@@ -250,6 +259,18 @@ export class AddIncidentComponent implements OnInit {
      selectDocuments(event, obj) {
         let files = [...event.target.files];
         let filesSize = 0;
+
+        if(files.length > 5) {
+            this.toastr.error('files count limit exceeded');
+            if (obj === 'uploadedPhotos') {
+                this.photoSizeError = 'files should not be more than 5';
+            } else if(obj === 'uploadedDocs') {
+                this.docSizeError = 'files should not be more than 5';
+            } else {
+                this.videoSizeError = 'files should not be more than 5';
+            }
+            return;
+        }
 
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];

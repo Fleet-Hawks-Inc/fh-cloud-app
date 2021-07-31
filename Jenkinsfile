@@ -86,6 +86,9 @@ pipeline {
           taskRevisionDefinition.taskDefinition.containerDefinitions[0].image = latestImageVersion
 
 
+          // Update Latest Definition Version
+          taskRevisionDefinition.taskDefinition.containerDefinitions[0].image = latestImageVersion
+          
           // Remove unwanted property for register task definiton CLI
           taskRevisionDefinition.taskDefinition.remove('taskDefinitionArn')
           taskRevisionDefinition.taskDefinition.remove('revision')
