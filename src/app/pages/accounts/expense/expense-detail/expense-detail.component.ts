@@ -60,6 +60,7 @@ export class ExpenseDetailComponent implements OnInit {
   accounts = [];
   invoices = [];
   categories = [];
+  units = [];
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
@@ -76,6 +77,11 @@ export class ExpenseDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.expenseData = result[0];
+          if(this.expenseData.unitType === 'vehicle') {
+            this.fetchVehicles();
+          } else {
+            this.fetchAssets();
+          }
 
           if (result[0].documents != undefined && result[0].documents.length > 0) {
             result[0].documents.map((x) => {
@@ -133,6 +139,20 @@ export class ExpenseDetailComponent implements OnInit {
     this.accountService.getData(`expense/categories/list`)
       .subscribe((result: any) => {
         this.categories = result;
+      })
+  }
+
+  fetchVehicles() {
+    this.apiService.getData(`vehicles/get/list`)
+      .subscribe((result: any) => {
+        this.units = result;
+      })
+  }
+
+  fetchAssets() {
+    this.apiService.getData(`assets/get/list`)
+      .subscribe((result: any) => {
+        this.units = result;
       })
   }
 }
