@@ -36,6 +36,7 @@ export class AddInvoiceComponent implements OnInit {
     invSalesman: null,
     invSubject: '',
     amountReceived: 0,
+    amountPaid: 0,
     fullPayment: false,
     balance: 0,
     details: [{
@@ -255,6 +256,7 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
+    this.invoiceData.balance = this.invoiceData.finalAmount;
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
