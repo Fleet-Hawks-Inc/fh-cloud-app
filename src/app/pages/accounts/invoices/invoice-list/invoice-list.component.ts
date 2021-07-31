@@ -174,7 +174,7 @@ editFn(invID: string) {
   }
    deleteOrderInvoice(invID: string, orderID: string) {
     this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
-      const invStatus = false;
+      const invStatus:boolean = false;
       this.apiService.getData(`orders/invoiceStatus/${orderID}/${invStatus}`).subscribe((res) => {
         if (res) {
           this.toaster.success('Invoice Deleted Successfully.');

@@ -445,7 +445,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   invoiceGenerated() {
-    const invStatus = true;
+    const invStatus:boolean = true;
     this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${invStatus}`).subscribe((res) => {});
   }
 
