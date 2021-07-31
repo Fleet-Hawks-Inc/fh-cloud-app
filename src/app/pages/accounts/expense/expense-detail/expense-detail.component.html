@@ -99,6 +99,10 @@
                                                         <td class="back-color-gray font-weight-bold">Invoice#</td>
                                                         <td>{{ invoices[expenseData.invoiceID] }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Type</td>
+                                                        <td>{{ expenseData.unitType }}</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -129,6 +133,10 @@
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Notes</td>
                                                         <td>{{ expenseData.notes }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Name</td>
+                                                        <td>{{ units[expenseData.unitID] }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -181,14 +189,14 @@
                                                     <tr>
                                                         <td>{{ accounts[expenseData.expAccountID] }}</td>
                                                         <td>{{ vendors[expenseData.vendorID] }}/{{ vendors[expenseData.customerID] }}</td>
-                                                        <td>{{ expenseData.categoryID }}</td>
+                                                        <td>{{ categories[expenseData.categoryID] }}</td>
                                                         <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
                                                         <td>0.00</td>
                                                     </tr>
                                                     <tr>
                                                         <td>{{ accounts[expenseData.paidAccountID] }}</td>
                                                         <td>{{ vendors[expenseData.vendorID] }}/{{ vendors[expenseData.customerID] }}</td>
-                                                        <td>{{ expenseData.categoryID }}</td>
+                                                        <td>{{ categories[expenseData.categoryID] }}</td>
                                                         <td>0.00</td>
                                                         <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
                                                     </tr>

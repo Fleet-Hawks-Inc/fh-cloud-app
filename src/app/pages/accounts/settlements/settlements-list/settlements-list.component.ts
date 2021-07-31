@@ -104,10 +104,12 @@ export class SettlementsListComponent implements OnInit {
     }
 
     deleteSettlement(settlementID) {
-        this.accountService.deleteData(`settlement/delete/${settlementID}`)
-          .subscribe((result: any) => {
-            this.fetchSettlements();
-            this.toaster.success('Settlement deleted successfully.');
-          })
+        if (confirm('Are you sure you want to delete?') === true) {
+            this.accountService.deleteData(`settlement/delete/${settlementID}`)
+            .subscribe((result: any) => {
+                this.fetchSettlements();
+                this.toaster.success('Settlement deleted successfully.');
+            })
+        }
     }
 }

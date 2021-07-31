@@ -130,28 +130,25 @@ export class AddReceiptComponent implements OnInit {
   getAmount(j: any, type: string) {
     if (type === 'orderInvoice') {
       for (let i = 0; i < this.orderInvoices.length; i++) {
-        console.log('i', i);
-        console.log('j', j);
         if (i === j) {
           if (this.orderInvoices[i].fullPayment === true) {
-            this.orderInvoices[i].amountReceived = this.orderInvoices[i].finalAmount;
+            this.orderInvoices[i].amountPaid = this.orderInvoices[i].balance;
           } else if (this.orderInvoices[i].fullPayment === true && this.orderInvoices[i].invStatus === 'partially_paid') {
-            this.orderInvoices[i].amountReceived = this.orderInvoices[i].balance;
+            this.orderInvoices[i].amountPaid = this.orderInvoices[i].balance;
           } else {
-            this.orderInvoices[i].amountReceived = 0;
+            this.orderInvoices[i].amountPaid = 0;
           }
         }
       }
     } else {
-      console.log('type', type);
       for (let i = 0; i < this.invoices.length; i++) {
         if (i === j) {
           if (this.invoices[i].fullPayment === true) {
-            this.invoices[i].amountReceived = this.invoices[i].finalAmount;
+            this.invoices[i].amountPaid = this.invoices[i].balance;
           } else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
-            this.invoices[i].amountReceived = this.invoices[i].balance;
+            this.invoices[i].amountPaid = this.invoices[i].balance;
           } else {
-            this.invoices[i].amountReceived = 0;
+            this.invoices[i].amountPaid = 0;
           }
         }
       }
@@ -161,25 +158,27 @@ export class AddReceiptComponent implements OnInit {
   async getPaidInvoices() {
     const paidInvoices = [];
     for (const element of this.orderInvoices) {
-      if (element.amountReceived !== 0 && element.amountReceived !== undefined) {
+      if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
-          invType: 'orderInvoice'
+          invType: 'orderInvoice',
+          amountPaid: element.amountPaid
         };
         paidInvoices.push(obj);
       }
     }
     for (const element of this.invoices) {
-      if (element.amountReceived !== 0 && element.amountReceived !== undefined) {
+      if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
-          invType: 'manual'
+          invType: 'manual',
+          amountPaid: element.amountPaid
         };
         paidInvoices.push(obj);
       }
@@ -224,7 +223,6 @@ export class AddReceiptComponent implements OnInit {
   }
   async fetchReceipt() {
     this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
-      console.log('fetched receipt', res);
       this.receiptData = res[0];
       this.receiptData.transactionLog = res[0].transactionLog;
       const fetchedInvoices = this.receiptData[`fetchedInvoices`];
@@ -235,8 +233,6 @@ export class AddReceiptComponent implements OnInit {
           this.orderInvoices.push(e);
         }
       });
-      console.log('this.invoices', this.invoices);
-      console.log('this.orderInvoices', this.orderInvoices);
     });
   }
 
