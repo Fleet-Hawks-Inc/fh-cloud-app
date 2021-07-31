@@ -43,11 +43,13 @@ export class InvoiceListComponent implements OnInit {
   fetchInvoices() {
     this.accountService.getData('order-invoice').subscribe((res: any) => {
       this.orderInvoices = res;
+      console.log('this.orderInvoices', this.orderInvoices);
       this.categorizeOrderInvoices(this.orderInvoices);
     });
 
     this.accountService.getData('invoices').subscribe((res: any) => {
-      this.invoices = this.invoices.concat(res);
+      this.invoices = res;
+      console.log('this.invoices', this.invoices);
       this.invoices.map((v: any) => {
         v.invStatus = v.invStatus.replace('_', ' ');
       });

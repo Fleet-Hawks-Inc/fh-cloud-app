@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable, Output } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
 import { HttpClient } from "@angular/common/http"
 @Injectable({
@@ -13,6 +13,9 @@ export class ListService {
 
   shipperDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperList = this.shipperDataSource.asObservable();
+
+  public isTrueDataSource = new BehaviorSubject<boolean>(false);
+  isTrueList = this.isTrueDataSource.asObservable();
 
   shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperObjectList = this.shipperObjectDataSource.asObservable();
@@ -240,4 +243,10 @@ fetchReceivers() {
       this.receiverObjectDataSource.next(result);
     });
   }
+
+  public changeButton(value: boolean){
+
+    this.isTrueDataSource.next(value);
+   
+   }
 }
