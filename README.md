@@ -6,7 +6,6 @@
 |Pre-Prod|[![Build Status](https://jenkins.fleethawks.com/buildStatus/icon?job=fh-cloud-app%2Fmaster)](https://jenkins.fleethawks.com/job/fh-cloud-app/job/master/) |
 |Prod |TBD |
 
-![build passing](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiMzA1aWQzMXlGTWM1dTQrRUlRYWNKY1FQZkh4SmI3dit2Nk11UmJ5OVNZOHN6dzJyZEgwRmpDbTRUaEdsT2dXSWtiaC94V3JuWVZ0V25SMUhxY2JHcGE4PSIsIml2UGFyYW1ldGVyU3BlYyI6Im4zTnNHSnRjSmJjT3NRb0oiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![Known Vulnerabilities](https://snyk.io/package/npm/snyk/badge.svg)](https://snyk.io/package/npm/snyk)
 
 
