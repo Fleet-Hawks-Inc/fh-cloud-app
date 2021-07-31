@@ -20,6 +20,7 @@ import { DriverPaymentsDetailComponent } from "./driver-payments/driver-payments
 import { AddEmployeePaymentComponent } from "./employee-payment/add-employee-payment/add-employee-payment.component";
 import { EmployeePaymentListComponent } from "./employee-payment/employee-payment-list/employee-payment-list.component";
 import { EmployeePaymentDetailComponent } from "./employee-payment/employee-payment-detail/employee-payment-detail.component";
+import { AddAccountModule } from "../add-account/add-account.module";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -95,7 +96,8 @@ const routes: Routes = [
   { path: "driver-payments/detail/:paymentID", component: DriverPaymentsDetailComponent },
   { path: "employee-payments/list", component: EmployeePaymentListComponent },
   { path: "employee-payments/add", component: AddEmployeePaymentComponent },
-  { path: "employee-payments/detail", component: EmployeePaymentDetailComponent },
+  { path: "employee-payments/edit/:paymentID", component: AddEmployeePaymentComponent },
+  { path: "employee-payments/detail/:paymentID", component: EmployeePaymentDetailComponent },
 ];
 
 @NgModule({
@@ -118,6 +120,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    AddAccountModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

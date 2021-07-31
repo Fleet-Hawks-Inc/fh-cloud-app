@@ -27,7 +27,7 @@ export class AddEventComponent implements OnInit {
         eventType: null,
         eventSource: 'manual',
         createdBy: '',
-        locationText:'',
+        locationText: '',
         location: '',
         notes: '',
         status: 'open',
@@ -39,8 +39,8 @@ export class AddEventComponent implements OnInit {
     selectedFileNames: Map<any, any>;
     criticalityType = [
         {
-            value: 'harshBraking',
-            name: 'Harsh Braking'
+            value: 'harshBrake',
+            name: 'Harsh Brake'
         },
         {
             value: 'harshAcceleration',
@@ -49,6 +49,13 @@ export class AddEventComponent implements OnInit {
         {
             value: 'highSpeed',
             name: 'High Speed'
+        },
+        {
+            value: 'highSpeed',
+            name: 'High Speed'
+        }, {
+            value: 'impactTilt',
+            name: 'Impact/Tilt'
         }
     ];
 
@@ -207,9 +214,8 @@ export class AddEventComponent implements OnInit {
     }
 
     disabledButton() {
-
-        if (this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' ||
-            this.event.eventType == '' || this.event.createdBy == '' || this.event.location == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == ''
+        if (this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == null ||
+                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.locationText == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == ''
             || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.event.notes.length > 500) {
             return true
         } else {
@@ -247,14 +253,14 @@ export class AddEventComponent implements OnInit {
         });
     }
 
-    async assignLocation(position: any,title:string) {
+    async assignLocation(position: any, title: string) {
         if (position) {
             this.event.location = `${position.lat},${position.lng}`;
-            this.event.locationText=title;
+            this.event.locationText = title;
             this.searchResults = false;
             $('div').removeClass('show-search__result');
         } else {
-            this.event.locationText=title;
+            this.event.locationText = title;
             this.event.location = '0,0';
         }
     }
@@ -265,6 +271,16 @@ export class AddEventComponent implements OnInit {
     selectDocuments(event, obj) {
         let files = [...event.target.files];
         let filesSize = 0;
+
+        if(files.length > 5) {
+            this.toastr.error('files count limit exceeded');
+            if (obj === 'uploadedPhotos') {
+                this.photoSizeError = 'files should not be more than 5';
+            } else {
+                this.videoSizeError = 'files should not be more than 5';
+            }
+            return;
+        }
 
         if (obj === 'uploadedPhotos') {
             this.uploadedPhotos = [];

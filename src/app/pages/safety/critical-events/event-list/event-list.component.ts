@@ -7,6 +7,7 @@ declare var $: any;
 import * as moment from "moment";
 import { SafetyService } from 'src/app/services/safety.service';
 import Constants from 'src/app/pages/fleet/constants';
+import { constants } from 'os';
 
 @Component({
   selector: 'app-event-list',
@@ -23,7 +24,6 @@ export class EventListComponent implements OnInit {
   vehicles = [];
   vehicleID = '';
   filter = {
-    driverID: null,
     vehicleID: null,
     date: null
 
@@ -33,12 +33,19 @@ export class EventListComponent implements OnInit {
   vehiclesObject: any = {};
   driversObject: any = {};
   drivers = [];
-  dataMessage: any;
+  dataMessage: any = Constants.FETCHING_DATA;
 
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
   status_values: any = ["open", "investigating", "coaching", "closed"];
   lastItemSK: string = '';
+  
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    private spinner: NgxSpinnerService, private hereMapService: HereMapService) { }
+    private spinner: NgxSpinnerService, private hereMapService: HereMapService) { 
+      const date = new Date();
+      this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+      this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
+    }
 
   async ngOnInit() {
     this.fetchEvents();
@@ -68,8 +75,9 @@ export class EventListComponent implements OnInit {
     } catch (error) {
       return 'NA';
     }
-
   }
+
+  
   fetchVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
@@ -78,13 +86,24 @@ export class EventListComponent implements OnInit {
   }
 
   searchEvents() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.filter.date == '') {
+      this.filter.date = 'null'
+    }
     this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
 
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.events = result;
+        this.events = [];
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          const location = await this.getLocation(element.location);
+          element.location = location;
+          this.events.push(element);
+
+        }
       })
   }
 
@@ -96,18 +115,25 @@ export class EventListComponent implements OnInit {
     if (this.lastItemSK != 'end') {
       this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
-          for (let index = 0; index < result.length; index++) {
-            const element = result[index];
-            const location = await this.getLocation(element.location);
-            element.location = location;
-            this.events.push(element);
-
+          
+          if (result.length == 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
-          if (this.events[this.events.length - 1].sk != undefined) {
-            this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+          if(result.length > 0) {
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              const location = await this.getLocation(element.location);
+              element.location = location;
+              this.events.push(element);
+  
+            }
+            if (this.events[this.events.length - 1].sk != undefined) {
+              this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
           }
+         
         })
     }
 
@@ -132,14 +158,16 @@ export class EventListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.driverID !== null || this.filter.vehicleID !== '' || this.filter.vehicleID !== null) {
-      
+    
+    if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
+      this.lastItemSK = '';
+      this.events = [];
+      this.fetchEvents();
       this.filter = {
-        driverID: null,
         vehicleID: null,
         date: ''
       };
-      this.fetchEvents();
+      
     } else {
       return false;
     }
