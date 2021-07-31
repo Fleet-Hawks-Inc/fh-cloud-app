@@ -455,7 +455,7 @@
                                                                   </label>
       
                                                                   <input placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
-                                                                     name="pickupLocation_{{w}}" (keyup)="searchTerm.next($event);"
+                                                                     name="pickupLocation_{{i}}{{w}}" (keyup)="searchTerm.next($event);"
                                                                      class="form-control " #pickupLocation="ngModel" required
                                                                      pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
                                                                      #location="ngModel" required>
@@ -486,14 +486,14 @@
                                                                <div class="col-lg-4 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input type="checkbox" [(ngModel)]="pick.address.manual"
-                                                                     name="pick_manual_{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')" >
+                                                                     name="pick_manual_{{i}}{{w}}" (change)="manualAddress($event.target.checked, i, w, 'shipper')" >
                                                                      <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn"> Type Manually</label>
                                                                   </div>
                                                                </div>
                                                                <div class="col-lg-6 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input [(ngModel)]="pick.unit"
-                                                                     name="unit_{w}}" type="checkbox" id="locationaddBtn3">
+                                                                     name="unit_{{i}}{w}}" type="checkbox" id="locationaddBtn3">
                                                                      <label class="control-label mt-2 font-weight-bold pl-3" for="locationaddBtn3"> Type Unit Number Manually</label>
                                                                   </div>
                                                                </div>
@@ -502,7 +502,7 @@
                                                                <div class="col-lg-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Unit Number</label>
                                                                   <input [(ngModel)]="pick.unitNumber"
-                                                                  name="unitNumber_{{w}}" type="text" class="form-control" placeholder="Unit Number">
+                                                                  name="unitNumber_{{i}}{{w}}" type="text" class="form-control" placeholder="Unit Number">
                                                                </div>
                                                             
                                                                <div class="col-12 pl-4 pr-4">
@@ -518,7 +518,7 @@
                                                                <div class="col-lg-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="pick.address.address"
-                                                                  name="address_{{w}}" type="text"  class="form-control" placeholder="type address">
+                                                                  name="address_{{i}}{{w}}" type="text"  class="form-control" placeholder="type address">
                                                                </div>
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -527,7 +527,7 @@
                                                                   <ng-select
                                                                   (change)="getStates($event, 'shipper', i, w)"
                                                                   [(ngModel)]="pick.address.countryCode"
-                                                                  name="countryID_{{w}}"
+                                                                  name="countryID_{{i}}{{w}}"
                                                                   class="form-control populate address_country"
                                                                   placeholder="Select Country"
                                                                 >
@@ -546,7 +546,7 @@
                                                                   <ng-select
                                                                      (change)="getCities($event, 'shipper', i, w)"
                                                                      [(ngModel)]="pick.address.stateCode"
-                                                                     name="stateID_{{w}}"
+                                                                     name="stateID_{{i}}{{w}}"
                                                                      class="form-control populate address_state"
                                                                      placeholder="Select province/state"
                                                                   >
@@ -563,7 +563,7 @@
                                                                   name="city_{{w}}" type="text" class="form-control" placeholder="toronto"> -->
                                                                   <ng-select
                                                                      [(ngModel)]="pick.address.cityName"
-                                                                     name="cityID_{{w}}"
+                                                                     name="cityID_{{i}}{{w}}"
                                                                      class="form-control populate address_city"
                                                                      placeholder="Select City"
                                                                   >
@@ -577,7 +577,7 @@
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="pick.address.zipCode"
-                                                                  name="zipCode_{{w}}" type="text" class="form-control" placeholder="V6C 1Z6">
+                                                                  name="zipCode_{{i}}{{w}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
                                                                <div class="col-12 pl-4 pr-4 pull-left">
                                                                   <div class="row">
@@ -600,7 +600,7 @@
       
                                                                   <div class="input-group">
       
-                                                                        <input [(ngModel)]="pick.pickupDate" name="pickupDate_{{w}}" type="text"
+                                                                        <input [(ngModel)]="pick.pickupDate" name="pickupDate_{{i}}{{w}}" type="text"
                                                                         placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
                                                                         class="form-control" autocomplete="off" #orderDate1="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
       
@@ -616,7 +616,7 @@
                                                                <div class="col-lg-6">
                                                                   <div class="input-group">
                                                                      <input [(ngModel)]="pick.pickupTime"
-                                                                        name="pickupTime_{{w}}" type="time" class="timepicker form-control" placeholder=""
+                                                                        name="pickupTime_{{i}}{{w}}" type="time" class="timepicker form-control" placeholder=""
                                                                         #pickupTime="ngModel" required pickupTime
                                                                         />
                                                                      <!-- <input [(ngModel)]="item.pickupTime"
@@ -641,7 +641,7 @@
       
                                                                   <div class="col-lg-11">
       
-                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{w}}{{z}}" class="form-control" >
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{i}}{{w}}{{z}}" class="form-control" >
       
                                                                   </div>
                                                                   <div class="col-lg-1 text-right mt-1 pl-0">
@@ -661,7 +661,7 @@
                                                                      </label>
       
                                                                      <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
-                                                                        name="pu{{z}}" type="text" class="form-control" >
+                                                                        name="pu{{i}}{{w}}{{z}}" type="text" class="form-control" >
       
                                                                   </div>
       
@@ -675,14 +675,14 @@
                                                                   </div>
                                                                   <div class="col-lg-6">
       
-                                                                     <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity_{{w}}{{z}}" class="form-control" >
+                                                                     <input placeholder="eg. 20,400" type="text" [(ngModel)]="commodity.quantity" name="quantity_{{i}}{{w}}{{z}}" class="form-control" >
       
                                                                   </div>
       
       
                                                                   <div class="col-lg-6">
       
-                                                                     <ng-select dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit_{{w}}{{z}}" placeholder="eg. select quantity"class="form-control">
+                                                                     <ng-select dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit_{{i}}{{w}}{{z}}" placeholder="eg. select quantity"class="form-control">
                                                                            <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
                                                                            <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
                                                                            <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
@@ -708,7 +708,7 @@
                                                                   </div>
                                                                   <div class="col-lg-6">
       
-                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight_{{w}}{{z}}" class="form-control" >
+                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight_{{i}}{{w}}{{z}}" class="form-control" >
                                                                      <!-- <div *ngIf="oWeight.invalid && (oWeight.dirty || oWeight.touched)" class="text-danger">
                                                                         <div *ngIf="oWeight.errors.pattern">
                                                                        Weight must contains numbers only.
@@ -722,7 +722,7 @@
                                                                   </div>
       
                                                                   <div class="col-lg-6">
-                                                                     <ng-select dropdownPosition='top' placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit_{{w}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+                                                                     <ng-select dropdownPosition='top' placeholder="eg. select weight" [(ngModel)]="commodity.weightUnit" name="weightUnit_{{i}}{{w}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
       
                                                                            <ng-option value="ton(s)">ton(s)</ng-option>
                                                                            <ng-option value="kg">Kilograms</ng-option>
@@ -741,7 +741,7 @@
                                                                      for="inputDefault">Pickup Instruction</label>
       
                                                                   <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="pick.pickupInstruction"
-                                                                     name="pickupInstruction_{{w}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                     name="pickupInstruction_{{i}}{{w}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
                                                                      ></textarea>
       
                                                                </div>
@@ -756,7 +756,7 @@
                                                                   </label>
       
                                                                   <input placeholder="eg. John Smith" [(ngModel)]="pick.contactPerson"
-                                                                     name="shippers.contactPerson_{{w}}" type="text" class="form-control"
+                                                                     name="shippers.contactPerson_{{i}}{{w}}" type="text" class="form-control"
                                                                      id="inputDefault" >
       
                                                                </div>
@@ -770,7 +770,7 @@
                                                                      <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                   </label>
       
-                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="pick.phone" name="shippers.phone_{{w}}"
+                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="pick.phone" name="shippers.phone_{{i}}{{w}}"
                                                                      type="text" class="form-control" id="inputDefault" >
       
                                                                </div>
@@ -864,7 +864,7 @@
                                                                   </label>
       
                                                                   <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
-                                                                     name="dropOffLocation_{{y}}" #dropLoc="ngModel"
+                                                                     name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
                                                                      required dropLoc
                                                                      (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
                                                                      tabindex="-1" aria-hidden="true" #drop="ngModel" required >
@@ -894,14 +894,14 @@
                                                                <div class="col-lg-4 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input type="checkbox" [(ngModel)]="dropItem.address.manual"
-                                                                     name="manualAddress_{{y}}" (change)="manualAddress($event.target.checked, i, y, 'receiver')" >
+                                                                     name="manualAddress_{{i}}{{y}}" (change)="manualAddress($event.target.checked, i, y, 'receiver')" >
                                                                      <label class="control-label mt-2 font-weight-bold"> Type Manually</label>
                                                                   </div>
                                                                </div>
                                                                <div class="col-lg-6 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input [(ngModel)]="dropItem.unit"
-                                                                     name="unit_{{y}}" type="checkbox" id="locationaddBtn3">
+                                                                     name="unit_{{i}}{{y}}" type="checkbox" id="locationaddBtn3">
                                                                      <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
                                                                   </div>
                                                                </div>
@@ -910,7 +910,7 @@
                                                                <div class="col-lg-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Unit Number</label>
                                                                   <input [(ngModel)]="dropItem.unitNumber"
-                                                                  name="unitNumber_{{y}}" type="text" class="form-control" placeholder="Unit Number">
+                                                                  name="unitNumber_{{i}}{{y}}" type="text" class="form-control" placeholder="Unit Number">
                                                                </div>
                                                             
                                                                <div class="col-12 pl-4 pr-4">
@@ -926,7 +926,7 @@
                                                                <div class="col-lg-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input type="text" [(ngModel)]="dropItem.address.address"
-                                                                  name="address_{{y}}"  class="form-control" placeholder="type address">
+                                                                  name="address_{{i}}{{y}}"  class="form-control" placeholder="type address">
                                                                </div>
                                                             
                                                                <div class="col-lg-6 pull-left">
@@ -934,7 +934,7 @@
                                                                  
                                                                   <ng-select
                                                                      [(ngModel)]="dropItem.address.cityName"
-                                                                     name="cityID_{{y}}"
+                                                                     name="cityID_{{i}}{{y}}"
                                                                      class="form-control populate address_city"
                                                                      placeholder="Select City"
                                                                   >
@@ -951,7 +951,7 @@
                                                                   <ng-select
                                                                      (change)="getCities($event, 'receiver', i, y)"
                                                                      [(ngModel)]="dropItem.address.stateCode"
-                                                                     name="stateID_{{y}}"
+                                                                     name="stateID_{{i}}{{y}}"
                                                                      class="form-control populate address_state"
                                                                      placeholder="Select province/state"
                                                                   >
@@ -968,7 +968,7 @@
                                                                   <ng-select
                                                                   (change)="getStates($event, 'receiver', i, y)"
                                                                   [(ngModel)]="dropItem.address.countryCode"
-                                                                  name="countryID_{{y}}"
+                                                                  name="countryID_{{i}}{{y}}"
                                                                   class="form-control populate address_country"
                                                                   placeholder="Select Country"
                                                                 >
@@ -982,7 +982,7 @@
                                                                <div class="col-lg-6 pull-left">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                   <input [(ngModel)]="dropItem.address.zipCode"
-                                                                  name="zipCode_{{y}}" type="text" class="form-control" placeholder="V6C 1Z6">
+                                                                  name="zipCode_{{i}}{{y}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
                                                                <div class="col-12 pl-4 pr-4 pull-left">
                                                                   <div class="row">
@@ -1003,7 +1003,7 @@
                                                                <div class="col-lg-6">
                                                                   <div class="input-group">
       
-                                                                     <input [(ngModel)]="dropItem.dropOffDate" name="dropOffDate_{{y}}" type="text"
+                                                                     <input [(ngModel)]="dropItem.dropOffDate" name="dropOffDate_{{i}}{{y}}" type="text"
                                                                         placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
                                                                         class="form-control" autocomplete="off" #delDate="ngModel" required  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
       
@@ -1020,7 +1020,7 @@
                                                                <div class="col-lg-6">
                                                                   <div class="input-group">
                                                                      <input [(ngModel)]="dropItem.dropOffTime"
-                                                                        name="dropOffTime_{{y}}" #dropOffTime="ngModel" required
+                                                                        name="dropOffTime_{{i}}{{y}}" #dropOffTime="ngModel" required
                                                                         dropOffTime type="time" class="timepicker form-control" placeholder=""
                                                                         />
                                                                   </div>
@@ -1043,7 +1043,7 @@
                                                                   </div>
                                                                   <div class="col-lg-11">
       
-                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{y}}{{z}}" class="form-control" >
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{i}}{{y}}{{z}}" class="form-control" >
       
       
                                                                   </div>
@@ -1067,7 +1067,7 @@
       
                                                                      </label>
       
-                                                                     <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{y}}{{z}}"
+                                                                     <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{i}}{{y}}{{z}}"
       
                                                                         type="text" class="form-control" >
                                                                         <!-- <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
@@ -1091,7 +1091,7 @@
                                                                   </div>
                                                                   <div class="col-lg-6">
       
-                                                                  <input placeholder="eg. 20,200" type="text" [(ngModel)]="commodity.quantity" name="quantity{{y}}{{z}}" class="form-control" >
+                                                                  <input placeholder="eg. 20,200" type="text" [(ngModel)]="commodity.quantity" name="quantity{{i}}{{y}}{{z}}" class="form-control" >
                                                                   <!-- <div *ngIf="txtQuantity.invalid && (txtQuantity.dirty || txtQuantity.touched)" class="text-danger">
                                                                      <div *ngIf="txtQuantity.errors.pattern">
                                                                    Quantity must contains number only.
@@ -1105,7 +1105,7 @@
                                                                   </div>
       
                                                                   <div class="col-lg-6">
-                                                                     <ng-select placeholder="eg. select quantity" dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+                                                                     <ng-select placeholder="eg. select quantity" dropdownPosition='top' [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{i}}{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
                                                                         <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
                                                                            <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
                                                                            <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
@@ -1140,7 +1140,7 @@
                                                                   </div>
                                                                   <div class="col-lg-6">
       
-                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight{{y}}{{z}}" class="form-control" >
+                                                                     <input placeholder="eg. 500 Kg" type="text" [(ngModel)]="commodity.weight" name="weight{{i}}{{y}}{{z}}" class="form-control" >
                                                                      <!-- <div *ngIf="txtWeight.invalid && (txtWeight.dirty || txtWeight.touched)" class="text-danger">
                                                                         <div *ngIf="txtWeight.errors.pattern">
                                                                       Weight must contains numbers only.
@@ -1153,7 +1153,7 @@
                                                                   </div>
       
                                                                   <div class="col-lg-6">
-                                                                     <ng-select placeholder="eg. select weight" dropdownPosition='top' [(ngModel)]="commodity.weightUnit" name="weightUnit{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
+                                                                     <ng-select placeholder="eg. select weight" dropdownPosition='top' [(ngModel)]="commodity.weightUnit" name="weightUnit{{i}}{{y}}{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false" >
                                                                            <ng-option value="ton(s)">ton(s)</ng-option>
                                                                            <ng-option value="kg">Kilograms</ng-option>
                                                                            <ng-option value="lbs">lbs</ng-option>
@@ -1180,7 +1180,7 @@
                                                                      for="inputDefault">Delivery Instruction</label>
       
                                                                   <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="dropItem.dropOffInstruction"
-                                                                     name="dropOffInstruction_{{y}}" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                     name="dropOffInstruction_{{i}}{{y}}" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
       
                                                                      style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
                                                                      <!-- <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
@@ -1202,7 +1202,7 @@
                                                                   </label>
       
                                                                   <input placeholder="eg. John Smith" [(ngModel)]="dropItem.contactPerson"
-                                                                     name="contactPerson_{{y}}" type="text" class="form-control"
+                                                                     name="contactPerson_{{i}}{{y}}" type="text" class="form-control"
                                                                      id="inputDefault" >
                                                                      <!-- <div *ngIf="conPickup.invalid && (conPickup.dirty || conPickup.touched)" class="text-danger">
                                                                         <div *ngIf="conPickup.errors.pattern">
@@ -1225,7 +1225,7 @@
                                                                      <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                                   </label>
       
-                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="dropItem.phone" name="phone_{{y}}"
+                                                                  <input placeholder="eg. 2234567891" [(ngModel)]="dropItem.phone" name="phone_{{i}}{{y}}"
                                                                      type="text" class="form-control" id="inputDefault" >
                                                                      <!-- <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
                                                                         <div *ngIf="cPhone.errors.pattern">

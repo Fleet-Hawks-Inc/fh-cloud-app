@@ -1464,6 +1464,7 @@ export class AddOrdersComponent implements OnInit {
     
 
     if (elem === "shipper") {
+      
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
@@ -1475,8 +1476,8 @@ export class AddOrdersComponent implements OnInit {
           element.pickupDate = itemDateAndTime[0];
           element.pickupTime = itemDateAndTime[1];
         }
-        
       }
+      
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
       this.shippersReceivers[j].shippers.update = true;
