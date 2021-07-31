@@ -6,27 +6,34 @@
           <div class="row" style="padding-top:10px;">
             <div class="col-md-2 col-lg-2">
               <div class="input-group input-group-md mb-3">
-                <input type="text" class="form-control" placeholder="Search">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filter.invNo" name="invNo">
               </div>
             </div>
             <div class="col-lg-3 col-md-3">
-              <div class="input-daterange input-group" data-plugin-datepicker>
-                <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span>
-                </span>
-                <input type="text" class="form-control" name="start">
-                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                  to
-                </span>
-                <input type="text" class="form-control" name="end">
+              <div class="input-daterange input-group">
+                 <span class="input-group-prepend">
+                    <span class="input-group-text">
+                       <i class="fas fa-calendar-alt"></i>
+                    </span>
+                 </span>
+                 <input [(ngModel)]="filter.startDate" name="startDate"
+                    type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                    ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                    autocomplete="off">
+                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                    to
+                 </span>
+                 <input [(ngModel)]="filter.endDate" name="endDate"
+                    type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                    ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                    autocomplete="off">
               </div>
+           </div>
+            <div class="col-md-2  col-lg-2">
+              <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+              <!-- <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button> -->
             </div>
-            <div class="col-md-1  col-lg-1">
-              <button type="submit" class="btn btn-sm btn-success">Search</button>
-            </div>
-            <div class="col-md-6  col-lg-6 text-right pr-5">
+            <div class="col-md-5  col-lg-5 text-right pr-5">
               <a routerLink="/accounts/invoices/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
                   class="fas fa-plus"></i> Add Invoice</a>
               <!-- <a routerLink="/accounts/invoices/add-load-invoice" class="btn btn-success btn-sm ml-2"
@@ -160,7 +167,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="invoices.length == 0 && orderInvoices.length == 0" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of orderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
@@ -219,7 +226,7 @@
                             <a class="dropdown-item text-1"
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
-                            <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
+                            <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided' && inv.invStatus !== 'partially paid'"
                               class="dropdown-item text-1" (click)="deleteOrderInvoice(inv.invID, inv.orderID)">Delete</button>
                           </div>
                         </div>
@@ -285,10 +292,10 @@
                           <div class="dropdown-menu" role="menu">
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button> -->
-                            <a class="dropdown-item text-1"
-                              *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
-                            <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
+                            <button class="dropdown-item text-1"
+                              *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'  && inv.invStatus !== 'partially paid'" (click)="editFn(inv.invID)"
+                              >Edit</button>
+                            <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided' && inv.invStatus !== 'partially paid'"
                               class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
                           </div>
                         </div>
@@ -319,7 +326,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="openInvoices.length == 0 || openOrderInvoices.length == 0" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of openOrderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
@@ -475,7 +482,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="paidInvoices.length == 0 && paidOrderInvoices.length" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of paidOrderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
@@ -625,7 +632,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="partiallyPaidInvoices.length === 0 && partiallyPaidOrderInvoices.length === 0" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of partiallyPaidOrderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
@@ -775,7 +782,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="emailedInvoices.length == 0 && emailedOrderInvoices.length === 0" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of emailedOrderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
@@ -925,7 +932,7 @@
                   </thead>
                   <tbody>
                     <tr *ngIf="voidedInvoices.length == 0 && voidedOrderInvoices.length === 0" class="text-center">
-                      <td colspan="13">{{ noInvoicesMsg }}</td>
+                      <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of voidedOrderInvoices; let i = index;">
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>

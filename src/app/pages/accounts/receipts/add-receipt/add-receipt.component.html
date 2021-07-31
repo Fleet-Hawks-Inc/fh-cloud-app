@@ -95,17 +95,18 @@
                             <th class="text-2">Invoice#</th>
                             <th class="text-2">Invoice Date</th>
                             <th class="text-2">Customer</th>
-                            <th class="text-2">Order#</th>
+                            <!-- <th class="text-2">Order#</th>
                             <th class="text-2">Freight Amount</th>
                             <th class="text-2">Other Charges</th>
-                            <th class="text-2">Tax</th>
+                            <th class="text-2">Tax</th> -->
                             <th class="text-2">Total Amount</th>
-                            <th class="text-2">Factoring Comp.</th>
-                            <th class="text-2">Factoring Comp. Charges</th>
+                            <th class="text-2">Amount Received</th>
+                            <!-- <th class="text-2">Factoring Comp.</th>
+                            <th class="text-2">Factoring Comp. Charges</th> -->
                             <th class="text-2">Invoice Balance</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
-                            <th class="text-2" width="7%">Amount Received</th>
+                            <th class="text-2" width="7%">Amount Paid</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -116,16 +117,17 @@
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
                             <td>{{customersObjects[inv.customerID]}}</td>
-                            <td>{{inv.invNo}}</td>
+                            <!-- <td>{{inv.invNo}}</td>
                             <td>{{inv.charges.freightFee.amount}} {{inv.charges.freightFee.currency}}</td>
                             <td>Add:
                               {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}<br>
                               Deduct:
                               {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td> -->
                             <td>{{inv.finalAmount}}{{inv.charges.freightFee.currency}}</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{inv.amountReceived}}{{inv.charges.freightFee.currency}}</td>
+                            <!-- <td>-</td>
+                            <td>-</td> -->
                             <td>{{inv.balance}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
@@ -133,7 +135,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number"  [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                              <input type="number"  [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
@@ -141,13 +143,14 @@
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
                             <td>{{customersObjects[inv.customerID]}}</td>
+                            <!-- <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>-</td>
-                            <td>{{inv.taxAmount}}</td>
+                            <td>{{inv.taxAmount}}</td> -->
                             <td>{{inv.finalAmount}}</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{inv.amountReceived}}</td>
+                            <!-- <td>-</td>
+                            <td>-</td> -->
                             <td>{{inv.balance}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
@@ -155,7 +158,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
