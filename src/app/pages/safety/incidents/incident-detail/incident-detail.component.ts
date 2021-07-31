@@ -15,6 +15,7 @@ declare var $: any;
 })
 export class IncidentDetailComponent implements OnInit {
   asseturl = this.apiService.AssetUrl;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   private platform: any;
   public map;
@@ -58,6 +59,8 @@ export class IncidentDetailComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  showMap: boolean = true;
+
   slideConfig1 = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -78,11 +81,43 @@ export class IncidentDetailComponent implements OnInit {
     this.fetchTripsByIDs();
     this.mapShow();
 
-    $('#viewVideosModal').modal({
+    $('#viewDocModal').modal({
       show: false
   }).on('hidden.bs.modal', function(){
       $(this).find('video')[0].pause();
   });
+  }
+
+
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
+
+        }
+        const location = await this.hereMap.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          this.showMap = false;
+          return 'NA';
+
+        }
+      } else {
+        this.showMap = false;
+        return 'NA';
+
+      }
+    } catch (error) {
+      this.showMap = false;
+      return 'NA';
+
+    }
+
   }
 
   async fetchEventDetail() {
@@ -100,8 +135,9 @@ export class IncidentDetailComponent implements OnInit {
         this.eventSource = result.eventSource;
         this.eventTime =  await this.convertTimeFormat(result.eventTime);
         
-        this.location = result.location;
-        await this.setMarker(this.location);
+        const location = await this.getLocation(result.location);
+        this.location = location;
+        await this.setMarker(result.location);
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.incidentImages = result.uploadedPhotos.map(x => ({
@@ -113,19 +149,12 @@ export class IncidentDetailComponent implements OnInit {
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
           this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
-        
         if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-           result.uploadedDocs.map(x => {
-            let name = x.split('.');
-            let ext = name[name.length - 1].toLowerCase();
-            if(ext == 'doc' || ext == 'docx') {
-              this.incidentDocs.push({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.asseturl}/${result.pk}/${x}&embedded=true`), name: x})
-            } else {
-              this.incidentDocs.push({path: this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.asseturl}/${result.pk}/${x}`), name: x})
-            }
-          });
-         
+          this.incidentDocs = result.uploadedDocs.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+          
+
         }
+        
         
         this.createdBy = result.createdBy;
         this.safetyNotes = result.safetyNotes;
@@ -146,20 +175,20 @@ export class IncidentDetailComponent implements OnInit {
     return time.join (''); // return adjusted time or original string
   }
 
-  setMarker = async (value: any) => {
-    
-    const service = this.platform.getSearchService();
-    const result = await service.geocode({ q: value });
-    
-    const positionFound = result.items[0].position;
-    const startIcon=new H.map.Icon("/assets/img/mapIcon/dest.png",{ size: { w: 30, h: 30 } })
-    this.map.setCenter({
-      lat: positionFound.lat,
-      lng: positionFound.lng
-    });
-    const currentLoc = new H.map.Marker({ lat: positionFound.lat, lng: positionFound.lng }, { icon: startIcon });
-    this.map.addObject(currentLoc);
-    
+  setMarker = async (location: any) => {
+    const cords = location.split(',');
+    if (cords.length > 0) {
+      const lat = cords[0];
+      const lng = cords[1];
+      const startIcon = new H.map.Icon("/assets/img/mapIcon/dest.png", { size: { w: 30, h: 30 } })
+      this.map.setCenter({
+        lat,
+        lng
+      });
+      const currentLoc = new H.map.Marker({ lat, lng }, { icon: startIcon });
+      this.map.addObject(currentLoc);
+    }
+
   }
 
   mapShow() {
@@ -206,4 +235,16 @@ export class IncidentDetailComponent implements OnInit {
         this.tripsObject = result;
       })
   }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
 }

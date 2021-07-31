@@ -7,6 +7,7 @@ declare var $: any;
 import * as moment from "moment";
 import { SafetyService } from 'src/app/services/safety.service';
 import Constants from 'src/app/pages/fleet/constants';
+import { constants } from 'os';
 
 @Component({
   selector: 'app-event-list',
@@ -32,12 +33,13 @@ export class EventListComponent implements OnInit {
   vehiclesObject: any = {};
   driversObject: any = {};
   drivers = [];
-  dataMessage: any;
+  dataMessage: any = Constants.FETCHING_DATA;
 
   birthDateMinLimit: any;
   birthDateMaxLimit: any;
   status_values: any = ["open", "investigating", "coaching", "closed"];
   lastItemSK: string = '';
+  
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService, private hereMapService: HereMapService) { 
       const date = new Date();
@@ -84,6 +86,10 @@ export class EventListComponent implements OnInit {
   }
 
   searchEvents() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.filter.date == '') {
+      this.filter.date = 'null'
+    }
     this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
       .subscribe(async (result: any) => {
 
@@ -109,18 +115,25 @@ export class EventListComponent implements OnInit {
     if (this.lastItemSK != 'end') {
       this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
-          for (let index = 0; index < result.length; index++) {
-            const element = result[index];
-            const location = await this.getLocation(element.location);
-            element.location = location;
-            this.events.push(element);
-
+          
+          if (result.length == 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
-          if (this.events[this.events.length - 1].sk != undefined) {
-            this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+          if(result.length > 0) {
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              const location = await this.getLocation(element.location);
+              element.location = location;
+              this.events.push(element);
+  
+            }
+            if (this.events[this.events.length - 1].sk != undefined) {
+              this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
           }
+         
         })
     }
 
@@ -145,7 +158,6 @@ export class EventListComponent implements OnInit {
   }
 
   resetFilter() {
-    console.log('this.filter', this.filter)
     
     if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
       this.lastItemSK = '';

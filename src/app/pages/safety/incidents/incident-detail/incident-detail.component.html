@@ -4,6 +4,7 @@
       height: 450px;
       width: 100%;
    }
+   
 </style>
 <section class="body">
    <div class="inner-wrapper">
@@ -31,9 +32,9 @@
                   <div class="bg-white p-3 text-dark">
                      <div class="form-group row justify-content-between pl-2 pr-2">
 
-                        <div class="col-xl-9 col-12 pl-0 pr-0">
+                        <div class="col-xl-12 col-12 pl-0 pr-0">
                            <div class="row pl-3 pr-3">
-                              <div class="col-xl-6 col-6 pl-0">
+                              <div class="col-xl-4 col-4 pl-0 pr-2">
                                  <div class="safetytile p-4 border">
                                     
                                     <div class="driverbar w100">
@@ -76,18 +77,13 @@
                                     <div class="w100 pull-left">
                                        <hr class="solid mt-2 mb-2">
                                     </div>
-                                    <div class="driverbar">
-                                       <span class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{tripsObject[trip]}}</span>
-                                       <h2
-                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                          Trip ID</h2>
-                                    </div>
+                                    
 
 
                                  </div>
                               </div>
 
-                              <div class="col-xl-6 col-6 pr-0">
+                              <div class="col-xl-4 col-4 pr-0 pl-2">
                                  <div class="safetytile p-4 border">
                                     
                                     <div class="driverbar w100">
@@ -134,6 +130,21 @@
                                     <div class="w100 pull-left">
                                        <hr class="solid mt-2 mb-2">
                                     </div>
+                                    
+
+
+                                 </div>
+                              </div>
+
+                              <div class="col-xl-4 col-4 pr-0  ">
+                                 <div class="safetytile p-4 border">
+                                    <div class="driverbar">
+                                       <span class="pull-right pt-1 text-4 font-weight-bold text-dark text-capitalize">{{tripsObject[trip]}}</span>
+                                       <h2
+                                          class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
+                                          Trip ID</h2>
+                                    </div>
+
                                     <div class="driverbar">
                                        <span
                                           class="pull-right pt-1 text-4 font-weight-bold text-dark w-50 text-right">{{location}}</span>
@@ -141,6 +152,7 @@
                                           class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
                                           Location</h2>
                                     </div>
+                                    
 
 
                                  </div>
@@ -148,50 +160,91 @@
 
                            </div>
                         </div>
-
-
-                        <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
-                           <div class="col-xl-12 col-12 mb-3">
-                              <div class="vehicle-common-box maindisbox w100 pull-left">
-                                 <div class="widgetload">
-                                    <div class="widgettbload">
-                                       <span class="pull-right text-3 mt-2 text-dark">
-
-                                       </span>
-
-                                       <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                             class="fas fa-box"></i> Attachments</h2>
-                                    </div>
-
-                                    <div class="widgetlinfo pb-1">
-                                       <div class="row">
-                                          <div class="col-lg-12 text-center p-5">
-                                             <a href="javascript:;" data-target="#viewDocsModal" data-toggle="modal"
-                                                class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i
-                                                   class="fas fa-eye"></i> View Incident Document</a>
-                                             <a href="javascript:;" data-target="#viewImagesModal" data-toggle="modal"
-                                                class="modal-with-form btn btn-success btn-block mb-2 btn-sm"><i
-                                                   class="fas fa-eye"></i> View Incident Photo</a>
-                                             <a href="javascript:;" data-target="#viewVideosModal" data-toggle="modal"
-                                                class="modal-with-form btn btn-success btn-block mb-1 btn-sm"><i
-                                                   class="fas fa-eye"></i> View Incident Video</a>
-                                          </div>
-
-                                       </div>
-
-
-
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
                      </div>
                   </div>
                </div>
             </div>
-
+            <div class="row mb-3">
+               <div class="col-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="row">
+                        <div class="col-4 pl-2 pr-2">
+                           <div class="vehicle-common-box p-3">
+                              <div class="row">
+                                 <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label>
+                                 </div>
+                                 <div class="col-lg-6 text-right">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-12">
+                                    <div class="row mb-1" *ngFor="let doc of incidentDocs;let d= index">
+                                       <div class="col-12"><a [href]="doc.path" target="_blank">Document {{d+1}} <i class="far fa-file text-dak mr-1"></i></a> </div>
+                                    </div>
+            
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div  class="col-lg-12" *ngIf="incidentDocs?.length == 0">
+                                    <span>No Data Found</span>
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                        <div class="col-4 pr-2 pl-2">
+                           <div class="vehicle-common-box p-3">
+                              <div class="row">
+                                 <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label>
+                                 </div>
+                                 <div class="col-lg-6 text-right">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-12">
+                                    <div class="row mb-1" *ngFor="let doc of incidentImages;let d= index">
+                                       <div class="col-12"><a [href]="doc.path" target="_blank">Photo {{d+1}} <i class="far fa-file text-dak mr-1"></i></a> </div>
+                                    </div>
+            
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div  class="col-lg-12" *ngIf="incidentImages?.length == 0">
+                                    <span>No Data Found</span>
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                        <div class="col-4 pl-2">
+                           <div class="vehicle-common-box p-3">
+                              <div class="row">
+                                 <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Video(s)</label>
+                                 </div>
+                                 <div class="col-lg-6 text-right">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-12">
+                                    <div class="row mb-1" *ngFor="let doc of incidentVideos;let d= index">
+                                       <div class="col-12"><a [href]="doc.path" target="_blank" >Video {{d+1}} <i class="far fa-file text-dak mr-1"></i></a> </div>
+                                    </div>
+            
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div  class="col-lg-12" *ngIf="incidentVideos?.length == 0">
+                                    <span>No Data Found</span>
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
             <div class="row mb-3">
                <div class="col-6">
                   <div class="bg-white p-3 text-dark">
@@ -370,3 +423,31 @@
    </div>
 </div>
 
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog w-50 h-auto mx-auto mt-4" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       <div class="form-row">
+         <div class="form-group col-md-12">
+           <div>
+             <iframe class="iframe-img" [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+
+           </div>
+         </div>
+       </div>
+
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+     </div>
+   </div>
+ </div>
+</div>

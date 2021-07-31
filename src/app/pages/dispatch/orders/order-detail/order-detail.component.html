@@ -917,7 +917,7 @@
                             </tr>
 
                             <tr>
-                                <td *ngFor="let item of invoiceData.data">
+                                <td >
                                     <div class="p-2">
                                         <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" >
                                             <tbody>
@@ -925,14 +925,14 @@
                                                     <td valign="top">
                                                         <b style="font-size: 12px;">CUSTOMER:</b> <br>
                                                         <span style="text-transform: capitalize;">
-                                                            {{item.customerData.companyName}} <br></span>
-                                                        {{item.customerData.address}} <br>
+                                                            {{invoiceData.data[0].customerData.companyName}} <br></span>
+                                                        {{invoiceData.data[0].customerData.address}} <br>
                                                         <span
-                                                            *ngIf="item.customerData.additionalContact != '' && item.customerData.additionalContact != null ">
-                                                            Contact Person: <b class="text-capitalize">{{item.customerData.additionalContact}}</b> <br></span>
+                                                            *ngIf="invoiceData.data[0].customerData.additionalContact != '' && invoiceData.data[0].customerData.additionalContact != null ">
+                                                            Contact Person: <b class="text-capitalize">{{invoiceData.data[0].customerData.additionalContact}}</b> <br></span>
                                                         <span
-                                                            *ngIf="item.customerData.phone != '' && item.customerData.phone != null ">Phone:
-                                                            <b>{{item.customerData.phone}}</b></span>
+                                                            *ngIf="invoiceData.data[0].customerData.phone != '' && invoiceData.data[0].customerData.phone != null ">Phone:
+                                                            <b>{{invoiceData.data[0].customerData.phone}}</b></span>
                                                     </td>
                                                     <td align="right">
                                                         <table>
@@ -968,69 +968,64 @@
                                                         </table>
                                                     </td>
                                                 </tr>
-                                                <tr *ngFor="let ship of item.shippers">
-                                                    <td valign="top" style="width: 50%;">
-                                                        <div  class="shipment__wrap" style=" border-style:dashed;   border-width: 1px ; border-color: #8d8d8d;
-                                                        padding: 10px;">
-                                                            <b style="font-size: 12px;">SHIPPER:</b> <br>
-                                                            <span class="text-capitalize">{{ship.companyName}}</span> <br>
-                                                            {{ship.shipAddress}}
-    
-                                                            <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+                                                <tr>
+                                                    <td valign="top" colspan="2">
+                                                        <div *ngFor="let item of invoiceData.data">
+                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;">
+                                                                <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
+                                                                    <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                                                    <span class="text-capitalize">{{ship.companyName}}</span> <br>
+                                                                    {{ship.shipAddress}}
+            
+                                                                    <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
+                                                                        <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+                                                                        
+                                                                        <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ pick.address.address }}
+                                                                            {{ pick.address.city }}
+                                                                            {{ pick.address.state }}
+                                                                            {{ pick.address.country }}
+                                                                            {{ pick.address.zipCode }}
+                                                                        </span>
+                                                                        <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ pick.address.pickupLocation }}
+                                                                        </span>
+                                                                        <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
+                                                                        
+                                                                        <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6" style="padding: 5px 0;">
+                                                                                        <table class="table-striped table-bordered" width="100%">
+                                                                                            <thead>
+                                                                                                <tr style="font-size: 12px;">
+                                                                                                    <td class="text-capitalize" colspan="2">COMMODITY</td>
+                                                                                                    <td style="width: 80px">PICK#</td>
+                                                                                                    <td style="width: 70px">QTY </td>
+                                                                                                    <td style="width: 70px">WEIGHT</td>
+                                                                                                
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr class="item" *ngFor="let commodity of pick.commodity;">
+                                                                                                    <td colspan="2">{{commodity.name}}</td>
+                                                                                                    <td>{{commodity.pu}}</td>
+                                                                                                    <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                                                                                    <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                                                                    
+                                                                                                </tr>
+                                                                                                
+                                    
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>    
                                                                 
-                                                                <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ pick.address.address }}
-                                                                    {{ pick.address.city }}
-                                                                    {{ pick.address.state }}
-                                                                    {{ pick.address.country }}
-                                                                    {{ pick.address.zipCode }}
-                                                                </span>
-                                                                <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ pick.address.pickupLocation }}
-                                                                </span>
-                                                                <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
-                                                                
-                                                                <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td colspan="6" style="padding: 5px 0;">
-                                                                                <table class="table-striped table-bordered" width="100%">
-                                                                                    <thead>
-                                                                                        <tr style="font-size: 12px;">
-                                                                                            <td class="text-capitalize" colspan="2">COMMODITY</td>
-                                                                                            <td style="width: 80px">PICK#</td>
-                                                                                            <td style="width: 70px">QTY </td>
-                                                                                            <td style="width: 70px">WEIGHT</td>
-                                                                                           
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="item" *ngFor="let commodity of pick.commodity;">
-                                                                                            <td colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.pu}}</td>
-                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
-                                                                                            
-                                                                                        </tr>
-                                                                                        
-                            
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                       
-                                                        
-                                                    </td>
-    
-                                                    <td valign="top" align="right" style="width: 50%;">
-                                                        <div *ngFor="let receive of ship.receivers;" style="    border: 1px dashed #8d8d8d;
-                                                        padding: 10px;">
+                                                                <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;width: 49.5%;float: left;border: 1px dashed #8d8d8d;">
                                                             <b style="font-size: 12px;">RECEIVER:</b> <br>
                                                             <span class="text-capitalize">{{receive.companyName}}</span> <br>
                                                             {{receive.receiverAddress}}
@@ -1081,13 +1076,20 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                        </div>    
+                                                            </div>
+                                                            
                                                         </div>
                                                         
+                                                        
                                                        
+                                                        
                                                     </td>
+    
+                                                    
                                                 </tr>
                                             </tbody>
-                                            <div *ngIf="item.shippers?.length > 1" class="html2pdf__page-break"></div>
+                                            
                                         </table>
                                        
                                         <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
@@ -1265,7 +1267,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel"
+<div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="generateInvoiceModalLabel"
     aria-hidden="true" *ngIf="isInvoice">
     <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
         <div class="modal-content">
@@ -1302,7 +1304,7 @@
                             </tr>
 
                             <tr>
-                                <td *ngFor="let item of invoiceData.data">
+                                <td *ngFor="let item of invoiceData.data; let idx = index;" style="display:block;width:99.9%;clear:both">
                                     <div class="p-2">
                                         <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" *ngFor="let ship of item.shippers">
                                             <tbody>
@@ -1468,14 +1470,14 @@
                                                             </div>
                                                         </div>
                                                         
-                                                       
+                                                       <div *ngIf="invoiceData.data?.length > 1" class="html2pdf__page-break"></div>
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                            <div *ngIf="item.shippers?.length > 1" class="html2pdf__page-break"></div>
+                                            
                                         </table>
                                        
-                                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none;margin-top: 10px;">
+                                        <table class="invoice-iner__wrapper" *ngIf="invoiceData.data?.length - 1 === idx" width="100%" style="border-top: none;margin-top: 10px;">
                                             <tbody>
                                                 <tr>
                                                     <td colspan="6">

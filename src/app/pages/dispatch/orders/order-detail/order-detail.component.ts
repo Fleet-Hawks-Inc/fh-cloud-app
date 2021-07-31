@@ -435,6 +435,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`invType`] = 'orderInvoice';
     this.invoiceData[`invStatus`] = 'open';
     this.invoiceData[`amountReceived`] = 0;
+    this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
     this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
@@ -445,7 +446,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   invoiceGenerated() {
-    const invStatus = true;
+    const invStatus:boolean = true;
     this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${invStatus}`).subscribe((res) => {});
   }
 

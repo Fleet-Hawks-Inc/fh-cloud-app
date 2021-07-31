@@ -107,7 +107,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventDate | date: "yyyy-MM-dd" }} {{ eventTime }}</span
+                            >{{ eventDate | date: "yyyy/MM/dd" }} {{ eventTime }}</span
                           >
                           <h2
                             class="
@@ -183,7 +183,7 @@
                             >Impact/Tilt</span
                           >
 
-                            <span *ngIf="eventType == 'harshBreaking'">
+                            <span *ngIf="eventType == 'harshBrake'">
                               Harsh Braking
                             </span>
 

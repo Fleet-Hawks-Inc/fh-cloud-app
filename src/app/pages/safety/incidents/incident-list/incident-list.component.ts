@@ -47,15 +47,14 @@ export class IncidentListComponent implements OnInit {
   serviceUrl = '';
   filter = {
     date: null,
-    driverID: null,
-    location: null
+    driverID: null
   };
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
   usersObject: any = {};
   status_values: any = ["open", "investigating", "coaching", "closed"];
-  dataMessage: any;
+  dataMessage: any = Constants.FETCHING_DATA;
   drivers = [];
   lastItemSK: string = '';
   birthDateMinLimit: any;
@@ -119,23 +118,33 @@ export class IncidentListComponent implements OnInit {
     }
   }
 
-  fetchEvents() {
+  async fetchEvents(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.events = [];
+    }
     if(this.lastItemSK != 'end') {
       this.safetyService.getData(`incidents?lastKey=${this.lastItemSK}`)
       .subscribe(async (result: any) => {
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          const location = await this.getLocation(element.location);
-          element.location = location;
-          this.events.push(element);
-
+        if (result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if(this.events[this.events.length - 1].sk != undefined) {
-          this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
-        } else {
-          this.lastItemSK = 'end';
+        if(result.length > 0) {
+          for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            const location = await this.getLocation(element.location);
+            element.location = location;
+            this.events.push(element);
+  
+          }
+          if(this.events[this.events.length - 1].sk != undefined) {
+            this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+          this.newEvents = this.events;
         }
-        this.newEvents = this.events;
+        
       })
     }
    
@@ -155,25 +164,40 @@ export class IncidentListComponent implements OnInit {
 
 
   searchEvent() {
-    
-    this.safetyService.getData(`incidents/paging?driverID=${this.filter.driverID}&location=${this.filter.location}&date=${this.filter.date}`)
-      .subscribe((result: any) => {
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.filter.date == '' || this.filter.driverID == '') {
+      this.filter.date = 'null';
+      this.filter.driverID = 'null';
+    }
+    this.safetyService.getData(`incidents/paging?driverID=${this.filter.driverID}&date=${this.filter.date}`)
+      .subscribe(async (result: any) => {
         
-        if(result.length == 0) {
+        if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.events = result;
+        this.events = [];
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          const location = await this.getLocation(element.location);
+          element.location = location;
+          this.events.push(element);
+
+        }
       })
    
   }
 
 
   fetchTabData(tabType) {
-    let current = this;
+    if(this.filter.date != '' || this.filter.date != null || this.filter.driverID != '' || this.filter.driverID != null) {
+      this.filter.date = '';
+      this.filter.driverID = null;
+    }
     this.events = this.newEvents;
     $(".navtabs").removeClass('active');
-
+    
     if (tabType === 'all') {
+      $("#allSafetyIncidents-tab").addClass('active');
       this.events = this.newEvents;
 
     } else if (tabType === 'assigned') {
@@ -189,6 +213,9 @@ export class IncidentListComponent implements OnInit {
       this.events = this.events.filter(element => { return element.status == 'closed'})
 
     }
+    if (this.events.length == 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
 
   }
 
@@ -201,14 +228,13 @@ export class IncidentListComponent implements OnInit {
 
 
   resetFilter() {
-    if(this.filter.date !== '' || this.filter.driverID !== '' || this.filter.location !== '') {
+    if(this.filter.date !== '' || this.filter.driverID !== '') {
       this.lastItemSK = ''; 
       this.events = [];
       this.fetchEvents();
       this.filter = {
         date: null,
         driverID: null,
-        location: null,
       };
     } else {
       return false;

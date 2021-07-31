@@ -1147,7 +1147,7 @@ export class AddOrdersComponent implements OnInit {
     this.submitDisabled = true;
     
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    console.log('orderData', this.orderData)
+    
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -1464,6 +1464,7 @@ export class AddOrdersComponent implements OnInit {
     
 
     if (elem === "shipper") {
+      
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
@@ -1475,8 +1476,8 @@ export class AddOrdersComponent implements OnInit {
           element.pickupDate = itemDateAndTime[0];
           element.pickupTime = itemDateAndTime[1];
         }
-        
       }
+      
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
       this.shippersReceivers[j].shippers.update = true;
