@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-add-receipt',
@@ -26,7 +27,7 @@ export class AddReceiptComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   receiptData = {
     customerID: null,
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     recNo: null,
     recAmount: 0,
     recAmountCur: null,
@@ -74,6 +75,7 @@ export class AddReceiptComponent implements OnInit {
   Success = '';
   submitDisabled = false;
   orderInvoices = [];
+  totalReceivedAmt = 0;
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -97,11 +99,16 @@ export class AddReceiptComponent implements OnInit {
     }
   }
   async getInvoices() {
+
     this.accountService.getData(`order-invoice/customer/${this.receiptData.customerID}`).subscribe((res: any) => {
       this.orderInvoices = res;
     });
     this.accountService.getData(`invoices/customer/${this.receiptData.customerID}`).subscribe((result) => {
       this.invoices = result;
+      setTimeout(() => {
+        this.receiptData.recAmountCur = this.invoices[0].invCur;
+      }, 1000);
+
     });
   }
   /*
@@ -153,7 +160,6 @@ export class AddReceiptComponent implements OnInit {
         }
       }
     }
-
   }
   async getPaidInvoices() {
     const paidInvoices = [];
@@ -235,7 +241,16 @@ export class AddReceiptComponent implements OnInit {
       });
     });
   }
+findReceivedAmtFn() {
+  for (const element of this.invoices) {
+   this.totalReceivedAmt += element.amountPaid;
+  }
+  for (const element of this.orderInvoices) {
+    this.totalReceivedAmt += element.amountPaid;
+   }
+  this.receiptData.recAmount = this.totalReceivedAmt;
 
+}
   async updateReceipt() {
     this.submitDisabled = true;
     this.errors = {};

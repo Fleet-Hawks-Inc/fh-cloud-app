@@ -148,7 +148,7 @@
                             Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
 
                           </div>
-                        </div> 
+                        </div>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Birth Date <span
@@ -235,17 +235,17 @@
                                     <div class="col-lg-12">
                                       <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
                                           <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
-                                      
+
                                       <p class="text-dark pt-2 mb-0"> <span class="pr-1"
                                           [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
                                             [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
-                                        
+
                                     </div>
                                     <div class="col-lg-12">
                                       <p class="text-dark pt-2 mb-0"><span class="pr-1"
                                           [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
                                             [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
-                                        
+
                                     </div>
                                   </div>
                                 </div>
@@ -320,7 +320,7 @@
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
                           (change)="onChangeHideErrors('phone')" placeholder="eg. 2234567891" #mob="ngModel"
-                          required pattern="[0-9]{1,10}$">
+                          required pattern="[0-9]{10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
                             Phone is required.
@@ -537,7 +537,7 @@
                           <ng-select [(ngModel)]="item.addressType" name="address[{{i}}].addressType"
                             placeholder="Select address type">
                             <ng-option value="Home">Home</ng-option>
-                            <ng-option value="Maiing Address">Maiing Address</ng-option>
+                            <ng-option value="Mailing Address">Mailing Address</ng-option>
                           </ng-select>
                         </div>
                       </div>
@@ -654,7 +654,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type 
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Document Type
                         </label>
                         <ng-select [(ngModel)]="document.documentType"
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
@@ -678,7 +678,7 @@
                   <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Document# 
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Document#
                           </label>
                           <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
@@ -696,7 +696,7 @@
                           </div> -->
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority 
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority
                           </label>
                           <input [(ngModel)]="document.issuingAuthority"
                             [attr.name]="'documentDetails['+i+'].issuingAuthority'"
@@ -714,7 +714,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country 
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country
                         </label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
@@ -740,7 +740,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date 
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date
                         </label>
                         <input [(ngModel)]="document.issueDate"
                           (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
@@ -755,7 +755,7 @@
                         </div> -->
                       </div>
                       <div class="col-5" *ngIf="document.documentType != 'BCN'">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date 
+                        <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
                           [ngModelOptions]="{standalone: true}"
@@ -1062,7 +1062,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input (change)="onChangeHideErrors('SIN')"
                           [(ngModel)]="driverData.SIN" name="SIN"
-                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" required pattern="^[0-9]{9}$" 
+                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" required pattern="^[0-9]{9}$"
                            >
                         <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
                           <div *ngIf="sin1.errors.required">
@@ -1143,7 +1143,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour
                           start after</label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
-                          name="paymentDetails.waitingHourAfter" type="text" class="form-control" 
+                          name="paymentDetails.waitingHourAfter" type="text" class="form-control"
 
                           placeholder="eg. Min 3 hours">
                           <!-- <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
@@ -1202,7 +1202,7 @@
                           <div class="col-lg-3">
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                               name="paymentDetails.loadPayPercentage" type="text" class="form-control"
-                              placeholder="eg. 2%, 5%, 10%" 
+                              placeholder="eg. 2%, 5%, 10%"
 
                               (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
                               <!-- <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
