@@ -10,7 +10,7 @@ declare var $: any;
 })
 export class ChartOfAccountsComponent implements OnInit {
   modalTitle = 'Add Account';
-  dataMessage: string = Constants.FETCHING_DATA;
+  dataMessage = Constants.NO_RECORDS_FOUND;
   accounts: any = [];
   parentMessage: '';
   filter = {
