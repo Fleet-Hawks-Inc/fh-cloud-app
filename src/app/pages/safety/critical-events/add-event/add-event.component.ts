@@ -215,8 +215,8 @@ export class AddEventComponent implements OnInit {
 
     disabledButton() {
         if (this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == null ||
-                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.locationText == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == ''
-            || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.event.notes.length > 500) {
+                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.locationText == '' || this.event.status == '' || 
+                this.event.eventSource == '' || this.event.notes.length > 500) {
             return true
         } else {
             return false;
