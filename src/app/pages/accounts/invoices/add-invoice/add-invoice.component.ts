@@ -27,7 +27,7 @@ export class AddInvoiceComponent implements OnInit {
     users: any = [];
   invoiceData = {
     invNo: '',
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     invRef: '',
     invCur: null,
     invDueDate: null,
@@ -261,6 +261,7 @@ export class AddInvoiceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
+    console.log('this.invoiceData', this.invoiceData);
     this.accountService.postData(`invoices`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -360,7 +361,8 @@ export class AddInvoiceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    // this.invoiceData.balance = this.invoiceData.finalAmount;
+    this.invoiceData.balance = this.invoiceData.finalAmount;
+    console.log('this.invoiceData', this.invoiceData);
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {

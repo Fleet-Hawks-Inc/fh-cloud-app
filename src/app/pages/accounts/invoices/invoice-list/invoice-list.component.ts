@@ -34,7 +34,7 @@ export class InvoiceListComponent implements OnInit {
   emailedOrderInvoices = [];
   partiallyPaidOrderInvoices = [];
   voidedOrderInvoices = [];
-
+  invGenStatus: boolean;
   filter = {
     startDate: null,
     endDate: null,
@@ -49,6 +49,9 @@ export class InvoiceListComponent implements OnInit {
   fetchInvoices() {
     this.accountService.getData('order-invoice').subscribe((res: any) => {
       this.orderInvoices = res;
+      this.orderInvoices.map((v: any) => {
+        v.invStatus = v.invStatus.replace('_', ' ');
+      });
       this.categorizeOrderInvoices(this.orderInvoices);
     });
 
@@ -162,9 +165,9 @@ export class InvoiceListComponent implements OnInit {
     this.invID = invID;
     $('#updateStatusModal').modal('show');
   }
-editFn(invID: string) {
-  this.router.navigateByUrl(`/accounts/invoices/edit/${invID}`);
-}
+  editFn(invID: string) {
+    this.router.navigateByUrl(`/accounts/invoices/edit/${invID}`);
+  }
   updateInvStatus() {
     this.accountService.getData(`invoices/status/${this.invID}/${this.invNewStatus}`).subscribe(() => {
       this.toaster.success('Invoice Status Updated Successfully.');
@@ -172,10 +175,10 @@ editFn(invID: string) {
       $('#updateStatusModal').modal('hide');
     });
   }
-   deleteOrderInvoice(invID: string, orderID: string) {
+  deleteOrderInvoice(invID: string, orderID: string) {
     this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
-      const invStatus:boolean = false;
-      this.apiService.getData(`orders/invoiceStatus/${orderID}/${invStatus}`).subscribe((res) => {
+      this.invGenStatus = false;
+      this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
         if (res) {
           this.toaster.success('Invoice Deleted Successfully.');
         }
@@ -184,21 +187,43 @@ editFn(invID: string) {
     });
   }
 
- searchFilter() {
-    // if ( this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
-    //   this.dataMessage = Constants.FETCHING_DATA;
-    //   console.log('this.filter.endDate', this.filter.endDate);
-    //   console.log('this.filter.startDate', this.filter.startDate);
-    //   console.log('this.filter.invNo', this.filter.invNo);
-    //   this.fetchDetails();
-    // }
+  searchFilter() {
+    if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchDetails();
+    }
   }
 
   fetchDetails() {
     this.accountService.getData(`invoices/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
       .subscribe((result: any) => {
-        console.log(' fetched invoices', result);
-       //this.invoices = result[0];     
+        this.invoices = result;
       });
+    this.accountService.getData(`order-invoice/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
+      .subscribe((result: any) => {
+        this.orderInvoices = result;
+      });
+  }
+  resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      invNo: null
+    };
+    this.total = 0;
+    this.openInvoices = [];
+    this.openTotal = 0;
+    this.paidInvoices = [];
+    this.paidTotal = 0;
+    this.emailedInvoices = [];
+    this.emailedTotal = 0;
+    this.partiallyPaidInvoices = [];
+    this.partiallyPaidTotal = 0;
+    this.voidedInvoices = [];
+    this.voidedTotal = 0;
+    this.invoices = [];
+    this.orderInvoices = [];
+    this.fetchInvoices();
   }
 }
