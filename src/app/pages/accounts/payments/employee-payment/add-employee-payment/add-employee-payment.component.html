@@ -116,7 +116,7 @@
                                                             <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{i}}" (change)="assignFullPayment(i, data)">
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="data.paidAmount" (input)="paymentCalculation(); checkInput('advAmount', i)" name="advPaidAmount{{i}}" [disabled]="data.paidStatus">
+                                                            <input type="text" class="form-control" [(ngModel)]="data.paidAmount" (input)="paymentCalculation(); checkInput('advAmount')" name="advPaidAmount{{i}}" [disabled]="data.paidStatus">
                                                             <label id="stlErr{{i}}" class="error">{{ data.errText  }}</label>
                                                         </td>
                                                     </tr>
