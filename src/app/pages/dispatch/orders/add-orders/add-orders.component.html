@@ -467,12 +467,12 @@
                                                                      </div> -->
                                                                      
                                                                   <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
-                                                                     <ul class="p-0 m-0 text-left">
+                                                                     <!-- <ul class="p-0 m-0 text-left">
                                                                         <li *ngFor="let item of searchResults;">
                                                                            <a href="javascript:;" (click)="assignLocation(i, w, 'shipper', item.address.label)"
                                                                               title="{{item.address.label}}">{{item.address.label}}</a>
                                                                         </li>
-                                                                     </ul>
+                                                                     </ul> -->
                                                                   </div>
                                                                </div>
                                                                <div class="col-lg-1 mar-top-37  pl-0">
@@ -866,7 +866,8 @@
                                                                   <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
                                                                      name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
                                                                      required dropLoc
-                                                                     (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
+                                                                     (input)="getSuggestions(
+                                                                        $event.target.value)" class="form-control" autocomplete="off"
                                                                      tabindex="-1" aria-hidden="true" #drop="ngModel" required >
                                                                      <!-- <div *ngIf="dropOffLocation.touched && shippersReceivers[0].receivers.dropOffLocation == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
                                                                          Drop off location is required.
@@ -875,10 +876,10 @@
                                                                     </div> -->
       
                                                                   <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
-                                                                     <ul class="p-0 m-0 text-left">
+                                                                     <ul class="p-0 m-0 text-left w-100">
                                                                         <li *ngFor="let item of searchResults;">
-                                                                           <a href="javascript:;" (click)="assignLocation(i, y, 'receiver', item.address.label)"
-                                                                              title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                           <a href="javascript:;" (click)="assignLocation(i, y, 'receiver', item.ShortString)"
+                                                                              title="{{item.ShortString}}">{{item.ShortString}}</a>
                                                                         </li>
                                                                      </ul>
                                                                   </div>
