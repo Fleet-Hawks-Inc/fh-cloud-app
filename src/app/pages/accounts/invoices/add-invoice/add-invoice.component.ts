@@ -33,6 +33,7 @@ export class AddInvoiceComponent implements OnInit {
     invDueDate: null,
     invPayTerms: '',
     customerID: null,
+    cusAddressID: null,
     invSalesman: null,
     invSubject: '',
     amountReceived: 0,
@@ -123,21 +124,48 @@ export class AddInvoiceComponent implements OnInit {
   }
   selectedCustomer(customerID: any) {
     this.apiService
-      .getData(`contacts/detail/${customerID}`)      .subscribe((result: any) => {
+      .getData(`contacts/detail/${customerID}`)
+      .subscribe((result: any) => {
         if (result.Items.length > 0) {
-          this.customerSelected = result.Items[0];
-          for (const element of this.customerSelected.address) {
-            if (element.addressType === 'Office') {
-              this.notOfficeAddress = false;
-              this.customerSelected.officeAddr = true;
-              this.customerSelected.email = result.Items[0].workEmail;
-              this.customerSelected.phone = result.Items[0].workPhone;
-            } else {
+
+          this.customerSelected = result.Items;
+          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
+            const element = this.customerSelected[0].address[i];
+            element[`isChecked`] = false;
+          }
+          if (this.invID) {
+            this.customerSelected[0].address.filter( elem => {
+              if (elem.addressID === this.invoiceData.cusAddressID) {
+                elem.isChecked = true;
+              }
+            });
+          } else {
+            this.customerSelected[0].address[0].isChecked = true;
+            if (this.customerSelected[0].address.length > 0) {
+              this.invoiceData.cusAddressID = this.customerSelected[0].address[0].addressID;
+            }
+            const addressLength = this.customerSelected[0].address.length;
+            const getType = this.customerSelected[0].address[0].addressType;
+
+            if (addressLength === 1 && (getType === '' || getType === null)) {
               this.notOfficeAddress = true;
+            } else {
+              this.notOfficeAddress = false;
             }
           }
         }
+
       });
+  }
+  getAddressID(value: boolean, i: number, id: string) {
+    if (value === true) {
+      this.invoiceData.cusAddressID = id;
+      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
+        const element = this.customerSelected[0].address[index];
+        element.isChecked = false;
+      }
+      this.customerSelected[0].address[i].isChecked = true;
+    }
   }
   getInvDueDate(e: any) {
  if (e === '15') {
@@ -235,7 +263,7 @@ export class AddInvoiceComponent implements OnInit {
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
+        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
       }
     }
   }
@@ -261,7 +289,6 @@ export class AddInvoiceComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    console.log('this.invoiceData', this.invoiceData);
     this.accountService.postData(`invoices`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -311,14 +338,14 @@ export class AddInvoiceComponent implements OnInit {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
       this.invoiceData.discountAmount = this.invoiceData.discount;
     }
-    this.finalAmount = (this.invoiceData.subTotal).toFixed(0);
+    this.finalAmount = (this.invoiceData.subTotal).toFixed(2);
     const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
     const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
     const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
-    const totalTax = Number(gst)  + Number(pst) + Number(hst);
-    const taxAmount =  Number(this.finalAmount) * totalTax / 100;
-    this.invoiceData.taxAmount = taxAmount;
-    const final = Number(this.finalAmount) + taxAmount;
+    const totalTax = parseInt(gst, 10)  + parseInt(pst, 10) + parseInt(hst, 10);
+    const taxAmount =  parseInt(this.finalAmount, 10) * totalTax / 100;
+    this.invoiceData.taxAmount = +taxAmount.toFixed(2);
+    const final = parseInt(this.finalAmount, 10) + taxAmount;
 
     this.invoiceData.finalAmount = final;
     this.newTaxes = this.invoiceData.taxesInfo;
@@ -332,6 +359,7 @@ export class AddInvoiceComponent implements OnInit {
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
       this.invoiceData = res[0];
+      this.selectedCustomer(this.invoiceData.customerID);
       this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
       this.fetchStateTaxes();
       this.invoiceData.details = res[0].details;
@@ -362,7 +390,6 @@ export class AddInvoiceComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.invoiceData.balance = this.invoiceData.finalAmount;
-    console.log('this.invoiceData', this.invoiceData);
     this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
