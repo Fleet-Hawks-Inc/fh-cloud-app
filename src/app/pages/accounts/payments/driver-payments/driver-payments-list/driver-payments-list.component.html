@@ -94,8 +94,8 @@
                               <td>{{ data.paymentNo }}</td>
                               <td>{{ data.payMode }}</td>
                               <td>
-                                 <span *ngFor="let stl of data.settlementIds; let s=index;">
-                                    {{ settlements[stl] }}
+                                 <span *ngFor="let stl of data.settlData; let s=index;">
+                                    <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
                                     <span *ngIf="s< data.settlementIds.length-1">,</span>
                                  </span>
                               </td>

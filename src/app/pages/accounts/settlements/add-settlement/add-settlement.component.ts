@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export class AddSettlementComponent implements OnInit {
         type: null,
         entityId: null,
         setNo: '',
-        txnDate: null,
+        txnDate: moment().format('YYYY-MM-DD'),
         fromDate: null,
         toDate: null,
         tripIds: [],

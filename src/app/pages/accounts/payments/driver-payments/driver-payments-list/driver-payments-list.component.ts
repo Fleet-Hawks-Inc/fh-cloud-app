@@ -66,9 +66,8 @@ export class DriverPaymentsListComponent implements OnInit {
           v.payMode = '-';
         }
         v.paymentTo = v.paymentTo.replace("_", " ");
-        v.settlementIds = [];
         v.settlData.map((k) => {
-          v.settlementIds.push(k.settlementId);
+          k.status = k.status.replace("_"," ");
         });
       })
     });
