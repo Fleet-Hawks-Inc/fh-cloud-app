@@ -3,7 +3,7 @@
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header">
         <div class="row pr-1 mr-1" style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Invoice Details </div>
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> <h5 class="m-0 font-weight-bold">Invoice# - {{invoiceData.invNo}} <span class="badge badge-dark p-1">{{invoiceData.invStatus | uppercase}}</span></h5> </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a routerLink="/accounts/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
               Invoices</a>
@@ -343,53 +343,11 @@
 
                   </td>
                 </tr>
-                <!-- <tr>
-                <td colspan="6" style="padding-top: 20px;">
-                    <table>
-                        <tbody><tr>
-                            <td><b style="font-size: 12px;">INSTRUCTIONS:</b></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <ol style="margin: 0; padding-left: 15px; ">
-                                    <li>Please ensure driver identifies himself as p/u on behalf of total logistics</li>
-                                    <li>Driver must be able and willing to provide either company photo id or another piece of suitable picture identification upon shipper/receiver request</li>
-                                    <li> All drivers are required to have safety shoes and vest</li>
-                                    <li>Please note that all food products are subject to fda review and therefore all drivers must report to the fda office at the time of crossing</li>
-                                </ol>
-                            </td>
-                        </tr>
-                    </tbody></table>
-                </td>
-            </tr> -->
-
-                <!-- <tr>
-            <td colspan="6" style="padding-top: 20px;">
-                <table>
-                    <tbody><tr>
-                        <td><b style="font-size: 12px;">TERMS:</b></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <ol style="margin: 0; padding-left: 15px; ">
-                                <li>Invoice with all paperwork has to be sent to apinvoice@totallogistics.Com</li>
-                                <li>Time in &amp; out required for pick-up and delivery</li>
-                                <li>Third party billing by total logistics control</li>
-                                <li>All trailers must arrive at receiver’s sealed - ftl’s sealed and ltl‘s sealed or padlocked</li>
-                                <li>Fuel surcharge included in all rates</li>
-                                <li>All trailers must be 53' in length with barn doors, food grade, odour-free, dry and clean</li>
-                                <li>Do not mix with hazmat or toxic materials</li>
-                            </ol>
-                        </td>
-                    </tr>
-                </tbody></table>
-            </td>
-        </tr> -->
               </tbody>
             </table>
           </section>
           <section class="mt-5 bg-white p-2" *ngIf="invoiceData != undefined">
-            <p class="font-weight-bold text-5">Journal Details</p>
+            <p class="font-weight-bold text-5 text-dark">Journal Details</p>
             <div class="col-xl-12 col-12 mb-3">
               <table class="table table-bordered table-hover">
                 <thead>
