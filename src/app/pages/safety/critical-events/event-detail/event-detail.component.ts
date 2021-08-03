@@ -60,7 +60,7 @@ export class EventDetailComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
     variableWidth: true,
     autoplaySpeed: 1500,
   };
@@ -91,7 +91,7 @@ export class EventDetailComponent implements OnInit {
     $('#viewVideosModal').modal({
         show: false
     }).on('hidden.bs.modal', function(){
-        $(this).find('video')[0].pause();
+      $("video").each(function () { this.pause() });
     });
   }
 
