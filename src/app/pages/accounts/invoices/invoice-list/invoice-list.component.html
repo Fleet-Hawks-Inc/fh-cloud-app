@@ -180,9 +180,10 @@
                       </td>
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                         <span *ngIf="inv.invType==='orderInvoice'">Add:
-                          {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}</span><br>
+                          {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</span>
                         <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                          {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</span></td>
+                          {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}</span><br>
+                        </td>
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}
                       </td>
                       <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
