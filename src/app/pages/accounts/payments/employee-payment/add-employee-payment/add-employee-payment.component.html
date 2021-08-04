@@ -77,6 +77,54 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row pt-3">
+                                        <div class="col-lg-12"> 
+                                            <h4>Advance Payments</h4>
+                                        </div>
+                                        <div class="col-lg-10 offset-lg-1">
+                                            <table
+                                                class="table table-bordered table-responsive-lg  table-striped simple-table">
+                                                <thead>
+                                                    <tr class="bgcol2">
+                                                        <th></th>
+                                                        <th class="text-2">Payment#</th>
+                                                        <th class="text-2">Payment Date</th>
+                                                        <th class="text-2">Account#</th>
+                                                        <th class="text-2">Amount</th>
+                                                        <th class="text-2">Paid Amount</th>
+                                                        <th class="text-2">Status</th>
+                                                        <th class="text-2">Full Payment</th>
+                                                        <th class="text-2">Payment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="advancePayments.length === 0" class="text-center">
+                                                        <td colspan="10">{{ dataMessage }} </td>
+                                                    </tr>
+                                                    <tr *ngFor="let data of advancePayments; let i=index">
+                                                        <td>
+                                                            <input type="checkbox" name="stl{{i}}" [(ngModel)]="data.selected" (change)="selectedAdvancepayments()">
+                                                        </td>
+                                                        <td>{{ data.paymentNo }}</td>
+                                                        <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td>{{ accList[data.accountID] }}</td>
+                                                        <td>{{ data.pendingPayment }} {{ data.currency }}</td>
+                                                        <td>{{ data.prevPaidAmount }}</td>
+                                                        <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span> </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{i}}" (change)="assignFullPayment(i, data)">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" [(ngModel)]="data.paidAmount" (input)="paymentCalculation(); checkInput('advAmount')" name="advPaidAmount{{i}}" [disabled]="data.paidStatus">
+                                                            <label id="stlErr{{i}}" class="error">{{ data.errText  }}</label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                     <div class="row" *ngIf="lastExist">
                                         <div class="col-lg-12">
                                             <h4>Last Payments</h4>
@@ -411,7 +459,7 @@
                                                             class="control-label font-weight-bold">Advance</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" name="advance" [(ngModel)]="paymentData.advance" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('advance');">
+                                                        <input type="text" class="form-control" name="advance" [(ngModel)]="paymentData.advance" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('advance');" disabled>
                                                         <label class="error">{{ advErr }}</label>
                                                     </div>
                                                 </div>
@@ -426,6 +474,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
                                             <button type="button" class="btn btn-default mr-2" routerLink="">Cancel</button>

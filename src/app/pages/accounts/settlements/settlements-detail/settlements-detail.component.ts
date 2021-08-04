@@ -108,7 +108,7 @@ export class SettlementsDetailComponent implements OnInit {
     }
 
     fetchAccounts() {
-        this.accountService.getData(`chartAc/get/internalID/list/all`)
+        this.accountService.getData(`chartAc/get/all/list`)
           .subscribe((result: any) => {
             this.accounts = result;
           })

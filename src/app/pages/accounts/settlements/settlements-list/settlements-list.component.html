@@ -60,7 +60,6 @@
                                         <th class="text-2">Settlement Date</th>
                                         <th class="text-2">Settlement Type</th>
                                         <th class="text-2">Trip#</th>
-                                        <th class="text-2">Truck#</th>
                                         <th class="text-2">Settled Amount</th>
                                         <th class="text-2">Paid Amount</th>
                                         <th class="text-2">Balance</th>
@@ -87,7 +86,6 @@
                                                 <span *ngIf="t < data.tripIds.length-1">,</span>
                                             </span>
                                         </td>
-                                        <td>-</td>
                                         <td>{{ data.finalTotal }} CAD </td>
                                         <td>{{ (data.paidAmount) ? data.paidAmount + ' CAD' : '-' }}</td>
                                         <td>{{ data.pendingPayment }} CAD</td> 

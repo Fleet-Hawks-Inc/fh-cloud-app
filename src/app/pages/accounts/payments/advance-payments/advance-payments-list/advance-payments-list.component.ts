@@ -49,6 +49,8 @@ export class AdvancePaymentsListComponent implements OnInit {
             v.payMode= '-';
           }
           v.status = v.status.replace("_"," ");
+          v.paidAmount = v.amount - v.pendingPayment;
+          v.paidAmount = v.paidAmount.toFixed(2);
         })
       });
   }
