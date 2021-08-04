@@ -213,7 +213,7 @@
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided' && inv.invStatus !== 'partially paid'"
-                              class="dropdown-item text-1" (click)="deleteOrderInvoice(inv.invID, inv.orderID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -258,7 +258,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'  && inv.invStatus !== 'partially paid'" (click)="editFn(inv.invID)"
                               >Edit</button>
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided' && inv.invStatus !== 'partially paid'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -287,7 +287,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngIf="openInvoices.length == 0 || openOrderInvoices.length == 0" class="text-center">
+                    <tr *ngIf="openInvoices.length == 0 && openOrderInvoices.length == 0" class="text-center">
                       <td colspan="13">{{ dataMessage }}</td>
                     </tr>
                     <tr *ngFor="let inv of openOrderInvoices; let i = index;">
@@ -354,7 +354,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -414,7 +414,7 @@
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                             <button type="button" class="dropdown-item text-1"
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              (click)="deleteInvoice(inv.invID)">Delete</button>
+                              (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -510,7 +510,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -565,7 +565,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -660,7 +660,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -715,7 +715,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -810,7 +810,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -865,7 +865,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -960,7 +960,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a> -->
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>
@@ -1015,7 +1015,7 @@
                               *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
                               routerLink="/accounts/invoices/edit/{{inv.invID}}">Edit</a>
                             <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided'"
-                              class="dropdown-item text-1" (click)="deleteInvoice(inv.invID)">Delete</button>
+                              class="dropdown-item text-1" (click)="voidInvoice(inv.invID)">Void</button>
                           </div>
                         </div>
                       </td>

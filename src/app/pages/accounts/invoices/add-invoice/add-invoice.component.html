@@ -69,7 +69,7 @@
                           </div>
                        </div>
 
-                       <div class="col-lg-11 mt-2" *ngIf="customerSelected.address.length > 0 && !notOfficeAddress">
+                       <div class="col-lg-11 mt-2" *ngIf="customerSelected?.length > 0 && !notOfficeAddress">
                           <div  *ngIf="invoiceData.customerID" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px; width: 90%;" >
 
                              <div class="row pl-3 pr-3">
@@ -145,7 +145,7 @@
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Reference#/Order#</label>
+                            Reference#</label>
                           <input type="text" class="form-control" [(ngModel)]="invoiceData.invRef" name="invRef"
                             placeholder="Enter Unique Reference Number">
                         </div>
@@ -177,7 +177,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
                           <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()"
-                          ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off">
+                          ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                         </div>
                       </div>
                       <div class="row pt-2">
@@ -306,7 +306,7 @@
                                         <div class="col-lg-7">
                                           <div class="row">
                                             <div class="col-lg-6 pr-0">
-                                              <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="invoiceData.discount" name="discount" (change)="calculateAmount()">
+                                              <input type="number" min="0" class="form-control" placeholder="0.00" [(ngModel)]="invoiceData.discount" name="discount" (change)="calculateAmount()">
                                             </div>
                                             <div class="col-lg-6 pl-0">
                                               <ng-select class="form-control populate" [(ngModel)]="invoiceData.discountUnit" name="discountUnit" (change)="calculateAmount()">
