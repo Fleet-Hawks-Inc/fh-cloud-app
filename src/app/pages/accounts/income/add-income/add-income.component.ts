@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ListService } from 'src/app/services/list.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class AddIncomeComponent implements OnInit {
     categoryID: null,
     incomeAccID: null,
     depositAccID: null,
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     invoiceID: null,
     paymentMode: null,
     paymentModeNo: null,

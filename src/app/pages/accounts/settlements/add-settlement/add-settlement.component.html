@@ -39,7 +39,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="row">
-                                                <div class="col-lg-5">
+                                                <!-- <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input type="text" class="form-control" name="setNo"
@@ -51,8 +51,8 @@
                                                             Settlement# is required.
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-5">
+                                                </div> -->
+                                                <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
                                                         Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -133,21 +133,21 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2" *ngIf="settlementData.type">
                                             <label class="control-label font-weight-bold pt-2">From Date</label>
                                             <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
                                                 #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
                                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2" *ngIf="settlementData.type">
                                             <label class="control-label font-weight-bold pt-2">To Date</label>
                                             <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
                                                 #toDate="ngbDatepicker" class="form-control" autocomplete="off"
                                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                         </div>
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2" *ngIf="settlementData.type">
                                             <button class="btn btn-success mar-top-37" (click)="searchFnc()">Search</button>
                                         </div>
                                     </div>

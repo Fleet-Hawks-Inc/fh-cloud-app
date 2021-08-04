@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -19,7 +20,7 @@ export class AddJournalComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   journal = {
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     referenceNo: '',
     currency: null,
     notes: '',
