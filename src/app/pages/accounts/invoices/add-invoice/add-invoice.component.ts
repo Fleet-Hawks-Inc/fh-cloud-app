@@ -21,7 +21,7 @@ export class AddInvoiceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) { }
     pageTitle = 'Add Invoice';
-    dateMinLimit = { year: 1950, month: 1, day: 1 };
+    dateMinLimit = { year: 2021, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     users: any = [];
@@ -67,13 +67,13 @@ export class AddInvoiceComponent implements OnInit {
    * Customer related properties
    */
   customers: any = [];
-  customerSelected = {
+  customerSelected = [{
     additionalContact: [],
     address: [],
     officeAddr: false,
     email: '',
     phone: ''
-  };
+  }];
   notOfficeAddress = false;
   /**
    * Accounts
@@ -129,6 +129,7 @@ export class AddInvoiceComponent implements OnInit {
         if (result.Items.length > 0) {
 
           this.customerSelected = result.Items;
+          console.log('this.customerSelected', this.customerSelected);
           for (let i = 0; i < this.customerSelected[0].address.length; i++) {
             const element = this.customerSelected[0].address[i];
             element[`isChecked`] = false;

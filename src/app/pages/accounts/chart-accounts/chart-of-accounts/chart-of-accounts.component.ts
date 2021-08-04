@@ -48,15 +48,21 @@ export class ChartOfAccountsComponent implements OnInit {
   }
   searchFilter() {
     if (this.filter.actType !== null || this.filter.actName !== null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAccounts();
+     if (this.filter.actType !== null) {
+      this.filter.actType.toLowerCase();
+     }
+     if (this.filter.actName !== null) {
+      this.filter.actName.toLowerCase();
+     }
+     this.dataMessage = Constants.FETCHING_DATA;
+     this.fetchAccounts();
     }
   }
   fetchAccounts() {
     this.accounts = this.accountService.getData(`chartAc/paging?actName=${this.filter.actName}&actType=${this.filter.actType}`).toPromise();
-    if (!this.accounts) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND;
-    }
+    // if (!this.accounts) {
+    //   this.dataMessage = Constants.NO_RECORDS_FOUND;
+    // }
   }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
