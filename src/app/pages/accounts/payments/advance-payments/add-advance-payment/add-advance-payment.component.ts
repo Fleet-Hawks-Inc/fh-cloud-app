@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
@@ -20,11 +21,12 @@ export class AddAdvancePaymentComponent implements OnInit {
     payMode: null,
     payModeNo: "",
     payModeDate: null,
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     referenceNo: "",
     notes: "",
     accountID: null,
-    status: "not_deducted"
+    status: "not_deducted",
+    paymentLinked: false,
   };
   drivers = [];
   carriers = [];
@@ -64,7 +66,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchCarriers();
     this.fetchOwnerOperators();
     this.fetchEmployee();
-    this.fetchVendor();
+    // this.fetchVendor();
     this.fetchCustomer();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
@@ -165,6 +167,8 @@ export class AddAdvancePaymentComponent implements OnInit {
       label = "Demand Draft";
     }
     this.payModeLabel = label;
+    this.paymentData.payModeNo = null;
+    this.paymentData.payModeDate = null;
   }
 
   fetchPaymentDetails() {

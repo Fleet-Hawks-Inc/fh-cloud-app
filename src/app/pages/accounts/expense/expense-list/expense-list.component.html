@@ -90,35 +90,6 @@
                 <div class="col pr-0">
                     <section class="card">
                         <div class="card-body">
-                            <div class="m-2">
-                                <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="allExpenses-tab" data-toggle="tab"
-                                            href="#allExpenses" role="tab" aria-controls="allExpenses"
-                                            aria-selected="true">All</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="fuelExpenses-tab" data-toggle="tab" href="#fuelExpenses"
-                                            role="tab" aria-controls="fuelExpenses" aria-selected="false">Fuel
-                                            Expenses</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="maintenanceExpenses-tab" data-toggle="tab"
-                                            href="#maintenanceExpenses" role="tab" aria-controls="maintenanceExpenses"
-                                            aria-selected="false">Maintenance Expenses</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="insuranceExpenses-tab" data-toggle="tab"
-                                            href="#insuranceExpenses" role="tab" aria-controls="insuranceExpenses"
-                                            aria-selected="false">Insurance Expenses</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="otherExpenses-tab" data-toggle="tab"
-                                            href="#otherExpenses" role="tab" aria-controls="otherExpenses"
-                                            aria-selected="false">Other Expenses</a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
                                 <div class="tab-pane show active" id="allExpenses" role="tabpanel"
                                     aria-labelledby="allExpenses-tab">
@@ -145,7 +116,7 @@
                                                 <td routerLink="/accounts/expense/detail">{{ categories[data.categoryID] }}</td>
                                                 <td routerLink="/accounts/expense/detail">{{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
                                                 <td routerLink="/accounts/expense/detail">
-                                                    <span *ngIf="data.recurring.status" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
+                                                    <span *ngIf="data.recurring" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
                                                 </td>
                                                 <td routerLink="/accounts/expense/detail">{{ data.finalTotal }} {{ data.currency }}</td>
                                                 <td>
@@ -158,101 +129,6 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Fuel Expenses -->
-                                <div class="tab-pane fade" id="fuelExpenses" role="tabpanel"
-                                    aria-labelledby="fuelExpenses-tab">
-                                    <table class="table table-bordered table-striped mb-0 ">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Time</th>
-                                                <th>Card Number</th>
-                                                <th>Unit#</th>
-                                                <th>Hub Miles</th>
-                                                <th>Odometer Miles</th>
-                                                <th>Trip#</th>
-                                                <th>Invoice</th>
-                                                <th>Total Invoice</th>
-                                                <th>Amount Billed</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="text-center">
-                                                <td colspan="11">{{ noRecrdMessage }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Maintenance Expenses -->
-                                <div class="tab-pane fade" id="maintenanceExpenses" role="tabpanel"
-                                    aria-labelledby="maintenanceExpenses-tab">
-                                    <table
-                                        class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Expense#</th>
-                                                <th>Expense Type</th>
-                                                <th>Vendor</th>
-                                                <th>Recurring</th>
-                                                <th>Amount</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="text-center">
-                                                <td colspan="11">{{ noRecrdMessage }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Insurance Expenses -->
-                                <div class="tab-pane fade" id="insuranceExpenses" role="tabpanel"
-                                    aria-labelledby="insuranceExpenses-tab">
-                                    <table
-                                        class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Expense#</th>
-                                                <th>Expense Type</th>
-                                                <th>Vendor</th>
-                                                <th>Recurring</th>
-                                                <th>Amount</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="text-center">
-                                                <td colspan="11">{{ noRecrdMessage }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- Other Expenses-->
-                                <div class="tab-pane fade" id="otherExpenses" role="tabpanel"
-                                    aria-labelledby="otherExpenses-tab">
-                                    <table
-                                        class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Expense#</th>
-                                                <th>Expense Type</th>
-                                                <th>Vendor</th>
-                                                <th>Recurring</th>
-                                                <th>Amount</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="text-center">
-                                                <td colspan="11">{{ noRecrdMessage }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
