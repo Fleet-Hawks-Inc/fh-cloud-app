@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export class AddSettlementComponent implements OnInit {
         type: null,
         entityId: null,
         setNo: '',
-        txnDate: null,
+        txnDate: moment().format('YYYY-MM-DD'),
         fromDate: null,
         toDate: null,
         tripIds: [],
@@ -326,6 +327,7 @@ export class AddSettlementComponent implements OnInit {
 
     paymentCalculation(trips) {
         let drvrPay = 0;
+        let teamMiles = 0;
         for (let i = 0; i < trips.length; i++) {
             const element = trips[i];
             let deliveryCount = 0;
@@ -340,6 +342,10 @@ export class AddSettlementComponent implements OnInit {
                     for (let t = 0; t < element.tripPlanning.length; t++) {
                         const plan = element.tripPlanning[t];
                         this.settlementData.miles.tripsTotal += parseFloat(plan.miles);
+
+                        if (element.driverIDs.length > 1) {
+                            teamMiles += parseFloat(plan.miles);
+                        }
 
                         if (plan.mileType === 'loaded') {
                             this.settlementData.miles.tripsLoaded += parseFloat(plan.miles);
@@ -387,11 +393,11 @@ export class AddSettlementComponent implements OnInit {
                         }
 
                         // team_miles, total_hours and team_hours will be from ELD
-                        if (element.driverIDs.length > 0) {
-                            this.settlementData.miles.tripsTeam += parseFloat('10');
-                            this.settlementData.miles.teamHours += parseFloat('2');
+                        if (element.driverIDs.length > 1) {
+                            this.settlementData.miles.tripsTeam = teamMiles;
+                            this.settlementData.miles.teamHours = 0;
                         }
-                        this.settlementData.miles.totalHours += parseFloat('2');
+                        this.settlementData.miles.totalHours = 0;
 
                     } else if (this.settlementData.type === 'carrier') {
                         let paymentInfo = this.contactDetail.paymentDetails;
@@ -460,14 +466,14 @@ export class AddSettlementComponent implements OnInit {
                 }
 
                 // Expenses will also come from ELD
-                let expObj = {
-                    tripID: element.tripID,
-                    expName: `Expense ${i + 1}`,
-                    desc: '-',
-                    amount: '50',
-                    currency: 'CAD'
-                }
-                this.settlementData.expenses.push(expObj);
+                // let expObj = {
+                //     tripID: element.tripID,
+                //     expName: `Expense ${i + 1}`,
+                //     desc: '-',
+                //     amount: '50',
+                //     currency: 'CAD'
+                // }
+                // this.settlementData.expenses.push(expObj);
             }
         }
         
@@ -685,6 +691,7 @@ export class AddSettlementComponent implements OnInit {
                 delete v.paymentDetails;
             })
         }
+        this.settlementData.pendingPayment = this.settlementData.finalTotal;
 
         this.accountService.putData(`settlement/update/${this.settlementID}`, this.settlementData).subscribe({
             complete: () => { },

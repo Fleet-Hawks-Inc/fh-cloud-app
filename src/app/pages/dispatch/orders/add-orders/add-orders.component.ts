@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService, ListService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { BehaviorSubject, from, Subject, throwError } from "rxjs";
+import * as _ from 'lodash';
 import {
   NgbCalendar,
   NgbDateAdapter
@@ -436,7 +437,7 @@ export class AddOrdersComponent implements OnInit {
     
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
-    this.searchLocation();
+    // this.searchLocation();
     this.listService.fetchShippersByIDs();
     this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
@@ -558,6 +559,13 @@ export class AddOrdersComponent implements OnInit {
 
       });
   }
+
+  getSuggestions = _.debounce(function (value) {
+    this.apiService.getData(`pcMiles/suggestions/${value}`).subscribe((result: any) => {
+      this.searchResults = result;
+    });
+  }, 800)
+
   resetSearch(){
     if(this.searchResults.length>0){
 
@@ -884,8 +892,6 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
-
- 
   /*
    * Get all Shippers from api
    */
@@ -1464,6 +1470,7 @@ export class AddOrdersComponent implements OnInit {
     
 
     if (elem === "shipper") {
+      
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
@@ -1475,8 +1482,8 @@ export class AddOrdersComponent implements OnInit {
           element.pickupDate = itemDateAndTime[0];
           element.pickupTime = itemDateAndTime[1];
         }
-        
       }
+      
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
       this.shippersReceivers[j].shippers.update = true;

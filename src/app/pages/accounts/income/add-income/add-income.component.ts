@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ListService } from 'src/app/services/list.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class AddIncomeComponent implements OnInit {
     categoryID: null,
     incomeAccID: null,
     depositAccID: null,
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     invoiceID: null,
     paymentMode: null,
     paymentModeNo: null,
@@ -31,7 +32,8 @@ export class AddIncomeComponent implements OnInit {
     recAmount: null,
     recCurr: null,
     description: '',
-    attachments: []
+    attachments: [],
+    transactionLog: [],
   }
 
   paymentMode = [
@@ -60,7 +62,7 @@ export class AddIncomeComponent implements OnInit {
       value: "demandDraft"
     },
   ];
-  
+
   invoices = [];
 
   categories = [];
@@ -126,7 +128,7 @@ export class AddIncomeComponent implements OnInit {
     */
   selectDocuments(event) {
     let files = [...event.target.files];
-    
+
     for (let i = 0; i < files.length; i++) {
       this.uploadedDocs.push(files[i])
     }
@@ -136,7 +138,7 @@ export class AddIncomeComponent implements OnInit {
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
-    this.hasSuccess = false; 
+    this.hasSuccess = false;
     this.incomeData.recAmount = parseFloat(this.incomeData.recAmount);
 
     // create form data instance
@@ -186,6 +188,7 @@ export class AddIncomeComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.incomeData = result[0];
+          this.incomeData.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
           this.carrierID = result[0].carrierID;
 
@@ -327,7 +330,7 @@ export class AddIncomeComponent implements OnInit {
       this.existingDocs.splice(index, 1);
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 
   changeDepAcc(val) {

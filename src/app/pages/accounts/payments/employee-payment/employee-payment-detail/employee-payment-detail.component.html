@@ -1,202 +1,214 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-         <div class="row pr-5 " style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-               Employee Payment #1279430
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+         <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  Employee Payment #{{ paymentData.paymentNo }}
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <a routerLink="/accounts/payments/employee-payments/list" class="btn btn-sm btn-default"><i
+                        class="fas fa-list"></i> Payment List</a>
+               </div>
             </div>
-            <div class="col-md-8  col-lg-8 text-right pr-4">
-               <a routerLink="/accounts/payments/employee-payments/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Payment List</a>
+         </header>
+         <div class="row">
+            <div class="col pr-0">
+               <div class="card-body text-dark">
+                  <form class="form-horizontal form-bordered" method="get">
+                     <div class=" row">
+                        <div class="col-lg-12 mb-4">
+                           <div class="row cmaindiv">
+                              <div class="col-md-3 col-lg-3">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="far fa-calendar-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate |
+                                       date:"yyyy/MM/dd" }}</p>
+                                    <p class="mb-0">DATE</p>
+                                 </div>
+                              </div>
+                              <div class="col-md-3 col-lg-3">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="fa fa-user text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ empdetail.firstName }} {{ empdetail.lastName }}</p>
+                                    <p class="mb-0">EMPLOYEE NAME</p>
+                                 </div>
+                              </div>
+                              <div class="col-md-3 col-lg-3">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="fas fa-map-marker-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{
+                                       (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}
+                                    </p>
+                                    <p class="mb-0">DEPARTMENT</p>
+                                 </div>
+                              </div>
+                              <div class="col-md-3 col-lg-3">
+                                 <div class="text-center p-4 cerbor">
+                                    <i class="fas fa-money-bill-wave text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.finalTotal }} CAD
+                                    </p>
+                                    <p class="mb-0">AMOUNT</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6 pr-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Payroll Type</td>
+                                          <td width="60%">{{ (paymentData.payroll.type === 'hourly') ? 'Hours' : 'Flat'
+                                             }}</td>
+                                       </tr>
+                                       <tr *ngIf="paymentData.payroll.type === 'hourly'">
+                                          <td class="back-color-gray font-weight-bold">Total Hours</td>
+                                          <td>{{ paymentData.payroll.hours }}</td>
+                                       </tr>
+                                       <tr *ngIf="paymentData.payroll.type === 'hourly'">
+                                          <td class="back-color-gray font-weight-bold">Rate/Hour</td>
+                                          <td>{{ paymentData.payroll.perHour }} CAD </td>
+                                       </tr>
+                                       <tr *ngIf="paymentData.payroll.type === 'flat'">
+                                          <td class="back-color-gray font-weight-bold">Amount</td>
+                                          <td>{{ paymentData.payroll.amount }} CAD </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">Taxes</td>
+                                          <td>{{ paymentData.taxes }}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6 pl-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Account</td>
+                                          <td width="60%">{{ accounts[paymentData.accountID] }}</td>
+                                       </tr>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
+                                          <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td> 
+                                       </tr>
+                                       <tr *ngIf="paymentData.payMode">
+                                          <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
+                                          <td class="text-capitalize">{{ paymentData.payModeNo }}</td>
+                                       </tr>
+                                       <tr *ngIf="paymentData.payMode">
+                                          <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
+                                          <td>{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <h5 class="font-weight-bold">Additions</h5>
+                                 <table class="table table-bordered">
+                                    <thead>
+                                       <tr class="bgcol2">
+                                          <th>Date</th>
+                                          <th>Charge Name</th>
+                                          <th>Description</th>
+                                          <th>Amount</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngIf="paymentData.addition.length === 0" class="text-center">
+                                          <td colspan="4">
+                                             {{ dataMessage }}
+                                          </td>
+                                       </tr>
+                                       <tr *ngFor="let data of paymentData.addition">
+                                          <td>{{ data.eventDate | date: "yyyy/MM/dd" }}</td>
+                                          <td>{{ data.chargeName }}</td>
+                                          <td>{{ data.description }}</td>
+                                          <td>{{ data.amount }} CAD</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="col-lg-12">
+                                 <h5 class="font-weight-bold">Deductions</h5>
+                                 <table class="table table-bordered">
+                                    <thead>
+                                       <tr class="bgcol2">
+                                          <th>Date</th>
+                                          <th>Charge Name</th>
+                                          <th>Description</th>
+                                          <th>Amount</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngIf="paymentData.deduction.length === 0" class="text-center">
+                                          <td colspan="4">
+                                             {{ dataMessage }}
+                                          </td>
+                                       </tr>
+                                       <tr *ngFor="let data of paymentData.deduction">
+                                          <td>{{ data.eventDate | date: "yyyy/MM/dd" }}</td>
+                                          <td>{{ data.chargeName }}</td>
+                                          <td>{{ data.description }}</td>
+                                          <td>{{ data.amount }} CAD</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <h5 class="font-weight-bold">Journal</h5>
+                                 <table class="table table-bordered table-hover">
+                                    <thead>
+                                       <tr class="bgcol2">
+                                          <th>Account Name</th>
+                                          <th>Name</th>
+                                          <th>Type</th>
+                                          <th>Debit</th>
+                                          <th>Credit</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngFor="let data of paymentData.transactionLog">
+                                          <td>{{ accounts[data.accountID] }}</td>
+                                          <td>{{ empdetail.firstName }} {{ empdetail.lastName }}</td>
+                                          <td>Employee Payment</td>
+                                          <td>{{ (data.trxType == 'debit') ? data.amount + ' CAD' : '0.00' }} </td>
+                                          <td>{{ (data.trxType == 'credit') ? data.amount + ' CAD' : '0.00' }}</td>
+                                       </tr>
+                                       <tr>
+                                          <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                          <td>{{ paymentData.finalTotal }} CAD</td>
+                                          <td>{{ paymentData.finalTotal }} CAD</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
             </div>
          </div>
-      </header>
-      <div class="row">
-         <div class="col pr-0">
-            <div class="card-body text-dark">
-               <form class="form-horizontal form-bordered" method="get">
-                  <div class=" row">
-                     <div class="col-lg-12 mb-4">
-                        <div class="row cmaindiv">
-                           <div class="col-md-3 col-lg-3">
-                              <div class="text-center p-4 cerbor">
-                                 <i class="far fa-calendar-alt text-7"></i>
-                                 <br>
-                                 <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020</p>
-                                 <p class="mb-0">DATE</p>
-                              </div>
-                           </div>
-                           <div class="col-md-3 col-lg-3">
-                              <div class="text-center p-4 cerbor">
-                                 <i class="fa fa-user text-7"></i>
-                                 <br>
-                                 <p class="mb-0 text-5 font-weight-bold text-dark">Manjot</p>
-                                 <p class="mb-0">EMPLOYEE NAME</p>
-                              </div>
-                           </div>
-                           <div class="col-md-3 col-lg-3">
-                              <div class="text-center p-4 cerbor">
-                                 <i class="fas fa-map-marker-alt text-7"></i>
-                                 <br>
-                                 <p class="mb-0 text-5 font-weight-bold text-dark">Sales</p>
-                                 <p class="mb-0">DEPARTMENT</p>
-                              </div>
-                           </div>
-                           <div class="col-md-3 col-lg-3">
-                              <div class="text-center p-4 cerbor">
-                                 <i class="fas fa-money-bill-wave text-7"></i>
-                                 <br>
-                                 <p class="mb-0 text-5 font-weight-bold text-dark">56.67 CAD</p>
-                                 <p class="mb-0">AMOUNT</p>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-6 pr-0">
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <table class="table table-bordered table-responsive-lg">
-                                 <tbody>
-                                    <tr>
-                                       <td  width="40%" class="back-color-gray font-weight-bold">Payroll Type</td>
-                                       <td width="60%">Hours</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Total Hours</td>
-                                       <td>100</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Rate/Hour</td>
-                                       <td>30 CAD </td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Taxes</td>
-                                       <td></td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-6 pl-0">
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <table class="table table-bordered table-responsive-lg">
-                                 <tbody>
-                                 <tr>
-                                       <td width="40%" class="back-color-gray font-weight-bold">Account</td>
-                                       <td width="60%">Test Account</td>
-                                    </tr>
-                                    <tr>
-                                       <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                       <td width="60%">Cash</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Payment Reference#</td>
-                                       <td>5767</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Payment Date</td>
-                                       <td>05/05/2020</td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                   <div class="col-lg-6">
-                   <div class="row">
-                     <div class="col-lg-12">
-                     <h5 class="font-weight-bold">Additions</h5>
-                     <table class="table table-bordered">
-                                       <thead>
-                                          <tr class="bgcol2"><th>Date</th>
-
-                                             <th>Charge Name</th>
-                                             <th>Description</th>
-                                             <th>Amount</th>
-                                          </tr>
-                                       </thead>
-                                       <tbody>
-                                          <tr>
-                                          <td>Jun 12,2020</td>
-                                             <td>Food</td>
-                                             <td>Had lunch with client</td>
-                                             <td>CAD 34</td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
-                     </div>
-                     <div class="col-lg-12">
-                     <h5 class="font-weight-bold">Deductions</h5>
-                        <table class="table table-bordered">
-                                       <thead>
-                                          <tr class="bgcol2"><th>Date</th>
-
-                                             <th>Charge Name</th>
-                                             <th>Description</th>
-                                             <th>Amount</th>
-                                          </tr>
-                                       </thead>
-                                       <tbody>
-                                          <tr>
-                                          <td>Jun 12,2020</td>
-                                             <td>Food</td>
-                                             <td>Had lunch with client</td>
-                                             <td>CAD 34</td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
-                     </div>
-                   </div>
-                   </div>
-                   <div class="col-lg-6">
-                   <div class="row">
-                   <div class="col-lg-12">
-                      <h5 class="font-weight-bold">Journal</h5>
-                        <table class="table table-bordered table-hover">
-                  <thead>
-                              <tr class="bgcol2">
-                      <th>Account Name</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                      <th>Debit</th>
-                      <th>Credit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Wages Account</td>
-                                    <td>Employee Name</td>
-                                    <td>Employee Payment</td>
-                      <td>5000 CAD</td>
-                      <td>0.00</td>
-                    </tr>
-                    <tr>
-                      <td>Cash Account</td>
-                                    <td>Employee Name</td>
-                                    <td>Employee Payment</td>
-                      <td>0.00</td>
-                      <td>5000 CAD</td>
-                    </tr>
-                    <tr>
-                                 <td colspan="3" class="font-weight-bold text-right">Total</td>
-                      <td>5000 CAD</td>
-                      <td>5000 CAD</td>
-                    </tr>
-                  </tbody>
-                </table>
-                   </div>
-                  </div>
-                   </div>
-                  </div>
-               </form>
-            </div>
-         </div>
-      </div>
-   </section>
-  </div>
+      </section>
+   </div>
 </section>
-

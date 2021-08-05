@@ -117,7 +117,9 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row pt-2">
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo(s) <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo(s) 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>  -->
+                                       </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple="" class="form-control p-0">
                                        <span *ngIf="photoSizeError != ''" class="text-danger">
                                           {{photoSizeError}}
@@ -125,7 +127,9 @@
                                     </div>
                             
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video(s) <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video(s) 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>  -->
+                                       </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedVideos')" name="uploadedVideos" multiple="" class="form-control p-0"> 
                                        <span *ngIf="videoSizeError != ''" class="text-danger">
                                           {{videoSizeError}}
@@ -135,14 +139,11 @@
                                  
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                       </label>
                                        <textarea class="form-control h-auto" #note="ngModel" required  rows="3" placeholder="Enter notes for the Safety Manager"
                                           name="notes" [(ngModel)]="event.notes"></textarea>
-                                       <div *ngIf="note.invalid && (note.dirty || note.touched)" class="text-danger">
-                                          <div *ngIf="note.errors.required">
-                                             Notes are required.
-                                          </div>
-                                       </div>
                                        <div *ngIf="event.notes?.length > 500" class="text-danger">
                                           Only 500 characters are allowed.
                                         </div>

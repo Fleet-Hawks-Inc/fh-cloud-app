@@ -1,3 +1,7 @@
 .incident-video-slider .slick-track {
     width: 100%;
 }
+
+#viewDocModal iframe img {
+    max-width: 100%;
+}

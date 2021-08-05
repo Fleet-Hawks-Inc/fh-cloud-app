@@ -99,6 +99,10 @@
                                                         <td class="back-color-gray font-weight-bold">Invoice#</td>
                                                         <td>{{ invoices[expenseData.invoiceID] }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Type</td>
+                                                        <td>{{ expenseData.unitType }}</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -129,6 +133,10 @@
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Notes</td>
                                                         <td>{{ expenseData.notes }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Name</td>
+                                                        <td>{{ units[expenseData.unitID] }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -167,38 +175,32 @@
                                 <div class="col-lg-6">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr class="bgcol2">
-                                                        <th>Account Name</th>
-                                                        <th>Name</th>
-                                                        <th>Type</th>
-                                                        <th>Debit</th>
-                                                        <th>Credit</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>{{ accounts[expenseData.expAccountID] }}</td>
-                                                        <td>{{ vendors[expenseData.vendorID] }}/{{ vendors[expenseData.customerID] }}</td>
-                                                        <td>{{ expenseData.categoryID }}</td>
-                                                        <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>{{ accounts[expenseData.paidAccountID] }}</td>
-                                                        <td>{{ vendors[expenseData.vendorID] }}/{{ vendors[expenseData.customerID] }}</td>
-                                                        <td>{{ expenseData.categoryID }}</td>
-                                                        <td>0.00</td>
-                                                        <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="3" class="text-right">Total</td>
-                                                        <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
-                                                        <td>{{ expenseData.finalTotal }} {{ expenseData.currency }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                          <table class="table table-bordered table-hover">
+                                            <thead>
+                                              <tr>
+                                                <th>Account Name</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr *ngFor="let dt of expenseData.transactionLog">
+                                                <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                                  <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                               <td>{{customersObject[dt.name] | titlecase}}</td>
+                                               <td>{{dt.type | titlecase}}</td>
+                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                              </tr>
+                                              <tr>
+                                                <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
+                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
                                         </div>
                                     </div>
                                 </div>

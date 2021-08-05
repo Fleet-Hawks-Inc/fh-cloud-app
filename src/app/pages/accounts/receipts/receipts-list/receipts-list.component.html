@@ -4,33 +4,37 @@
       <header class="page-header">
               <form class="form-horizontal" method="get">
              <div class="row" style="padding-top:10px;">
-                <div class="col-md-2 col-lg-2">
-                   <div class="input-group input-group-md mb-3">
-                    <input type="text" class="form-control" placeholder="Search">
-                   </div>
+              <div class="col-md-2 col-lg-2">
+                <div class="input-group input-group-md mb-3">
+                  <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filter.recNo" name="recNo">
                 </div>
-
-                <div class="col-lg-3 col-md-3">
-                   <div class="input-daterange input-group" data-plugin-datepicker>
-                      <span class="input-group-prepend">
-                         <span class="input-group-text">
-                            <i class="fas fa-calendar-alt"></i>
-                         </span>
+              </div>
+              <div class="col-lg-3 col-md-3">
+                <div class="input-daterange input-group">
+                   <span class="input-group-prepend">
+                      <span class="input-group-text">
+                         <i class="fas fa-calendar-alt"></i>
                       </span>
-                      <input type="text" class="form-control" name="start">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                         to
-                      </span>
-                      <input type="text" class="form-control" name="end">
-                   </div>
-                   </div>
-
-                <div class="col-md-1  col-lg-1">
-                          <button type="submit" class="btn btn-sm btn-success">Search</button>
-                         </div>
-                <div class="col-md-6  col-lg-6 text-right pr-5">
+                   </span>
+                   <input [(ngModel)]="filter.startDate" name="startDate"
+                      type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                      ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                      autocomplete="off">
+                   <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                      to
+                   </span>
+                   <input [(ngModel)]="filter.endDate" name="endDate"
+                      type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                      ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                      autocomplete="off">
+                </div>
+             </div>
+              <div class="col-md-2  col-lg-2">
+                <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+                <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
+              </div>
+                <div class="col-md-5  col-lg-5 text-right pr-5">
                    <a routerLink="/accounts/receipts/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Receive Payment </a>
-
                 </div>
              </div>
              </form>
@@ -50,12 +54,12 @@
                             <th class="text-2">Account</th>
                             <th class="text-2">Factoring Company</th>
                             <th class="text-2">Amount</th>
-                            <th class="text-2">Action</th>
+                            <!-- <th class="text-2">Action</th> -->
                          </tr>
                       </thead>
                       <tbody>
                         <tr *ngIf="receipts.length == 0" class="text-center">
-                          <td colspan="9">{{ noReceiptsMsg }}</td>
+                          <td colspan="9">{{ dataMessage }}</td>
                       </tr>
                          <tr *ngFor="let rec of receipts">
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate}}</td>
@@ -66,14 +70,14 @@
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID]}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
-                            <td><div class="btn-group flex-wrap">
+                            <!-- <td><div class="btn-group flex-wrap">
                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                   <div class="dropdown-menu" role="menu">
                                      <a class="dropdown-item text-1" routerLink="/accounts/receipts/edit/{{rec.recID}}">Edit</a>
                                      <button type="button" class="dropdown-item text-1" (click)="deleteReceipt(rec.recID)">Delete</button>
                                   </div>
                                </div>
-                            </td>
+                            </td> -->
                          </tr>
                       </tbody>
                    </table>

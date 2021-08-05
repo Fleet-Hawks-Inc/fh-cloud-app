@@ -9,6 +9,8 @@ import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
 import * as html2pdf from 'html2pdf.js';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -154,6 +156,14 @@ export class OrderDetailComponent implements OnInit {
   today: any;
   cusAddressID: string;
   isInvoiced: boolean;
+  generateBtnDisabled = false;
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  invGenStatus = false;
   constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
@@ -429,24 +439,60 @@ export class OrderDetailComponent implements OnInit {
 
   }
 
-  saveInvoice(){
+  saveInvoice() {
+    this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
     this.invoiceData[`invNo`] = this.orderNumber;
     this.invoiceData[`invType`] = 'orderInvoice';
     this.invoiceData[`invStatus`] = 'open';
     this.invoiceData[`amountReceived`] = 0;
+    this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
     this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
-    this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
-      this.toastr.success('Invoice Added Successfully.');
+    // this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
+    //   if (res) {
+
+    //     $('#previewInvoiceModal').modal('hide');
+    //   }
+    //   this.toastr.success('Invoice Added Successfully.');
+    // });
+
+
+    this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.generateBtnDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.generateBtnDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        $('#previewInvoiceModal').modal('hide');
+        this.generateBtnDisabled = false;
+        this.toastr.success('Invoice Added Successfully.');
+      },
     });
   }
 
   invoiceGenerated() {
-    const invStatus = true;
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${invStatus}`).subscribe((res) => {});
+    this.invGenStatus = true;
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {

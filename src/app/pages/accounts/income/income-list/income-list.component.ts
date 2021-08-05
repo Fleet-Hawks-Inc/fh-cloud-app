@@ -61,7 +61,7 @@ export class IncomeListComponent implements OnInit {
   }
 
   fetchCustomers() {
-    this.apiService.getData(`contacts/get/list/customer`)
+    this.apiService.getData(`contacts/get/list`)
       .subscribe((result: any) => {
         this.customers = result;
       })

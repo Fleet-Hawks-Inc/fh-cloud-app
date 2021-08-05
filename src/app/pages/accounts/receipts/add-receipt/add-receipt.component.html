@@ -19,11 +19,11 @@
                     <div class="col-lg-12">
 
                         <div class=" row">
-                          <div class="col-lg-5 offset-lg-1">
+                          <!-- <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo" #receiptNo="ngModel" required>
+                                <input type="text" class="form-control" [(ngModel)]="receiptData.recNo" name="recNo" #receiptNo="ngModel">
                                 <div *ngIf="receiptNo.invalid && (receiptNo.dirty || receiptNo.touched)" class="text-danger">
                                   <div *ngIf="receiptNo.errors.required">
                                     Receipt# is required.
@@ -31,7 +31,7 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> -->
                           <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-5">
@@ -95,17 +95,18 @@
                             <th class="text-2">Invoice#</th>
                             <th class="text-2">Invoice Date</th>
                             <th class="text-2">Customer</th>
-                            <th class="text-2">Order#</th>
+                            <!-- <th class="text-2">Order#</th>
                             <th class="text-2">Freight Amount</th>
                             <th class="text-2">Other Charges</th>
-                            <th class="text-2">Tax</th>
+                            <th class="text-2">Tax</th> -->
                             <th class="text-2">Total Amount</th>
-                            <th class="text-2">Factoring Comp.</th>
-                            <th class="text-2">Factoring Comp. Charges</th>
+                            <th class="text-2">Amount Received</th>
+                            <!-- <th class="text-2">Factoring Comp.</th>
+                            <th class="text-2">Factoring Comp. Charges</th> -->
                             <th class="text-2">Invoice Balance</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
-                            <th class="text-2" width="7%">Amount Received</th>
+                            <th class="text-2" width="7%">Amount Paid</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -116,16 +117,17 @@
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
                             <td>{{customersObjects[inv.customerID]}}</td>
-                            <td>{{inv.invNo}}</td>
+                            <!-- <td>{{inv.invNo}}</td>
                             <td>{{inv.charges.freightFee.amount}} {{inv.charges.freightFee.currency}}</td>
                             <td>Add:
                               {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}<br>
                               Deduct:
                               {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td> -->
                             <td>{{inv.finalAmount}}{{inv.charges.freightFee.currency}}</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{inv.amountReceived}}{{inv.charges.freightFee.currency}}</td>
+                            <!-- <td>-</td>
+                            <td>-</td> -->
                             <td>{{inv.balance}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
@@ -133,7 +135,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number"  [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                              <input type="number"  [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}"  (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
@@ -141,13 +143,14 @@
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
                             <td>{{customersObjects[inv.customerID]}}</td>
+                            <!-- <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>-</td>
-                            <td>{{inv.taxAmount}}</td>
+                            <td>{{inv.taxAmount}}</td> -->
                             <td>{{inv.finalAmount}}</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{inv.amountReceived}}</td>
+                            <!-- <td>-</td>
+                            <td>-</td> -->
                             <td>{{inv.balance}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
@@ -155,7 +158,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountReceived" name="amountReceived{{i}}"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
@@ -181,8 +184,9 @@
                             <div class="col-lg-6 pl-0">
                               <ng-select class="form-control populate" [(ngModel)]="receiptData.advAmtCur"
                               name="advAmtCur">
-                                  <ng-option value="USD">USD</ng-option>
+
                                   <ng-option value="CAD">CAD</ng-option>
+                                  <ng-option value="USD">USD</ng-option>
                               </ng-select>
                             </div>
                           </div>
@@ -222,7 +226,7 @@
                           <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
                             <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
-                              {{ item.actName }}</ng-option>
+                              {{ item.actName | titlecase}}</ng-option>
                           </ng-select>
                           <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
                             <div *ngIf="receiptAct.errors.required">
@@ -280,7 +284,7 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
+                      <a type="button" class="btn btn-default" routerLink="/accounts/receipts/list">Cancel</a>
                       <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="addReceipt()">Save</button>
                       <button type="button" class="btn btn-success" *ngIf="recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="updateReceipt()">Update</button>
                     </div>

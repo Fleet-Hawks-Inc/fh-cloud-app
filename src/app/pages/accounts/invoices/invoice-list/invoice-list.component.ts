@@ -1,7 +1,7 @@
 import { AccountService, ApiService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import Constants from 'src/app/pages/fleet/constants';
+import Constants from '../../../fleet/constants';
 import { Router } from '@angular/router';
 declare var $: any;
 @Component({
@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements OnInit {
-  noInvoicesMsg = Constants.NO_RECORDS_FOUND;
+  dataMessage = Constants.NO_RECORDS_FOUND;
   invoices = [];
   customersObjects = {};
   invNewStatus: string;
@@ -34,22 +34,29 @@ export class InvoiceListComponent implements OnInit {
   emailedOrderInvoices = [];
   partiallyPaidOrderInvoices = [];
   voidedOrderInvoices = [];
+  invGenStatus: boolean;
+  filter = {
+    startDate: null,
+    endDate: null,
+    invNo: null
+  };
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.fetchInvoices();
     this.fetchCustomersByIDs();
+    this.fetchInvoices();
   }
   fetchInvoices() {
     this.accountService.getData('order-invoice').subscribe((res: any) => {
       this.orderInvoices = res;
-      console.log('this.orderInvoices', this.orderInvoices);
+      this.orderInvoices.map((v: any) => {
+        v.invStatus = v.invStatus.replace('_', ' ');
+      });
       this.categorizeOrderInvoices(this.orderInvoices);
     });
 
     this.accountService.getData('invoices').subscribe((res: any) => {
       this.invoices = res;
-      console.log('this.invoices', this.invoices);
       this.invoices.map((v: any) => {
         v.invStatus = v.invStatus.replace('_', ' ');
       });
@@ -68,7 +75,7 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       for (const element of invoices) {
         if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + element.finalAmount;
+          this.openTotal = this.openTotal + element.balance;
           this.openTotal = +(this.openTotal).toFixed(2);
           this.openOrderInvoices.push(element);
         } else if (element.invStatus === 'paid') {
@@ -76,11 +83,11 @@ export class InvoiceListComponent implements OnInit {
           this.paidTotal = +(this.paidTotal).toFixed(2);
           this.paidOrderInvoices.push(element);
         } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + element.finalAmount;
+          this.emailedTotal = this.emailedTotal + element.balance;
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
           this.emailedOrderInvoices.push(element);
-        } else if (element.invStatus === 'partially_paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + element.finalAmount;
+        } else if (element.invStatus === 'partially paid') {
+          this.partiallyPaidTotal = this.partiallyPaidTotal + element.balance;
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
           this.partiallyPaidOrderInvoices.push(element);
         } else if (element.invStatus === 'voided') {
@@ -98,7 +105,7 @@ export class InvoiceListComponent implements OnInit {
       this.findOverDueInvoice(this.openInvoices);
       for (const element of invoices) {
         if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + element.finalAmount;
+          this.openTotal = this.openTotal + element.balance;
           this.openTotal = +(this.openTotal).toFixed(2);
           this.openInvoices.push(element);
           this.findOverDueInvoice(this.openInvoices);
@@ -107,11 +114,11 @@ export class InvoiceListComponent implements OnInit {
           this.paidTotal = +(this.paidTotal).toFixed(2);
           this.paidInvoices.push(element);
         } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + element.finalAmount;
+          this.emailedTotal = this.emailedTotal + element.balance;
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
           this.emailedInvoices.push(element);
-        } else if (element.invStatus === 'partially_paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + element.finalAmount;
+        } else if (element.invStatus === 'partially paid') {
+          this.partiallyPaidTotal = this.partiallyPaidTotal + element.balance;
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
           this.partiallyPaidInvoices.push(element);
         } else if (element.invStatus === 'voided') {
@@ -147,18 +154,22 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  deleteInvoice(invID: string) {
-    this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
-      this.toaster.success('Invoice Deleted Successfully.');
-      this.fetchInvoices();
-    });
+  voidInvoice(invID: string) {
+    if (confirm('Are you sure you want to void?') === true) {
+      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
+        this.toaster.success('Invoice Deleted Successfully.');
+        this.fetchInvoices();
+      });
+    }
   }
 
   changeStatus(invID: string) {
     this.invID = invID;
     $('#updateStatusModal').modal('show');
   }
-
+  editFn(invID: string) {
+    this.router.navigateByUrl(`/accounts/invoices/edit/${invID}`);
+  }
   updateInvStatus() {
     this.accountService.getData(`invoices/status/${this.invID}/${this.invNewStatus}`).subscribe(() => {
       this.toaster.success('Invoice Status Updated Successfully.');
@@ -166,15 +177,58 @@ export class InvoiceListComponent implements OnInit {
       $('#updateStatusModal').modal('hide');
     });
   }
-   deleteOrderInvoice(invID: string, orderID: string) {
-    this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
-      const invStatus = false;
-      this.apiService.getData(`orders/invoiceStatus/${orderID}/${invStatus}`).subscribe((res) => {
-        if (res) {
-          this.toaster.success('Invoice Deleted Successfully.');
-        }
+  voidOrderInvoice(invID: string, orderID: string) {
+    if (confirm('Are you sure you want to void?') === true) {
+      this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
+        this.invGenStatus = false;
+        this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
+          if (res) {
+            this.toaster.success('Invoice Voided Successfully.');
+          }
+        });
+        this.fetchInvoices();
       });
-      this.fetchInvoices();
-    });
+    }
+
+  }
+
+  searchFilter() {
+    if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchDetails();
+    }
+  }
+
+  fetchDetails() {
+    this.accountService.getData(`invoices/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
+      .subscribe((result: any) => {
+        this.invoices = result;
+      });
+    this.accountService.getData(`order-invoice/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
+      .subscribe((result: any) => {
+        this.orderInvoices = result;
+      });
+  }
+  resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      invNo: null
+    };
+    this.total = 0;
+    this.openInvoices = [];
+    this.openTotal = 0;
+    this.paidInvoices = [];
+    this.paidTotal = 0;
+    this.emailedInvoices = [];
+    this.emailedTotal = 0;
+    this.partiallyPaidInvoices = [];
+    this.partiallyPaidTotal = 0;
+    this.voidedInvoices = [];
+    this.voidedTotal = 0;
+    this.invoices = [];
+    this.orderInvoices = [];
+    this.fetchInvoices();
   }
 }
