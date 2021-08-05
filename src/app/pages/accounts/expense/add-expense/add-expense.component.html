@@ -53,8 +53,7 @@
                                             <ng-select [(ngModel)]="expenseData.expAccountID" name="expAccountID"
                                                 placeholder="Select Expense Account" #expAccount="ngModel" required (change)="changeDepAcc($event)">
                                                 <ng-option value="{{ data.actID }}"
-                                                    *ngFor="let data of expenseAccounts | async">{{ data.actName }} - {{
-                                                    data.actNo }}</ng-option>
+                                                    *ngFor="let data of expenseAccounts | async"> {{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                             </ng-select>
 
                                             <div *ngIf="expAccount.invalid && (expAccount.dirty || expAccount.touched)" class="text-danger">
@@ -78,8 +77,8 @@
                                                 placeholder="Select Paid Through Account" #paidTh="ngModel"
                                                 required>
                                                 <optgroup *ngFor="let data of paidThroughAccounts | async" >
-                                                    <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID">{{ data.actName }}
-                                                        - {{ data.actNo }}</ng-option>
+                                                    <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID"> {{ data.actNo }} - {{ data.actName | titlecase}}
+                                                       </ng-option>
                                                     </optgroup>
                                             </ng-select>
 

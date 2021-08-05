@@ -8,7 +8,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
 import { ListService } from 'src/app/services/list.service';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
-import * as moment from "moment";
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -48,12 +48,14 @@ export class AddExpenseComponent implements OnInit {
       pstAmount: null,
       includeHST: true,
       hstpercent: null,
-      hstAmount: null
+      hstAmount: null,
     },
+    taxAmount: 0,
     customerID: null,
     invoiceID: null,
     documents: [],
-    notes: ''
+    notes: '',
+    transactionLog: [],
   };
 
   expenseCategories = [];
@@ -91,8 +93,8 @@ export class AddExpenseComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   submitDisabled = false;
   errors = {};
   response: any = '';
@@ -111,7 +113,7 @@ export class AddExpenseComponent implements OnInit {
   constructor(private listService: ListService, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.expenseID = this.route.snapshot.params['expenseID'];
+    this.expenseID = this.route.snapshot.params[`expenseID`];
     if(this.expenseID != undefined) {
       this.fetchExpenseByID();
     }
@@ -149,8 +151,8 @@ export class AddExpenseComponent implements OnInit {
     this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.expenseData.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
 
-    if(stateCode != undefined && stateCode != null) {
-      let selected:any = this.stateTaxes.filter(o => o.stateCode == stateCode);
+    if(stateCode !== undefined && stateCode != null) {
+      let selected:any = this.stateTaxes.filter(o => o.stateCode === stateCode);
       this.expenseData.taxes.gstPercent = selected[0].GST;
       this.expenseData.taxes.pstPercent = selected[0].PST;
       this.expenseData.taxes.hstpercent = selected[0].HST;
@@ -176,7 +178,7 @@ export class AddExpenseComponent implements OnInit {
     */
   selectDocuments(event) {
     let files = [...event.target.files];
-    
+
     for (let i = 0; i < files.length; i++) {
       this.uploadedDocs.push(files[i])
     }
@@ -186,7 +188,7 @@ export class AddExpenseComponent implements OnInit {
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
-    this.hasSuccess = false; 
+    this.hasSuccess = false;
 
     this.expenseData.amount = parseFloat(this.expenseData.amount);
     // create form data instance
@@ -236,6 +238,7 @@ export class AddExpenseComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.expenseData = result[0];
+          this.expenseData.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
           this.states = CountryStateCity.GetStatesByCountryCode([result[0].countryCode]);
@@ -269,7 +272,7 @@ export class AddExpenseComponent implements OnInit {
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
-    this.hasSuccess = false; 
+    this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
 
     // create form data instance
@@ -370,22 +373,26 @@ export class AddExpenseComponent implements OnInit {
       this.existingDocs.splice(index, 1);
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 
   calculateFinalTotal() {
+    this.expenseData.taxAmount = 0;
     this.expenseData.finalTotal = +this.expenseData.amount;
     if(this.expenseData.taxes.gstPercent != null && this.expenseData.taxes.includeGST) {
       this.expenseData.taxes.gstAmount = (this.expenseData.amount*this.expenseData.taxes.gstPercent)/100;
+      this.expenseData.taxAmount += this.expenseData.taxes.gstAmount;
       this.expenseData.finalTotal += +this.expenseData.taxes.gstAmount;
     }
     if(this.expenseData.taxes.hstpercent != null && this.expenseData.taxes.includeHST) {
       this.expenseData.taxes.hstAmount = (this.expenseData.amount*this.expenseData.taxes.hstpercent)/100;
       this.expenseData.finalTotal += +this.expenseData.taxes.hstAmount;
+      this.expenseData.taxAmount += this.expenseData.taxes.hstAmount;
     }
     if(this.expenseData.taxes.pstPercent != null && this.expenseData.taxes.includePST) {
       this.expenseData.taxes.pstAmount = (this.expenseData.amount*this.expenseData.taxes.pstPercent)/100;
       this.expenseData.finalTotal += +this.expenseData.taxes.pstAmount;
+      this.expenseData.taxAmount += this.expenseData.taxes.pstAmount;
     }
   }
 
