@@ -20,7 +20,7 @@ export class AddJournalComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   journal = {
-    txnDate: moment().format('YYYY-MM-DD'),
+    txnDate:  moment().format('YYYY-MM-DD'),
     referenceNo: '',
     currency: null,
     notes: '',
@@ -44,7 +44,8 @@ export class AddJournalComponent implements OnInit {
     }],
     debitTotalAmount: 0,
     creditTotalAmount: 0,
-    attachments: []
+    attachments: [],
+    transactionLog: [],
   };
   difference = 0;
   accounts = [];
@@ -54,8 +55,8 @@ export class AddJournalComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   submitDisabled = true;
   journalID;
   Asseturl = this.apiService.AssetUrl;
@@ -168,10 +169,10 @@ export class AddJournalComponent implements OnInit {
       .subscribe((result: any) => {
         if(result[0] != undefined) {
           this.journal = result[0];
-
+          this.journal.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
           this.carrierID = result[0].carrierID;
-
+          console.log('this.journal', this.journal);
           this.journal.details.map((k, index) => {
             let type= '';
             if(k.debit === 0) {
@@ -201,7 +202,6 @@ export class AddJournalComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.journal.attachments = this.existingDocs;
-
     // create form data instance
     const formData = new FormData();
 
@@ -286,7 +286,7 @@ export class AddJournalComponent implements OnInit {
       this.existingDocs.splice(index, 1);
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 
   /*
@@ -294,7 +294,7 @@ export class AddJournalComponent implements OnInit {
     */
   selectDocuments(event) {
     let files = [...event.target.files];
-    
+
     for (let i = 0; i < files.length; i++) {
       this.uploadedDocs.push(files[i])
     }
