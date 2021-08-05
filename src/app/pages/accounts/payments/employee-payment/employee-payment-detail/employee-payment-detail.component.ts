@@ -62,6 +62,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
   fetchPaymentDetail() {
     this.accountService.getData(`employee-payments/detail/${this.paymentID}`).subscribe((result: any) => {
       this.paymentData = result[0];
+      if(this.paymentData.payMode) {
+        this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");
+      }
       this.fetchEmpDetail(result[0].entityId);
     })
   }

@@ -184,12 +184,12 @@
                                                     </div>
                                                     <div class="row pt-2" id="chequeDiv" *ngIf="incomeData.paymentMode !== null">
                                                         <div class="col-lg-5">
-                                                            <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required>
+                                                            <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required placeholder="{{ paymentLabel }} Reference">
 
                                                             <div *ngIf="modeNUmber.invalid && (modeNUmber.dirty || modeNUmber.touched)" class="text-danger">
                                                                 <div *ngIf="modeNUmber.errors.required">
-                                                                    {{ paymentLabel }} number is required.
+                                                                    {{ paymentLabel }} reference is required.
                                                                 </div>
                                                             </div>
                                                         </div>
