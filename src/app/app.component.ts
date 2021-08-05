@@ -82,6 +82,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
       }
     }, false);
+
+    $('.modal-dialog').draggable({
+      handle: ".modal-header"
+    });
   }
 
   getToken() {
