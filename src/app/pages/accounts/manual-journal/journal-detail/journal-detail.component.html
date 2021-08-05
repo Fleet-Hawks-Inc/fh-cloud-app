@@ -66,9 +66,9 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let data of journal.details">
-                                                <td>{{ accounts[data.accountID] | titlecase}}</td>
+                                                <td>{{ accounts[data.accountID] | titlecase }}</td>
                                                 <td>{{ data.description }}</td>
-                                                <td>{{ contacts[data.contactID] | titlecase}}</td>
+                                                <td>{{ contacts[data.contactID] | titlecase }} </td>
                                                 <td>{{ data.debit }}</td>
                                                 <td>{{ data.credit }}</td>
                                             </tr>

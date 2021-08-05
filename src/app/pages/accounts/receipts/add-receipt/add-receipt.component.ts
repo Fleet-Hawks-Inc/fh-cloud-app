@@ -160,6 +160,7 @@ export class AddReceiptComponent implements OnInit {
         }
       }
     }
+    this.findReceivedAmtFn();
   }
   async getPaidInvoices() {
     const paidInvoices = [];
@@ -242,6 +243,7 @@ export class AddReceiptComponent implements OnInit {
     });
   }
 findReceivedAmtFn() {
+  this.totalReceivedAmt = 0;
   for (const element of this.invoices) {
    this.totalReceivedAmt += element.amountPaid;
   }
@@ -249,7 +251,6 @@ findReceivedAmtFn() {
     this.totalReceivedAmt += element.amountPaid;
    }
   this.receiptData.recAmount = this.totalReceivedAmt;
-
 }
   async updateReceipt() {
     this.submitDisabled = true;

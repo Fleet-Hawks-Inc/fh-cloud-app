@@ -47,19 +47,21 @@ export class ChartOfAccountsComponent implements OnInit {
     $('#addAccountModal').modal('show');
   }
   searchFilter() {
+    let name = null;
+    let type = null;
     if (this.filter.actType !== null || this.filter.actName !== null) {
-     if (this.filter.actType !== null) {
-      this.filter.actType.toLowerCase();
+     if (this.filter.actType !== null && this.filter.actType !== '') {
+      type = this.filter.actType.toLowerCase();
      }
-     if (this.filter.actName !== null) {
-      this.filter.actName.toLowerCase();
+     if (this.filter.actName !== null && this.filter.actName !== '') {
+      name = this.filter.actName.toLowerCase();
      }
      this.dataMessage = Constants.FETCHING_DATA;
-     this.fetchAccounts();
+     this.fetchAccounts(name, type);
     }
   }
-  fetchAccounts() {
-    this.accounts = this.accountService.getData(`chartAc/paging?actName=${this.filter.actName}&actType=${this.filter.actType}`).toPromise();
+  fetchAccounts(actName: string, actType: null) {
+    this.accounts = this.accountService.getData(`chartAc/paging?actName=${actName}&actType=${actType}`).toPromise();
     // if (!this.accounts) {
     //   this.dataMessage = Constants.NO_RECORDS_FOUND;
     // }
