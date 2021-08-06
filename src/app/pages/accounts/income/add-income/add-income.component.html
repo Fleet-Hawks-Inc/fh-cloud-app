@@ -36,7 +36,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-2 mar-top-37"> <a
-                                                                href="javascript:;" (click)="showCategoryModal()" 
+                                                                href="javascript:;" (click)="showCategoryModal()"
                                                                 class="btn modal-with-form btn-success btn-sm"><i
                                                                     class="fas fa-plus"></i></a> </div>
                                                     </div>
@@ -46,10 +46,9 @@
                                                                 Income Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                             <ng-select [(ngModel)]="incomeData.incomeAccID" name="incomeAccID" placeholder="Select Income Account"
                                                                 #incAccount="ngModel" required (change)="changeDepAcc($event)">
-                                                                <ng-option value="{{ data.actID }}" *ngFor="let data of incomeAccounts | async">{{ data.actName }} - {{
-                                                                    data.actNo }}</ng-option>
+                                                                <ng-option value="{{ data.actID }}" *ngFor="let data of incomeAccounts | async"> {{ data.actNo }} - {{ data.actName | titlecase }} </ng-option>
                                                             </ng-select>
-                                                        
+
                                                             <div *ngIf="incAccount.invalid && (incAccount.dirty || incAccount.touched)" class="text-danger">
                                                                 <div *ngIf="incAccount.errors.required">
                                                                     Income account is required.
@@ -57,7 +56,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-2 mar-top-37"> <a
-                                                            href="javascript:;" (click)="showAcModal()" 
+                                                            href="javascript:;" (click)="showAcModal()"
                                                             class="btn modal-with-form btn-success btn-sm"><i
                                                                 class="fas fa-plus"></i></a> </div>
                                                     </div>
@@ -68,7 +67,7 @@
                                                                 Deposit Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                                 <ng-select [(ngModel)]="incomeData.depositAccID" name="depositAccID" placeholder="Select Deposit Account" #deposit="ngModel" required>
                                                                     <optgroup *ngFor="let data of depositAccounts | async" >
-                                                                        <ng-option value="{{ data.actID }}" *ngIf="data.actID !== incomeData.incomeAccID">{{ data.actName }} - {{ data.actNo }}</ng-option>
+                                                                        <ng-option value="{{ data.actID }}" *ngIf="data.actID !== incomeData.incomeAccID">  {{ data.actNo }} - {{ data.actName | titlecase }}</ng-option>
                                                                     </optgroup>
                                                                 </ng-select>
 
@@ -185,12 +184,12 @@
                                                     </div>
                                                     <div class="row pt-2" id="chequeDiv" *ngIf="incomeData.paymentMode !== null">
                                                         <div class="col-lg-5">
-                                                            <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required>
+                                                            <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required placeholder="{{ paymentLabel }} Reference">
 
                                                             <div *ngIf="modeNUmber.invalid && (modeNUmber.dirty || modeNUmber.touched)" class="text-danger">
                                                                 <div *ngIf="modeNUmber.errors.required">
-                                                                    {{ paymentLabel }} number is required.
+                                                                    {{ paymentLabel }} reference is required.
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -256,7 +255,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-11 text-right">
-                                                    <button type="button" routerLink="" class="btn btn-default mr-2">Cancel</button> 
+                                                    <button type="button" routerLink="" class="btn btn-default mr-2">Cancel</button>
                                                     <button type="submit" class="btn btn-success" *ngIf="!incomeID" (click)="addRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Save</button>
                                                     <button type="submit" class="btn btn-success" *ngIf="incomeID" (click)="updateRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Update</button>
                                                 </div>

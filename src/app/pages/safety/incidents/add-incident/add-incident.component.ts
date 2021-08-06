@@ -116,8 +116,7 @@ export class AddIncidentComponent implements OnInit {
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
             this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == '' ||
             this.event.eventTime == null || this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
-            this.event.locationText == '' || this.event.notes == '' || this.event.status == '' || this.event.eventSource == '' 
-        || this.uploadedPhotos.length == 0 || this.uploadedVideos.length == 0 || this.uploadedDocs.length == 0  || this.event.notes.length > 500) {
+            this.event.locationText == '' || this.event.status == '' || this.event.eventSource == '' || this.event.notes.length > 500) {
             return true
         } else {
             return false;

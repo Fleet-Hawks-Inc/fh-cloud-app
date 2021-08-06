@@ -11,18 +11,18 @@
           </div>
           <div class="col-lg-2 col-md-2">
             <ng-select class="form-control pull-left form-control-sm mb-0" [(ngModel)]="filter.actType" name="actType">
-              <ng-option value="Current_Assets">Current Assets</ng-option>
-        <ng-option value="Bank">Bank</ng-option>
-        <ng-option value="Credit_Card/Loan">Credit Card/Loan</ng-option>
-        <ng-option value="Direct_Expenses">Direct Expenses</ng-option>
-        <ng-option value="Equity">Equity</ng-option>
-        <ng-option value="Fixed_Assets">Fixed Assets</ng-option>
-        <ng-option value="Future_Assets">Future Assets</ng-option>
-        <ng-option value="Future_Liability">Future Liability</ng-option>
-        <ng-option value="Other_Income">Other Income</ng-option>
-        <ng-option value="Overheads">Overheads</ng-option>
-        <ng-option value="Sales">Sales</ng-option>
-        <ng-option value="Current_Liability">Current Liability</ng-option>
+              <ng-option value="current assets">Current Assets</ng-option>
+        <ng-option value="bank">Bank</ng-option>
+        <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
+        <ng-option value="direct expenses">Direct Expenses</ng-option>
+        <ng-option value="equity">Equity</ng-option>
+        <ng-option value="fixed assets">Fixed Assets</ng-option>
+        <ng-option value="future assets">Future Assets</ng-option>
+        <ng-option value="future liability">Future Liability</ng-option>
+        <ng-option value="other income">Other Income</ng-option>
+        <ng-option value="overheads">Overheads</ng-option>
+        <ng-option value="sales">Sales</ng-option>
+        <ng-option value="current liability">Current Liability</ng-option>
             </ng-select>
           </div>
           <div class="col-md-2  col-lg-2">
@@ -49,7 +49,6 @@
                         <th class="text-2">Account Name</th>
                         <th class="text-2">Account Number</th>
                         <th class="text-2">Account Type</th>
-                        <!-- <th class="text-2">Detail Type</th> -->
                         <th class="text-2">Description</th>
                         <!-- <th class="text-2">Opening Balance</th>
                         <th class="text-2">Closing Balance</th> -->
@@ -57,13 +56,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="accounts.length === 0" class="text-center">
-                        <td colspan="7">{{ dataMessage }}</td>
+                      <tr *ngIf="!accounts" class="text-center">
+                        <td colspan="5">{{ dataMessage }}</td>
                      </tr>
                       <tr *ngFor="let ac of accounts | async">
-                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName | titlecase}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>
-                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType}}</td>
+                        <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType | titlecase}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actDesc}}</td>
                         <!-- <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.opnBal}}&nbsp;{{ac.opnBalCurrency}}</td>
                         <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.closingAmt | absoluteValue}}&nbsp;{{ac.opnBalCurrency}}</td> -->

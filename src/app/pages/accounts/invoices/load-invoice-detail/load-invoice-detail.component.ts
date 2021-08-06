@@ -8,11 +8,12 @@ import { AccountService, ApiService } from '../../../../services';
 })
 export class LoadInvoiceDetailComponent implements OnInit {
   invID = '';
+  showDetails = false;
   invoiceData: any = {};
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
-  constructor(private route: ActivatedRoute,private accountService: AccountService, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
@@ -25,6 +26,9 @@ export class LoadInvoiceDetailComponent implements OnInit {
   }
   fetchInvoice() {
     this.accountService.getData(`order-invoice/detail/${this.invID}`).subscribe((res) => {
+      if (res) {
+        this.showDetails = true;
+      }
       this.invoiceData = res[0];
       this.invoiceData.transactionLog.map((v: any) => {
         v.type = v.type.replace('_', ' ');

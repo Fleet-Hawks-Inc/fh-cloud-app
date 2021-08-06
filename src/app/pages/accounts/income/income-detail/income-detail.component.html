@@ -55,7 +55,7 @@
                                                         <td>{{ incomeData.paymentMode }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Number</td>
+                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Reference</td>
                                                         <td>{{ incomeData.paymentModeNo }}</td>
                                                     </tr>
                                                     <tr>
@@ -108,13 +108,13 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>{{ accounts[incomeData.incomeAccID] }}</td>
+                                                        <td>{{ accounts[incomeData.incomeAccID] | titlecase }}</td>
                                                         <td>0.00</td>
                                                         <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
 
                                                     </tr>
                                                     <tr>
-                                                        <td>{{ accounts[incomeData.depositAccID] }}</td>
+                                                        <td>{{ accounts[incomeData.depositAccID] | titlecase }}</td>
                                                         <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
                                                         <td>0.00</td>
                                                     </tr>
