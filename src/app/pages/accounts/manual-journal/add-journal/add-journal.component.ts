@@ -20,7 +20,7 @@ export class AddJournalComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   journal = {
-    txnDate:  moment().format('YYYY-MM-DD'),
+    txnDate: moment().format('YYYY-MM-DD'),
     referenceNo: '',
     currency: null,
     notes: '',
@@ -167,18 +167,18 @@ export class AddJournalComponent implements OnInit {
   fetchJournalByID() {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
-        if(result[0] != undefined) {
+        if(result[0] !== undefined) {
           this.journal = result[0];
           this.journal.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
           this.carrierID = result[0].carrierID;
           console.log('this.journal', this.journal);
           this.journal.details.map((k, index) => {
-            let type= '';
-            if(k.debit === 0) {
-              type='credit';
+            let type = '';
+            if (k.debit === 0) {
+              type = 'credit';
             } else {
-              type='debit'
+              type = 'debit';
             }
             this.disableOtherField(type, index);
           })

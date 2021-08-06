@@ -59,7 +59,6 @@ export class ReceiptDetailComponent implements OnInit {
       this.receiptData.transactionLog.map((v: any) => {
         v.type = v.type.replace('_', ' ');
       });
-      console.log('this.receiptData', this.receiptData);
     });
   }
 }

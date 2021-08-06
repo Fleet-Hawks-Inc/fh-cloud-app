@@ -128,7 +128,7 @@
                                                         <tr *ngFor="let data of journal.details; let i=index">
                                                             <td>
                                                                 <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account" (change)="checkSelectedAccount($event, i)" #accID="ngModel" required>
-                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actName }} - {{ item.actNo }}</ng-option>
+                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actNo }} - {{ item.actName | titlecase}}</ng-option>
                                                                 </ng-select>
 
                                                                 <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
