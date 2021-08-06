@@ -24,7 +24,8 @@ export class AddAdvancePaymentComponent implements OnInit {
     referenceNo: "",
     notes: "",
     accountID: null,
-    status: "not_deducted"
+    status: "not_deducted",
+    transactionLog: [],
   };
   drivers = [];
   carriers = [];

@@ -89,7 +89,9 @@
                       <tr *ngFor="let trx of account.transactionLog; let i= index">
                         <td>{{i+1}}</td>
                         <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
-                        <td>{{customersObject[trx.name]}}</td>
+                        <td><span *ngIf="trx.name !== undefined">{{customersObject[trx.name]}}</span>
+                          <span *ngIf="trx.name === undefined">-</span>
+                        </td>
                         <td>{{trx.type | titlecase}}</td>
                         <td>{{trx.desc}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
