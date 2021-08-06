@@ -140,7 +140,7 @@
                         <div class="col-lg-4 offset-lg-1 pr-0">
 
                            <div class="row">
-                              <div class="col-lg-11">
+                              <div class="col-10">
                                  <label
                                     class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -165,10 +165,14 @@
                                   </div>
 
                               </div>
-                              <div class="col-lg-1 mar-top-37 pl-0">
+                              <div class="col-2 mar-top-37 p-0">
                                  <a class="btn btn-success btn-sm text-light" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
                                        class="fas fa-plus"></i>
                                  </a>
+                                 <a data-toggle="modal" (click)="listService.fetchCustomers();" href="javascript:;"
+                                    class="modal-with-form btn btn-sm btn-success ml-2">
+                                       <em class="fas fa-sync"></em>
+                                    </a>
                               </div>
 
                               <div class="col-11"  *ngIf="notOfficeAddress">
@@ -410,14 +414,14 @@
                                                    <div id="collapseShipperArea-{{i}}" class="collapse show">
                                                       <div class="row mr-4">
 
-                                                         <div class="col-lg-11 col-md-12">
+                                                         <div class="col-10">
                                                             <label
                                                                class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                for="inputDefault">Shipper <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
 
                                                             <ng-select [(ngModel)]="item.shippers.shipperID"
-                                                               name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" (change)="shipperAddress($event)" #conSlt1="ngModel" required>
+                                                               name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" (change)="shipperAddress('shipper', $event)" #conSlt1="ngModel" required>
 
                                                                   <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
 
@@ -427,11 +431,16 @@
                                                            </div>
                                                            
                                                          </div>
-                                                         <div class="col-lg-1 mar-top-37  pl-0">
+                                                         <div class="col-2 mar-top-37  p-0">
                                                             <a data-toggle="modal" data-target="#addShipperModal" href="javascript:;"
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
+                                                           <a data-toggle="modal" (click)="listService.fetchShippers();" href="javascript:;"
+                                                           class="modal-with-form btn btn-sm btn-success ml-2">
+                                                               <em class="fas fa-sync"></em>
+                                                            </a>
+                                                           
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3 mr-4">
@@ -440,8 +449,8 @@
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                                                Confirmation#
                                                             </label>
-                                                            <ng-select multiple="true" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="orderData.cusConfirmation" name="cusConfirmation" type="text"
-                                                               class="form-control"></ng-select>
+                                                            <ng-select multiple="true" (change)="getConfirmations(i)" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="cusConfirmation" name="cusConfirmation" type="text"
+                                                               class="form-control h-auto"></ng-select>
                            
                                                          </div>
                                                       </div>
@@ -453,7 +462,7 @@
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                      for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                   </label>
-                                                                  <ng-select placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
+                                                                  <ng-select (change)="assignLocation(i, w, 'shipper', $event)" placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
                                                                   name="pickupLocation_{{i}}{{w}}" class="form-control " #pickupLocation="ngModel" required
                                                                   pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
                                                                   #location="ngModel" required>
@@ -463,7 +472,12 @@
                                                                            {{item.userLocation}}
                                                                         </span>
                                                                         <span *ngIf="item.manual">
-                                                                           {{item.address1}}, {{item.address2}} {{item.cityName}} {{item.stateName}} {{item.countryName}} {{item.zipCode}}
+                                                                           {{item.address1}} <span *ngIf="item.address1">,</span> 
+                                                                           {{item.address2}} <span *ngIf="item.address2">,</span> 
+                                                                           {{item.cityName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.stateName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.countryName}}
+                                                                           {{item.zipCode}}
                                                                         </span>
                                                                      </ng-option>
    
@@ -480,14 +494,14 @@
       
                                                                      </div> -->
                                                                      
-                                                                  <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
+                                                                  <!-- <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
                                                                      <ul class="p-0 m-0 text-left w-100">
                                                                         <li *ngFor="let item of searchResults;">
                                                                            <a href="javascript:;" (click)="assignLocation(i, w, 'shipper', item)"
                                                                               title="{{item.address.label}}">{{item.address.label}}</a>
                                                                         </li>
                                                                      </ul>
-                                                                  </div>
+                                                                  </div> -->
                                                                </div>
                                                                <div class="col-lg-1 mar-top-37  pl-0">
                                                                   <a (click)="addPickUpPoint(i, 'shipper')" *ngIf="w == 0" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
@@ -517,14 +531,6 @@
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark">Unit Number</label>
                                                                   <input [(ngModel)]="pick.unitNumber"
                                                                   name="unitNumber_{{i}}{{w}}" type="text" class="form-control" placeholder="Unit Number">
-                                                               </div>
-                                                            
-                                                               <div class="col-12 pl-4 pr-4">
-                                                                  <div class="row">
-                                                                     <div class="col-12 bordbtm">
-                                                                        &nbsp;
-                                                                     </div>
-                                                                  </div>
                                                                </div>
                                                             
                                                             </div>
@@ -671,19 +677,7 @@
                                                                </div>
       
                                                             </div>
-                                                            <div class="row mt-3 mr-4">
-      
-                                                               <div class="col-lg-12 col-md-12">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">Pickup Instruction</label>
-      
-                                                                  <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="pick.pickupInstruction"
-                                                                     name="pickupInstruction_{{i}}{{w}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
-                                                                     ></textarea>
-      
-                                                               </div>
-      
-                                                            </div>
+                                                            
                                                             <div *ngFor="let commodity of pick.commodity; let z = index;">
                                                                <div class="row mt-3 mr-4 align-items-center">
                                                                   
@@ -789,17 +783,29 @@
                                                                </div>
                                                               
                                                             </div>
-                                                            
+                                                            <div class="row mt-3 mr-4">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Pickup Instruction</label>
+      
+                                                                  <textarea placeholder="eg. Enter pickup instruction" [(ngModel)]="pick.pickupInstruction"
+                                                                     name="pickupInstruction_{{i}}{{w}}" class="form-control h-auto" rows="2" #Pickup1= "ngModel" pattern ="^[\s\S]{500}$"
+                                                                     ></textarea>
+      
+                                                               </div>
+      
+                                                            </div>
                                                             
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3 mr-4">
-                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                         <div class="col-3">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Load ?</label>
+                                                               for="inputDefault">Driver Assist</label>
                                                          </div>
 
-                                                         <div class="col-lg-5 mb-3 pl-0 pr-0">
+                                                         <div class="col-5">
                                                             <div class="btn-group-toggle" data-toggle="buttons">
                                                                   <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': item.shippers.driverLoad}" (click)="driverLoadChange(i, true)">
                                                                   <input [(ngModel)]="item.shippers.driverLoad"
@@ -813,11 +819,21 @@
                                                             </div>
                                                          </div>
 
-                                                         <div class="col-lg-3 col-sm-12 col-xs-12 col-12 text-right pr-2">
-                                                            <p class="mb-1"><a *ngIf="item.shippers.save" href="javascript:;" (click)="saveShipper(i)"
-                                                               class="btn btnw90px btn-md btn-dark">Save</a></p>
-                                                            <p><a *ngIf="item.shippers.update" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
-                                                               class="btn btnw90px btn-md btn-dark">Update</a></p>
+                                                         <div class="col-4 text-right">
+                                                            <label class="control-label font-weight-bold mb-0 mt-2 text-3 mr-1 text-dark"
+                                                               for="inputDefault">Live Load</label>
+                                                               <div class="checkbox-custom checkbox-default pl-0 d-inline-block">
+                                                                  <input type="checkbox" [(ngModel)]="item.shippers.liveLoad"
+                                                                  name="liveLoad">
+                                                                  <label class="control-label mt-2 font-weight-bold pl-3"></label>
+                                                               </div>
+                                                         </div>
+                                                         
+                                                         <div class="col-12 text-right mt-3">
+                                                            <a *ngIf="item.shippers.save" href="javascript:;" (click)="saveShipper(i)"
+                                                               class="btn btnw90px btn-md btn-dark">Save</a>
+                                                            <a *ngIf="item.shippers.update" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
+                                                               class="btn btnw90px btn-md btn-dark">Update</a>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -842,14 +858,14 @@
                                                       <div class="mr-4">
                                                          <div class="row">
 
-                                                            <div class="col-lg-11 col-md-12">
+                                                            <div class="col-10">
                                                                <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                   for="inputDefault">Receiver <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                </label>
 
                                                                <ng-select [(ngModel)]="item.receivers.receiverID"
-                                                                  name="receiverID" #receiverID="ngModel" required
-                                                                  receiverID placeholder="Select Receiver"class="form-control" data-select2-id="16"
+                                                                  name="receiverID" #receiverID="ngModel" required (change)="shipperAddress('receiver', $event)"
+                                                                  receiverID placeholder="Select Receiver"class="form-control"
                                                                   tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
                                                                   <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
                                                                </ng-select>
@@ -859,11 +875,15 @@
                                                             </div>
 
                                                             </div>
-                                                            <div class="col-lg-1 mar-top-37  pl-0">
+                                                            <div class="col-lg-2 mar-top-37  p-0">
                                                                <a data-toggle="modal" data-target="#addConsigneeModal" href="javascript:;"
                                                                   class="modal-with-form btn btn-sm btn-success">
                                                                   <em class="fas fa-plus"></em>
-                                                            </a>
+                                                               </a>
+                                                               <a data-toggle="modal" (click)="listService.fetchReceivers();" href="javascript:;"
+                                                                  class="modal-with-form btn btn-sm btn-success ml-2">
+                                                                     <em class="fas fa-sync"></em>
+                                                                  </a>
                                                             </div>
                                                          </div>
                                                       </div>
@@ -877,27 +897,46 @@
                                                                      for="inputDefault">Drop Off Location
                                                                      <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                   </label>
-      
-                                                                  <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
+                                                                  <ng-select (change)="assignLocation(i, y, 'receiver', $event)" placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
+                                                                  name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
+                                                                  required dropLoc class="form-control" autocomplete="off"
+                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required >
+   
+                                                                     <ng-option *ngFor="let item of receiverAddresses" value="{{item.addressID}}">
+                                                                        <span *ngIf="!item.manual">
+                                                                           {{item.userLocation}}
+                                                                        </span>
+                                                                        <span *ngIf="item.manual">
+                                                                           {{item.address1}} <span *ngIf="item.address1">,</span> 
+                                                                           {{item.address2}} <span *ngIf="item.address2">,</span> 
+                                                                           {{item.cityName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.stateName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.countryName}}
+                                                                           {{item.zipCode}}
+                                                                        </span>
+                                                                     </ng-option>
+   
+                                                               </ng-select>
+                                                                  <!-- <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
                                                                      name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
                                                                      required dropLoc
                                                                      (input)="getSuggestions($event,
                                                                         $event.target.value)" class="form-control" autocomplete="off"
-                                                                     tabindex="-1" aria-hidden="true" #drop="ngModel" required >
+                                                                     tabindex="-1" aria-hidden="true" #drop="ngModel" required > -->
                                                                      <!-- <div *ngIf="dropOffLocation.touched && shippersReceivers[0].receivers.dropOffLocation == '' && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
                                                                          Drop off location is required.
       
       
                                                                     </div> -->
       
-                                                                  <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
+                                                                  <!-- <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
                                                                      <ul class="p-0 m-0 text-left w-100">
                                                                         <li *ngFor="let item of searchResults;">
                                                                            <a href="javascript:;" (click)="assignLocation(i, y, 'receiver', item)"
                                                                               title="{{item.ShortString}}">{{item.ShortString}}</a>
                                                                         </li>
                                                                      </ul>
-                                                                  </div>
+                                                                  </div> -->
                                                                </div>
                                                                <div class="col-lg-1 mar-top-37  pl-0">
                                                                   <a (click)="addPickUpPoint(i, 'receiver')" *ngIf="y == 0" href="javascript:;" class="modal-with-form btn btn-sm btn-success">
@@ -1092,26 +1131,6 @@
                                                                </div>
                                                             </div>
       
-                                                            <div class="row mt-3">
-      
-                                                               <div class="col-lg-12 col-md-12">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">Delivery Instruction</label>
-      
-                                                                  <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="dropItem.dropOffInstruction"
-                                                                     name="dropOffInstruction_{{i}}{{y}}" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
-      
-                                                                     style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
-                                                                     <!-- <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
-                                                                      <div>
-                                                                        <div *ngIf="Deliv1.errors.pattern">
-                                                                          Only 500 characters are allowed.
-                                                                         </div>
-                                                                      </div>
-                                                                    </div> -->
-                                                               </div>
-      
-                                                            </div>
                                                             <div *ngFor="let commodity of dropItem.commodity; let z = index;">
                                                                <div class="row mt-3">
                                                                   <div class="col-6">
@@ -1256,17 +1275,36 @@
       
                                                                </div>
                                                             </div>
-                                                            
+                                                            <div class="row mt-3">
+      
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                     for="inputDefault">Delivery Instruction</label>
+      
+                                                                  <textarea placeholder="eg. Enter delivery instruction" [(ngModel)]="dropItem.dropOffInstruction"
+                                                                     name="dropOffInstruction_{{i}}{{y}}" class="form-control h-auto" rows="2" #Deliv1= "ngModel" pattern ="^[\s\S]{500}$"
+      
+                                                                     style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                                                     <!-- <div *ngIf="Deliv1.invalid && (Deliv1.dirty || Deliv1.touched)" class="text-danger">
+                                                                      <div>
+                                                                        <div *ngIf="Deliv1.errors.pattern">
+                                                                          Only 500 characters are allowed.
+                                                                         </div>
+                                                                      </div>
+                                                                    </div> -->
+                                                               </div>
+      
+                                                            </div>
                                                          </div>
                                                       </div>
                                                      
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                         <div class="col-3">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Unload ?</label>
+                                                               for="inputDefault">Driver Assist </label>
                                                          </div>
 
-                                                         <div class="col-lg-5 mb-3 pl-0 pr-0">
+                                                         <div class="col-5">
                                                             <div class="btn-group-toggle" data-toggle="buttons">
                                                                <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': item.receivers.driverUnload}" (click)="driverUnLoadChange(i, true)">
                                                                   <input [(ngModel)]="item.receivers.driverUnload"
@@ -1278,13 +1316,21 @@
                                                                   id="unloadno"> No</label>
                                                             </div>
                                                          </div>
-
-                                                         <div class="col-lg-3 col-sm-12 col-xs-12 col-12 text-right">
-                                                            <p><a *ngIf="item.receivers.save" href="javascript:;"
+                                                         <div class="col-3 text-right">
+                                                            <label class="control-label font-weight-bold mb-0 mt-2 text-3 mr-2 text-dark"
+                                                               for="inputDefault">Live Unload</label>
+                                                               <div class="checkbox-custom checkbox-default pl-0 d-inline-block">
+                                                                  <input type="checkbox" [(ngModel)]="item.receivers.liveUnLoad"
+                                                                  name="liveUnLoad">
+                                                                  <label class="control-label mt-2 font-weight-bold pl-3"></label>
+                                                               </div>
+                                                         </div>
+                                                         <div class="col-12 text-right mt-3">
+                                                            <a *ngIf="item.receivers.save" href="javascript:;"
                                                                class="btn btnw90px btn-md btn-dark"
-                                                               (click)="saveReceiver(i)">Save</a></p>
-                                                            <p><a *ngIf="item.receivers.update" href="javascript:;" (click)="updateShipperReceiver('receiver', i)"
-                                                               class="btn btnw90px btn-md btn-dark">Update</a></p>
+                                                               (click)="saveReceiver(i)">Save</a>
+                                                            <a *ngIf="item.receivers.update" href="javascript:;" (click)="updateShipperReceiver('receiver', i)"
+                                                               class="btn btnw90px btn-md btn-dark">Update</a>
 
                                                          </div>
 
@@ -1303,9 +1349,9 @@
                                        </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row" *ngIf="i != 0">
                                        <div class="col-11 pr-0 text-right">
-                                          <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
+                                          <button (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
                                        </div>
                                     </div>
                                  </div>
@@ -1333,12 +1379,10 @@
                                     </div>
                                  </div>
 
-                                 <div class="row mt-3">
+                                 <!-- <div class="row mt-3">
 
                                     <div class="col-lg-8 offset-lg-2">
-                                       <!-- <label class="control-label font-weight-bold text-3 text-dark"
-                                          for="inputDefault">&nbsp;</label> -->
-
+                                       
                                        <div class="checkbox-custom checkbox-default">
                                           <input (change)="checkTrailer($event.target.value)"
                                              [(ngModel)]="orderData.additionalDetails.dropTrailer" name="dropTrailer"
@@ -1349,17 +1393,15 @@
 
                                     </div>
 
-                                 </div>
+                                 </div> -->
 
+                                 <div class="row mt-3">
 
-
-                                 <div class="row mt-3" *ngIf="!orderData.additionalDetails.dropTrailer">
-
-                                    <div class="col-lg-8 offset-lg-2">
+                                    <div class="col-4 offset-lg-2">
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault">Asset Type</label>
 
-                                       <ng-select placeholder="eg. Reefer" [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
+                                       <ng-select [clearable]="false" placeholder="eg. Reefer" [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                           class="form-control populate" >
 
                                            <ng-option value="container">Container</ng-option>
@@ -1390,10 +1432,20 @@
                                            </div>
                                       </div> -->
                                     </div>
-                                    <div class="col-lg-3">
+                                    
+                                    <div class="col-4">
+                                       <label class="control-label font-weight-bold text-3 text-dark"
+                                          for="inputDefault">Seal#</label>
+
+                                       <ng-select [clearable]="false" placeholder="" [(ngModel)]="orderData.additionalDetails.sealNo" name="sealNo"
+                                          class="form-control populate" >
+
+                                           <ng-option value="customer_seal">Customer Seal</ng-option>
+                                           <ng-option value="company_seal">Company Seal</ng-option>
+                                       
+                                       </ng-select>
                                     </div>
                                  </div>
-
 
                                  <!-- <div class="row mt-3">
                                     <div class="col-lg-10 offset-lg-2">
@@ -1626,7 +1678,7 @@
                                  <div class="row mt-3">
                                     <div class="col-lg-12">
                                        <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                          for="inputDefault">Freight Fee
+                                          for="inputDefault">Rate
                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                        </label>
                                     </div>
@@ -1677,7 +1729,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-3">
-                                       <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.freightFee.currency"
+                                       <ng-select [clearable]="false" (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.freightFee.currency"
                                        #freightCur="ngModel" required freightCur  name="freight_currency"
 
                                        placeholder="select currency" class="form-control populate" #sltcurrency="ngModel" required>
@@ -1735,7 +1787,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-3">
-                                       <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="fuel_currency"
+                                       <ng-select [clearable]="false" (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="fuel_currency"
                                        placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
 
                                           <ng-option value="CAD">CAD</ng-option>
@@ -1786,7 +1838,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-3">
-                                       <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="accessfee_currency{{i}}"
+                                       <ng-select [clearable]="false" (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="accessfee_currency{{i}}"
                                        placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true" >
 
                                           <ng-option value="CAD">CAD</ng-option>
@@ -1844,7 +1896,7 @@
                                        </div>
                                     </div>
                                     <div class="col-lg-3">
-                                       <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="currency{{i}}"
+                                       <ng-select [clearable]="false" (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="currency{{i}}"
                                           data-plugin-selecttwo="" placeholder="select currency"  class="form-control populate" data-select2-id="52"
                                           tabindex="-1" aria-hidden="true" >
 
