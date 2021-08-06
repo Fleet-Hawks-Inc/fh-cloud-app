@@ -22,7 +22,12 @@ pipeline {
     AWS_ECS_CLUSTER_PREPROD = 'fh-non-prod-cluster'
     AWS_CODE_BUILD_PROJECT_PREPROD = 'fleet-manager-application'
     AWS_ECS_SERVICE_PREPROD = 'fleet-manager-application'
-    AWS_ECS_TASK_DEFINITION_PREPROD = 'task-def-fleet-manager-dashboard'  
+    AWS_ECS_TASK_DEFINITION_PREPROD = 'task-def-fleet-manager-dashboard'
+    AWS_ECR_REGION_PROD = 'ca-central-1'
+    AWS_ECS_CLUSTER_PROD = 'fh-prod-cluster'
+    AWS_CODE_BUILD_PROJECT_PROD = 'fh-manager-dashboard'
+    AWS_ECS_SERVICE_PROD = 'fleet-manager-application'
+    AWS_ECS_TASK_DEFINITION_PROD = 'fh-cloud-app-task-definition'
   }
 
   stages {
@@ -60,6 +65,22 @@ pipeline {
           codeBuildOutput = awsCodeBuild credentialsId: 'aws-code-build-groovy',
             credentialsType: 'jenkins', projectName: "${AWS_ECS_SERVICE_PREPROD}",
           region: AWS_ECR_REGION_PREPROD, sourceControlType: 'project'
+
+          echo(codeBuildOutput.getBuildId())
+        }
+      }  
+    }
+    
+    // Build Stage for PROD
+    stage('PROD: Build Docker Image') {
+      when {
+        branch 'raahatxfh-update'
+      }
+      steps {
+        script {
+          codeBuildOutput = awsCodeBuild credentialsId: 'code-groovy-production',
+            credentialsType: 'jenkins', projectName: "${AWS_CODE_BUILD_PROJECT_PROD}",
+          region: AWS_ECR_REGION_PROD, sourceControlType: 'project'
 
           echo(codeBuildOutput.getBuildId())
         }
