@@ -18,6 +18,7 @@ export class AddReceiptComponent implements OnInit {
   pageTitle = 'Add Receipt';
   public recID: string;
   dataMessage: string = Constants.NO_RECORDS_FOUND;
+  dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
   customers: any = [];
   customersObjects = {};
   invoices = [];
@@ -30,6 +31,7 @@ export class AddReceiptComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     recNo: null,
     recAmount: 0,
+    totalAmount: 0,
     recAmountCur: null,
     accountID: null,
     advAmt: 0,
@@ -38,7 +40,10 @@ export class AddReceiptComponent implements OnInit {
     paymentModeNo: null,
     paymentModeDate: null,
     paidInvoices: [],
-    transactionLog: []
+    transactionLog: [],
+    advData: [],
+    advancePayIds: [],
+    advance: 0,
   };
   paymentMode = [
     {
@@ -66,6 +71,7 @@ export class AddReceiptComponent implements OnInit {
       value: 'demandDraft'
     },
   ];
+  advancePayments = [];
   paymentLabel = '';
   errors = {};
   response: any = '';
@@ -76,6 +82,9 @@ export class AddReceiptComponent implements OnInit {
   submitDisabled = false;
   orderInvoices = [];
   totalReceivedAmt = 0;
+  accList = [];
+  advErr = '';
+  newTotal = 0;
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -97,18 +106,61 @@ export class AddReceiptComponent implements OnInit {
     } else {
       this.pageTitle = 'Add Receipt';
     }
+    this.fetchAccounts();
+  }
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
+      this.accList = result;
+    });
   }
   async getInvoices() {
-
+    this.newTotal = 0;
+    this.advancePayments = [];
     this.accountService.getData(`order-invoice/customer/${this.receiptData.customerID}`).subscribe((res: any) => {
       this.orderInvoices = res;
+      for (const op of this.orderInvoices) {
+        this.newTotal += op.balance;
+        this.receiptData.totalAmount = this.newTotal;
+      }
     });
     this.accountService.getData(`invoices/customer/${this.receiptData.customerID}`).subscribe((result) => {
       this.invoices = result;
       setTimeout(() => {
         this.receiptData.recAmountCur = this.invoices[0].invCur;
+        this.receiptData.advAmtCur = this.invoices[0].invCur;
       }, 1000);
 
+      for (const op of this.invoices) {
+        this.newTotal += op.balance;
+        this.receiptData.totalAmount = this.newTotal;
+      }
+    });
+
+    this.fetchAdvancePayments();
+  }
+  fetchAdvancePayments() {
+    this.dataMessageAdv = Constants.FETCHING_DATA;
+    const fromDate = null;
+    const toDate = null;
+    this.accountService.getData(`advance/entity/${this.receiptData.customerID}?from=${fromDate}
+          &to=${toDate}`).subscribe((result: any) => {
+      if (result.length === 0) {
+        this.dataMessageAdv = Constants.NO_RECORDS_FOUND;
+      }
+      this.advancePayments = result;
+      this.advancePayments.map((v) => {
+        v.selected = false;
+        if(v.payMode) {
+          v.payMode = v.payMode.replace('_', ' ');
+        }
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.paidStatus = false;
+        v.status = v.status.replace('_', ' ');
+        v.errText = '';
+        v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
+        v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
+      })
     });
   }
   /*
@@ -252,6 +304,58 @@ findReceivedAmtFn() {
    }
   this.receiptData.recAmount = this.totalReceivedAmt;
 }
+selectedAdvancepayments() {
+  this.receiptData.advancePayIds = [];
+  this.receiptData.advData = [];
+  for (const element of this.advancePayments) {
+    if(element.selected) {
+      if(!this.receiptData.advancePayIds.includes(element.paymentID)) {
+        let obj = {
+          paymentID: element.paymentID,
+          status: element.status,
+          paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
+          totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
+          pendingAmount: element.pendingPayment
+        }
+        this.receiptData.advancePayIds.push(element.paymentID);
+        this.receiptData.advData.push(obj);
+      }
+    }
+  }
+  this.advancePaymentCalculation();
+}
+advancePaymentCalculation() {
+  this.receiptData.advAmt = 0;
+  for (const element of this.advancePayments) {
+    console.log('element', element);
+    if(element.selected) {
+      this.receiptData.advAmt += Number(element.paidAmount);
+      this.receiptData.advData.map((v) => {
+        if(element.paymentID === v.paymentID) {
+          v.paidAmount = Number(element.paidAmount);
+          v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+
+          if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+            v.status = 'deducted';
+          } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+            v.status = 'partially_deducted';
+          } else {
+            v.status = 'not_deducted';
+          }
+
+          v.paidAmount = v.paidAmount.toFixed(2);
+        }
+      })
+    }
+  }
+  // if(selectCount > 0) {
+  //   this.submitDisabled = false;
+  // } else {
+  //   this.submitDisabled = true;
+  // }
+  this.receiptData.advAmt = (this.receiptData.advAmt) ? Number(this.receiptData.advAmt) : 0;
+  this.receiptData.totalAmount = (this.receiptData.totalAmount) ? Number(this.receiptData.totalAmount) : 0;
+}
   async updateReceipt() {
     this.submitDisabled = true;
     this.errors = {};
@@ -287,5 +391,28 @@ findReceivedAmtFn() {
         this.router.navigateByUrl('/accounts/receipts/list');
       },
     });
+  }
+
+  assignFullPayment(type, index, data) {
+      if(data.fullPayment) {
+        this.advancePayments[index].paidAmount = data.pendingPayment;
+        this.advancePayments[index].paidStatus = true;
+      } else {
+        this.advancePayments[index].paidAmount = 0;
+        this.advancePayments[index].paidStatus = false;
+      }
+      this.selectedAdvancepayments();
+      this.advancePaymentCalculation();
+  }
+
+  checkInput(type, index='') {
+
+      // if(this.receiptData.advance > this.receiptData.totalAmount) {
+      //   this.advErr = 'Advance amount should be less than settlement amount';
+      //   this.submitDisabled = true;
+      // } else {
+      //   this.advErr = '';
+      //   this.submitDisabled = false;
+      // }
   }
 }

@@ -120,7 +120,6 @@ export class AddAdvancePaymentComponent implements OnInit {
   }
 
   addRecord() {
-    console.log("paymentData", this.paymentData);
     this.submitDisabled = true;
     this.accountService.postData("advance", this.paymentData).subscribe({
       complete: () => {},

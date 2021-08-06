@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {Auth} from 'aws-amplify';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -101,8 +102,10 @@ export class AddInvoiceComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
+  currentUser:any = '';
   ngOnInit() {
     this.listService.fetchCustomers();
+    this.getCurrentuser();
     this.customers = this.listService.customersList;
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
@@ -122,6 +125,11 @@ export class AddInvoiceComponent implements OnInit {
       this.users = result;
     });
   }
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.invoiceData.invSalesman = this.currentUser;
+}
   selectedCustomer(customerID: any) {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
@@ -129,7 +137,6 @@ export class AddInvoiceComponent implements OnInit {
         if (result.Items.length > 0) {
 
           this.customerSelected = result.Items;
-          console.log('this.customerSelected', this.customerSelected);
           for (let i = 0; i < this.customerSelected[0].address.length; i++) {
             const element = this.customerSelected[0].address[i];
             element[`isChecked`] = false;
