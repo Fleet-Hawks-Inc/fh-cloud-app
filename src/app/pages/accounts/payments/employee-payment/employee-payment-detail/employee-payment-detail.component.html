@@ -99,14 +99,14 @@
                                        </tr>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                          <td width="60%">{{ paymentData.payMode }}</td>
+                                          <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td> 
                                        </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Payment Reference#</td>
-                                          <td>{{ paymentData.payModeNo }}</td>
+                                       <tr *ngIf="paymentData.payMode">
+                                          <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
+                                          <td class="text-capitalize">{{ paymentData.payModeNo }}</td>
                                        </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Payment Date</td>
+                                       <tr *ngIf="paymentData.payMode">
+                                          <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
                                           <td>{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
                                        </tr>
                                     </tbody>

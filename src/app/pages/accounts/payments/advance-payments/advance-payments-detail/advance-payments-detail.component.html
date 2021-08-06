@@ -53,11 +53,11 @@
                                     <tbody>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                          <td width="60%">{{ (payModeLabel) ? payModeLabel : '-' }}</td>
+                                          <td width="60%" class="text-capitalize">{{ (payModeLabel) ? payModeLabel : '-' }}</td>
                                        </tr>
-                                       <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">{{ payModeLabel }}#</td>
-                                          <td width="60%">{{ (paymentData.payModeNo) ? paymentData.payModeNo : '-' }}</td>
+                                       <tr *ngIf="payModeLabel">
+                                          <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ payModeLabel }} Reference</td>
+                                          <td width="60%" class="text-capitalize">{{ (paymentData.payModeNo) ? paymentData.payModeNo : '-' }}</td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reference#</td>
