@@ -56,7 +56,7 @@
                               <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
                                 placeholder="Select Customer" class="form-control" #receiptCustomer="ngModel" required>
                                 <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
-                                  {{customer.companyName}}
+                                  {{customer.companyName | titlecase}}
                                 </ng-option>
                               </ng-select>
                               <div *ngIf="receiptCustomer.invalid && (receiptCustomer.dirty || receiptCustomer.touched)" class="text-danger">
@@ -95,14 +95,8 @@
                             <th class="text-2">Invoice#</th>
                             <th class="text-2">Invoice Date</th>
                             <th class="text-2">Customer</th>
-                            <!-- <th class="text-2">Order#</th>
-                            <th class="text-2">Freight Amount</th>
-                            <th class="text-2">Other Charges</th>
-                            <th class="text-2">Tax</th> -->
                             <th class="text-2">Total Amount</th>
                             <th class="text-2">Amount Received</th>
-                            <!-- <th class="text-2">Factoring Comp.</th>
-                            <th class="text-2">Factoring Comp. Charges</th> -->
                             <th class="text-2">Invoice Balance</th>
                             <th class="text-2">Status</th>
                             <th class="text-2 text-center" width="3%">Full Payment</th>
@@ -116,49 +110,34 @@
                           <tr *ngFor="let inv of orderInvoices; let i= index;">
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
-                            <td>{{customersObjects[inv.customerID]}}</td>
-                            <!-- <td>{{inv.invNo}}</td>
-                            <td>{{inv.charges.freightFee.amount}} {{inv.charges.freightFee.currency}}</td>
-                            <td>Add:
-                              {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}<br>
-                              Deduct:
-                              {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</td> -->
-                            <td>{{inv.finalAmount}}{{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.amountReceived}}{{inv.charges.freightFee.currency}}</td>
-                            <!-- <td>-</td>
-                            <td>-</td> -->
-                            <td>{{inv.balance}}</td>
+                            <td>{{customersObjects[inv.customerID] | titlecase}}</td>
+                            <td>{{inv.finalAmount}} {{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.amountReceived}} {{inv.charges.freightFee.currency}}</td>
+                            <td>{{inv.balance}} {{inv.charges.freightFee.currency}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number"  [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}"  (change)="findReceivedAmtFn()"
+                              <input type="number"  [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}"  (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
                           <tr *ngFor="let inv of invoices; let i= index;">
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
-                            <td>{{customersObjects[inv.customerID]}}</td>
-                            <!-- <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>{{inv.taxAmount}}</td> -->
-                            <td>{{inv.finalAmount}}</td>
-                            <td>{{inv.amountReceived}}</td>
-                            <!-- <td>-</td>
-                            <td>-</td> -->
-                            <td>{{inv.balance}}</td>
+                            <td>{{customersObjects[inv.customerID] | titlecase}}</td>
+                            <td>{{inv.finalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.amountReceived}} {{inv.invCur}}</td>
+                            <td>{{inv.balance}} {{inv.invCur}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
                               <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" (change)="findReceivedAmtFn()"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
@@ -166,6 +145,58 @@
                       </table>
                     </div>
                   </div>
+                  <div class="row" *ngIf="totalErr">
+                    <div class="col-lg-10 offset-lg-1 text-right">
+                          <label class="control-label error">Paid Amount can not be greater than Balance Amount.</label>
+
+                    </div>
+                  </div>
+                  <!-- <div class="row pt-3">
+                    <div class="col-lg-12">
+                        <h4>Advance Payments</h4>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                        <table
+                            class="table table-bordered table-responsive-lg  table-striped simple-table">
+                            <thead>
+                                <tr class="bgcol2">
+                                    <th></th>
+                                    <th class="text-2">Payment#</th>
+                                    <th class="text-2">Payment Date</th>
+                                    <th class="text-2">Account#</th>
+                                    <th class="text-2">Amount</th>
+                                    <th class="text-2">Paid Amount</th>
+                                    <th class="text-2">Status</th>
+                                    <th class="text-2">Full Payment</th>
+                                    <th class="text-2">Payment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="advancePayments.length === 0" class="text-center">
+                                    <td colspan="10">{{ dataMessageAdv }} </td>
+                                </tr>
+                                <tr *ngFor="let data of advancePayments; let i=index">
+                                    <td>
+                                        <input type="checkbox" name="stl{{i}}" [(ngModel)]="data.selected" (change)="selectedAdvancepayments()">
+                                    </td>
+                                    <td>{{ data.paymentNo }}</td>
+                                    <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                    <td>{{ accList[data.accountID] }}</td>
+                                    <td>{{ data.pendingPayment }} {{ data.currency }}</td>
+                                    <td>{{ data.prevPaidAmount }}</td>
+                                    <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span> </td>
+                                    <td class="text-center">
+                                        <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{i}}" (change)="assignFullPayment('advance', i, data)">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" [(ngModel)]="data.paidAmount" (input)="advancePaymentCalculation(); checkInput('advAmount', i)" name="advPaidAmount{{i}}" [disabled]="data.paidStatus">
+                                        <label id="stlErr{{i}}" class="error">{{ data.errText  }}</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> -->
                   <div class="row pt-2">
                     <div class="col-lg-12">
                       <h4>Record Payment</h4>
@@ -174,6 +205,26 @@
                   <div class="row pt-2">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold">Total Amount</label>
+                          <div class="row">
+                            <div class="col-lg-6 pr-0">
+                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.totalAmount"
+                              name="totalAmount" [disabled]="true">
+                            </div>
+                            <div class="col-lg-6 pl-0">
+                              <ng-select class="form-control populate" [(ngModel)]="receiptData.recAmountCur"
+                              name="recAmountCur" [disabled]="true">
+
+                                  <ng-option value="CAD">CAD</ng-option>
+                                  <ng-option value="USD">USD</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-5"> </div>
+                      </div>
+                      <!-- <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Advance Received</label>
                           <div class="row">
@@ -192,14 +243,14 @@
                           </div>
                         </div>
                         <div class="col-lg-5"> </div>
-                      </div>
+                      </div> -->
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
                               <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
-                                name="recAmount" #receiptAmt="ngModel" required>
+                                name="recAmount" #receiptAmt="ngModel" [disabled]="true">
                                 <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
                                   <div *ngIf="receiptAmt.errors.required">
                                     Received amount is required.
@@ -208,9 +259,9 @@
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
-                                class="form-control populate" #receiptAmtCur="ngModel" required>
-                                <ng-option value="USD">USD</ng-option>
+                                class="form-control populate" #receiptAmtCur="ngModel" [disabled]="true">
                                 <ng-option value="CAD">CAD</ng-option>
+                                <ng-option value="USD">USD</ng-option>
                               </ng-select>
                               <div *ngIf="receiptAmtCur.invalid && (receiptAmtCur.dirty || receiptAmtCur.touched)" class="text-danger">
                                 <div *ngIf="receiptAmtCur.errors.required">
@@ -221,6 +272,14 @@
                           </div>
                         </div>
                       </div>
+                      <div class="row" *ngIf="totalErr">
+                        <div class="col-lg-7">
+                          <label class="control-label error">Received Amount can not be greater than Total Amount.</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
                       <div class="row pt-2">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -239,9 +298,7 @@
                             class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i></button>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row pt-1">
+                      <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
@@ -285,8 +342,7 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <a type="button" class="btn btn-default" routerLink="/accounts/receipts/list">Cancel</a>
-                      <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="addReceipt()">Save</button>
-                      <button type="button" class="btn btn-success" *ngIf="recID" [disabled]="!recForm.form.valid || submitDisabled" (click)="updateReceipt()">Update</button>
+                      <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled || totalErr" (click)="addReceipt()">Save</button>
                     </div>
                   </div>
                 </form>

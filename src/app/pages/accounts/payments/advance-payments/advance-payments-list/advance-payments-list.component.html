@@ -80,15 +80,15 @@
                                         </td>
                                         <td>{{ data.paymentNo }} </td>
                                         <td class="text-capitalize">{{ data.payMode }}</td>
-                                        <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>: 
+                                        <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>:
                                             <span *ngIf="data.paymentTo === 'driver'">
-                                                {{ drivers[data.entityId] }}
+                                                {{ drivers[data.entityId] | titlecase}}
                                             </span>
 
                                             <span *ngIf="data.paymentTo !== 'driver'">
-                                                {{ contacts[data.entityId] }}
+                                                {{ contacts[data.entityId] | titlecase }}
                                             </span>
-                                            
+
                                         </td>
                                         <td>{{ data.amount }} {{ data.currency }}</td>
                                         <td>{{ data.paidAmount }} {{ data.currency }}</td>

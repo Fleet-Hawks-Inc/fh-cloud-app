@@ -49,6 +49,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
     }
   };
   accounts = [];
+  customersObjects = {};
+  accountsObjects = {};
+  accountsIntObjects = {};
 
   constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
@@ -56,7 +59,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
     this.paymentID = this.route.snapshot.params["paymentID"];
     this.fetchPaymentDetail();
     this.fetchEmployees();
-    this.fetchAllAccounts();
+    this.fetchCustomersByIDs();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
   }
 
   fetchPaymentDetail() {
@@ -81,9 +86,20 @@ export class EmployeePaymentDetailComponent implements OnInit {
     })
   }
 
-  fetchAllAccounts() {
-    this.accountService.getData(`chartAc/get/all/list`).subscribe((result: any) => {
-      this.accounts = result;
+  fetchCustomersByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
+  }
+
+  fetchAccountsByIDs() {
+    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+      this.accountsObjects = result;
+    });
+  }
+  fetchAccountsByInternalIDs() {
+    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+      this.accountsIntObjects = result;
     });
   }
 

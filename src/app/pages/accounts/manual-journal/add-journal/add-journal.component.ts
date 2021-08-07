@@ -172,7 +172,6 @@ export class AddJournalComponent implements OnInit {
           this.journal.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
           this.carrierID = result[0].carrierID;
-          console.log('this.journal', this.journal);
           this.journal.details.map((k, index) => {
             let type = '';
             if (k.debit === 0) {

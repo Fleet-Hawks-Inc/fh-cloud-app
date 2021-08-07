@@ -19,7 +19,7 @@
                                 <form class="form-horizontal form-bordered" method="get" #empPaymentForm="ngForm">
                                     <div class="row">
                                         <div class="col-lg-5 offset-lg-1">
-                                            <div class="row" id="settlementListDiv"> 
+                                            <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Employee
@@ -355,8 +355,8 @@
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account" #accountID="ngModel" required>
-                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actName }} - {{
-                                                                data.actNo }}</ng-option>
+                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{
+                                                                data.actName | titlecase}}</ng-option>
                                                         </ng-select>
 
                                                         <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
@@ -365,7 +365,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="col-lg-5"><label
                                                             class="control-label font-weight-bold labelalign">Payment
                                                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>

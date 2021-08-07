@@ -27,7 +27,7 @@
                                                         font-bold text-lg-right
                                                         pt-2">Advance
                                                         Payment#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.paymentNo" name="paymentNo" placeholder="Enter payment#" #payNo="ngModel" required>
+                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.paymentNo" name="paymentNo" placeholder="Enter payment#" #payNo="ngModel" >
                                                     <div *ngIf="payNo.invalid && (payNo.dirty || payNo.touched)" class="text-danger">
                                                         <div *ngIf="payNo.errors.required">
                                                             Advance payment# is required.
@@ -199,8 +199,7 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right">Account <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountNo="ngModel" required>
-                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actName }} - {{
-                                                            data.actNo }}</ng-option>
+                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                     </ng-select>
 
                                                     <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
@@ -266,7 +265,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-10 text-right">
-                                            <button type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</button>
+                                            <a type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</a>
                                             <button type="button" *ngIf="!paymentID" (click)="addRecord()" [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
                                             <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()" [disabled]="!payForm.form.valid || submitDisabled"  class="btn btn-success">Update</button>
                                         </div>
