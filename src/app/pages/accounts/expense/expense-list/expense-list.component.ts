@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
-import  Constants  from '../../../fleet/constants'; 
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-expense-list',
@@ -50,12 +50,15 @@ export class ExpenseListComponent implements OnInit {
   }
 
   deleteExpense(expenseID) {
-    this.accountService.getData(`expense/delete/${expenseID}`)
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.accountService.getData(`expense/delete/${expenseID}`)
       .subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchExpenses();
         this.toaster.success('Expense transaction deleted successfully.');
-      })
+      });
+    }
+
   }
 
   fetchExpenseCategories() {
@@ -67,6 +70,7 @@ export class ExpenseListComponent implements OnInit {
 
   searchFilter() {
     if(this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.expenses = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchExpenses();
     }

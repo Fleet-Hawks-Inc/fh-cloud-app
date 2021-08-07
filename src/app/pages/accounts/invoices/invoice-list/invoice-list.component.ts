@@ -43,8 +43,8 @@ export class InvoiceListComponent implements OnInit {
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.fetchInvoices();
     this.fetchCustomersByIDs();
+    this.fetchInvoices();
   }
   fetchInvoices() {
     this.accountService.getData('order-invoice').subscribe((res: any) => {
@@ -154,11 +154,13 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  deleteInvoice(invID: string) {
-    this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
-      this.toaster.success('Invoice Deleted Successfully.');
-      this.fetchInvoices();
-    });
+  voidInvoice(invID: string) {
+    if (confirm('Are you sure you want to void?') === true) {
+      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
+        this.toaster.success('Invoice Deleted Successfully.');
+        this.fetchInvoices();
+      });
+    }
   }
 
   changeStatus(invID: string) {
@@ -175,16 +177,19 @@ export class InvoiceListComponent implements OnInit {
       $('#updateStatusModal').modal('hide');
     });
   }
-  deleteOrderInvoice(invID: string, orderID: string) {
-    this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
-      this.invGenStatus = false;
-      this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
-        if (res) {
-          this.toaster.success('Invoice Deleted Successfully.');
-        }
+  voidOrderInvoice(invID: string, orderID: string) {
+    if (confirm('Are you sure you want to void?') === true) {
+      this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
+        this.invGenStatus = false;
+        this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
+          if (res) {
+            this.toaster.success('Invoice Voided Successfully.');
+          }
+        });
+        this.fetchInvoices();
       });
-      this.fetchInvoices();
-    });
+    }
+
   }
 
   searchFilter() {

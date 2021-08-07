@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
+import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
@@ -14,9 +16,10 @@ declare var $: any;
   styleUrls: ["./add-employee-payment.component.css"],
 })
 export class AddEmployeePaymentComponent implements OnInit {
+  dataMessage: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
     entityId: null,
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     paymentNo: '',
     payroll: {
       type: null,
@@ -37,6 +40,9 @@ export class AddEmployeePaymentComponent implements OnInit {
     taxes: 0,
     advance: 0,
     finalTotal: 0,
+    advancePayIds: [],
+    advData: [],
+    transactionLog: [],
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -99,6 +105,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       designation: ''
     }
   };
+  advancePayments = [];
+  accList = [];
 
   constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
@@ -110,6 +118,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.fetchLastAdded();
     }
     this.fetchEmployees();
+    this.fetchAccounts();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
@@ -136,6 +145,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.paymentData.payroll.amount = Number(paymentInfo.payrollRate);
       }
     })
+    this.fetchAdvancePayments();
   }
 
   EmpRateCalc() {
@@ -298,7 +308,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.advErr = '';
         this.submitDisabled = false;
       }
-    } 
+    }
   }
 
   fetchLastAdded() {
@@ -315,5 +325,107 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.apiService.getData(`contacts/minor/detail/${empID}`).subscribe((result: any) => {
       this.empdetail = result.Items[0];
     })
+  }
+
+  fetchAdvancePayments() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.accountService.getData(`advance/entity/${this.paymentData.entityId}?from=null&to=null`).subscribe((result: any) => {
+      if(result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      this.advancePayments = result;
+      this.advancePayments.map((v) => {
+        v.selected = false;
+        if(v.payMode) {
+          v.payMode = v.payMode.replace("_"," ");
+        }
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.paidStatus = false;
+        v.status = v.status.replace("_"," ");
+        v.errText = '';
+        v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
+        v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
+      })
+    });
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
+      this.accList = result;
+    });
+  }
+
+  selectedAdvancepayments() {
+    this.paymentData.advancePayIds = [];
+    this.paymentData.advData = [];
+    for (const element of this.advancePayments) {
+      if(element.selected) {
+        if(!this.paymentData.advancePayIds.includes(element.paymentID)) {
+          let obj = {
+            paymentID: element.paymentID,
+            status: element.status,
+            paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
+            totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
+            pendingAmount: element.pendingPayment
+          }
+          this.paymentData.advancePayIds.push(element.paymentID);
+          this.paymentData.advData.push(obj);
+        }
+      }
+    }
+    this.paymentCalculation();
+  }
+
+  assignFullPayment(index, data) {
+    if(data.fullPayment) {
+      this.advancePayments[index].paidAmount = data.pendingPayment;
+      this.advancePayments[index].paidStatus = true;
+    } else {
+      this.advancePayments[index].paidAmount = 0;
+      this.advancePayments[index].paidStatus = false;
+    }
+    this.selectedAdvancepayments();
+    this.paymentCalculation();
+  }
+
+  paymentCalculation() {
+    this.paymentData.subTotal = 0;
+    this.paymentData.finalTotal = 0;
+    this.paymentData.advance = 0;
+    let selectCount = 0;
+
+    for (const element of this.advancePayments) {
+      if(element.selected) {
+        this.paymentData.advance += Number(element.paidAmount);
+        this.paymentData.advData.map((v) => {
+          if(element.paymentID === v.paymentID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+
+            if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+              v.status = 'deducted';
+            } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+              v.status = 'partially_deducted';
+            } else {
+              v.status = 'not_deducted';
+            }
+
+            v.paidAmount = v.paidAmount.toFixed(2);
+          }
+        })
+      }
+    }
+    if(selectCount > 0) {
+      this.submitDisabled = false;
+    } else {
+      this.submitDisabled = true;
+    }
+    this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
+    this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
+    this.paymentData.paymentTotal = (this.paymentData.paymentTotal) ? Number(this.paymentData.paymentTotal) : 0;
+
+    this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
+    this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
   }
 }

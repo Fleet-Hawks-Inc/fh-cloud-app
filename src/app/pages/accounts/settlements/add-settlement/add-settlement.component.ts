@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export class AddSettlementComponent implements OnInit {
         type: null,
         entityId: null,
         setNo: '',
-        txnDate: null,
+        txnDate: moment().format('YYYY-MM-DD'),
         fromDate: null,
         toDate: null,
         tripIds: [],
@@ -58,6 +59,7 @@ export class AddSettlementComponent implements OnInit {
         status: 'unpaid',
         paymentLinked: false,
         pendingPayment: 0,
+        transactionLog: [],
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
@@ -104,7 +106,7 @@ export class AddSettlementComponent implements OnInit {
     constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
-        this.settlementID = this.route.snapshot.params['settlementID'];
+        this.settlementID = this.route.snapshot.params[`settlementID`];
         if (this.settlementID) {
             this.fetchSettlementDetail();
         }
@@ -281,18 +283,18 @@ export class AddSettlementComponent implements OnInit {
             }
             this.settlementData.taxes = localAmount + federalAmount;
             this.settlementData.taxes = this.settlementData.taxes.toFixed(2);
-            this.settlementData.finalTotal = this.settlementData.paymentTotal + parseFloat(this.settlementData.taxes);    
+            this.settlementData.finalTotal = this.settlementData.paymentTotal + parseFloat(this.settlementData.taxes);
         } else if(this.settlementData.type == 'owner_operator') {
             this.settlementData.finalTotal = this.settlementData.subTotal;
             this.calculateTaxes('');
         } else {
             this.settlementData.finalTotal = this.settlementData.subTotal;
         }
-        
+
         if(this.settlementData.finalTotal == 0) {
             this.submitDisabled = true;
         }
-        
+
     }
 
     selectedTrip() {
@@ -326,6 +328,7 @@ export class AddSettlementComponent implements OnInit {
 
     paymentCalculation(trips) {
         let drvrPay = 0;
+        let teamMiles = 0;
         for (let i = 0; i < trips.length; i++) {
             const element = trips[i];
             let deliveryCount = 0;
@@ -340,6 +343,10 @@ export class AddSettlementComponent implements OnInit {
                     for (let t = 0; t < element.tripPlanning.length; t++) {
                         const plan = element.tripPlanning[t];
                         this.settlementData.miles.tripsTotal += parseFloat(plan.miles);
+
+                        if (element.driverIDs.length > 1) {
+                            teamMiles += parseFloat(plan.miles);
+                        }
 
                         if (plan.mileType === 'loaded') {
                             this.settlementData.miles.tripsLoaded += parseFloat(plan.miles);
@@ -387,11 +394,11 @@ export class AddSettlementComponent implements OnInit {
                         }
 
                         // team_miles, total_hours and team_hours will be from ELD
-                        if (element.driverIDs.length > 0) {
-                            this.settlementData.miles.tripsTeam += parseFloat('10');
-                            this.settlementData.miles.teamHours += parseFloat('2');
+                        if (element.driverIDs.length > 1) {
+                            this.settlementData.miles.tripsTeam = teamMiles;
+                            this.settlementData.miles.teamHours = 0;
                         }
-                        this.settlementData.miles.totalHours += parseFloat('2');
+                        this.settlementData.miles.totalHours = 0;
 
                     } else if (this.settlementData.type === 'carrier') {
                         let paymentInfo = this.contactDetail.paymentDetails;
@@ -419,7 +426,7 @@ export class AddSettlementComponent implements OnInit {
                         let driverDeliveryCount = 0;
                         oprElement.hours += parseFloat('10');
                         this.settlementData.miles.totalHours += parseFloat('10');
-                        
+
                         for (let t = 0; t < element.tripPlanning.length; t++) {
                             const plan = element.tripPlanning[t];
                             if(plan.driverID === oprElement.driverID) {
@@ -432,7 +439,7 @@ export class AddSettlementComponent implements OnInit {
                                 if (plan.type === 'Delivery') {
                                     driverDeliveryCount += 1;
                                 }
-                                
+
                                 oprElement.total += parseFloat(plan.miles);
                                 if (plan.mileType === 'loaded') {
                                     oprElement.loaded += parseFloat(plan.miles);
@@ -456,21 +463,21 @@ export class AddSettlementComponent implements OnInit {
                         }
                     }
                     let driverPayments = this.settlementData.miles.drivers.map(driver => driver.payment);
-                    this.settlementData.paymentTotal = _.sum(driverPayments); 
+                    this.settlementData.paymentTotal = _.sum(driverPayments);
                 }
 
                 // Expenses will also come from ELD
-                let expObj = {
-                    tripID: element.tripID,
-                    expName: `Expense ${i + 1}`,
-                    desc: '-',
-                    amount: '50',
-                    currency: 'CAD'
-                }
-                this.settlementData.expenses.push(expObj);
+                // let expObj = {
+                //     tripID: element.tripID,
+                //     expName: `Expense ${i + 1}`,
+                //     desc: '-',
+                //     amount: '50',
+                //     currency: 'CAD'
+                // }
+                // this.settlementData.expenses.push(expObj);
             }
         }
-        
+
         this.calculateFinalTotal();
     }
 
@@ -552,7 +559,7 @@ export class AddSettlementComponent implements OnInit {
                         this.operatorDriversList.push(element.driverId);
                     }
                 }
-                
+
                 if(this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
                     this.fetchTrips();
                     if(this.settlementData.type === 'driver') {
@@ -640,7 +647,7 @@ export class AddSettlementComponent implements OnInit {
             this.calculateDedTotal();
             this.selectedTrip();
             this.paymentCalculation(this.settledTrips);
-            
+
             this.accountService.putData(`settlement/un-settle/trip/${this.settlementID}?entity=${tripID}`, this.settlementData).subscribe({
                 complete: () => { },
                 error: (err: any) => {
@@ -799,11 +806,11 @@ export class AddSettlementComponent implements OnInit {
         if(this.settlementData.taxObj.gstPrcnt > 0) {
             this.settlementData.taxObj.gstAmount = this.settlementData.taxObj.gstPrcnt*this.settlementData.subTotal/100;
             this.settlementData.taxObj.gstAmount = this.settlementData.taxObj.gstAmount.toFixed(2);
-        } 
+        }
         if(this.settlementData.taxObj.pstPrcnt > 0) {
             this.settlementData.taxObj.pstAmount = this.settlementData.taxObj.pstPrcnt*this.settlementData.subTotal/100;
             this.settlementData.taxObj.pstAmount = this.settlementData.taxObj.pstAmount.toFixed(2);
-        } 
+        }
         if(this.settlementData.taxObj.hstPrcnt > 0) {
             this.settlementData.taxObj.hstAmount = this.settlementData.taxObj.hstPrcnt*this.settlementData.subTotal/100;
             this.settlementData.taxObj.hstAmount = this.settlementData.taxObj.hstAmount.toFixed(2);

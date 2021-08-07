@@ -37,7 +37,7 @@ export class JournalDetailComponent implements OnInit {
   constructor(private accountService: AccountService, private router: Router, private route: ActivatedRoute, private apiService: ApiService, private domSanitizer: DomSanitizer, private toaster: ToastrService) { }
 
   ngOnInit() {
-    this.journalID = this.route.snapshot.params['journalID'];
+    this.journalID = this.route.snapshot.params[`journalID`];
     this.fetchJournalByID();
     this.fetchContacts();
     this.fetchAccounts();
@@ -48,7 +48,6 @@ export class JournalDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if(result[0] != undefined) {
           this.journal = result[0];
-
           if (result[0].attachments != undefined && result[0].attachments.length > 0) {
             result[0].attachments.map((x) => {
               let obj = {
@@ -91,6 +90,6 @@ export class JournalDetailComponent implements OnInit {
     this.accountService.deleteData(`journal/uploadDelete/${this.journalID}/${name}`).subscribe((result: any) => {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 }

@@ -63,14 +63,16 @@
                                         <th class="text-2">Advance Payment#</th>
                                         <th class="text-2">Payment Mode</th>
                                         <th class="text-2">Paid To</th>
-                                        <th class="text-2">Amount</th>
+                                        <th class="text-2">Advance Amount</th>
+                                        <th class="text-2">Deducted Amount</th>
+                                        <th class="text-2">Balance</th>
                                         <th class="text-2">Status</th>
                                         <th class="text-2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="payments.length === 0" class="text-center">
-                                        <td colspan="7">{{ dataMessage }} </td>
+                                        <td colspan="9">{{ dataMessage }} </td>
                                     </tr>
                                     <tr *ngFor="let data of payments; let i=index;">
                                         <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">
@@ -78,17 +80,19 @@
                                         </td>
                                         <td>{{ data.paymentNo }} </td>
                                         <td class="text-capitalize">{{ data.payMode }}</td>
-                                        <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>: 
+                                        <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>:
                                             <span *ngIf="data.paymentTo === 'driver'">
-                                                {{ drivers[data.entityID] }}
+                                                {{ drivers[data.entityId] | titlecase}}
                                             </span>
 
                                             <span *ngIf="data.paymentTo !== 'driver'">
-                                                {{ contacts[data.entityID] }}
+                                                {{ contacts[data.entityId] | titlecase }}
                                             </span>
-                                            
+
                                         </td>
                                         <td>{{ data.amount }} {{ data.currency }}</td>
+                                        <td>{{ data.paidAmount }} {{ data.currency }}</td>
+                                        <td>{{ data.pendingPayment }} {{ data.currency }}</td>
                                         <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
                                         </td>
                                         <td>
@@ -102,7 +106,7 @@
                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                     <a class="dropdown-item"
                                                         routerLink="/accounts/payments/advance-payments/edit/{{ data.paymentID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
+                                                    <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
                                                         (click)="deletePayment(data.paymentID)">Delete</a>
                                                 </div>
                                             </div>

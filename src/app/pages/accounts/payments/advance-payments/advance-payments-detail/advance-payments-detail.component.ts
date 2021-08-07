@@ -25,11 +25,14 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     notes: "",
     accountID: null,
     status: "",
+    transactionLog: [],
   };
   paymentID;
   entityName = "";
   payModeLabel = "";
   accountName = '';
+  accountsObjects: any = {};
+  accountsIntObjects: any = {};
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -38,20 +41,34 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.paymentID = this.route.snapshot.params["paymentID"];
+    this.paymentID = this.route.snapshot.params[`paymentID`];
     this.fetchPayments();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
   }
-
+  fetchAccountsByIDs() {
+    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+      this.accountsObjects = result;
+    });
+  }
+  fetchAccountsByInternalIDs() {
+    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+      this.accountsIntObjects = result;
+    });
+  }
   fetchPayments() {
     this.accountService
       .getData(`advance/detail/${this.paymentID}`)
       .subscribe((result: any) => {
         this.paymentData = result[0];
-        console.log("this.payments", this.paymentData);
-        if(this.paymentData.status) {
-          this.paymentData.status = this.paymentData.status.replace('_'," ");
+
+        this.paymentData.transactionLog.map((v: any) => {
+          v.type = v.type.replace('_', ' ');
+        });
+        if (this.paymentData.status) {
+          this.paymentData.status = this.paymentData.status.replace('_',' ');
         }
-        
+
         this.changePaymentMode(this.paymentData.payMode);
         if (this.paymentData.paymentTo === "driver") {
           this.fetchDriverDetail(this.paymentData.entityId);

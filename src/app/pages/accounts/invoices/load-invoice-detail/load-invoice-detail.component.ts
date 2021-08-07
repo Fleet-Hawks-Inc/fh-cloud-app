@@ -13,7 +13,7 @@ export class LoadInvoiceDetailComponent implements OnInit {
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
-  constructor(private route: ActivatedRoute,private accountService: AccountService, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];

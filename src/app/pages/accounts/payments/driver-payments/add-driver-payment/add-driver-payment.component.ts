@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,14 +15,16 @@ import { AccountService, ApiService, ListService } from 'src/app/services';
 export class AddDriverPaymentComponent implements OnInit {
 
   dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
     paymentTo: null,
     entityId: null,
     paymentNo: '',
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     fromDate: null,
     toDate: null,
     settlementIds: [],
+    advancePayIds: [],
     payMode: null,
     payModeNo: "",
     payModeDate: null,
@@ -31,7 +34,9 @@ export class AddDriverPaymentComponent implements OnInit {
     finalAmount:<any> 0,
     pendingPayment: <any> 0,
     accountID: null,
-    settlData: []
+    settlData: [],
+    advData: [],
+    transactionLog: [],
   };
   drivers = [];
   carriers = [];
@@ -44,8 +49,8 @@ export class AddDriverPaymentComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   submitDisabled = true;
   paymentID;
   searchDisabled = false;
@@ -54,6 +59,8 @@ export class AddDriverPaymentComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  advancePayments = [];
+  accList = [];
 
   constructor(
     private listService: ListService,
@@ -75,6 +82,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.fetchCarriers();
     this.fetchtrips();
     this.fetchOwnerOperators();
+    this.fetchAccounts();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
@@ -82,6 +90,12 @@ export class AddDriverPaymentComponent implements OnInit {
   fetchDrivers() {
     this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
       this.drivers = result;
+    });
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/get/all/list`).subscribe((result: any) => {
+      this.accList = result;
     });
   }
 
@@ -117,6 +131,8 @@ export class AddDriverPaymentComponent implements OnInit {
       label = "Demand Draft";
     }
     this.payModeLabel = label;
+    this.paymentData.payModeNo = null;
+    this.paymentData.payModeDate = null;
   }
 
   resetEntityVal() {
@@ -124,6 +140,8 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   fetchSettlements() {
+    this.settlements = [];
+    this.advancePayments = [];
     if(!this.paymentID && this.paymentData.entityId != null) {
       if(this.paymentData.fromDate !== null && this.paymentData.toDate == null) {
         this.toaster.error('Please select to date');
@@ -149,6 +167,8 @@ export class AddDriverPaymentComponent implements OnInit {
           v.errText = '';
         })
       });
+
+      this.fetchAdvancePayments();
     } else {
       return false;
     }
@@ -165,7 +185,7 @@ export class AddDriverPaymentComponent implements OnInit {
   selectedSettlements() {
     this.paymentData.settlementIds = [];
     this.paymentData.settlData = [];
-    
+
     for (const element of this.settlements) {
       if(element.selected) {
         if(!this.paymentData.settlementIds.includes(element.sttlID)) {
@@ -181,18 +201,19 @@ export class AddDriverPaymentComponent implements OnInit {
         }
       }
     }
-    
+
     this.paymentCalculation();
   }
 
   paymentCalculation() {
     this.paymentData.totalAmount = 0;
     this.paymentData.finalAmount = 0;
+    this.paymentData.advance = 0;
     let selectCount = 0;
     for (const element of this.settlements) {
       if(element.selected) {
         if(element.paidAmount > 0) {
-          selectCount += 1; 
+          selectCount += 1;
         }
         this.paymentData.totalAmount += Number(element.paidAmount);
         this.paymentData.settlData.map((v) => {
@@ -205,6 +226,28 @@ export class AddDriverPaymentComponent implements OnInit {
               v.status = 'partially_paid';
             } else {
               v.status = 'unpaid';
+            }
+
+            v.paidAmount = v.paidAmount.toFixed(2);
+          }
+        })
+      }
+    }
+
+    for (const element of this.advancePayments) {
+      if(element.selected) {
+        this.paymentData.advance += Number(element.paidAmount);
+        this.paymentData.advData.map((v) => {
+          if(element.paymentID === v.paymentID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+
+            if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+              v.status = 'deducted';
+            } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+              v.status = 'partially_deducted';
+            } else {
+              v.status = 'not_deducted';
             }
 
             v.paidAmount = v.paidAmount.toFixed(2);
@@ -319,13 +362,25 @@ export class AddDriverPaymentComponent implements OnInit {
     });
   }
 
-  assignFullPayment(index, data) {
-    if(data.fullPayment) {
-      this.settlements[index].paidAmount = data.pendingPayment;
-      this.settlements[index].paidStatus = true;
+  assignFullPayment(type, index, data) {
+    if(type === 'settlement') {
+      if(data.fullPayment) {
+        this.settlements[index].paidAmount = data.pendingPayment;
+        this.settlements[index].paidStatus = true;
+      } else {
+        this.settlements[index].paidAmount = 0;
+        this.settlements[index].paidStatus = false;
+      }
+
     } else {
-      this.settlements[index].paidAmount = 0;
-      this.settlements[index].paidStatus = false;
+      if(data.fullPayment) {
+        this.advancePayments[index].paidAmount = data.pendingPayment;
+        this.advancePayments[index].paidStatus = true;
+      } else {
+        this.advancePayments[index].paidAmount = 0;
+        this.advancePayments[index].paidStatus = false;
+      }
+      this.selectedAdvancepayments();
     }
     this.paymentCalculation();
   }
@@ -370,7 +425,50 @@ export class AddDriverPaymentComponent implements OnInit {
         this.advErr = '';
         this.submitDisabled = false;
       }
-    } 
-    
+    }
+  }
+
+  fetchAdvancePayments() {
+    this.dataMessageAdv = Constants.FETCHING_DATA;
+    this.accountService.getData(`advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}`).subscribe((result: any) => {
+      if(result.length === 0) {
+        this.dataMessageAdv = Constants.NO_RECORDS_FOUND;
+      }
+      this.advancePayments = result;
+      this.advancePayments.map((v) => {
+        v.selected = false;
+        if(v.payMode) {
+          v.payMode = v.payMode.replace("_"," ");
+        }
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.paidStatus = false;
+        v.status = v.status.replace("_"," ");
+        v.errText = '';
+        v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
+        v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
+      })
+    });
+  }
+
+  selectedAdvancepayments() {
+    this.paymentData.advancePayIds = [];
+    this.paymentData.advData = [];
+    for (const element of this.advancePayments) {
+      if(element.selected) {
+        if(!this.paymentData.advancePayIds.includes(element.paymentID)) {
+          let obj = {
+            paymentID: element.paymentID,
+            status: element.status,
+            paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
+            totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
+            pendingAmount: element.pendingPayment
+          }
+          this.paymentData.advancePayIds.push(element.paymentID);
+          this.paymentData.advData.push(obj);
+        }
+      }
+    }
+    this.paymentCalculation();
   }
 }

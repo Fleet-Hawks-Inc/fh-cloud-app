@@ -53,8 +53,7 @@
                                             <ng-select [(ngModel)]="expenseData.expAccountID" name="expAccountID"
                                                 placeholder="Select Expense Account" #expAccount="ngModel" required (change)="changeDepAcc($event)">
                                                 <ng-option value="{{ data.actID }}"
-                                                    *ngFor="let data of expenseAccounts | async">{{ data.actName }} - {{
-                                                    data.actNo }}</ng-option>
+                                                    *ngFor="let data of expenseAccounts | async"> {{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                             </ng-select>
 
                                             <div *ngIf="expAccount.invalid && (expAccount.dirty || expAccount.touched)" class="text-danger">
@@ -78,8 +77,8 @@
                                                 placeholder="Select Paid Through Account" #paidTh="ngModel"
                                                 required>
                                                 <optgroup *ngFor="let data of paidThroughAccounts | async" >
-                                                    <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID">{{ data.actName }}
-                                                        - {{ data.actNo }}</ng-option>
+                                                    <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID"> {{ data.actNo }} - {{ data.actName | titlecase}}
+                                                       </ng-option>
                                                     </optgroup>
                                             </ng-select>
 
@@ -292,7 +291,7 @@
                                                     <div class="input-group">
                                                         <input [(ngModel)]="expenseData.taxes.gstPercent"
                                                             name="gstPercent" type="text" placeholder="GST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()">
+                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.gstPercent">
                                                         <span class="input-group-append pr-2">
                                                             <span class="input-group-text"
                                                                 style="font-size: 0.7rem !important;">
@@ -307,16 +306,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5">
+                                        <div class="col-lg-5"> 
                                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                                                 <input type="checkbox" name="pstStatus"
-                                                    [(ngModel)]="expenseData.taxes.includePST" (change)="calculateFinalTotal()"> PST</label>
+                                                    [(ngModel)]="expenseData.taxes.includePST"(change)="calculateFinalTotal()"> PST</label>
                                             <div class="row">
                                                 <div class="col-lg-6 pr-0">
                                                     <div class="input-group">
                                                         <input [(ngModel)]="expenseData.taxes.pstPercent"
                                                             name="pstPercent" type="text" placeholder="PST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()">
+                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.includePST">
                                                         <span class="input-group-append pr-2">
                                                             <span class="input-group-text"
                                                                 style="font-size: 0.7rem !important;">
@@ -339,7 +338,7 @@
                                                     <div class="input-group">
                                                         <input [(ngModel)]="expenseData.taxes.hstpercent"
                                                             name="hstpercent" type="text" placeholder="HST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()">
+                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.hstpercent">
                                                         <span class="input-group-append pr-2">
                                                             <span class="input-group-text"
                                                                 style="font-size: 0.7rem !important;">
