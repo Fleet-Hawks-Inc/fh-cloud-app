@@ -198,7 +198,7 @@
                           <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <div class="row">
                             <div class="col-lg-6 pr-0">
-                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
+                              <input type="number" min="0" class="form-control"  [(ngModel)]="receiptData.recAmount"
                                 name="recAmount" #receiptAmt="ngModel" required>
                                 <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
                                   <div *ngIf="receiptAmt.errors.required">
@@ -208,7 +208,7 @@
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
-                                class="form-control populate" #receiptAmtCur="ngModel" required>
+                                class="form-control populate"placeholder="Select currency" #receiptAmtCur="ngModel" required>
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
                               </ng-select>

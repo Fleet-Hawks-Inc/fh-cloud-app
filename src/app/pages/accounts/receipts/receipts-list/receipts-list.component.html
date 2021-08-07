@@ -6,7 +6,7 @@
              <div class="row" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                 <div class="input-group input-group-md mb-3">
-                  <input type="text" class="form-control" placeholder="Search" [(ngModel)]="filter.recNo" name="recNo">
+                  <input type="text" class="form-control" placeholder="Search by Receipt#" [(ngModel)]="filter.recNo" name="recNo">
                 </div>
               </div>
               <div class="col-lg-3 col-md-3">
@@ -62,7 +62,7 @@
                           <td colspan="9">{{ dataMessage }}</td>
                       </tr>
                          <tr *ngFor="let rec of receipts">
-                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate | date : 'yyyy/MM/dd'}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}}</span></td>
                             <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID]}}</td>
