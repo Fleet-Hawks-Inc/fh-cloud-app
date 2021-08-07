@@ -7,7 +7,7 @@ import  Constants  from '../../../fleet/constants';
   selector: 'app-journal-list',
   templateUrl: './journal-list.component.html',
   styleUrls: ['./journal-list.component.css']
-}) 
+})
 export class JournalListComponent implements OnInit {
 
   dataMessage: string = Constants.FETCHING_DATA;
@@ -38,11 +38,13 @@ export class JournalListComponent implements OnInit {
   }
 
   deleteJournal(journalID) {
-    this.accountService.getData(`journal/delete/${journalID}`)
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.accountService.getData(`journal/delete/${journalID}`)
       .subscribe((result: any) => {
         this.fetchJournals();
         this.toaster.success('Manual journal deleted successfully.');
-      })
+      });
+    }
   }
 
   searchFilter() {

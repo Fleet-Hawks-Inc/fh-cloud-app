@@ -68,12 +68,14 @@ export class IncomeListComponent implements OnInit {
   }
 
   deleteIncome(incomeID) {
-    this.accountService.getData(`income/delete/${incomeID}`)
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.accountService.getData(`income/delete/${incomeID}`)
       .subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchAccounts();
         this.toaster.success('Income transaction deleted successfully.');
-      })
+      });
+    }
   }
 
   fetchIncomeCategories() {
