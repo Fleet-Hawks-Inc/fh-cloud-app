@@ -67,7 +67,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchOwnerOperators();
     this.fetchEmployee();
     // this.fetchVendor();
-    this.fetchCustomer();
+    // this.fetchCustomer();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }

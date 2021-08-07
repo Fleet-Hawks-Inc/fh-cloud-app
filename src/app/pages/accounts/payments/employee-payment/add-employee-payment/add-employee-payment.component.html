@@ -78,7 +78,7 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="row pt-3">
+                                    <div class="row pt-3" *ngIf="advancePayments.length > 0">
                                         <div class="col-lg-12"> 
                                             <h4>Advance Payments</h4>
                                         </div>
@@ -148,19 +148,19 @@
                                                         <tr>
                                                             <td>{{ lastAdded.paymentNo }}<br>{{ lastAdded.txnDate | date: "yyyy/MM/dd" }}</td>
                                                             <td>{{ lastAdded.payMode }}<br>Ref.#
-                                                                :<strong>{{ lastAdded.payModeNo }}</strong><br>Date:<strong>{{ lastAdded.payModeDate | date: "yyyy/MM/dd" }}</strong>
+                                                                :<strong> {{ lastAdded.payModeNo }}</strong><br>Date:<strong> {{ lastAdded.payModeDate | date: "yyyy/MM/dd" }}</strong>
                                                             </td>
-                                                            <td>Name: <strong>{{ empdetail.firstName }} {{ empdetail.lastName }}</strong>
-                                                                <br>Department: <strong>{{ (empdetail.userAccount.department) ? empdetail.userAccount.department : '-' }}</strong>
-                                                                <br>Designation:<strong>{{ (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}</strong>
+                                                            <td>Name: <strong> {{ employees[lastAdded.entityId] }}</strong>
+                                                                <br>Department: <strong> {{ (empdetail.userAccount.department) ? empdetail.userAccount.department : '-' }}</strong>
+                                                                <br>Designation:<strong> {{ (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}</strong>
                                                             </td>
                                                             <td>Total Amount: 
-                                                                <strong>{{ lastAdded.finalTotal }} CAD</strong>
+                                                                <strong> {{ lastAdded.finalTotal }} CAD</strong>
                                                                 <br>Add:&nbsp;
-                                                                <strong>{{ lastAdded.additionTotal }} CAD</strong>
+                                                                <strong> {{ lastAdded.additionTotal }} CAD</strong>
                                                                 &nbsp;&nbsp;Deduct:&nbsp;
-                                                                <strong>{{ lastAdded.deductionTotal }} CAD</strong>
-                                                                <br>Taxes:<strong>{{ lastAdded.taxes }} CAD </strong>
+                                                                <strong> {{ lastAdded.deductionTotal }} CAD</strong>
+                                                                <br>Taxes:<strong> {{ lastAdded.taxes }} CAD </strong>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -189,7 +189,7 @@
                                                             <label
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Hours<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
-                                                            <input type="text" class="form-control" name="hours" [(ngModel)]="paymentData.payroll.hours" (change)="EmpRateCalc()" placeholder="e.g 8" #rllHOur="ngModel" required>
+                                                            <input type="text" class="form-control" name="hours" [(ngModel)]="paymentData.payroll.hours" (input)="EmpRateCalc()" placeholder="e.g 8" #rllHOur="ngModel" required>
                                                             <div *ngIf="rllHOur.invalid && (rllHOur.dirty || rllHOur.touched)" class="text-danger">
                                                                 <div *ngIf="rllHOur.errors.required">
                                                                     Hours are required.
@@ -214,7 +214,7 @@
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Flat
                                                                 Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
-                                                            <input type="text" class="form-control" name="amount" [(ngModel)]="paymentData.payroll.amount" placeholder="e.g 50" disabled #flAmount="ngModel" required>
+                                                            <input type="text" class="form-control" name="amount" [(ngModel)]="paymentData.payroll.amount" (input)="empFlatRate()" placeholder="e.g 50" #flAmount="ngModel" required>
                                                             <div *ngIf="flAmount.invalid && (flAmount.dirty || flAmount.touched)" class="text-danger">
                                                                 <div *ngIf="flAmount.errors.required">
                                                                     Flat amount is required.
@@ -242,7 +242,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let data of paymentData.addition; let i=index;">
-                                                            <td>{{ data.eventDate }}</td>
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
                                                             <td>{{ data.chargeName }}</td>
                                                             <td>{{ data.desc }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
@@ -304,7 +304,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let data of paymentData.deduction; let i=index;">
-                                                            <td>{{ data.eventDate }}</td>
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
                                                             <td>{{ data.chargeName }}</td>
                                                             <td>{{ data.desc }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
