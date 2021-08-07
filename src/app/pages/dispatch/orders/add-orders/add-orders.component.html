@@ -169,7 +169,7 @@
                                  <a class="btn btn-success btn-sm text-light" (click)="setValue()" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
                                        class="fas fa-plus"></i>
                                  </a>
-                                 <a data-toggle="modal" (click)="listService.fetchCustomers();" href="javascript:;"
+                                 <a data-toggle="modal" (click)="fetchData('customer')" href="javascript:;"
                                     class="modal-with-form btn btn-sm btn-success ml-2">
                                        <em class="fas fa-sync"></em>
                                     </a>
@@ -433,7 +433,7 @@
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
-                                                           <a data-toggle="modal" (click)="listService.fetchShippers();" href="javascript:;"
+                                                           <a data-toggle="modal" (click)="fetchData('shipper')" href="javascript:;"
                                                            class="modal-with-form btn btn-sm btn-success ml-2">
                                                                <em class="fas fa-sync"></em>
                                                             </a>
@@ -877,7 +877,7 @@
                                                                   class="modal-with-form btn btn-sm btn-success">
                                                                   <em class="fas fa-plus"></em>
                                                                </a>
-                                                               <a data-toggle="modal" (click)="listService.fetchReceivers();" href="javascript:;"
+                                                               <a data-toggle="modal" (click)="fetchData('receiver');" href="javascript:;"
                                                                   class="modal-with-form btn btn-sm btn-success ml-2">
                                                                      <em class="fas fa-sync"></em>
                                                                   </a>

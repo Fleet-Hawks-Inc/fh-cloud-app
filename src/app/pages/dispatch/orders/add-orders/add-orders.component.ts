@@ -2331,4 +2331,14 @@ export class AddOrdersComponent implements OnInit {
   setValue() {
     localStorage.setItem('isOpen', 'true');
   }
+
+  fetchData(value: string) {
+    if(value === 'shipper') {
+      this.listService.fetchShippers();
+    } else if(value === 'receiver') {
+      this.listService.fetchReceivers();
+    } else {
+      this.listService.fetchCustomers()
+    }
+  }
 }
