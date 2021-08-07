@@ -2835,8 +2835,14 @@ export class AddressBookComponent implements OnInit {
   }
 
   showMainModal() {
-    this.custCurrentTab = 1;
-    $('#allContactsModal').modal('show');
+    if(localStorage.getItem('isOpen') != 'true') {
+      this.custCurrentTab = 1;
+      $('#allContactsModal').modal('show');    
+    } else {
+      $('#allContactsModal').modal('hide');
+      localStorage.setItem('isOpen', 'false'); 
+    }
+    
   }
 
   clearModalData() {

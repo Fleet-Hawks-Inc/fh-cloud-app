@@ -452,13 +452,17 @@ export class AddOrdersComponent implements OnInit {
     
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
-    // this.searchLocation();
     this.listService.fetchShippersByIDs();
     this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
     this.disableButton();
 
+    $('.modal').on('hidden.bs.modal',(e) => {
+        localStorage.setItem('isOpen', 'false');
+      
+    })
+    
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
       this.fetchOrderByID(); 
@@ -474,6 +478,7 @@ export class AddOrdersComponent implements OnInit {
     
     this.customers = this.listService.customersList;
     this.shippers = this.listService.shipperList;
+    
     this.receivers = this.listService.receiverList;
     
     this.listService.receiverObjectList.subscribe(res => {
@@ -485,7 +490,7 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.fetchCountries();
-    // this.getCarrierState();
+    
     this.shippersReceivers.forEach(elem => {
       elem.shippers.cusConfirmation.forEach((c, i) => {
         elem.shippers.cusConfirmation.push(c);
@@ -546,41 +551,6 @@ export class AddOrdersComponent implements OnInit {
           }
         }
   }
-
-  public searchLocation() {
-    let target;
-    this.searchTerm
-      .pipe(
-        map((e: any) => {
-          $(".map-search__results").hide();
-          $('div').removeClass('show-search__result');
-          $(e.target).closest("div").addClass("show-search__result");
-          target = e;
-          return e.target.value;
-        }),
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((term) => {
-          console.log('temr', term);
-
-          if(term!=undefined){
-          return this.HereMap.searchEntries(term)
-        }
-        else{
-          return ' '
-        }
-        }),
-        catchError((e) => {
-          return throwError(e);
-        })
-      )
-      .subscribe((res) => {
-        console.log('res', res);
-        this.searchResults = res;
-
-      });
-  }
-
 
   //  getSuggestions = _.debounce(async function (ev, value) {
   //   if(value != '') {
@@ -645,50 +615,49 @@ export class AddOrdersComponent implements OnInit {
 
     // this.isShipperSubmit = true; 
    //check if all required fields are filled
-   console.log('this.shippersReceivers[i]', this.shippersReceivers[i].shippers)
    
-    // if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
-    //   if (
-    //     !this.shippersReceivers[i].shippers.shipperID || 
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].address.countryCode ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
-    //     !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
-    //   ){
-    //     this.toastr.error("Please fill required fields.");
-    //     return false;
-    //   }
-    // } else if(
-    //   !this.shippersReceivers[i].shippers.shipperID ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].address.pickupLocation ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
-    //   !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
-    // ){
-    //   this.toastr.error("Please fill required fields.");
-    //   return false;
-    // }
+    if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
+      if (
+        !this.shippersReceivers[i].shippers.shipperID || 
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.countryCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
+      ){
+        this.toastr.error("Please fill required fields.");
+        return false;
+      }
+    } else if(
+      !this.shippersReceivers[i].shippers.shipperID ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].address.pickupLocation ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
+    ){
+      this.toastr.error("Please fill required fields.");
+      return false;
+    }
     
     if(this.shippersReceivers[i].shippers.update == true) {
       this.shippersReceivers[i].shippers.update == false;
       this.shippersReceivers[i].shippers.save == true;
     }
     
-    let location: any;
+    let data: any = {};
     for (let index = 0; index < this.shippersReceivers[i].shippers.pickupPoint.length; index++) {
       const element = this.shippersReceivers[i].shippers.pickupPoint[index];
       if(element.pickupDate != '' && element.pickupTime) {
@@ -696,8 +665,22 @@ export class AddOrdersComponent implements OnInit {
         delete element.pickupDate;
         delete element.pickupTime;
       }
-      
-      
+      if(element.address.manual === true){
+        data = {
+          address: element.address.address,
+          cityName: element.address.cityName,
+          stateName: element.address.stateName,
+          countryName: element.address.countryName,
+          zipCode: element.address.zipCode
+        }
+       
+
+        let result = await this.newGeoCode(data);
+        
+        if(result != undefined){
+          element.address.geoCords = result;
+        }
+      }
     }
     
     let currentShipper: any = {
@@ -713,22 +696,20 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Shipper added successfully.");
-    
-    // await this.emptyShipper(i);
+    await this.emptyShipper(i);
   }
 
   async newGeoCode(data: any) {
    
     let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
     
-    if(result != undefined && result.length > 0) {
-      return result[0].Coords;
+    if(result.items != undefined && result.items.length > 0) {
+      return result.items[0].position;
     }
   }
 
   async reverseGeoCode(cords: any) {
     this.apiService.getData(`pcMiles/reverse/${cords}`).subscribe((result: any) => {
-      console.log('pc codes', result);
       if(result.length > 0) {
         return result[0].Coords;
       }
@@ -746,56 +727,72 @@ export class AddOrdersComponent implements OnInit {
     }
   }
   async saveReceiver(i) {
-    console.log('shipper', this.shippersReceivers)
-    console.log('shipper', this.finalShippersReceivers)
     // this.isReceiverSubmit = true;
-    // if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
-    //   if (
-    //     !this.shippersReceivers[i].receivers.receiverID || 
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].address.countryCode ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime || 
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
-    //   ){
-    //     this.toastr.error("Please fill required fields.");
-    //     return false;
-    //   }
-    // } else if(
-    //   !this.shippersReceivers[i].receivers.receiverID ||
-    //   !this.shippersReceivers[i].receivers.dropPoint[0].address.dropOffLocation ||
-    //   !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-    //   !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-    //   !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
-    //     !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
-    // ){
-    //   this.toastr.error("Please fill required fields.");
-    //   return false;
-    // }
+    if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
+      if (
+        !this.shippersReceivers[i].receivers.receiverID || 
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.countryCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime || 
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
+      ){
+        this.toastr.error("Please fill required fields.");
+        return false;
+      }
+    } else if(
+      !this.shippersReceivers[i].receivers.receiverID ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].address.dropOffLocation ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
+    ){
+      this.toastr.error("Please fill required fields.");
+      return false;
+    }
 
     if(this.shippersReceivers[i].receivers.update == true) {
       this.shippersReceivers[i].receivers.update == false;
       this.shippersReceivers[i].receivers.save == true;
     }
-    let location: any;
+
+    let data: any = {};
+
     for (let index = 0; index < this.shippersReceivers[i].receivers.dropPoint.length; index++) {
       const element = this.shippersReceivers[i].receivers.dropPoint[index];
       if(element.dropOffDate != '' && element.dropOffTime) {
         element['dateAndTime'] = element.dropOffDate + " " + element.dropOffTime;
         delete element.dropOffDate;
         delete element.dropOffTime;
+      }
+
+      if(element.address.manual === true){
+        data = {
+          address: element.address.address,
+          cityName: element.address.cityName,
+          stateName: element.address.stateName,
+          countryName: element.address.countryName,
+          zipCode: element.address.zipCode
+        }
+       
+        let result = await this.newGeoCode(data);
+        
+        if(result != undefined){
+          element.address.geoCords = result;
+        }
       }
     }
     
@@ -812,9 +809,8 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     this.toastr.success("Receiver added successfully.");
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    // await this.emptyReceiver(i);
-    console.log('ff', this.finalShippersReceivers)
-    console.log('dd f', this.shippersReceivers)
+    await this.emptyReceiver(i);
+    
    
 }
 
@@ -886,6 +882,8 @@ export class AddOrdersComponent implements OnInit {
 
   async emptyShipper(i) {
     this.shippersReceivers[i].shippers.shipperID = null;
+    this.cusConfirmation = [];
+    this.shippersReceivers[i].shippers.cusConfirmation = [];
     this.shippersReceivers[i].shippers.pickupPoint = [{
       unit: false,
       unitNumber: '',
@@ -921,30 +919,14 @@ export class AddOrdersComponent implements OnInit {
       ],
     }];
     this.shippersReceivers[i].shippers.driverLoad = false,
+    this.shippersReceivers[i].shippers.liveLoad = true,
     this.shippersReceivers[i].shippers.save = true,
     this.shippersReceivers[i].shippers.update = false
     
     
   }
 
-  /*
-   * Get all Shippers from api
-   */
-  fetchShippers() {
-    this.apiService.getData("shippers").subscribe((result: any) => {
-      this.shippers = result.Items;
-    });
-  }
 
-
-  /*
-   * Get all Receivers from api
-   */
-  fetchReceivers() {
-    this.apiService.getData("receivers").subscribe((result: any) => {
-      this.receivers = result.Items;
-    });
-  }
 
   /*
    * Selecting files before uploading
@@ -1017,7 +999,7 @@ export class AddOrdersComponent implements OnInit {
     
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
-        let cords = `${element.address.geoCords.Lon},${element.address.geoCords.Lat}`;
+        let cords = `${element.address.geoCords.lng},${element.address.geoCords.lat}`;
         this.getAllCords.push(cords);
       });
       
@@ -1065,7 +1047,11 @@ export class AddOrdersComponent implements OnInit {
             element['isChecked'] = false;
           }
           this.customerSelected[0].address[0].isChecked = true;
-          this.cusAdditionalContact = result.Items[0].additionalContact
+          this.cusAdditionalContact = result.Items[0].additionalContact;
+          
+          if(this.cusAdditionalContact.length === 1 && this.cusAdditionalContact[0].firstName == '') {
+            this.cusAdditionalContact = []
+          }
           if(this.customerSelected[0].address.length > 0) {
             this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
           }
@@ -1465,7 +1451,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = getAddress[0].countryCode;
       this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = getAddress[0].countryName;
       this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = getAddress[0].zipCode;
-      console.log('shipper', this.shippersReceivers[i].shippers.pickupPoint)
+      
     } else {
       let getAddress = this.receiverAddresses.filter(elem => elem.addressID == id);
       if(getAddress[0].manual) {
@@ -1511,7 +1497,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = getAddress[0].countryCode;
       this.shippersReceivers[i].receivers.dropPoint[w].address.countryName = getAddress[0].countryName;
       this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = getAddress[0].zipCode;
-      console.log('receiver', this.shippersReceivers[i].receivers.dropPoint)
     }
     $("div").removeClass("show-search__result");
   }
@@ -2315,14 +2300,21 @@ export class AddOrdersComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  shipperAddress(value, id) {
+  shipperReceiverAddress(value, id) {
     this.apiService.getData(`contacts/detail/${id}`).subscribe(res => {
       if(value === 'shipper') {
-        console.log('value', value);
-        this.shipAddresses = res.Items[0].address;
-        console.log('this.shipAddresses', this.shipAddresses);
+        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+          this.shipAddresses = [];  
+        } else {
+          this.shipAddresses = res.Items[0].address;
+        }
       } else {
-        this.receiverAddresses = res.Items[0].address;
+        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+          this.receiverAddresses = [];  
+        } else {
+          this.receiverAddresses = res.Items[0].address;
+        }
+        
       }
       
     })
@@ -2334,5 +2326,9 @@ export class AddOrdersComponent implements OnInit {
       allTags.push(elem.label);
     })
     this.shippersReceivers[i].shippers.cusConfirmation = allTags;
+  }
+
+  setValue() {
+    localStorage.setItem('isOpen', 'true');
   }
 }

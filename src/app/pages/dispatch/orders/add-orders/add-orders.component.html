@@ -166,7 +166,7 @@
 
                               </div>
                               <div class="col-2 mar-top-37 p-0">
-                                 <a class="btn btn-success btn-sm text-light" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
+                                 <a class="btn btn-success btn-sm text-light" (click)="setValue()" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
                                        class="fas fa-plus"></i>
                                  </a>
                                  <a data-toggle="modal" (click)="listService.fetchCustomers();" href="javascript:;"
@@ -186,11 +186,8 @@
                                  <div class=""  *ngIf="orderData.customerID" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
 
                                     <div class="row pl-3 pr-3">
-                                       <div class="col-lg-6" style="background-color:#e1e2e3;">
+                                       <div class="col-12" style="background-color:#e1e2e3;">
                                           <h5 class=" font-weight-bold">Details</h5>
-                                       </div>
-                                       <div class="col-lg-6 text-right" style="background-color:#e1e2e3;">
-                                          <!-- <button type="button" class="btn btn-default btn-xs mt-2" data-toggle="modal" data-target="#addressModal"><i class="fas fa-pencil-alt"></i>Edit</button> -->
                                        </div>
                                     </div>
                                     <div class="row pl-3 pr-3">
@@ -210,7 +207,7 @@
                                                 </div>
                                              </div>
                                             
-                                             <div class="row border-top mb-1 pt-2 pb-2 pr-3 position-relative" *ngFor="let address of item.address; let i = index;">
+                                             <div class="row border-top mb-1 pt-2 pb-2 position-relative" [ngClass]="{'pl-4' : item.address.length > 1}" *ngFor="let address of item.address; let i = index;">
                                                 <div class="col-12">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
                                                       {{address.address1}}
@@ -261,7 +258,7 @@
                               <div class="col-lg-6">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal Contact</label>
 
-                                 <ng-select [(ngModel)]="orderData.additionalContact" [addTag]="true" name="orderData.additionalContact" class="form-control populate"
+                                 <ng-select notFoundText="Please type to add name" [(ngModel)]="orderData.additionalContact" [addTag]="true" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
                                     <ng-option value="{{ data.fullName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.fullName }}</ng-option>
                                  </ng-select>
@@ -420,8 +417,8 @@
                                                                for="inputDefault">Shipper <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
 
-                                                            <ng-select [(ngModel)]="item.shippers.shipperID"
-                                                               name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" (change)="shipperAddress('shipper', $event)" #conSlt1="ngModel" required>
+                                                            <ng-select [clearable]="false" [(ngModel)]="item.shippers.shipperID"
+                                                               name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" (change)="shipperReceiverAddress('shipper', $event)" #conSlt1="ngModel" required>
 
                                                                   <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
 
@@ -432,7 +429,7 @@
                                                            
                                                          </div>
                                                          <div class="col-2 mar-top-37  p-0">
-                                                            <a data-toggle="modal" data-target="#addShipperModal" href="javascript:;"
+                                                            <a data-toggle="modal" (click)="setValue()" data-target="#addShipperModal" href="javascript:;"
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
@@ -449,14 +446,14 @@
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                                                Confirmation#
                                                             </label>
-                                                            <ng-select multiple="true" (change)="getConfirmations(i)" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="cusConfirmation" name="cusConfirmation" type="text"
+                                                            <ng-select multiple="true" notFoundText="Please type to add confirmation numbers" (change)="getConfirmations(i)" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="cusConfirmation" name="cusConfirmation" type="text"
                                                                class="form-control h-auto"></ng-select>
                            
                                                          </div>
                                                       </div>
                                                       <div class="addsr-scrollbar addsr-scroll-y pickup-location__main">
                                                          <div *ngFor="let pick of item.shippers.pickupPoint; let w = index;" [ngClass]="{'p-3 bg-grey mt-2': w != 0}">
-                                                            <div class="row mt-3 mr-4">
+                                                            <div class="row mt-3" [ngClass]="{'mr-4': w == 0}">
 
                                                                <div class="col-lg-11 col-md-11">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
@@ -480,7 +477,7 @@
                                                                            {{item.zipCode}}
                                                                         </span>
                                                                      </ng-option>
-   
+                                                                     
                                                                </ng-select>
                                                                   <!-- <input placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
                                                                      name="pickupLocation_{{i}}{{w}}" (keyup)="searchTerm.next($event);"
@@ -863,8 +860,8 @@
                                                                   for="inputDefault">Receiver <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                </label>
 
-                                                               <ng-select [(ngModel)]="item.receivers.receiverID"
-                                                                  name="receiverID" #receiverID="ngModel" required (change)="shipperAddress('receiver', $event)"
+                                                               <ng-select [clearable]="false" [(ngModel)]="item.receivers.receiverID"
+                                                                  name="receiverID" #receiverID="ngModel" required (change)="shipperReceiverAddress('receiver', $event)"
                                                                   receiverID placeholder="Select Receiver"class="form-control"
                                                                   tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
                                                                   <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
@@ -876,7 +873,7 @@
 
                                                             </div>
                                                             <div class="col-lg-2 mar-top-37  p-0">
-                                                               <a data-toggle="modal" data-target="#addConsigneeModal" href="javascript:;"
+                                                               <a data-toggle="modal" (click)="setValue()" data-target="#addConsigneeModal" href="javascript:;"
                                                                   class="modal-with-form btn btn-sm btn-success">
                                                                   <em class="fas fa-plus"></em>
                                                                </a>
@@ -1298,7 +1295,7 @@
                                                          </div>
                                                       </div>
                                                      
-                                                      <div class="row mt-3">
+                                                      <div class="row mt-3 mr-4">
                                                          <div class="col-3">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 text-dark"
                                                                for="inputDefault">Driver Assist </label>
@@ -1316,7 +1313,7 @@
                                                                   id="unloadno"> No</label>
                                                             </div>
                                                          </div>
-                                                         <div class="col-3 text-right">
+                                                         <div class="col-4 text-right">
                                                             <label class="control-label font-weight-bold mb-0 mt-2 text-3 mr-2 text-dark"
                                                                for="inputDefault">Live Unload</label>
                                                                <div class="checkbox-custom checkbox-default pl-0 d-inline-block">
@@ -1499,7 +1496,7 @@
                                     <div class="col-lg-10 offset-lg-2">
                                        <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temperature</label>
                                     </div>
-                                    <div class="col-lg-4 offset-lg-2">
+                                    <div class="col-2 offset-lg-2">
                                        <input
                                           name="orderData.additionalDetails.refeerTemp.minTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTemprature" type="text" class="form-control"
                                           placeholder="From" id="inputDefault" >
@@ -1509,7 +1506,7 @@
                                               </div>
                                          </div> -->
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-2">
                                        <ng-select
 
                                        name="orderData.additionalDetails.refeerTemp.minTempratureUnit" (change)="tempChange($event)" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTempratureUnit"
@@ -1530,7 +1527,7 @@
 
                                  <div class="row mt-3" *ngIf="orderData.additionalDetails.trailerType == 'reefer'">
 
-                                    <div class="col-lg-4 offset-lg-2">
+                                    <div class="col-2 offset-lg-2">
                                        <input
                                        name="orderData.additionalDetails.refeerTemp.maxTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTemprature" type="text" class="form-control"
                                        type="text" class="form-control"
@@ -1541,7 +1538,7 @@
                                               </div>
                                          </div> -->
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-2">
                                        <ng-select
                                        name="orderData.additionalDetails.refeerTemp.maxTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTempratureUnit" type="text" class="form-control"
                                        (change)="tempChange($event)"
@@ -2137,8 +2134,9 @@
   id="addOrderCustomerModal"
   tabindex="-1"
   role="dialog"
+  data-backdrop="static" data-keyboard="false"
   aria-labelledby="addOrderCustomerLabel"
-  aria-hidden="true" cdkDrag
+  aria-hidden="true"
 >
   <div class="modal-dialog w-50 h-auto mx-auto mt-4" role="document">
     <div class="modal-content">
