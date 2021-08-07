@@ -36,6 +36,7 @@ export class AddDriverPaymentComponent implements OnInit {
     accountID: null,
     settlData: [],
     advData: [],
+    transactionLog: [],
   };
   drivers = [];
   carriers = [];
