@@ -99,7 +99,7 @@
                                        </tr>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                          <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td> 
+                                          <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td>
                                        </tr>
                                        <tr *ngIf="paymentData.payMode">
                                           <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
@@ -177,30 +177,31 @@
                               <div class="col-lg-12">
                                  <h5 class="font-weight-bold">Journal</h5>
                                  <table class="table table-bordered table-hover">
-                                    <thead>
-                                       <tr class="bgcol2">
-                                          <th>Account Name</th>
-                                          <th>Name</th>
-                                          <th>Type</th>
-                                          <th>Debit</th>
-                                          <th>Credit</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr *ngFor="let data of paymentData.transactionLog">
-                                          <td>{{ accounts[data.accountID] }}</td>
-                                          <td>{{ empdetail.firstName }} {{ empdetail.lastName }}</td>
-                                          <td>Employee Payment</td>
-                                          <td>{{ (data.trxType == 'debit') ? data.amount + ' CAD' : '0.00' }} </td>
-                                          <td>{{ (data.trxType == 'credit') ? data.amount + ' CAD' : '0.00' }}</td>
-                                       </tr>
-                                       <tr>
-                                          <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                          <td>{{ paymentData.finalTotal }} CAD</td>
-                                          <td>{{ paymentData.finalTotal }} CAD</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
+                                  <thead>
+                                    <tr>
+                                      <th>Account Name</th>
+                                      <th>Name</th>
+                                      <th>Type</th>
+                                      <th>Debit</th>
+                                      <th>Credit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let dt of paymentData.transactionLog">
+                                      <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                         <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                      <td>{{customersObjects[dt.name] | titlecase}}</td>
+                                      <td>{{dt.type | titlecase}}</td>
+                                      <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                      <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                      <td>{{ paymentData.finalTotal }} CAD</td>
+                                      <td>{{ paymentData.finalTotal }} CAD</td>
+                                   </tr>
+                                  </tbody>
+                                </table>
                               </div>
                            </div>
                         </div>

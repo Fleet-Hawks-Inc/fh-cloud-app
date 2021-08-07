@@ -42,6 +42,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     finalTotal: 0,
     advancePayIds: [],
     advData: [],
+    transactionLog: [],
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -307,7 +308,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.advErr = '';
         this.submitDisabled = false;
       }
-    } 
+    }
   }
 
   fetchLastAdded() {
