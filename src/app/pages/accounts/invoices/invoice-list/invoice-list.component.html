@@ -207,8 +207,8 @@
                           class="badge badge-danger p-1">{{inv.invStatus | uppercase}}</span></td>
                       <td>
                         <div class="btn-group flex-wrap">
-                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                              class="fas fa-ellipsis-v"></i></button>
+                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="inv.invStatus === 'paid' || inv.invStatus === 'voided'  || inv.invStatus === 'partially paid'"><i
+                            class="fas fa-ellipsis-v"></i></button>
                           <div class="dropdown-menu" role="menu">
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button> -->
@@ -378,8 +378,8 @@
                           class="badge badge-danger p-1">{{inv.invStatus | uppercase}}</span></td>
                       <td>
                         <div class="btn-group flex-wrap">
-                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                              class="fas fa-ellipsis-v"></i></button>
+                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="inv.invStatus === 'paid' || inv.invStatus === 'voided'  || inv.invStatus === 'partially paid'"><i
+                            class="fas fa-ellipsis-v"></i></button>
                           <div class="dropdown-menu" role="menu">
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button> -->
@@ -464,8 +464,8 @@
                           class="badge badge-danger p-1">{{inv.invStatus | uppercase}}</span></td>
                       <td>
                         <div class="btn-group flex-wrap">
-                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                              class="fas fa-ellipsis-v"></i></button>
+                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="inv.invStatus === 'paid' || inv.invStatus === 'voided'  || inv.invStatus === 'partially paid'"><i
+                            class="fas fa-ellipsis-v"></i></button>
                           <div class="dropdown-menu" role="menu">
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button>
@@ -506,8 +506,8 @@
                           class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                       <td>
                         <div class="btn-group flex-wrap">
-                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
-                              class="fas fa-ellipsis-v"></i></button>
+                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="inv.invStatus === 'paid' || inv.invStatus === 'voided'  || inv.invStatus === 'partially paid'"><i
+                            class="fas fa-ellipsis-v"></i></button>
                           <div class="dropdown-menu" role="menu">
                             <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                               Status</button> -->

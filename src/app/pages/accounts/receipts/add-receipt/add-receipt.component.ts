@@ -41,9 +41,6 @@ export class AddReceiptComponent implements OnInit {
     paymentModeDate: null,
     paidInvoices: [],
     transactionLog: [],
-    advData: [],
-    advancePayIds: [],
-    advance: 0,
   };
   paymentMode = [
     {
@@ -85,6 +82,8 @@ export class AddReceiptComponent implements OnInit {
   accList = [];
   advErr = '';
   newTotal = 0;
+  totalErr = false;
+  paidAmtErr = false;
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -102,7 +101,6 @@ export class AddReceiptComponent implements OnInit {
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.pageTitle = 'Edit Receipt';
-      this.fetchReceipt();
     } else {
       this.pageTitle = 'Add Receipt';
     }
@@ -244,6 +242,24 @@ export class AddReceiptComponent implements OnInit {
     }
     this.receiptData[`paidInvoices`] = paidInvoices;
   }
+
+  matchPayment() {
+ for (const element of this.invoices) {
+    if (element.amountPaid === element.balance) {
+   element.fullPayment = true;
+    } else {
+      element.fullPayment = false;
+    }
+ }
+ for (const element of this.orderInvoices) {
+  if (element.amountPaid === element.balance) {
+ element.fullPayment = true;
+  } else {
+    element.fullPayment = false;
+  }
+}
+  }
+
   async addReceipt() {
     this.submitDisabled = true;
     this.errors = {};
@@ -280,21 +296,8 @@ export class AddReceiptComponent implements OnInit {
       },
     });
   }
-  async fetchReceipt() {
-    this.accountService.getData(`receipts/detail/${this.recID}`).subscribe((res: any) => {
-      this.receiptData = res[0];
-      this.receiptData.transactionLog = res[0].transactionLog;
-      const fetchedInvoices = this.receiptData[`fetchedInvoices`];
-      fetchedInvoices.map((e) => {
-        if (e.invType === 'manual') {
-          this.invoices.push(e);
-        } else {
-          this.orderInvoices.push(e);
-        }
-      });
-    });
-  }
-findReceivedAmtFn() {
+ findReceivedAmtFn() {
+  this.matchPayment();
   this.totalReceivedAmt = 0;
   for (const element of this.invoices) {
    this.totalReceivedAmt += element.amountPaid;
@@ -303,116 +306,70 @@ findReceivedAmtFn() {
     this.totalReceivedAmt += element.amountPaid;
    }
   this.receiptData.recAmount = this.totalReceivedAmt;
-}
-selectedAdvancepayments() {
-  this.receiptData.advancePayIds = [];
-  this.receiptData.advData = [];
-  for (const element of this.advancePayments) {
-    if(element.selected) {
-      if(!this.receiptData.advancePayIds.includes(element.paymentID)) {
-        let obj = {
-          paymentID: element.paymentID,
-          status: element.status,
-          paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
-          totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
-          pendingAmount: element.pendingPayment
-        }
-        this.receiptData.advancePayIds.push(element.paymentID);
-        this.receiptData.advData.push(obj);
-      }
-    }
+  if (this.receiptData.recAmount > this.receiptData.totalAmount) {
+     this.totalErr = true;
+  } else {
+    this.totalErr = false;
   }
-  this.advancePaymentCalculation();
 }
-advancePaymentCalculation() {
-  this.receiptData.advAmt = 0;
-  for (const element of this.advancePayments) {
-    console.log('element', element);
-    if(element.selected) {
-      this.receiptData.advAmt += Number(element.paidAmount);
-      this.receiptData.advData.map((v) => {
-        if(element.paymentID === v.paymentID) {
-          v.paidAmount = Number(element.paidAmount);
-          v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+// selectedAdvancepayments() {
+//   this.receiptData.advancePayIds = [];
+//   this.receiptData.advData = [];
+//   for (const element of this.advancePayments) {
+//     if(element.selected) {
+//       if(!this.receiptData.advancePayIds.includes(element.paymentID)) {
+//         let obj = {
+//           paymentID: element.paymentID,
+//           status: element.status,
+//           paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
+//           totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
+//           pendingAmount: element.pendingPayment
+//         }
+//         this.receiptData.advancePayIds.push(element.paymentID);
+//         this.receiptData.advData.push(obj);
+//       }
+//     }
+//   }
+//   this.advancePaymentCalculation();
+// }
+// advancePaymentCalculation() {
+//   this.receiptData.advAmt = 0;
+//   for (const element of this.advancePayments) {
+//     if(element.selected) {
+//       this.receiptData.advAmt += Number(element.paidAmount);
+//       this.receiptData.advData.map((v) => {
+//         if(element.paymentID === v.paymentID) {
+//           v.paidAmount = Number(element.paidAmount);
+//           v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
 
-          if(Number(element.paidAmount) === Number(element.pendingPayment)) {
-            v.status = 'deducted';
-          } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
-            v.status = 'partially_deducted';
-          } else {
-            v.status = 'not_deducted';
-          }
+//           if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+//             v.status = 'deducted';
+//           } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+//             v.status = 'partially_deducted';
+//           } else {
+//             v.status = 'not_deducted';
+//           }
 
-          v.paidAmount = v.paidAmount.toFixed(2);
-        }
-      })
-    }
-  }
-  // if(selectCount > 0) {
-  //   this.submitDisabled = false;
-  // } else {
-  //   this.submitDisabled = true;
+//           v.paidAmount = v.paidAmount.toFixed(2);
+//         }
+//       })
+//     }
+//   }
+//   this.receiptData.advAmt = (this.receiptData.advAmt) ? Number(this.receiptData.advAmt) : 0;
+//   this.receiptData.totalAmount = (this.receiptData.totalAmount) ? Number(this.receiptData.totalAmount) : 0;
+// }
+
+
+  // assignFullPayment(type, index, data) {
+  //     if(data.fullPayment) {
+  //       this.advancePayments[index].paidAmount = data.pendingPayment;
+  //       this.advancePayments[index].paidStatus = true;
+  //     } else {
+  //       this.advancePayments[index].paidAmount = 0;
+  //       this.advancePayments[index].paidStatus = false;
+  //     }
+  //     this.selectedAdvancepayments();
+  //     this.advancePaymentCalculation();
   // }
-  this.receiptData.advAmt = (this.receiptData.advAmt) ? Number(this.receiptData.advAmt) : 0;
-  this.receiptData.totalAmount = (this.receiptData.totalAmount) ? Number(this.receiptData.totalAmount) : 0;
-}
-  async updateReceipt() {
-    this.submitDisabled = true;
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    await this.getPaidInvoices();
-    this.accountService.putData(`receipts/update/${this.recID}`, this.receiptData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        this.submitDisabled = false;
-        this.response = res;
-        this.toastr.success('Receipt updated successfully.');
-        this.router.navigateByUrl('/accounts/receipts/list');
-      },
-    });
-  }
 
-  assignFullPayment(type, index, data) {
-      if(data.fullPayment) {
-        this.advancePayments[index].paidAmount = data.pendingPayment;
-        this.advancePayments[index].paidStatus = true;
-      } else {
-        this.advancePayments[index].paidAmount = 0;
-        this.advancePayments[index].paidStatus = false;
-      }
-      this.selectedAdvancepayments();
-      this.advancePaymentCalculation();
-  }
-
-  checkInput(type, index='') {
-
-      // if(this.receiptData.advance > this.receiptData.totalAmount) {
-      //   this.advErr = 'Advance amount should be less than settlement amount';
-      //   this.submitDisabled = true;
-      // } else {
-      //   this.advErr = '';
-      //   this.submitDisabled = false;
-      // }
-  }
 }

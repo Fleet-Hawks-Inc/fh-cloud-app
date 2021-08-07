@@ -68,7 +68,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchOwnerOperators();
     this.fetchEmployee();
     // this.fetchVendor();
-    this.fetchCustomer();
+   // this.fetchCustomer();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
@@ -180,7 +180,6 @@ export class AddAdvancePaymentComponent implements OnInit {
   }
 
   updateRecord() {
-    console.log("paymentData", this.paymentData);
     this.submitDisabled = true;
     this.accountService.putData(`advance/${this.paymentID}`, this.paymentData).subscribe({
       complete: () => {},
