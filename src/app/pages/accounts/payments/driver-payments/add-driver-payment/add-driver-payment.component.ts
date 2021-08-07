@@ -48,8 +48,8 @@ export class AddDriverPaymentComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   submitDisabled = true;
   paymentID;
   searchDisabled = false;
@@ -184,7 +184,7 @@ export class AddDriverPaymentComponent implements OnInit {
   selectedSettlements() {
     this.paymentData.settlementIds = [];
     this.paymentData.settlData = [];
-    
+
     for (const element of this.settlements) {
       if(element.selected) {
         if(!this.paymentData.settlementIds.includes(element.sttlID)) {
@@ -200,7 +200,7 @@ export class AddDriverPaymentComponent implements OnInit {
         }
       }
     }
-    
+
     this.paymentCalculation();
   }
 
@@ -212,7 +212,7 @@ export class AddDriverPaymentComponent implements OnInit {
     for (const element of this.settlements) {
       if(element.selected) {
         if(element.paidAmount > 0) {
-          selectCount += 1; 
+          selectCount += 1;
         }
         this.paymentData.totalAmount += Number(element.paidAmount);
         this.paymentData.settlData.map((v) => {
@@ -370,7 +370,7 @@ export class AddDriverPaymentComponent implements OnInit {
         this.settlements[index].paidAmount = 0;
         this.settlements[index].paidStatus = false;
       }
-      
+
     } else {
       if(data.fullPayment) {
         this.advancePayments[index].paidAmount = data.pendingPayment;
