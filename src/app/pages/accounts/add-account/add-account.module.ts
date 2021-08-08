@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddAccountComponent } from './add-account.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -16,7 +16,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   fromModel(value: string): NgbDateStruct {
     if (!value)
       return null
-    let parts = value.split(this.DELIMITER);
+    const parts = value.split(this.DELIMITER);
     return {
       year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
@@ -63,7 +63,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CommonModule,
     FormsModule,
     NgSelectModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule,
   ],
   exports: [AddAccountComponent],
   providers: [

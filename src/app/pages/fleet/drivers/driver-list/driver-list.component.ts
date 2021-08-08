@@ -229,13 +229,13 @@ export class DriverListComponent implements OnInit {
 
   deactivateDriver(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.driverID,
-        status: eventData.driverStatus
-      }
-      this.apiService.postData('drivers/delete', record).subscribe((result: any) => {
+      // let record = {
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.driverID,
+      //   status: eventData.driverStatus
+      // }
+      this.apiService.deleteData(`drivers/delete/${eventData.driverID}`).subscribe((result: any) => {
 
         this.drivers = [];
         this.driverDraw = 0;

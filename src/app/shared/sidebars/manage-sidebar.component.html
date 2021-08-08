@@ -1,27 +1,30 @@
 <ul class="nav nav-main mr-0 bg-white">
+  
   <li routerLinkActive="nav-active">
-    <a class="nav-link" routerLink="manage/reports">
-      <i class="fas fa-file-alt" aria-hidden="true"></i>
-      <span>Reports</span>
-    </a>
-  </li>
-  <!-- <li routerLinkActive="nav-active">
-    <a class="nav-link" href="javascript:;">
+    <a class="nav-link" routerLink="/Map-Dashboard">
       <i class="fas fa-bell" aria-hidden="true"></i>
       <span>Alerts</span>
     </a>
-  </li> -->
+  </li>
   
-  <!-- <li routerLinkActive="nav-active">
-    <a class="nav-link" routerLink="manage/settings">
-      <i class="fas fa-cogs" aria-hidden="true"></i>
-      <span>Settings</span>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" routerLink="/fleet/devices/list">
+      <i class="fas fa-tablet" aria-hidden="true"></i>
+      <span>Device</span>
     </a>
-  </li> -->
+  </li>
+
+  
   <li routerLinkActive="nav-active">
     <a class="nav-link" [routerLink]="['/manage','users','list']">
       <i class="fas fa-user" aria-hidden="true"></i>
       <span>Users</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" routerLink="manage/settings/overview">
+      <i class="fas fa-cogs" aria-hidden="true"></i>
+      <span>Settings</span>
     </a>
   </li>
 

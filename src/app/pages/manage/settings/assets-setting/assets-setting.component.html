@@ -1,0 +1,132 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+               <div class="row">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     <h2 class="font-weight-bold pl-0">Assets Settings</h2>
+                  </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                     <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                  </div>
+               </div>
+            </header>
+           
+            <div class="routing-overview__wrapper m-3">
+               <div class="row">
+                  <div class="col-lg-12 col-xl-12 mb-4">
+                     <div class=" ">
+                        <ul class="nav nav-tabs top-tabs">
+                           <li class="nav-item active">
+                              <a class="nav-link active" href="#drlistset" data-toggle="tab">Assets Listing</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="#dstatusset" data-toggle="tab">Assets Status</a>
+                           </li>
+                          
+                        </ul>
+                        <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                           <!-- driver listing -->
+						   <div id="drlistset" class="tab-pane active">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Set the visibility of assets listing to:</p>
+                                 </div>
+								 
+                                 <div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Assets Drivers
+										</label>
+									</div>
+									<span class="text-2">By this setting active assets show only in driver listing</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										Show Both Active/Inactive Assets
+										</label>
+									</div>
+									<span class="text-2">In this setting all listing (active, in active) show</span>
+                                 </div>
+                              </div>
+							  
+							  
+                           </div>
+						   
+                           <!-- assets status -->
+                           <div id="dstatusset" class="tab-pane">
+                              <div class="row">
+                                 <div class="col-10">
+                                    <p class="text-4 font-weight-bold text-dark">Activate or deactivate your assets:</p>
+                                 </div>
+								 <div class="col-2 text-right"> <a routerLink="/manage/settings/asset" class="btn btn-success btn-sm modal-with-form"><i class="fas fa-plus"></i> Change Status</a> </div>
+								 
+							
+								<div class="col-12">
+											<table class="table table-striped table-bordered simple-table">
+												<thead>
+													<tr style="background-color:#ccc;">
+														<th>Assets Name</th>
+														<th>Assets Number</th>
+														<th>Status</th>
+														<th>Status Date/Time</th>
+														<th>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Horse Trailer</td>
+														<td>A254280</td>
+														<td>Active</td>
+														<td>10/03/2020, 07:20 PM</td>
+														<td>
+															<div class="switch switch-sm switch-dark">
+															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
+															</div>
+														 </td>
+													</tr>
+													<tr>
+														<td>Asset Trailer</td>
+														<td>A254280</td>
+														<td>Inactive</td>
+														<td>10/05/2020, 10:25 AM</td>
+														<td>
+															<div class="switch switch-sm switch-dark">
+															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
+															</div>
+														 </td>
+													</tr>
+													<tr>
+														<td>Asset Test</td>
+														<td>A254280</td>
+														<td>Active</td>
+														<td>14/02/2020, 11:45 AM</td>
+														<td>
+															<div class="switch switch-sm switch-dark">
+															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
+															</div>
+														 </td>
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+                              </div>
+							  
+							  
+                           </div>
+						   
+             
+					
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

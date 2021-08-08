@@ -23,7 +23,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.txnDate}}</p>
                         <p class="mb-0">DATE</p>
                       </div>
                     </div>
@@ -31,7 +31,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="fa fa-user text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">MIT ltd</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{customersObject[receiptData.customerID] | uppercase}}</p>
                         <p class="mb-0">CUSTOMER</p>
                       </div>
                     </div>
@@ -40,7 +40,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="fas fa-money-bill-wave text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">5800 CAD</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.recAmount}}&nbsp;{{receiptData.recAmountCur}}</p>
                         <p class="mb-0">AMOUNT</p>
                       </div>
                     </div>
@@ -53,7 +53,7 @@
                         <tbody>
                           <tr>
                             <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                            <td width="60%">Cash</td>
+                            <td width="60%">{{receiptData.paymentMode | titlecase}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -66,8 +66,8 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td class="back-color-gray font-weight-bold">Cash Reference#</td>
-                            <td>5767</td>
+                            <td class="back-color-gray font-weight-bold">{{receiptData.paymentMode | titlecase}}#, Date</td>
+                            <td>{{receiptData.paymentModeNo}}, {{receiptData.paymentModeDate}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -89,20 +89,10 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1234</td>
-                            <td>3400 CAD</td>
-                            <td>3400 CAD</td>
-                          </tr>
-                          <tr>
-                            <td>89778</td>
-                            <td>1400 CAD</td>
-                            <td>1400 CAD</td>
-                          </tr>
-                          <tr>
-                            <td>888</td>
-                            <td>1000 CAD</td>
-                            <td>500 CAD</td>
+                          <tr *ngFor="let inv of receiptData.fetchedInvoices">
+                            <td>{{inv.invNo}}</td>
+                            <td>{{inv.finalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.amountReceived}} {{inv.invCur}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -121,32 +111,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Cash Account(a/c selected in form)</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>5000 CAD</td>
-                        <td>0.00</td>
-                      </tr>
-                      <tr>
-                        <td>Advance Payment Account</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>800 CAD</td>
-                        <td>0.00</td>
-
-                      </tr>
-                      <tr>
-                        <td>Accounts Receivables</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>0.00</td>
-                        <td>5800 CAD</td>
+                      <tr *ngFor="let dt of receiptData.transactionLog">
+                        <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                       <td>{{customersObject[dt.name] | titlecase}}</td>
+                       <td>{{dt.type | titlecase}}</td>
+                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>5800 CAD</td>
-                        <td>5800 CAD</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
                       </tr>
                     </tbody>
                   </table>

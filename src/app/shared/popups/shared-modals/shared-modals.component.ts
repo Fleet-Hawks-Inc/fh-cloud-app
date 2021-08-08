@@ -1,3 +1,4 @@
+const ct = require('countries-and-timezones');
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { from, Subject } from 'rxjs';
@@ -588,7 +589,7 @@ users = [];
     });
  }
  fetchTimezones(){
-  const ct = require('countries-and-timezones');
+  
   const UStimezones = ct.getTimezonesForCountry('US');
   UStimezones.forEach((element: any) => {
     const obj: any = {

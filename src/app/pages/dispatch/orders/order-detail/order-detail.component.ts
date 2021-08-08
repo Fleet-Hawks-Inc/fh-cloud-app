@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
+import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
+import * as html2pdf from 'html2pdf.js';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -138,6 +142,7 @@ export class OrderDetailComponent implements OnInit {
   totalCharges: any = 0;
   advances = 0;
   balance = 0;
+  newOrderData: any;
 
   assetTypes = {};
   milesArr = [];
@@ -145,14 +150,30 @@ export class OrderDetailComponent implements OnInit {
   carrierID = '';
   stateCode = '';
   zeroRated = false;
+  isInvoice = false;
   taxableAmount: any;
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
+  invoiceData: any;
+  today: any;
+  cusAddressID: string;
+  isInvoiced: boolean;
+  generateBtnDisabled = false;
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  invGenStatus = false;
+  constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+    this.today = new Date();
+   }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
+    this.fetchInvoiceData();
   }
 
   /**
@@ -162,6 +183,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
+          this.newOrderData = result;
           result = result.Items[0];
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
@@ -175,6 +197,7 @@ export class OrderDetailComponent implements OnInit {
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
           this.fetchCustomersByID();
+          this.cusAddressID = result.cusAddressID;
           this.customerPo = result.customerPO;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
@@ -182,30 +205,31 @@ export class OrderDetailComponent implements OnInit {
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
+          this.isInvoiced = result.invoiceGenerate;
           this.shipperReceiversInfos = result.shippersReceiversInfo;
 
           for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
             const element = this.shipperReceiversInfos[u];
-              for (let k = 0; k < element.shippers.length; k++) {
-                const element1 = element.shippers[k];
-                element1.date = '';
-                element1.time = '';
+              // for (let k = 0; k < element.shippers.length; k++) {
+              //   const element1 = element.shippers[k];
+              //   element1.date = '';
+              //   element1.time = '';
 
-                let datetime = element1.dateAndTime.split(' ');
-                if(datetime[0] != undefined) {
-                  element1.date = datetime[0];
-                }
-                if(datetime[1] != undefined) {
-                  element1.time = datetime[1];
-                }
+              //   let datetime = element1.dateAndTime.split(' ');
+              //   if(datetime[0] != undefined) {
+              //     element1.date = datetime[0];
+              //   }
+              //   if(datetime[1] != undefined) {
+              //     element1.time = datetime[1];
+              //   }
 
-              }
+              // }
 
-              
+
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
-          this.additionalDetails.trailerType = result.additionalDetails.trailerType;
+          this.additionalDetails.trailerType = result.additionalDetails.trailerType ? result.additionalDetails.trailerType.replace('_', ' ') : '-';
           this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
           this.charges = result.charges;
           this.discount = result.discount;
@@ -213,49 +237,33 @@ export class OrderDetailComponent implements OnInit {
           this.taxesInfo = result.taxesInfo;
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
-          
-              
+
+
 
           this.milesArr = [];
-          for (let k = 0; k < element.receivers.length; k++) {
-            const element2 = element.receivers[k];
-            element2.date = '';
-            element2.time = '';
+          // for (let k = 0; k < element.receivers.length; k++) {
+          //   const element2 = element.receivers[k];
+          //   element2.date = '';
+          //   element2.time = '';
 
-            let datetime = element2.dateAndTime.split(' ');
-            if(datetime[0] != undefined) {
-              element2.date = datetime[0];
-            }
-            if(datetime[1] != undefined) {
-              element2.time = datetime[1];
-            }
+          //   let datetime = element2.dateAndTime.split(' ');
+          //   if(datetime[0] != undefined) {
+          //     element2.date = datetime[0];
+          //   }
+          //   if(datetime[1] != undefined) {
+          //     element2.time = datetime[1];
+          //   }
 
-          }
+          // }
       }
       for(let i = 0; i < this.taxesInfo.length; i++){
         if(this.taxesInfo[i].amount){
           this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
       }
-          // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
-          //   const element = result.shippersReceiversInfo[p];
 
-          // }
+          this.milesArr = result.shippersReceiversInfo;
 
-          result.shippersReceiversInfo.map((v) => {
-            let newArr = [];
-            newArr['receivers'] = [];
-            newArr['shippers'] = [];
-            v.receivers.map((rec) =>{
-              newArr['receivers'].push(rec);
-            })
-
-            v.shippers.map((ship) =>{
-              newArr['shippers'].push(ship);
-            })
-
-            this.milesArr.push(newArr);
-          })
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -273,14 +281,14 @@ export class OrderDetailComponent implements OnInit {
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
-          
+
           if(result.attachments != undefined && result.attachments.length > 0){
             this.attachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
+          }
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
             this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
-          
+          }
+
           // if (
           //   result.uploadedDocs != undefined &&
           //   result.uploadedDocs.length > 0
@@ -356,7 +364,7 @@ export class OrderDetailComponent implements OnInit {
           //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
           // }
 
-          
+
 
 
       }, (err) => {
@@ -386,41 +394,105 @@ export class OrderDetailComponent implements OnInit {
    */
   fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
-      result = result.Items[0];
-      this.customerName = `${result.companyName}`;
 
-      if(result.address.length > 0) {
-        if(result.address[0].manual) {
-          this.customerAddress = result.address[0].address1;
-        } else {
-          this.customerAddress = result.address[0].userLocation;
+      if(result.Items.length > 0) {
+        result = result.Items[0];
+        this.customerName = `${result.companyName}`;
+        let newCusAddress = result.address.filter((elem: any) => {
+          if(elem.addressID === this.cusAddressID){
+            return elem;
+          }
+        });
+        newCusAddress = newCusAddress[0];
+        if(result.address.length > 0) {
+          if(newCusAddress.manual) {
+            this.customerAddress = newCusAddress.address1;
+          } else {
+            this.customerAddress = newCusAddress.userLocation;
+          }
+          this.customerCityName = newCusAddress.cityName;
+          this.customerStateName = newCusAddress.stateName;
+          this.customerCountryName = newCusAddress.countryName;
+          this.customerPhone = result.workPhone;
+          this.customerEmail = result.workEmail;
         }
       }
-      this.customerCityName = result.address[0].cityName;
-      this.customerStateName = result.address[0].stateName;
-      this.customerCountryName = result.address[0].countryName;
-      this.customerPhone = result.workPhone;
-      this.customerEmail = result.workEmail;
-      // this.customerfax = result.additionalContact.fax;
+
     });
   }
 
 
   generatePDF() {
     var data = document.getElementById('print_wrap');
-    html2canvas(data).then(canvas => {
-      // Few necessary setting options
-      var imgWidth = 208;
-      var pageHeight = 295;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save('MYPdf.pdf'); // Generated PDF
+    html2pdf(data, {
+      margin:       0,
+      filename:     'invoice.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+
     });
+    this.saveInvoice();
+    this.fetchOrder();
+    this.invoiceGenerated();
+
+  }
+
+  saveInvoice() {
+    this.generateBtnDisabled = true;
+    this.invoiceData[`transactionLog`] = [];
+    this.invoiceData[`invNo`] = this.orderNumber;
+    this.invoiceData[`invType`] = 'orderInvoice';
+    this.invoiceData[`invStatus`] = 'open';
+    this.invoiceData[`amountReceived`] = 0;
+    this.invoiceData[`amountPaid`] = 0;
+    this.invoiceData[`fullPayment`] = false;
+    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
+    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`orderID`] = this.orderID;
+    // this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
+    //   if (res) {
+
+    //     $('#previewInvoiceModal').modal('hide');
+    //   }
+    //   this.toastr.success('Invoice Added Successfully.');
+    // });
+
+
+    this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.generateBtnDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.generateBtnDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        $('#previewInvoiceModal').modal('hide');
+        this.generateBtnDisabled = false;
+        this.toastr.success('Invoice Added Successfully.');
+      },
+    });
+  }
+
+  invoiceGenerated() {
+    this.invGenStatus = true;
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {
@@ -432,20 +504,20 @@ export class OrderDetailComponent implements OnInit {
 
   // delete uploaded images and documents
   async delete(type: string, name: string, index) {
-    let record = {
-      eventID: this.orderID,
-      type: type,
-      name: name,
-      date: this.createdDate,
-      time: this.createdTime
-    }
-    await this.apiService.postData(`orders/uploadDelete`, record).toPromise();
+    // let record = {
+    //   eventID: this.orderID,
+    //   type: type,
+    //   name: name,
+    //   date: this.createdDate,
+    //   time: this.createdTime
+    // }
+    await this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`).toPromise();
     if(type == 'attachment') {
       this.attachments.splice(index, 1);
     } else {
       this.docs.splice(index, 1);
     }
-    this.toastr.error('Document deleted successfully');
+    this.toastr.success('Document deleted successfully');
   }
 
   setPDFSrc(val) {
@@ -459,14 +531,14 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  
+
    /*
    * Selecting files before uploading
    */
   selectDocuments(event) {
     let files = [...event.target.files];
     let totalCount = this.docs.length+files.length;
-    
+
     if(totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
@@ -499,7 +571,7 @@ export class OrderDetailComponent implements OnInit {
       }
 
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
-        
+
         this.docs = [];
         if (result.length > 0) {
           for (let k = 0; k < result.length; k++) {
@@ -523,8 +595,8 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-                    
-            
+
+
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
@@ -557,5 +629,15 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  
+
+  fetchInvoiceData() {
+    this.apiService
+      .getData(`orders/invoice/${this.orderID}`)
+      .subscribe((result: any) => {
+        this.invoiceData = result[0];
+        this.isInvoice = true;
+      });
+  }
+
+
 }

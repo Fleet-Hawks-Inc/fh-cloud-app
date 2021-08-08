@@ -352,6 +352,7 @@ export class CalendarViewComponent implements OnInit {
         result = result.Items[0];
         // delete result.timeCreated;
         delete result.timeModified;
+        delete result._type;
         if(result.documents == undefined) {
           result.documents = [];
         }

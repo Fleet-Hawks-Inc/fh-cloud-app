@@ -1,650 +1,143 @@
 <section class="body">
-<div class="inner-wrapper">
-  <section role="main" class="content-body pl-0 pr-0 pt-0">
-    <header class="page-header">
-       <div id="fuel-expense-header" style="display:none;">
-          <form class="form-horizontal" method="get">
-             <div class="row px-4" style="padding-top:10px;">
-                <div class="col-md-2 col-lg-2">
-                   <select  class="form-control populate">
-                      <optgroup label="">
-                         <option value="1">Vehicle 1</option>
-                         <option value="2">Vehicle 2</option>
-                         <option value="2">Vehicle 3</option>
-                         <option value="2">Vehicle 4</option>
-                         <option value="2">Vehicle 5</option>
-                      </optgroup>
-                   </select>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                   <div class="input-daterange input-group" data-plugin-datepicker="">
-                      <span class="input-group-prepend">
-                      <span class="input-group-text">
-                      <i class="fas fa-calendar-alt"></i>
-                      </span>
-                      </span>
-                      <input type="text" class="form-control" name="start">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                      to
-                      </span>
-                      <input type="text" class="form-control" name="end">
-                   </div>
-                </div>
-                <div class="col-md-1  col-lg-1">
-                   <button type="submit" class="btn btn-sm btn-success">Search</button>
-                </div>
-                <div class="col-md-6  col-lg-6 text-right pr-5">
-                   <!-- <a routerLink="/accounts/expense/list" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
-                </div>
-             </div>
-          </form>
-       </div>
-       <div id="other-expense-header">
-          <form class="form-horizontal" method="get">
-             <div class="row px-4" style="padding-top:10px;">
-                <div class="col-md-2 col-lg-2">
-                   <div class="input-group input-group-md mb-3">
-                      <input type="text" class="form-control" placeholder="Search">
-                   </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                   <div class="input-daterange input-group" data-plugin-datepicker="">
-                      <span class="input-group-prepend">
-                      <span class="input-group-text">
-                      <i class="fas fa-calendar-alt"></i>
-                      </span>
-                      </span>
-                      <input type="text" class="form-control" name="start">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                      to
-                      </span>
-                      <input type="text" class="form-control" name="end">
-                   </div>
-                </div>
-                <div class="col-md-2  col-lg-2">
-                   <div class="input-group input-group-md mb-3">
-                      <select data-plugin-selectTwo class="form-control populate">
-                         <optgroup label="">
-                            <option value="1">Annual Inspection Fees</option>
-                            <option value="2">Depreciation</option>
-                            <option value="2">Down Payment</option>
-                            <option value="2">Equipment</option>
-                            <option value="2">Fines</option>
-                            <option value="2">Insurance</option>
-                            <option value="2">Lease</option>
-                            <option value="2">Legal/Court Costs</option>
-                            <option value="2">Loan</option>
-                            <option value="2">Loan Payment</option>
-                            <option value="2">Miscellaneous</option>
-                            <option value="2">Moving Violations</option>
-                            <option value="2">Safety Technology</option>
-                            <option value="2">Telematics Device</option>
-                            <option value="2">Tolls</option>
-                            <option value="2">Vehicle Disposal Costs</option>
-                            <option value="2">Vehicle Registration and Taxes</option>
-                         </optgroup>
-                      </select>
-                   </div>
-                </div>
-                <div class="col-md-1  col-lg-1">
-                   <button type="submit" class="btn btn-sm btn-success">Search</button>
-                </div>
-                <div class="col-md-4  col-lg-4 text-right pr-5">
-                   <a routerLink="/accounts/expense/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Expense </a>
-                </div>
-             </div>
-          </form>
-       </div>
-    </header>
-    <div class="row">
-       <div class="col pr-0">
-          <section class="card">
-             <div class="card-body">
-                <div class="m-2">
-                   <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                      <li class="nav-item">
-                         <a class="nav-link active" id="allExpenses-tab" data-toggle="tab" href="#allExpenses" role="tab"
-                            aria-controls="allExpenses" aria-selected="true">All</a>
-                      </li>
-                      <li class="nav-item">
-                         <a class="nav-link" id="fuelExpenses-tab" data-toggle="tab" href="#fuelExpenses" role="tab"
-                            aria-controls="fuelExpenses" aria-selected="false">Fuel Expenses</a>
-                      </li>
-                      <li class="nav-item">
-                         <a class="nav-link" id="maintenanceExpenses-tab" data-toggle="tab" href="#maintenanceExpenses" role="tab"
-                            aria-controls="maintenanceExpenses" aria-selected="false">Maintenance Expenses</a>
-                      </li>
-                      <li class="nav-item">
-                         <a class="nav-link" id="insuranceExpenses-tab" data-toggle="tab" href="#insuranceExpenses" role="tab"
-                            aria-controls="insuranceExpenses" aria-selected="false">Insurance Expenses</a>
-                      </li>
-                      <li class="nav-item">
-                         <a class="nav-link" id="otherExpenses-tab" data-toggle="tab" href="#otherExpenses" role="tab"
-                            aria-controls="otherExpenses" aria-selected="false">Other Expenses</a>
-                      </li>
-                   </ul>
-                </div>
-                <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                   <div class="tab-pane show active" id="allExpenses" role="tabpanel" aria-labelledby="allExpenses-tab">
-                   <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                         <thead>
-                            <tr>
-                               <th>Date</th>
-                               <th>Expense#</th>
-                               <th>Expense Type</th>
-                               <th>Vendor</th>
-                               <th>Recurring</th>
-                               <th>Amount</th>
-                               <th>Status</th>
-                               <th>Action</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 3, 2020</td>
-                               <td routerLink="/accounts/expense/detail">34345</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail">Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td routerLink="/accounts/expense/detail"><span class="badge badge-dark p-1">UNPAID</span></td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="add-other-expenses.php">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 12, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3454545</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td routerLink="/accounts/expense/detail"><span class="badge badge-dark p-1">UNPAID</span></td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 1, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3423445</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td routerLink="/accounts/expense/detail"><span class="badge badge-dark p-1">PAID</span></td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">May 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">45345</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td routerLink="/accounts/expense/detail"><span class="badge badge-dark p-1">UNPAID</span></td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Apr 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">332342445</td>
-                               <td routerLink="/accounts/expense/detail">Factoring Charges</td>
-                               <td routerLink="/accounts/expense/detail">XYZ Inc.</td>
-                               <td routerLink="/accounts/expense/detail"> Weekly</td>
-                               <td routerLink="/accounts/expense/detail">$1500.34</td>
-                               <td routerLink="/accounts/expense/detail"><span class="badge badge-dark p-1">UNPAID</span></td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
-                   <!-- Fuel Expenses -->
-                   <div class="tab-pane fade" id="fuelExpenses" role="tabpanel" aria-labelledby="fuelExpenses-tab">
-                   <table class="table table-bordered table-striped mb-0 ">
-                <thead>
-                   <tr>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th >Card Number</th>
-                      <th>Unit#</th>
-                      <th>Hub Miles</th>
-                      <th>Odometer Miles</th>
-                      <th>Trip#</th>
-                      <th>Invoice</th>
-                      <th>Total Invoice</th>
-                      <th>Amount Billed</th>
-                      <th>Actions</th>
-                   </tr>
-                </thead>
-                <tbody>
-                   <tr>
-                      <td onclick="window.location='fuel-details.php';">06/06/2020</td>
-                      <td onclick="window.location='fuel-details.php';">09:20 AM</td>
-                      <td onclick="window.location='fuel-details.php';">76782020</td>
-                      <td onclick="window.location='fuel-details.php';">5645</td>
-                      <td onclick="window.location='fuel-details.php';">76.18</td>
-                      <td onclick="window.location='fuel-details.php';">761658</td>
-                      <td onclick="window.location='fuel-details.php';">TR-6772</td>
-                      <td onclick="window.location='fuel-details.php';">INV-11535</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD </td>
-                      <td><div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu">
-                               <a class="dropdown-item text-1" href="edit-fuel-entry.php">Edit</a>
-                                <a class="dropdown-item text-1 modal-with-form" href="#deleteModal">Delete</a>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header">
+                <div id="fuel-expense-header" style="display:none;">
+                    <form class="form-horizontal" method="get">
+                        <div class="row px-4" style="padding-top:10px;">
+                            <div class="col-md-2 col-lg-2">
+                                <select class="form-control populate">
+                                    <optgroup label="">
+                                        <option value="1">Vehicle 1</option>
+                                        <option value="2">Vehicle 2</option>
+                                        <option value="2">Vehicle 3</option>
+                                        <option value="2">Vehicle 4</option>
+                                        <option value="2">Vehicle 5</option>
+                                    </optgroup>
+                                </select>
                             </div>
-                         </div></td>
-                   </tr>
-                   <tr>
-                      <td onclick="window.location='fuel-details.php';">06/06/2020</td>
-                      <td onclick="window.location='fuel-details.php';">09:20 AM</td>
-                      <td onclick="window.location='fuel-details.php';">76782020</td>
-                      <td onclick="window.location='fuel-details.php';">5645</td>
-                      <td onclick="window.location='fuel-details.php';">76.18</td>
-                      <td onclick="window.location='fuel-details.php';">761658</td>
-                      <td onclick="window.location='fuel-details.php';">TR-6772</td>
-                      <td onclick="window.location='fuel-details.php';">INV-11535</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD </td>
-                      <td><div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu">
-                               <a class="dropdown-item text-1" href="edit-fuel-entry.php">Edit</a>
-                                <a class="dropdown-item text-1 modal-with-form" href="#deleteModal">Delete</a>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="input-daterange input-group" data-plugin-datepicker="">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </span>
+                                    <input type="text" class="form-control" name="start">
+                                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                        to
+                                    </span>
+                                    <input type="text" class="form-control" name="end">
+                                </div>
                             </div>
-                         </div></td>
-                   </tr>
-                   <tr>
-                      <td onclick="window.location='fuel-details.php';">06/06/2020</td>
-                      <td onclick="window.location='fuel-details.php';">09:20 AM</td>
-                      <td onclick="window.location='fuel-details.php';">76782020</td>
-                      <td onclick="window.location='fuel-details.php';">5645</td>
-                      <td onclick="window.location='fuel-details.php';">76.18</td>
-                      <td onclick="window.location='fuel-details.php';">761658</td>
-                      <td onclick="window.location='fuel-details.php';">TR-6772</td>
-                      <td onclick="window.location='fuel-details.php';">INV-11535</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD </td>
-                      <td><div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu">
-                               <a class="dropdown-item text-1" href="edit-fuel-entry.php">Edit</a>
-                                <a class="dropdown-item text-1 modal-with-form" href="#deleteModal">Delete</a>
+                            <div class="col-md-1  col-lg-1">
+                                <button type="submit" class="btn btn-sm btn-success">Search</button>
                             </div>
-                         </div></td>
-                   </tr>
-                   <tr>
-                      <td onclick="window.location='fuel-details.php';">06/06/2020</td>
-                      <td onclick="window.location='fuel-details.php';">09:20 AM</td>
-                      <td onclick="window.location='fuel-details.php';">76782020</td>
-                      <td onclick="window.location='fuel-details.php';">5645</td>
-                      <td onclick="window.location='fuel-details.php';">76.18</td>
-                      <td onclick="window.location='fuel-details.php';">761658</td>
-                      <td onclick="window.location='fuel-details.php';">TR-6772</td>
-                      <td onclick="window.location='fuel-details.php';">INV-11535</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD</td>
-                      <td onclick="window.location='fuel-details.php';">200 USD </td>
-                      <td><div class="btn-group flex-wrap">
-                            <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                            <div class="dropdown-menu" role="menu">
-                               <a class="dropdown-item text-1" href="edit-fuel-entry.php">Edit</a>
-                               <a class="dropdown-item text-1 modal-with-form" href="#deleteModal">Delete</a>
+                            <div class="col-md-6  col-lg-6 text-right pr-5">
+                                <!-- <a routerLink="/accounts/expense/list" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
                             </div>
-                         </div></td>
-                   </tr>
-                </tbody>
-             </table>
-                   </div>
-                   <!-- Maintenance Expenses -->
-                   <div class="tab-pane fade" id="maintenanceExpenses" role="tabpanel" aria-labelledby="maintenanceExpenses-tab">
-                   <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                         <thead>
-                            <tr>
-                               <th>Date</th>
-                               <th>Expense#</th>
-                               <th>Expense Type</th>
-                               <th>Vendor</th>
-                               <th>Recurring</th>
-                               <th>Amount</th>
-                               <th>Action</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 3, 2020</td>
-                               <td routerLink="/accounts/expense/detail">34345</td>
-                               <td routerLink="/accounts/expense/detail">Repair and Maintenance</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 12, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3454545</td>
-                               <td routerLink="/accounts/expense/detail">Repair and Maintenance</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 1, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3423445</td>
-                               <td routerLink="/accounts/expense/detail">Repair and Maintenance</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">May 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">45345</td>
-                               <td routerLink="/accounts/expense/detail">Repair and Maintenance</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Apr 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">332342445</td>
-                              <td routerLink="/accounts/expense/detail">Repair and Maintenance</td>
-                               <td routerLink="/accounts/expense/detail">XYZ Inc.</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1500.34</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
-                   <!-- Insurance Expenses -->
-                   <div class="tab-pane fade" id="insuranceExpenses" role="tabpanel" aria-labelledby="insuranceExpenses-tab">
-                   <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                         <thead>
-                            <tr>
-                               <th>Date</th>
-                               <th>Expense#</th>
-                               <th>Expense Type</th>
-                               <th>Vendor</th>
-                               <th>Recurring</th>
-                               <th>Amount</th>
-                               <th>Action</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 3, 2020</td>
-                               <td routerLink="/accounts/expense/detail">34345</td>
-                               <td routerLink="/accounts/expense/detail">Insurance Vehicle</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Yearly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 12, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3454545</td>
-                               <td routerLink="/accounts/expense/detail">Insurance Vehicle</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Yearly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 1, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3423445</td>
-                               <td routerLink="/accounts/expense/detail">Insurance Vehicle</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Yearly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">May 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">45345</td>
-                               <td routerLink="/accounts/expense/detail">Insurance Vehicle</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Yearly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Apr 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">332342445</td>
-                             <td routerLink="/accounts/expense/detail">Insurance Asset</td>
-                               <td routerLink="/accounts/expense/detail">XYZ Inc.</td>
-                               <td routerLink="/accounts/expense/detail"> Yearly</td>
-                               <td routerLink="/accounts/expense/detail">$1500.34</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
-                   <!-- Other Expenses-->
-                   <div class="tab-pane fade" id="otherExpenses" role="tabpanel" aria-labelledby="otherExpenses-tab">
-                      <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                         <thead>
-                            <tr>
-                               <th>Date</th>
-                               <th>Expense#</th>
-                               <th>Expense Type</th>
-                               <th>Vendor</th>
-                               <th>Recurring</th>
-                               <th>Amount</th>
-                               <th>Action</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 3, 2020</td>
-                               <td routerLink="/accounts/expense/detail">34345</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail">Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 12, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3454545</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Jun 1, 2020</td>
-                               <td routerLink="/accounts/expense/detail">3423445</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">May 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">45345</td>
-                               <td routerLink="/accounts/expense/detail">Annual Inspection Fees</td>
-                               <td routerLink="/accounts/expense/detail">Manpreet</td>
-                               <td routerLink="/accounts/expense/detail"> Biweekly</td>
-                               <td routerLink="/accounts/expense/detail">$1345.5656</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                            <tr>
-                               <td routerLink="/accounts/expense/detail">Apr 5, 2020</td>
-                               <td routerLink="/accounts/expense/detail">332342445</td>
-                               <td routerLink="/accounts/expense/detail">Factoring Charges</td>
-                               <td routerLink="/accounts/expense/detail">XYZ Inc.</td>
-                               <td routerLink="/accounts/expense/detail"> -</td>
-                               <td routerLink="/accounts/expense/detail">$1500.34</td>
-                               <td>
-                                  <div class="btn-group flex-wrap">
-                                     <button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                     <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item text-1" href="#">Edit</a>
-                                        <a class="dropdown-item text-1" href="#">Delete</a>
-                                     </div>
-                                  </div>
-                               </td>
-                            </tr>
-                         </tbody>
-                      </table>
-                   </div>
+                        </div>
+                    </form>
                 </div>
-             </div>
-          </section>
-       </div>
+                <div id="other-expense-header">
+                    <form class="form-horizontal" method="get">
+                        <div class="row px-4" style="padding-top:10px;">
+                            <div class="col-md-2 col-lg-2">
+                                <div class="input-group input-group-md mb-3">
+                                    <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3">
+                                <div class="input-daterange input-group" data-plugin-datepicker="">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </span>
+                                    <input [(ngModel)]="filter.startDate" name="startDate"
+                                        type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                                        ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit"
+                                        [maxDate]="futureDatesLimit">
+                                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                        to
+                                    </span>
+                                    <input [(ngModel)]="filter.endDate" name="endDate"
+                                        type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                                        ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit"
+                                        [maxDate]="futureDatesLimit">
+                                </div>
+                            </div>
+                            <div class="col-md-2  col-lg-2">
+                                <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.typeId">
+                                    <ng-option *ngFor="let data of categories | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                                </ng-select>
+                            </div>
+                            <div class="col-md-2 col-lg-2">
+                                <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                                <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
+                            </div>
+                            <div class="col-md-3 col-lg-3 text-right pr-5">
+                                <a routerLink="/accounts/expense/add" class="btn btn-success btn-sm ml-2"
+                                    style="color:white;"><i class="fas fa-plus"></i> Add Expense </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                                <div class="tab-pane show active" id="allExpenses" role="tabpanel"
+                                    aria-labelledby="allExpenses-tab">
+                                    <table
+                                        class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Expense Type</th>
+                                                <th>Vendor</th>
+                                                <th>Recurring</th>
+                                                <th>Amount</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="expenses.length === 0" class="text-center">
+                                                <td colspan="6">{{ dataMessage }}</td>
+                                            </tr>
+                                            <tr *ngFor="let data of expenses;">
+                                                <td routerLink="/accounts/expense/detail/{{ data.expenseID }}">
+                                                    {{ data.txnDate | date:'yyyy/MM/dd' }}
+                                                </td>
+                                                <td routerLink="/accounts/expense/detail">{{ categories[data.categoryID] }}</td>
+                                                <td routerLink="/accounts/expense/detail">{{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
+                                                <td routerLink="/accounts/expense/detail">
+                                                    <span *ngIf="data.recurring" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
+                                                </td>
+                                                <td routerLink="/accounts/expense/detail">{{ data.finalTotal }} {{ data.currency }}</td>
+                                                <td>
+                                                    <div class="btn-group flex-wrap">
+                                                        <button type="button" class="mb-1 mt-1 mr-1 btn"
+                                                            data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <a class="dropdown-item text-1" routerLink="/accounts/expense/edit/{{ data.expenseID }}">Edit</a>
+                                                            <a class="dropdown-item text-1" (click)="deleteExpense(data.expenseID)">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
     </div>
- </section>
-</div>
 </section>

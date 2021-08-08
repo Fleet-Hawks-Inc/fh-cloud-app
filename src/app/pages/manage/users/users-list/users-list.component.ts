@@ -134,7 +134,7 @@ export class UsersListComponent implements OnInit {
  async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-      .getData(`contacts/delete/employee/${contactID}`)
+      .deleteData(`contacts/delete/employee/${contactID}`)
       .subscribe(async(result: any) => {
         this.userDraw = 0;
         this.lastEvaluatedKey = '';

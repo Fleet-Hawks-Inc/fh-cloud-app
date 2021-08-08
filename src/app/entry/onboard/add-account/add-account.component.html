@@ -6,8 +6,8 @@
         <div class="col">
           <section class="card" style="align-items: center;">
             <div class="card-body pr-5 pl-5 onboardwidth">
-              <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm" [mustMatch]="['password', 'confirmPassword']"
-                 #cForm="ngForm" novalidate="novalidate">
+              <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm"
+                [mustMatch]="['password', 'confirmPassword']" #cForm="ngForm" novalidate="novalidate">
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
@@ -24,8 +24,8 @@
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
-                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
+                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName" name="firstName"
+                          placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
                         <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                           <div *ngIf="fName.errors.required">
                             First name is required.
@@ -54,97 +54,107 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName" name="userName" minlength="6" 
-                          placeholder="eg. john.smith" #uName1="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
+                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName"
+                          name="userName" minlength="6" placeholder="eg. john.smith" #uName1="ngModel" required
+                          pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
                         <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
                           <div *ngIf="uName1.errors.required">
                             Username is required.
                           </div>
                           <div *ngIf="uName1.errors.pattern">
-                           Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
+                            Username should be at-least 6 characters long and can be a combination of numbers, letters
+                            and dot(.).
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span 
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <div class="input-group">
-                              <input id="pd" [(ngModel)]="password" name="password" #pwd="ngModel" required
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                                [type]="fieldTextType ? 'text' : 'password'" (input) ="validatePassword($event.target.value)" placeholder="Password" class="form-control" />
-                                <div class="input-group-append">
-                                  <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{
+                        <div class="input-group">
+                          <input id="pd" [(ngModel)]="password" name="password" #pwd="ngModel" required
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                            [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
+                            placeholder="Password" class="form-control" />
+                          <div class="input-group-append">
+                            <span class="input-group-text eye">
+                              <i class="fa" [ngClass]="{
                                       'fa-eye-slash': !fieldTextType,
                                       'fa-eye': fieldTextType
-                                    }"
-                                    (click)="toggleFieldTextType()"></i>
-                                  </span>
-                               </div>
+                                    }" (click)="toggleFieldTextType()"></i>
+                            </span>
+                          </div>
 
-                            </div>
-                            <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
-                              <div *ngIf="pwd.errors.required">
-                                Password is required.
+                        </div>
+                        <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                          <div *ngIf="pwd.errors.required">
+                            Password is required.
+                          </div>
+                          <div *ngIf="pwd.errors.pattern">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2  mb-1"> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                    </i></span> 8 characters minimum</p>
+                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                    </i></span> atleast 1 number</p>
+
                               </div>
-                              <div *ngIf="pwd.errors.pattern">
-                                <div class="row">
-                                  <div class="col-lg-12">
-                                    <p class="text-dark pt-2  mb-1"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
-                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number</p>
-                                
-                                  </div>
-                                  <div class="col-lg-12">
-                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                        <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 uppercase</p>
-                                      
-                                    <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
-                                        [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                          [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
-                                      
-                                  </div>
-                                  <div class="col-lg-12">
-                                    <p class="text-dark pt-2 mb-1 "><span class="pr-1"
-                                        [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                                          [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
-                                    
-                                  </div>
-                                </div>
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                    </i></span> atleast 1 uppercase</p>
+
+                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                      [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                    </i></span> atleast 1 lowercase</p>
+
+                              </div>
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2 mb-1 "><span class="pr-1"
+                                    [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                      [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                  atleast 1 special character(!@#$%^&*.-)</p>
+
                               </div>
                             </div>
-                         
+                          </div>
+                        </div>
+
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <div class="input-group">
-                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd1="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
-                                />
-                                <div class="input-group-append">
-                                  <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{
+                        <div class="input-group">
+                          <input id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword" #cpwd1="ngModel" required
+                            [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                            class="form-control" />
+                          <div class="input-group-append">
+                            <span class="input-group-text eye">
+                              <i class="fa" [ngClass]="{
                                       'fa-eye-slash': !cpwdfieldTextType,
                                       'fa-eye': cpwdfieldTextType
-                                    }"
-                                    (click)="togglecpwdfieldTextType()"></i>
-                                  </span>
-                               </div>
-                            </div>
-                          <div *ngIf="cpwd1.invalid && (cpwd1.dirty || cpwd1.touched)" class="text-danger">
-                            <div *ngIf="cpwd1.errors.required">
-                              Confirm password is required.
-                            </div>
-                            <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
+                                    }" (click)="togglecpwdfieldTextType()"></i>
+                            </span>
                           </div>
+                        </div>
+                        <div *ngIf="cpwd1.invalid && (cpwd1.dirty || cpwd1.touched)" class="text-danger">
+                          <div *ngIf="cpwd1.errors.required">
+                            Confirm password is required.
+                          </div>
+                          <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
+                        </div>
                       </div>
                     </div>
-                    
-                    
-                  
+
+
+
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -154,14 +164,14 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
                           placeholder="eg. 2234567891" #ph="ngModel" required pattern="^[0-9]{1,10}$">
-                          <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
-                            <div *ngIf="ph.errors.required">
+                        <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                          <div *ngIf="ph.errors.required">
                             Phone number is required.
-                            </div>
-                            <div *ngIf="ph.errors.pattern">
-                              Enter valid phone number eg. 2234567891
-                            </div>
                           </div>
+                          <div *ngIf="ph.errors.pattern">
+                            Enter valid phone number eg. 2234567891
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class=" row">
@@ -169,24 +179,25 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="email" name="email"
-                          placeholder="eg. johnsmith@gmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-                          <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
-                            <div *ngIf="em.errors.required">
-                              Email is required.
-                            </div>
-                            <div *ngIf="em.errors.pattern">
-                              Enter valid email eg. johnsmith@test.com.
-                            </div>
+                        <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="email"
+                          name="email" placeholder="eg. johnsmith@gmail.com" #em="ngModel" required
+                          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                        <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
+                          <div *ngIf="em.errors.required">
+                            Email is required.
                           </div>
+                          <div *ngIf="em.errors.pattern">
+                            Enter valid email eg. johnsmith@test.com.
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select  class="form-control populate" [(ngModel)]="findingWay" placeholder="Select way how did u find us?"
-                          name="findingWay">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us? </label>
+                        <ng-select class="form-control populate" [(ngModel)]="findingWay"
+                          placeholder="Select way how did u find us?" name="findingWay">
                           <ng-option value="Google">Google</ng-option>
                           <ng-option value="Bing">Bing</ng-option>
 
@@ -213,22 +224,23 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Registered Company Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName"
-                          placeholder="eg. Westjet" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
-                          <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
-                            <div *ngIf="cName.errors.required">
-                              Company name is required.
-                            </div>
-                            <div *ngIf="cName.errors.pattern">
-                              Company name can only contains alphanumeric characters with length between 4-120.
-                            </div>
+                          placeholder="eg. Westjet" #cName="ngModel" required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                        <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
+                          <div *ngIf="cName.errors.required">
+                            Company name is required.
                           </div>
+                          <div *ngIf="cName.errors.pattern">
+                            Company name can only contains alphanumeric characters with length between 4-120.
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Number of Fleets<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets" #tFleet="ngModel" required min="1">
+                        <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets"
+                          #tFleet="ngModel" required min="1">
                         <div *ngIf="tFleet.invalid && (tFleet.dirty || tFleet.touched)" class="text-danger">
                           <div *ngIf="tFleet.errors.required">
                             Number of fleet is required.
@@ -245,11 +257,13 @@
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Asset(s)</label>
-                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.trailers" name="trailers">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.trailers"
+                              name="trailers">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Reefer(s)</label>
-                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.reefers" name="reefers">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.reefers"
+                              name="reefers">
                           </div>
                         </div>
                       </div>
@@ -259,11 +273,13 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Dry Van(s)</label>
-                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.dryVans" name="dryVans">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.dryVans"
+                              name="dryVans">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Flatbed(s)</label>
-                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.flatbed" name="flatbed">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.flatbed"
+                              name="flatbed">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">CurtainSide(s)</label>
@@ -275,7 +291,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo <span class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo </label>
                         <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo" type="file"
                           class="form-control p-0">
                       </div>
@@ -288,10 +304,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name &nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Doing Business As"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
+                          </label>
                         <input type="text" class="form-control" placeholder="eg. Bookstore" [(ngModel)]="DBAName"
-                          name="DBAName" #dba="ngModel" >
-                          <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
+                          name="DBAName" #dba="ngModel">
+                        <!-- <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
                             <div *ngIf="dba.errors.pattern">
                               DBA name can only contains alphanumeric characters with length between 4-120.
                             </div>
@@ -303,8 +319,9 @@
                             title="Employer Identification Number (EIN) is a unique 9 digit identification number that is assigned to a business
                                         entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
                                         for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN"  #ein="ngModel">
+                          </label>
+                        <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN"
+                          name="EIN" #ein="ngModel">
 
                         <!-- <div *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
                           <div *ngIf="ein.errors.pattern">
@@ -334,37 +351,37 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">MC#
-                          <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span> &nbsp;<i
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span> &nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="MC number (Motor Carrier number) is 6 digit number, an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>
                         </label>
-                        <input type="number"  min="0" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC" [required]="bizCountry==='US'"
-                        #mc="ngModel" pattern="^[0-9]{6}$" name="MC" >
-                          <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
-                            <div *ngIf="mc.errors.required">
-                              MC number is required.
-                            </div>
-                            <div *ngIf="mc.errors.pattern">
-                              MC number must contain 6 numbers.
-                            </div>
+                        <input type="number" min="0" class="form-control" placeholder="Enter 6 digit MC number"
+                          [(ngModel)]="MC" [required]="bizCountry==='US'" #mc="ngModel" pattern="^[0-9]{6}$" name="MC">
+                        <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
+                          <div *ngIf="mc.errors.required">
+                            MC number is required.
                           </div>
+                          <div *ngIf="mc.errors.pattern">
+                            MC number must contain 6 numbers.
+                          </div>
+                        </div>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT# <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i class="fas fa-exclamation-circle"
                             data-toggle="tooltip" data-placement="top"
                             title="A Department of Transportation (DOT) number is a 8 digit number the Federal Motor Carrier Safety Administration, or FMCSA, assigns to registered commercial vehicles. All carrier vehicles that weigh more than a certain amount, carry specific amounts of paying passengers or operate between state lines require DOT numbers."></i></label>
-                        <input type="number" min="0" class="form-control" placeholder="Enter 8 digit  DOT number" [required]="bizCountry==='US'"
-                        [(ngModel)]="DOT" name="DOT" #dot="ngModel" pattern="^[0-9]{8}$">
-                          <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
-                            <div *ngIf="dot.errors.required">
-                              DOT number is required.
-                            </div>
-                            <div *ngIf="dot.errors.pattern">
-                              DOT number must contain 8 numbers.
-                            </div>
+                        <input type="number" min="0" class="form-control" placeholder="Enter 8 digit  DOT number"
+                          [required]="bizCountry==='US'" [(ngModel)]="DOT" name="DOT" #dot="ngModel"
+                          pattern="^[0-9]{8}$">
+                        <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
+                          <div *ngIf="dot.errors.required">
+                            DOT number is required.
                           </div>
+                          <div *ngIf="dot.errors.pattern">
+                            DOT number must contain 8 numbers.
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -373,9 +390,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">CCC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" >
-                          <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
+                          </label>
+                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel"
+                          placeholder="eg. 1234">
+                        <!-- <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
                             <div *ngIf="ccc.errors.pattern">
                               CCC must be of length 4 and contains  capital letters or numbers.
                             </div>
@@ -385,10 +403,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 2-4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control"  [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
-                        #scac="ngModel"  >
-                          <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
+                         </label>
+                        <input type="text" class="form-control" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JKI2"
+                          #scac="ngModel">
+                        <!-- <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
                               SCAC must be of length 4 and contains  capital letters or numbers.
                             </div>
@@ -399,14 +417,14 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Liability Insurance#&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance" placeholder="Enter liability insurance number"
-                          name="liabilityInsurance">
+                          </label>
+                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance"
+                          placeholder="Enter liability insurance number" name="liabilityInsurance">
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance" placeholder="Enter cargo insurance number">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; </label>
+                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance"
+                          placeholder="Enter cargo insurance number">
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -443,12 +461,10 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <label
-                      class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
                   </div>
                   <div class="col-lg-12">
-                    <label
-                      class="control-label text-3 pt-2">Yard address is mandatory</label>
+                    <label class="control-label text-3 pt-2">Yard address is mandatory</label>
                   </div>
                   <div class="col-lg-12">
                     <div *ngFor="let item of addressDetails; let i = index;" class="address-item">
@@ -460,7 +476,7 @@
                         <div class="col-lg-5 pt-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Address
                             Type<span *ngIf="item.addressType==='yard'"
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
                             placeholder="Select address type">
                             <ng-option value="mailing">Mailing</ng-option>
@@ -472,11 +488,12 @@
                             typing
                             your
                             location <span *ngIf="!item.manual && item.addressType==='yard'"
-                            class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle"
+                              data-toggle="tooltip" data-placement="top"
                               title="we'll pull address automatically from Map"></i></label>
                           <input type="text" class="form-control" placeholder="Type address"
-                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual" [required]="!item.manual && item.addressType==='yard'"
-                            (keyup)="searchTerm.next($event);">
+                            [(ngModel)]="item.userLocation" name="userLocation{{i}}" [disabled]="item.manual"
+                            [required]="!item.manual && item.addressType==='yard'" (keyup)="searchTerm.next($event);">
                           <div class="checkbox-custom pt-2">
                             <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
                               type="checkbox">
@@ -500,12 +517,12 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                 Country<span *ngIf="item.manual && item.addressType==='yard'"
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}" [required]="item.manual && item.addressType==='yard'"
-                                (change)="getStates($event, i)" class="form-control populate"
-                                placeholder="Select country">
-                                  <ng-option value="CA">Canada</ng-option>
-                                  <ng-option value="US">United States</ng-option>
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
+                                [required]="item.manual && item.addressType==='yard'" (change)="getStates($event, i)"
+                                class="form-control populate" placeholder="Select country">
+                                <ng-option value="CA">Canada</ng-option>
+                                <ng-option value="US">United States</ng-option>
                               </ng-select>
                             </div>
                           </div>
@@ -513,8 +530,9 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                 Province/State<span *ngIf="item.manual && item.addressType==='yard'"
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}" [required]="item.manual && item.addressType==='yard'"
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
+                                name="stateCode{{i}}" [required]="item.manual && item.addressType==='yard'"
                                 placeholder="Select province/state">
                                 <ng-option class="text-capitalize" *ngFor="let state of item.states"
                                   value="{{state.stateCode}}">{{state.stateName}}</ng-option>
@@ -527,11 +545,12 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                 City<span *ngIf="item.manual && item.addressType==='yard'"
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}" [required]="item.manual && item.addressType==='yard'"
-                                placeholder="Select city">
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="item.cityName" name="cityName{{i}}"
+                                [required]="item.manual && item.addressType==='yard'" placeholder="Select city">
 
-                                <ng-option class="text-capitalize" *ngFor="let city of item.cities" value="{{city.cityName}}">
+                                <ng-option class="text-capitalize" *ngFor="let city of item.cities"
+                                  value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
                               </ng-select>
@@ -544,12 +563,13 @@
                           <div class="row">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
-                              <label
-                                class="control-label font-weight-bold text-lg-right pt-2">Address<span *ngIf="item.manual && item.addressType==='yard'"
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Address<span
+                                  *ngIf="item.manual && item.addressType==='yard'"
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
-                                placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel" [required]="item.manual && item.addressType==='yard'" >
-                                <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
+                                placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel"
+                                [required]="item.manual && item.addressType==='yard'">
+                              <!-- <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
                                     Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
                                   </div>
@@ -570,11 +590,13 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
 
-                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code<span *ngIf="item.manual && item.addressType==='yard'"
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control" [required]="item.manual && item.addressType==='yard'"
-                                placeholder="eg. 7V2 3R4"  #zip="ngModel">
-                                <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code<span
+                                  *ngIf="item.manual && item.addressType==='yard'"
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
+                                [required]="item.manual && item.addressType==='yard'" placeholder="eg. 7V2 3R4"
+                                #zip="ngModel">
+                              <!-- <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
 
                                   <div *ngIf="zip.errors.pattern">
                                     Zip code can contain capital letters or numbers and no special characters.
@@ -597,7 +619,8 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12 text-right">
-                    <a href="javascript:;" (click)="addAddress()" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Add Another
+                    <a href="javascript:;" (click)="addAddress()" class="btn btn-success"><i
+                        class="fa fa-plus fa-fw"></i> Add Another
                       Address</a>
                   </div>
                 </div>
@@ -612,10 +635,11 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
-                          placeholder="eg. Bank of Nova Scotia">
-                          <!-- <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
+                         </label>
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName"
+                          [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}" #bName="ngModel"
+                          pattern="^[a-zA-Z0-9\s]{2,30}$" placeholder="eg. Bank of Nova Scotia">
+                        <!-- <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
                               Branch name must be between 2 to 30 characters and must not contain special characters.
                             </div>
@@ -625,10 +649,11 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
-                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" >
-                          <!-- <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
+                          </label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber"
+                          [ngModelOptions]="{standalone: true}" placeholder="eg. 12123456701"
+                          [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel">
+                        <!-- <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
                               Account number must be between 7-12 numbers.
                             </div>
@@ -643,10 +668,11 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
-                        #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
-                          <!-- <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
+                         </label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber"
+                          [ngModelOptions]="{standalone: true}" [attr.name]="'banks['+b+'].routingNumber'"
+                          #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
+                        <!-- <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
                               Routing number must be of 9 digits.
                             </div>
@@ -661,11 +687,11 @@
                             title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry.
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
-                         placeholder="eg. 12345789"
-                          >
-                          <!-- <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
+                          </label>
+                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"
+                          [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
+                          placeholder="eg. 12345789">
+                        <!-- <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
                             <div *ngIf="trans.errors.pattern">
                               Transit number must contain 9 numbers.
                             </div>
@@ -678,24 +704,37 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
-                          <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
-                        #ins="ngModel" placeholder="eg. 219"
-                        [attr.name]="'banks['+b+'].institutionNumber'">
-                          <!-- <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
+                          </label>
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber"
+                          [ngModelOptions]="{standalone: true}" #ins="ngModel" placeholder="eg. 219"
+                          [attr.name]="'banks['+b+'].institutionNumber'">
+                        <!-- <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
                             <div *ngIf="ins.errors.pattern">
                               Institution number must be of 3 digits.
                             </div>
                           </div> -->
+                        <div class="mt-2 d-flex flex-row-reverse">
+                          <ngx-recaptcha2 #captchaElem="ngModel" [siteKey]="siteKey" [size]="size" [hl]="lang"
+                            [theme]="theme" [(ngModel)]="reCaptcha" name="reCaptcha" required>
+                          </ngx-recaptcha2>
+                        </div>
+                        <div *ngIf="captchaElem.invalid && (captchaElem.dirty || captchaElem.touched)"
+                            class="text-danger d-flex flex-row-reverse">
+                            <div *ngIf="captchaElem.errors.required">
+                              ReCaptcha is required.
+                            </div>
+                          </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row mt-2 ">
+
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button>
-                         <!---- <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button> -->
+                    <button type="button" class="btn btn-success" (click)="onSubmit()"
+                      [disabled]="!cForm.form.valid">Save</button>
+                    <!---- <button type="button" class="btn btn-success" (click)="onSubmit()">Save</button> -->
 
                   </div>
                 </div>

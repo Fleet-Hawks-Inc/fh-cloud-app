@@ -244,7 +244,8 @@ export class AddVehicleNewComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
-
+  manufacturerDataSource:any=[];
+  modals:any=[]
   slides = [];
   documentSlides = [];
   localPhotos = [];
@@ -280,7 +281,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchGroups();
     this.fetchVehicles();
     this.listService.fetchVendors();
-    this.listService.fetchManufacturers();
+    this.fetchManufacturers();
     this.listService.fetchModels();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
@@ -327,6 +328,35 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
+  fetchManufacturers() {
+    this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
+      data.forEach(element => {
+        
+        this.manufacturerDataSource.push(Object.keys(element)[0].toUpperCase())
+        
+      });
+    
+    });
+  }
+  fetchModels(){
+    this.modals=[]
+    let manufacturer:any=this.manufacturerID.toLowerCase();
+    this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
+      data.forEach(element => {
+        let output=[]
+        if(element[manufacturer]){
+          element[manufacturer].forEach(element => {
+            output.push(element.toUpperCase());
+            
+          });
+        this.modals=output
+        }
+      });
+    
+    });
+
+  }
+
   getStates(event: any) {
     const countryCode: any = event;
     this.stateCode = '';
@@ -335,6 +365,7 @@ export class AddVehicleNewComponent implements OnInit {
 
 
   resetModel() {
+    this.fetchModels();
     this.modelID = null;
     $('#vehicleSelect').val('');
   }

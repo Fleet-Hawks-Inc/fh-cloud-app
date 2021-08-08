@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService, ListService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
-import { from, Subject, throwError } from "rxjs";
+import { BehaviorSubject, from, Subject, throwError } from "rxjs";
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import * as _ from 'lodash';
 import {
   NgbCalendar,
   NgbDateAdapter
@@ -23,6 +25,9 @@ import { PdfAutomationService } from "../../pdf-automation/pdf-automation.servic
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { DomSanitizer} from '@angular/platform-browser';
+import { CountryStateCity } from "src/app/shared/utilities/countryStateCities";
+import { element } from "protractor";
+import { Auth } from "aws-amplify";
 
 declare var $: any;
 declare var H: any;
@@ -33,13 +38,14 @@ declare var H: any;
 })
 export class AddOrdersComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  public isTrueDataSource = new BehaviorSubject<boolean>(false);
+  isTrueList = this.isTrueDataSource.asObservable();
   public getOrderID;
   aOrder1: NgForm;
   pageTitle = "Add Order";
   private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchResults: any='';
-  public searchResults1: any;
   public readonly apiKey = environment.mapConfig.apiKey;
   time: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
   seconds = false;
@@ -67,23 +73,22 @@ export class AddOrdersComponent implements OnInit {
   assetTypes = [];
   form;
   visibleIndex = 0;
-  customerSelected = {
-    additionalContact : [],
-    address:[],
-    officeAddr: false,
-    email: '',
-    phone: ''
-  };
+  customerSelected: any = [];
   orderMode: string = "FTL";
+  radioSelected: any;
+  countries;
+  states;
+  cities;
 
   getOrderNumber: string;
   orderData = {
     stateTaxID: "",
+    invoiceGenerate: false,
     customerID: null,
+    cusAddressID: '',
     orderNumber: "",
     createdDate: "",
     createdTime: "",
-    customerPO: "",
     reference: "",
     phone: "",
     email: "",
@@ -117,6 +122,7 @@ export class AddOrdersComponent implements OnInit {
     additionalDetails: {
       trailerType: '',
       dropTrailer: false,
+      sealNo: '',
       uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
@@ -134,7 +140,7 @@ export class AddOrdersComponent implements OnInit {
       freightFee: {
         type: null,
         amount: 0,
-        currency: null,
+        currency: 'CAD',
       },
       fuelSurcharge: {
         type: null,
@@ -190,64 +196,101 @@ export class AddOrdersComponent implements OnInit {
     }
   ];
 
+  cusConfirmation = [];
+  
+  photoSizeError = '';
+
   showShipperUpdate: boolean = false;
   showReceiverUpdate: boolean = false;
   shippersReceivers = [
     {
       shippers: {
         shipperID: null,
-        pickupLocation: "",
-        pickupDate: "",
-        pickupTime: "",
-        pickupInstruction: "",
-        contactPerson: "",
-        phone: "",
-        reference: "",
-        notes: "",
-        commodity: [
+        cusConfirmation : [],
+        pickupPoint: [
           {
-            name: "",
-            quantity: "",
-            quantityUnit: null,
-            weight: "",
-            weightUnit: null,
-            pu: ""
-          },
+            unit: false,
+            unitNumber: '',
+            address: {
+              countryName: '',
+              stateName: '',
+              cityName: null,
+              zipCode: '',
+              address: '',
+              
+              pickupLocation: '',
+              manual: false,
+              countryCode: null,
+              stateCode: null,
+              states: [],
+              cities: [],
+              geoCords: {},
+            },
+            pickupDate: "",
+            pickupTime: "",
+            pickupInstruction: "",
+            contactPerson: "",
+            phone: "",
+          
+            commodity: [
+              {
+                name: "",
+                quantity: "",
+                quantityUnit: null,
+                weight: "",
+                weightUnit: null,
+                pu: ""
+              },
+            ],
+          }
         ],
-        minTemprature: "",
-        minTempratureUnit: "",
-        maxTemprature: "",
-        maxTempratureUnit: "",
         driverLoad: false,
+        liveLoad: true,
         save: true,
         update: false
+        
       },
       receivers: {
         receiverID: null,
-        dropOffLocation: "",
-        dropOffDate: "",
-        dropOffTime: "",
-        dropOffInstruction: "",
-        contactPerson: "",
-        phone: "",
-        reference: "",
-        notes: "",
-        commodity: [
+        dropPoint: [
           {
-            name: "",
-            quantity: "",
-            quantityUnit: null,
-            weight: "",
-            weightUnit: null,
-            del:""
-            // pu: ""
-          },
+            
+            unit: false,
+            unitNumber: '',
+            address: {
+              zipCode: '',
+              address: '',
+              dropOffLocation: '',
+              manual: false,
+              countryName: '',
+              countryCode: null,
+              stateName: '',
+              stateCode: null,
+              cityName: null,
+              states: [],
+              cities: [],
+              geoCords: {},
+            },
+            dropOffDate: '',
+            dropOffTime: '',
+            dropOffInstruction: '',
+            contactPerson: '',
+            phone: '',
+            commodity: [
+              {
+                name: '',
+                quantity: '',
+                quantityUnit: null,
+                weight: '',
+                weightUnit: null,
+                del: ''
+              },
+            ],
+          }
         ],
-        minTemprature: "",
-        minTempratureUnit: "",
-        maxTemprature: "",
-        maxTempratureUnit: "",
+        
         driverUnload: false,
+        liveUnLoad: true,
         save: true,
         update: false
       },
@@ -275,6 +318,9 @@ export class AddOrdersComponent implements OnInit {
       },
     ],
   };
+
+  shipAddresses = [];
+  receiverAddresses = [];
 
   customers: any = [];
   shippers: any = [];
@@ -305,7 +351,11 @@ export class AddOrdersComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  ifStatus = '';
 
+  cusAdditionalContact: any = [];
+  isInvoiceGenerated: boolean;
+  
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -327,83 +377,92 @@ export class AddOrdersComponent implements OnInit {
     // };
     // config.outsideDays = "hidden";
 
-    this.pdfService.dataSubscribe$
-      .pipe(
-        tap((v) => {
+    // this.pdfService.dataSubscribe$
+    //   .pipe(
+    //     tap((v) => {
 
-          if (v.toString() !== "" && v !== "undefined" && v !== undefined) {
-            const d = JSON.parse(v);
+    //       if (v.toString() !== "" && v !== "undefined" && v !== undefined) {
+    //         const d = JSON.parse(v);
 
-            this.orderData.orderNumber = d.OrderNumber;
-            this.orderData.customerPO = d.CustomerPO;
-            this.orderData.reference = d.reference;
-            this.orderData.csa = d.csa;
-            this.orderData.ctpat = d.ctpat;
-            this.orderData.additionalcontactname = d.additionalcontactname;
-            this.orderData.email = d.email;
-            this.orderData.phone = d.phone;
+    //         this.orderData.orderNumber = d.OrderNumber;
+    //         this.orderData.customerPO = d.CustomerPO;
+    //         this.orderData.reference = d.reference;
+    //         this.orderData.csa = d.csa;
+    //         this.orderData.ctpat = d.ctpat;
+    //         this.orderData.additionalcontactname = d.additionalcontactname;
+    //         this.orderData.email = d.email;
+    //         this.orderData.phone = d.phone;
 
-            this.shippersReceivers[0].shippers.shipperID = d.shippersshipperID;
-            this.shippersReceivers[0].shippers.pickupLocation =
-              d.shipperspickupLocation;
-            this.shippersReceivers[0].shippers.pickupDate =
-              d.shipperspickupDate;
-            this.shippersReceivers[0].shippers.pickupTime =
-              d.shipperspickupTime;
-            this.shippersReceivers[0].shippers.pickupInstruction =
-              d.shipperspickupInstruction;
-            this.shippersReceivers[0].shippers.contactPerson =
-              d.shipperscontactPerson;
-            this.shippersReceivers[0].shippers.phone = d.shippersshipperID;
-            this.shippersReceivers[0].shippers.reference = d.shippersphone;
-            this.shippersReceivers[0].shippers.notes = d.shippersnotes;
-            this.shippersReceivers[0].shippers.commodity[0].name =
-              d.shipperscommodityname;
-            this.shippersReceivers[0].shippers.commodity[0].quantity =
-              d.shipperscommodityquantity;
-            this.shippersReceivers[0].shippers.commodity[0].quantityUnit =
-              d.shipperscommodityquantityUnit;
-            this.shippersReceivers[0].shippers.commodity[0].weight =
-              d.shippersweight;
-            this.shippersReceivers[0].shippers.commodity[0].weightUnit =
-              d.shippersweightUnit;
+    //         this.shippersReceivers[0].shippers.shipperID = d.shippersshipperID;
+    //         this.shippersReceivers[0].shippers.pickupLocation =
+    //           d.shipperspickupLocation;
+    //         this.shippersReceivers[0].shippers.pickupDate =
+    //           d.shipperspickupDate;
+    //         this.shippersReceivers[0].shippers.pickupTime =
+    //           d.shipperspickupTime;
+    //         this.shippersReceivers[0].shippers.pickupInstruction =
+    //           d.shipperspickupInstruction;
+    //         this.shippersReceivers[0].shippers.contactPerson =
+    //           d.shipperscontactPerson;
+    //         this.shippersReceivers[0].shippers.phone = d.shippersshipperID;
+            
+    //         this.shippersReceivers[0].shippers.commodity[0].name =
+    //           d.shipperscommodityname;
+    //         this.shippersReceivers[0].shippers.commodity[0].quantity =
+    //           d.shipperscommodityquantity;
+    //         this.shippersReceivers[0].shippers.commodity[0].quantityUnit =
+    //           d.shipperscommodityquantityUnit;
+    //         this.shippersReceivers[0].shippers.commodity[0].weight =
+    //           d.shippersweight;
+    //         this.shippersReceivers[0].shippers.commodity[0].weightUnit =
+    //           d.shippersweightUnit;
 
-            this.shippersReceivers[0].receivers.receiverID =
-              d.receiversreceiverID;
-            this.shippersReceivers[0].receivers.dropOffLocation =
-              d.receiversdropOffLocation;
-            this.shippersReceivers[0].receivers.dropOffDate =
-              d.receiversdropOffDate;
-            this.shippersReceivers[0].receivers.dropOffTime =
-              d.receiversdropOffTime;
-            this.shippersReceivers[0].receivers.dropOffInstruction =
-              d.receiversdropOffInstruction;
+    //         this.shippersReceivers[0].receivers.receiverID =
+    //           d.receiversreceiverID;
+    //         this.shippersReceivers[0].receivers.dropOffLocation =
+    //           d.receiversdropOffLocation;
+    //         this.shippersReceivers[0].receivers.dropOffDate =
+    //           d.receiversdropOffDate;
+    //         this.shippersReceivers[0].receivers.dropOffTime =
+    //           d.receiversdropOffTime;
+    //         this.shippersReceivers[0].receivers.dropOffInstruction =
+    //           d.receiversdropOffInstruction;
 
-            this.orderData.charges.freightFee.amount = d.freightFeeamount;
-            this.orderData.charges.freightFee.currency = d.freightFeecurrency;
-            this.orderData.charges.freightFee.type = d.freightFeetype;
+    //         this.orderData.charges.freightFee.amount = d.freightFeeamount;
+    //         this.orderData.charges.freightFee.currency = d.freightFeecurrency;
+    //         this.orderData.charges.freightFee.type = d.freightFeetype;
 
-          }
-        })
-      )
-      .subscribe((v: any) => {
-      });
+    //       }
+    //     })
+      // )
+      // .subscribe((v: any) => {
+      // });
+  }
+
+  async getCarrierState() {
+    let carrierID = (await Auth.currentSession()).getIdToken().payload.carrierID;
+    this.apiService.getData(`carriers/${carrierID}`).subscribe(res => {})
+    
   }
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-  ngOnInit() {
+  async ngOnInit() {
     
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
-    this.searchLocation();
-    this.fetchShippersByIDs();
-    this.fetchReceiversByIDs();
+    this.listService.fetchShippersByIDs();
+    this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
 
     this.disableButton();
 
+    $('.modal').on('hidden.bs.modal',(e) => {
+        localStorage.setItem('isOpen', 'false');
+      
+    })
+    
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
       this.fetchOrderByID(); 
@@ -416,13 +475,31 @@ export class AddOrdersComponent implements OnInit {
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
       this.packagingUnitsList = data;
     });
-
+    
     this.customers = this.listService.customersList;
     this.shippers = this.listService.shipperList;
+    
     this.receivers = this.listService.receiverList;
+    
+    this.listService.receiverObjectList.subscribe(res => {
+      this.receiversObjects = res;
+    });
+
+    this.listService.shipperObjectList.subscribe(res => {
+      this.shippersObjects = res;
+    });
+
+    this.fetchCountries();
+    
+    this.shippersReceivers.forEach(elem => {
+      elem.shippers.cusConfirmation.forEach((c, i) => {
+        elem.shippers.cusConfirmation.push(c);
+    });
+    })
+    
   }
 
-
+  
   async fetchStateTaxes() {
     
     let result = await this.apiService
@@ -475,39 +552,22 @@ export class AddOrdersComponent implements OnInit {
         }
   }
 
-  public searchLocation() {
-    let target;
-    this.searchTerm
-      .pipe(
-        map((e: any) => {
-          $(".map-search__results").hide();
-          $('div').removeClass('show-search__result');
-          $(e.target).closest("div").addClass("show-search__result");
-          target = e;
-          return e.target.value;
-        }),
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((term) => {
+  //  getSuggestions = _.debounce(async function (ev, value) {
+  //   if(value != '') {
+  //     $(".map-search__results").hide();
+  //     $('div').removeClass('show-search__result');
+  //     $(ev.target).closest("div").addClass("show-search__result");
+  //     let data = {
+  //       query: value,
+  //       currentCords : this.deviceLocation ? this.deviceLocation : ''
+  //     };
+  //     console.log('data', data);
+  //     this.searchResults = await this.HereMap.searchEntries(data)
+  //     console.log('searchResults', this.searchResults);
+  //   }
+    
+  // }, 800)
 
-          if(term!=undefined){
-          return this.HereMap.searchEntries(term);
-        }
-        else{
-          return ' '
-        }
-        }),
-        catchError((e) => {
-          return throwError(e);
-        })
-      )
-      .subscribe((res) => {
-
-        this.searchResults = res;
-        this.searchResults1 = res;
-
-      });
-  }
   resetSearch(){
     if(this.searchResults.length>0){
 
@@ -523,99 +583,137 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers.driverUnload = value;
   }
 
-  async saveShipper(i) {
+  manualAddress(value, i, w, arr) {
+    
+    if(arr === 'shipper') {
+      if(value === true) {
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = ''
+      } else {
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.address= '';
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = '';
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = ''
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = ''
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = ''
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = {};
+      }
+    } else {
+      if(value === true) {
+        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = ''
+      } else {
+        this.shippersReceivers[i].receivers.dropPoint[w].address.address= '';
+        this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = '';
+        this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = ''
+        this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = ''
+        this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = ''
+        this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = {};
+      }
+    }
+    
+  }
+
+  async saveShipper(i: number) {
+
     // this.isShipperSubmit = true; 
+   //check if all required fields are filled
+   
+    if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
+      if (
+        !this.shippersReceivers[i].shippers.shipperID || 
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.countryCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
+      ){
+        this.toastr.error("Please fill required fields.");
+        return false;
+      }
+    } else if(
+      !this.shippersReceivers[i].shippers.shipperID ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].address.pickupLocation ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].pu ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantity ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].quantityUnit ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weight ||
+      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].weightUnit
+    ){
+      this.toastr.error("Please fill required fields.");
+      return false;
+    }
     
     if(this.shippersReceivers[i].shippers.update == true) {
       this.shippersReceivers[i].shippers.update == false;
       this.shippersReceivers[i].shippers.save == true;
     }
+    
+    let data: any = {};
+    for (let index = 0; index < this.shippersReceivers[i].shippers.pickupPoint.length; index++) {
+      const element = this.shippersReceivers[i].shippers.pickupPoint[index];
+      if(element.pickupDate != '' && element.pickupTime) {
+        element['dateAndTime'] = element.pickupDate + " " + element.pickupTime;
+        delete element.pickupDate;
+        delete element.pickupTime;
+      }
+      if(element.address.manual === true){
+        data = {
+          address: element.address.address,
+          cityName: element.address.cityName,
+          stateName: element.address.stateName,
+          countryName: element.address.countryName,
+          zipCode: element.address.zipCode
+        }
+       
 
-    let location = this.shippersReceivers[i].shippers.pickupLocation;
-    let geoCodeResponse;
-    let result = await this.getCords(location);
-    geoCodeResponse = result;
-
-    //check if all required fields are filled
-    if (
-      !this.shippersReceivers[i].shippers.shipperID ||
-      !this.shippersReceivers[i].shippers.pickupLocation ||
-      !this.shippersReceivers[i].shippers.pickupDate ||
-      !this.shippersReceivers[i].shippers.pickupTime 
-      // !this.shippersReceivers[i].shippers.contactPerson ||
-      // !this.shippersReceivers[i].shippers.phone
-    ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
+        let result = await this.newGeoCode(data);
+        
+        if(result != undefined){
+          element.address.geoCords = result;
+        }
+      }
     }
-
-    let commoditiesFilled = true;
-    //check if selected commodities are filled
-    // for (
-    //   let j = 0;
-    //   j < this.shippersReceivers[i].shippers.commodity.length;
-    //   j++
-    // ) {
-    //   let currentCommodity: any = this.shippersReceivers[i].shippers.commodity[
-    //     j
-    //   ];
-
-    //   if (
-    //     !currentCommodity.name ||
-    //     !currentCommodity.quantity ||
-    //     !currentCommodity.quantityUnit ||
-    //     !currentCommodity.weight ||
-    //     !currentCommodity.weightUnit
-    //     // !currentCommodity.pu
-
-    //   ) {
-    //     commoditiesFilled = false;
-    //   }
-    // }
-
-    if (!commoditiesFilled) {
-      this.toastr.error("Please fill required fields.");
-      return false;
-    }
-
-    this.isShipperSubmit = false; 
-
+    
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
-      pickupLocation: this.shippersReceivers[i].shippers.pickupLocation,
-      dateAndTime:
-        this.shippersReceivers[i].shippers.pickupDate +
-        " " +
-        this.shippersReceivers[i].shippers.pickupTime,
-      pickupInstruction: this.shippersReceivers[i].shippers.pickupInstruction,
-      contactPerson: this.shippersReceivers[i].shippers.contactPerson,
-      phone: this.shippersReceivers[i].shippers.phone,
-      // BOL: this.shippersReceivers[i].shippers.BOL,
-      reference: this.shippersReceivers[i].shippers.reference,
-      notes: this.shippersReceivers[i].shippers.notes,
-      commodity: this.shippersReceivers[i].shippers.commodity,
-      minTemprature: this.shippersReceivers[i].shippers.notes,
-      minTempratureUnit: this.shippersReceivers[i].shippers.minTempratureUnit,
-      maxTemprature: this.shippersReceivers[i].shippers.maxTemprature,
-      maxTempratureUnit: this.shippersReceivers[i].shippers.maxTempratureUnit,
+      pickupPoint: this.shippersReceivers[i].shippers.pickupPoint,
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
 
     };
-    currentShipper.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
-    // this.orderData.shipperInfo.push(currentShipper);
-    if (this.finalShippersReceivers[i] == undefined) {
-      this.finalShippersReceivers[i].shippers = [];
-    } else if (this.finalShippersReceivers[i].shippers == undefined) {
-      this.finalShippersReceivers[i].shippers = [];
-    }
-    this.finalShippersReceivers[i].shippers.push(currentShipper);
 
+    this.finalShippersReceivers[i].shippers.push(currentShipper);
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-    this.emptyShipper(i);
+    
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    this.toastr.success("Shipper Added.");
+    this.toastr.success("Shipper added successfully.");
+    await this.emptyShipper(i);
+  }
+
+  async newGeoCode(data: any) {
    
+    let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    
+    if(result.items != undefined && result.items.length > 0) {
+      return result.items[0].position;
+    }
+  }
+
+  async reverseGeoCode(cords: any) {
+    this.apiService.getData(`pcMiles/reverse/${cords}`).subscribe((result: any) => {
+      if(result.length > 0) {
+        return result[0].Coords;
+      }
+    });
   }
 
   async getCords(value){
@@ -630,107 +728,106 @@ export class AddOrdersComponent implements OnInit {
   }
   async saveReceiver(i) {
     // this.isReceiverSubmit = true;
+    if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
+      if (
+        !this.shippersReceivers[i].receivers.receiverID || 
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.countryCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime || 
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
+      ){
+        this.toastr.error("Please fill required fields.");
+        return false;
+      }
+    } else if(
+      !this.shippersReceivers[i].receivers.receiverID ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].address.dropOffLocation ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
+      !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].del ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantity ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].quantityUnit ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weight ||
+        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].weightUnit
+    ){
+      this.toastr.error("Please fill required fields.");
+      return false;
+    }
+
     if(this.shippersReceivers[i].receivers.update == true) {
       this.shippersReceivers[i].receivers.update == false;
       this.shippersReceivers[i].receivers.save == true;
     }
 
-    let location = this.shippersReceivers[i].receivers.dropOffLocation;
-    let geoCodeResponse;
-    let result = await this.getCords(location);
-    geoCodeResponse = result;
-    //check if all required fields are filled
-    if (
-      !this.shippersReceivers[i].receivers.receiverID ||
-      !this.shippersReceivers[i].receivers.dropOffLocation ||
-      !this.shippersReceivers[i].receivers.dropOffDate ||
-      !this.shippersReceivers[i].receivers.dropOffTime
-      // !this.shippersReceivers[i].receivers.contactPerson ||
-      // !this.shippersReceivers[i].receivers.phone
-    ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
+    let data: any = {};
+
+    for (let index = 0; index < this.shippersReceivers[i].receivers.dropPoint.length; index++) {
+      const element = this.shippersReceivers[i].receivers.dropPoint[index];
+      if(element.dropOffDate != '' && element.dropOffTime) {
+        element['dateAndTime'] = element.dropOffDate + " " + element.dropOffTime;
+        delete element.dropOffDate;
+        delete element.dropOffTime;
+      }
+
+      if(element.address.manual === true){
+        data = {
+          address: element.address.address,
+          cityName: element.address.cityName,
+          stateName: element.address.stateName,
+          countryName: element.address.countryName,
+          zipCode: element.address.zipCode
+        }
+       
+        let result = await this.newGeoCode(data);
+        
+        if(result != undefined){
+          element.address.geoCords = result;
+        }
+      }
     }
-
-    let commoditiesFilled = true;
-    //check if selected commodities are filled
-    // for (
-    //   let j = 0;
-    //   j < this.shippersReceivers[i].receivers.commodity.length;
-    //   j++
-    // ) {
-    //   let currentCommodity: any = this.shippersReceivers[i].receivers.commodity[
-    //     j
-    //   ];
-
-    //   if (
-    //     !currentCommodity.name ||
-    //     !currentCommodity.quantity ||
-    //     !currentCommodity.quantityUnit ||
-    //     !currentCommodity.weight ||
-    //     !currentCommodity.weightUnit
-    //     // !currentCommodity.del
-    //     // !currentCommodity.pu
-    //   ) {
-    //     commoditiesFilled = false;
-    //   }
-    // }
-
-    if (!commoditiesFilled) {
-      this.toastr.error("Please fill required fields.");
-      return false;
-    }
-
-    this.isReceiverSubmit = false;
-
+    
     let currentReceiver: any = {
       receiverID: this.shippersReceivers[i].receivers.receiverID,
-      dropOffLocation: this.shippersReceivers[i].receivers.dropOffLocation,
-      dateAndTime:
-        this.shippersReceivers[i].receivers.dropOffDate +
-        " " +
-        this.shippersReceivers[i].receivers.dropOffTime,
-      dropOffInstruction: this.shippersReceivers[i].receivers
-        .dropOffInstruction,
-      contactPerson: this.shippersReceivers[i].receivers.contactPerson,
-      phone: this.shippersReceivers[i].receivers.phone,
-      reference: this.shippersReceivers[i].receivers.reference,
-      notes: this.shippersReceivers[i].receivers.notes,
-      commodity: this.shippersReceivers[i].receivers.commodity,
-      minTemprature: this.shippersReceivers[i].receivers.notes,
-      minTempratureUnit: this.shippersReceivers[i].receivers.minTempratureUnit,
-      maxTemprature: this.shippersReceivers[i].receivers.maxTemprature,
-      maxTempratureUnit: this.shippersReceivers[i].receivers.maxTempratureUnit,
+      dropPoint: this.shippersReceivers[i].receivers.dropPoint,
       driverUnload: this.shippersReceivers[i].receivers.driverUnload,
-    };
-    currentReceiver.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
-    // this.orderData.receiverInfo.push(currentReceiver);
-    if (this.finalShippersReceivers[i] == undefined) {
-      this.finalShippersReceivers[i].receivers = [];
-    }
-    if (this.finalShippersReceivers[i].receivers == undefined) {
-      this.finalShippersReceivers[i].receivers = [];
-    }
-    this.finalShippersReceivers[i].receivers.push(currentReceiver);
 
+    };
+
+    this.finalShippersReceivers[i].receivers.push(currentReceiver);
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
+ 
     await this.shipperReceiverMerge();
-    this.emptyReceiver(i);
+    this.toastr.success("Receiver added successfully.");
     await this.getMiles(this.orderData.milesInfo.calculateBy);
-    this.toastr.success("Receiver Added.");
+    await this.emptyReceiver(i);
+    
+   
 }
 
   async shipperReceiverMerge() {
     this.mergedArray = [];
     this.finalShippersReceivers.forEach((item) => {
       item.shippers.forEach((elem) => {
-        this.mergedArray.push(elem);
+        elem.pickupPoint.forEach((point) => {
+          this.mergedArray.push(point);
+        });
       });
       item.receivers.forEach((elem) => {
-        this.mergedArray.push(elem);
+        elem.dropPoint.forEach((point) => {
+          this.mergedArray.push(point);
+        });
       });
     });
-    // this.mergedArray = this.finalShippersReceivers[0].shippers.concat(this.finalShippersReceivers[0].receivers);
     
     this.mergedArray.sort((a, b) => {
       return (
@@ -738,116 +835,126 @@ export class AddOrdersComponent implements OnInit {
       );
     });
     
+    
   }
-
-  emptyShipper(i) {
-    this.shippersReceivers[i].shippers["shipperID"] = "";
-    this.shippersReceivers[i].shippers["pickupLocation"] = "";
-    this.shippersReceivers[i].shippers["pickupDate"] = "";
-    this.shippersReceivers[i].shippers["pickupTime"] = "";
-    this.shippersReceivers[i].shippers["pickupInstruction"] = "";
-    this.shippersReceivers[i].shippers["contactPerson"] = "";
-    this.shippersReceivers[i].shippers["phone"] = "";
-    this.shippersReceivers[i].shippers["BOL"] = "";
-    this.shippersReceivers[i].shippers["reference"] = "";
-    this.shippersReceivers[i].shippers["notes"] = "";
-    this.shippersReceivers[i].shippers["commodity"] = [
-      {
-        name: "",
-        quantity: "",
-        quantityUnit: "",
-        weight: "",
-        weightUnit: "",
-        pu: ""
+  
+  async emptyReceiver(i) {
+    this.shippersReceivers[i].receivers.receiverID = null;
+    this.shippersReceivers[i].receivers.dropPoint = [{
+      unit: false,
+      unitNumber: '',
+      address: {
+        address: '',
+        manual: false,
+        dropOffLocation: '',
+        cityName: '',
+        stateCode: '',
+        stateName: '',
+        countryName: '',
+        countryCode: '',
+        cities: [],
+        states: [],
+        zipCode: '',
+        geoCords: {},
       },
-    ];
-    this.shippersReceivers[i].shippers["minTempratureUnit"] = "";
-    this.shippersReceivers[i].shippers["maxTemprature"] = "";
-    this.shippersReceivers[i].shippers["maxTempratureUnit"] = "";
-    this.shippersReceivers[i].shippers["driverLoad"] = false;
+      dropOffDate: "",
+      dropOffTime: "",
+      dropOffInstruction: "",
+      contactPerson: "",
+      phone: "",
+    
+      commodity: [
+        {
+          name: "",
+          quantity: "",
+          quantityUnit: null,
+          weight: "",
+          weightUnit: null,
+          del: ""
+        },
+      ],
+    }];
+    this.shippersReceivers[i].receivers.driverUnload = false,
+    this.shippersReceivers[i].receivers.save = true,
+    this.shippersReceivers[i].receivers.update = false
   }
 
-  emptyReceiver(i) {
-    this.shippersReceivers[i].receivers["receiverID"] = "";
-    this.shippersReceivers[i].receivers["dropOffLocation"] = "";
-    this.shippersReceivers[i].receivers["dropOffDate"] = "";
-    this.shippersReceivers[i].receivers["dropOffTime"] = "";
-    this.shippersReceivers[i].receivers["dropOffInstruction"] = "";
-    this.shippersReceivers[i].receivers["contactPerson"] = "";
-    this.shippersReceivers[i].receivers["phone"] = "";
-    this.shippersReceivers[i].receivers["reference"] = "";
-    this.shippersReceivers[i].receivers["notes"] = "";
 
-    this.shippersReceivers[i].receivers["commodity"] = [
-      {
-        name: "",
-        quantity: "",
-        quantityUnit: "",
-        weight: "",
-        weightUnit: "",
-        del:""
-        // pu: ""
+  async emptyShipper(i) {
+    this.shippersReceivers[i].shippers.shipperID = null;
+    this.cusConfirmation = [];
+    this.shippersReceivers[i].shippers.cusConfirmation = [];
+    this.shippersReceivers[i].shippers.pickupPoint = [{
+      unit: false,
+      unitNumber: '',
+      address: {
+        address: '',
+        manual: false,
+        pickupLocation: '',
+        cityName: '',
+        stateCode: '',
+        stateName: '',
+        countryName: '',
+        countryCode: '',
+        cities: [],
+        states: [],
+        zipCode: '',
+        geoCords: {},
       },
-    ];
-
-    this.shippersReceivers[i].receivers["minTempratureUnit"] = "";
-    this.shippersReceivers[i].receivers["maxTemprature"] = "";
-    this.shippersReceivers[i].receivers["maxTempratureUnit"] = "";
-    this.shippersReceivers[i].receivers["driverUnload"] = false;
+      pickupDate: "",
+      pickupTime: "",
+      pickupInstruction: "",
+      contactPerson: "",
+      phone: "",
+    
+      commodity: [
+        {
+          name: "",
+          quantity: "",
+          quantityUnit: null,
+          weight: "",
+          weightUnit: null,
+          pu: ""
+        },
+      ],
+    }];
+    this.shippersReceivers[i].shippers.driverLoad = false,
+    this.shippersReceivers[i].shippers.liveLoad = true,
+    this.shippersReceivers[i].shippers.save = true,
+    this.shippersReceivers[i].shippers.update = false
+    
+    
   }
 
-  /*
-   * Get all customers from api
-   */
-  // fetchCustomers() {
-  //   this.apiService.getData("/fetch/order/customers").subscribe((result: any) => {
-  //     this.customers = result.Items;
-  //   });
-  // }
 
-  /*
-   * Get all shippers's IDs of names from api
-   */
-  fetchShippersByIDs() {
-    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
-      this.shippersObjects = result;
-    });
-  }
-  /*
-   * Get all Shippers from api
-   */
-  fetchShippers() {
-    this.apiService.getData("shippers").subscribe((result: any) => {
-      this.shippers = result.Items;
-    });
-  }
-
-  /*
-   * Get all receivers's IDs of names from api
-   */
-  fetchReceiversByIDs() {
-    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
-      this.receiversObjects = result;
-    });
-  }
-
-  /*
-   * Get all Receivers from api
-   */
-  fetchReceivers() {
-    this.apiService.getData("receivers").subscribe((result: any) => {
-      this.receivers = result.Items;
-    });
-  }
 
   /*
    * Selecting files before uploading
    */
   selectDocuments(event) {
     let files = [...event.target.files];
-
-    this.uploadedDocs = files;
-
+    let filesSize = 0;
+    if(files.length > 5) {
+      this.toastr.error('files count limit exceeded');
+      this.photoSizeError = 'files should not be more than 5';
+      return;
+    }
+    
+    for (let i = 0; i < files.length; i++) {
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toastr.error('files size limit exceeded');
+        return;
+      } else {
+        let name = files[i].name.split('.');
+        let ext = name[name.length - 1].toLowerCase();
+        if (ext == 'doc' || ext == 'docx' || ext == 'pdf' || ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+           this.uploadedDocs.push(files[i])
+        } else {
+            this.photoSizeError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
+      }
+    }
   }
 
   getTimeFormat(date) {
@@ -892,7 +999,7 @@ export class AddOrdersComponent implements OnInit {
     
     if (this.mergedArray !== undefined) {
       this.mergedArray.forEach((element) => {
-        let cords = `${element.position.lng},${element.position.lat}`;
+        let cords = `${element.address.geoCords.lng},${element.address.geoCords.lat}`;
         this.getAllCords.push(cords);
       });
       
@@ -912,7 +1019,7 @@ export class AddOrdersComponent implements OnInit {
       } else if (value === "pcmiles") {
         //
         //
-        this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+this.getAllCords.join(";")).subscribe((result) => {
+        this.apiService.getData('trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops='+this.getAllCords.join(";")).subscribe((result) => {
           this.orderData.milesInfo["totalMiles"] = result;
         });
       } else {
@@ -924,21 +1031,45 @@ export class AddOrdersComponent implements OnInit {
   }
 
   selectedCustomer(customerID: any) {
+    
+      this.orderData.additionalContact = null;
+      this.orderData.phone = '';
+      this.orderData.email = '';
+    
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
         if(result.Items.length > 0) {
-          this.customerSelected = result.Items[0];
-          for (let i = 0; i < this.customerSelected.address.length; i++) {
-            const element = this.customerSelected.address[i];
-            if(element.addressType == 'Office') {
-              this.notOfficeAddress = false;
-              this.customerSelected.officeAddr = true;
-              this.customerSelected.email = result.Items[0].workEmail;
-              this.customerSelected.phone = result.Items[0].workPhone;
-            } else {
-              this.notOfficeAddress = true;
-            }
+          
+          this.customerSelected = result.Items;
+          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
+            const element = this.customerSelected[0].address[i];
+            element['isChecked'] = false;
+          }
+          this.customerSelected[0].address[0].isChecked = true;
+          this.cusAdditionalContact = result.Items[0].additionalContact;
+          
+          if(this.cusAdditionalContact.length === 1 && this.cusAdditionalContact[0].firstName == '') {
+            this.cusAdditionalContact = []
+          }
+          if(this.customerSelected[0].address.length > 0) {
+            this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
+          }
+          
+          let addressLength = this.customerSelected[0].address.length;
+          let getType = this.customerSelected[0].address[0].addressType;
+          
+          if(addressLength === 1 && (getType == '' || getType == null)) {
+            this.notOfficeAddress = true;
+          } else {
+            this.notOfficeAddress = false;
+          }
+          if(this.getOrderID) {
+            this.customerSelected[0].address.filter( elem => {
+              if(elem.addressID === this.orderData.cusAddressID) {
+                elem.isChecked = true;
+              }
+            })
           }
         }
         
@@ -946,8 +1077,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   setAdditionalContact(event) {
-    for (let i = 0; i < this.customerSelected.additionalContact.length; i++) {
-      const element = this.customerSelected.additionalContact[i];
+    for (let i = 0; i < this.cusAdditionalContact.length; i++) {
+      const element = this.cusAdditionalContact[i];
       if(element.fullName == event) {
         this.orderData.phone = element.phone;
         this.orderData.email = element.email;
@@ -955,34 +1086,44 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  addCommodity(arr, parentIndex) {
+  addCommodity(arr: string, parentIndex: number, i: number) {
+    
     if (arr === "shipper") {
-      this.shippersReceivers[parentIndex].shippers.commodity.push({
-        name: "",
-        quantity: "",
-        quantityUnit: "",
-        weight: "",
-        weightUnit: "",
-        pu : ""
-      });
+      let ttlLen = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.length -1;
+      let lastItem = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity[ttlLen];
+      if(lastItem.name != '' && lastItem.pu != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
+        this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+          pu : ''
+        });
+      } 
+      
     } else {
-      this.shippersReceivers[parentIndex].receivers.commodity.push({
-        name: "",
-        quantity: "",
-        quantityUnit: "",
-        weight: "",
-        weightUnit: "",
-        del:""
-        // pu : ""
-      });
+      let ttlLen = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.length -1;
+      let lastItem = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity[ttlLen];
+      if(lastItem.name != '' && lastItem.del != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) { 
+        this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
+          name: '',
+          quantity: '',
+          quantityUnit: '',
+          weight: '',
+          weightUnit: '',
+          del: ''
+        });
+      } 
+      
     }
   }
 
-  removeCommodity(obj: string, parentIndex: number, i: number) {
+  removeCommodity(obj: string, parentIndex: number, w: number, i: number) {
     if (obj === "shipper") {
-      this.shippersReceivers[parentIndex].shippers.commodity.splice(i, 1);
+      this.shippersReceivers[parentIndex].shippers.pickupPoint[w].commodity.splice(i, 1);
     } else {
-      this.shippersReceivers[parentIndex].receivers.commodity.splice(i, 1);
+      this.shippersReceivers[parentIndex].receivers.dropPoint[w].commodity.splice(i, 1);
     }
   }
 
@@ -1012,7 +1153,6 @@ export class AddOrdersComponent implements OnInit {
   checkFormErrors() {
     if (
       !this.orderData.customerID ||
-      !this.orderData.customerPO ||
       !this.orderData.orderNumber ||
       !this.orderData.charges.freightFee.type ||
       !this.orderData.charges.freightFee.amount ||
@@ -1030,11 +1170,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.isSubmit = true;
-    // if (!this.checkFormErrors()) return false;
-
+    this.submitDisabled = true;
+    
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-
+    
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -1051,18 +1190,47 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+
+    for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
+      const element = this.orderData.shippersReceiversInfo[i];
+      for (let j = 0; j < element.shippers.length; j++) {
+        const ship = element.shippers[j];
+        for (let l = 0; l < ship.pickupPoint.length; l++) {
+          const newPick = ship.pickupPoint[l];
+          delete newPick.address.states;
+          delete newPick.address.cities;
+        }
+      }
+      
+      for (let x = 0; x < element.receivers.length; x++) {
+        const newReceive = element.receivers[x];
+        for (let l = 0; l < newReceive.dropPoint.length; l++) {
+          const newDrop = newReceive.dropPoint[l];
+          delete newDrop.address.states;
+          delete newDrop.address.cities;
+        }
+      }
+    }
+
     //for location search in listing page
     let selectedLoc = '';
+    
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
-        let newloc = h.dropOffLocation.replace(/,/g, "");
-        selectedLoc += newloc.toLowerCase() + '|';
+        h.dropPoint.map(elem => {
+          let newloc = elem.address.dropOffLocation.replace(/,/g, "");
+          selectedLoc += newloc.toLowerCase() + '|';
+        })
+        
       })
 
       element.shippers.map((h:any) => {
-        let newloc = h.pickupLocation.replace(/,/g, "");
-        selectedLoc += newloc.toLowerCase() + '|';
+        h.pickupPoint.map(elem => {
+          let newloc = elem.address.pickupLocation.replace(/,/g, "");
+          selectedLoc += newloc.toLowerCase() + '|';
+        })
+        
       })
     }
 
@@ -1079,11 +1247,12 @@ export class AddOrdersComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
-    this.submitDisabled = true;
+    
 
     this.apiService.postData("orders", formData, true).subscribe({
       complete: () => {},
       error: (err) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -1232,41 +1401,200 @@ export class AddOrdersComponent implements OnInit {
     this.showReceiverUpdate = false;
   }
 
-  assignLocation(i, elem, label) {
-    if (elem === "shipper") {
-      this.shippersReceivers[i].shippers.pickupLocation = label;
+  assignLocation(i:number, w: number,  elem: any, id: string) {
+    let getAddress;
+    if(elem === 'shipper') {
+      getAddress = this.shipAddresses.filter(elem => elem.addressID == id);
+    }
+    if (elem === 'shipper') {
+     
+      if(getAddress[0].manual) {
+        let newAddress = '';
+        if(getAddress[0].address1 != '') {
+          newAddress = `${getAddress[0].address1}`;
+        }
+        if(getAddress[0].address2 != '') {
+          if(getAddress[0].address1 != '') {
+            newAddress = `${getAddress[0].address2}`;
+          } else {
+            newAddress = `${newAddress}, ${getAddress[0].address2}`;
+          }
+        }
+
+        if(getAddress[0].cityName != '') {
+          if(getAddress[0].address2 != '') {
+            newAddress = `${newAddress}, ${getAddress[0].cityName}`;
+          } else {
+            newAddress = `${getAddress[0].cityName}`;
+          }
+          
+        } 
+        if(getAddress[0].stateName != '') {
+          newAddress = `${newAddress}, ${getAddress[0].stateName}`;
+        }
+        if(getAddress[0].countryName != '') {
+          newAddress = `${newAddress}, ${getAddress[0].countryName}`;
+        }
+        if(getAddress[0].zipCode != '') {
+          newAddress = `${newAddress}, ${getAddress[0].zipCode}`;
+        }
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = newAddress;
+      } else {
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = getAddress[0].userLocation;
+        
+      }
+     
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = getAddress[0].geoCords;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = getAddress[0].cityName;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = getAddress[0].stateCode;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName = getAddress[0].stateName;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = getAddress[0].countryCode;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = getAddress[0].countryName;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = getAddress[0].zipCode;
+      
     } else {
-      this.shippersReceivers[i].receivers.dropOffLocation = label;
+      let getAddress = this.receiverAddresses.filter(elem => elem.addressID == id);
+      if(getAddress[0].manual) {
+        let newAddress = '';
+        if(getAddress[0].address1 != '') {
+          newAddress = `${getAddress[0].address1}`;
+        }
+        if(getAddress[0].address2 != '') {
+          if(getAddress[0].address1 != '') {
+            newAddress = `${getAddress[0].address2}`;
+          } else {
+            newAddress = `${newAddress}, ${getAddress[0].address2}`;
+          }
+        }
+
+        if(getAddress[0].cityName != '') {
+          if(getAddress[0].address2 != '') {
+            newAddress = `${newAddress}, ${getAddress[0].cityName}`;
+          } else {
+            newAddress = `${getAddress[0].cityName}`;
+          }
+          
+        } 
+        if(getAddress[0].stateName != '') {
+          newAddress = `${newAddress}, ${getAddress[0].stateName}`;
+        }
+        if(getAddress[0].countryName != '') {
+          newAddress = `${newAddress}, ${getAddress[0].countryName}`;
+        }
+        if(getAddress[0].zipCode != '') {
+          newAddress = `${newAddress}, ${getAddress[0].zipCode}`;
+        }
+        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = newAddress;
+      } else {
+        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = getAddress[0].userLocation;
+        
+      }
+     
+      this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = getAddress[0].geoCords;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = getAddress[0].cityName;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = getAddress[0].stateCode;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.stateName = getAddress[0].stateName;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = getAddress[0].countryCode;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.countryName = getAddress[0].countryName;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = getAddress[0].zipCode;
     }
     $("div").removeClass("show-search__result");
   }
 
-  editList(elem, parentIndex, i) {
+  addPickUpPoint(i, obj) {
+    if(obj == 'shipper') {
+      this.shippersReceivers[i].shippers.pickupPoint.push({
+        unit: false,
+        unitNumber: '',
+        address: {
+          address: '',
+          manual: false,
+          pickupLocation: '',
+          cityName: '',
+          stateName: '',
+          stateCode: '',
+          countryName: '',
+          countryCode: '',
+          zipCode: '',
+          cities: [],
+          states: [],
+          geoCords: {},
+        },
+        pickupDate: "",
+        pickupTime: "",
+        pickupInstruction: "",
+        contactPerson: "",
+        phone: "",
+      
+        commodity: [
+          {
+            name: "",
+            quantity: "",
+            quantityUnit: null,
+            weight: "",
+            weightUnit: null,
+            pu: ""
+          },
+        ],
+      })
+    } else {
+      this.shippersReceivers[i].receivers.dropPoint.push({
+            
+        unit: false,
+        unitNumber: '',
+        address: {
+          address: '',
+          manual: false,
+          dropOffLocation: '',
+          cityName: '',
+          stateName: '',
+          stateCode: '',
+          countryName: '',
+          countryCode: '',
+          zipCode: '',
+          cities: [],
+          states: [],
+          geoCords: {},
+        },
+        dropOffDate: '',
+        dropOffTime: '',
+        dropOffInstruction: '',
+        contactPerson: '',
+        phone: '',
+        commodity: [
+          {
+            name: '',
+            quantity: '',
+            quantityUnit: null,
+            weight: '',
+            weightUnit: null,
+            del: ''
+          },
+        ],
+      })
+    }
+  }
 
+  editList(elem, parentIndex, i) {
+    
     let j = parentIndex; 
     
 
     if (elem === "shipper") {
-      let data = this.finalShippersReceivers[parentIndex].shippers[i];
-      let itemDateAndTime = data.dateAndTime.split(" ");
       
+      let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
-      this.shippersReceivers[j].shippers.pickupLocation = data.pickupLocation;
-      this.shippersReceivers[j].shippers.pickupDate = itemDateAndTime[0];
-      this.shippersReceivers[j].shippers.pickupTime = itemDateAndTime[1];
-      this.shippersReceivers[j].shippers.pickupInstruction =
-        data.pickupInstruction;
-      this.shippersReceivers[j].shippers.contactPerson = data.contactPerson;
-      this.shippersReceivers[j].shippers.phone = data.phone;
-      this.shippersReceivers[j].shippers.commodity = data.commodity;
-      this.shippersReceivers[j].shippers.reference = data.reference;
-      this.shippersReceivers[j].shippers.notes = data.notes;
-      this.shippersReceivers[j].shippers.minTempratureUnit =
-        data.minTempratureUnit;
-      this.shippersReceivers[j].shippers.maxTemprature = data.maxTemprature;
-      this.shippersReceivers[j].shippers.maxTempratureUnit =
-        data.maxTempratureUnit;
+      this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
+      for (let index = 0; index < this.shippersReceivers[j].shippers.pickupPoint.length; index++) {
+        const element = this.shippersReceivers[j].shippers.pickupPoint[index];
+        if(element['dateAndTime'] != undefined || element['dateAndTime'] != '') {
+          let itemDateAndTime = element['dateAndTime'].split(" ");
+          element.pickupDate = itemDateAndTime[0];
+          element.pickupTime = itemDateAndTime[1];
+        }
+      }
+      
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
       this.shippersReceivers[j].shippers.update = true;
@@ -1276,24 +1604,17 @@ export class AddOrdersComponent implements OnInit {
       
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
-      let itemDateAndTime = data.dateAndTime.split(" ");
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
-      this.shippersReceivers[j].receivers.dropOffLocation =
-        data.dropOffLocation;
-      this.shippersReceivers[j].receivers.dropOffDate = itemDateAndTime[0];
-      this.shippersReceivers[j].receivers.dropOffTime = itemDateAndTime[1];
-      this.shippersReceivers[j].receivers.dropOffInstruction =
-        data.dropOffInstruction;
-      this.shippersReceivers[j].receivers.contactPerson = data.contactPerson;
-      this.shippersReceivers[j].receivers.phone = data.phone;
-      this.shippersReceivers[j].receivers.commodity = data.commodity;
-      this.shippersReceivers[j].receivers.reference = data.reference;
-      this.shippersReceivers[j].receivers.notes = data.notes;
-      this.shippersReceivers[j].receivers.minTempratureUnit =
-        data.minTempratureUnit;
-      this.shippersReceivers[j].receivers.maxTemprature = data.maxTemprature;
-      this.shippersReceivers[j].receivers.maxTempratureUnit =
-        data.maxTempratureUnit;
+      this.shippersReceivers[j].receivers.dropPoint =
+        data.dropPoint;
+      for (let index = 0; index < this.shippersReceivers[j].receivers.dropPoint.length; index++) {
+        const element = this.shippersReceivers[j].receivers.dropPoint[index];
+        if(element['dateAndTime'] != undefined || element['dateAndTime'] != '') {
+          let itemDateAndTime = element['dateAndTime'].split(" ");
+          element.dropOffDate = itemDateAndTime[0];
+          element.dropOffTime = itemDateAndTime[1];
+        }
+      }
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
 
       this.shippersReceivers[j].receivers.save = false;
@@ -1309,58 +1630,41 @@ export class AddOrdersComponent implements OnInit {
     if (obj === "shipper") {
       let data = this.shippersReceivers[i].shippers;
       
-      delete this.finalShippersReceivers[i].shippers[this.stateShipperIndex]
-        .pickupDate;
-      delete this.finalShippersReceivers[i].shippers[this.stateShipperIndex]
-        .pickupTime;
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].shipperID = data.shipperID;
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
-      ].pickupLocation = data.pickupLocation;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].dateAndTime = data.pickupDate + " " + data.pickupTime;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].pickupInstruction = data.pickupInstruction;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].contactPerson = data.contactPerson;
-      this.finalShippersReceivers[i].shippers[this.stateShipperIndex].phone =
-        data.phone;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].commodity = data.commodity;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].reference = data.reference;
-      this.finalShippersReceivers[i].shippers[this.stateShipperIndex].notes =
-        data.notes;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].minTempratureUnit = data.minTempratureUnit;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].maxTemprature = data.maxTemprature;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].maxTempratureUnit = data.maxTempratureUnit;
+      ].pickupPoint = data.pickupPoint;
+      let location: any;
+      for (let index = 0; index < this.finalShippersReceivers[i].shippers[this.stateShipperIndex].pickupPoint.length; index++) {
+        const element = this.shippersReceivers[i].shippers.pickupPoint[index];
+        element['dateAndTime'] = element.pickupDate + " " + element.pickupTime;
+        delete element.pickupDate;
+        delete element.pickupTime;
+        if(element.address.manual == false) {
+          location = element.address.pickupLocation;
+        } else {
+          location = `${element.address.address},${element.address.cityName}, ${element.address.stateName},
+                    ${element.address.countryName} ${element.address.zipCode}`
+        }
+        
+        let result = await this.getCords(location);
+       
+        if(result != undefined){
+          element.address.geoCords = result.position;
+        }
+      }
+     
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].driverLoad = data.driverLoad;
       this.showShipperUpdate = false;
-      let result = await this.getCords(data.pickupLocation)
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].position = result.position;
       data.save = true;
       data.update = false;
       
+      this.toastr.success('Shipper Updated successfully.');
       this.emptyShipper(i);
-      
-      this.toastr.success('Shipper Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
       
@@ -1374,50 +1678,40 @@ export class AddOrdersComponent implements OnInit {
       ].receiverID = data.receiverID;
       this.finalShippersReceivers[i].receivers[
         this.stateShipperIndex
-      ].dropOffLocation = data.dropOffLocation;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].dateAndTime = data.dropOffDate + " " + data.dropOffTime;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].dropOffInstruction = data.dropOffInstruction;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].contactPerson = data.contactPerson;
-      this.finalShippersReceivers[i].receivers[this.stateShipperIndex].phone =
-        data.phone;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].commodity = data.commodity;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].reference = data.reference;
-      this.finalShippersReceivers[i].receivers[this.stateShipperIndex].notes =
-        data.notes;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].minTempratureUnit = data.minTempratureUnit;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].maxTemprature = data.maxTemprature;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].maxTempratureUnit = data.maxTempratureUnit;
+      ].dropPoint = data.dropPoint;
+      let location: any;
+      let allDropPoints = this.finalShippersReceivers[i].receivers[this.stateShipperIndex].dropPoint;
+      for (let index = 0; index < allDropPoints.length; index++) {
+        const element = this.shippersReceivers[i].receivers.dropPoint[index];
+        element['dateAndTime'] = element.dropOffDate + " " + element.dropOffTime;
+        delete element.dropOffDate;
+        delete element.dropOffTime;
+        if(element.address.manual == false) {
+          location = element.address.dropOffLocation;
+        } else {
+          location = `${element.address.address},${element.address.cityName}, ${element.address.stateCode},
+                    ${element.address.countryCode} ${element.address.zipCode}`
+        }
+        
+        let result = await this.getCords(location);
+      
+        if(result != undefined){
+          element.address.geoCords = result.position;
+        }
+      }
+      
       this.finalShippersReceivers[i].receivers[
         this.stateShipperIndex
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
       
-      let result = await this.getCords(data.dropOffLocation)
-      
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].position = result.position;
       data.save = true;
       data.update = false;
-      this.toastr.success('Receiver Updated');
+      this.toastr.success('Receiver updated successfully.');
       this.emptyReceiver(i);
     }
+    
+   
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
@@ -1449,7 +1743,9 @@ export class AddOrdersComponent implements OnInit {
       .getData("orders/" + this.getOrderID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        this.orderData.cusAddressID = result.cusAddressID;
         await this.fetchStateTaxes();
+        
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
         
         this.orderData.taxesInfo = [
@@ -1468,16 +1764,17 @@ export class AddOrdersComponent implements OnInit {
         ];
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
-
+        
         if(result.attachments !== undefined && result.attachments.length > 0){
           this.orderAttachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         this.orderData["attachments"] = result.attachments;
-        this.orderData["orderStatus"] = result.orderStatus;
+        this.ifStatus = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
+        this.isInvoiceGenerated = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -1615,13 +1912,19 @@ export class AddOrdersComponent implements OnInit {
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
-        let newloc = h.dropOffLocation.replace(/,/g, "");
-        selectedLoc += newloc.toLowerCase() + '|';
+        h.dropPoint.map(elem => {
+          let newloc = elem.address.dropOffLocation.replace(/,/g, "");
+          selectedLoc += newloc.toLowerCase() + '|';
+        })
+        
       })
 
       element.shippers.map((h:any) => {
-        let newloc = h.pickupLocation.replace(/,/g, "");
-        selectedLoc += newloc.toLowerCase() + '|';
+        h.pickupPoint.map(elem => {
+          let newloc = elem.address.pickupLocation.replace(/,/g, "");
+          selectedLoc += newloc.toLowerCase() + '|';
+        })
+        
       })
     }
     this.orderData['loc'] = selectedLoc;
@@ -1696,62 +1999,95 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
-
+    
+    
     let allFields = {
       shippers: {
-        shipperID: "",
-        pickupLocation: "",
-        pickupDate: "",
-        pickupTime: "",
-        pickupInstruction: "",
-        contactPerson: "",
-        phone: "",
-        reference: "",
-        notes: "",
-        commodity: [
+        shipperID: null,
+        cusConfirmation: [],
+        pickupPoint: [
           {
-            name: "",
-            quantity: "",
-            quantityUnit: "",
-            weight: "",
-            weightUnit: "",
-            pu : ""
-          },
+            unit: false,
+            unitNumber: '',
+            address: {
+              address: '',
+              manual: false,
+              pickupLocation: '',
+              cityName: '',
+              stateCode: '',
+              stateName: '',
+              countryCode: '',
+              countryName: '',
+              zipCode: '',
+              cities: [],
+              states: [],
+              geoCords: {},
+            },
+            pickupDate: "",
+            pickupTime: "",
+            pickupInstruction: "",
+            contactPerson: "",
+            phone: "",
+          
+            commodity: [
+              {
+                name: "",
+                quantity: "",
+                quantityUnit: null,
+                weight: "",
+                weightUnit: null,
+                pu: ""
+              },
+            ],
+          }
         ],
-        minTemprature: "",
-        minTempratureUnit: "",
-        maxTemprature: "",
-        maxTempratureUnit: "",
         driverLoad: false,
+        liveLoad: true,
         save: true,
         update: false
+        
       },
       receivers: {
-        receiverID: "",
-        dropOffLocation: "",
-        dropOffDate: "",
-        dropOffTime: "",
-        dropOffInstruction: "",
-        contactPerson: "",
-        phone: "",
-        reference: "",
-        notes: "",
-        commodity: [
+        receiverID: null,
+        dropPoint: [
           {
-            name: "",
-            quantity: "",
-            quantityUnit: "",
-            weight: "",
-            weightUnit: "",
-            del : ""
-            // pu : ""
-          },
+            
+            unit: false,
+            unitNumber: '',
+            address: {
+              address: '',
+              manual: false,
+              dropOffLocation: '',
+              cityName: '',
+              stateCode: '',
+              stateName: '',
+              countryCode: '',
+              countryName: '',
+              zipCode: '',
+              cities: [],
+              states: [],
+              geoCords: {},
+            },
+            dropOffDate: '',
+            dropOffTime: '',
+            dropOffInstruction: '',
+            contactPerson: '',
+            phone: '',
+            commodity: [
+              {
+                name: '',
+                quantity: '',
+                quantityUnit: null,
+                weight: '',
+                weightUnit: null,
+                del: ''
+              },
+            ],
+          }
         ],
-        minTemprature: "",
-        minTempratureUnit: "",
-        maxTemprature: "",
-        maxTempratureUnit: "",
+        
         driverUnload: false,
+        liveUnLoad: true,
         save: true,
         update: false
       },
@@ -1766,6 +2102,10 @@ export class AddOrdersComponent implements OnInit {
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
     this.finalShippersReceivers.splice(i, 1);
+  }
+
+  searchFn(term: string, item: {name: string}) {
+    return item.name.includes(term) && item.name !== term;
   }
 
   addAccessFee(value: string) {
@@ -1790,68 +2130,6 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.accessorialDeductionInfo.accessDeductions.splice(index, 1);
     }
-  }
-
-  accordianChange(event, i) {
-    this.activeId = this.activeId == event.panelId ? "" : event.panelId;
-    var offset = $('.accordian_0').offset();
-    $('.accordian_'+ i).css('top', offset);
-    $('html, body').animate({scrollTop:$('.accordian_'+ i).offset().top - 130}, 'slow');
-    
-    for (let i = 0; i < this.shippersReceivers.length; i++) {
-      const element = this.shippersReceivers[i];
-      element.shippers.shipperID = '';
-      
-      element.shippers.pickupLocation ='';
-      element.shippers.pickupDate ='';
-      element.shippers.pickupTime ='';
-      element.shippers.pickupInstruction ='';
-      element.shippers.contactPerson ='';
-      element.shippers.phone ='';
-      element.shippers.commodity  = [{
-        name: '',
-        quantity: '',
-        quantityUnit: '',
-        weight: '',
-        weightUnit: '',
-        pu: ''
-        
-      }],
-      element.shippers.reference ='';
-      element.shippers.notes ='';
-      element.shippers.minTempratureUnit ='';
-      element.shippers.maxTemprature ='';
-      element.shippers.maxTempratureUnit ='';
-      element.shippers.driverLoad = false;
-      element.shippers.save = true;
-      element.shippers.update = false;
-      
-      
-      element.receivers.receiverID = '';
-      element.receivers.dropOffLocation = '';
-      element.receivers.dropOffDate = '';
-      element.receivers.dropOffTime = '';
-      element.receivers.dropOffInstruction = '';
-      element.receivers.contactPerson = '';
-      element.receivers.phone = '';
-      element.receivers.commodity = [{
-        name: '',
-        quantity: '',
-        quantityUnit: '',
-        weight: '',
-        weightUnit: '',
-        del: ''
-      }];
-      element.receivers.reference = '';
-      element.receivers.notes = '';
-      element.receivers.minTempratureUnit = '';
-      element.receivers.maxTemprature = '';
-      element.receivers.maxTempratureUnit = '';
-      element.receivers.driverUnload = false,
-      element.receivers.save = true;
-      element.receivers.update = false;
-    }
-    
   }
 
   tempChange(value) {
@@ -1923,16 +2201,16 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  assignReceiverValue(type, fieldName, fieldVaue, shipperInd, commIndex) {
-    if(type == 'commodity') {
-      if(fieldName == 'weightUnit' || fieldName == 'quantityUnit') {
-        this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue;
-      } else {
-        this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue.target.value;
-      }
+  // assignReceiverValue(type, fieldName, fieldVaue, shipperInd, commIndex) {
+  //   if(type == 'commodity') {
+  //     if(fieldName == 'weightUnit' || fieldName == 'quantityUnit') {
+  //       this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue;
+  //     } else {
+  //       this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue.target.value;
+  //     }
 
-    }
-  }
+  //   }
+  // }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
@@ -1959,5 +2237,108 @@ export class AddOrdersComponent implements OnInit {
     // });
     this.deletedFiles.push(record)
     this.orderAttachments.splice(index, 1);
+  }
+
+  removePickUpPoint (i:number, w: number, obj: string) {
+    if(obj == 'shipper') {
+      this.shippersReceivers[i].shippers.pickupPoint.splice(w, 1)
+    } else {
+      this.shippersReceivers[i].receivers.dropPoint.splice(w, 1)
+    }
+    
+  }
+
+   /*
+   * Get all countries from api
+   */
+   fetchCountries() {
+    this.countries = CountryStateCity.GetAllCountries();
+  }
+
+  getStates(countryCode: string, str: string, i: number, w: number) {
+    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    
+    let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    if(str === 'shipper') {
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName= countryName;
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.states = states;
+    } else {
+      this.shippersReceivers[i].receivers.dropPoint[w].address.countryName= countryName;
+      this.shippersReceivers[i].receivers.dropPoint[w].address.states = states;
+    }
+    
+  }
+
+  getCities(stateCode: string, str: string, i: number, w: number) {
+    if(str === 'shipper') {
+      let countryCode = this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode;
+      let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName= stateResult;
+      let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.cities = cities;
+    } else {
+      let countryCode = this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode;
+      let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+      this.shippersReceivers[i].receivers.dropPoint[w].address.stateName= stateResult;
+      let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      this.shippersReceivers[i].receivers.dropPoint[w].address.cities = cities;
+    }
+  }
+
+  getAddressID(value: boolean, i: number, id: string) {
+    if(value === true) {
+      this.orderData.cusAddressID = id;
+      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
+        const element = this.customerSelected[0].address[index];
+        element.isChecked = false;
+      }
+      this.customerSelected[0].address[i].isChecked = true;
+    }
+  }
+
+  public changeModalValue(){
+    this.listService.changeButton(false);
+  }
+
+  shipperReceiverAddress(value, id) {
+    this.apiService.getData(`contacts/detail/${id}`).subscribe(res => {
+      if(value === 'shipper') {
+        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+          this.shipAddresses = [];  
+        } else {
+          this.shipAddresses = res.Items[0].address;
+        }
+      } else {
+        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+          this.receiverAddresses = [];  
+        } else {
+          this.receiverAddresses = res.Items[0].address;
+        }
+        
+      }
+      
+    })
+  }
+
+  getConfirmations(i) {
+    let allTags = [];
+    this.cusConfirmation.forEach(elem => {
+      allTags.push(elem.label);
+    })
+    this.shippersReceivers[i].shippers.cusConfirmation = allTags;
+  }
+
+  setValue() {
+    localStorage.setItem('isOpen', 'true');
+  }
+
+  fetchData(value: string) {
+    if(value === 'shipper') {
+      this.listService.fetchShippers();
+    } else if(value === 'receiver') {
+      this.listService.fetchReceivers();
+    } else {
+      this.listService.fetchCustomers()
+    }
   }
 }

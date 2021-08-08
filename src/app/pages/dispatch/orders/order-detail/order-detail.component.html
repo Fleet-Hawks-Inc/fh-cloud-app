@@ -1,74 +1,63 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Order Details
-          </div>
-          <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"
-              ><i class="fas fa-pencil-alt"></i> Edit Order</a
-            >
-            <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Orders</a
-            >
-            <div class="btn-group flex-wrap" *ngIf="!environment">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Actions<span class="caret"></span>
-              </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <header class="page-header">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Order Details
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right">
+                        <button [disabled]="isInvoiced" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
+                            Generate Invoice</button>
+                        <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
+                                class="fas fa-pencil-alt"></i> Edit Order</a>
+                        <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+                            Orders</a>
+                        <div class="btn-group flex-wrap" *ngIf="!environment">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">
+                                Actions<span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                   position: absolute;
                   will-change: transform;
                   top: 0px;
                   left: 0px;
                   transform: translate3d(0px, 38px, 0px);
-                "
-              >
-                <a class="dropdown-item text-1" href="#">Edit</a>
-                <a class="dropdown-item text-1" href="#">Print</a>
-                <a class="dropdown-item text-1" href="#">Email</a>
-                <a class="dropdown-item text-1" href="#">Fax</a>
-                <a class="dropdown-item text-1" href="">Cancel</a>
-              </div>
-            </div>
-            <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-plus"></i>
+                ">
+                                <a class="dropdown-item text-1" href="#">Edit</a>
+                                <a class="dropdown-item text-1" href="#">Print</a>
+                                <a class="dropdown-item text-1" href="#">Email</a>
+                                <a class="dropdown-item text-1" href="#">Fax</a>
+                                <a class="dropdown-item text-1" href="">Cancel</a>
+                            </div>
+                        </div>
+                        <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success btn-sm"><i class="fas fa-plus"></i>
                      Create Invoice</a> -->
-          </div>
-        </div>
-      </header>
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-12">
-            <div
-              class="bg-white p-3 d-flex justify-content-between align-items-center text-dark"
-            >
-              <div>
-                <h4 class="m-0 font-weight-bold">{{orderMode}} - ORD{{orderNumber}}</h4>
-              </div>
-              <!-- <div class="pull-right">
+                    </div>
+                </div>
+            </header>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                            <div>
+                                <h4 class="m-0 font-weight-bold">{{orderMode}} - ORD{{orderNumber}}</h4>
+                            </div>
+                            <!-- <div class="pull-right">
                 <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"
                   ><i class="fas fa-plus"></i> Add Order</a
                 >
               </div> -->
-            </div>
-          </div>
-        </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3">
-              <div class="row mb-3">
-                <!--
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3">
+                            <div class="row mb-3">
+                                <!--
                   <div class="col-lg-6 text-dark">
                            <div id="vehicle-details" class="">
                               <div class="row m-0">
@@ -103,383 +92,421 @@
                         </div>
                   -->
 
-                <div class="col-lg-6 text-dark">
-                  <div id="vehicle-details" class="">
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Customer:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerName }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Address:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerAddress }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        City, Province/State:
-                      </div>
-                      <div class="col-lg-9 p-2">
-                        {{ customerCityName }}, {{ customerStateName }}
-                      </div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Country:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerCountryName }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Phone:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerPhone }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Email:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerEmail }}</div>
-                    </div>
-                    <!-- <div class="row m-0">
-                      <div
-                        class="col-lg-3 p-2 font-weight-bold text-3 text-left"
-                      >
-                        Fax:
-                      </div>
-                      <div class="col-lg-9 p-2">{{ customerfax }}</div>
-                    </div> -->
-                  </div>
-                </div>
-
-                <div class="col-lg-6 text-dark">
-                  <div id="vehicle-details" class="">
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Customer PO#:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                        {{ customerPo }}
-                      </div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Reference:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">{{ reference }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Order Creation Date/Time:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">{{ createdTime | date : 'yyyy/MM/dd hh:mm:ss a' }}</div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Additonal Contact Name:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                        {{ additionalContactName }}
-                      </div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Phone:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                        {{ additionalPhone }}
-                      </div>
-                    </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Email:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                        {{ additionalEmail }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="row mb-3 shipment-wrap"
-          *ngFor="
-            let shipperReceiversInfo of shipperReceiversInfos;
-            let i = index
-          "
-        >
-          <div class="col-lg-12">
-            <div class="bg-white p-3">
-              <div class="row mb-3 ">
-                <div class="col-lg-12 mb-4 mb-lg-0">
-                  <div
-                    class="accordion"
-                    id="accordion{{i}}"
-                    style="
-                      border: 0.5px solid #333;
-                      background: #f6f6f6;
-                      border-radius: 10px;
-                      box-shadow: 2px 5px 5px #d1d1d1;
-                    "
-                  >
-                    <div class="card card-default mb-0 mt-0">
-                      <div class="card-header bgnone" id="collapse1Heading{{i}}">
-                        <h4 class="card-title m-0">
-                          <a
-                            class="accordion-toggle cursorpoint font-weight-bold text-4 text-dark"
-                            data-toggle="collapse"
-                            [attr.data-target]="'#collapse' + i"
-                            aria-expanded="true"
-                            [attr.aria-controls]="'collapse' + i"
-                          >
-                            Shipment-{{ i + 1 }}</a
-                          >
-                        </h4>
-                      </div>
-                      <div
-                        id="collapse{{i}}"
-                        class="collapse"
-                        [attr.aria-labelledby]="'collapse1Heading' + i"
-                      >
-                        <div class="card-body">
-                          <div class="form-group row divderrel">
-                            <div class="midledriver"></div>
-                            
-                            <div class="col-lg-6">
-                              <h4
-                                class="mt-0 text-dark font-weight-bold text-4"
-                              >
-                              Shipper
-                              </h4>
-                            </div>
-                            <div class="col-lg-6">
-                              <h4
-                                class="mt-0 text-dark font-weight-bold text-4"
-                              >
-                              Receiver
-                              </h4>
-                            </div>
-
-                            <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
-                              <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
-
-                                 <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickShipper(i,j) id="shipperArea-{{i}}-{{j}}">
-                                      <span class="pull-left">Shipper {{j+1}}</span>
-                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
-                                    </label>
-                                  </a>
-
-                                  <section>
-                                    <div id="collapseShipperArea-{{i}}-{{j}}" class="collapse">
-                                      <div class="row">
-                                        <div class="col-lg-12">
-                                          <p class="mb-0 text-dark">
-                                            <strong>{{shippersObjects[shipperReceiversInfo.shippers[j].shipperID]}}</strong>
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                             {{shipperReceiversInfo.shippers[j].pickupLocation}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Pickup Date/Time:</strong>
-                                            {{shipperReceiversInfo.shippers[j].date | date:'yyyy/MM/dd' }} {{shipperReceiversInfo.shippers[j].time}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Pickup Instruction:</strong>
-                                            {{shipperReceiversInfo.shippers[j].pickupInstruction}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong
-                                              >Contact Person at Pickup:</strong
-                                            >
-                                            {{shipperReceiversInfo.shippers[j].contactPerson}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong>
-                                            {{shipperReceiversInfo.shippers[j].phone}}
-                                          </p>
-                                          <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
-                                            <thead>
-                                             <tr>
-
-                                              <th>Sr. No.</th>
-                                              <th>Commodity</th>
-                                              <th>PU#</th>
-                                              <th>Quantity</th>
-                                              <th>Weight</th>
-                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                             <tr *ngFor="let commodity of shipperReceiversInfo.shippers[j].commodity;let l = index">
-                                              <td>{{l+1}}</td>
-                                              <td>{{commodity.name}}</td>
-                                              <td>{{commodity.pu}}</td>
-                                              <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                              <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
-                                             </tr>
-
-                                         </table>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Will Driver Load ?:</strong>
-                                           {{shipperReceiversInfo.shippers[j].driverLoad ? 'Yes' : 'No'}}
-                                          </p>
+                                <div class="col-lg-6 text-dark">
+                                    <div id="vehicle-details" class="">
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                Customer:
+                                            </div>
+                                            <div class="col-lg-9 p-2 text-capitalize">{{ customerName }}</div>
                                         </div>
-                                      </div>
-                                    </div>
-                                 </section>
-                                 <div class="mt-3"></div>
-                              </div>
-                            </div>
-
-                            <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
-                              <div class="pl-0 pr-5" *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
-
-                                 <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}">
-                                      <span class="pull-left">Receiver {{k+1}}</span>
-                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
-                                    </label>
-                                    <div class="expand_caret caret"></div>
-                                  </a>
-
-                                  <section>
-                                    <div id="collapseReceiverArea-{{i}}-{{k}}" class="collapse">
-                                      <div class="row">
-                                        <div class="col-lg-12">
-                                          <p class="mb-0 text-dark">
-                                            <strong>{{receiversObjects[shipperReceiversInfo.receivers[k].receiverID]}}</strong>
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                             {{shipperReceiversInfo.receivers[k].dropOffLocation}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Delivery Date/Time:</strong>
-                                            {{shipperReceiversInfo.receivers[k].date | date:'yyyy/MM/dd'}} {{shipperReceiversInfo.receivers[k].time}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong
-                                              >Delivery Instruction:</strong
-                                            >
-                                            {{shipperReceiversInfo.receivers[k].dropOffInstruction}}
-
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong
-                                              >Contact Person at
-                                              Delivery</strong
-                                            >
-                                            {{shipperReceiversInfo.receivers[k].contactPerson}}
-
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong>
-                                            {{shipperReceiversInfo.receivers[k].phone}}
-                                          </p>
-                                          <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
-                                            <thead>
-                                             <tr>
-
-                                              <th>Sr. No.</th>
-                                              <th>Commodity</th>
-                                              <th>DEL#</th>
-                                              <th>Quantity</th>
-                                              <th>Weight</th>
-                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                             <tr *ngFor="let commodity of shipperReceiversInfo.receivers[k].commodity;let m = index">
-                                              <td>{{m+1}}</td>
-                                              <td>{{commodity.name}}</td>
-                                              <td>{{commodity.del}}</td>
-                                              <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                              <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
-                                             </tr>
-
-                                         </table>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Will Driver Load ?:</strong>
-                                            {{shipperReceiversInfo.receivers[k].driverUnload ? 'Yes': 'No'}}
-                                          </p>
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                Address:
+                                            </div>
+                                            <div class="col-lg-9 p-2">{{ customerAddress }}</div>
                                         </div>
-                                      </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                City, Province/State:
+                                            </div>
+                                            <div class="col-lg-9 p-2">
+                                                {{ customerCityName }}, {{ customerStateName }}
+                                            </div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                Country:
+                                            </div>
+                                            <div class="col-lg-9 p-2">{{ customerCountryName }}</div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                Phone:
+                                            </div>
+                                            <div class="col-lg-9 p-2">{{ customerPhone }}</div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-3 p-2 font-weight-bold text-3 text-left">
+                                                Email:
+                                            </div>
+                                            <div class="col-lg-9 p-2">{{ customerEmail }}</div>
+                                        </div>
+
                                     </div>
-                                 </section>
-                                 <div class="mt-3"></div>
-                              </div>
+                                </div>
+
+                                <div class="col-lg-6 text-dark">
+                                    <div id="vehicle-details" class="">
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Customer PO#:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">
+                                                {{ customerPo }}
+                                            </div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Reference:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{ reference }}</div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Order Creation Date/Time:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{ createdTime | date : 'yyyy/MM/dd
+                                                hh:mm:ss a' }}</div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Additonal Contact Name:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">
+                                                {{ additionalContactName }}
+                                            </div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Phone:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">
+                                                {{ additionalPhone }}
+                                            </div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Email:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">
+                                                {{ additionalEmail }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3">
-              <div class="row">
-                <div class="col-lg-6 text-dark">
-                  <div id="vehicle-details" class="">
-                    <div class="row m-0 back-color-gray">
-                      <div class="col-lg-12 p-2">
-                        <h2
-                          class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                        >
-                          Additional Details
-                        </h2>
-                      </div>
+                <div class="row mb-3 shipment-wrap" *ngFor="
+                    let shipperReceiversInfo of shipperReceiversInfos;
+                    let i = index
+                ">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3">
+                            <div class="row mb-3 ">
+                                <div class="col-lg-12 mb-4 mb-lg-0">
+                                    <div class="accordion" id="accordion{{i}}" style="
+                                        border: 0.5px solid #333;
+                                        background: #f6f6f6;
+                                        border-radius: 10px;
+                                        box-shadow: 2px 5px 5px #d1d1d1;
+                                        ">
+                                        <div class="card card-default mb-0 mt-0">
+                                            <div class="card-header bgnone" id="collapse1Heading{{i}}">
+                                                <h4 class="card-title m-0">
+                                                    <a class="accordion-toggle cursorpoint font-weight-bold text-4 text-dark"
+                                                        data-toggle="collapse" [attr.data-target]="'#collapse' + i"
+                                                        aria-expanded="true" [attr.aria-controls]="'collapse' + i">
+                                                        Shipment-{{ i + 1 }}</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse{{i}}" class="collapse"
+                                                [attr.aria-labelledby]="'collapse1Heading' + i">
+                                                <div class="card-body">
+                                                    <div class="form-group row divderrel">
+                                                        <div class="midledriver"></div>
+
+                                                        <div class="col-lg-6">
+                                                            <h4 class="mt-0 text-dark font-weight-bold text-4">
+                                                                Shipper
+                                                            </h4>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <h4 class="mt-0 text-dark font-weight-bold text-4">
+                                                                Receiver
+                                                            </h4>
+                                                        </div>
+
+                                                        <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
+                                                            <div class="pl-0 pr-5"
+                                                                *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
+
+                                                                <a data-toggle="collapse"
+                                                                    [attr.data-target]="'#collapseShipperArea-' + i + '-' + j"
+                                                                    href="#collapseShipperArea-{{i}}-{{j}}"
+                                                                    aria-expanded="false">
+                                                                    <label style="background: #F4F4F4;width: 100%;"
+                                                                        class="text-dark text-5 mb-0 font-weight-bold btn"
+                                                                        (click)=caretClickShipper(i,j)
+                                                                        id="shipperArea-{{i}}-{{j}}">
+                                                                        <span class="pull-left">Shipper {{j+1}}</span>
+                                                                        <i
+                                                                            class="fas fa-caret-right caret_icon pull-right mt-2"></i>
+                                                                    </label>
+                                                                </a>
+
+                                                                <section>
+                                                                    <div id="collapseShipperArea-{{i}}-{{j}}"
+                                                                        class="collapse">
+                                                                        <div style="border: 1px solid #efefef;
+                                                                        padding: 10px;">
+                                                                                 <div class="row">
+                                                                                    <div class="col-lg-12">
+                                                                                        <p class="mb-0 text-dark text-capitalize">
+                                                                                            <strong>{{shippersObjects[shipper.shipperID]}}</strong>
+                                                                                        </p>
+                                                                                        <div
+                                                                                            style="padding: 10px;
+                                                                                            background: #f3f3f3;
+                                                                                            margin-bottom: 10px;"
+                                                                                            *ngFor="let pick of shipper.pickupPoint">
+                                                                                            <p *ngIf="pick.unit" class="mb-0 text-dark">
+                                                                                                <strong>Unit Number:</strong>
+                                                                                                {{pick.unitNumber }}
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Pickup Location:</strong>
+                                                                                                <span class="mb-0 text-dark"
+                                                                                                    *ngIf="!pick.address.manual">
+                                                                                                    {{pick.address.pickupLocation}}
+                                                                                                </span>
+                                                                                                <span class="mb-0 text-dark"
+                                                                                                    *ngIf="pick.address.manual">
+                                                                                                    {{pick.address.address}},
+                                                                                                    {{pick.address.city}},
+                                                                                                    {{pick.address.state}},
+                                                                                                    {{pick.address.country}}
+                                                                                                    {{pick.address.zipCode}}
+                                                                                                </span>
+                                                                                            </p>
+
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Pickup
+                                                                                                    Date/Time:</strong>
+                                                                                                {{pick.dateAndTime |
+                                                                                                date:'yyyy/MM/dd hh:mm a' }}
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Pickup
+                                                                                                    Instruction:</strong>
+                                                                                                {{pick.pickupInstruction ? pick.pickupInstruction : '-'}}
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Contact Person at
+                                                                                                    Pickup:</strong>
+                                                                                                {{pick.contactPerson ? pick.contactPerson : '-'}}
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Phone:</strong>
+                                                                                                {{pick.phone ? pick.phone : '-'}}
+                                                                                            </p>
+                                                                                            <table
+                                                                                                class="table table-responsive-lg table-bordered table-striped table-sm mt-3 mb-0">
+                                                                                                <thead>
+                                                                                                    <tr>
+
+                                                                                                        <th>Sr. No.</th>
+                                                                                                        <th>Commodity</th>
+                                                                                                        <th>PU#</th>
+                                                                                                        <th>Quantity</th>
+                                                                                                        <th>Weight</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                    <tr
+                                                                                                        *ngFor="let commodity of pick.commodity;let l = index">
+                                                                                                        <td>{{l+1}}</td>
+                                                                                                        <td>{{commodity.name ? commodity.name : '-'}}
+                                                                                                        </td>
+                                                                                                        <td>{{commodity.pu ? commodity.pu : '-'}}
+                                                                                                        </td>
+                                                                                                        <td>{{commodity.quantity ? commodity.quantity : 0}}
+                                                                                                            {{commodity.quantityUnit}}
+                                                                                                        </td>
+                                                                                                        <td>{{commodity.weight ? commodity.weight : 0}}
+                                                                                                            {{commodity.weightUnit}}
+                                                                                                        </td>
+                                                                                                    </tr>
+
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </section>
+                                                                <p class="mb-0 text-dark">
+                                                                    <strong>Will Driver Load ?:</strong>
+                                                                    {{shipper.driverLoad ? 'Yes' : 'No'}}
+                                                                </p>
+                                                                <div class="mt-3"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
+                                                            <div class="pl-0 pr-5"
+                                                                *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
+
+                                                                <a data-toggle="collapse"
+                                                                    [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k"
+                                                                    href="#collapseReceiverArea-{{i}}-{{k}}"
+                                                                    aria-expanded="false">
+                                                                    <label style="background: #F4F4F4;width: 100%;"
+                                                                        class="text-dark text-5 font-weight-bold btn"
+                                                                        (click)=caretClickReceiver(i,k)
+                                                                        id="receiverArea-{{i}}-{{k}}">
+                                                                        <span class="pull-left">Receiver {{k+1}}</span>
+                                                                        <i
+                                                                            class="fas fa-caret-right caret_icon pull-right mt-2"></i>
+                                                                    </label>
+                                                                    <div class="expand_caret caret"></div>
+                                                                </a>
+
+                                                                <section>
+                                                                    <div id="collapseReceiverArea-{{i}}-{{k}}"
+                                                                        class="collapse">
+                                                                        <div style="border: 1px solid #efefef;
+                                                                        padding: 10px;">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12">
+                                                                                    <p class="mb-0 text-dark text-capitalize">
+                                                                                        <strong>{{receiversObjects[receiver.receiverID]}}</strong>
+                                                                                    </p>
+                                                                                    <div
+                                                                                    style="padding: 10px;
+                                                                                    background: #f3f3f3;
+                                                                                    margin-bottom: 10px;"
+                                                                                        *ngFor="let drop of receiver.dropPoint">
+                                                                                        <p *ngIf="drop.unit" class="mb-0 text-dark">
+                                                                                            <strong>Unit Number:</strong>
+                                                                                            {{drop.unitNumber }}
+                                                                                        </p>
+                                                                                        <p class="mb-0 text-dark">
+                                                                                            <strong>Drop Location:</strong>
+                                                                                            <span class="mb-0 text-dark"
+                                                                                                *ngIf="!drop.address.manual">
+                                                                                                {{drop.address.dropOffLocation}}
+                                                                                            </span>
+                                                                                            <span class="mb-0 text-dark"
+                                                                                                *ngIf="drop.address.manual">
+                                                                                                {{drop.address.address}},
+                                                                                                {{drop.address.city}},
+                                                                                                {{drop.address.state}},
+                                                                                                {{drop.address.country}}
+                                                                                                {{drop.address.zipCode}}
+                                                                                            </span>
+                                                                                        </p>
+
+
+                                                                                        <p class="mb-0 text-dark">
+                                                                                            <strong>Delivery Date/Time:</strong>
+                                                                                            {{drop.dateAndTime
+                                                                                            | date:'yyyy/MM/dd hh:mm a'}}
+
+                                                                                        </p>
+                                                                                        <p class="mb-0 text-dark">
+                                                                                            <strong>Delivery
+                                                                                                Instruction:</strong>
+                                                                                            {{drop.dropOffInstruction ? drop.dropOffInstruction : '-'}}
+
+                                                                                        </p>
+                                                                                        <p class="mb-0 text-dark">
+                                                                                            <strong>Contact Person at
+                                                                                                Delivery</strong>
+                                                                                            {{drop.contactPerson ? drop.contactPerson : '-'}}
+
+                                                                                        </p>
+                                                                                        <p class="mb-0 text-dark">
+                                                                                            <strong>Phone:</strong>
+                                                                                            {{drop.phone ? drop.phone : '-'}}
+                                                                                        </p>
+                                                                                        <table
+                                                                                            class="table table-responsive-lg table-bordered table-striped table-sm mt-3 mb-0">
+                                                                                            <thead>
+                                                                                                <tr>
+
+                                                                                                    <th>Sr. No.</th>
+                                                                                                    <th>Commodity</th>
+                                                                                                    <th>DEL#</th>
+                                                                                                    <th>Quantity</th>
+                                                                                                    <th>Weight</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr
+                                                                                                    *ngFor="let commodity of drop.commodity;let m = index">
+                                                                                                    <td>{{m+1}}</td>
+                                                                                                    <td>{{commodity.name ? commodity.name : '-'}}</td>
+                                                                                                    <td>{{commodity.del ? commodity.del : '-'}}</td>
+                                                                                                    <td>{{commodity.quantity ? commodity.quantity : 0}}
+                                                                                                        {{commodity.quantityUnit}}
+                                                                                                    </td>
+                                                                                                    <td>{{commodity.weight ? commodity.weight : 0}}
+                                                                                                        {{commodity.weightUnit}}
+                                                                                                    </td>
+                                                                                                </tr>
+
+                                                                                        </table>
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </section>
+                                                                <p class="mb-0 text-dark">
+                                                                    <strong>Will Driver Load ?:</strong>
+                                                                    {{receiver.driverUnload
+                                                                    ? 'Yes': 'No'}}
+                                                                </p>
+                                                                <div class="mt-3"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Drop Asset:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes' : 'No'}}</div>
-                    </div>
-                    <div class="row m-0" *ngIf="!additionalDetails.dropTrailer">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Asset Type:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}</div>
-                    </div>
-                    <!-- <div class="row m-0">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3">
+                            <div class="row">
+                                <div class="col-lg-6 text-dark">
+                                    <div id="vehicle-details" class="">
+                                        <div class="row m-0 back-color-gray">
+                                            <div class="col-lg-12 p-2">
+                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                    Additional Details
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="row m-0">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Drop Asset:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes'
+                                                : 'No'}}</div>
+                                        </div>
+                                        <div class="row m-0" *ngIf="!additionalDetails.dropTrailer">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Asset Type:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}
+                                            </div>
+                                        </div>
+                                        <!-- <div class="row m-0">
                       <div
                         class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                       >
@@ -493,79 +520,109 @@
 
                       </div>
                     </div> -->
-                    <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Temperature Required:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                        From
-                        {{additionalDetails.refeerTemp.minTemprature}}
-                        {{additionalDetails.refeerTemp.minTempratureUnit }}
-                        To
-                        {{additionalDetails.refeerTemp.maxTemprature }}
-                        {{additionalDetails.refeerTemp.maxTempratureUnit }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                        <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Temperature Required:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">
+                                                From
+                                                {{additionalDetails.refeerTemp.minTemprature}}
+                                                {{additionalDetails.refeerTemp.minTempratureUnit }}
+                                                To
+                                                {{additionalDetails.refeerTemp.maxTemprature }}
+                                                {{additionalDetails.refeerTemp.maxTempratureUnit }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 mb-3 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <span class="pull-right text-3 mt-2 text-dark">
-                          </span>
-                          <h2
-                            class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Miles for the Load is entered using: 
-                            <span *ngIf="milesInfo.calculateBy == 'pcmiles'">PC miles</span>
-                            <span *ngIf="milesInfo.calculateBy != 'pcmiles'">Manual</span>
-                          </h2>
-                        </div>
+                                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 mb-3 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <span class="pull-right text-3 mt-2 text-dark">
+                                                    </span>
+                                                    <h2
+                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                        Miles for the Load is entered using:
+                                                        <span *ngIf="milesInfo.calculateBy == 'pcmiles'">PC miles</span>
+                                                        <span *ngIf="milesInfo.calculateBy != 'pcmiles'">Manual</span>
+                                                    </h2>
+                                                </div>
 
-                        <div class="widgetlinfo">
-                          <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
-                            <thead>
-                              <tr class="bgcol2">
-                                <th>From</th>
-                                <th>To</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr *ngIf="milesArr?.length == 0">
-                                <td>No data found</td>
-                              </tr>
-                              <tr *ngFor="let data of milesArr">
-                                <td>
-                                  <span *ngFor="let shipp of data.shippers; let s=index">
-                                    {{s+1}}. {{ shipp.pickupLocation }}
-                                    <br>
-                                  </span>
-                                </td>
-                                <td>
-                                  <span *ngFor="let rec of data.receivers; let r=index">
-                                    {{r+1}}. {{ rec.dropOffLocation }}
-                                    <br>
-                                  </span>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                                                <div class="widgetlinfo">
+                                                    <table
+                                                        class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
+                                                        <thead>
+                                                            <tr class="bgcol2">
+                                                                <th>From</th>
+                                                                <th>To</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngIf="milesArr?.length == 0">
+                                                                <td colspan="2">No data found</td>
+                                                            </tr>
+                                                            <tr *ngFor="let data of milesArr">
+                                                                <td style="width: 50%;">
+                                                                    <div *ngFor="let ship of data.shippers; let i = index;" class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Shipper-{{i + 1}}</strong></h5>
+                                                                        <div
+                                                                            *ngFor="let point of ship.pickupPoint; let s=index">
+                                                                            Pickup-{{s + 1}}:
+                                                                            <span *ngIf="point.address.manual">
+                                                                                {{ point.address.address }}
+                                                                                {{ point.address.city }}
+                                                                                {{ point.address.state }}
+                                                                                {{ point.address.country }}
+                                                                                {{ point.address.zipCode }}
+                                                                            </span>
+                                                                            <span *ngIf="!point.address.manual">
+                                                                                {{ point.address.pickupLocation }}
 
-                          <p class="mb-0 mt-3 text-dark text-right">
-                            <strong>Total Miles: </strong>
-                            <span class="">{{milesInfo.totalMiles}} Miles</span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                                                                            </span>
+                                                                            <br>
+                                                                        </div>
 
-                  <!-- <div class="col-xl-12 col-12 mb-3">
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 50%;">
+                                                                    <div
+                                                                        *ngFor="let rec of data.receivers; let r = index" class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{r + 1}}</strong></h5>
+                                                                        <div
+                                                                            *ngFor="let drop of rec.dropPoint; let s = index;">
+                                                                             Drop-{{s + 1}}:
+                                                                            <span *ngIf="drop.address.manual">
+                                                                                {{ drop.address.address }}
+                                                                                {{ drop.address.city }}
+                                                                                {{ drop.address.state }}
+                                                                                {{ drop.address.country }}
+                                                                                {{ drop.address.zipCode }}
+                                                                            </span>
+                                                                            <span *ngIf="!drop.address.manual">
+                                                                                {{ drop.address.dropOffLocation }}
+
+                                                                            </span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <p class="mb-0 mt-3 text-dark text-right">
+                                                        <strong>Total Miles: </strong>
+                                                        <span class="">{{milesInfo.totalMiles}} Miles</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
                         <div class="widgettbload">
@@ -607,665 +664,978 @@
                       </div>
                     </div>
                   </div> -->
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3">
-              <div class="row">
-                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <span class="pull-right text-3 mt-2 text-dark">
-                          </span>
-                          <h2
-                            class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Charges
-                          </h2>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="widgetlinfo">
-                          <div class="col-lg-2 pull-left">
-                            <img
-                              src="assets/img/icon-cur.png"
-                              class="img-fluid"
-                              alt="shipper"
-                            />
-                          </div>
-                          <div class="col-lg-10 pull-left">
-                            <p class="mb-0 text-dark">
-                              Freight Fee
-                              <span class="pull-right">{{charges.freightFee.amount}} {{charges.freightFee.currency}}</span>
-                            </p>
-                            <p class="mb-0 text-dark">
-                              Fuel Surcharge
-                              <span class="pull-right">{{charges.fuelSurcharge.amount}} {{charges.freightFee.currency}}</span>
-                            </p>
-                            <p class="mb-0 text-dark">
-                              Accessorial Amount
-                              <span class="pull-right">{{charges.accessorialFeeInfo.total}} {{charges.freightFee.currency}}</span>
-                            </p>
-                            <p class="mb-0 text-dark">
-                              Accessorial Deduction Amount
-                              <span class="pull-right">{{charges.accessorialDeductionInfo.total}} {{charges.freightFee.currency}}</span>
-                            </p>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3">
+                            <div class="row">
+                                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <span class="pull-right text-3 mt-2 text-dark">
+                                                    </span>
+                                                    <h2
+                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                        Charges
+                                                    </h2>
+                                                </div>
 
-                            <!-- <p class="mb-0 text-dark" *ngIf="stateCode == ''"> Tax Amount <span class="pull-right">${{taxesTotal}}</span> </p> -->
-                            <p class="mb-0 text-dark" *ngIf="!zeroRated">
-                              Tax Amount
-                              <span *ngIf="stateCode != ''">
-                                ( <span class="font-weight-semibold">{{ stateCode }}</span> )
-                              </span>
-                              <span class="pull-right">{{taxableAmount}} {{charges.freightFee.currency}}</span>
-                            </p>
+                                                <div class="widgetlinfo">
+                                                    <div class="col-lg-2 pull-left">
+                                                        <img src="assets/img/icon-cur.png" class="img-fluid"
+                                                            alt="shipper" />
+                                                    </div>
+                                                    <div class="col-lg-10 pull-left">
+                                                        <p class="mb-0 text-dark">
+                                                            Freight Fee
+                                                            <span class="pull-right">{{charges.freightFee.amount}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+                                                        <p class="mb-0 text-dark">
+                                                            Fuel Surcharge
+                                                            <span class="pull-right">{{charges.fuelSurcharge.amount}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+                                                        <p class="mb-0 text-dark">
+                                                            Accessorial Amount
+                                                            <span
+                                                                class="pull-right">{{charges.accessorialFeeInfo.total}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+                                                        <p class="mb-0 text-dark">
+                                                            Accessorial Deduction Amount
+                                                            <span
+                                                                class="pull-right">{{charges.accessorialDeductionInfo.total}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
 
-                            <p class="mb-0 text-dark bordtopdas">
-                              <strong>Total Charges</strong>
-                              <span class="pull-right">{{totalCharges}} {{charges.freightFee.currency}}</span>
-                            </p>
-                            <!-- <p class="mb-0 text-dark bordtopdas">
+                                                        <!-- <p class="mb-0 text-dark" *ngIf="stateCode == ''"> Tax Amount <span class="pull-right">${{taxesTotal}}</span> </p> -->
+                                                        <p class="mb-0 text-dark" *ngIf="!zeroRated">
+                                                            Tax Amount
+                                                            <span *ngIf="stateCode != ''">
+                                                                ( <span class="font-weight-semibold">{{ stateCode
+                                                                    }}</span> )
+                                                            </span>
+                                                            <span class="pull-right">{{taxableAmount}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+
+                                                        <p class="mb-0 text-dark bordtopdas">
+                                                            <strong>Total Charges</strong>
+                                                            <span class="pull-right">{{totalCharges}}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+                                                        <!-- <p class="mb-0 text-dark bordtopdas">
                               <strong>Advance Received</strong>
                               <span class="pull-right">${{advances}}</span>
                             </p> -->
-                            <p class="mb-0 text-dark bordtopdas">
-                              <strong>Balance</strong>
-                              <span class="pull-right">{{ balance }} {{charges.freightFee.currency}}</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <h2
-                            class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                          >
-                            <i class="fas fa-box"></i> Attachments
-                          </h2>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d= index">
-                              <div class="col-5"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                    (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
-                              <div class="col-  3 text-right">
-                                 <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                    data-target="#viewDocModal"></em>
-                                 <a href="javascript:;" (click)="delete('attachment',item.name, d)" class="modal-with-form">
-                                    <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                           </div>
-                           <div *ngIf="attachments.length == 0;" class="my-2 px-2">
-                                <span>No attachment found</span>
-                           </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                    <div class="col-xl-12 col-12 mb-3">
-                      <div class="boxshadow1 maindisbox w100 pull-left">
-                        <div class="widgetload">
-                          <div class="widgettbload">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <h2
-                                    class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                                >
-                                    <i class="fas fa-box"></i> Upload BOL/POD
-                                </h2>
-                               </div>
-                                <div class="col-6">
-                                    <input
-                                      type="file"
-                                      (change)="selectDocuments($event)"
-                                      multiple
-                                      class="p-0 form-control pull-right mb-0"
-                                      id="bolUpload"
-                                    />
-                                  </div>
-                            </div>
-                            </div>
-                          <div class="row">
-                            <div class="col-12">
-                              <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                                <div class="col-7"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                      (click)="setPDFSrc(doc.path)">Bol {{d+1}}</a> </div>
-                                <div class="col-3 text-right">
-                                   <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                      data-target="#viewDocModal"></em>
-                                   <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
-                                      <em class="fas fa-times text-danger"></em></a>
+                                                        <p class="mb-0 text-dark bordtopdas">
+                                                            <strong>Balance</strong>
+                                                            <span class="pull-right">{{ balance }}
+                                                                {{charges.freightFee.currency}}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                             </div>
-                             <div *ngIf="docs.length == 0;" class="my-2 px-2">
-                                <span>No document found</span>
-                           </div>
+
+                                <div class="col-xl-3 col-12 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <h2
+                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                        <i class="fas fa-box"></i> Attachments
+                                                    </h2>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="row my-2 px-2"
+                                                            *ngFor="let item of attachments; let d= index">
+                                                            <div class="col-5"><a href="javascript:;"
+                                                                    data-toggle="modal" data-target="#viewDocModal"
+                                                                    (click)="setPDFSrc(item.path)">Document {{d+1}}</a>
+                                                            </div>
+                                                            <div class="col-  3 text-right">
+                                                                <em class="far fa-file text-dak mr-1"
+                                                                    (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                                                    data-target="#viewDocModal"></em>
+                                                                <a href="javascript:;"
+                                                                    (click)="delete('attachment',item.name, d)"
+                                                                    class="modal-with-form">
+                                                                    <em class="fas fa-times text-danger"></em></a>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="attachments.length == 0;" class="my-2 px-2">
+                                                            <span>No attachment found</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-12 pl-0 pr-0">
+                                    <div class="col-xl-12 col-12 mb-3">
+                                        <div class="boxshadow1 maindisbox w100 pull-left">
+                                            <div class="widgetload">
+                                                <div class="widgettbload">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-6">
+                                                            <h2
+                                                                class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                                                <i class="fas fa-box"></i> Upload BOL/POD
+                                                            </h2>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="file" (change)="selectDocuments($event)"
+                                                                multiple class="p-0 form-control pull-right mb-0"
+                                                                id="bolUpload" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="row my-2 px-2"
+                                                            *ngFor="let doc of docs;let d= index">
+                                                            <div class="col-7"><a href="javascript:;"
+                                                                    data-toggle="modal" data-target="#viewDocModal"
+                                                                    (click)="setPDFSrc(doc.path)">Bol {{d+1}}</a> </div>
+                                                            <div class="col-3 text-right">
+                                                                <em class="far fa-file text-dak mr-1"
+                                                                    (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                                    data-target="#viewDocModal"></em>
+                                                                <a href="javascript:;"
+                                                                    (click)="delete('docs',doc.name, d)"
+                                                                    class="modal-with-form">
+                                                                    <em class="fas fa-times text-danger"></em></a>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="docs.length == 0;" class="my-2 px-2">
+                                                            <span>No document found</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-  </div>
+                </div>
+            </section>
+        </section>
+    </div>
 </section>
 <!-- Modal -->
-<div
-  class="modal fade"
-  id="templateSelectionModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="templateSelectionModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" style="max-width: 1200px" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="templateSelectionModalLabel">
-          Select Invoice Template
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <i
-            class="far fa-window-close modal-dismiss"
-            style="font-size: 25px"
-          ></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="invoice-templates__listing">
-          <ul class="m-0 p-0 d-flex flex-wrap">
-            <li
-              class="position-relative"
-              *ngFor="let item of templateList; let i = index"
-              [ngClass]="{ active: selectedItem === i }"
-              (click)="selectedItem = i"
-            >
-              <img src="{{ item }}" class="img-fluid" />
-              <div class="invoice-actions">
-                <div>
-                  <a href="javascript:;" class="btn btn-success"
-                    >Use template</a
-                  >
+<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog"
+    aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1200px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="templateSelectionModalLabel">
+                    Select Invoice Template
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size: 25px"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="invoice-templates__listing">
+                    <ul class="m-0 p-0 d-flex flex-wrap">
+                        <li class="position-relative" *ngFor="let item of templateList; let i = index"
+                            [ngClass]="{ active: selectedItem === i }" (click)="selectedItem = i">
+                            <img src="{{ item }}" class="img-fluid" />
+                            <div class="invoice-actions">
+                                <div>
+                                    <a href="javascript:;" class="btn btn-success">Use template</a>
+                                </div>
+                            </div>
+                            <div class="selected-template">
+                                <i class="fa fa-check-circle fa-fw" style="color: #000"></i>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-              </div>
-              <div class="selected-template">
-                <i class="fa fa-check-circle fa-fw" style="color: #000"></i>
-              </div>
-            </li>
-          </ul>
+            </div>
+            <div class="modal-footer">
+                <a (click)="previewModal()" href="javascript:;" class="btn btn-success">Preview</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <a (click)="previewModal()" href="javascript:;" class="btn btn-success"
-          >Preview</a
-        >
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 
-<div
-  class="modal fade"
-  id="previewInvoiceModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="previewInvoiceModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" style="max-width: 1200px" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="print-invoice__wrapper">
-          <div class="container-fluid invoice-wrapper" id="print_wrap">
-            <!-- Header -->
-            <header>
-              <div class="row align-items-center">
-                <div class="col-sm-7 text-center text-sm-left mb-3 mb-sm-0">
-                  <img
-                    id="logo"
-                    src="assets/img/logo.png"
-                    title="FleetHawks"
-                    alt="FleetHawks"
-                  />
-                </div>
-                <div class="col-sm-5 text-center text-sm-right">
-                  <h4 class="text-7 mb-0">Invoice</h4>
-                </div>
-              </div>
-              <hr />
-            </header>
+<div class="modal fade" id="previewInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel"
+    aria-hidden="true" *ngIf="isInvoice">
+    <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <section class="invoice-wrapper p-0" style="background-color: #fff;">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td width="60%" class="title" valign="middle"
+                                                    style="padding: 10px;text-align: left;">
+                                                    <h4
+                                                        style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                        INVOICE</h4>
+                                                </td>
+                                                <td width="60%" class="title" valign="middle"
+                                                    style="padding: 10px;text-align: right;">
+                                                    <h4
+                                                        style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                        {{invoiceData.carrierData.companyName}}</h4>
+                                                    <h6 style="color: #040404;
+                                                    font-weight: 500;
+                                                    width: 250px;
+                                                    float: right;"
+                                                        class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
 
-            <!-- Main Content -->
-            <main>
-              <div class="row align-items-center">
-                <div class="col-sm-6">
-                  <strong>Invoice No:</strong> <span>16835</span> <br /><strong
-                    >Invoice Date:</strong
-                  >
-                  <span>05/12/2020</span>
-                </div>
-                <div class="col-sm-6 text-sm-right">
-                  <strong>Order:</strong> <span> 52415 </span>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-6">
-                  <strong>Carrier:</strong>
-                  <address>
-                    iLoad Trucking Ltd<br />
-                    245-7337 120th Street,<br />
-                    Canada 67R67 <br />
-                    (403) 635-6352 <br />
-                    <b>Contact Person:</b> Baljit Singh
-                  </address>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-sm-6 text-sm-right order-sm-1">
-                  <div *ngFor="let item of consineeData">
-                    <strong>Consignee:</strong>
-                    <address>
-                      {{ item.receiverName }}<br />
-                      {{ item.dropOffLocation }}<br />
-                      {{ item.phone }} <br />
-                      <b>Contact Person:</b> {{ item.contactPerson }}
-                    </address>
-                    <strong>Expected Date:</strong
-                    ><span> {{ item.locationDateTime }}</span>
-                  </div>
-                </div>
-                <div class="col-sm-6 order-sm-0">
-                  <div *ngFor="let item of shipperData">
-                    <strong>Shipper:</strong>
-                    <address>
-                      {{ item.shipperName }}<br /><br />
-                      {{ item.pickupLocation }}<br />
-                      {{ item.phone }} <br />
-                      <b>Contact:</b> {{ item.contactPerson }}
-                    </address>
-                    <strong>Expected Date:</strong
-                    ><span> {{ item.locationDateTime }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- <hr class="mb-2"> -->
-              <!-- <div class="row pb-2">
-                      <div class="col-4"><strong>Driver:</strong> <span>John Smith</span></div>
-                      <div class="col-4 text-center"> <strong>Truck:</strong> <span>54152</span></div>
-                      <div class="col-4 text-right"> <strong>Trailer:</strong> <span>#525114</span></div>
-                    </div> -->
-              <div class="card mt-2">
-                <div class="card-header px-2 py-0" style="background: #333">
-                  <table class="table mb-0">
-                    <thead>
-                      <tr style="color: #fff">
-                        <td style="width: 65%" class="border-0">
-                          <strong>commodity </strong>
-                        </td>
-                        <td style="width: 80px" class="text-center border-0">
-                          <strong>Weight</strong>
-                        </td>
-                        <td style="width: 75px" class="text-center border-0">
-                          <strong>QTY</strong>
-                        </td>
-                        <td style="width: 90px" class="text-right border-0">
-                          <strong>Amount</strong>
-                        </td>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="card-body py-0 px-2">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <tbody>
-                        <tr>
-                          <td style="width: 65%" class="border-0">
-                            ABC commodity
-                          </td>
-                          <!-- <td class="col-4 text-1 border-0"></td> -->
-                          <td style="width: 80px" class="text-center border-0">
-                            100 KG
-                          </td>
-                          <td style="width: 75px" class="text-center border-0">
-                            10
-                          </td>
-                          <td style="width: 90px" class="text-right border-0">
-                            <small>CAD </small>500.00
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+                            <tr>
+                                <td >
+                                    <div class="p-2">
+                                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" >
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                                        <span style="text-transform: capitalize;">
+                                                            {{invoiceData.data[0].customerData.companyName}} <br></span>
+                                                        {{invoiceData.data[0].customerData.address}} <br>
+                                                        <span
+                                                            *ngIf="invoiceData.data[0].customerData.additionalContact != '' && invoiceData.data[0].customerData.additionalContact != null ">
+                                                            Contact Person: <b class="text-capitalize">{{invoiceData.data[0].customerData.additionalContact}}</b> <br></span>
+                                                        <span
+                                                            *ngIf="invoiceData.data[0].customerData.phone != '' && invoiceData.data[0].customerData.phone != null ">Phone:
+                                                            <b>{{invoiceData.data[0].customerData.phone}}</b></span>
+                                                    </td>
+                                                    <td align="right">
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Invoice#</b> <br>
+                                                                        </span>
+                                                                        {{orderNumber}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Invoice Date</b> <br>
+                                                                        </span>
+                                                                       {{today | date: 'yyyy/MM/dd'}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Order#</b>
+                                                                        </span><br>
+                                                                        {{orderNumber}}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="top" colspan="2">
+                                                        <div *ngFor="let item of invoiceData.data">
+                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;">
+                                                                <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
+                                                                    <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                                                    <span class="text-capitalize">{{ship.companyName}}</span> <br>
+                                                                    {{ship.shipAddress}}
 
-              <div class="card mt-3">
-                <div class="card-header px-2 py-0" style="background: #333">
-                  <table class="table mb-0">
-                    <thead>
-                      <tr style="color: #fff">
-                        <td style="width: 200px" class="border-0">
-                          <strong>Fee Method</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Value</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Rate</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Amount</strong>
-                        </td>
-                        <td style="width: 100px" class="text-center border-0">
-                          <strong>Tax</strong>
-                        </td>
-                        <td style="width: 100px" class="text-right border-0">
-                          <strong>Total</strong>
-                        </td>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="card-body py-0 px-2">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <tbody>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong
-                              >Freight Fees <small>(Per Mile)</small></strong
-                            >
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            1200 Miles
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>2.00
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>2,400
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>400 <small>(13.0%)</small>
-                          </td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>2,800
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong
-                              >Fuel Surcharge
-                              <small><br />(Per Mile)</small></strong
-                            >
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            1200 Miles
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>1.00
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>1,200
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>250 <small>(12.0%)</small>
-                          </td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>1,650
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="width: 200px">
-                            <strong>Tarp <small>(Other Charges)</small></strong>
-                          </td>
-                          <td style="width: 100px" class="text-center">-</td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>30
-                          </td>
-                          <td style="width: 100px" class="text-center">
-                            <small>CAD </small>30
-                          </td>
-                          <td style="width: 100px" class="text-center">-</td>
-                          <td style="width: 100px" class="text-right">
-                            <small>CAD </small>30
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="4" class="bg-light-2 text-right">
-                            <strong>Total:</strong>
-                          </td>
-                          <td class="bg-light-2 text-center">
-                            <strong><small>CAD </small>650</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>4,480</strong>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="5" class="bg-light-2 text-right">
-                            <strong>Discount:</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>80</strong>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colspan="5" class="bg-light-2 text-right">
-                            <strong>Payable Amount:</strong>
-                          </td>
-                          <td class="bg-light-2 text-right">
-                            <strong><small>CAD </small>4,400</strong>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="card-body py-0 px-2 mt-5">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                        <tr>
-                          <td class="border-0 p-0">
-                            <h4 class="m-0 text-uppercase">
-                              <b>Instructions</b>
-                            </h4>
-                          </td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="p-0 border-0">
-                            1. PLEASE ENSURE DRIVER IDENTIFIES HIMSELF AS P/U ON
-                            BEHALF OF TOTAL LOGISTICS
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            2. DRIVER MUST BE ABLE AND WILLING TO PROVIDE EITHER
-                            COMPANY PHOTO ID or ANOTHER PIECE OF SUITABLE
-                            PICTURE IDENTIFICATION UPON SHIPPER/RECEIVER REQUEST
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            3. ALL DRIVERS ARE REQUIRED TO HAVE SAFETY SHOES AND
-                            VEST
-                          </td>
-                        </tr>
+                                                                    <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
+                                                                        <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
 
-                        <tr>
-                          <td class="p-0 border-0 mt-2 text-uppercase">
-                            <b
-                              >NOTE: Please note that all Food Products are
-                              subject to FDA review and therefore all drivers
-                              must report to the FDA office at the time of
-                              crossing</b
-                            >
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                                                                        <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ pick.address.address }}
+                                                                            {{ pick.address.city }}
+                                                                            {{ pick.address.state }}
+                                                                            {{ pick.address.country }}
+                                                                            {{ pick.address.zipCode }}
+                                                                        </span>
+                                                                        <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ pick.address.pickupLocation }}
+                                                                        </span>
+                                                                        <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
 
-                <div class="card-body py-0 px-2 mt-5">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                        <tr>
-                          <td class="border-0 p-0">
-                            <h4 class="m-0 text-uppercase">
-                              <b>Terms &amp; Conditions</b>
-                            </h4>
-                          </td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> INVOICE WITH ALL PAPERWORK HAS TO BE SENT
-                            TO APinvoice@totallogistics.com
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> TIME IN &amp; OUT REQUIRED FOR PICK-UP AND
-                            DELIVERY
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Third party billing by Total Logistics
-                            Control
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> All trailers must arrive at receiver’s
-                            sealed - FTL’s Sealed and LTL‘s sealed or Padlocked
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Fuel surcharge included in all rates
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> All trailers must be 53' in length with
-                            barn doors, FOOD GRADE, odour-free, dry and clean
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 border-0">
-                            <b>▸</b> Do not mix with hazmat or toxic materials
-                          </td>
-                        </tr>
-                      </tbody>
+                                                                        <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6" style="padding: 5px 0;">
+                                                                                        <table class="table-striped table-bordered" width="100%">
+                                                                                            <thead>
+                                                                                                <tr style="font-size: 12px;">
+                                                                                                    <td class="text-capitalize" colspan="2">COMMODITY</td>
+                                                                                                    <td style="width: 80px">PICK#</td>
+                                                                                                    <td style="width: 70px">QTY </td>
+                                                                                                    <td style="width: 70px">WEIGHT</td>
+
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr class="item" *ngFor="let commodity of pick.commodity;">
+                                                                                                    <td colspan="2">{{commodity.name}}</td>
+                                                                                                    <td>{{commodity.pu}}</td>
+                                                                                                    <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                                                                                    <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+
+                                                                                                </tr>
+
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;width: 49.5%;float: left;border: 1px dashed #8d8d8d;">
+                                                            <b style="font-size: 12px;">RECEIVER:</b> <br>
+                                                            <span class="text-capitalize">{{receive.companyName}}</span> <br>
+                                                            {{receive.receiverAddress}}
+
+                                                            <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
+                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                                <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ drop.address.address }}
+                                                                    {{ drop.address.city }}
+                                                                    {{ drop.address.state }}
+                                                                    {{ drop.address.country }}
+                                                                    {{ drop.address.zipCode }}
+                                                                </span>
+                                                                <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ drop.address.dropOffLocation }}
+                                                                </span>
+                                                                <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
+
+                                                                <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td colspan="6" style="padding: 5px 0;">
+                                                                                <table class="table-striped table-bordered" width="100%">
+                                                                                    <thead>
+                                                                                        <tr style="font-size: 12px;">
+                                                                                            <td colspan="2">COMMODITY</td>
+                                                                                            <td style="width: 80px">DEL#</td>
+                                                                                            <td style="width: 70px">QTY </td>
+                                                                                            <td style="width: 70px">WEIGHT</td>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr class="item" *ngFor="let commodity of drop.commodity;">
+                                                                                            <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
+                                                                                            <td>{{commodity.del}}</td>
+                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+
+                                                                                        </tr>
+
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+                                                    </td>
+
+
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <table class="table-striped table-bordered" width="100%">
+                                                            <thead>
+                                                                <tr style="font-size: 12px;">
+                                                                    <td colspan="6">FEE METHOD</td>
+
+                                                                    <td style="width: 100px" align="right">TOTAL</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr class="item">
+                                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
+                                                                                        <small>(Freight Fees)</small></td>
+
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.freightFee.amount}}
+                                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6">
+                                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
+                                                                                            (Fuel Surcharge)</small></td>
+
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
+                                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                                                    <td colspan="6">{{item.type}} <small>(Fuel
+                                                                                            Surcharge)</small></td>
+                                                                                    <td align="right">{{item.amount}}
+                                                                                        <small>{{item.currency}}</small></td>
+
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                                                <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                        Deduction)</small></td>
+                                                                                <td align="right">- {{item.amount}}
+                                                                                    <small>{{item.currency}}</small></td>
+
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+
+                                                                <tr class="bg-transparent">
+                                                                    <td align="right" colspan="6">Sub Total</td>
+                                                                    <td align="right">{{invoiceData.subTotal}}
+                                                                        <small>{{charges.freightFee.currency}} </small></td>
+                                                                </tr>
+                                                                <tr class="bg-transparent">
+                                                                    <td colspan="6" align="right">Tax</td>
+                                                                    <td align="right">{{invoiceData.taxesAmt}}
+                                                                        <small>{{charges.freightFee.currency}} </small></td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                            <tfoot class="border-1">
+                                                                <tr>
+                                                                    <th colspan="6" align="right">
+                                                                        <div style="text-align: right;">
+                                                                            TOTAL
+                                                                        </div>
+                                                                    </th>
+                                                                    <th align="right">
+                                                                        <div style="text-align: right;">
+                                                                            {{invoiceData.finalAmount}}
+                                                                            <small>{{charges.freightFee.currency}} </small>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                      <td colspan="6" style="padding-top: 20px;">
+                          <table>
+                              <tbody><tr>
+                                  <td><b style="font-size: 12px;">INSTRUCTIONS:</b></td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <ol style="margin: 0; padding-left: 15px; ">
+                                          <li>Please ensure driver identifies himself as p/u on behalf of total logistics</li>
+                                          <li>Driver must be able and willing to provide either company photo id or another piece of suitable picture identification upon shipper/receiver request</li>
+                                          <li> All drivers are required to have safety shoes and vest</li>
+                                          <li>Please note that all food products are subject to fda review and therefore all drivers must report to the fda office at the time of crossing</li>
+                                      </ol>
+                                  </td>
+                              </tr>
+                          </tbody></table>
+                      </td>
+                  </tr> -->
+
+                            <!-- <tr>
+                  <td colspan="6" style="padding-top: 20px;">
+                      <table>
+                          <tbody><tr>
+                              <td><b style="font-size: 12px;">TERMS:</b></td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <ol style="margin: 0; padding-left: 15px; ">
+                                      <li>Invoice with all paperwork has to be sent to apinvoice@totallogistics.Com</li>
+                                      <li>Time in &amp; out required for pick-up and delivery</li>
+                                      <li>Third party billing by total logistics control</li>
+                                      <li>All trailers must arrive at receiver’s sealed - ftl’s sealed and ltl‘s sealed or padlocked</li>
+                                      <li>Fuel surcharge included in all rates</li>
+                                      <li>All trailers must be 53' in length with barn doors, food grade, odour-free, dry and clean</li>
+                                      <li>Do not mix with hazmat or toxic materials</li>
+                                  </ol>
+                              </td>
+                          </tr>
+                      </tbody></table>
+                  </td>
+              </tr> -->
+                        </tbody>
                     </table>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a href="javascript:;" (click)="generatePDF()" class="btn btn-success"
-          >Print</a
-        >
-      </div>
     </div>
-  </div>
+</div>
+
+<div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="generateInvoiceModalLabel"
+    aria-hidden="true" *ngIf="isInvoice">
+    <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <section class="invoice-wrapper p-0" style="background-color: #fff;" id="print_wrap">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td width="60%" class="title" valign="middle"
+                                                    style="padding: 10px;text-align: left;">
+                                                    <h4
+                                                        style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                        INVOICE</h4>
+                                                </td>
+                                                <td width="60%" class="title" valign="middle"
+                                                    style="padding: 10px;text-align: right;">
+                                                    <h4
+                                                        style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                        {{invoiceData.carrierData.companyName}}</h4>
+                                                    <h6 style="color: #040404;
+                                                    font-weight: 500;
+                                                    width: 250px;
+                                                    float: right;"
+                                                        class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td *ngFor="let item of invoiceData.data; let idx = index;" style="display:block;width:99.9%;clear:both">
+                                    <div class="p-2">
+                                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" *ngFor="let ship of item.shippers">
+                                            <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                                        <span style="text-transform: capitalize;">
+                                                            {{item.customerData.companyName}} <br></span>
+                                                        {{item.customerData.address}} <br>
+                                                        <span
+                                                            *ngIf="item.customerData.additionalContact != '' && item.customerData.additionalContact != null ">
+                                                            Contact Person: <b class="text-capitalize">{{item.customerData.additionalContact}}</b> <br></span>
+                                                        <span
+                                                            *ngIf="item.customerData.phone != '' && item.customerData.phone != null ">Phone:
+                                                            <b>{{item.customerData.phone}}</b></span>
+                                                    </td>
+                                                    <td align="right">
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Invoice#</b> <br>
+                                                                        </span>
+                                                                        {{orderNumber}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Invoice Date</b> <br>
+                                                                        </span>
+                                                                       {{today | date: 'yyyy/MM/dd'}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right" style="padding: 0 0 10px">
+                                                                        <span
+                                                                            style="font-size: 12px;text-transform: uppercase;">
+                                                                            <b>Order#</b>
+                                                                        </span><br>
+                                                                        {{orderNumber}}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr >
+                                                    <td valign="top" style="width: 50%;">
+                                                        <div  class="shipment__wrap" style=" border-style:dashed;   border-width: 1px ; border-color: #8d8d8d;
+                                                        padding: 10px;">
+                                                            <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                                            <span class="text-capitalize">{{ship.companyName}}</span> <br>
+                                                            {{ship.shipAddress}}
+
+                                                            <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
+                                                                <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                                <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ pick.address.address }}
+                                                                    {{ pick.address.city }}
+                                                                    {{ pick.address.state }}
+                                                                    {{ pick.address.country }}
+                                                                    {{ pick.address.zipCode }}
+                                                                </span>
+                                                                <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ pick.address.pickupLocation }}
+                                                                </span>
+                                                                <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
+
+                                                                <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td colspan="6" style="padding: 5px 0;">
+                                                                                <table class="table-striped table-bordered" width="100%">
+                                                                                    <thead>
+                                                                                        <tr style="font-size: 12px;">
+                                                                                            <td class="text-capitalize" colspan="2">COMMODITY</td>
+                                                                                            <td style="width: 80px">PICK#</td>
+                                                                                            <td style="width: 70px">QTY </td>
+                                                                                            <td style="width: 70px">WEIGHT</td>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr class="item" *ngFor="let commodity of pick.commodity;">
+                                                                                            <td colspan="2">{{commodity.name}}</td>
+                                                                                            <td>{{commodity.pu}}</td>
+                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+
+                                                                                        </tr>
+
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </td>
+
+                                                    <td valign="top" align="right" style="width: 50%;">
+                                                        <div *ngFor="let receive of ship.receivers;" style="    border: 1px dashed #8d8d8d;
+                                                        padding: 10px;">
+                                                            <b style="font-size: 12px;">RECEIVER:</b> <br>
+                                                            <span class="text-capitalize">{{receive.companyName}}</span> <br>
+                                                            {{receive.receiverAddress}}
+
+                                                            <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
+                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                                <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ drop.address.address }}
+                                                                    {{ drop.address.city }}
+                                                                    {{ drop.address.state }}
+                                                                    {{ drop.address.country }}
+                                                                    {{ drop.address.zipCode }}
+                                                                </span>
+                                                                <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                    {{ drop.address.dropOffLocation }}
+                                                                </span>
+                                                                <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
+
+                                                                <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td colspan="6" style="padding: 5px 0;">
+                                                                                <table class="table-striped table-bordered" width="100%">
+                                                                                    <thead>
+                                                                                        <tr style="font-size: 12px;">
+                                                                                            <td colspan="2">COMMODITY</td>
+                                                                                            <td style="width: 80px">DEL#</td>
+                                                                                            <td style="width: 70px">QTY </td>
+                                                                                            <td style="width: 70px">WEIGHT</td>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr class="item" *ngFor="let commodity of drop.commodity;">
+                                                                                            <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
+                                                                                            <td>{{commodity.del}}</td>
+                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
+                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+
+                                                                                        </tr>
+
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                       <div *ngIf="invoiceData.data?.length > 1" class="html2pdf__page-break"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                        <table class="invoice-iner__wrapper" *ngIf="invoiceData.data?.length - 1 === idx" width="100%" style="border-top: none;margin-top: 10px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <table class="table-striped table-bordered" width="100%">
+                                                            <thead>
+                                                                <tr style="font-size: 12px;">
+                                                                    <td colspan="6">FEE METHOD</td>
+
+                                                                    <td style="width: 100px" align="right">TOTAL</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr class="item">
+                                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
+                                                                                        <small>(Freight Fees)</small></td>
+
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.freightFee.amount}}
+                                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6">
+                                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
+                                                                                            (Fuel Surcharge)</small></td>
+
+                                                                                    <td align="right">
+                                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
+                                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                                                    <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                      Addition)</small></td>
+                                                                                    <td align="right">{{item.amount}}
+                                                                                        <small>{{item.currency}}</small></td>
+
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
+                                                                    <td colspan="8" style="padding: 0;">
+                                                                        <table style="width: 100%;">
+                                                                            <tbody>
+                                                                                <tr
+                                                                                *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                                                <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                        Deduction)</small></td>
+                                                                                <td align="right">- {{item.amount}}
+                                                                                    <small>{{item.currency}}</small></td>
+
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+
+                                                                <tr class="bg-transparent">
+                                                                    <td align="right" colspan="6">Sub Total</td>
+                                                                    <td align="right">{{invoiceData.subTotal}}
+                                                                        <small>{{charges.freightFee.currency}} </small></td>
+                                                                </tr>
+                                                                <tr class="bg-transparent">
+                                                                    <td colspan="6" align="right">Tax</td>
+                                                                    <td align="right">{{invoiceData.taxesAmt}}
+                                                                        <small>{{charges.freightFee.currency}} </small></td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                            <tfoot class="border-1">
+                                                                <tr>
+                                                                    <th colspan="6" align="right">
+                                                                        <div style="text-align: right;">
+                                                                            TOTAL
+                                                                        </div>
+                                                                    </th>
+                                                                    <th align="right">
+                                                                        <div style="text-align: right;">
+                                                                            {{invoiceData.finalAmount}}
+                                                                            <small>{{charges.freightFee.currency}} </small>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="javascript:;" (click)="generatePDF()" class="btn btn-success">Generate & Print</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          (click)="setSrcValue()"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <div>
-              <iframe
-                [src]="pdfSrc"
-                frameborder="0"
-                width="100%"
-                height="400px"
-              >
-              </iframe>
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+                <button type="button" (click)="setSrcValue()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div>
+                            <iframe [src]="pdfSrc" frameborder="0" width="100%" height="400px">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="setSrcValue()" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-default"
-          (click)="setSrcValue()"
-          data-dismiss="modal"
-        >
-          Cancel
-        </button>
-      </div>
     </div>
-  </div>
 </div>
-
-
-

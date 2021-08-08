@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService, ApiService } from 'src/app/services';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-income-list',
@@ -7,9 +11,102 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IncomeListComponent implements OnInit {
 
-  constructor() { }
+  dataMessage: string = Constants.FETCHING_DATA;
+  incomeAccounts = [];
+  customers = [];
+  categories = [];
+  invoices = [];
+  filter = {
+    amount: '',
+    startDate: null,
+    endDate: null,
+    categoryID: null,
+  };
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
+  constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
+    this.fetchAccounts();
+    this.fetchCustomers();
+    this.fetchIncomeCategories();
+    this.fetchInvoices();
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}`)
+      .subscribe((result: any) => {
+        if(result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.incomeAccounts = result;
+        this.incomeAccounts.map((v) => {
+          if(v.paymentMode === 'creditCard') {
+            v.paymentMode = 'Credit Card';
+          } else if(v.paymentMode === 'debitCard') {
+            v.paymentMode = 'Debit Card';
+          } else if(v.paymentMode === 'demandDraft') {
+            v.paymentMode = 'Demand Card';
+          } else if(v.paymentMode === 'eft') {
+            v.paymentMode = 'EFT';
+          } else if(v.paymentMode === 'cash') {
+            v.paymentMode = 'Cash';
+          } else if(v.paymentMode === 'cheque') {
+            v.paymentMode = 'Cheque';
+          }
+        })
+      })
+  }
+
+  fetchCustomers() {
+    this.apiService.getData(`contacts/get/list`)
+      .subscribe((result: any) => {
+        this.customers = result;
+      })
+  }
+
+  deleteIncome(incomeID) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.accountService.getData(`income/delete/${incomeID}`)
+      .subscribe((result: any) => {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchAccounts();
+        this.toaster.success('Income transaction deleted successfully.');
+      });
+    }
+  }
+
+  fetchIncomeCategories() {
+    this.accountService.getData(`income/categories/list`)
+      .subscribe((result: any) => {
+        this.categories = result;
+      })
+  }
+
+  fetchInvoices() {
+    this.accountService.getData('invoices/get/list').subscribe((res: any) => {
+      this.invoices = res;
+    });
+  }
+
+  searchFilter() {
+    if(this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchAccounts();
+    }
+  }
+
+  resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      amount: '',
+      startDate: null,
+      endDate: null,
+      categoryID: null,
+    }
+    this.fetchAccounts();
   }
 
 }

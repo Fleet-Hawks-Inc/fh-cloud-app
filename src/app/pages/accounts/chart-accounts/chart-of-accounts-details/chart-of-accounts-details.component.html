@@ -4,21 +4,30 @@
       <header class="page-header">
         <div class="row" style="padding-top:10px;">
           <div class="col-lg-3 col-md-3">
-            <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-calendar-alt"></i>
-                </span> </span>
-              <input type="text" class="form-control" name="start"> <span
-                class="input-group-text border-left-0 border-right-0 rounded-0">
-                to
-              </span>
-              <input type="text" class="form-control" name="end">
+            <div class="input-daterange input-group">
+               <span class="input-group-prepend">
+                  <span class="input-group-text">
+                     <i class="fas fa-calendar-alt"></i>
+                  </span>
+               </span>
+               <input [(ngModel)]="filter.startDate" name="startDate"
+                  type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                  ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                  autocomplete="off">
+               <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+               </span>
+               <input [(ngModel)]="filter.endDate" name="endDate"
+                  type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                  ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                  autocomplete="off">
             </div>
+         </div>
+          <div class="col-md-2  col-lg-2">
+            <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+            <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
           </div>
-          <div class="col-md-1  col-lg-1">
-            <button type="submit" class="btn btn-sm btn-success">Search</button>
-          </div>
-          <div class="col-md-8  col-lg-8 text-right"> <a routerLink="/accounts/chart-accounts/list"
+          <div class="col-md-7  col-lg-7 text-right"> <a routerLink="/accounts/chart-accounts/list"
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> Chart Of Accounts</a>
           </div>
         </div>
@@ -34,7 +43,7 @@
                       <div class="text-center p-4 ">
                         <i class="fas fa-file-invoice-dollar text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actName}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actName | titlecase}}</p>
                         <p class="mb-0">Account Name</p>
                       </div>
                     </div>
@@ -50,7 +59,7 @@
                       <div class="text-center p-4">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actType}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actType | titlecase}}</p>
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
@@ -79,18 +88,20 @@
                       </tr>
                       <tr *ngFor="let trx of account.transactionLog; let i= index">
                         <td>{{i+1}}</td>
-                        <td>{{trx.trxDate}}</td>
-                        <td>{{trx.name}}</td>
-                        <td>{{trx.type}}</td>
+                        <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
+                        <td><span *ngIf="trx.name !== undefined">{{customersObject[trx.name] |  titlecase}}</span>
+                          <span *ngIf="trx.name === undefined">-</span>
+                        </td>
+                        <td>{{trx.type | titlecase}}</td>
                         <td>{{trx.desc}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
-                        <td>{{trx.trxRunTotal}}&nbsp; <span>{{trx.trxType === 'debit' ?  'Dr' : 'Cr'}}</span></td>
+                        <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Closing Balance</td>
                         <td></td>
-                        <td>{{account.closingAmt}}&nbsp;{{account.opnBalCurrency}}</td>
+                        <td>{{account.closingAmt | absoluteValue}}&nbsp;{{account.opnBalCurrency}}</td>
                         <td></td>
                       </tr>
                       <tr>

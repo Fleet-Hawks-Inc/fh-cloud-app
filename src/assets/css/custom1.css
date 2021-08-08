@@ -444,6 +444,11 @@ html.fixed .content-body {
 .modal .modal-dialog {
     max-width: 900px;
 }
+
+.modal .modal-dialog-lg {
+    max-width: 1250px;
+}
+
 .modal .modal-dialog.modal-sm {
     max-width: 500px;
 }

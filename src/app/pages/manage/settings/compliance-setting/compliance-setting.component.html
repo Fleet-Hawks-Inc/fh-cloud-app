@@ -1,0 +1,378 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pr-0 pt-0">
+            <header class="page-header pr27 pl18">
+               <div class="row">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     <h2 class="font-weight-bold">Compliance Settings</h2>
+                  </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+                     <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
+                  </div>
+               </div>
+            </header>
+           
+            <div class="routing-overview__wrapper m-3">
+               <div class="row">
+                  <div class="col-lg-12 col-xl-12 mb-4">
+                     <div class=" ">
+                        <ul class="nav nav-tabs top-tabs">
+                           <li class="nav-item active">
+                              <a class="nav-link active" href="#hosset" data-toggle="tab">HOS</a>
+                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="#logsset" data-toggle="tab">Logs</a>
+                           </li>
+                           <!--
+						   <li class="nav-item">
+                              <a class="nav-link" href="#impexpset" data-toggle="tab">Import/Export</a>
+                           </li>
+						   <li class="nav-item">
+                              <a class="nav-link" href="#mperset" data-toggle="tab">Manage Access</a>
+                           </li>
+						   -->
+						   
+						    <li class="nav-item">
+                              <a class="nav-link" href="#umset" data-toggle="tab">Unidentified Miles</a>
+                           </li>
+						    <li class="nav-item">
+                              <a class="nav-link" href="#inspset" data-toggle="tab">Inspection</a>
+                           </li>
+						   <li class="nav-item">
+                              <a class="nav-link" href="#iftaset" data-toggle="tab">IFTA Reports</a>
+                           </li>
+                        
+                        </ul>
+                        <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                           <!-- driver listing -->
+						   <div id="hosset" class="tab-pane active">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Manage Duty Status</p>
+                                 </div>
+								 
+                                 <div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Add/Edit/Delete
+										</label>
+									</div>
+									<span class="text-2">Add/Edit/Delete</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										None
+										</label>
+									</div>
+									<span class="text-2">None</span>
+                                 </div>
+                              </div>
+                           </div>
+						   
+						   
+                           <!-- driver status -->
+                           <div id="logsset" class="tab-pane">
+                              <div class="row">
+                                 <div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Activate or deactivate your drivers:</p>
+                                 </div>
+								 
+								<div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Active Drivers
+										</label>
+									</div>
+									<span class="text-2">By this setting active drivers show only in driver listing</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										Show Uncertified Drivers
+										</label>
+									</div>
+									<span class="text-2">In this setting all listing (active, uncertified) show</span>
+                                 </div> 
+								 
+								
+                              </div>
+							  
+							  
+                           </div>
+						   
+                           <!-- import and export setting -->
+                           <div id="impexpset" class="tab-pane">
+                              <div class="row text-dark">
+                                 <div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Enable password protection before uploading/downloading files</p>
+                                 </div>
+								 
+                                 <div class="col-3 offset-lg-1">
+                                    <div class="checkbox-custom">
+                                       <input type="checkbox">
+                                       <label class="control-label font-weight-bold mt-2">Import</label>
+                                    </div>
+									<span class="text-2">The password is required only on import</span>
+                                 </div>
+								 
+								 <div class="col-4">
+                                    <div class="checkbox-custom">
+                                       <input type="checkbox">
+                                       <label class="control-label font-weight-bold mt-2">Export</label>
+                                    </div>
+									<span class="text-2">The password is required only on export</span>
+                                 </div>
+								 
+								 <div class="col-4">
+                                    <div class="checkbox-custom">
+                                       <input type="checkbox">
+                                       <label class="control-label font-weight-bold mt-2">Both</label>
+                                    </div>
+									<span class="text-2">The password is required for both</span>
+                                 </div>
+								 
+								 
+								 <div class="col-md-12 mt-4 text-center">
+										<button class="btn btn-default modal-dismiss">Cancel</button>
+										<button class="btn btn-success modal-confirm">Save</button>
+								</div>
+                              </div>
+                           </div>
+                           
+                           <!-- Manage Permissions -->
+                           <div id="mperset" class="tab-pane">
+                              <div class="row">
+                                 <div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Manage access layers within system:</p>
+                                 </div>
+								 
+								<div class="col-12">
+											<table class="table table-striped table-bordered">
+												<thead>
+													<tr style="background-color:#ccc;">
+														<th>Role</th>
+														<th colspan="7">Access Layer</th>
+														<th>Action</th>
+														
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Fleet Manager</td>
+														<td>Basic Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Document Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Payment & Licence Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>HOS Compliance <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Emergency Contact <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td><a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+													</tr>
+													
+													<tr>
+														<td>Account Manager</td>
+														<td>Basic Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Document Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Payment & Licence Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>HOS Compliance <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Emergency Contact <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td><a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+													</tr>
+													
+													<tr>
+														<td>Safety Manager</td>
+														<td>Basic Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Document Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Payment & Licence Detail <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Address <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>HOS Compliance <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td>Emergency Contact <a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+														<td><a href="#editperm" class="btn ml-3 btn-dark btn-sm modal-with-form"><i class="fas fa-pen"></i></a>
+														</td>
+													</tr>
+													
+												
+												</tbody>
+											</table>
+											
+											<div id="editperm" class="modal-block modal-block-primary mfp-hide">
+												<section class="card">
+													<header class="card-header">
+														<h2 class="card-title">Set Permissions</h2> </header>
+													<div class="card-body text-dark">
+														<form>
+															<div class="form-row">
+																<div class="col-lg-4">
+																	<label class="contcheck"> Read
+																	  <input type="checkbox" checked="checked">
+																	  <span class="checkmark"></span>
+																	</label>
+																</div>
+																<div class="col-lg-4">
+																	<label class="contcheck"> Write
+																	  <input type="checkbox" checked="checked">
+																	  <span class="checkmark"></span>
+																	</label>
+																</div>
+																
+																<div class="col-lg-4">
+																	<label class="contcheck"> Both
+																	  <input type="checkbox" checked="checked">
+																	  <span class="checkmark"></span>
+																	</label>
+																</div>
+															</div>
+														
+															
+														
+															
+														</form>
+													</div>
+													<footer class="card-footer">
+														<div class="row">
+															<div class="col-md-12 text-right">
+																<button class="btn btn-default modal-dismiss">Cancel</button>
+																<button class="btn btn-success modal-confirm">Save</button>
+															</div>
+														</div>
+													</footer>
+												</section>
+											</div>
+											
+											
+													
+										</div>
+                              </div>
+							  
+							  
+                           </div>
+						   
+						   
+						   <div id="umset" class="tab-pane">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Set the visibility of driver listing to:</p>
+                                 </div>
+								 
+                                 <div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Active Drivers
+										</label>
+									</div>
+									<span class="text-2">By this setting active drivers show only in driver listing</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										Show Both Active/Inactive Drivers
+										</label>
+									</div>
+									<span class="text-2">In this setting all listing (active, in active) show</span>
+                                 </div>
+                              </div>
+                           </div>
+						   
+						   
+						   
+						   <div id="inspset" class="tab-pane">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Set the visibility of driver listing to:</p>
+                                 </div>
+								 
+                                 <div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Active Drivers
+										</label>
+									</div>
+									<span class="text-2">By this setting active drivers show only in driver listing</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										Show Both Active/Inactive Drivers
+										</label>
+									</div>
+									<span class="text-2">In this setting all listing (active, in active) show</span>
+                                 </div>
+                              </div>
+                           </div>
+						   
+						   
+						   <div id="iftaset" class="tab-pane">
+                              <div class="row pt-2">
+								<div class="col-12">
+                                    <p class="text-4 font-weight-bold text-dark">Set the visibility of driver listing to:</p>
+                                 </div>
+								 
+                                 <div class="col-5 offset-lg-1">
+									<div class="radio">
+										<label>
+										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+										Active Drivers
+										</label>
+									</div>
+									<span class="text-2">By this setting active drivers show only in driver listing</span>
+                                 </div>
+								 
+								 <div class="col-5">
+                                    <div class="radio">
+										<label>
+										<input type="radio" name="ad" id="ad" class="driver-type">
+										Show Both Active/Inactive Drivers
+										</label>
+									</div>
+									<span class="text-2">In this setting all listing (active, in active) show</span>
+                                 </div>
+                              </div>
+                           </div>
+						   
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>

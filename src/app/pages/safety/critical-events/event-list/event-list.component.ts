@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, HereMapService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import * as moment from "moment";
 import { SafetyService } from 'src/app/services/safety.service';
+import Constants from 'src/app/pages/fleet/constants';
+import { constants } from 'os';
 
 @Component({
   selector: 'app-event-list',
@@ -18,164 +20,158 @@ export class EventListComponent implements OnInit {
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
-  coachingStatus = [
-    {
-      value:'open',
-      name: 'Open'
-    },
-    {
-      value:'closed',
-      name: 'Closed'
-    },
-    {
-      value:'underReview',
-      name: 'Under Review'
-    },
-    {
-      value:'coaching',
-      name: 'Coaching'
-    },
-    {
-      value:'investigating',
-      name: 'Investigating'
-    },
-  ];
-  vehicles  = [];
+
+  vehicles = [];
   vehicleID = '';
-  filterValue = {
-    date: '',
-    driverID: '',
-    filterDateStart: <any> '',
-    filterDateEnd: <any> '',
-    driverName: '',
-    vehicleID:null
+  filter = {
+    vehicleID: null,
+    date: null
+
   };
-  
+
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
+  drivers = [];
+  dataMessage: any = Constants.FETCHING_DATA;
 
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
   status_values: any = ["open", "investigating", "coaching", "closed"];
+  lastItemSK: string = '';
   
-  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toastr: ToastrService,
-    private spinner: NgxSpinnerService,) { }
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
+    private spinner: NgxSpinnerService, private hereMapService: HereMapService) { 
+      const date = new Date();
+      this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+      this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
+    }
 
-  ngOnInit(): void {
-    this.fetchevents();
+  async ngOnInit() {
+    this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
-    this.fetchAllDriverIDs();
   }
 
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
 
+        }
+        const location = await this.hereMapService.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          return 'NA';
+        }
+      } else {
+        return 'NA';
+      }
+    } catch (error) {
+      return 'NA';
+    }
+  }
+
+  
   fetchVehicles() {
     this.apiService.getData('vehicles')
-    .subscribe((result: any) => {
+      .subscribe((result: any) => {
         this.vehicles = result.Items;
-    })
-  }
-
-  searchFilter(event, type, vehicleID) {
-    if(type === 'vehicle') {
-      this.filterValue.vehicleID = vehicleID;
-      
-      $("#searchVehicle").text(event.target.innerText);
-    } 
-    if(type === 'date') {
-      if(this.filterValue.date !== '') {
-        let date = this.filterValue.date;
-        let newdate = date.split('-').reverse().join('-');
-        this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
-        this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
-        this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
-        this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
-      }
-    }
+      })
   }
 
   searchEvents() {
-    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
-      
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.filter.date == '') {
+      this.filter.date = 'null'
     }
-  }
+    this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
+      .subscribe(async (result: any) => {
 
-  fetchevents() {
-    this.safetyService.getData('critical-events')
-      .subscribe((result: any) => {
-        this.events = result;
-      })
-  }
+        if (result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.events = [];
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          const location = await this.getLocation(element.location);
+          element.location = location;
+          this.events.push(element);
 
-  getSuggestions(searchvalue='') {
-    if(searchvalue !== '') {
-      searchvalue = searchvalue.toLowerCase();
-      this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
-        complete: () => {},
-        error: () => { },
-        next: (result: any) => {
-          this.suggestions = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-  
-            let obj = {
-              userName: element.userName,
-              name: element.firstName + ' ' + element.lastName
-            };
-            this.suggestions.push(obj)
-          }
         }
       })
-    }    
   }
 
+  async fetchEvents(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.events = [];
+    }
+    if (this.lastItemSK != 'end') {
+      this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
+        .subscribe(async (result: any) => {
+          
+          if (result.length == 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if(result.length > 0) {
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              const location = await this.getLocation(element.location);
+              element.location = location;
+              this.events.push(element);
+  
+            }
+            if (this.events[this.events.length - 1].sk != undefined) {
+              this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
+          }
+         
+        })
+    }
+
+  }
+
+
   changeStatus(eventID: any, newValue: string, i: string) {
-    
+
     let data = {
       eventID: eventID,
       status: newValue
     }
-    this.safetyService.putData('critical-events', data).subscribe(async (res: any)=> { 
-      
-      if(res == false) {
-        let result = await this.getOldStatus(eventID)
-        this.events[i].status = result[0].status;
-        this.toastr.error('Please select valid status');
+    this.safetyService.putData('critical-events', data).subscribe(async (res: any) => {
+      if (res.status == false) {
+        this.events[i].status = res.oldStatus;
+        this.toaster.error('Please select valid status');
       } else {
-        this.toastr.success('Status updated successfully');
+        this.toaster.success('Status updated successfully');
       }
     });
 
   }
 
-  async getOldStatus(eventID: string) {
-    return await this.safetyService.getData('critical-events/' + eventID).toPromise();
-    
-  }
-
-  searchSelectedDriver(data) {
-    this.filterValue.driverID = data.userName;
-    this.filterValue.driverName = data.name;
-    this.suggestions = [];
-  }
-
   resetFilter() {
-    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
-      this.spinner.show();
-      this.filterValue = {
-        date: '',
-        driverID: '',
-        filterDateStart: '',
-        filterDateEnd: '',
+    
+    if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
+      this.lastItemSK = '';
+      this.events = [];
+      this.fetchEvents();
+      this.filter = {
         vehicleID: null,
-        driverName: ''
+        date: ''
       };
-      this.suggestions = [];
-      $("#searchVehicle").text('Search by vehicle');
-      this.spinner.hide();
+      
     } else {
       return false;
     }
-    
+
   }
 
   fetchAllVehiclesIDs() {
@@ -185,11 +181,22 @@ export class EventListComponent implements OnInit {
       });
   }
 
-  fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/username-list')
-      .subscribe((result: any) => {
-        this.driversObject = result;
-        
-      });
+
+
+  convertTimeFormat(time: any) {
+    // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice(1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(''); // return adjusted time or original string
   }
+
+  onScroll() {
+    this.fetchEvents();
+  }
+
 }

@@ -1,164 +1,251 @@
-<section class="body">
+<section class="body" *ngIf="showDetails">
  <div class="inner-wrapper">
   <section role="main" class="content-body pt-0 pr-0 pl-0">
     <header class="page-header pr-5">
       <div class="row pr-1 mr-1" style="padding-top:10px;">
-        <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Invoice Details </div>
-        <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/accounts/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Invoices</a>
+        <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> <h5 class="m-0 font-weight-bold">Invoice# - {{invoice.invNo}} <span class="badge badge-dark p-1">{{invoice.invStatus | uppercase}}</span></h5></div>
+        <div class="col-md-8 col-lg-8 text-right">
+            <button class="btn btn-sm btn-success mr-1" (click)="generatePDF()">Print Invoice</button>
+           <a routerLink="/accounts/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Invoices</a>
         </div>
       </div>
     </header>
     <section class="m-2">
       <div class="row mb-3">
-        <div class="col-lg-12">
-          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-            <h4 class="m-0 font-weight-bold">Invoice# - {{invoice.invNo}} <span class="badge badge-dark p-1">{{invoice.invStatus}}</span></h4> </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-lg-12">
-          <div class="bg-white p-3">
-            <div class="row mb-3">
-              <div class="col-lg-6 text-dark">
-                <div id="vehicle-details" class="">
-                  <div class="row m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Customer:</div>
-                    <div class="col-lg-8 p-2">{{customersObjects[invoice.invCustomerID]}}</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Address:</div>
-                    <div class="col-lg-8 p-2">100 Street, Olympic Park</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">City, Province or State:</div>
-                    <div class="col-lg-8 p-2">Calagary, AB</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Country:</div>
-                    <div class="col-lg-8 p-2">Canada</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Phone:</div>
-                    <div class="col-lg-8 p-2">(103) 069-1461</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Email:</div>
-                    <div class="col-lg-8 p-2">info@fleetinc.ca</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left">Fax:</div>
-                    <div class="col-lg-8 p-2">(103) 069-1465</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6 text-dark">
-                <div id="vehicle-details" class="">
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Reference#/Order#:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invRef}}</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Creation Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invDate}} </div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Invoice Due Date:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invDueDate}}</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Total Amount:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.totalAmount}}</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount Received:</div>
-                    <div class="col-lg-8 p-2 border-box">0.00</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Balance:</div>
-                    <div class="col-lg-8 p-2 border-box">6050 CAD</div>
-                  </div>
-                    <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Salesperson:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invSalesman}}</div>
-                  </div>
-                  <div class="row  m-0">
-                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Subject:</div>
-                    <div class="col-lg-8 p-2 border-box">{{invoice.invSubject}}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-lg-12"> </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-lg-12">
-          <div class="bg-white p-3">
-            <div class="row">
-              <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
-                <div class="col-xl-12 col-12 mb-3">
-                  <div class="boxshadow1 maindisbox w100 pull-left">
-                    <div class="widgetload">
-                      <div class="widgettbload"> <span class="pull-right text-3 mt-2 text-dark">
-                                         </span>
-                        <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Charges</h2> </div>
-                      <div class="widgetlinfo">
-                        <div class="col-lg-2 pull-left"> <img src="img/icon-cur.png" class="img-fluid" alt="shipper"> </div>
-                        <div class="col-lg-10 pull-left">
-                          <p class="mb-0 text-dark">Discount <span class="pull-right">{{invoice.discount}}{{invoice.discountUnit}}</span></p>
-                          <p class="mb-0 text-dark">Subtotal<span class="pull-right">{{invoice.subTotal}}</span></p>
-                          <p class="mb-0 text-dark">Tax Amount ( <span class="font-weight-semibold">AB</span> ) <span class="pull-right">50.00 CAD</span></p>
-                          <p class="mb-0 text-dark bordtopdas"><strong>Total Amount</strong> <span class="pull-right">{{invoice.totalAmount}}</span></p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-6 col-12 pl-0 pr-0">
-                <div class="col-xl-12 col-12 mb-3">
-                  <table class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Account Name</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                      </tr>
-                    </thead>
+        <div class="col-lg-6 offset-lg-3">
+          <section class="invoice-wrapper p-0" style="background-color: #fff; border-bottom: 0px !important;" id="print_wrap">
+            <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2"><h1 class="font-weight-bold text-dark f-60">{{invoice.invSubject | titlecase}}</h1></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td width="50%" valign="top">
+                  <h2 class="text-dark mb-0 font-weight-bold text-5">{{carrier.carrierName | titlecase}}</h2>
+                  <p class="text-dark"><span *ngIf="!carrierAddress.manual">{{carrierAddress.userLocation}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.address}},</span>{{carrierAddress.cityName}},
+                    <span *ngIf="!carrierAddress.manual">{{carrierAddress.stateName}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.stateName}},</span>
+                    <span *ngIf="!carrierAddress.manual">{{carrierAddress.countryName}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.countryName}},</span>{{carrierAddress.zipCode}}
+                    <br>
+                  <strong>Phone:</strong> {{carrier.phone}}<br>
+                  <strong>Email:</strong> {{carrier.email}}
+                  </p>
+                  </td>
+                  <td valign="top"><table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td>Account1(a/c selected in form)</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>0.00</td>
-                        <td>6050 CAD</td>
-                      </tr>
-                      <tr>
-                        <td>Accounts Receivable</td>
-                        <td>Customer Name</td>
-                        <td>Invoice Income</td>
-                        <td>6050 CAD</td>
-                        <td>0.00</td>
-                      </tr>
-                      <tr>
-                        <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>6050 CAD</td>
-                        <td>6050 CAD</td>
+                        <td align="right">
+                        <h2 class="text-dark mb-0 font-weight-bold text-5">By Salesperson</h2>
+                      <p class="text-dark"><span *ngIf="invoice.invSalesman !== null && invoice.invSalesman !== undefined && invoice.invSalesman !== '' ">{{invoice.invSalesman}}</span>
+                      </p>
+                        </td>
                       </tr>
                     </tbody>
+                  </table></td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td><h2 class="text-dark mb-0 font-weight-bold text-9 bordbtm3">Invoice Detail</h2></td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+
+                  <td><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td><h2 class="text-dark mb-0 font-weight-bold text-9 bordbtm3">Invoice To</h2></td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+                </tr>
+                <tr>
+                  <td valign="top"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td width="40%">
+                        <p class="text-dark mb-0 text-3"><strong>Invoice:</strong>
+                      </p>
+                        </td>
+                        <td><p class="text-dark mb-0">{{invoice.invNo}}</p>
+                  </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        <p class="text-dark mb-0 text-3"><strong>Invoice Date:</strong>
+                      </p>
+                        </td>
+                        <td><p class="text-dark mb-0">{{invoice.txnDate}}</p>
+                  </td>
+                      </tr>
+                     <tr>
+                        <td>
+                        <p class="text-dark mb-0 text-3"><strong>Due Date:</strong>
+                      </p>
+                        </td>
+                        <td><p class="text-dark mb-0">{{invoice.invDueDate}}</p>
+                  </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        <p class="text-dark mb-0 text-3"><strong>Terms:</strong>
+                      </p>
+                        </td>
+                        <td><p class="text-dark mb-0"><span *ngIf="invoice.invPayTerms === '15' || invoice.invPayTerms === '30' || invoice.invPayTerms === '45' ">{{invoice.invPayTerms}} Days</span>
+                          <span *ngIf="invoice.invPayTerms === 'dueReceipt' ">Due On Receipt</span>
+                          <span *ngIf="invoice.invPayTerms === 'dueEnd' ">Due End Of The Month</span>
+                          <span *ngIf="invoice.invPayTerms === 'custom' ">Custom</span></p>
+                  </td>
+                      </tr>
+                      <tr>
+                        <td>
+                        <p class="text-dark mb-0 text-3"><strong>Invoice Subject:</strong>
+                      </p>
+                        </td>
+                        <td><p class="text-dark mb-0">{{invoice.invSubject |titlecase}}</p>
+                  </td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+             <td width="50%" valign="top">
+                  <h3 class="text-dark mb-0 font-weight-bold text-4">{{customersObjects[invoice.customerID]}}</h3>
+                  <p class="text-dark">{{customerAddress}},<span *ngIf="customerAddressType === 'manual'">{{customerCityName}}, {{customerStateName}}, {{customerCountryName}},</span>{{customerZipcode}}<br>
+                  <strong>Phone:</strong> {{ customerPhone }}<br>
+                  <strong>Email:</strong> {{ customerEmail }}
+                  </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td width="46%" class="pl-3 pt-2"><p class="text-3 font-weight-bold text-dark mb-2">Description (Commodity/Services)</p></td>
+                        <td width="18%" class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Quantity/Hours</p></td>
+                        <td width="18%" class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Price/Rate ({{invoice.invCur}})</p></td>
+                        <td width="18%" class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Amount ({{invoice.invCur}})</p></td>
+                      </tr>
+                      <tr *ngFor="let dt of invoice.details; let d = index;">
+                        <td class="pl-3 pt-2"><p class="text-3 text-dark mb-2">  {{dt.commodityService}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.qtyHours}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.priceRate}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{dt.amount}}</p></td>
+                      </tr>
+
+                    </tbody>
                   </table>
-                </div>
-              </div>
+
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2"><table width="100%" border="0" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td width="84%" class="pr-3 pt-2 text-right"><p class="text-4 font-weight-bold text-dark mb-2">Discount <span *ngIf="invoice.discountUnit === '%'">({{invoice.discount}})%</span></p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-4 text-dark mb-2">{{invoice.discountAmount}}</p></td>
+                      </tr>
+                      <tr>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Sub Total</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.subTotal}}</p></td>
+                      </tr>
+                      <tr>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Tax( <span class="font-weight-semibold">{{statesObjects[invoice.invStateProvince]}}</span> )</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.taxAmount}}</p></td>
+                      </tr>
+                      <tr>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Total</p></td>
+                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.finalAmount}}</td>
+                      </tr>
+                      <tr>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Amount Paid</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.amountReceived}}</p></td>
+                      </tr>
+                      <tr>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Amount Due</p></td>
+                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.balance}}</td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td colspan="2">&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="mt-5 bg-white p-2">
+            <p class="font-weight-bold text-5 text-dark">Journal Details</p>
+            <div class="col-xl-12 col-12 mb-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Account Name</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dt of invoice.transactionLog">
+                    <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                       <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                    <td>{{customersObjects[dt.name] | titlecase}}</td>
+                    <td>{{dt.type | titlecase}}</td>
+                    <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                    <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" class="font-weight-bold text-right">Total</td>
+                    <td>{{total}} {{invoice.invCur}}</td>
+                    <td>{{total}} {{invoice.invCur}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
   </section>
  </div>
 </section>
+

@@ -68,6 +68,8 @@ export class AddTripComponent implements OnInit {
         driverIDs: [],
         vehicleIDs: [],
         assetIDs: [],
+        stlStatus: [],
+        carrierIDs: [],
         loc: '',
         mapFrom: 'order',
         iftaMiles: []
@@ -180,6 +182,7 @@ export class AddTripComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+    splitArr = [];
 
     async ngOnInit() {
 
@@ -273,9 +276,7 @@ export class AddTripComponent implements OnInit {
 
                 if(this.trips.length > 0) {
                     let endingPoint = this.textFieldValues['lng'] + "," + this.textFieldValues['lat'];
-                    console.log('endingPoint===', endingPoint);
                     this.getSingleRowMiles(endingPoint, this.trips.length);
-                    console.log('hello')
                 }
 
                 
@@ -593,93 +594,112 @@ export class AddTripComponent implements OnInit {
                             let PTime = '';
                             
                             m.shippers.map(async (n) => {
-                                if (n.dateAndTime != undefined && n.dateAndTime != '') {
-                                    let dmy = n.dateAndTime.split(' ');
-                                    PDate = dmy[0];
-                                    PTime = dmy[1];
-                                }
-                                let pickupMiles = 0;
-                                let obj = {
-                                    type: 'Pickup',
-                                    date: PDate,
-                                    name: current.shippersObjects[n.shipperID],
-                                    dateTime: n.dateAndTime,
-                                    miles: pickupMiles,
-                                    carrierID: '',
-                                    carrierName: '',
-                                    // time: PTime,
-                                    pickupTime: PTime,
-                                    dropTime: '',
-                                    actualPickupTime: '',
-                                    actualDropTime: '',
-                                    locationName: n.pickupLocation,
-                                    vehicleName: '',
-                                    trailerName: '',
-                                    driverName: '',
-                                    coDriverName: '',
-                                    fromOrder: 'yes',
-                                    lat:n.position.lat,
-                                    lng:n.position.lng
-                                }
-                                // current.calculateActualMiles(pickupMiles)
-                                if(n.pickupLocation != '' && n.pickupLocation != undefined){
-                                    locations.push(n.pickupLocation)
-                                }
-                                tripPlans.push(obj);
-                                // tripPlans.sort((a, b) => b.type.localeCompare(a.type)); 
-
-                                tripPlans.sort((a, b) => {
-                                    return (
-                                      new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
-                                    );
-                                });
+                                n.pickupPoint.map((pk) => {
+                                    if (pk.dateAndTime != undefined && pk.dateAndTime != '') {
+                                        let dmy = pk.dateAndTime.split(' ');
+                                        PDate = dmy[0];
+                                        PTime = dmy[1];
+                                    }
+                                    let pickLocation = '';
+                                    if(pk.address.manual) {
+                                        pickLocation = `${pk.address.address}, ${pk.address.city}, ${pk.address.state}. ${pk.address.country}`;
+                                    } else {
+                                        pickLocation = pk.address.pickupLocation;
+                                    }
+                                    let pickupMiles = 0; 
+                                    let obj = {
+                                        type: 'Pickup',
+                                        date: PDate,
+                                        name: current.shippersObjects[n.shipperID],
+                                        dateTime: pk.dateAndTime,
+                                        miles: pickupMiles,
+                                        carrierID: '',
+                                        carrierName: '',
+                                        // time: PTime,
+                                        pickupTime: PTime,
+                                        dropTime: '',
+                                        actualPickupTime: '',
+                                        actualDropTime: '',
+                                        locationName: pickLocation,
+                                        vehicleName: '',
+                                        trailerName: '',
+                                        driverName: '',
+                                        coDriverName: '',
+                                        fromOrder: 'yes',
+                                        lat:pk.address.geoCords.lat,
+                                        lng:pk.address.geoCords.lng
+                                    }
+                                    // current.calculateActualMiles(pickupMiles)
+                                    if(n.pickupLocation != '' && n.pickupLocation != undefined){
+                                        locations.push(n.pickupLocation)
+                                    }
+                                    tripPlans.push(obj);
+                                    // tripPlans.sort((a, b) => b.type.localeCompare(a.type)); 
+    
+                                    tripPlans.sort((a, b) => {
+                                        return (
+                                          new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
+                                        );
+                                    });
+                                })
+                                
                             })
                         })
 
                         v.shippersReceiversInfo.map( (j) => {
                              j.receivers.map(async (k) => {
-                                let DrDate = moment().format('YYYY-MM-DD');
-                                let DrTime = '';
-                                if (k.dateAndTime != undefined && k.dateAndTime != '') {
-                                    let dmy = k.dateAndTime.split(' ');
-                                    DrDate = dmy[0];
-                                    DrTime = dmy[1];
-                                }
+                                k.dropPoint.map((dr) => {
+                                    let dropLocation = '';
+                                    if(dr.address.manual) {
+                                        dropLocation = `${dr.address.address}, ${dr.address.city}, ${dr.address.state}, ${dr.address.country}`;
+                                    } else {
+                                        dropLocation = dr.address.dropOffLocation;
+                                    }
+
+                                    let DrDate = moment().format('YYYY-MM-DD');
+                                    let DrTime = '';
+                                    if (dr.dateAndTime != undefined && dr.dateAndTime != '') {
+                                        let dmy = dr.dateAndTime.split(' ');
+                                        DrDate = dmy[0];
+                                        DrTime = dmy[1];
+                                    }
+                                    
+                                    let deliveryMiles = 0;
+                                    let obj = {
+                                        type: 'Delivery',
+                                        date: DrDate,
+                                        dateTime: dr.dateAndTime,
+                                        name: current.receiversObjects[k.receiverID],
+                                        miles: deliveryMiles,
+                                        carrierID: '',
+                                        carrierName: '',
+                                        // time: DrTime,
+                                        pickupTime: '',
+                                        dropTime: DrTime,
+                                        actualPickupTime: '',
+                                        actualDropTime: '',
+                                        locationName: dropLocation,
+                                        vehicleName: '',
+                                        trailerName: '',
+                                        driverName: '',
+                                        coDriverName: '',
+                                        fromOrder: 'yes',
+                                        lat:dr.address.geoCords.lat,
+                                        lng:dr.address.geoCords.lng
+                                    }
+                                    if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
+                                        locations.push(k.dropOffLocation)
+                                    }
+                                    
+                                    tripPlans.push(obj);
+                                    // tripPlans.sort((a, b) => b.type.localeCompare(a.type));
+                                    tripPlans.sort((a, b) => {
+                                        return (
+                                        new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
+                                        );
+                                    });
+                                })
                                 
-                                let deliveryMiles = 0;
-                                let obj = {
-                                    type: 'Delivery',
-                                    date: DrDate,
-                                    dateTime: k.dateAndTime,
-                                    name: current.receiversObjects[k.receiverID],
-                                    miles: deliveryMiles,
-                                    carrierID: '',
-                                    carrierName: '',
-                                    // time: DrTime,
-                                    pickupTime: '',
-                                    dropTime: DrTime,
-                                    actualPickupTime: '',
-                                    actualDropTime: '',
-                                    locationName: k.dropOffLocation,
-                                    vehicleName: '',
-                                    trailerName: '',
-                                    driverName: '',
-                                    coDriverName: '',
-                                    fromOrder: 'yes',
-                                    lat:k.position.lat,
-                                    lng:k.position.lng
-                                }
-                                if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
-                                    locations.push(k.dropOffLocation)
-                                }
-                                
-                                tripPlans.push(obj);
-                                // tripPlans.sort((a, b) => b.type.localeCompare(a.type));
-                                tripPlans.sort((a, b) => {
-                                    return (
-                                      new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
-                                    );
-                                });
                             })
                         })
                     }
@@ -746,13 +766,11 @@ export class AddTripComponent implements OnInit {
                
                 // this.textFieldValues.miles = result;
                 this.trips[tripLength].miles = result;
-                console.log('this.textFieldValues.miles', this.textFieldValues.miles);
                 this.calculateActualMiles(result);
                 this.getStateWiseMiles();
             });
         }
         catch (error) {
-            console.error(error)
             throw new Error(error);
         }
     }
@@ -903,18 +921,19 @@ export class AddTripComponent implements OnInit {
             if(addType == 'populate') {
                 for (let l = 0; l < this.trips.length; l++) {
                     const element = this.trips[l];
-                    
-                    element.vehicleName = this.tempTextFieldValues.vehicleName;
-                    element.vehicleID = this.tempTextFieldValues.vehicleID;
-                    element.trailer = this.tempTextFieldValues.trailer;
-                    element.driverName = this.tempTextFieldValues.driverName;
-                    element.driverUsername = this.tempTextFieldValues.driverUsername;
-                    element.coDriverName = this.tempTextFieldValues.coDriverName;
-                    element.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
-                    element.trailerName = this.tempTextFieldValues.trailerName;
-                    element.driverID = this.tempTextFieldValues.driverID;
-                    element.coDriverID = this.tempTextFieldValues.coDriverID;
-                    element.trailerID = this.informationAsset;
+                    if(element.carrierID == '') {
+                        element.vehicleName = this.tempTextFieldValues.vehicleName;
+                        element.vehicleID = this.tempTextFieldValues.vehicleID;
+                        element.trailer = this.tempTextFieldValues.trailer;
+                        element.driverName = this.tempTextFieldValues.driverName;
+                        element.driverUsername = this.tempTextFieldValues.driverUsername;
+                        element.coDriverName = this.tempTextFieldValues.coDriverName;
+                        element.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
+                        element.trailerName = this.tempTextFieldValues.trailerName;
+                        element.driverID = this.tempTextFieldValues.driverID;
+                        element.coDriverID = this.tempTextFieldValues.coDriverID;
+                        element.trailerID = this.informationAsset;
+                    }
                 }
 
                 $("#assignConfirmationModal").modal('hide');
@@ -1079,9 +1098,11 @@ export class AddTripComponent implements OnInit {
         }
 
         let selectedDriverids = [];
+        let selectedCarrierids = [];
         let selectedVehicles = [];
         let selectedAssets = [];
         let selectedLocations = '';
+        let stlStatus = [];
         if (planData.length >= 2) {
             let addedPlan = planData.map(function (v) { return v.type; });
 
@@ -1135,12 +1156,16 @@ export class AddTripComponent implements OnInit {
                 if(element.driverID != '' && element.driverID != undefined) {
                     if(!selectedDriverids.includes(element.driverID)) {
                         selectedDriverids.push(element.driverID);
+                        let driverStatus = element.driverID + ':false';
+                        stlStatus.push(driverStatus);
                     }
                 }
 
                 if(element.coDriverID != '' && element.coDriverID != undefined) {
                     if(!selectedDriverids.includes(element.coDriverID)) {
                         selectedDriverids.push(element.coDriverID);
+                        let driverStatus = element.driverID + ':false';
+                        stlStatus.push(driverStatus);
                     }
                 }
 
@@ -1153,6 +1178,14 @@ export class AddTripComponent implements OnInit {
                 if(element.locationName != '' && element.locationName != undefined) {
                     element.locationName = element.locationName.replace(/,/g, "");
                     selectedLocations += element.locationName.toLowerCase() + '|';
+                }
+
+                if(element.carrierID != '' && element.carrierID != undefined) {
+                    if(!selectedCarrierids.includes(element.carrierID)) {
+                        selectedCarrierids.push(element.carrierID);
+                        let carrStatus = element.carrierID + ':false';
+                        stlStatus.push(carrStatus);
+                    }
                 }
 
                 if (element.trailer != '' && element.trailer != undefined) {
@@ -1178,6 +1211,8 @@ export class AddTripComponent implements OnInit {
         this.tripData.vehicleIDs = await selectedVehicles;
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
+        this.tripData.stlStatus = await stlStatus;
+        this.tripData.carrierIDs = await selectedCarrierids;
         this.spinner.show();
         this.errors = {};
         this.hasError = false;
@@ -1270,25 +1305,40 @@ export class AddTripComponent implements OnInit {
                 let ind2 = 1;
                 i.shippersReceiversInfo.map((j) => {
                     j.receivers.map((k) => {
-                        let dateTime = '';
-                        if (k.dateAndTime != undefined && k.dateAndTime != '') {
-                            let dmy = k.dateAndTime.split(' ');
-                            dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                        }
-                        i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
-                        ind++;
+                        k.dropPoint.map((dr) => {
+                            let dateTime = '';
+                            if (dr.dateAndTime != undefined && dr.dateAndTime != '') {
+                                let dmy = dr.dateAndTime.split(' ');
+                                dateTime = moment(dmy[0]).format("YYYY/MM/DD") + ' ' + dmy[1];
+                            }
+                            if(dr.address.manual) {
+                                i.deliveryLocations += ind + '. ' + dr.address.address + ' <br/>' + dateTime + ' <br/>';    
+                            } else {
+                                i.deliveryLocations += ind + '. ' + dr.address.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
+                            }
+                            
+                            ind++;
+                        })
+                        
                     })
                 })
 
                 i.shippersReceiversInfo.map((m) => {
-                    let dateTime = '';
                     m.shippers.map((n) => {
-                        if (n.dateAndTime != undefined && n.dateAndTime != '') {
-                            let dmy = n.dateAndTime.split(' ');
-                            dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                        }
-                        i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
-                        ind2++;
+                        n.pickupPoint.map((pk) => {
+                            let dateTime = '';
+                            if (pk.dateAndTime != undefined && pk.dateAndTime != '') {
+                                let dmy = pk.dateAndTime.split(' ');
+                                dateTime = moment(dmy[0]).format("YYYY/MM/DD") + ' ' + dmy[1];
+                            }
+                            if(pk.address.manual) {
+                                i.pickupLocations += ind2 + '. ' + pk.address.address + ' <br/>' + dateTime + ' <br/>';
+                            } else {
+                                i.pickupLocations += ind2 + '. ' + pk.address.pickupLocation + ' <br/>' + dateTime + ' <br/>';
+                            }
+                            ind2++;
+                        })
+                        
                     })
                 })
             }
@@ -1393,6 +1443,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['createdDate'] = result.createdDate;
                 this.tripData['createdTime'] = result.createdTime;
                 this.tripData['mapFrom'] = result.mapFrom;
+                this.tripData['settlmnt'] = result.settlmnt;
                 this.dateCreated = result.dateCreated;
                 this.orderNo = ''; 
                 
@@ -1517,11 +1568,12 @@ export class AddTripComponent implements OnInit {
             }
         }
 
-        
+        let selectedCarrierids = [];
         let selectedDriverids = [];
         let selectedVehicles = [];
         let selectedLocations = '';
         let selectedAssets = [];
+        let stlStatus = [];
 
         for (let i = 0; i < planData.length; i++) {
 
@@ -1588,18 +1640,30 @@ export class AddTripComponent implements OnInit {
             if(element.driverID != '' && element.driverID != undefined) {
                 if(!selectedDriverids.includes(element.driverID)) {
                     selectedDriverids.push(element.driverID);
+                    let driverStatus = element.driverID + ':false';
+                    stlStatus.push(driverStatus);
                 }
             }
 
             if(element.coDriverID != '' && element.coDriverID != undefined) {
                 if(!selectedDriverids.includes(element.coDriverID)) {
                     selectedDriverids.push(element.coDriverID);
+                    let driverStatus = element.coDriverID + ':false';
+                    stlStatus.push(driverStatus);
                 }
             }
 
             if(element.vehicleID != '' && element.vehicleID != undefined) {
                 if(!selectedVehicles.includes(element.vehicleID)) {
                     selectedVehicles.push(element.vehicleID);
+                }
+            }
+
+            if(element.carrierID != '' && element.carrierID != undefined) {
+                if(!selectedCarrierids.includes(element.carrierID)) {
+                    selectedCarrierids.push(element.carrierID);
+                    let carrStatus = element.carrierID + ':false';
+                    stlStatus.push(carrStatus);
                 }
             }
     
@@ -1616,12 +1680,13 @@ export class AddTripComponent implements OnInit {
         this.tripData.vehicleIDs = await selectedVehicles;
         this.tripData.assetIDs = await selectedAssets;
         this.tripData.loc = await selectedLocations;
+        this.tripData.stlStatus = await stlStatus;
+        this.tripData.carrierIDs = await selectedCarrierids;
 
         // this.spinner.show();
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-        console.log('this.tripData updateeeeeeeee', this.tripData);
         this.updateOrderStatusToConfirmed();
         this.apiService.putData('trips', this.tripData).subscribe({
             complete: () => {
@@ -1719,74 +1784,89 @@ export class AddTripComponent implements OnInit {
                         let PTime = '';
                         
                         m.shippers.map(async (n) => {
-                            if (n.dateAndTime != undefined && n.dateAndTime != '') {
-                                let dmy = n.dateAndTime.split(' ');
-                                PDate = dmy[0].split('-').reverse().join('-');
-                                PTime = dmy[1];
-                            }
-                            let pickupMiles = 0;
-                            let obj = {
-                                type: 'Pickup',
-                                // date: PDate,
-                                name: this.shippersObjects[n.shipperID],
-                                
-                                miles: pickupMiles,
-                                carrierID: '',
-                                carrierName: '',
-                                // time: PTime,
-                                pickupTime: PTime,
-                                dropTime: '',
-                                actualPickupTime: '',
-                                actualDropTime: '',
-                                locationName: n.pickupLocation,
-                                vehicleName: '',
-                                trailerName: '',
-                                driverName: '',
-                                coDriverName: '',
-                                fromOrder: 'yes',
-                                lat:n.position.lat,
-                                lng:n.position.lng
-                            }
-                            this.orderStops.push(obj);
-                            this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
+                            n.pickupPoint.map((pk) => {
+                                if (pk.dateAndTime != undefined && pk.dateAndTime != '') {
+                                    let dmy = pk.dateAndTime.split(' ');
+                                    PDate = dmy[0].split('-').reverse().join('-');
+                                    PTime = dmy[1];
+                                }
+                                let pickLocation = '';
+                                if(pk.address.manual) {
+                                    pickLocation = `${pk.address.address}, ${pk.address.city}, ${pk.address.state}. ${pk.address.country}`;
+                                } else {
+                                    pickLocation = pk.address.pickupLocation;
+                                }
+                                let pickupMiles = 0;
+                                let obj = {
+                                    type: 'Pickup',
+                                    // date: PDate,
+                                    name: this.shippersObjects[n.shipperID],
+                                    miles: pickupMiles,
+                                    carrierID: '',
+                                    carrierName: '',
+                                    // time: PTime,
+                                    pickupTime: PTime,
+                                    dropTime: '',
+                                    actualPickupTime: '',
+                                    actualDropTime: '',
+                                    locationName: pickLocation,
+                                    vehicleName: '',
+                                    trailerName: '',
+                                    driverName: '',
+                                    coDriverName: '',
+                                    fromOrder: 'yes',
+                                    lat:pk.address.geoCords.lat,
+                                    lng:pk.address.geoCords.lng
+                                }
+                                this.orderStops.push(obj);
+                                this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
+                            })
                         })
                     })
 
                     v.shippersReceiversInfo.map( (j) => {
                          j.receivers.map(async (k) => {
-                            let DrDate = '';
-                            let DrTime = '';
-                            if (k.dateAndTime != undefined && k.dateAndTime != '') {
-                                let dmy = k.dateAndTime.split(' ');
-                                DrDate = dmy[0].split('-').reverse().join('-');
-                                DrTime = dmy[1];
-                            }
-                            
-                            let deliveryMiles = 0;
-                            let obj = {
-                                type: 'Delivery',
-                                // date: DrDate,
-                                name: this.receiversObjects[k.receiverID],
-                                miles: deliveryMiles,
-                                carrierID: '',
-                                carrierName: '',
-                                // time: DrTime,
-                                pickupTime: '',
-                                dropTime: DrTime,
-                                actualPickupTime: '',
-                                actualDropTime: '',
-                                locationName: k.dropOffLocation,
-                                vehicleName: '',
-                                trailerName: '',
-                                driverName: '',
-                                coDriverName: '',
-                                fromOrder: 'yes',
-                                lat:k.position.lat,
-                                lng:k.position.lng
-                            }
-                            
-                            this.orderStops.push(obj);
-                            this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
+                            k.dropPoint.map((dr) => {
+                                let DrDate = '';
+                                let DrTime = '';
+                                if (dr.dateAndTime != undefined && dr.dateAndTime != '') {
+                                    let dmy = dr.dateAndTime.split(' ');
+                                    DrDate = dmy[0].split('-').reverse().join('-');
+                                    DrTime = dmy[1];
+                                }
+                                let dropLocation = '';
+                                if(dr.address.manual) {
+                                    dropLocation = `${dr.address.address}, ${dr.address.city}, ${dr.address.state}, ${dr.address.country}`;
+                                } else {
+                                    dropLocation = dr.address.dropOffLocation;
+                                }
+                                
+                                let deliveryMiles = 0;
+                                let obj = {
+                                    type: 'Delivery',
+                                    // date: DrDate,
+                                    name: this.receiversObjects[k.receiverID],
+                                    miles: deliveryMiles,
+                                    carrierID: '',
+                                    carrierName: '',
+                                    // time: DrTime,
+                                    pickupTime: '',
+                                    dropTime: DrTime,
+                                    actualPickupTime: '',
+                                    actualDropTime: '',
+                                    locationName: dropLocation,
+                                    vehicleName: '',
+                                    trailerName: '',
+                                    driverName: '',
+                                    coDriverName: '',
+                                    fromOrder: 'yes',
+                                    lat:dr.address.geoCords.lat,
+                                    lng:dr.address.geoCords.lng
+                                }
+                                
+                                this.orderStops.push(obj);
+                                this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
+                            })
                         })
                     })
                 }
@@ -1945,5 +2025,27 @@ export class AddTripComponent implements OnInit {
 
     showConfirmationPopup() {
         $("#assignConfirmationModal").modal('show');
+    }
+
+    splitTrip() {
+        let tripDriver = [];
+        for (const element of this.trips) {
+            if(!tripDriver.includes(element.driverID)) {
+                tripDriver.push(element.driverID);
+                let obj = {
+                    driverID: element.driverID,
+                    data: []
+                }
+                obj.data.push(element);
+                this.splitArr.push(obj);
+            } else {
+                this.splitArr.map((v) => {
+                    if(v.driverID == element.driverID) {
+                        v.data.push(element);
+                    }
+                })
+            }
+        }
+        console.log('this.splitArr', this.splitArr);
     }
 }

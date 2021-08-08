@@ -1,8 +1,9 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable, Output } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
+import { HttpClient } from "@angular/common/http"
 @Injectable({
   providedIn: "root",
 })
@@ -12,6 +13,15 @@ export class ListService {
 
   shipperDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperList = this.shipperDataSource.asObservable();
+
+  public isTrueDataSource = new BehaviorSubject<boolean>(false);
+  isTrueList = this.isTrueDataSource.asObservable();
+
+  shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  shipperObjectList = this.shipperObjectDataSource.asObservable();
+
+  receiverObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  receiverObjectList = this.receiverObjectDataSource.asObservable();
 
   receiverDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   receiverList = this.receiverDataSource.asObservable();
@@ -68,21 +78,21 @@ export class ListService {
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
-  constructor(private apiService: ApiService,private accountService: AccountService,) {}
+  constructor(private apiService: ApiService,private accountService: AccountService,private httpClient:HttpClient) {}
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
+    this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
       this.vendorDataSource.next(result);
     });
   }
 
 fetchShippers() {
-  this.apiService.getData("shippers").subscribe((result: any) => {
+  this.apiService.getData("contacts/get/type/consignor").subscribe((result: any) => {
     this.shipperDataSource.next(result);
   });
 }
 fetchReceivers() {
-  this.apiService.getData("receivers").subscribe((result: any) => {
+  this.apiService.getData("contacts/get/type/consignee").subscribe((result: any) => {
     this.receiverDataSource.next(result);
   });
 }
@@ -124,7 +134,7 @@ fetchReceivers() {
 
   fetchOwnerOperators() {
     this.apiService
-      .getData(`ownerOperators`)
+      .getData(`contacts/get/type/ownerOperator`)
       .subscribe((result: any) => {
         this.ownerOperatorDataSource.next(result);
       });
@@ -165,10 +175,6 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    // this.apiService.getData(`customers`).subscribe((result: any) => {
-    //   this.customersDataSource.next(result.Items);
-    // });
-
     this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
       this.customersDataSource.next(result);
     });
@@ -225,4 +231,22 @@ fetchReceivers() {
       this.accountsDataSource.next(res);
       });
   }
+
+  fetchShippersByIDs() {
+    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
+      this.shipperObjectDataSource.next(result);
+    });
+  }
+
+  fetchReceiversByIDs() {
+    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
+      this.receiverObjectDataSource.next(result);
+    });
+  }
+
+  public changeButton(value: boolean){
+
+    this.isTrueDataSource.next(value);
+   
+   }
 }

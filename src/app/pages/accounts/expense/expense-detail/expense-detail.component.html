@@ -1,180 +1,243 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <div class="row" style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Expense# - 1279430 <span class="badge badge-dark p-1">UNPAID</span></div>
-          <div class="col-md-8  col-lg-8 text-right pr-4">
-             <a routerLink="/accounts/expense/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Other Expenses List</a>
-          </div>
-        </div>
-      </header>
-      <div class="row">
-        <div class="col pr-0">
-          <div class="card-body text-dark">
-            <form class="form-horizontal form-bordered" method="get">
-              <div class=" row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"> Expenses Details</label>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Expense Details</div>
+                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <a routerLink="/accounts/expense/list" class="btn btn-sm btn-default"><i
+                                class="fas fa-list"></i> Other Expenses List</a>
+                    </div>
                 </div>
-                <div class="col-lg-12 mb-4">
-                  <div class="row cmaindiv">
-                    <div class="col-md-3 col-lg-3">
-                      <div class="text-center p-4 cerbor"> <i class="far fa-calendar-alt text-7"></i>
-                        <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020 12:00 PM</p>
-                        <p class="mb-0">DATE</p>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                      <div class="text-center p-4 cerbor"> <i class="fa fa-user text-7"></i>
-                        <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">Expense Type</p>
-                        <p class="mb-0">EXPENSE TYPE</p>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                      <div class="text-center p-4 cerbor"> <i class="far fa-calendar-check text-7"></i>
-                        <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">56.67 CAD</p>
-                        <p class="mb-0">AMOUNT</p>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-lg-3">
-                      <div class="text-center p-4"> <i class="fas fa-map-marker-alt text-7"></i>
-                        <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">Vendor 1</p>
-                        <p class="mb-0">VENDOR</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 pr-0">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
-                        <tbody>
-                          <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">Recurring</td>
-                            <td width="60%">Biweekly</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Start Date</td>
-                            <td>Jun 20,2020</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">End Date</td>
-                            <td>Jun 20,2022</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Customer</td>
-                            <td>-</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Invoice#</td>
-                            <td>-</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 pl-0">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
-                        <tbody>
-                        <tr>
-                            <td class="back-color-gray font-weight-bold">Taxes</td>
-                            <td>GST - 0.45 CAD, PST - 0.45 CAD, HST - 0.45 CAD </td>
-                          </tr>
-                          <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">Country</td>
-                            <td width="60%">Country</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">State</td>
-                            <td>state</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">City</td>
-                            <td>City</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">Notes</td>
-                            <td>This is description about expenses</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="row pt-2">
-                    <div class="col-lg-12">
-                      <div class="vehicle-common-box p-3">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <label class="control-label font-weight-bold text-3">Documents(s)</label>
-                          </div>
-                        </div>
-                        <hr class="solid mt-3">
-                        <div class="row">
-                          <div class="col-lg-9">Name of the Document</div>
-                          <div class="col-lg-3 text-right">
-                            <div class="btn-group flex-wrap mx-2">
-                              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);"> <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a> </div>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <div class="card-body text-dark">
+                        <form class="form-horizontal form-bordered" method="get">
+                            <div class=" row">
+                                <div class="col-lg-12">
+                                    <!-- <label
+                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">
+                                        Expenses Details</label> -->
+                                </div>
+                                <div class="col-lg-12 mb-4">
+                                    <div class="row cmaindiv">
+                                        <div class="col-md-2 col-lg-2">
+                                            <div class="text-center p-4 cerbor"> <i
+                                                    class="far fa-calendar-alt text-7"></i>
+                                                <br>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">
+                                                    {{ expenseData.txnDate | date:'yyyy/MM/dd' }}
+                                                </p>
+                                                <p class="mb-0">DATE</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2">
+                                            <div class="text-center p-4 cerbor"> <i class="fa fa-user text-7"></i>
+                                                <br>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ categories[expenseData.categoryID] }}</p>
+                                                <p class="mb-0">EXPENSE TYPE</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2">
+                                            <div class="text-center p-4 cerbor"> <i
+                                                    class="far fa-calendar-check text-7"></i>
+                                                <br>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.amount }} {{ expenseData.currency }}</p>
+                                                <p class="mb-0">AMOUNT</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2">
+                                            <div class="text-center p-4 cerbor"> <i
+                                                    class="far fa-calendar-check text-7"></i>
+                                                <br>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.finalTotal }} {{ expenseData.currency }}</p>
+                                                <p class="mb-0">FINAL AMOUNT</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2">
+                                            <div class="text-center p-4"> <i class="fas fa-map-marker-alt text-7"></i>
+                                                <br>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ vendors[expenseData.vendorID] }}</p>
+                                                <p class="mb-0">VENDOR</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pr-0">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-bordered table-responsive-lg">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="40%" class="back-color-gray font-weight-bold">
+                                                            Recurring</td>
+                                                        <td width="60%">
+                                                            <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.interval }}</span>
+                                                            <span *ngIf="!expenseData.recurring.status">-</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Start Date</td>
+                                                        <td>
+                                                            <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.startDate | date:'yyyy/MM/dd' }}</span>
+                                                            <span *ngIf="!expenseData.recurring.status">-</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">End Date</td>
+                                                        <td>
+                                                            <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.endDate | date:'yyyy/MM/dd' }}</span>
+                                                            <span *ngIf="!expenseData.recurring.status">-</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Customer</td>
+                                                        <td>{{ vendors[expenseData.customerID] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Invoice#</td>
+                                                        <td>{{ invoices[expenseData.invoiceID] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Type</td>
+                                                        <td>{{ expenseData.unitType }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pl-0">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-bordered table-responsive-lg">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Taxes</td>
+                                                        <td>GST - {{ expenseData.taxes.gstAmount }} {{ expenseData.currency }}, PST - {{ expenseData.taxes.pstAmount }} {{ expenseData.currency }}, HST - {{ expenseData.taxes.hstAmount }} {{ expenseData.currency }} </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="40%" class="back-color-gray font-weight-bold">Country
+                                                        </td>
+                                                        <td width="60%">{{ expenseData.countryName }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">State</td>
+                                                        <td>{{ expenseData.stateName }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">City</td>
+                                                        <td>{{ expenseData.cityName }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Notes</td>
+                                                        <td>{{ expenseData.notes }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Unit Name</td>
+                                                        <td>{{ units[expenseData.unitID] }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row mt-2" *ngIf="documentSlides.length > 0">
+                                        <div class="col-lg-12">
+                                            <div class="vehicle-common-box p-3">
+                                                <div class="row mt-2">
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-3">Uploaded
+                                                            Document(s)</label>
+                                                    </div>
+                                                </div>
+                                                <hr class="solid mt-3">
+                                                <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                            data-target="#viewDocModal"
+                                                            (click)="setPDFSrc(item.path)">Document
+                                                            {{d+1}}</a> </div>
+                                                    <div class="col-lg-3 text-right">
+                                                        <i class="far fa-file text-dak mr-1"
+                                                            (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                                            data-target="#viewDocModal"></i>
+                                                        <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                                            class="modal-with-form"><i
+                                                                class="fas fa-times text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                          <table class="table table-bordered table-hover">
+                                            <thead>
+                                              <tr>
+                                                <th>Account Name</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr *ngFor="let dt of expenseData.transactionLog">
+                                                <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                                  <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                               <td>{{customersObject[dt.name] | titlecase}}</td>
+                                               <td>{{dt.type | titlecase}}</td>
+                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                              </tr>
+                                              <tr>
+                                                <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
+                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
+                        </form>
                     </div>
-                  </div>
                 </div>
-                         <div class="col-lg-6">
-                       <div class="row">
-                       <div class="col-lg-12">
-                        <table class="table table-bordered">
-                         <thead>
-                         <tr class="bgcol2">
-                         <th>Account Name</th>
-             <th>Name</th>
-                         <th>Type</th>
-                         <th>Debit</th>
-                         <th>Credit</th>
-                         </tr>
-                         </thead>
-                         <tbody>
-                         <tr>
-                         <td>Expense Acoount</td>
-             <td>Vendor Name/Customer Name</td>
-                         <td>Expense Type from list</td>
-                         <td>1000 CAD</td>
-                         <td>0.00</td>
-                         </tr>
-                         <tr>
-                         <td>Cash/Bank Account</td>
-             <td>Vendor Name/Customer Name</td>
-                         <td>Expense Type from list</td>
-                         <td>0.00</td>
-                         <td>1000 CAD</td>
-                         </tr>
-                         <tr>
-                         <td colspan="3" class="text-right">Total</td>
-                         <td>1000 CAD</td>
-                         <td>1000 CAD</td>
-                         </tr>
-                         </tbody>
-                         </table>
-                       </div>
-                       </div>
-                         </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+            </div>
+        </section>
+    </div>
 </section>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div>
+                            <iframe [src]='pdfSrc' title="" width="100%" height="800px"> </iframe>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

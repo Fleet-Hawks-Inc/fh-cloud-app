@@ -4,9 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services/here-map.service';
-import * as moment from 'moment';
 import { SafetyService } from 'src/app/services/safety.service';
+import spacetime from 'spacetime';
 declare var H: any;
+declare var $: any;
 
 @Component({
   selector: 'app-event-detail',
@@ -28,22 +29,27 @@ export class EventDetailComponent implements OnInit {
     eventDate: '',
     eventTime: '',
     location: '',
-    driverUsername: '',
-    driverName: '',
     criticalityType: '-',
   };
 
   public eventImages = [];
   public eventVideos = [];
 
-  driver: string;
+  showMap: boolean = true;
+  deviceSerialNo: string;
   vehicle: string;
+  trip: string;
   eventDate: string;
   eventTime: string;
   eventType: string;
   location: string;
   createdBy: string;
   eventSource: string;
+  assigned: string;
+  deviceEventId: string;
+  eventStartDateTime: string;
+  eventEndDateTime: string;
+  eventSpeed: number;
 
   eventID = '';
   safetyNotes = [];
@@ -54,7 +60,8 @@ export class EventDetailComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
+    variableWidth: true,
     autoplaySpeed: 1500,
   };
 
@@ -63,98 +70,207 @@ export class EventDetailComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
+    variableWidth: true,
     autoplaySpeed: 1500,
   };
 
+
+  vehiclesObject: any = {};
+  driversObject: any = {};
+
   ngOnInit() {
-    this.platform=this.hereMap.mapSetAPI();
+    this.platform = this.hereMap.mapSetAPI();
     this.map = this.hereMap.mapInit();
     this.eventID = this.route.snapshot.params['eventID'];
     this.fetchEventDetail();
+    this.fetchAllDriverIDs();
+    this.fetchAllVehiclesIDs();
     this.mapShow();
+
+    $('#viewVideosModal').modal({
+        show: false
+    }).on('hidden.bs.modal', function(){
+      $("video").each(function () { this.pause() });
+    });
   }
 
   async fetchEventDetail() {
-    this.safetyService.getData('critical-events/' + this.eventID)
+    this.safetyService.getData('critical-events/detail/' + this.eventID)
       .subscribe(async (res: any) => {
-        
+
         let result = res[0];
-        this.driver = result.driverUsername;
+        this.deviceSerialNo = result.deviceSerialNo || 'NA';
         this.vehicle = result.vehicleID;
+        this.trip = result.tripID;
+        this.assigned = result.assigned;
         this.eventDate = result.eventDate;
         this.eventSource = result.eventSource;
-        this.eventTime =  result.eventTime;;
-        
+        this.eventStartDateTime = result.eventStartDateTime;
+        this.eventEndDateTime = result.eventEndDateTime;
+        this.eventTime = await this.convertTimeFormat(result.eventTime);
+        this.createdBy = result.createdBy;
         this.eventType = result.eventType;
-        this.location = result.location;
-        await this.setMarker(this.location);
-        
-        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+        this.eventSpeed = parseInt(result.speed);
+        this.deviceEventId = result.deviceEventId;
+        const location = await this.getLocation(result.location);
+        this.location = location;
+        await this.setMarker(result.location);
+        this.safetyNotes = result.safetyNotes;
+        if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
           this.eventImages = result.uploadedPhotos.map(x => ({
             path: `${this.asseturl}/${result.pk}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
-          this.eventVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+        if (result.uploadedVideos != undefined && result.uploadedVideos.length > 0) {
+          this.eventVideos = result.uploadedVideos.map(x => ({
+            path: `${this.asseturl}/${result.pk}/${x}`,
+            name: x
+          }));
         }
 
-        this.createdBy = result.createdBy;
-        this.safetyNotes = result.safetyNotes;
-        console.log('this.eventImages', this.eventImages);
-        console.log('this.eventVideos', this.eventVideos);
-        // this.fetchDriverDetail(this.driver)
+
+
       })
   }
-  
+
+
+  convertTimeFormat(time: any) {
+    // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice(1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(''); // return adjusted time or original string
+  }
+
   mapShow() {
-    
+
     setTimeout(() => {
       this.hereMap.mapSetAPI();
       this.hereMap.mapInit();
     }, 100);
   }
 
+  async getLocation(location: string) {
+    try {
+      const cords = location.split(',');
+      if (cords.length == 2) {
+        const params = {
+          lat: cords[0].trim(),
+          lng: cords[1].trim()
 
-  setMarker = async (value: any) => {
-    
-    const service = this.platform.getSearchService();
-    const result = await service.geocode({ q: value });
-    
-    const positionFound = result.items[0].position;
-    this.map.setCenter({
-      lat: positionFound.lat,
-      lng: positionFound.lng
-    });
-    const currentLoc = new H.map.Marker({ lat: positionFound.lat, lng: positionFound.lng });
-    this.map.addObject(currentLoc);
-    
-  }
-
-
-  async fetchDriverDetail(driverUserName) {
-    let result = await this.apiService.getData('drivers/userName/' + driverUserName).toPromise();
-      // .subscribe((result: any) => {
-        
-        if (result.Items[0].firstName != undefined) {
-          return result.Items[0].firstName + ' ' + result.Items[0].lastName;
         }
-      // })
+        const location = await this.hereMap.revGeoCode(params);
+
+        if (location && location.items.length > 0) {
+          return location.items[0].title;
+        } else {
+          this.showMap = false;
+          return 'NA';
+
+        }
+      } else {
+        this.showMap = false;
+        return 'NA';
+
+      }
+    } catch (error) {
+      this.showMap = false;
+      return 'NA';
+
+    }
+
   }
 
-  
+  setMarker = async (location: any) => {
+    const cords = location.split(',');
+    if (cords.length > 0) {
+      const lat = cords[0];
+      const lng = cords[1];
+      const startIcon = new H.map.Icon("/assets/img/mapIcon/dest.png", { size: { w: 30, h: 30 } })
+      this.map.setCenter({
+        lat,
+        lng
+      });
+      const currentLoc = new H.map.Marker({ lat, lng }, { icon: startIcon });
+      this.map.addObject(currentLoc);
+    }
+
+  }
+
+  fetchAllVehiclesIDs() {
+    this.apiService.getData('vehicles/get/list')
+      .subscribe((result: any) => {
+        this.vehiclesObject = result;
+      });
+  }
+
+  fetchAllDriverIDs() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversObject = result;
+      });
+  }
+
+
   addNotes() {
-    let data = {
+    if (this.newNotes.trim().length > 0) {
+      let data = {
         notes: this.newNotes,
         eventID: this.eventID,
+      }
+
+      this.safetyService.postData('critical-events/notes', data).subscribe(res => {
+        this.fetchEventDetail();
+        this.toastr.success('Notes added successfully');
+        this.newNotes = '';
+      });
     }
-    
-    this.safetyService.postData('critical-events/notes', data).subscribe(res => {
-      this.fetchEventDetail();
-      this.toastr.success('Notes added successfully!');
-      this.newNotes = '';
-    });
+
   }
+
+  /**
+   * Fetch Event Evidence only in case of Automatic events generated by DashCam
+   */
+  async fetchEvidence() {
+
+    try {
+      this.eventVideos = [];
+      const eventStartDate = spacetime(this.eventStartDateTime).format('numeric-cn');
+      const eventEndDate = spacetime(this.eventEndDateTime).format('numeric-cn');
+      const body = {
+        deviceSerialNo: this.deviceSerialNo,
+        startDateTime: `${eventStartDate} 00:00:00`,
+        endDateTime: `${eventEndDate} 23:59:59`,
+        deviceEventId: this.deviceEventId
+      }
+      const response: any = await this.safetyService.postData('critical-events/fetchEvent', body).toPromise()
+
+      if (response && response.alarmFiles && response.alarmFiles.length > 0) {
+
+        for (const video of response.alarmFiles) {
+          const params = {
+            path: video.videoUrl,
+            name: video.alarmType
+
+          }
+          this.eventVideos.push(params)
+        }
+
+      } else {
+        this.toastr.error('Event Video not available. Please try again.')
+      }
+    } catch (error) {
+
+      this.toastr.error('Unable to fetch evidence.')
+    }
+
+  }
+
 }

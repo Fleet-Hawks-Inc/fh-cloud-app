@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService, ListService } from '../../../services';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -10,9 +11,11 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-   @Input() childMessage: string;
+  @Input() childMessage: string;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   receivedActID = '';
-  carrierID = '100';
   actName: '';
   actType: '';
   actNo: number;
@@ -23,17 +26,21 @@ export class AddAccountComponent implements OnInit {
   actDate: '';
   closingAmt: number;
   transactionLog = [];
+  transLog = false;
   internalActID = '';
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  submitDisabled = false;
   constructor(
-    private ngbCalendar: NgbCalendar,
     private router: Router,
-    private dateAdapter: NgbDateAdapter<string>,
     private accountService: AccountService,
     private listService: ListService,
     private toaster: ToastrService) { }
-  get today() {
-    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-  }
+
   ngOnInit() {
     if (this.receivedActID === '') {
       this.actName = '';
@@ -48,7 +55,7 @@ export class AddAccountComponent implements OnInit {
       this.internalActID = '';
     }
   }
-  ngOnChanges() {
+  ngOnChanges () {
     this.receivedActID = this.childMessage;
     if (this.receivedActID !== '' && this.receivedActID !== undefined) {
       this.fetchAccount();
@@ -63,6 +70,7 @@ export class AddAccountComponent implements OnInit {
       this.actDate = '';
       this.closingAmt = null;
       this.internalActID = '';
+
     }
   }
   addAccount() {
@@ -77,24 +85,49 @@ export class AddAccountComponent implements OnInit {
       actDate: this.actDate,
       transactionLog: [],
       closingAmt: 0,
-      internalActID : '',
+      internalActID: '',
     };
-    console.log('data', data);
-    this.accountService.postData(`chartAc`, data).subscribe((res: any) => {
-      this.toaster.success('Account Added Successfully.');
-      $('#addAccountModal').modal('hide');
-      this.listService.fetchChartAccounts();
-      this.actName = '';
-      this.actType = '';
-      this.actNo = null;
-      this.actDesc = '';
-      this.opnBal = null;
-      this.opnBalCurrency = '';
-      this.actDash = false;
-      this.actDate = '';
-      this.closingAmt = null;
-      this.transactionLog = [];
-      this.internalActID = '';
+    this.accountService.postData('chartAc', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Account Added Successfully.');
+        $('#addAccountModal').modal('hide');
+        this.listService.fetchChartAccounts();
+        this.actName = '';
+        this.actType = '';
+        this.actNo = null;
+        this.actDesc = '';
+        this.opnBal = null;
+        this.opnBalCurrency = '';
+        this.actDash = false;
+        this.actDate = '';
+        this.closingAmt = null;
+        this.transactionLog = [];
+        this.internalActID = '';
+        this.transLog = false;
+      },
     });
   }
   fetchAccount() {
@@ -109,11 +142,15 @@ export class AddAccountComponent implements OnInit {
       this.actDate = res.actDate;
       this.closingAmt = res.closingAmt;
       this.internalActID = res.internalActID;
+      this.transactionLog = res.transactionLog;
+      if (this.transactionLog.length > 0) {
+        this.transLog = true;
+      }
+
     });
   }
   updateAccount() {
     const data = {
-      pk: this.carrierID,
       actID: this.receivedActID,
       actName: this.actName,
       actType: this.actType,
@@ -123,19 +160,55 @@ export class AddAccountComponent implements OnInit {
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
-      transactionLog: [],
+      transactionLog: this.transactionLog,
       closingAmt: this.closingAmt,
       internalActID: this.internalActID,
     };
-    console.log('data', data);
-    this.accountService.putData(`chartAc/update/${this.receivedActID}`, data).subscribe((res: any) => {
-      this.toaster.success('Account Updated Successfully.');
-      this.listService.fetchChartAccounts();
-      $('#addAccountModal').modal('hide');
-
+    this.accountService.putData(`chartAc/update/${this.receivedActID}`, data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Account Updated Successfully.');
+        $('#addAccountModal').modal('hide');
+        this.listService.fetchChartAccounts();
+        this.actName = '';
+        this.actType = '';
+        this.actNo = null;
+        this.actDesc = '';
+        this.opnBal = null;
+        this.opnBalCurrency = '';
+        this.actDash = false;
+        this.actDate = '';
+        this.closingAmt = null;
+        this.transactionLog = [];
+        this.internalActID = '';
+        this.transLog = false;
+      },
     });
   }
   hideModal() {
     $('#addAccountModal').modal('hide');
+    this.transLog = false;
   }
 }

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
+import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AllReportsComponent } from './all-reports/all-reports.component';
 import {
   AddUserComponent,
@@ -9,9 +11,6 @@ import {
   EditProfileComponent
 } from './index';
 import { ManagemainComponent } from './managemain/managemain.component';
-
-import {SettingsComponent} from './settings/settings.component';
-
 
 const routes: Routes = [
   {
@@ -23,6 +22,16 @@ const routes: Routes = [
       { path: 'edit/:contactID', component: AddUserComponent},
     ],
   },
+
+  {
+    path: 'alerts',
+    children: [
+      { path: 'list', component: AlertsListComponent},
+      { path: 'add', component: AddAlertsComponent},
+      
+    ],
+  },
+
   {
     path: 'company',
     children: [
@@ -31,34 +40,29 @@ const routes: Routes = [
 
     ],
   },
-  {
-    path: 'settings',
-    component: SettingsComponent
-  },
+  // {
+  //   path: 'settings',
+  //   component: SettingsComponent
+  // },
   {
     path: 'overview',
     component: ManagemainComponent
   },
   {
-    path: 'reports',
+    path: 'allreport',
     component: AllReportsComponent
   },
+
   {
-    path: 'fleet',
-    loadChildren: () => import('./reports/fleet/manage-fleet-reports.module').then((m) => m.ManageFleetReportsModule) ,
+    path: 'reports',
+    loadChildren: () => import('./reports/manage-reports.module').then((m) => m.ManageReportsModule) ,
   },
   {
-    path: 'dispatch',
-    loadChildren: () => import('./reports/dispatch/manage-dispatch-reports.module').then((m) => m.ManageDispatchReportsModule) ,
-  },
-  {
-    path: 'safety',
-    loadChildren: () => import('./reports/safety/manage-safety-reports.module').then((m) => m.ManageSafetyReportsModule) ,
-  },
-  {
-    path: 'compliance',
-    loadChildren: () => import('./reports/compliance-reports/manage-compliance-reports.module').then((m) => m.ManageComplianceReportsModule) ,
+    path: 'settings',
+    loadChildren: () => import('./settings/manage-settings.module').then((m) => m.ManageSettingsModule) ,
   }
+
+  
   
 ];
 

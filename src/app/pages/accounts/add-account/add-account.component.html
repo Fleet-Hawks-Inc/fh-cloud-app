@@ -1,79 +1,108 @@
-
-  <form id="accountForm" class="form-horizontal form-bordered bg-white" name="accountForm">
-    <div class="form-row">
-      <div class="form-group col-lg-12">
-        <label class="control-label font-weight-bold">Account Type</label>
-        <ng-select class="form-control populate" [(ngModel)]="actType" name="actType">
-          <ng-option value="Current Assets">Current Assets</ng-option>
-          <ng-option value="Bank">Bank</ng-option>
-          <ng-option value="Credit Card/Loan">Credit Card/Loan</ng-option>
-          <ng-option value="Depreciation">Depreciation</ng-option>
-          <ng-option value="Direct Expenses">Direct Expenses</ng-option>
-          <ng-option value="Equity">Equity</ng-option>
-          <ng-option value="Expenses">Expenses</ng-option>
-          <ng-option value="Fixed Assets">Fixed Assets</ng-option>
-          <ng-option value="Future Assets">Future Assets</ng-option>
-          <ng-option value="Liabilities">Liabilities</ng-option>
-          <ng-option value="Future Liabilities">Future Liabilities</ng-option>
-          <ng-option value="Other Income">Other Income</ng-option>
-          <ng-option value="Overheads">Overheads</ng-option>
-          <ng-option value="Sales">Sales</ng-option>
-        </ng-select>
-      </div>
-    </div>
-    <div class="form-row mt-2">
-      <div class="form-group col-lg-12">
-        <label class="control-label font-weight-bold">Account Number</label>
-        <input type="number" class="form-control" [(ngModel)]="actNo" name="actNo">
-      </div>
-    </div>
-    <div class="form-row mt-2">
-      <div class="form-group col-lg-12">
-        <label class="control-label font-weight-bold">Account Name</label>
-        <input type="text" class="form-control" [(ngModel)]="actName" name="actName">
-      </div>
-    </div>
-    <div class="form-row mt-2">
-      <div class="form-group col-lg-12">
-        <label class="control-label font-weight-bold">Balance</label>
-        <div class="row">
-          <div class="col-lg-3 pr-0">
-            <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal"> </div>
-          <div class="col-lg-3 pl-0">
-            <ng-select  class="form-control populate" [(ngModel)]="opnBalCurrency" name="opnBalCurrency">
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-            </ng-select>
-          </div>
-          <div class="col-lg-1 pr-0">
-            <label class="control-label font-weight-bold">as of</label>
-          </div>
-          <div class="col-lg-4 pr-0">
-            <input type="date"  class="form-control" [(ngModel)]="actDate" name="actDate" >
-            <!-- <input type="text" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" class="form-control" [(ngModel)]="actDate" name="actDate" data-plugin-datepicker=""> -->
-           </div>
+<form id="accountForm" class="form-horizontal form-bordered bg-white" method="POST"  #actForm="ngForm">
+  <div class="form-row">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Account Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <ng-select class="form-control populate" [(ngModel)]="actType" name="actType" #accountType="ngModel" required>
+        <ng-option value="current assets">Current Assets</ng-option>
+        <ng-option value="bank">Bank</ng-option>
+        <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
+        <ng-option value="direct expenses">Direct Expenses</ng-option>
+        <ng-option value="equity">Equity</ng-option>
+        <ng-option value="fixed assets">Fixed Assets</ng-option>
+        <ng-option value="future assets">Future Assets</ng-option>
+        <ng-option value="future liability">Future Liability</ng-option>
+        <ng-option value="other income">Other Income</ng-option>
+        <ng-option value="overheads">Overheads</ng-option>
+        <ng-option value="sales">Sales</ng-option>
+        <ng-option value="current liability">Current Liability</ng-option>
+      </ng-select>
+      <div *ngIf="accountType.invalid && (accountType.dirty || accountType.touched)" class="text-danger">
+        <div *ngIf="accountType.errors.required">
+          Account type is required.
         </div>
       </div>
     </div>
-    <div class="form-row mt-2">
-      <div class="form-group col-lg-12">
-        <div class="checkbox-custom">
-          <input type="checkbox" class="form-control" [(ngModel)]="actDash" name="actDash">
-          <label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+  </div>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Account Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <input type="number" class="form-control" min="0" [(ngModel)]="actNo" name="actNo" #accountNo="ngModel" required>
+      <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
+        <div *ngIf="accountNo.errors.required">
+          Account number is required.
         </div>
       </div>
     </div>
-    <div class="form-row mt-2">
-      <div class="form-group col-lg-12">
-        <label class="control-label font-weight-bold">Description</label>
-        <textarea rows="3" class="form-control" [(ngModel)]="actDesc" name="actDesc"></textarea>
+  </div>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Account Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <input type="text" class="form-control" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+      <div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
+        <div *ngIf="accountName.errors.required">
+          Account name is required.
+        </div>
       </div>
     </div>
-    <div class="form-row mt-2">
-      <div class="col-lg-12 text-right">
-        <button class="btn btn-default mr-2" (click)="hideModal()">Cancel</button>
-        <button type="button" class="btn btn-success" *ngIf="!childMessage" (click)="addAccount()">Save</button>
-        <button type="button" class="btn btn-success" *ngIf="childMessage" (click)="updateAccount()">Update</button>
+  </div>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <div class="row">
+        <div class="col-lg-3 pr-0">
+          <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog">
+          <div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
+            <div *ngIf="actBal.errors.required">
+              Account balance is required.
+            </div>
+          </div>
+         </div>
+        <div class="col-lg-3 pl-0">
+          <ng-select class="form-control populate" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
+            <ng-option value="CAD">CAD</ng-option>
+            <ng-option value="USD">USD</ng-option>
+          </ng-select>
+          <div *ngIf="balCur.invalid && (balCur.dirty || balCur.touched)" class="text-danger">
+            <div *ngIf="balCur.errors.required">
+              Balance currency is required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1 pr-0">
+          <label class="control-label font-weight-bold">as of</label>
+        </div>
+        <div class="col-lg-4 pr-0">
+          <input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+            [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" [disabled]="transLog">
+          <div *ngIf="accountDate.invalid && (accountDate.dirty || accountDate.touched)" class="text-danger">
+            <div *ngIf="accountDate.errors.required">
+              Account date is required.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </form>
+  </div>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <div class="checkbox-custom">
+        <input type="checkbox" class="form-control" [(ngModel)]="actDash" name="actDash">
+        <label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Description</label>
+      <textarea rows="3" class="form-control" [(ngModel)]="actDesc" name="actDesc"></textarea>
+    </div>
+  </div>
+  <div class="form-row mt-2">
+    <div class="col-lg-12 text-right">
+      <button class="btn btn-default mr-2" (click)="hideModal()">Cancel</button>
+      <button type="button" class="btn btn-success" *ngIf="!childMessage" [disabled]="!actForm.form.valid" (click)="addAccount()">Save</button>
+      <button type="button" class="btn btn-success" *ngIf="childMessage" [disabled]="!actForm.form.valid" (click)="updateAccount()" >Update</button>
+    </div>
+  </div>
+</form>

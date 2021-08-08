@@ -1,123 +1,167 @@
 <section class="body">
-<div class="inner-wrapper">
-	<section role="main" class="content-body pl-0 pt-0 pr-0">
-    <header class="page-header">
-      <div class="row" style="padding-top:10px;">
-        <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Income Transaction </div>
-        <div class="col-md-8  col-lg-8 text-right">
-           <a routerLink="/accounts/income/list" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Income Transactions</a>
-       <a routerLink="/accounts/income/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Income</a> </div>
-      </div>
-    </header>
-    <div class="row">
-      <div class="col pr-0">
-        <div class="card-body text-dark">
-          <form class="form-horizontal form-bordered" method="get">
-            <div class=" row">
-              <div class="col-lg-12">
-                <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Income Transaction Details</label>
-              </div>
-              <div class="col-lg-6">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <table class="table table-bordered table-responsive-lg">
-                      <tbody>
-                        <tr>
-                          <td width="40%" class="back-color-gray font-weight-bold">Income Date</td>
-                          <td width="60%">Jun 15, 2020</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Invoice#</td>
-                          <td>V687</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Customer</td>
-                          <td>Manjit</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Received Amount</td>
-                          <td>CAD 456</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Payment Mode</td>
-                          <td>Cash</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Cash Reference</td>
-                          <td>34455</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Date</td>
-                          <td>Jun 7,2020</td>
-                        </tr>
-                        <tr>
-                          <td class="back-color-gray font-weight-bold">Descirption</td>
-                          <td>Test description</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="vehicle-common-box p-3">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-3">Documents(s)</label>
-                        </div>
-                        <!-- <div class="col-lg-6 text-right"><div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div></div> --></div>
-                      <hr class="solid mt-3">
-                      <div class="row">
-                        <div class="col-lg-9">Name of the Document</div>
-                        <div class="col-lg-3 text-right">
-                          <div class="btn-group flex-wrap mx-2">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);"> <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a> </div>
-                          </div>
-                        </div>
-                      </div>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Income Transaction </div>
+                    <div class="col-md-8  col-lg-8 text-right">
+                        <a routerLink="/accounts/income/list" class="btn btn-sm btn-default mr-2"><i
+                                class="fas fa-list"></i> Income Transactions</a>
+                        <a routerLink="/accounts/income/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i>
+                            Add Income</a>
                     </div>
-                  </div>
                 </div>
-                          <div class="row">
-                <div class="col-lg-12">
-                  <table class="table table-bordered simple-table">
-                    <thead>
-                      <tr>
-                        <th>Account Name</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Income Account</td>
-                        <td>0.00</td>
-                        <td>1000 CAD</td>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <div class="card-body text-dark">
+                        <form class="form-horizontal form-bordered" method="get">
+                            <div class=" row">
+                                <div class="col-lg-12">
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Income
+                                        Transaction Details</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-bordered table-responsive-lg">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="40%" class="back-color-gray font-weight-bold">Income
+                                                            Date</td>
+                                                        <td width="60%">{{ incomeData.txnDate | date:"yyyy/MM/dd" }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="40%" class="back-color-gray font-weight-bold">Income
+                                                            Category</td>
+                                                        <td width="60%">{{ categories[incomeData.categoryID] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Invoice#</td>
+                                                        <td>{{ (incomeData.invoiceID) ? invoices[incomeData.invoiceID]: '-' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Customer</td>
+                                                        <td>{{ (incomeData.customerID) ? customers[incomeData.customerID]: '-' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Received Amount
+                                                        </td>
+                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Payment Mode</td>
+                                                        <td>{{ incomeData.paymentMode }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Reference</td>
+                                                        <td>{{ incomeData.paymentModeNo }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Date</td>
+                                                        <td>{{ incomeData.paymentModeDate | date:"yyyy/MM/dd" }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="back-color-gray font-weight-bold">Description</td>
+                                                        <td>{{ (incomeData.description) ? incomeData.description: '-' }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row mb-2" *ngIf="documentSlides.length > 0">
+                                        <div class="col-lg-12">
+                                            <div class="vehicle-common-box p-3">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label font-weight-bold text-3">Documents(s)</label>
+                                                    </div>
+                                                </div>
+                                                <hr class="solid mt-3">
+                                                <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                        data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                                        {{d+1}}</a> </div>
+                                                    <div class="col-lg-3 text-right">
+                                                        <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                                           data-toggle="modal" data-target="#viewDocModal"></i>
+                                                        <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                                           class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-bordered simple-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Account Name</th>
+                                                        <th>Debit</th>
+                                                        <th>Credit</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{{ accounts[incomeData.incomeAccID] | titlecase }}</td>
+                                                        <td>0.00</td>
+                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
 
-                      </tr>
-                      <tr>
-                        <td>Other Account</td>
-                        <td>1000 CAD</td>
-                        <td>0.00</td>
-                      </tr>
-                      <tr>
-                        <td>Total</td>
-                        <td>1000 CAD</td>
-                        <td>1000 CAD</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>{{ accounts[incomeData.depositAccID] | titlecase }}</td>
+                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
+                                                        <td>0.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total</td>
+                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
+                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              </div>
             </div>
-          </form>
-        </div>
-      </div>
+        </section>
     </div>
-  </section>
-</div>
 </section>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="form-row">
+               <div class="form-group col-md-12">
+                  <div>
+                     <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
+
+                  </div>
+               </div>
+            </div>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>

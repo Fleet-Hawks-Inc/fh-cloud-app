@@ -5,12 +5,14 @@ export const environment = {
   isDispatchEnabled: true,
   isComplianceEnabled: true,
   isManageEnabled: true,
-  isSafetyEnabled: false,
-  isAccountsEnabled: false,
+  isSafetyEnabled: true,
+  isAccountsEnabled: true,
+  isReportsEnabled: true,
+  
   BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
-  AccountServiceUrl: 'https://accounts.us-east-2.fleethawks.com/api/v1/healthcheck',
-  SafetyServiceUrl: 'https://safety.us-east-2.fleethawks.com/',
+  AccountServiceUrl: 'https://accounts.us-east-2.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.us-east-2.fleethawks.com/api/v1/',
 
   temp: 'search',
   LoginUrl: 'users/login',
