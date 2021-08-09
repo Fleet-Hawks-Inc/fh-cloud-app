@@ -21,6 +21,7 @@ import { AddEmployeePaymentComponent } from "./employee-payment/add-employee-pay
 import { EmployeePaymentListComponent } from "./employee-payment/employee-payment-list/employee-payment-list.component";
 import { EmployeePaymentDetailComponent } from "./employee-payment/employee-payment-detail/employee-payment-detail.component";
 import { AddAccountModule } from "../add-account/add-account.module";
+import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -120,7 +121,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
-    AddAccountModule
+    AddAccountModule,
+    PaymentChequeComponent
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
