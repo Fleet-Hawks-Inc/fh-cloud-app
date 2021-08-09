@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col-lg-12 pr-1 pl-2">
             <div class="bg-white">
-              <div class="row pl-4 pr-4">
+              <div class="row pl-4 pr-4 align-items-center text-capitalize">
                 <div class="col-md-2 col-lg-2">
                   <div class="text-center p-4 cerbor">
                     <i class="fa fa-user text-7"></i>
@@ -165,7 +165,7 @@
                   <tr *ngIf="trips.length == 0" class="text-center">
                     <td colspan="6">{{dataMessage}}</td>
                 </tr>
-                  <tr *ngFor="let trip of trips;">
+                  <tr *ngFor="let trip of trips;" class="text-capitalize">
                     <td>{{trip.dateCreated | date: 'yyyy/MM/dd'}}</td>
                     <td>{{trip.tripNo}}</td>
                     <td><span *ngFor="let driver of trip.driverIDs">{{driverList[driver]}}</span></td>
@@ -193,7 +193,7 @@
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
-      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+      <div class="modal-body text-dark text-capitalize" style="max-height: 500px;overflow: scroll;">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"

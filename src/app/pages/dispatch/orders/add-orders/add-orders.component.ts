@@ -85,6 +85,7 @@ export class AddOrdersComponent implements OnInit {
     stateTaxID: "",
     invoiceGenerate: false,
     customerID: null,
+    cusConfirmation: '',
     cusAddressID: '',
     orderNumber: "",
     createdDate: "",
@@ -196,7 +197,7 @@ export class AddOrdersComponent implements OnInit {
     }
   ];
 
-  cusConfirmation = [];
+  customerPOs = [];
   
   photoSizeError = '';
 
@@ -206,7 +207,7 @@ export class AddOrdersComponent implements OnInit {
     {
       shippers: {
         shipperID: null,
-        cusConfirmation : [],
+        customerPO : [],
         pickupPoint: [
           {
             unit: false,
@@ -492,8 +493,8 @@ export class AddOrdersComponent implements OnInit {
     this.fetchCountries();
     
     this.shippersReceivers.forEach(elem => {
-      elem.shippers.cusConfirmation.forEach((c, i) => {
-        elem.shippers.cusConfirmation.push(c);
+      elem.shippers.customerPO.forEach((c, i) => {
+        elem.shippers.customerPO.push(c);
     });
     })
     
@@ -552,21 +553,6 @@ export class AddOrdersComponent implements OnInit {
         }
   }
 
-  //  getSuggestions = _.debounce(async function (ev, value) {
-  //   if(value != '') {
-  //     $(".map-search__results").hide();
-  //     $('div').removeClass('show-search__result');
-  //     $(ev.target).closest("div").addClass("show-search__result");
-  //     let data = {
-  //       query: value,
-  //       currentCords : this.deviceLocation ? this.deviceLocation : ''
-  //     };
-  //     console.log('data', data);
-  //     this.searchResults = await this.HereMap.searchEntries(data)
-  //     console.log('searchResults', this.searchResults);
-  //   }
-    
-  // }, 800)
 
   resetSearch(){
     if(this.searchResults.length>0){
@@ -682,12 +668,15 @@ export class AddOrdersComponent implements OnInit {
         }
       }
     }
-    
+    let newPosData = [];
+    this.shippersReceivers[i].shippers.customerPO.forEach(element => {
+      newPosData.push(element.label)
+    });
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupPoint: this.shippersReceivers[i].shippers.pickupPoint,
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
-
+      customerPO:  newPosData,
     };
 
     this.finalShippersReceivers[i].shippers.push(currentShipper);
@@ -882,8 +871,8 @@ export class AddOrdersComponent implements OnInit {
 
   async emptyShipper(i) {
     this.shippersReceivers[i].shippers.shipperID = null;
-    this.cusConfirmation = [];
-    this.shippersReceivers[i].shippers.cusConfirmation = [];
+    this.customerPOs = [];
+    this.shippersReceivers[i].shippers.customerPO = [];
     this.shippersReceivers[i].shippers.pickupPoint = [{
       unit: false,
       unitNumber: '',
@@ -1236,7 +1225,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData['loc'] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
-
+    
     // create form data instance
     const formData = new FormData();
 
@@ -1585,6 +1574,7 @@ export class AddOrdersComponent implements OnInit {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
+      this.shippersReceivers[j].shippers.customerPO = data.customerPO;
       this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
       for (let index = 0; index < this.shippersReceivers[j].shippers.pickupPoint.length; index++) {
         const element = this.shippersReceivers[j].shippers.pickupPoint[index];
@@ -1633,6 +1623,9 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].shipperID = data.shipperID;
+      this.finalShippersReceivers[i].shippers[
+        this.stateShipperIndex
+      ].customerPO = data.customerPO;
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].pickupPoint = data.pickupPoint;
@@ -2004,7 +1997,7 @@ export class AddOrdersComponent implements OnInit {
     let allFields = {
       shippers: {
         shipperID: null,
-        cusConfirmation: [],
+        customerPO: [],
         pickupPoint: [
           {
             unit: false,
@@ -2318,14 +2311,6 @@ export class AddOrdersComponent implements OnInit {
       }
       
     })
-  }
-
-  getConfirmations(i) {
-    let allTags = [];
-    this.cusConfirmation.forEach(elem => {
-      allTags.push(elem.label);
-    })
-    this.shippersReceivers[i].shippers.cusConfirmation = allTags;
   }
 
   setValue() {
