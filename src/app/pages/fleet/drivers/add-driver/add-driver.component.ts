@@ -661,6 +661,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     });
   }
 
+  async newGeoCode(data: any) {
+   
+    let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    
+    if(result.items != undefined && result.items.length > 0) {
+      return result.items[0].position;
+    }
+  }
 
   async onSubmit() {
     if (this.abstractDocs.length > 0) {
@@ -688,16 +696,33 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       const element = this.driverData.address[i];
       delete element.states;
       delete element.cities;
-      if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
-        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateCode} ${element.countryCode}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        if (result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
+      //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateCode} ${element.countryCode}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
+      //   result = result.items[0];
+      //   if (result != undefined) {
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
     // create form data instance
     const formData = new FormData();
@@ -775,25 +800,27 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
+    // let result = await this.HereMap.geoCode(item.address.label);
+    // result = result.items[0];
 
-    this.driverData.address[i].userLocation = result.address.label;
-    this.driverData.address[i].zipCode = result.address.postalCode;
+    this.driverData.address[i].userLocation = item.address.label;
+    this.driverData.address[i].zipCode = item.address.Zip;
 
-    this.driverData.address[i].geoCords.lat = result.position.lat;
-    this.driverData.address[i].geoCords.lng = result.position.lng;
-    this.driverData.address[i].countryName = result.address.countryName;
+    this.driverData.address[i].geoCords.lat = item.position.lat;
+    this.driverData.address[i].geoCords.lng = item.position.lng;
+    this.driverData.address[i].countryName = item.address.CountryFullName;
     $('div').removeClass('show-search__result');
 
-    this.driverData.address[i].stateName = result.address.state;
-    this.driverData.address[i].cityName = result.address.city;
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
+    this.driverData.address[i].stateName = item.address.StateName;
+    this.driverData.address[i].cityName = item.address.City;
+    
+    this.driverData.address[i]['street'] = item.address.StreetAddress;
+    // if (result.address.houseNumber === undefined) {
+    //   result.address.houseNumber = '';
+    // }
+    // if (result.address.street === undefined) {
+    //   result.address.street = '';
+    // }
   }
 
   remove(obj, i, addressID = null) {
@@ -1004,17 +1031,33 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       const element = this.driverData.address[i];
       delete element.states;
       delete element.cities;
-      if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
-        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateCode} ${element.countryCode}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
+      //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateCode} ${element.countryCode}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        if (result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      //   result = result.items[0];
+      //   if (result != undefined) {
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
     if (this.driverData.hosDetails.hosCycle !== '') {
       let cycleName = '';

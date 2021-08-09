@@ -18,7 +18,7 @@
                                     (input)="getSuggestions($event.target.value)" />
                             </div>
                             <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                                <ul>
+                                <ul class="text-capitalize">
                                    <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;" (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"
                                    > {{ suggestedVehicle.vehicleIdentification }}</li>
                                 </ul>
@@ -170,8 +170,8 @@
                                     <table class="row-border hover table table-bordered table-striped mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="col1 minWidth200">VIN</th>
                                                 <th class="col2 minWidth200">Vehicle Name/Number</th>
+                                                <th class="col1 minWidth200">VIN</th>
                                                 <th class="col3 minWidth200">Vehicle Type</th>
                                                 <th class="col4 minWidth200">Make</th>
                                                 <th class="col5 extra">Model</th>
@@ -198,13 +198,14 @@
                                             <tr *ngIf="vehicles.length == 0" class="text-center">
                                                 <td colspan="13">{{ dataMessage }}</td>
                                             </tr>
-                                            <tr *ngFor="let vehicle of vehicles; let i = index">
+                                            <tr *ngFor="let vehicle of vehicles; let i = index" class="text-capitalize">
+                                                <td class="hand-icon" *ngIf="hideShow.vehicleName" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    <span class="font-weight-bold line-height-lg text-capitalize">{{ vehicle.vehicleIdentification }}</span>
+                                                </td>
                                                 <td class="hand-icon" *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicle.VIN }}
                                                 </td>
-                                                <td class="hand-icon" *ngIf="hideShow.vehicleName" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{ vehicle.vehicleIdentification }}
-                                                </td>
+                                                
                                                 <td class="hand-icon" *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicleTypeObects[vehicle.vehicleType] }}
                                                 </td>
@@ -233,7 +234,7 @@
                                                     {{vehicle.fluid.fuelType}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.currentStatus}}
+                                                    <span class="badge badge-dark p-1 text-uppercase">{{vehicle.currentStatus}}</span>
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.group" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{groupsList[vehicle.groupID]}}

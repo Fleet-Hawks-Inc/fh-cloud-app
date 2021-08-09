@@ -1409,19 +1409,19 @@ export class AddTripComponent implements OnInit {
         });
     }
 
-    async assignLocation(elem, label, index) {
-        const result = await this.hereMap.geoCode(label);
+    async assignLocation(elem, item, index) {
         // await this.resetMap();
+        console.log('dd', item);
         if (elem == 'editLoc') {
-            this.trips[index].locationName = label;
-            this.trips[index]['lat'] = result.items[0].position.lat;
-            this.trips[index]['lng'] = result.items[0].position.lng;
+            this.trips[index].locationName = item.address.label;
+            this.trips[index]['lat'] = item.position.lat;
+            this.trips[index]['lng'] = item.position.lng;
 
             this.actualMiles = 0;
             await this.getMiles()
             await this.resetMap();
         } else {
-            this.textFieldValues.locationName = label;
+            this.textFieldValues.locationName = item.address.label;
         }
         this.searchResults = false;
         $('td').removeClass('show-search__result');

@@ -18,8 +18,11 @@
                      </div>
                      <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                         <ul>
-                           <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
-                           (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
+                           <li 
+                              *ngFor="let suggestedDriver of suggestedDrivers" 
+                              style="cursor: pointer;"
+                              (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
+                              class="text-capitalize"
                            >{{ suggestedDriver.firstName }}  {{ suggestedDriver.lastName }}</li>
                         </ul>
                      </div>

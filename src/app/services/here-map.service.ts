@@ -188,29 +188,27 @@ export class HereMapService {
     
   // }
 
-  getCurrentPosition(): Promise<any>
-  {
-    return new Promise((resolve, reject) => {
 
-      navigator.geolocation.getCurrentPosition(resp => {
-          resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
-        },
-        err => {
-          console.log(' error getting current location : ' + JSON.stringify(err));
-        });
-    });
-
+  searchForOnBoard = async (value) => {
+    let data = {
+      query: value,
+    };
+    let result = await this.apiService.getData(`pcMiles/onboard/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if(result != null) {
+      return result.items;
+    }
+    
   }
 
   searchLocation = async (value) => {
-    let deviceLocation = await  this.getCurrentPosition();
     let data = {
       query: value,
-      currentCords : deviceLocation ? deviceLocation : ''
     };
-    
     let result = await this.apiService.getData(`pcMiles/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
-    return result.items;
+    if(result != null) {
+      return result.items;
+    }
+    
   }
   
   // returns the response
@@ -396,16 +394,5 @@ export class HereMapService {
     }
   }
 
-  /**
-   * Get coordinates for specified location
-   * @param data 
-   * address, city, state, country, zip code
-   */
-   public async newGeoCode(data: any) {
-
-    let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
-    console.log('new', result);
-
-  }
 
 }

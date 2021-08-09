@@ -6,11 +6,11 @@
         <div class="row" style="padding-top:10px;">
           <div class="col-md-2 col-lg-2">
             <div class="input-group input-group-md mb-3">
-              <input type="text" class="form-control" placeholder="Search by name" [(ngModel)]="filter.actName" name="actName">
+              <input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName" name="actName">
             </div>
           </div>
           <div class="col-lg-2 col-md-2">
-            <ng-select class="form-control pull-left form-control-sm mb-0" [(ngModel)]="filter.actType" name="actType">
+            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"[(ngModel)]="filter.actType" name="actType">
               <ng-option value="current assets">Current Assets</ng-option>
         <ng-option value="bank">Bank</ng-option>
         <ng-option value="credit card / loan">Credit Card/Loan</ng-option>

@@ -32,7 +32,6 @@ export class AddDriverPaymentComponent implements OnInit {
     taxes:<any> 0,
     advance:<any> 0,
     finalAmount:<any> 0,
-    pendingPayment: <any> 0,
     accountID: null,
     settlData: [],
     advData: [],
@@ -263,14 +262,18 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
     this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
     this.paymentData.totalAmount = (this.paymentData.totalAmount) ? Number(this.paymentData.totalAmount) : 0;
-    this.paymentData.pendingPayment = this.paymentData.totalAmount + this.paymentData.taxes - this.paymentData.advance;
-    this.paymentData.finalAmount = this.paymentData.totalAmount + this.paymentData.taxes;
+    this.paymentData.finalAmount = this.paymentData.totalAmount + this.paymentData.taxes - this.paymentData.advance;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount);
   }
 
   addRecord() {
     if(this.paymentData.settlementIds.length === 0) {
       this.toaster.error("Please select settlement(s)");
+      return false;
+    }
+
+    if(this.paymentData.finalAmount <= 0 ) {
+      this.toaster.error("Net payable should be greated than 0");
       return false;
     }
 
@@ -331,6 +334,24 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   updateRecord() {
+    if(this.paymentData.settlementIds.length === 0) {
+      this.toaster.error("Please select settlement(s)");
+      return false;
+    }
+
+    if(this.paymentData.finalAmount <= 0 ) {
+      this.toaster.error("Net payable should be greated than 0");
+      return false;
+    }
+
+    for (const element of this.settlements) {
+      if(element.selected) {
+        if(element.paidAmount === 0) {
+          this.toaster.error("Please select settlement amount");
+          return false;
+        }
+      }
+    }
     this.submitDisabled = true;
     this.accountService.putData(`driver-payments/${this.paymentID}`, this.paymentData).subscribe({
       complete: () => {},

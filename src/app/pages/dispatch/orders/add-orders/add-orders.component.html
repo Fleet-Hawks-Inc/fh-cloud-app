@@ -253,7 +253,15 @@
 
                         </div>
                         <div class="col-lg-4 pr-0 offset-lg-2">
-                           
+                           <div class="row mt-2">
+
+                              <div class="col-12">
+                                 <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer Confirmation#</label>
+                                 <input placeholder="eg. 024933435"[(ngModel)]="orderData.cusConfirmation" name="cusConfirmation" type="text" class="form-control" >
+
+                              </div>
+                              
+                           </div>
                            <div class="row mt-2">
                               <div class="col-lg-6">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal Contact</label>
@@ -442,11 +450,11 @@
                                                       </div>
                                                       <div class="row mt-3 mr-4">
 
-                                                         <div class="col-11">
+                                                         <div class="col-12">
                                                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                                               Confirmation#
+                                                               PO#
                                                             </label>
-                                                            <ng-select multiple="true" notFoundText="Please type to add confirmation numbers" (change)="getConfirmations(i)" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="cusConfirmation" name="cusConfirmation" type="text"
+                                                            <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="item.shippers.customerPO" name="customerPOs" type="text"
                                                                class="form-control h-auto"></ng-select>
                            
                                                          </div>
