@@ -16,8 +16,8 @@ export class AddAccountComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   receivedActID = '';
-  actName: '';
-  actType: '';
+  actName = null;
+  actType = null;
   actNo: number;
   actDesc: '';
   opnBal: number;
@@ -74,6 +74,7 @@ export class AddAccountComponent implements OnInit {
     }
   }
   addAccount() {
+    this.submitDisabled = true;
     const data = {
       actName: this.actName,
       actType: this.actType,
