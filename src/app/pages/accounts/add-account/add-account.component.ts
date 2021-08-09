@@ -74,6 +74,7 @@ export class AddAccountComponent implements OnInit {
     }
   }
   addAccount() {
+    this.submitDisabled = true;
     const data = {
       actName: this.actName,
       actType: this.actType,

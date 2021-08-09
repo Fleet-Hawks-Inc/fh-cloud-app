@@ -56,7 +56,7 @@
                   <td><table width="90%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                       <tr>
-                        <td><h2 class="text-dark mb-0 font-weight-bold text-9 bordbtm3">Invoice Detail</h2></td>
+                        <td><h2 class="text-dark mb-0 font-weight-bold text-7 bordbtm3">Invoice Detail</h2></td>
                       </tr>
                     </tbody>
                   </table></td>
@@ -64,7 +64,7 @@
                   <td><table width="90%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                       <tr>
-                        <td><h2 class="text-dark mb-0 font-weight-bold text-9 bordbtm3">Invoice To</h2></td>
+                        <td><h2 class="text-dark mb-0 font-weight-bold text-7 bordbtm3">Invoice To</h2></td>
                       </tr>
                     </tbody>
                   </table></td>
@@ -136,9 +136,6 @@
                   <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
                   <td colspan="2">
                   <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
                     <tbody>
@@ -154,7 +151,6 @@
                         <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.priceRate}}</p></td>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{dt.amount}}</p></td>
                       </tr>
-
                     </tbody>
                   </table>
 
@@ -194,16 +190,13 @@
                   <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
+                  <td>
+                    <p class="text-dark mb-0 text-3"><strong>Remarks:</strong>
+                    </p>
+                  </td>
+                  <td>
+                    {{invoice.remarks}}
+                  </td>
                 </tr>
                 <tr>
                   <td colspan="2">&nbsp;</td>
