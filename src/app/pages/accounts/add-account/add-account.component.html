@@ -2,7 +2,7 @@
   <div class="form-row">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Account Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-      <ng-select class="form-control populate" [(ngModel)]="actType" name="actType" #accountType="ngModel" required>
+      <ng-select class="form-control populate" placeholder="Select account type" [(ngModel)]="actType" name="actType" #accountType="ngModel" required>
         <ng-option value="current assets">Current Assets</ng-option>
         <ng-option value="bank">Bank</ng-option>
         <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
@@ -26,7 +26,7 @@
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Account Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-      <input type="number" class="form-control" min="0" [(ngModel)]="actNo" name="actNo" #accountNo="ngModel" required>
+      <input type="number" class="form-control" min="0" placeholder="eg. 1100,1150 " [(ngModel)]="actNo" name="actNo" #accountNo="ngModel" required>
       <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
         <div *ngIf="accountNo.errors.required">
           Account number is required.
@@ -37,7 +37,7 @@
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Account Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-      <input type="text" class="form-control" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+      <input type="text" class="form-control" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
       <div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
         <div *ngIf="accountName.errors.required">
           Account name is required.
@@ -58,7 +58,7 @@
           </div>
          </div>
         <div class="col-lg-3 pl-0">
-          <ng-select class="form-control populate" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
+          <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
             <ng-option value="CAD">CAD</ng-option>
             <ng-option value="USD">USD</ng-option>
           </ng-select>
@@ -95,7 +95,7 @@
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Description</label>
-      <textarea rows="3" class="form-control" [(ngModel)]="actDesc" name="actDesc"></textarea>
+      <textarea rows="3" class="form-control" placeholder="Enter description of the account"[(ngModel)]="actDesc" name="actDesc"></textarea>
     </div>
   </div>
   <div class="form-row mt-2">

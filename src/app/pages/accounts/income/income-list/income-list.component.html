@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 col-lg-2">
-                            <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.categoryID">
+                            <ng-select name="searchValue" placeholder="Search by income category" [(ngModel)]="filter.categoryID">
                                 <ng-option *ngFor="let data of categories | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                             </ng-select>
                         </div>

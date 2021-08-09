@@ -100,7 +100,7 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <div class="row">
                                                 <div class="col-lg-6 pr-2">
-                                                    <input type="text" class="form-control" name="amount"
+                                                    <input type="number" class="form-control" min="0"name="amount"
                                                         [(ngModel)]="expenseData.amount" placeholder="e.g 100" (change)="calculateFinalTotal()" #amount="ngModel" required>
 
                                                     <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
@@ -255,9 +255,9 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Province/State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="expenseData.stateCode" name="stateCode"
-                                                placeholder="Select State"
+                                                placeholder="Select Province/State"
                                                 (change)="getCities(expenseData.countryCode, $event)" #state="ngModel" required>
                                                 <ng-option value="{{ data.stateCode }}" *ngFor="let data of states">{{
                                                     data.stateName }} </ng-option>
@@ -445,7 +445,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
-                                            <textarea class="form-control h-auto" rows="3" name="notes"
+                                            <textarea class="form-control h-auto" placeholder="Enter notes of the expense transaction"rows="3" name="notes"
                                                 [(ngModel)]="expenseData.notes"></textarea>
                                         </div>
                                     </div>
