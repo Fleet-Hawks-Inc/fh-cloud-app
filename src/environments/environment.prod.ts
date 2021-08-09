@@ -34,7 +34,7 @@ export const environment = {
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads-ue1',
 
-    region: 'us-east-1'
+    region: 'ca-central-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,
