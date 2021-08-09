@@ -165,7 +165,7 @@
                       <div class="row pt-2">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Terms</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
+                          <ng-select class="form-control populate" placeholder="Select payment terms"[(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
                               <ng-option value="15">15 Days</ng-option>
                               <ng-option value="30">30 Days</ng-option>
                               <ng-option value="45">45 Days</ng-option>
@@ -178,6 +178,16 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
                           <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()"
                           ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                            Salesperson</label>
+                          <ng-select class="form-control populate" placeholder="Select salesperson" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
+                            <ng-option *ngFor="let user of users" value="{{user.contactID}}">
+                              {{user.firstName}} {{user.lastName}}</ng-option>
+                          </ng-select>
                         </div>
                       </div>
                       <div class="row pt-2">
@@ -226,7 +236,7 @@
                           <tbody>
                             <tr *ngFor="let dt of invoiceData.details; let d = index;">
                               <td>
-                                <input type="text" class="form-control" [(ngModel)]="dt.commodityService" name="commodityService{{d}}" #accID="ngModel" required>
+                                <input type="text" class="form-control" placeholder="Enter commodity/service"  [(ngModel)]="dt.commodityService" name="commodityService{{d}}" #accID="ngModel" required>
                                 <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
                                   <div *ngIf="accID.errors.required">
                                       Commodity is required.
@@ -267,7 +277,7 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="accountID{{d}}" #act="ngModel" required>
+                                    <ng-select class="form-control populate"  placeholder="Select account" [(ngModel)]="dt.accountID" name="accountID{{d}}" #act="ngModel" required>
                                         <ng-option *ngFor="let act of accounts | async" value="{{act.actID}}">{{act.actNo}} - {{act.actName | titlecase}}</ng-option>
                                     </ng-select>
                                     <div *ngIf="act.invalid && (act.dirty || act.touched)" class="text-danger">
@@ -293,7 +303,7 @@
                               <div class="row">
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
+                                  <textarea class="form-control" placeholder="Enter remarks of the invoice" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="row">
