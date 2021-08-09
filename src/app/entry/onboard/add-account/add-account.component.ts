@@ -189,7 +189,6 @@ export class AddAccountComponent implements OnInit {
     }
   }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
@@ -199,7 +198,7 @@ export class AddAccountComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(term => {
-        return this.HereMap.searchEntries(term);
+        return this.HereMap.searchForOnBoard(term);
       }),
       catchError((e) => {
         return throwError(e);
@@ -208,25 +207,27 @@ export class AddAccountComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
-    this.addressDetails[i].countryCode = result.address.countryCode;
-    this.addressDetails[i].stateCode = result.address.stateCode;
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].zipCode = result.address.postalCode;
+    // let result = await this.HereMap.geoCode(item.address.label);
+    // result = result.items[0];
+    console.log('item', item);
+    this.addressDetails[i][`userLocation`] = item.address.label;
+    this.addressDetails[i].geoCords.lat = item.position.lat;
+    this.addressDetails[i].geoCords.lng = item.position.lng;
+    this.addressDetails[i].countryName = item.address.CountryFullName;
+    this.addressDetails[i].countryCode = item.address.countryCode;
+    this.addressDetails[i].stateCode = item.address.stateCode;
+    this.addressDetails[i].stateName = item.address.state;
+    this.addressDetails[i].cityName = item.address.city;
+    this.addressDetails[i].zipCode = item.address.postalCode;
     $('div').removeClass('show-search__result');
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
+    // if (result.address.houseNumber === undefined) {
+    //   result.address.houseNumber = '';
+    // }
+    // if (result.address.street === undefined) {
+    //   result.address.street = '';
+    // }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel

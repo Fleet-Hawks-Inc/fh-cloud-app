@@ -220,7 +220,7 @@
                                             <ul class="p-0 m-0 text-left" *ngIf="searchResults">
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
-                                                        (click)="assignLocation('source', item.address.label)"
+                                                        (click)="assignLocation('source', item)"
                                                         title="{{item.address.label}}">{{item.address.label}}</a>
                                                 </li>
                                             </ul>
@@ -408,7 +408,7 @@
                                             <ul class="p-0 m-0 text-left" *ngIf="searchResults">
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
-                                                        (click)="assignLocation('destination', item.address.label)"
+                                                        (click)="assignLocation('destination', item)"
                                                         title="{{item.address.label}}">{{item.address.label}}</a>
                                                 </li>
                                             </ul>
@@ -639,7 +639,7 @@
                                                                             <li
                                                                                 *ngFor="let item of searchResults;">
                                                                                 <a href="javascript:;"
-                                                                                    (click)="assignLocation('stops', item.address.label, i)"
+                                                                                    (click)="assignLocation('stops', item, i)"
                                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
                                                                             </li>
                                                                         </ul>
