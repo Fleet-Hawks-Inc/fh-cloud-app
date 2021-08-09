@@ -154,42 +154,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                    </label>
-                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
-                                                    placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
-                                                    #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
 
-                                                    <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
-                                                        <div *ngIf="payDate.errors.required">
-                                                            Payment date is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label
-                                                        font-weight-bold
-                                                        font-bold text-lg-right
-                                                        pt-2">Reference#
-                                                    </label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -261,11 +226,37 @@
                                         <div class="col-lg-5">
                                             <div class="row">
                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
+                                                    #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+                                                    <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                                                        <div *ngIf="payDate.errors.required">
+                                                            Payment date is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-2">
+                                                <div class="col-lg-10">
+                                                    <label class="control-label
+                                                        font-weight-bold
+                                                        font-bold text-lg-right
+                                                        pt-2">Reference#
+                                                    </label>
+                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-10">
                                                     <label class="control-label
                                                         font-weight-bold
                                                         font-bold text-lg-right
                                                         pt-2">Notes
-
                                                     </label>
                                                     <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes"></textarea>
                                                 </div>

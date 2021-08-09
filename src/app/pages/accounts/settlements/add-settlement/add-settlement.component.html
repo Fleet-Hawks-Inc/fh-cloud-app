@@ -148,7 +148,7 @@
                                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
-                                            <button class="btn btn-success mar-top-37" (click)="searchFnc()">Search</button>
+                                            <button class="btn btn-success mar-top-37" (click)="searchFnc()" [disabled]="searchDisabled">Search</button>
                                         </div>
                                     </div>
                                     <div class="row" *ngIf="settlementID">
@@ -182,10 +182,18 @@
                                                         </tr>
                                                         <tr *ngFor="let trp of settledTrips; let t=index;">
                                                             <td *ngIf="!settlementData.paymentLinked">
-                                                                <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)"> 
-                                                                    <i class="fa fa-trash"></i>
-                                                                </a>
-                                                                <!-- <input type="checkbox" (change)="selectedTrip()" [checked]="trp.selected" [(ngModel)]="trp.selected" name="chk{{t}}"> -->
+                                                                <span *ngIf="settledTrips.length > 1">
+                                                                    <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)"> 
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                                </span>
+
+                                                                <span *ngIf="settledTrips.length === 1">
+                                                                    <!-- <a href="javascript:;">  -->
+                                                                        <i class="fa fa-trash" style="color: #CCC"></i>
+                                                                    <!-- </a> -->
+                                                                </span>
+                                                                
                                                             </td>
                                                             <td>{{ trp.tripNo }}</td>
                                                             <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
@@ -258,7 +266,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr class="text-center" *ngIf="trips.length === 0">
-                                                            <td colspan="11">{{ noRecordMsg }}</td>
+                                                            <td colspan="11">{{ tripMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let trp of trips; let t=index;">
                                                             <td>
@@ -372,24 +380,6 @@
                                             <div class="col-lg-2">
                                                 <div class="row">
                                                     <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold">Total Hours</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" name="totalHours" [(ngModel)]="settlementData.miles.totalHours" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row pt-2">
-                                                    <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold">Driver Total Hours</label>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" class="form-control" name="driverHours" [(ngModel)]="settlementData.miles.driverHours" disabled>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="row">
-                                                    <div class="col-lg-6 text-right">
                                                         <label class="control-label font-weight-bold">Team Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -398,10 +388,28 @@
                                                 </div>
                                                 <div class="row pt-2">
                                                     <div class="col-lg-6 text-right">
-                                                        <label class="control-label font-weight-bold">Team Hours</label>
+                                                        <label class="control-label font-weight-bold">Driver Team Miles</label>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" name="teamHours" [(ngModel)]="settlementData.miles.teamHours" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Driver Team Loaded</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="driverLoadedTeam" [(ngModel)]="settlementData.miles.driverLoadedTeam" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Driver Team Empty</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="driverEmptyTeam" [(ngModel)]="settlementData.miles.driverEmptyTeam" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -821,7 +829,7 @@
 
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
-                                            <button class="btn btn-default mr-2">Cancel</button>
+                                            <button class="btn btn-default mr-2" routerLink="/accounts/settlements/list">Cancel</button>
                                             <button class="btn btn-success" *ngIf="!settlementID" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="addRecord()">Save</button>
                                             <button class="btn btn-success" *ngIf="settlementID && !settlementData.paymentLinked" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="updateRecord()">Update</button>
                                         </div>

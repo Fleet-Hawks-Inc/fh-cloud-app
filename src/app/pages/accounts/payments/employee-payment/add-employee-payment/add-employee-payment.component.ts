@@ -59,14 +59,14 @@ export class AddEmployeePaymentComponent implements OnInit {
     eventDate: null,
     chargeName: "",
     desc: "",
-    amount: "",
+    amount:<any> "",
     currency: "CAD",
   };
   deductionRowData = {
     eventDate: null,
     chargeName: "",
     desc: "",
-    amount: "",
+    amount:<any> "",
     currency: "CAD",
   };
   accounts;
@@ -114,8 +114,6 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentID = this.route.snapshot.params["paymentID"];
     if(this.paymentID) {
       this.fetchPaymentDetail();
-    } else {
-      this.fetchLastAdded();
     }
     this.fetchEmployees();
     this.fetchAccounts();
@@ -133,6 +131,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.payroll.type = null;
     this.paymentData.payroll.amount = 0;
     this.paymentData.payroll.perHour = 0;
+    this.paymentData.paymentTotal = 0;
+    this.paymentData.finalTotal = 0;
+    this.paymentData.subTotal =0;
+    this.paymentData.taxes=0;
+    this.paymentData.advance =0;
     this.apiService.getData(`contacts/detail/${this.paymentData.entityId}`).subscribe((result: any) => {
       this.empDetails = result.Items[0];
       let paymentInfo = this.empDetails.paymentDetails;
@@ -143,8 +146,13 @@ export class AddEmployeePaymentComponent implements OnInit {
       } else if (paymentInfo.payrollType === 'Flat') {
         this.paymentData.payroll.type = 'flat';
         this.paymentData.payroll.amount = Number(paymentInfo.payrollRate);
+        this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+        this.paymentData.finalTotal = this.paymentData.payroll.amount;
+        this.paymentData.subTotal = this.paymentData.payroll.amount;
       }
+      
     })
+    this.fetchLastAdded();
     this.fetchAdvancePayments();
   }
 
@@ -154,12 +162,19 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.calculateFinalTotal() ;
   }
 
+  empFlatRate() {
+    this.paymentData.payroll.amount = Number(this.paymentData.payroll.amount);
+    this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+    this.calculateFinalTotal();
+  }
+
   addAdditionalExp() {
     if (
       this.additionRowData.eventDate != null &&
       this.additionRowData.chargeName != "" &&
       this.additionRowData.amount != ""
     ) {
+      this.additionRowData.amount = Number(this.additionRowData.amount);
       this.paymentData.addition.push(this.additionRowData);
       this.additionRowData = {
         eventDate: null,
@@ -178,6 +193,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.deductionRowData.chargeName != "" &&
       this.deductionRowData.amount != ""
     ) {
+      this.deductionRowData.amount = Number(this.deductionRowData.amount);
       this.paymentData.deduction.push(this.deductionRowData);
       this.deductionRowData = {
         eventDate: null,
@@ -280,6 +296,13 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   calculateFinalTotal() {
+    this.paymentData.subTotal = Number(this.paymentData.subTotal);
+    this.paymentData.taxes = Number(this.paymentData.taxes);
+    this.paymentData.advance = Number(this.paymentData.advance);
+    this.paymentData.paymentTotal = Number(this.paymentData.paymentTotal);
+    this.paymentData.additionTotal = Number(this.paymentData.additionTotal);
+    this.paymentData.deductionTotal = Number(this.paymentData.deductionTotal);
+    this.paymentData.finalTotal = Number(this.paymentData.finalTotal);
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
     this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
   }
@@ -312,7 +335,8 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   fetchLastAdded() {
-    this.accountService.getData(`employee-payments/last/added`).subscribe((result: any) => {
+    this.lastExist = false;
+    this.accountService.getData(`employee-payments/last/added/${this.paymentData.entityId}`).subscribe((result: any) => {
       if(result.length > 0) {
         this.lastExist = true;
         this.fetchEmpDetail(result[0].entityId);
@@ -328,6 +352,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   fetchAdvancePayments() {
+    this.advancePayments = [];
     this.dataMessage = Constants.FETCHING_DATA;
     this.accountService.getData(`advance/entity/${this.paymentData.entityId}?from=null&to=null`).subscribe((result: any) => {
       if(result.length === 0) {
@@ -427,5 +452,11 @@ export class AddEmployeePaymentComponent implements OnInit {
 
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
     this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
+  }
+
+  calculatePayroll() {
+    this.accountService.getData(`employee-payments/payroll/calculate`).subscribe((result: any) => {
+      // console.log('payrioll calculate result============', result);
+    })
   }
 }
