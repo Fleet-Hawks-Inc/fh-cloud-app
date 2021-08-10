@@ -448,17 +448,7 @@
                                                            
                                                          </div>
                                                       </div>
-                                                      <div class="row mt-3 mr-4">
-
-                                                         <div class="col-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                                               PO#
-                                                            </label>
-                                                            <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="item.shippers.customerPO" name="customerPOs" type="text"
-                                                               class="form-control h-auto"></ng-select>
-                           
-                                                         </div>
-                                                      </div>
+                                                      
                                                       <div class="addsr-scrollbar addsr-scroll-y pickup-location__main">
                                                          <div *ngFor="let pick of item.shippers.pickupPoint; let w = index;" [ngClass]="{'p-3 bg-grey mt-2': w != 0}">
                                                             <div class="row mt-3" [ngClass]="{'mr-4': w == 0}">
@@ -682,7 +672,17 @@
                                                                </div>
       
                                                             </div>
-                                                            
+                                                            <div class="row mt-3 mr-4">
+
+                                                               <div class="col-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
+                                                                     PO#
+                                                                  </label>
+                                                                  <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="pick.customerPO" name="customerPO_{{i}}{{w}}" type="text"
+                                                                     class="form-control h-auto"></ng-select>
+                                 
+                                                               </div>
+                                                            </div>
                                                             <div *ngFor="let commodity of pick.commodity; let z = index;">
                                                                <div class="row mt-3 mr-4 align-items-center">
                                                                   
@@ -710,7 +710,7 @@
                                                                      <a class="btn btn-success btn-sm btn btn-success btn-sm mt-2" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
                                                                   </div>
                                                                </div>
-      
+                                                               
                                                 
       
                                                                <div class="row mt-3 mr-4">
