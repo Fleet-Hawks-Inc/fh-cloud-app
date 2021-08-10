@@ -268,7 +268,7 @@
                                 <div class="row">
                                   <div class="col-lg-12">
                                     <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="accountID{{d}}" #act="ngModel" required>
-                                        <ng-option *ngFor="let act of accounts | async" value="{{act.actID}}">{{act.actNo}} - {{act.actName | titlecase}}</ng-option>
+                                        <ng-option *ngFor="let act of accounts" value="{{act.actID}}">{{act.actNo}} - {{act.actName | titlecase}}</ng-option>
                                     </ng-select>
                                     <div *ngIf="act.invalid && (act.dirty || act.touched)" class="text-danger">
                                       <div *ngIf="act.errors.required">

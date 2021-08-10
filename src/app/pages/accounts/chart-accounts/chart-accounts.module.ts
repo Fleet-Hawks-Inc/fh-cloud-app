@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AddAccountModule } from '../add-account/add-account.module';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -74,7 +75,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     AddAccountModule,
     SharedModule,
-    NgbModule
+    NgbModule,
+    InfiniteScrollModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

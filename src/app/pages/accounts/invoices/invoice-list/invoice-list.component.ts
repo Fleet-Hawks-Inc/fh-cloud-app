@@ -12,6 +12,8 @@ declare var $: any;
 export class InvoiceListComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
   invoices = [];
+  fetchedManualInvoices = [];
+  fetchedOrderInvoices = [];
   customersObjects = {};
   invNewStatus: string;
   invID: string;
@@ -40,29 +42,145 @@ export class InvoiceListComponent implements OnInit {
     endDate: null,
     invNo: null
   };
+  lastItemSK = '';
+  lastItemOrderSK = '';
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private router: Router) { }
 
   ngOnInit() {
+    this.invoices = [];
+    this.orderInvoices = [];
     this.fetchCustomersByIDs();
     this.fetchInvoices();
+    this.getInvoices();
   }
   fetchInvoices() {
-    this.accountService.getData('order-invoice').subscribe((res: any) => {
-      this.orderInvoices = res;
-      this.orderInvoices.map((v: any) => {
-        v.invStatus = v.invStatus.replace('_', ' ');
-      });
-      this.categorizeOrderInvoices(this.orderInvoices);
+    this.accountService.getData('order-invoice/all/invoices').subscribe((res: any) => {
+      this.fetchedOrderInvoices = res;
+      this.getTotalInvoices(this.fetchedOrderInvoices);
     });
-
-    this.accountService.getData('invoices').subscribe((res: any) => {
-      this.invoices = res;
-      this.invoices.map((v: any) => {
-        v.invStatus = v.invStatus.replace('_', ' ');
-      });
-      this.categorizeInvoices(this.invoices);
+    this.accountService.getData('invoices/all/invoices').subscribe((res: any) => {
+      this.fetchedManualInvoices = res;
+      this.getTotalInvoices(this.fetchedManualInvoices);
     });
+  }
 
+  getTotalOrderInvoices(invoices: any) {
+    if (invoices.length > 0) {
+      for (const element of invoices) {
+        if (element.invStatus === 'open') {
+          this.openTotal = this.openTotal + Number(element.finalAmount);
+          this.openTotal = +(this.openTotal).toFixed(2);
+        } else if (element.invStatus === 'paid') {
+          this.paidTotal = this.paidTotal + Number(element.finalAmount);
+          this.paidTotal = +(this.paidTotal).toFixed(2);
+        } else if (element.invStatus === 'emailed') {
+          this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
+          this.emailedTotal = +(this.emailedTotal).toFixed(2);
+        } else if (element.invStatus === 'partially paid') {
+          this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
+          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+        } else if (element.invStatus === 'voided') {
+          this.voidedTotal = this.voidedTotal + Number(element.finalAmount);
+          this.voidedTotal = +(this.voidedTotal).toFixed(2);
+        }
+      }
+      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
+      this.total = +(this.total).toFixed(2);
+    }
+  }
+  getTotalInvoices(invoices: any) {
+    if (invoices.length > 0) {
+      for (const element of invoices) {
+        if (element.invStatus === 'open') {
+          this.openTotal = this.openTotal + Number(element.finalAmount);
+          this.openTotal = +(this.openTotal).toFixed(2);
+        } else if (element.invStatus === 'paid') {
+          this.paidTotal = this.paidTotal + Number(element.finalAmount);
+          this.paidTotal = +(this.paidTotal).toFixed(2);
+        } else if (element.invStatus === 'emailed') {
+          this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
+          this.emailedTotal = +(this.emailedTotal).toFixed(2);
+        } else if (element.invStatus === 'partially paid') {
+          this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
+          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+        } else if (element.invStatus === 'voided') {
+          this.voidedTotal = this.voidedTotal + Number(element.finalAmount);
+          this.voidedTotal = +(this.voidedTotal).toFixed(2);
+        }
+      }
+      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
+      this.total = +(this.total).toFixed(2);
+    }
+  }
+  getInvoices(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.invoices = [];
+      this.paidInvoices = [];
+      this.emailedInvoices = [];
+      this.partiallyPaidInvoices = [];
+      this.voidedInvoices = [];
+    }
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`invoices?lastKey=${this.lastItemSK}`)
+        .subscribe(async (result: any) => {
+          console.log('manual result', result);
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if (result.length > 0) {
+            for (const element of result) {
+              this.invoices.push(element);
+            }
+            if (this.invoices[this.invoices.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
+            this.invoices.map((v: any) => {
+              v.invStatus = v.invStatus.replace('_', ' ');
+            });
+            this.categorizeInvoices(this.invoices);
+          }
+        });
+    }
+    // Order invoices
+    if (refresh === true) {
+      this.lastItemOrderSK = '';
+      this.orderInvoices = [];
+      this.openOrderInvoices = [];
+      this.paidOrderInvoices = [];
+      this.emailedOrderInvoices = [];
+      this.partiallyPaidOrderInvoices = [];
+      this.voidedOrderInvoices = [];
+    }
+    if (this.lastItemOrderSK !== 'end') {
+      this.accountService.getData(`order-invoice?lastKey=${this.lastItemOrderSK}`)
+        .subscribe(async (result: any) => {
+          console.log('order result', result);
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if (result.length > 0) {
+            for (const element of result) {
+              this.orderInvoices.push(element);
+            }
+            if (this.orderInvoices[this.orderInvoices.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(this.orderInvoices[this.orderInvoices.length - 1].sk);
+            } else {
+              this.lastItemOrderSK = 'end';
+            }
+            this.orderInvoices.map((v: any) => {
+              v.invStatus = v.invStatus.replace('_', ' ');
+            });
+            this.categorizeOrderInvoices(this.orderInvoices);
+          }
+        });
+    }
+
+  }
+  onScroll() {
+    this.getInvoices();
   }
   routeFn(invID: string, type: string) {
     if (type === 'manual') {
@@ -75,29 +193,17 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       for (const element of invoices) {
         if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + element.balance;
-          this.openTotal = +(this.openTotal).toFixed(2);
           this.openOrderInvoices.push(element);
         } else if (element.invStatus === 'paid') {
-          this.paidTotal = this.paidTotal + element.finalAmount;
-          this.paidTotal = +(this.paidTotal).toFixed(2);
           this.paidOrderInvoices.push(element);
         } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + element.balance;
-          this.emailedTotal = +(this.emailedTotal).toFixed(2);
           this.emailedOrderInvoices.push(element);
         } else if (element.invStatus === 'partially paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + element.balance;
-          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
           this.partiallyPaidOrderInvoices.push(element);
         } else if (element.invStatus === 'voided') {
-          this.voidedTotal = this.voidedTotal + element.finalAmount;
-          this.voidedTotal = +(this.voidedTotal).toFixed(2);
           this.voidedOrderInvoices.push(element);
         }
       }
-      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
-      this.total = +(this.total).toFixed(2);
     }
   }
   categorizeInvoices(invoices: any) {
@@ -105,30 +211,18 @@ export class InvoiceListComponent implements OnInit {
       this.findOverDueInvoice(this.openInvoices);
       for (const element of invoices) {
         if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + element.balance;
-          this.openTotal = +(this.openTotal).toFixed(2);
           this.openInvoices.push(element);
           this.findOverDueInvoice(this.openInvoices);
         } else if (element.invStatus === 'paid') {
-          this.paidTotal = this.paidTotal + element.finalAmount;
-          this.paidTotal = +(this.paidTotal).toFixed(2);
           this.paidInvoices.push(element);
         } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + element.balance;
-          this.emailedTotal = +(this.emailedTotal).toFixed(2);
           this.emailedInvoices.push(element);
         } else if (element.invStatus === 'partially paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + element.balance;
-          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
           this.partiallyPaidInvoices.push(element);
         } else if (element.invStatus === 'voided') {
-          this.voidedTotal = this.voidedTotal + element.finalAmount;
-          this.voidedTotal = +(this.voidedTotal).toFixed(2);
           this.voidedInvoices.push(element);
         }
       }
-      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
-      this.total = +(this.total).toFixed(2);
     }
   }
   findOverDueInvoice(invoices: any) {
@@ -216,6 +310,8 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null
     };
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
     this.total = 0;
     this.openInvoices = [];
     this.openTotal = 0;
@@ -229,6 +325,10 @@ export class InvoiceListComponent implements OnInit {
     this.voidedTotal = 0;
     this.invoices = [];
     this.orderInvoices = [];
+    this.fetchedManualInvoices = [];
+    this.fetchedOrderInvoices = [];
     this.fetchInvoices();
+    this.getInvoices();
+
   }
 }
