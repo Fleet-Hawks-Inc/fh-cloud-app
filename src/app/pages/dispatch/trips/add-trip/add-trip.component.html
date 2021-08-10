@@ -25,7 +25,7 @@
                                         <div class="row">
                                             <div class="col-lg-3">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
+                                                    class="control-label font-weight-semibold text-3 text-dark">Dispatcher</label>
                                             </div>
                                             <div class="col-lg-6">
                                                 <p class="font-weight-bold text-5 text-dark mb-0 pt-1">{{ currentUser }}
@@ -36,7 +36,7 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#
+                                                    class="control-label font-weight-semibold text-3 text-dark">Trip#
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
 
@@ -64,7 +64,7 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    class="control-label font-weight-semibold text-3 text-dark">Select
                                                     Order# <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
@@ -91,7 +91,7 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    class="control-label font-weight-semibold text-3 text-dark">Select
                                                     Permanent Route
 
                                                 </label>
@@ -108,7 +108,7 @@
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Create
+                                                    class="control-label font-weight-semibold text-3 text-dark">Create
                                                     this trip using
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
@@ -126,15 +126,12 @@
                                     <div class="col-lg-6 mb-1">
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <p class="font-weight-semibold text-5 mb-3 pt-1">&nbsp;</p>
+                                                <p class="font-weight-semibold text-5 emptyp pt-1">&nbsp;</p>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
-
-                                                </label>
+                                                <label class="control-label font-weight-semibold text-3 text-dark">BOL/POD#</label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="eg. 13253578">
 
@@ -144,7 +141,7 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    class="control-label font-weight-semibold text-3 text-dark">Select
                                                     Trip Date
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
@@ -172,7 +169,7 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-12">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
+                                                    class="control-label font-weight-semibold text-3 text-dark">Reefer
                                                     Temperature </label>
                                             </div>
                                             <div class="col-lg-10 col-md-12">
@@ -734,53 +731,53 @@
                                 <div class="form-group row pt-3">
                                     <div class="col-lg-12">
                                         <div class="bggreyn p-3">
-                                            <h3 class="font-weight-bold text-dark text-6 mt-0">Notifications</h3>
+                                            <h3 class="font-weight-bold text-dark text-6 mt-0 mb-1">Notifications</h3>
                                             <div class="row">
 
                                                 <div class="col-lg-6 col-md-6">
                                                     <label
-                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Planned
+                                                        class="control-label font-weight-bold text-3 text-dark">Planned
                                                         v/s Changed Route</label>
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat1" name="changeRoute"
                                                             [(ngModel)]="tripData.notifications.changeRoute">
                                                         <label
-                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            class="control-label font-weight-semibold text-3 text-dark"
                                                             for="HazMat1">Notify Dispatcher about changed route?</label>
                                                     </div>
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat2" name="pickUp"
                                                             [(ngModel)]="tripData.notifications.pickUp">
                                                         <label
-                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            class="control-label font-weight-semibold text-3 text-dark"
                                                             for="HazMat2">Notify Dispatcher about pick up?</label>
                                                     </div>
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat3" name="dropOff"
                                                             [(ngModel)]="tripData.notifications.dropOff">
                                                         <label
-                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            class="control-label font-weight-semibold text-3 text-dark"
                                                             for="HazMat3">Notify Dispatcher about drop off?</label>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6">
                                                     <label
-                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Trip
+                                                        class="control-label font-weight-bold text-3 text-dark">Trip
                                                         Details</label>
 
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat4" name="tripToDriver"
                                                             [(ngModel)]="tripData.notifications.tripToDriver">
                                                         <label
-                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            class="control-label font-weight-semibold text-3 text-dark"
                                                             for="HazMat4">Send trip details to the driver</label>
                                                     </div>
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat5" name="tripToDispatcher"
                                                             [(ngModel)]="tripData.notifications.tripToDispatcher">
                                                         <label
-                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            class="control-label font-weight-semibold text-3 text-dark"
                                                             for="HazMat5">Send trip details to the dispatcher</label>
                                                     </div>
                                                 </div>

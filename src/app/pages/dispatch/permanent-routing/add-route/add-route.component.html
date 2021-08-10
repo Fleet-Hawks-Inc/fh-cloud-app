@@ -138,7 +138,7 @@
                                                 value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-1 pl-0">
+                                    <div class="col-lg-1">
                                         <a href="#/fleet/drivers/add" target="_blank"
                                             class="btn btn-success btn-sm modal-with-form mar-top-37"><i
                                                 class="fas fa-plus"></i></a>
@@ -165,7 +165,7 @@
                                             </ng-container>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-1 pl-0">
+                                    <div class="col-lg-1">
                                         <a href="#/fleet/drivers/add" target="_blank"
                                             class="btn btn-success btn-sm modal-with-form mar-top-37"><i
                                                 class="fas fa-plus"></i></a>
@@ -626,15 +626,14 @@
                                                                     1}}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="mt-1">
+                                                                <div class="mt-1 map-search_div">
                                                                     <input name="stopName_{{i}}"
                                                                         [(ngModel)]="routeData.stops[i].name"
                                                                         (keyup)="searchTerm.next($event);"
                                                                         class="form-control">
 
-                                                                    <div class="map-search__results bg-white row mt-1 ml-0 mt-5"
-                                                                        style="width: 46%">
-                                                                        <ul class="m-0 text-left"
+                                                                    <div class="map-search__results2 bg-white row mt-1 ml-0 mt-5">
+                                                                        <ul class="m-0 pl-0 text-left"
                                                                             *ngIf="searchResults">
                                                                             <li
                                                                                 *ngFor="let item of searchResults;">
