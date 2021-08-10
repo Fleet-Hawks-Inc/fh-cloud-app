@@ -232,8 +232,8 @@
                            <table class="row-border hover table table-bordered table-striped mb-0">
                               <thead>
                                  <tr>
-                                    <th class="col0 minWidth200">VIN</th>
                                     <th class="col1 minWidth200">Asset Name/Number</th>
+                                    <th class="col0 minWidth200">VIN</th>
                                     <th class="col2 minWidth200">Asset Type</th>
                                     <th class="col6 minWidth200">Make</th>
                                     <th class="col4 minWidth200">Last Location</th>
@@ -255,9 +255,10 @@
                                  <tr *ngIf="allData.length == 0" class="text-center">
                                     <td colspan="15">{{ dataMessage }}</td>
                                 </tr>
-                                 <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+                                 <tr class="cursorpoint text-capitalize" *ngFor="let item of allData;let i = index">
+                                    <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">
+                                       <span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span></td>
                                     <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
-                                    <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                                     <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
                                     <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
                                     <td *ngIf="hideShow.lastLocation" >Live Location</td>

@@ -98,7 +98,7 @@
                                             <div class="row pt-2">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2 ">Notes</label>
-                                                    <textarea rows="3" name="notes" [(ngModel)]="journal.notes" class="form-control h-auto"></textarea>
+                                                    <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,7 +138,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <textarea class="form-control h-auto" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
+                                                                <textarea class="form-control h-auto" placeholder="Enter description of the journal" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
                                                             </td>
                                                             <td>
                                                                 <ng-select [(ngModel)]="data.contactID" name="currency{{i}}" placeholder="Select contact">
@@ -146,10 +146,10 @@
                                                                 </ng-select>
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
+                                                                <input type="number" min="0" placeholder="0.00"name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
+                                                                <input type="number" min="0"  placeholder="0.00" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
                                                             </td>
                                                             <td>
                                                                 <a *ngIf="i>1" href="javascript:;" (click)="deleteDetail(i)"><i class="fa fa-trash"> </i> </a>
