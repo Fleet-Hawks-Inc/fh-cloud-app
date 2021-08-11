@@ -6,6 +6,7 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService, ListService } from 'src/app/services';
+declare var $: any;
 
 @Component({
   selector: 'app-add-driver-payment',
@@ -491,5 +492,9 @@ export class AddDriverPaymentComponent implements OnInit {
       }
     }
     this.paymentCalculation();
+  }
+
+  showCheque() {
+    $('#chequeModal').modal('show');
   }
 }
