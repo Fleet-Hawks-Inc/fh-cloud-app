@@ -1,0 +1,149 @@
+[
+    [
+        {
+            "from": 0,
+            "to": 13808,
+            "name": "Claim Code 1",
+            "value": "claim_code_1"
+        },
+        {
+            "from": 13808.01,
+            "to": 16181,
+            "name": "Claim Code 2",
+            "value": "claim_code_2"
+        },
+        {
+            "from": 16181.01,
+            "to": 18550,
+            "name": "Claim Code 3",
+            "value": "claim_code_3"
+        },
+        {
+            "from": 18550.01,
+            "to": 20927,
+            "name": "Claim Code 4",
+            "value": "claim_code_4"
+        },
+        {
+            "from": 20927.01,
+            "to": 23300,
+            "name": "Claim Code 5",
+            "value": "claim_code_5"
+        },
+        {
+            "from": 23300.01,
+            "to": 25673,
+            "name": "Claim Code 6",
+            "value": "claim_code_6"
+        },
+        {
+            "from": 25673.01,
+            "to": 28046,
+            "name": "Claim Code 7",
+            "value": "claim_code_7"
+        },
+        {
+            "from": 28046.01,
+            "to": 30419,
+            "name": "Claim Code 8",
+            "value": "claim_code_8"
+        },
+        {
+            "from": 30419.01,
+            "to": 32729,
+            "name": "Claim Code 9",
+            "value": "claim_code_9"
+        },
+        {
+            "from": 32729.01,
+            "to": 35165,
+            "name": "Claim Code 10",
+            "value": "claim_code_10"
+        },
+        {
+            "from": "-",
+            "to": "-",
+            "name": "Claim Code E",
+            "value": "claim_code_e"
+        }
+    ],
+    [
+        {
+            "stateCode": "AB",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 19369,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 19369.01,
+                    "to": 22203,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 22203.01,
+                    "to": 25037,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 25037.01,
+                    "to": 27871,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 27871.01,
+                    "to": 30705,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 30705.01,
+                    "to": 33539,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 33539.01,
+                    "to": 36373,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 36373.01,
+                    "to": 39207,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 39207.01,
+                    "to": 42041,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 42041.01,
+                    "to": 44875,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 44875.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        }
+    ]
+]
