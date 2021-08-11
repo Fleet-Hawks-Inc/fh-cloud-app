@@ -196,23 +196,19 @@ accessorialDeductionInfo = {
     taxAmount: 100,
     transactionLog : []
    };
-   console.log('data', data);
    const invID = '1vD7jJpv2eKTgW0IanO9PRBPGR6';
    this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe((res: any) => {
-     console.log('invoice deleted');
    });
  }
 
  fetchInvoices() {
   this.accountService.getData('order-invoice').subscribe((res: any) => {
-    console.log('result of invoices', res);
   });
  }
 
  fetchInvoice() {
    const invID = '1vD7jJpv2eKTgW0IanO9PRBPGR6';
    this.accountService.getData(`order-invoice/${invID}`).subscribe((res: any) => {
-console.log('result of one invoice', res);
    });
  }
 }

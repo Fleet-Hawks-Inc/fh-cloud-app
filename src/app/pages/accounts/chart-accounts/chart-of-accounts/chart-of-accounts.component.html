@@ -62,7 +62,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngIf="!accounts" class="text-center">
+                        <tr *ngIf="accounts.length === 0" class="text-center">
                           <td colspan="5">{{ dataMessage }}</td>
                        </tr>
                         <!-- <tr *ngFor="let ac of accounts | async"> -->

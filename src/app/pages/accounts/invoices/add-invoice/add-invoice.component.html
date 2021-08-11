@@ -182,16 +182,6 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Salesperson</label>
-                          <ng-select class="form-control populate" placeholder="Select salesperson" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
-                            <ng-option *ngFor="let user of users" value="{{user.contactID}}">
-                              {{user.firstName}} {{user.lastName}}</ng-option>
-                          </ng-select>
-                        </div>
-                      </div>
-                      <div class="row pt-2">
-                        <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
                             Subject</label>
                           <input type="text" class="form-control" placeholder="Rent Invoice" [(ngModel)]="invoiceData.invSubject"
@@ -202,10 +192,6 @@
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                             Salesperson</label>
-                          <!-- <ng-select class="form-control populate" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
-                            <ng-option *ngFor="let user of users" value="{{user.contactID}}">
-                              {{user.firstName}} {{user.lastName}}</ng-option>
-                          </ng-select> -->
                           <label class="control-label font-semi-bold">  {{ currentUser }}</label>
                         </div>
                       </div>

@@ -66,10 +66,11 @@ export class ChartOfAccountsComponent implements OnInit {
   searchAccounts(actName: string, actType: null) {
     this.accountService.getData(`chartAc/paging?actName=${actName}&actType=${actType}`).subscribe((res: any) => {
       this.accounts = res;
+      if (this.accounts.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
     });
-    if (!this.accounts) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND;
-    }
+
   }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
