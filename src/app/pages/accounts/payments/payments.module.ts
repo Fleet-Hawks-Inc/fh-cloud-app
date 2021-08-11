@@ -112,7 +112,7 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
-    PaymentChequeComponent
+    // PaymentChequeComponent
   ],
   imports: [
     CommonModule, 
