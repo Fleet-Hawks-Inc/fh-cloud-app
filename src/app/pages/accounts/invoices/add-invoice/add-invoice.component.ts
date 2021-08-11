@@ -108,7 +108,7 @@ export class AddInvoiceComponent implements OnInit {
     this.getCurrentuser();
     this.customers = this.listService.customersList;
     this.fetchStateTaxes();
-    this.fetchUsers();
+   // this.fetchUsers();
     this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {

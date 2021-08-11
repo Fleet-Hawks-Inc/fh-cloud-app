@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
@@ -36,6 +37,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
+  fax = '';
   bizCountry = null;
   uploadedLogo = '';
   fleets = {
@@ -47,13 +49,14 @@ export class AddAccountComponent implements OnInit {
     trailers: 0,
     trucks: 0,
   };
-  reCaptcha:any
-  size="Normal"
-  lang="en"
-  theme="light"
+  reCaptcha: any
+  size = "Normal"
+  lang = "en"
+  theme = "light"
 
   addressDetails = [{
     addressType: 'yard',
+    defaultYard: false,
     countryName: '',
     countryCode: '',
     stateCode: '',
@@ -75,6 +78,23 @@ export class AddAccountComponent implements OnInit {
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
+    addressDetails: [{
+      addressType: '',
+      countryName: '',
+      countryCode: '',
+      stateCode: '',
+      stateName: '',
+      cityName: '',
+      zipCode: '',
+      address: '',
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      manual: false,
+      bankStates: [],
+      bankCities: []
+    }]
   }];
   submitDisabled = false;
   public searchTerm = new Subject<string>();
@@ -103,6 +123,7 @@ export class AddAccountComponent implements OnInit {
   yardAddress: boolean;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
+  yardDefault = false;
   passwordValidation = {
     upperCase: false,
     lowerCase: false,
@@ -110,7 +131,7 @@ export class AddAccountComponent implements OnInit {
     specialCharacters: false,
     length: false
   }
-  siteKey="6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo"
+  siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
   constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -148,24 +169,48 @@ export class AddAccountComponent implements OnInit {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  getStates(countryCode: any, index:any) {
+  manBankAddress(event, i, bankIndex) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+    }
+  }
+  getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
     this.addressDetails[index].cityName = '';
     this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-   getCities(stateCode: any, index: any, countryCode: any) {
+  getCities(stateCode: any, index: any, countryCode: any) {
     this.addressDetails[index].cityName = '';
     this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.addressDetails[index].cities   = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  getBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].stateCode = '';
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
-    }
-    else {
+    } else {
       this.addressDetails.push({
         addressType: '',
+        defaultYard: false,
         countryName: '',
         countryCode: '',
         stateCode: '',
@@ -232,18 +277,35 @@ export class AddAccountComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
+  defaultYardFn(e: any, index: number) {
+    if (e === true) {
+      this.addressDetails[index].defaultYard = true;
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (i !== index) {
+        this.addressDetails[i].defaultYard = false;
+      }
+    }
+    if (e === false) {
+      this.addressDetails[index].defaultYard = false;
+    }
+  }
+  setYardDefault(event: any, index: number) {
+if (event === 'mailing') {
+  this.addressDetails[index].defaultYard = false;
+}
+  }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
     this.hideErrors();
-    for (let i = 0; i < this.addressDetails.length; i++) {
-      const element = this.addressDetails[i];
+    for (const element of this.addressDetails) {
       delete element.states;
       delete element.cities;
       if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
-        let fullAddress = `${element.address} ${element.cityName}
+        const fullAddress = `${element.address} ${element.cityName}
     ${element.stateCode} ${element.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
@@ -253,27 +315,52 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
-    for(let i=0; i < this.addressDetails.length;i++){
+    for (const op of this.banks) {
+      for( const addressElement of op.addressDetails) {
+        delete addressElement.bankStates;
+        delete addressElement.bankCities;
+        if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
+          const fullAddress = `${addressElement.address} ${addressElement.cityName}
+      ${addressElement.stateCode} ${addressElement.countryCode}`;
+          let result = await this.HereMap.geoCode(fullAddress);
+          if (result.items.length > 0) {
+            result = result.items[0];
+            addressElement.geoCords.lat = result.position.lat;
+            addressElement.geoCords.lng = result.position.lng;
+          }
+        }
+      }
+
+    }
+    const getYardDefault = this.addressDetails.filter((address: any) => {
+      return address.defaultYard === true;
+    });
+    if (getYardDefault.length === 0) {
+      this.yardDefault = false;
+    } else {
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
-           if (this.addressDetails[i].manual) {
-            if (this.addressDetails[i].countryCode !== '' &&
+        if (this.addressDetails[i].manual) {
+          if (this.addressDetails[i].countryCode !== '' &&
             this.addressDetails[i].stateCode !== '' &&
             this.addressDetails[i].cityName !== '' &&
             this.addressDetails[i].zipCode !== '' &&
             this.addressDetails[i].address !== '') {
-              this.yardAddress = true;
-            }
-           } else if (!this.addressDetails[i].manual) {
-            if (this.addressDetails[i][`userLocation`] !== '' ) {
-              this.yardAddress = true;
-            }
-           }
+            this.yardAddress = true;
+          }
+        } else if (!this.addressDetails[i].manual) {
+          if (this.addressDetails[i][`userLocation`] !== '') {
+            this.yardAddress = true;
+          }
+        }
         break;
-       } else {
+      } else {
         this.yardAddress = false;
       }
     }
-    if (this.yardAddress) {
+    if (this.yardAddress && this.yardDefault) {
       const data = {
         entityType: 'carrier',
         CCC: this.CCC,
@@ -297,6 +384,7 @@ export class AddAccountComponent implements OnInit {
         password: this.password,
         addressDetails: this.addressDetails,
         phone: this.phone,
+        fax: this.fax,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -308,7 +396,7 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
-      if(data.bizCountry === 'CA') {
+      if (data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;
       }
@@ -338,7 +426,7 @@ export class AddAccountComponent implements OnInit {
                 this.submitDisabled = true;
               },
               error: () => { },
-              next: () => {this.submitDisabled = true; },
+              next: () => { this.submitDisabled = true; },
             });
         },
         next: (res) => {
@@ -348,8 +436,8 @@ export class AddAccountComponent implements OnInit {
           this.cancel();
         },
       });
-    } else{
-      this.toaster.error('Yard address is mandatory');
+    } else {
+      this.toaster.error('Yard address is mandatory and atleast one yard as default is mandatory');
     }
 
   }
@@ -358,11 +446,11 @@ export class AddAccountComponent implements OnInit {
       .subscribe((v) => {
         if (v === 'userName' || v === 'email' || v === 'carrierName') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
         if (v === 'cognito') {
-         this.toaster.error(this.errors[v]);
+          this.toaster.error(this.errors[v]);
         }
       });
   }
@@ -377,7 +465,7 @@ export class AddAccountComponent implements OnInit {
     this.errors = {};
   }
   selectPhoto(event) {
-    let files = [...event.target.files];
+    const files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
@@ -385,33 +473,33 @@ export class AddAccountComponent implements OnInit {
     let passwordVerify = passwordStrength(password)
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
-    } else{
+    } else {
       this.passwordValidation.lowerCase = false;
     }
 
     if (passwordVerify.contains.includes('uppercase')) {
       this.passwordValidation.upperCase = true;
-    } else{
+    } else {
       this.passwordValidation.upperCase = false;
     }
     if (passwordVerify.contains.includes('symbol')) {
       this.passwordValidation.specialCharacters = true;
-    } else{
+    } else {
       this.passwordValidation.specialCharacters = false;
     }
     if (passwordVerify.contains.includes('number')) {
       this.passwordValidation.number = true;
-    } else{
+    } else {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
-      this.passwordValidation.length = true
-    } else{
+      this.passwordValidation.length = true;
+    } else {
       this.passwordValidation.length = false;
-  
-    
+
+
     }
-    if(password.includes('.')|| password.includes('-')){
+    if (password.includes('.') || password.includes('-')) {
       this.passwordValidation.specialCharacters = true;
     }
 

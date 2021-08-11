@@ -37,7 +37,6 @@ export class ReceiptsListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`receipts?lastKey=${this.lastItemSK}`)
       .subscribe(async (result: any) => {
-        console.log('main result', result);
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
