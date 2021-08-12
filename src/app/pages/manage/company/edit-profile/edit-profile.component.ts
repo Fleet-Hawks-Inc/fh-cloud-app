@@ -240,6 +240,10 @@ export class EditProfileComponent implements OnInit {
     this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
   }
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+  }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
@@ -342,34 +346,41 @@ export class EditProfileComponent implements OnInit {
     });
   }
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
-    this.addressDetails[i].countryCode = result.address.countryCode;
-    this.addressDetails[i].stateCode = result.address.stateCode;
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].zipCode = result.address.postalCode;
+    console.log('item', item);
+    this.addressDetails[i][`userLocation`] = item.address.label;
+    this.addressDetails[i].geoCords.lat = item.position.lat;
+    this.addressDetails[i].geoCords.lng = item.position.lng;
+    this.addressDetails[i].countryName = item.address.CountryFullName;
+    this.addressDetails[i].countryCode = item.address.Country;
+    this.addressDetails[i].stateCode = item.address.State;
+    this.addressDetails[i].stateName = item.address.StateName;
+    this.addressDetails[i].cityName = item.address.City;
+    this.addressDetails[i].zipCode = item.address.Zip;
+    this.addressDetails[i].address = item.address.StreetAddress;
     $('div').removeClass('show-search__result');
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+  async bankAddress(i, item, bankIndex: any) {
+    console.log('item', item);
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
+    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
+    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
+    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
+    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
+    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
+    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
+    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
+    $('div').removeClass('show-search__result');
   }
   async UpdateCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
     this.hideErrors();
-
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
       delete element.states;
@@ -386,7 +397,7 @@ export class EditProfileComponent implements OnInit {
       }
     }
     for (const op of this.banks) {
-      for( const addressElement of op.addressDetails) {
+      for ( const addressElement of op.addressDetails) {
         delete addressElement.bankStates;
         delete addressElement.bankCities;
         if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
