@@ -537,7 +537,7 @@
 
                                             <div class="form-group col-lg-6">
                                                 <label class="control-label font-weight-bold">Provincial Claim Code</label>
-                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" disabled>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" >
                                                     <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
                                                     <ng-container *ngFor="let data of provincalClaimCodes">
                                                         <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number }} - {{ data.to | number }} ({{ data.name }})</ng-option>
@@ -575,7 +575,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-success" (click)="calculatePayroll()">Save</button> -->
                 </div>
             </form>
         </div>
