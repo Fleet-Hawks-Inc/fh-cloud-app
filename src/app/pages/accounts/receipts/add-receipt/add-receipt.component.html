@@ -7,7 +7,6 @@
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/receipts/list"
               class="btn btn-default"><i class="fas fa-list"></i> All Receipts</a> </div>
         </div>
-
       </header>
       <section class="card mt-0 mb-4">
         <div class="card-body">
@@ -213,12 +212,7 @@
                               name="totalAmount" [disabled]="true">
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <ng-select class="form-control populate" [(ngModel)]="receiptData.recAmountCur"
-                              name="recAmountCur" [disabled]="true">
-
-                                  <ng-option value="CAD">CAD</ng-option>
-                                  <ng-option value="USD">USD</ng-option>
-                              </ng-select>
+                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
                             </div>
                           </div>
                         </div>
@@ -258,16 +252,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
-                                class="form-control populate" #receiptAmtCur="ngModel" placeholder="Select currency" [disabled]="true">
-                                <ng-option value="CAD">CAD</ng-option>
-                                <ng-option value="USD">USD</ng-option>
-                              </ng-select>
-                              <div *ngIf="receiptAmtCur.invalid && (receiptAmtCur.dirty || receiptAmtCur.touched)" class="text-danger">
-                                <div *ngIf="receiptAmtCur.errors.required">
-                                  Received amount currency is required.
-                                </div>
-                              </div>
+                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
+
                             </div>
                           </div>
                         </div>
@@ -284,7 +270,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
-                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
+                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actNo }} -
                               {{ item.actName | titlecase}}</ng-option>
                           </ng-select>
                           <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
@@ -315,7 +301,9 @@
                       </div>
                       <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} <span *ngIf="paymentLabel === 'Cash'">Reference</span>
+                            <span *ngIf="paymentLabel !== 'Cash'">Number</span>
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required
                             class="form-control">
                             <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">

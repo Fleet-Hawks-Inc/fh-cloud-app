@@ -96,8 +96,8 @@ export class AddReceiptComponent implements OnInit {
     this.listService.fetchCustomers();
     this.customers = this.listService.customersList;
     this.fetchCustomersByIDs();
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
+    // this.listService.fetchChartAccounts();
+    // this.accounts = this.listService.accountsList;
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.pageTitle = 'Edit Receipt';
@@ -107,30 +107,43 @@ export class AddReceiptComponent implements OnInit {
     this.fetchAccounts();
   }
   fetchAccounts() {
-    this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
-      this.accList = result;
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
     });
   }
+
   async getInvoices() {
     this.newTotal = 0;
     this.advancePayments = [];
     this.accountService.getData(`order-invoice/customer/${this.receiptData.customerID}`).subscribe((res: any) => {
+     if (res !== undefined) {
       this.orderInvoices = res;
+      this.orderInvoices.map((v: any) => {
+        v.invStatus = v.invStatus.replace('_', ' ');
+      });
+      if(this.orderInvoices.length > 0) {
+this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currency;
+      }
       for (const op of this.orderInvoices) {
         this.newTotal += op.balance;
         this.receiptData.totalAmount = this.newTotal;
       }
+     }
     });
     this.accountService.getData(`invoices/customer/${this.receiptData.customerID}`).subscribe((result) => {
-      this.invoices = result;
-      setTimeout(() => {
-        this.receiptData.recAmountCur = this.invoices[0].invCur;
-        this.receiptData.advAmtCur = this.invoices[0].invCur;
-      }, 1000);
-
-      for (const op of this.invoices) {
-        this.newTotal += op.balance;
-        this.receiptData.totalAmount = this.newTotal;
+      if (result !== undefined) {
+        this.invoices = result;
+        this.invoices.map((v: any) => {
+          v.invStatus = v.invStatus.replace('_', ' ');
+        });
+        if (this.invoices.length > 0) {
+            this.receiptData.recAmountCur = this.invoices[0].invCur;
+            this.receiptData.advAmtCur = this.invoices[0].invCur;
+        }
+        for (const op of this.invoices) {
+          this.newTotal += op.balance;
+          this.receiptData.totalAmount = this.newTotal;
+        }
       }
     });
 
@@ -222,7 +235,9 @@ export class AddReceiptComponent implements OnInit {
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: 'orderInvoice',
-          amountPaid: element.amountPaid
+          amountPaid: element.amountPaid,
+          balance: element.balance,
+          invCur: element.charges.freightFee.currency,
         };
         paidInvoices.push(obj);
       }
@@ -235,7 +250,9 @@ export class AddReceiptComponent implements OnInit {
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: 'manual',
-          amountPaid: element.amountPaid
+          amountPaid: element.amountPaid,
+          balance: element.balance,
+          invCur: element.invCur,
         };
         paidInvoices.push(obj);
       }

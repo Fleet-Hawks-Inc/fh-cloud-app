@@ -9,6 +9,7 @@ import { AddLoadInvoiceComponent } from './add-load-invoice/add-load-invoice.com
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -89,7 +90,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    InfiniteScrollModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

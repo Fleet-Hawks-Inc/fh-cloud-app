@@ -6,9 +6,9 @@ import { AccountsRoutingModule } from './accounts-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ChartsModule } from 'ng2-charts';
 import { HomeComponent } from './home/home.component';
-import { AddAccountComponent } from '../accounts/add-account/add-account.component';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartAccountsModule } from './chart-accounts/chart-accounts.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -69,7 +69,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     ChartsModule,
     FormsModule,
-    ChartAccountsModule
+    ChartAccountsModule,
+    InfiniteScrollModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

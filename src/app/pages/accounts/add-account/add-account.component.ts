@@ -212,4 +212,6 @@ export class AddAccountComponent implements OnInit {
     $('#addAccountModal').modal('hide');
     this.transLog = false;
   }
+
+
 }
