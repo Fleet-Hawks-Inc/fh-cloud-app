@@ -961,8 +961,8 @@
                                                                <div class="col-lg-6 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input [(ngModel)]="dropItem.unit"
-                                                                     name="unit_{{i}}{{y}}" type="checkbox" id="locationaddBtn3">
-                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                                     name="unit_{{i}}{{y}}" type="checkbox" id="locationaddBtn4">
+                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn4"> Type Unit Number Manually</label>
                                                                   </div>
                                                                </div>
                                                             </div>
@@ -1442,13 +1442,17 @@
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault">Seal#</label>
 
-                                       <ng-select [clearable]="false" placeholder="" [(ngModel)]="orderData.additionalDetails.sealNo" name="sealNo"
+                                       <ng-select [clearable]="false" placeholder="" [(ngModel)]="orderData.additionalDetails.sealType" name="sealNo"
                                           class="form-control populate" >
 
                                            <ng-option value="customer_seal">Customer Seal</ng-option>
                                            <ng-option value="company_seal">Company Seal</ng-option>
                                        
                                        </ng-select>
+                                       <div *ngIf="orderData.additionalDetails.sealType != ''">
+                                          <input name="sealNo" [(ngModel)]="orderData.additionalDetails.sealNo" type="text">
+                                       </div>
+                                       
                                     </div>
                                  </div>
 
