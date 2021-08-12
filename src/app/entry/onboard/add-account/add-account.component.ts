@@ -1,6 +1,7 @@
-import { element } from 'protractor';
+
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
+import { AccountService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
@@ -79,7 +80,7 @@ export class AddAccountComponent implements OnInit {
     routingNumber: '',
     institutionNumber: '',
     addressDetails: [{
-      addressType: '',
+      addressType: 'branch',
       countryName: '',
       countryCode: '',
       stateCode: '',
@@ -132,7 +133,11 @@ export class AddAccountComponent implements OnInit {
     length: false
   }
   siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
-  constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
+  constructor(private apiService: ApiService,
+              private toaster: ToastrService,
+              private accountService: AccountService,
+              private location: Location,
+              private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -141,6 +146,9 @@ export class AddAccountComponent implements OnInit {
     $(document).ready(() => {
       // this.carrierForm = $('#carrierForm').validate();
     });
+  }
+  geocodingSearch(value) {
+    this.HereMap.geoCode(value);
   }
   // Show password
   toggleFieldTextType() {
@@ -168,6 +176,10 @@ export class AddAccountComponent implements OnInit {
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
+  }
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    $('div').removeClass('show-search__result');
   }
   manBankAddress(event, i, bankIndex) {
     if (event.target.checked) {
@@ -254,28 +266,33 @@ export class AddAccountComponent implements OnInit {
   }
 
   async userAddress(i, item) {
-    // let result = await this.HereMap.geoCode(item.address.label);
-    // result = result.items[0];
-    console.log('item', item);
     this.addressDetails[i][`userLocation`] = item.address.label;
     this.addressDetails[i].geoCords.lat = item.position.lat;
     this.addressDetails[i].geoCords.lng = item.position.lng;
     this.addressDetails[i].countryName = item.address.CountryFullName;
-    this.addressDetails[i].countryCode = item.address.countryCode;
-    this.addressDetails[i].stateCode = item.address.stateCode;
-    this.addressDetails[i].stateName = item.address.state;
-    this.addressDetails[i].cityName = item.address.city;
-    this.addressDetails[i].zipCode = item.address.postalCode;
+    this.addressDetails[i].countryCode = item.address.Country;
+    this.addressDetails[i].stateCode = item.address.State;
+    this.addressDetails[i].stateName = item.address.StateName;
+    this.addressDetails[i].cityName = item.address.City;
+    this.addressDetails[i].zipCode = item.address.Zip;
+    this.addressDetails[i].address = item.address.StreetAddress;
     $('div').removeClass('show-search__result');
-    // if (result.address.houseNumber === undefined) {
-    //   result.address.houseNumber = '';
-    // }
-    // if (result.address.street === undefined) {
-    //   result.address.street = '';
-    // }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+  async bankAddress(i, item, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
+    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
+    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
+    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
+    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
+    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
+    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
+    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
+    $('div').removeClass('show-search__result');
   }
   defaultYardFn(e: any, index: number) {
     if (e === true) {
@@ -296,22 +313,26 @@ if (event === 'mailing') {
   this.addressDetails[index].defaultYard = false;
 }
   }
+  predefinedAccounts() {
+    this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
+    });
+  }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
     this.hideErrors();
-    for (const element of this.addressDetails) {
-      delete element.states;
-      delete element.cities;
-      if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
-        const fullAddress = `${element.address} ${element.cityName}
-    ${element.stateCode} ${element.countryCode}`;
+    for (const el of this.addressDetails) {
+      delete el.states;
+      delete el.cities;
+      if (el.countryCode !== '' && el.stateCode !== '' && el.cityName !== '') {
+        const fullAddress = `${el.address} ${el.cityName}
+    ${el.stateCode} ${el.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
+          el.geoCords.lat = result.position.lat;
+          el.geoCords.lng = result.position.lng;
         }
       }
     }
@@ -409,7 +430,9 @@ if (event === 'mailing') {
       // append other fields
       formData.append('data', JSON.stringify(data));
       this.apiService.postData('carriers/add', formData, true).subscribe({
-        complete: () => { },
+        complete: () => {
+
+         },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -430,6 +453,7 @@ if (event === 'mailing') {
             });
         },
         next: (res) => {
+          this.predefinedAccounts();
           this.response = res;
           this.submitDisabled = true;
           this.toaster.success('Carrier created successfully.');
