@@ -82,9 +82,26 @@ export class AdvancePaymentsListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.type !== null || this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.payments = [];
-      this.fetchPayments();
+      if (
+        this.filter.startDate != "" &&
+        this.filter.endDate == ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (
+        this.filter.startDate == "" &&
+        this.filter.endDate != ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (this.filter.startDate > this.filter.endDate) {
+        this.toaster.error("Start date should be less then end date");
+        return false;
+      } else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.payments = [];
+        this.fetchPayments();
+      }
     }
   }
 

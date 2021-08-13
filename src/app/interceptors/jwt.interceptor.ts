@@ -18,7 +18,8 @@ const whiteListedUrls = [
   'countries',
   'states/country/',
   'cities/state/',
-  'carriers/add'];
+  'carriers/add',
+  'pcMiles/onboard/suggestions/'];
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   headers;

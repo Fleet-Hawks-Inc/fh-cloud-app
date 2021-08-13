@@ -19,7 +19,7 @@
                                 <form class="form-horizontal form-bordered" method="get" #empPaymentForm="ngForm">
                                     <div class="row">
                                         <div class="col-lg-5 offset-lg-1">
-                                            <div class="row" id="settlementListDiv"> 
+                                            <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Employee
@@ -78,7 +78,7 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="row pt-3">
+                                    <div class="row pt-3" *ngIf="advancePayments.length > 0">
                                         <div class="col-lg-12"> 
                                             <h4>Advance Payments</h4>
                                         </div>
@@ -148,19 +148,19 @@
                                                         <tr>
                                                             <td>{{ lastAdded.paymentNo }}<br>{{ lastAdded.txnDate | date: "yyyy/MM/dd" }}</td>
                                                             <td>{{ lastAdded.payMode }}<br>Ref.#
-                                                                :<strong>{{ lastAdded.payModeNo }}</strong><br>Date:<strong>{{ lastAdded.payModeDate | date: "yyyy/MM/dd" }}</strong>
+                                                                :<strong> {{ lastAdded.payModeNo }}</strong><br>Date:<strong> {{ lastAdded.payModeDate | date: "yyyy/MM/dd" }}</strong>
                                                             </td>
-                                                            <td>Name: <strong>{{ empdetail.firstName }} {{ empdetail.lastName }}</strong>
-                                                                <br>Department: <strong>{{ (empdetail.userAccount.department) ? empdetail.userAccount.department : '-' }}</strong>
-                                                                <br>Designation:<strong>{{ (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}</strong>
+                                                            <td>Name: <strong> {{ employees[lastAdded.entityId] }}</strong>
+                                                                <br>Department: <strong> {{ (empdetail.userAccount.department) ? empdetail.userAccount.department : '-' }}</strong>
+                                                                <br>Designation:<strong> {{ (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}</strong>
                                                             </td>
                                                             <td>Total Amount: 
-                                                                <strong>{{ lastAdded.finalTotal }} CAD</strong>
+                                                                <strong> {{ lastAdded.finalTotal }} CAD</strong>
                                                                 <br>Add:&nbsp;
-                                                                <strong>{{ lastAdded.additionTotal }} CAD</strong>
+                                                                <strong> {{ lastAdded.additionTotal }} CAD</strong>
                                                                 &nbsp;&nbsp;Deduct:&nbsp;
-                                                                <strong>{{ lastAdded.deductionTotal }} CAD</strong>
-                                                                <br>Taxes:<strong>{{ lastAdded.taxes }} CAD </strong>
+                                                                <strong> {{ lastAdded.deductionTotal }} CAD</strong>
+                                                                <br>Taxes:<strong> {{ lastAdded.taxes }} CAD </strong>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -189,7 +189,7 @@
                                                             <label
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Hours<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
-                                                            <input type="text" class="form-control" name="hours" [(ngModel)]="paymentData.payroll.hours" (change)="EmpRateCalc()" placeholder="e.g 8" #rllHOur="ngModel" required>
+                                                            <input type="text" class="form-control" name="hours" [(ngModel)]="paymentData.payroll.hours" (input)="EmpRateCalc()" placeholder="e.g 8" #rllHOur="ngModel" required>
                                                             <div *ngIf="rllHOur.invalid && (rllHOur.dirty || rllHOur.touched)" class="text-danger">
                                                                 <div *ngIf="rllHOur.errors.required">
                                                                     Hours are required.
@@ -214,7 +214,7 @@
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Flat
                                                                 Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                             </label>
-                                                            <input type="text" class="form-control" name="amount" [(ngModel)]="paymentData.payroll.amount" placeholder="e.g 50" disabled #flAmount="ngModel" required>
+                                                            <input type="text" class="form-control" name="amount" [(ngModel)]="paymentData.payroll.amount" (input)="empFlatRate()" placeholder="e.g 50" #flAmount="ngModel" required>
                                                             <div *ngIf="flAmount.invalid && (flAmount.dirty || flAmount.touched)" class="text-danger">
                                                                 <div *ngIf="flAmount.errors.required">
                                                                     Flat amount is required.
@@ -242,7 +242,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let data of paymentData.addition; let i=index;">
-                                                            <td>{{ data.eventDate }}</td>
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
                                                             <td>{{ data.chargeName }}</td>
                                                             <td>{{ data.desc }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
@@ -304,7 +304,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let data of paymentData.deduction; let i=index;">
-                                                            <td>{{ data.eventDate }}</td>
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
                                                             <td>{{ data.chargeName }}</td>
                                                             <td>{{ data.desc }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
@@ -355,8 +355,8 @@
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account" #accountID="ngModel" required>
-                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actName }} - {{
-                                                                data.actNo }}</ng-option>
+                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{
+                                                                data.actName | titlecase}}</ng-option>
                                                         </ng-select>
 
                                                         <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
@@ -365,7 +365,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="col-lg-5"><label
                                                             class="control-label font-weight-bold labelalign">Payment
                                                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -441,7 +441,7 @@
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" name="dedddd" [(ngModel)]="paymentData.deductionTotal" placeholder="e.g 150" disabled>
                                                     </div>
-                                                    <div class="col-lg-6 offset-lg-6 pt-2"><a href="javascript:;"
+                                                    <div class="col-lg-6 offset-lg-6 pt-2"><a href="javascript:;" (click)="openPayrollModel()"
                                                             class="btn btn-default modal-with-form btn-sm">Calculate
                                                             Payroll</a></div>
                                                 </div>
@@ -450,7 +450,7 @@
                                                             class="control-label font-weight-bold">Taxes</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" name="taxes" [(ngModel)]="paymentData.taxes" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('tax')">
+                                                        <input type="text" class="form-control" name="taxes" [(ngModel)]="paymentData.taxes" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('tax')" disabled>
                                                         <label class="error">{{ taxErr }}</label>
                                                     </div>
                                                 </div>
@@ -490,3 +490,94 @@
         </section>
     </div>
 </section>
+
+<!-- payroll calculation modal -->
+<div class="modal fade" id="payrollModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 600px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Taxes</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="card">
+                                <div class="card-body" style="display: block;">
+                                    <div class="form-group text-dark">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Pay Period</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.payPeriod" name="payPeriod" placeholder="Select Pay Period" (change)="calculatePayroll()">
+                                                    <ng-option value="{{ data.payCount }}" *ngFor="let data of payPeriods">{{ data.name }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">State</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.stateCode" name="stateCode" placeholder="Select State" (change)="assignProvincalCode()">
+                                                    <ng-option value="{{ data.stateCode }}" *ngFor="let data of states">{{ data.stateName }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Federal Claim Code</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.federalCode" name="federalCode" placeholder="Select Federal Claim Code" disabled>
+                                                    <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
+                                                    <ng-container *ngFor="let data of claimCodes[0]">
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e'">{{ data.from | number }} - {{ data.to | number }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Provincial Claim Code</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" disabled>
+                                                    <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
+                                                    <ng-container *ngFor="let data of provincalClaimCodes">
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number }} - {{ data.to | number }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_x'">Greater than {{ data.from | number }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Federal Tax</label>
+                                                <input type="text" class="form-control" name="pro_fedtax" [(ngModel)]="paymentData.taxdata.federalTax" disabled> 
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Provincial Tax</label>
+                                                <input type="text" class="form-control" name="pro_provtax" [(ngModel)]="paymentData.taxdata.provincialTax" disabled> 
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">CPP (Canada Pension Plan)</label>
+                                                <input type="text" class="form-control" name="pro_cpp" [(ngModel)]="paymentData.taxdata.cpp" disabled> 
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">EI (Employment Insurance)</label>
+                                                <input type="text" class="form-control" name="pro_ei" [(ngModel)]="paymentData.taxdata.ei" disabled> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-success" (click)="calculatePayroll()">Save</button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -732,27 +732,36 @@ export class AddressBookComponent implements OnInit {
   }
 
   async userAddress(data: any, i: number, item: any) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
+    // let result = await this.HereMap.geoCode(item.address.label);
+    // result = result.items[0];
+    
+    data.address[i].userLocation = item.address.label;
+    data.address[i].geoCords.lat = item.position.lat;
+    data.address[i].geoCords.lng = item.position.lng;
+    data.address[i].countryName = item.address.CountryFullName;
+    data.address[i].stateName = item.address.StateName;
+    data.address[i].cityName = item.address.City;
 
-    data.address[i].userLocation = result.address.label;
-    data.address[i].geoCords.lat = result.position.lat;
-    data.address[i].geoCords.lng = result.position.lng;
-    data.address[i].countryName = result.address.countryName;
-    data.address[i].stateName = result.address.state;
-    data.address[i].cityName = result.address.city;
-
-    data.address[i].countryCode = result.address.countryCode;
-    data.address[i].stateCode = result.address.stateCode;
-    data.address[i].zipCode = result.address.postalCode;
-    if (result.address.houseNumber != undefined) {
-      data.address[i].houseNumber = result.address.houseNumber;
-    } else {}
-    if (result.address.street != undefined) {
-      data.address[i].street = result.address.street;
-    }
+    data.address[i].countryCode = item.address.Country;
+    data.address[i].stateCode = item.address.State;
+    data.address[i].zipCode = item.address.Zip;
+    data.address[i].street = item.address.StreetAddress;
+    // if (result.address.houseNumber != undefined) {
+    //   data.address[i].houseNumber = result.address.houseNumber;
+    // } else {}
+    // if (result.address.street != undefined) {
+    //   data.address[i].street = result.address.street;
+    // }
 
     $('div').removeClass('show-search__result');
+  }
+
+  async reverseGeoCode(cords: any) {
+    this.apiService.getData(`pcMiles/reverse/${cords}`).subscribe((result: any) => {
+      if(result.length > 0) {
+        return result;
+      }
+    });
   }
 
   addAddress(data) {
@@ -776,6 +785,15 @@ export class AddressBookComponent implements OnInit {
       houseNumber: '',
       street: ''
     });
+  }
+
+  async newGeoCode(data: any) {
+   
+    let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    
+    if(result.items != undefined && result.items.length > 0) {
+      return result.items[0].position;
+    }
   }
 
   public searchLocation() {
@@ -813,19 +831,36 @@ export class AddressBookComponent implements OnInit {
       const element = this.customerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+       let data = {
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+       
+
+        let result = await this.newGeoCode(data);
+        
+        if(result != undefined){
+          element.geoCords = result;
         }
       }
     }
-
+    
     for (let j = 0; j < this.customerData.additionalContact.length; j++) {
       const element = this.customerData.additionalContact[j];
       element.fullName = element.firstName + ' '+ element.lastName;
@@ -908,17 +943,34 @@ export class AddressBookComponent implements OnInit {
       const element = this.customerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.customerData.additionalContact.length; j++) {
@@ -986,16 +1038,33 @@ export class AddressBookComponent implements OnInit {
       const element = this.brokerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
@@ -1065,18 +1134,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.ownerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
@@ -1147,18 +1233,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.ownerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
@@ -1227,18 +1330,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.brokerData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
@@ -1310,17 +1430,34 @@ export class AddressBookComponent implements OnInit {
       const element = this.vendorData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     // create form data instance
@@ -1384,18 +1521,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.vendorData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     // create form data instance
@@ -1461,18 +1615,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.carrierData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
@@ -1542,18 +1713,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.carrierData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
@@ -1626,17 +1814,34 @@ export class AddressBookComponent implements OnInit {
       const element = this.shipperData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
@@ -1707,18 +1912,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.shipperData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
@@ -1791,17 +2013,34 @@ export class AddressBookComponent implements OnInit {
       const element = this.consigneeData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
@@ -1874,18 +2113,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.consigneeData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
@@ -1957,18 +2213,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.fcCompanyData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     // create form data instance
@@ -2033,16 +2306,33 @@ export class AddressBookComponent implements OnInit {
       const element = this.fcCompanyData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
     // create form data instance
     const formData = new FormData();
@@ -2109,18 +2399,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.staffData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     // create form data instance
@@ -2190,18 +2497,35 @@ export class AddressBookComponent implements OnInit {
       const element = this.staffData.address[i];
       delete element.states;
       delete element.cities;
-      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
+      // if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+      //   let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+      //   ${element.stateName} ${element.countryName}`;
+      //   let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+      //   if(result.items.length > 0) {
+      //     result = result.items[0];
+      //     element.geoCords.lat = result.position.lat;
+      //     element.geoCords.lng = result.position.lng;
+      //   }
 
-      }
+      // }
+      if(element.manual === true){
+        let data = {
+           address1: element.address1,
+           address2: element.address2,
+           cityName: element.cityName,
+           stateName: element.stateName,
+           countryName: element.countryName,
+           zipCode: element.zipCode
+         }
+        
+ 
+         let result = await this.newGeoCode(data);
+         
+         if(result != undefined){
+           element.geoCords = result;
+         }
+       }
     }
 
     // create form data instance
@@ -2835,8 +3159,14 @@ export class AddressBookComponent implements OnInit {
   }
 
   showMainModal() {
-    this.custCurrentTab = 1;
-    $('#allContactsModal').modal('show');
+    if(localStorage.getItem('isOpen') != 'true') {
+      this.custCurrentTab = 1;
+      $('#allContactsModal').modal('show');    
+    } else {
+      $('#allContactsModal').modal('hide');
+      localStorage.setItem('isOpen', 'false'); 
+    }
+    
   }
 
   clearModalData() {

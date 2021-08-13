@@ -20,22 +20,22 @@
                                 <form class="form-horizontal form-bordered" method="get" #payForm="ngForm">
                                     <div class="row">
                                         <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label
                                                         font-weight-bold
                                                         font-bold text-lg-right
                                                         pt-2">Advance
                                                         Payment#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.paymentNo" name="paymentNo" placeholder="Enter payment#" #payNo="ngModel" required>
+                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.paymentNo" name="paymentNo" placeholder="Enter payment#" #payNo="ngModel" >
                                                     <div *ngIf="payNo.invalid && (payNo.dirty || payNo.touched)" class="text-danger">
                                                         <div *ngIf="payNo.errors.required">
                                                             Advance payment# is required.
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row pt-2" id="settlementListDiv">
+                                            </div> -->
+                                            <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
                                                         Payment To/From<span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -47,7 +47,7 @@
                                                         <ng-option value="owner_operator">Owner Operator</ng-option>
                                                         <ng-option value="employee">Employee</ng-option>
                                                         <!-- <ng-option value="vendor">Vendor</ng-option> -->
-                                                        <ng-option value="customer">Customer</ng-option>
+                                                        <!-- <ng-option value="customer">Customer</ng-option> -->
                                                     </ng-select>
                                                     <div *ngIf="payTo.invalid && (payTo.dirty || payTo.touched)" class="text-danger">
                                                         <div *ngIf="payTo.errors.required">
@@ -154,42 +154,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                    </label>
-                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
-                                                    placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
-                                                    #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
 
-                                                    <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
-                                                        <div *ngIf="payDate.errors.required">
-                                                            Payment date is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label
-                                                        font-weight-bold
-                                                        font-bold text-lg-right
-                                                        pt-2">Reference#
-                                                    </label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -234,8 +199,7 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right">Account <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountNo="ngModel" required>
-                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actName }} - {{
-                                                            data.actNo }}</ng-option>
+                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                     </ng-select>
 
                                                     <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
@@ -262,11 +226,37 @@
                                         <div class="col-lg-5">
                                             <div class="row">
                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
+                                                    #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+                                                    <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                                                        <div *ngIf="payDate.errors.required">
+                                                            Payment date is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-2">
+                                                <div class="col-lg-10">
+                                                    <label class="control-label
+                                                        font-weight-bold
+                                                        font-bold text-lg-right
+                                                        pt-2">Reference#
+                                                    </label>
+                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-10">
                                                     <label class="control-label
                                                         font-weight-bold
                                                         font-bold text-lg-right
                                                         pt-2">Notes
-
                                                     </label>
                                                     <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes"></textarea>
                                                 </div>
@@ -275,7 +265,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-10 text-right">
-                                            <button type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</button>
+                                            <a type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</a>
                                             <button type="button" *ngIf="!paymentID" (click)="addRecord()" [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
                                             <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()" [disabled]="!payForm.form.valid || submitDisabled"  class="btn btn-success">Update</button>
                                         </div>

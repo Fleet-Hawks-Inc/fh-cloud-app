@@ -1,5 +1,7 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
+import { AccountService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
@@ -36,6 +38,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
+  fax = '';
   bizCountry = null;
   uploadedLogo = '';
   fleets = {
@@ -47,13 +50,14 @@ export class AddAccountComponent implements OnInit {
     trailers: 0,
     trucks: 0,
   };
-  reCaptcha:any
-  size="Normal"
-  lang="en"
-  theme="light"
+  reCaptcha: any
+  size = "Normal"
+  lang = "en"
+  theme = "light"
 
   addressDetails = [{
     addressType: 'yard',
+    defaultYard: false,
     countryName: '',
     countryCode: '',
     stateCode: '',
@@ -75,6 +79,23 @@ export class AddAccountComponent implements OnInit {
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
+    addressDetails: [{
+      addressType: 'branch',
+      countryName: '',
+      countryCode: '',
+      stateCode: '',
+      stateName: '',
+      cityName: '',
+      zipCode: '',
+      address: '',
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      manual: false,
+      bankStates: [],
+      bankCities: []
+    }]
   }];
   submitDisabled = false;
   public searchTerm = new Subject<string>();
@@ -103,6 +124,7 @@ export class AddAccountComponent implements OnInit {
   yardAddress: boolean;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
+  yardDefault = false;
   passwordValidation = {
     upperCase: false,
     lowerCase: false,
@@ -110,8 +132,12 @@ export class AddAccountComponent implements OnInit {
     specialCharacters: false,
     length: false
   }
-  siteKey="6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo"
-  constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
+  siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
+  constructor(private apiService: ApiService,
+              private toaster: ToastrService,
+              private accountService: AccountService,
+              private location: Location,
+              private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -120,6 +146,9 @@ export class AddAccountComponent implements OnInit {
     $(document).ready(() => {
       // this.carrierForm = $('#carrierForm').validate();
     });
+  }
+  geocodingSearch(value) {
+    this.HereMap.geoCode(value);
   }
   // Show password
   toggleFieldTextType() {
@@ -148,24 +177,52 @@ export class AddAccountComponent implements OnInit {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  getStates(countryCode: any, index:any) {
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+  }
+  manBankAddress(event, i, bankIndex) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+    }
+  }
+  getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
     this.addressDetails[index].cityName = '';
     this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-   getCities(stateCode: any, index: any, countryCode: any) {
+  getCities(stateCode: any, index: any, countryCode: any) {
     this.addressDetails[index].cityName = '';
     this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.addressDetails[index].cities   = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  getBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].stateCode = '';
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
-    }
-    else {
+    } else {
       this.addressDetails.push({
         addressType: '',
+        defaultYard: false,
         countryName: '',
         countryCode: '',
         stateCode: '',
@@ -189,7 +246,6 @@ export class AddAccountComponent implements OnInit {
     }
   }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
@@ -199,7 +255,7 @@ export class AddAccountComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(term => {
-        return this.HereMap.searchEntries(term);
+        return this.HereMap.searchForOnBoard(term);
       }),
       catchError((e) => {
         return throwError(e);
@@ -208,71 +264,124 @@ export class AddAccountComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
-    this.addressDetails[i].countryCode = result.address.countryCode;
-    this.addressDetails[i].stateCode = result.address.stateCode;
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].zipCode = result.address.postalCode;
+    this.addressDetails[i][`userLocation`] = item.address.label;
+    this.addressDetails[i].geoCords.lat = item.position.lat;
+    this.addressDetails[i].geoCords.lng = item.position.lng;
+    this.addressDetails[i].countryName = item.address.CountryFullName;
+    this.addressDetails[i].countryCode = item.address.Country;
+    this.addressDetails[i].stateCode = item.address.State;
+    this.addressDetails[i].stateName = item.address.StateName;
+    this.addressDetails[i].cityName = item.address.City;
+    this.addressDetails[i].zipCode = item.address.Zip;
+    this.addressDetails[i].address = item.address.StreetAddress;
     $('div').removeClass('show-search__result');
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
+  async bankAddress(i, item, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
+    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
+    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
+    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
+    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
+    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
+    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
+    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
+    $('div').removeClass('show-search__result');
+  }
+  defaultYardFn(e: any, index: number) {
+    if (e === true) {
+      this.addressDetails[index].defaultYard = true;
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (i !== index) {
+        this.addressDetails[i].defaultYard = false;
+      }
+    }
+    if (e === false) {
+      this.addressDetails[index].defaultYard = false;
+    }
+  }
+  setYardDefault(event: any, index: number) {
+if (event === 'mailing') {
+  this.addressDetails[index].defaultYard = false;
+}
+  }
+  predefinedAccounts() {
+    this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
+    });
+  }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
     this.hideErrors();
-    for (let i = 0; i < this.addressDetails.length; i++) {
-      const element = this.addressDetails[i];
-      delete element.states;
-      delete element.cities;
-      if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
-        let fullAddress = `${element.address} ${element.cityName}
-    ${element.stateCode} ${element.countryCode}`;
+    for (const el of this.addressDetails) {
+      delete el.states;
+      delete el.cities;
+      if (el.countryCode !== '' && el.stateCode !== '' && el.cityName !== '') {
+        const fullAddress = `${el.address} ${el.cityName}
+    ${el.stateCode} ${el.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
+          el.geoCords.lat = result.position.lat;
+          el.geoCords.lng = result.position.lng;
         }
       }
     }
-    for(let i=0; i < this.addressDetails.length;i++){
+    for (const op of this.banks) {
+      for( const addressElement of op.addressDetails) {
+        delete addressElement.bankStates;
+        delete addressElement.bankCities;
+        if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
+          const fullAddress = `${addressElement.address} ${addressElement.cityName}
+      ${addressElement.stateCode} ${addressElement.countryCode}`;
+          let result = await this.HereMap.geoCode(fullAddress);
+          if (result.items.length > 0) {
+            result = result.items[0];
+            addressElement.geoCords.lat = result.position.lat;
+            addressElement.geoCords.lng = result.position.lng;
+          }
+        }
+      }
+
+    }
+    const getYardDefault = this.addressDetails.filter((address: any) => {
+      return address.defaultYard === true;
+    });
+    if (getYardDefault.length === 0) {
+      this.yardDefault = false;
+    } else {
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
-           if (this.addressDetails[i].manual) {
-            if (this.addressDetails[i].countryCode !== '' &&
+        if (this.addressDetails[i].manual) {
+          if (this.addressDetails[i].countryCode !== '' &&
             this.addressDetails[i].stateCode !== '' &&
             this.addressDetails[i].cityName !== '' &&
             this.addressDetails[i].zipCode !== '' &&
             this.addressDetails[i].address !== '') {
-              this.yardAddress = true;
-            }
-           } else if (!this.addressDetails[i].manual) {
-            if (this.addressDetails[i][`userLocation`] !== '' ) {
-              this.yardAddress = true;
-            }
-           }
+            this.yardAddress = true;
+          }
+        } else if (!this.addressDetails[i].manual) {
+          if (this.addressDetails[i][`userLocation`] !== '') {
+            this.yardAddress = true;
+          }
+        }
         break;
-       } else {
+      } else {
         this.yardAddress = false;
       }
     }
-    if (this.yardAddress) {
+    if (this.yardAddress && this.yardDefault) {
       const data = {
         entityType: 'carrier',
         CCC: this.CCC,
@@ -296,6 +405,7 @@ export class AddAccountComponent implements OnInit {
         password: this.password,
         addressDetails: this.addressDetails,
         phone: this.phone,
+        fax: this.fax,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -307,7 +417,7 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
-      if(data.bizCountry === 'CA') {
+      if (data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;
       }
@@ -320,7 +430,9 @@ export class AddAccountComponent implements OnInit {
       // append other fields
       formData.append('data', JSON.stringify(data));
       this.apiService.postData('carriers/add', formData, true).subscribe({
-        complete: () => { },
+        complete: () => {
+
+         },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -337,18 +449,19 @@ export class AddAccountComponent implements OnInit {
                 this.submitDisabled = true;
               },
               error: () => { },
-              next: () => {this.submitDisabled = true; },
+              next: () => { this.submitDisabled = true; },
             });
         },
         next: (res) => {
+          this.predefinedAccounts();
           this.response = res;
           this.submitDisabled = true;
           this.toaster.success('Carrier created successfully.');
           this.cancel();
         },
       });
-    } else{
-      this.toaster.error('Yard address is mandatory');
+    } else {
+      this.toaster.error('Yard address is mandatory and atleast one yard as default is mandatory');
     }
 
   }
@@ -357,11 +470,11 @@ export class AddAccountComponent implements OnInit {
       .subscribe((v) => {
         if (v === 'userName' || v === 'email' || v === 'carrierName') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
         if (v === 'cognito') {
-         this.toaster.error(this.errors[v]);
+          this.toaster.error(this.errors[v]);
         }
       });
   }
@@ -376,7 +489,7 @@ export class AddAccountComponent implements OnInit {
     this.errors = {};
   }
   selectPhoto(event) {
-    let files = [...event.target.files];
+    const files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
@@ -384,33 +497,33 @@ export class AddAccountComponent implements OnInit {
     let passwordVerify = passwordStrength(password)
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
-    } else{
+    } else {
       this.passwordValidation.lowerCase = false;
     }
 
     if (passwordVerify.contains.includes('uppercase')) {
       this.passwordValidation.upperCase = true;
-    } else{
+    } else {
       this.passwordValidation.upperCase = false;
     }
     if (passwordVerify.contains.includes('symbol')) {
       this.passwordValidation.specialCharacters = true;
-    } else{
+    } else {
       this.passwordValidation.specialCharacters = false;
     }
     if (passwordVerify.contains.includes('number')) {
       this.passwordValidation.number = true;
-    } else{
+    } else {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
-      this.passwordValidation.length = true
-    } else{
+      this.passwordValidation.length = true;
+    } else {
       this.passwordValidation.length = false;
-  
-    
+
+
     }
-    if(password.includes('.')|| password.includes('-')){
+    if (password.includes('.') || password.includes('-')) {
       this.passwordValidation.specialCharacters = true;
     }
 

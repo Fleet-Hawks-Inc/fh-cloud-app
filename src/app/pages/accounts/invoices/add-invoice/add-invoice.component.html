@@ -165,7 +165,7 @@
                       <div class="row pt-2">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Terms</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
+                          <ng-select class="form-control populate" placeholder="Select payment terms"[(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
                               <ng-option value="15">15 Days</ng-option>
                               <ng-option value="30">30 Days</ng-option>
                               <ng-option value="45">45 Days</ng-option>
@@ -182,22 +182,20 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Salesperson</label>
-                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invSalesman" name="invSalesman">
-                            <ng-option *ngFor="let user of users" value="{{user.contactID}}">
-                              {{user.firstName}} {{user.lastName}}</ng-option>
-                          </ng-select>
-                        </div>
-                      </div>
-                      <div class="row pt-2">
-                        <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
                             Subject</label>
                           <input type="text" class="form-control" placeholder="Rent Invoice" [(ngModel)]="invoiceData.invSubject"
                             name="invSubject">
                         </div>
                       </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                            Salesperson</label>
+                          <label class="control-label font-semi-bold">  {{ currentUser }}</label>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                   <div class="row">
@@ -213,30 +211,45 @@
                         <table class="table table-bordered">
                           <thead>
                             <tr>
-                              <th width="25%">Commodity/Service</th>
-                              <th width="15%">Quantity/Hours</th>
-                              <th width="10%">Price/Rate</th>
-                              <th width="20%">Amount</th>
-                              <th width="25%">Account</th>
+                              <th width="25%">Commodity/Service<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                              <th width="15%">Quantity/Hours<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                              <th width="10%">Price/Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                              <th width="20%">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                              <th width="25%">Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
                               <th width="5%">Action</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr *ngFor="let dt of invoiceData.details; let d = index;">
                               <td>
-                                <input type="text" class="form-control" [(ngModel)]="dt.commodityService" name="commodityService{{d}}">
+                                <input type="text" class="form-control" placeholder="Enter commodity/service"  [(ngModel)]="dt.commodityService" name="commodityService{{d}}" #accID="ngModel" required>
+                                <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
+                                  <div *ngIf="accID.errors.required">
+                                      Commodity is required.
+                                  </div>
+                              </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="number" class="form-control" [(ngModel)]="dt.qtyHours" min="0" name="qtyHours{{d}}" (change)="calculateDetailAmt($event.target.value,d, 'qty')">
+                                    <input type="number" class="form-control" [(ngModel)]="dt.qtyHours" min="0" name="qtyHours{{d}}" (change)="calculateDetailAmt($event.target.value,d, 'qty')" #qty="ngModel" required>
+                                    <div *ngIf="qty.invalid && (qty.dirty || qty.touched)" class="text-danger">
+                                      <div *ngIf="qty.errors.required">
+                                         Quantity/Hours is required.
+                                      </div>
+                                  </div>
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="number" class="form-control" [(ngModel)]="dt.priceRate" min="0" name="priceRate{{d}}" (change)="calculateDetailAmt($event.target.value,d,'price')">
+                                    <input type="number" class="form-control" [(ngModel)]="dt.priceRate" min="0" name="priceRate{{d}}" (change)="calculateDetailAmt($event.target.value,d,'price')" #rate="ngModel" required>
+                                    <div *ngIf="rate.invalid && (rate.dirty || rate.touched)" class="text-danger">
+                                      <div *ngIf="rate.errors.required">
+                                         Rate is required.
+                                      </div>
+                                  </div>
                                   </div>
                                 </div>
                               </td>
@@ -250,9 +263,15 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <ng-select class="form-control populate" [(ngModel)]="dt.accountID" name="accountID{{d}}">
-                                        <ng-option *ngFor="let act of accounts | async" value="{{act.actID}}">{{act.actNo}} - {{act.actName}}</ng-option>
+                                    <ng-select class="form-control populate" placeholder="Select account" [(ngModel)]="dt.accountID" name="accountID{{d}}" #act="ngModel" required>
+                                        <ng-option *ngFor="let act of accounts" value="{{act.actID}}">{{act.actNo}} - {{act.actName | titlecase}}</ng-option>
+
                                     </ng-select>
+                                    <div *ngIf="act.invalid && (act.dirty || act.touched)" class="text-danger">
+                                      <div *ngIf="act.errors.required">
+                                         Account is required.
+                                      </div>
+                                  </div>
                                   </div>
                                 </div>
                               </td>
@@ -271,7 +290,7 @@
                               <div class="row">
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
+                                  <textarea class="form-control" placeholder="Enter remarks of the invoice" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="row">

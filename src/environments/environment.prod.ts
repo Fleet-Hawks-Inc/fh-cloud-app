@@ -5,14 +5,15 @@ export const environment = {
   isDispatchEnabled: true,
   isComplianceEnabled: true,
   isManageEnabled: true,
-  isSafetyEnabled: false,
-  isAccountsEnabled: false,
+  isSafetyEnabled: true,
+  isAccountsEnabled: true,
   isReportsEnabled: false,
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
+
   AssetURL: 'https://fh-cloud-service-uploads-ue1.s3.us-east-1.amazonaws.com',
-  AccountServiceUrl: 'http://localhost:4002/api/v1/',
-  SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+  AccountServiceUrl: 'https://accounts.cloud.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.cloud.fleethawks.com/api/v1/',
 
   temp: 'search',
   LoginUrl: 'users/login',
@@ -26,14 +27,14 @@ export const environment = {
   //   APP_CLIENT_ID: '77ihpijtlrk6kt7e2ufma285il'
   // },
   congitoConfig: {
-    USER_POOL_ID: 'us-east-1_EtYcKjB24',
-    REGION: 'us-east-1',
-    APP_CLIENT_ID: '5kklsg245i4m7ap8q7k3q3fku3'
+    USER_POOL_ID: 'ca-central-1_F0KoWWGIh',
+    REGION: 'ca-central-1',
+    APP_CLIENT_ID: '1khgs3lefjv2qld1dgts0dno68'
   },
   awsBucket: {
     bucketName: 'fh-cloud-service-uploads-ue1',
 
-    region: 'us-east-1'
+    region: 'ca-central-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,

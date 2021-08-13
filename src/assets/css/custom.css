@@ -2512,9 +2512,10 @@ input.placeholder-lowercase {
 
 .addsr-scrollbar {
   position: relative;
-  height: 720px;
+  height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 15px;
 }
 /* toggle switch */
 

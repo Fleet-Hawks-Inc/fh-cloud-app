@@ -61,7 +61,7 @@
                                         <ul class="m-0 p-0 mt-4 pt-2">
                                             <li class=" mb-2 border" *ngFor="let trip of tempTrips; let i=index;">
                                                 <div class="fc-event-main">
-                                                    <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
+                                                    <h5 class="mb-2 font-weight-bold mt-0 border-bottom h5height pb-2">
                                                         <div class="d-inline-block" *ngFor="let customer of trip.customersArr;">
                                                             <span class="name-short">{{ customer.icon }}</span>
                                                             {{ customer.name }} 
@@ -254,8 +254,9 @@
             <div class="modal-footer card-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="javascript:;" class="btn btn-success mr-2" (click)="saveAssetModalData()">Save</a>
-                        <button class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</button>
+                        
+                        <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal">Cancel</button>
+                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()">Select</a>
                     </div>
                 </div>
             </div>

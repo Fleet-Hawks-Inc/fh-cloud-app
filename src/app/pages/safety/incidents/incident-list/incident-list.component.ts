@@ -61,7 +61,7 @@ export class IncidentListComponent implements OnInit {
   birthDateMaxLimit: any;
 
   constructor(private apiService: ApiService,private hereMapService: HereMapService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    ) { 
+    ) {
       const date = new Date();
       this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
       this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
@@ -70,7 +70,6 @@ export class IncidentListComponent implements OnInit {
   ngOnInit(): void {
     this.fetchEvents();
     this.fetchVehicles();
-    
     this.fetchAllVehiclesIDs();
     this.fetchAllDriverIDs();
     this.fetchAllUsersIDs();
@@ -78,12 +77,12 @@ export class IncidentListComponent implements OnInit {
   }
 
   changeStatus(incidentID: any, newValue: string, i: string) {
-    
+
     let data = {
       incidentID: incidentID,
       status: newValue
     }
-    this.safetyService.putData('incidents', data).subscribe(async (res: any)=> { 
+    this.safetyService.putData('incidents', data).subscribe(async (res: any)=> {
       if(res.status == false) {
         this.events[i].status = res.oldStatus;
         this.toaster.error('Please select valid status');
@@ -135,19 +134,18 @@ export class IncidentListComponent implements OnInit {
             const location = await this.getLocation(element.location);
             element.location = location;
             this.events.push(element);
-  
           }
-          if(this.events[this.events.length - 1].sk != undefined) {
+          if (this.events[this.events.length - 1].sk != undefined) {
             this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
           } else {
             this.lastItemSK = 'end';
           }
           this.newEvents = this.events;
         }
-        
+
       })
     }
-   
+
   }
 
   onScroll() {
@@ -171,7 +169,7 @@ export class IncidentListComponent implements OnInit {
     }
     this.safetyService.getData(`incidents/paging?driverID=${this.filter.driverID}&date=${this.filter.date}`)
       .subscribe(async (result: any) => {
-        
+
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -184,7 +182,7 @@ export class IncidentListComponent implements OnInit {
 
         }
       })
-   
+
   }
 
 
@@ -195,7 +193,7 @@ export class IncidentListComponent implements OnInit {
     }
     this.events = this.newEvents;
     $(".navtabs").removeClass('active');
-    
+
     if (tabType === 'all') {
       $("#allSafetyIncidents-tab").addClass('active');
       this.events = this.newEvents;
@@ -229,7 +227,7 @@ export class IncidentListComponent implements OnInit {
 
   resetFilter() {
     if(this.filter.date !== '' || this.filter.driverID !== '') {
-      this.lastItemSK = ''; 
+      this.lastItemSK = '';
       this.events = [];
       this.fetchEvents();
       this.filter = {
@@ -238,7 +236,7 @@ export class IncidentListComponent implements OnInit {
       };
     } else {
       return false;
-    } 
+    }
   }
 
   fetchAllVehiclesIDs() {
@@ -265,7 +263,7 @@ export class IncidentListComponent implements OnInit {
   convertTimeFormat (time: any) {
     // Check correct time format and split into components
     time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-  
+
     if (time.length > 1) { // If time format correct
       time = time.slice (1);  // Remove full string match value
       time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM

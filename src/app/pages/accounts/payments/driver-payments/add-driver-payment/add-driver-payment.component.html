@@ -416,7 +416,7 @@
                                                             Payable</label>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.pendingPayment" name="pendingPayment" disabled>
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.finalAmount" name="finalAmount" disabled>
                                                     </div>
                                                 </div>
                                             </div>
@@ -424,6 +424,8 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
+                                            <!-- <button type="button" class="btn btn-success modal-with-form mr-2" (click)="showCheque()">Cheque preview</button> -->
+
                                             <button type="button" class="btn btn-default mr-2" routerLink="/accounts/payments/driver-payments/list">Cancel</button>
                                             <button type="button" class="btn btn-success modal-with-form" [disabled]="!paymentForm.form.valid || submitDisabled" *ngIf="!paymentID" (click)="addRecord()">Save</button>
                                         </div>
@@ -518,6 +520,27 @@
                                 <input type="text" class="form-control"> </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="chequeModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 1000px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header"> 
+                <h4 class="modal-title">Cheque</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <!-- <app-payment-cheque></app-payment-cheque> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

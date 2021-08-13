@@ -12,7 +12,9 @@ export class ChartOfAccountsComponent implements OnInit {
   modalTitle = 'Add Account';
   dataMessage = Constants.NO_RECORDS_FOUND;
   accounts: any = [];
+  newAccounts = [];
   parentMessage: '';
+  lastItemSK = '';
   filter = {
     actType: null,
     actName: null,
@@ -20,8 +22,9 @@ export class ChartOfAccountsComponent implements OnInit {
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
+    // this.listService.fetchChartAccounts();
+    // this.accounts = this.listService.accountsList;
+    this.fetchAccounts();
   }
   preAccounts() {
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
@@ -57,14 +60,17 @@ export class ChartOfAccountsComponent implements OnInit {
       name = this.filter.actName.toLowerCase();
      }
      this.dataMessage = Constants.FETCHING_DATA;
-     this.fetchAccounts(name, type);
+     this.searchAccounts(name, type);
     }
   }
-  fetchAccounts(actName: string, actType: null) {
-    this.accounts = this.accountService.getData(`chartAc/paging?actName=${actName}&actType=${actType}`).toPromise();
-    // if (!this.accounts) {
-    //   this.dataMessage = Constants.NO_RECORDS_FOUND;
-    // }
+  searchAccounts(actName: string, actType: null) {
+    this.accountService.getData(`chartAc/paging?actName=${actName}&actType=${actType}`).subscribe((res: any) => {
+      this.accounts = res;
+      if (this.accounts.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+    });
+
   }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
@@ -72,7 +78,36 @@ export class ChartOfAccountsComponent implements OnInit {
       actType: null,
       actName: null,
     };
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
+    this.lastItemSK = '';
+    this.accounts = [];
+    this.fetchAccounts();
+  }
+  async fetchAccounts(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.accounts = [];
+    }
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`chartAc?lastKey=${this.lastItemSK}`)
+      .subscribe(async (result: any) => {
+        if (result.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        if (result.length > 0) {
+          for (const element of result) {
+            this.accounts.push(element);
+          }
+          if (this.accounts[this.accounts.length - 1].sk !== undefined) {
+            this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+        }
+      });
+    }
+
+  }
+  onScroll() {
+    this.fetchAccounts();
   }
 }

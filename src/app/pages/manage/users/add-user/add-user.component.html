@@ -114,7 +114,7 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="eg. 2234567891"
                             [(ngModel)]="userData.phone" name="phone" #umob="ngModel"
-                            required pattern="[0-9]{1,10}$">
+                            required pattern="[0-9]{10}$">
                             <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
                               <div *ngIf="umob.errors.required">
                                 Phone is required.

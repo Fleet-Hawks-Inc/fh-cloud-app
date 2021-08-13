@@ -141,7 +141,7 @@
                                                                 Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                             <div class="row">
                                                                 <div class="col-lg-6 pr-1">
-                                                                    <input type="text" name="recAmount" class="form-control" [(ngModel)]="incomeData.recAmount" #recAmount="ngModel" required/>
+                                                                    <input type="number" name="recAmount" class="form-control" min="0" placeholder="0.00" [(ngModel)]="incomeData.recAmount" #recAmount="ngModel" required/>
 
                                                                     <div *ngIf="recAmount.invalid && (recAmount.dirty || recAmount.touched)" class="text-danger">
                                                                         <div *ngIf="recAmount.errors.required">
@@ -247,7 +247,7 @@
                                                             <div class="col-lg-10">
                                                                 <label
                                                                     class="control-label font-weight-bold">Description</label>
-                                                                <textarea class="form-control h-auto" name="description" [(ngModel)]="incomeData.description" rows="3"></textarea>
+                                                                <textarea class="form-control h-auto" name="description" placeholder="Enter description of the income transaction" [(ngModel)]="incomeData.description" rows="3"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -255,7 +255,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-11 text-right">
-                                                    <button type="button" routerLink="" class="btn btn-default mr-2">Cancel</button>
+                                                    <a routerLink="/accounts/income/list" type="button" class="btn btn-default mr-2">Cancel</a>
                                                     <button type="submit" class="btn btn-success" *ngIf="!incomeID" (click)="addRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Save</button>
                                                     <button type="submit" class="btn btn-success" *ngIf="incomeID" (click)="updateRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Update</button>
                                                 </div>

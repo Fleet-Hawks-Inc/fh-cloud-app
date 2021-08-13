@@ -60,26 +60,31 @@ export class SettlementsDetailComponent implements OnInit {
 
     entityName = "";
     entityPaymentType = "";
-
+    accountsObjects = {};
+    accountsIntObjects = {};
     constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
 
     ngOnInit() {
-        this.settlementID = this.route.snapshot.params['settlementID'];
+        this.settlementID = this.route.snapshot.params[`settlementID`];
         this.fetchSettlementDetail();
         this.fetchTrips();
-        this.fetchAccounts();
+        this.fetchAccountsByIDs();
+        this.fetchAccountsByInternalIDs();
     }
 
     fetchSettlementDetail() {
         this.accountService.getData(`settlement/detail/${this.settlementID}`)
             .subscribe((result: any) => {
                 this.settlementData = result[0];
+                this.settlementData.transactionLog.map((v: any) => {
+                  v.type = v.type.replace('_', ' ');
+                });
                 if (this.settlementData.type === 'driver') {
                     this.fetchDriverDetail(this.settlementData.entityId);
                 } else {
                     this.fetchContact(this.settlementData.entityId);
                 }
-            })
+            });
     }
 
     fetchDriverDetail(driverID) {
@@ -88,7 +93,7 @@ export class SettlementsDetailComponent implements OnInit {
                 this.driverDetail = result.Items[0];
                 this.entityName  = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
                 this.entityPaymentType = this.driverDetail.paymentDetails.paymentType;
-            })
+            });
     }
 
     fetchContact(contactID) {
@@ -97,21 +102,25 @@ export class SettlementsDetailComponent implements OnInit {
                 this.operatorDetail = result.Items[0];
                 this.entityName  = this.operatorDetail.companyName;
                 this.entityPaymentType = this.operatorDetail.paymentDetails.payrollType;
-            })
+            });
     }
 
     fetchTrips() {
         this.apiService.getData(`trips/get/list`)
             .subscribe((result: any) => {
                 this.tripsObj = result;
-            })
+            });
     }
 
-    fetchAccounts() {
-        this.accountService.getData(`chartAc/get/all/list`)
-          .subscribe((result: any) => {
-            this.accounts = result;
-          })
-      }
+    fetchAccountsByIDs() {
+      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
+    }
+    fetchAccountsByInternalIDs() {
+      this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+        this.accountsIntObjects = result;
+      });
+    }
 
 }

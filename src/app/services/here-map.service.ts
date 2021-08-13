@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AnyCnameRecord } from 'dns';
+import { ApiService } from './api.service';
 declare var H: any;
 
 @Injectable({
@@ -43,7 +44,7 @@ export class HereMapService {
     };
     return httpOptions;
   }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private apiService: ApiService) { }
 
   /**
    * Initialize maps
@@ -162,44 +163,54 @@ export class HereMapService {
   /*
   AutoSuggest Search Api v7
 */
-  searchLocation = async (query) => {
-    this.platform = new H.service.Platform({
-      'apikey': this.apiKey,
-    });
-    if (query !== '') {
-      const service = this.platform.getSearchService();
-      const response = await service.autosuggest(
-        {
-          at: `51.271096,-114.275941`,
-          limit: 5,
-          q: query,
-          lang: 'en',
-        }
-      );
-      let newData = [];
-      response.items.forEach(element => {
-        if (element.address != undefined) {
-          newData.push(element);
-        }
-      });
-      return newData;
+  // searchLocation = async (query) => {
+  //   this.platform = new H.service.Platform({
+  //     'apikey': this.apiKey,
+  //   });
+  //   if (query !== '') {
+  //     const service = this.platform.getSearchService();
+  //     const response = await service.autosuggest(
+  //       {
+  //         at: `51.271096,-114.275941`,
+  //         limit: 5,
+  //         q: query,
+  //         lang: 'en',
+  //       }
+  //     );
+  //     let newData = [];
+  //     response.items.forEach(element => {
+  //       if (element.address != undefined) {
+  //         newData.push(element);
+  //       }
+  //     });
+  //     return newData;
+  //   }
+    
+  // }
+
+
+  searchForOnBoard = async (value) => {
+    let data = {
+      query: value,
+    };
+    let result = await this.apiService.getData(`pcMiles/onboard/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if(result != null) {
+      return result.items;
     }
-    // if (query !== '') {
-    //   const service = this.platform.getSearchService();
-    //   const result = await service.geocode({ q: query });
-    //   if (result && result.items.length > 0) {
-    //     const response = await service.autosuggest(
-    //       {
-    //         at: `51.271096,-114.275941`,
-    //         limit: 5,
-    //         q: query,
-    //         lang: 'en',
-    //       }
-    //     );
-    //     return response.items;
-    //   }
-    // }
+    
   }
+
+  searchLocation = async (value) => {
+    let data = {
+      query: value,
+    };
+    let result = await this.apiService.getData(`pcMiles/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if(result != null) {
+      return result.items;
+    }
+    
+  }
+  
   // returns the response
   public searchEntries(query) {
     return this.searchLocation(query);
@@ -382,5 +393,6 @@ export class HereMapService {
     } catch (erro) {
     }
   }
+
 
 }
