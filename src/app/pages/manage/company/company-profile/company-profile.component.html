@@ -62,37 +62,38 @@
                       <td width="20%" class="back-color-gray">Registered Company Name</td>
                       <td width="30%">{{carriers.carrierName | titlecase}}</td>
                       <td width="20%" class="back-color-gray">DBA Name</td>
-                      <td width="30%">{{carriers.DBAName | titlecase}}</td>
+                      <td width="30%"><span *ngIf="carriers.DBAName !== ''">{{carriers.DBAName | titlecase}}</span>
+                                      <span *ngIf="carriers.DBAName === ''">-</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Number of Fleets</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span></td>
                       <td class="back-color-gray">EIN</td>
-                      <td>{{carriers.EIN}}</td>
+                      <td>{{carriers.EIN ? carriers.EIN : '-'}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Vehicle(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span></td>
                       <td class="back-color-gray">Liability Insurance#</td>
-                      <td>{{carriers.liabilityInsurance}}</td>
+                      <td>{{carriers.liabilityInsurance ? carriers.liabilityInsurance : '-'}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Asset(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span></td>
                       <td class="back-color-gray">Cargo Insurance#</td>
-                      <td>{{carriers.cargoInsurance}}</td>
+                      <td>{{carriers.cargoInsurance ? carriers.cargoInsurance : '-'}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Reefer(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span></td>
                       <td class="back-color-gray">CCC</td>
-                      <td>{{carriers.CCC}}</td>
+                      <td>{{carriers.CCC ? carriers.CCC : '-'}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Dry Van(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span></td>
                       <td class="back-color-gray">SCAC</td>
-                      <td>{{carriers.SCAC}}</td>
+                      <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Flatbed(s)</td>
@@ -104,7 +105,7 @@
                     </tr>
                     <tr>
                       <td class="back-color-gray">Curtainside(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide}}</span></td>
+                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide ? carriers.fleets.curtainSide : '-'}}</span></td>
                       <td class="back-color-gray">CSA</td>
                       <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span></td>
                     </tr>
@@ -131,13 +132,13 @@
                       <td width="20%" class="back-color-gray">Address Type</td>
                       <td width="30%">{{address.addressType | titlecase}} <span *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span></td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address}}</span></td>
+                      <td width="30%">{{address.address}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Country</td>
-                      <td><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{address.countryName}}</span></td>
+                      <td>{{address.countryName}}</td>
                       <td class="back-color-gray">Province/State</td>
-                      <td><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{address.stateName}}</span></td>
+                      <td>{{address.stateName}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">City</td>
@@ -177,7 +178,7 @@
                       <td width="20%" class="back-color-gray">Address Type</td>
                       <td width="30%">{{address.addressType | titlecase}}</td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address}}</span></td>
+                      <td width="30%">{{address.address}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Country</td>
