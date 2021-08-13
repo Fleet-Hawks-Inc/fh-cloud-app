@@ -47,7 +47,9 @@ export class AddEmployeePaymentComponent implements OnInit {
       cpp: 0,
       ei: 0,
       federalTax: 0,
-      provincialTax: 0
+      provincialTax: 0,
+      emplCPP: 0,
+      emplEI: 0
     },
     taxes: 0,
     advance: 0,
@@ -314,24 +316,24 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   calculateFinalTotal() {
-    console.log('this.paymentData.taxes', this.paymentData.taxes);
     this.paymentData.subTotal = Number(this.paymentData.subTotal);
     this.paymentData.taxes = Number(this.paymentData.taxes);
     this.paymentData.advance = Number(this.paymentData.advance);
     this.paymentData.paymentTotal = Number(this.paymentData.paymentTotal);
     this.paymentData.additionTotal = Number(this.paymentData.additionTotal);
     this.paymentData.deductionTotal = Number(this.paymentData.deductionTotal);
-    this.paymentData.finalTotal = Number(this.paymentData.finalTotal);
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
-    console.log('this.paymentData.subTotal', this.paymentData.subTotal);
     this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
-    console.log('this.paymentData.finalTotal', this.paymentData.finalTotal);
+
+    this.paymentData.subTotal = Number(this.paymentData.subTotal.toFixed(2));
+    this.paymentData.finalTotal = Number(this.paymentData.finalTotal.toFixed(2));
   }
 
   fetchPaymentDetail() {
     this.accountService.getData(`employee-payments/detail/${this.paymentID}`).subscribe((result: any) => {
       this.paymentData = result[0];
       this.submitDisabled = true;
+      this.assignProvincalCode();
     })
   }
 
@@ -480,16 +482,24 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   calculatePayroll() {
-    this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.subTotal}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
-      console.log('payrioll calculate result============', result);
-      this.paymentData.taxdata.cpp = result.cpp;
-      this.paymentData.taxdata.ei = result.insurance;
-      this.paymentData.taxdata.federalTax = result.federalTax;
-      this.paymentData.taxdata.provincialTax = result.provncTax;
-      this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
-      this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-      console.log('this.payroll', this.paymentData.taxdata);
-    })
+    if(!this.paymentID) {
+      if(this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
+        this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.subTotal}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
+          this.paymentData.taxdata.cpp = result.cpp;
+          this.paymentData.taxdata.ei = result.insurance;
+          this.paymentData.taxdata.federalTax = result.federalTax;
+          this.paymentData.taxdata.provincialTax = result.provncTax;
+          this.paymentData.taxdata.emplCPP = result.employerCpp;
+          this.paymentData.taxdata.emplEI = result.employerEI;
+          this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+          this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
+    
+          this.calculateFinalTotal();
+        })
+      } else {
+        this.resetPayrollCalculations();
+      }
+    }
   }
 
   fetchPayPeriods() {
@@ -501,23 +511,35 @@ export class AddEmployeePaymentComponent implements OnInit {
   fetchClaimCodes() {
     this.httpClient.get('assets/jsonFiles/payroll/claimCodes.json').subscribe((data: any) => {
       this.claimCodes = data;
-      console.log('this.claimCodes', this.claimCodes);
     });
   }
 
   getStates() {
     this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
-    console.log('states', this.states);
   }
 
   assignProvincalCode() {
+    if(this.paymentData.taxdata.stateCode == null || this.paymentData.taxdata.stateCode == undefined) {
+      this.resetPayrollCalculations();
+    }
+    this.provincalClaimCodes = [];
     this.claimCodes[1].map((v) => {
       if(this.paymentData.taxdata.stateCode === v.stateCode) {
         this.provincalClaimCodes = v.codes;
       }
     })
     this.paymentData.taxdata.provincialCode = 'claim_code_1';
-
     this.calculatePayroll();
+  }
+
+  resetPayrollCalculations() {
+    this.paymentData.taxdata.cpp = 0;
+    this.paymentData.taxdata.ei = 0;
+    this.paymentData.taxdata.federalTax = 0;
+    this.paymentData.taxdata.provincialTax = 0;
+    this.paymentData.taxdata.emplCPP = 0;
+      this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+    this.calculateFinalTotal();
   }
 }
