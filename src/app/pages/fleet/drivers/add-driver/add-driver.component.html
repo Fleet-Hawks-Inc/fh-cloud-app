@@ -106,28 +106,85 @@
                           </div>
                           <div class="col-lg-12" *ngIf="driverData.driverType == 'contractor'">
                             <div class="row">
-                              <div class="col-lg-11">
+                              <div class="col-lg-6">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Corporation <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                </label>
+                                <ng-select [(ngModel)]="driverData.corporationType" name="corporationType"
+                                  class="form-control form-control-sm" placeholder="Select corporation"
+                                  (change)="onChangeHideErrors('corporation'); changeCompany($event)" #corp="ngModel" required>
+                                  <ng-option value="company">Company</ng-option>
+                                  <ng-option value="corporation">Corporation</ng-option>
+                                  <ng-option value="owner_operator">Owner Operator</ng-option>
+                                </ng-select>
+                                <div *ngIf="corp.invalid && (corp.dirty || corp.touched)" class="text-danger">
+                                  <div *ngIf="corp.errors.required">
+                                    Corporation is required.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-5" *ngIf="driverData.corporationType == 'owner_operator'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span
                                   class="mandfield text-2 ml-1"><sup>*</sup></span>
-                              </label>
-                              <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
-                                class="form-control form-control-sm" placeholder="Select Owner Operator "
-                                (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
-                                <ng-option *ngFor="let item of ownerOperators | async" value="{{item.contactID}}">
-                                  {{item.companyName}}</ng-option>
-                              </ng-select>
+                                </label>
+                                <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
+                                  class="form-control form-control-sm" placeholder="Select Owner Operator "
+                                  (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
+                                  <ng-option *ngFor="let item of ownerOperators | async" value="{{item.contactID}}">
+                                    {{item.companyName}}</ng-option>
+                                </ng-select>
+                                <div *ngIf="oSlt.invalid && (oSlt.dirty || oSlt.touched)" class="text-danger">
+                                  <div *ngIf="oSlt.errors.required">
+                                    Owner operator is required.
+                                  </div>
+                                </div>
                               </div>
-                              <div class="col-lg-1  mar-top-37 text-left">
+                              <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'owner_operator'">
                                 <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
                                   class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                               </div>
+                              <div class="col-lg-5" *ngIf="driverData.corporationType == 'company'">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Vendor <span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                </label>
+                                <ng-select [(ngModel)]="driverData.vendor" name="vendor"
+                                  class="form-control form-control-sm" placeholder="Select Vendor"
+                                  (change)="onChangeHideErrors('vendor')" #vendor="ngModel" required>
+                                  <ng-option *ngFor="let item of vendors | async" value="{{item.contactID}}">
+                                    {{item.companyName}}</ng-option>
+                                </ng-select>
+                                <div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)" class="text-danger">
+                                  <div *ngIf="vendor.errors.required">
+                                    Vendor is required.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6" *ngIf="driverData.corporationType == 'corporation'">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Corporation <span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                </label>
+                                <input [(ngModel)]="driverData.corporation" name="corporation"
+                                class="form-control form-control-sm" placeholder="Select Corporation"
+                                (change)="onChangeHideErrors('corporation')" #corp1="ngModel" required type="text">
+                                
+                                <div *ngIf="corp1.invalid && (corp1.dirty || corp1.touched)" class="text-danger">
+                                  <div *ngIf="corp1.errors.required">
+                                    Corporation is required.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'owner_operator'">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
+                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                              <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'company'">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                              
                             </div>
 
-                            <div *ngIf="oSlt.invalid && (oSlt.dirty || oSlt.touched)" class="text-danger">
-                              <div *ngIf="oSlt.errors.required">
-                                Owner operator is required.
-                              </div>
-                            </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -155,7 +212,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
-                         [(ngModel)]="driverData.DOB"
+                         [(ngModel)]="driverData.DOB" readonly
                           name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
                           #dob="ngModel" required [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit">
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
@@ -381,7 +438,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
-                              #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text"
+                              #d11="ngbDatepicker" readonly [(ngModel)]="driverData.startDate" name="startDate" type="text"
                               class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date1.invalid && (date1.dirty || date1.touched)" class="text-danger">
                               <div *ngIf="date1.errors.required">
@@ -392,7 +449,7 @@
                           <div class="col-lg-6" *ngIf="driverData.driverType !== 'contractor'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date
                             </label>
-                            <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
+                            <input (click)="d12.toggle()" readonly ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
 
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
@@ -455,17 +512,17 @@
                       </div>
                       <div class="col-lg-5 mar-top-37">
                         <div class="row">
-                          <div class="col-lg-12">
+                          <div class="col-lg-12 text-right">
                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
                               Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
                                  type="file">
                            </div>
                           </div>
-                          <div class="col-lg-12" *ngIf="errorAbstract && abstractDocs.length == 0">
+                          <div class="col-lg-12 text-right" *ngIf="errorAbstract && abstractDocs.length == 0">
                             <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
                           </div>
-                          <div class="col-lg-12" *ngIf="abstractDocs.length > 0">
+                          <div class="col-lg-12 text-right" *ngIf="abstractDocs.length > 0">
                             <label>File(s) attached</label>
                           </div>
                         </div>
@@ -626,6 +683,7 @@
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
                         </div>
+                        <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                       </div>
                     </div>
                   </div>
@@ -636,19 +694,23 @@
           <div class="row mb-3">
             <div class="col-lg-12">
               <div class="bg-white p-3">
-                <div class="row adddriverpl">
-                  <div class="col-lg-10">
+                <div class="row adddriverpl mb-3">
+                  <div class="col-lg-6">
                     <label class="control-label font-weight-bold text-lg-right text-dark text-5">Documents Details</label>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 text-right">
-                    <button type="button" (click)="addDocument()" id="add-document"
-                      [disabled]="driverData.documentDetails.length == 3" class="btn btn-success cus-btn-padd"><i
-                        class="fa fa-plus"></i> Add
-                      Another Document</button>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-5"></div>
+                      <div class="col-5 text-right">
+                        <button type="button" (click)="addDocument()" id="add-document"
+                          [disabled]="driverData.documentDetails.length == 3" class="btn btn-success cus-btn-padd"><i
+                            class="fa fa-plus"></i> Add
+                          Another Document</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                
                 <div class="form-group row adddriverpl text-dark border-0 mb-0 pb-0" id="document-one"
                   *ngFor="let document of driverData.documentDetails;let i = index">
                   <div class="col-lg-6">
@@ -744,7 +806,7 @@
                         </label>
                         <input [(ngModel)]="document.issueDate"
                           (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
-                          #d="ngbDatepicker" type="text" class="form-control" [maxDate]="getcurrentDate"
+                          #d="ngbDatepicker" readonly type="text" class="form-control" [maxDate]="getcurrentDate"
                           [minDate]="birthDateMinLimit" placeholder="yyyy/mm/dd"
                           [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
                           #idSlt="ngModel">
@@ -758,7 +820,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
-                          [ngModelOptions]="{standalone: true}"
+                          [ngModelOptions]="{standalone: true}" readonly
                           (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
                           [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel" >
@@ -881,7 +943,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
-                            name="crossBorderDetails.fastExpiry" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+                            name="crossBorderDetails.fastExpiry" readonly (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
                             type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                         </div>
                       </div>
@@ -904,28 +966,25 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL# <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL# 
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number"
                           type="text" class="form-control" placeholder="9 digits eg. 0005-04440"
-                          (change)="onChangeHideErrors('CDL_Number')" #cdl="ngModel" required maxlength="9"
-                          pattern="^[0-9]{9}$">
+                          (change)="onChangeHideErrors('CDL_Number')" #cdl="ngModel" required>
                         <div *ngIf="cdl.invalid && (cdl.dirty || cdl.touched)" class="text-danger">
                           <div *ngIf="cdl.errors.required">
                             CDL# is required.
                           </div>
-                          <div *ngIf="cdl.errors.pattern">
-                            CDL# must contain 9 numbers.
-                          </div>
+                          
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration 
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()" ngbDatepicker
-                          #d3="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.licenceExpiry"
+                          #d3="ngbDatepicker" readonly [(ngModel)]="driverData.licenceDetails.licenceExpiry"
                           name="licenceDetails.licenceExpiry" [maxDate]="futureDatesLimit" [minDate]="getcurrentDate"
                           type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required>
                         <div *ngIf="leSlt.invalid && (leSlt.dirty || leSlt.touched)" class="text-danger">
@@ -935,8 +994,8 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country 
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getLicStates($event)"
                           [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
@@ -953,13 +1012,13 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State 
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
                           placeholder="Select Province/State"
-                          (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
-                          required>
+                          (change)="onChangeHideErrors('licenceDetails.issuedState');" required #ipSlt="ngModel"
+                          >
                           <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
@@ -1057,21 +1116,22 @@
                           </div>
                         </div> -->
                       </div>
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">SIN <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <div class="col-lg-10" *ngIf="driverData.driverType === 'employee'">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">SIN 
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input (change)="onChangeHideErrors('SIN')"
                           [(ngModel)]="driverData.SIN" name="SIN"
-                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" required pattern="^[0-9]{9}$"
+                          required
+                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" pattern="^[0-9]{9}$"
                            >
-                        <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
-                          <div *ngIf="sin1.errors.required">
-                            SIN is required.
+                           <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
+                            <div *ngIf="sin1.errors.required">
+                              SIN is required.
+                            </div>
+                            <div *ngIf="sin1.errors.pattern">
+                              SIN must contain 9 numbers.
+                            </div>
                           </div>
-                          <div *ngIf="sin1.errors.pattern">
-                            SIN must contain 9 numbers.
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -1360,6 +1420,7 @@
                             <ng-option value="Weekly">Weekly</ng-option>
                             <ng-option value="Biweekly">Biweekly</ng-option>
                             <ng-option value="Monthly">Monthly</ng-option>
+                            <ng-option value="Semi_monthly">Semi-Monthly</ng-option>
                             <ng-option value="Quaterly">Quaterly</ng-option>
                             <ng-option value="Annually">Annually</ng-option>
                           </ng-select>

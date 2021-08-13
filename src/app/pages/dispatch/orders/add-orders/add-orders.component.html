@@ -467,10 +467,10 @@
                                                                            {{item.userLocation}}
                                                                         </span>
                                                                         <span *ngIf="item.manual">
-                                                                           {{item.address1}} <span *ngIf="item.address1">,</span> 
-                                                                           {{item.address2}} <span *ngIf="item.address2">,</span> 
-                                                                           {{item.cityName}} <span *ngIf="item.cityName">,</span> 
-                                                                           {{item.stateName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.address1}}<span *ngIf="item.address1">,</span> 
+                                                                           {{item.address2}}<span *ngIf="item.address2">,</span> 
+                                                                           {{item.cityName}}<span *ngIf="item.cityName">,</span> 
+                                                                           {{item.stateName}}<span *ngIf="item.cityName">,</span> 
                                                                            {{item.countryName}}
                                                                            {{item.zipCode}}
                                                                         </span>
@@ -1442,7 +1442,7 @@
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault">Seal#</label>
 
-                                       <ng-select [clearable]="false" placeholder="" [(ngModel)]="orderData.additionalDetails.sealType" name="sealNo"
+                                       <ng-select [clearable]="false" placeholder="Select seal type" [(ngModel)]="orderData.additionalDetails.sealType" name="sealType"
                                           class="form-control populate" >
 
                                            <ng-option value="customer_seal">Customer Seal</ng-option>
@@ -1450,7 +1450,7 @@
                                        
                                        </ng-select>
                                        <div *ngIf="orderData.additionalDetails.sealType != ''">
-                                          <input name="sealNo" [(ngModel)]="orderData.additionalDetails.sealNo" type="text">
+                                          <input class="form-control" placeholder="Type seal number" name="sealNo" [(ngModel)]="orderData.additionalDetails.sealNo" type="text">
                                        </div>
                                        
                                     </div>
