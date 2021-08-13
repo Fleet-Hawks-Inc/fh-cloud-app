@@ -222,9 +222,9 @@
                                               </thead>
                                               <tbody>
                                                 <tr *ngFor="let dt of settlementData.transactionLog">
-                                                  <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]}}</span>
-                                                    <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]}}</span></td>
-                                                 <td>{{entityName}}</td>
+                                                  <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                                    <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                                 <td>{{entityName | titlecase}}</td>
                                                  <td>{{dt.type | titlecase}}</td>
                                                  <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                                                  <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>

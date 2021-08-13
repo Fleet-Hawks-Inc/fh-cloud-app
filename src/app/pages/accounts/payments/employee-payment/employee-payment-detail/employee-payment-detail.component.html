@@ -95,7 +95,7 @@
                                     <tbody>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Account</td>
-                                          <td width="60%">{{ accounts[paymentData.accountID] }}</td>
+                                          <td width="60%">{{ accountsObjects[paymentData.accountID] | titlecase}}</td>
                                        </tr>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
@@ -180,7 +180,7 @@
                                   <thead>
                                     <tr>
                                       <th>Account Name</th>
-                                      <th>Name</th>
+                                      <th>Description</th>
                                       <th>Type</th>
                                       <th>Debit</th>
                                       <th>Credit</th>
@@ -190,16 +190,16 @@
                                     <tr *ngFor="let dt of paymentData.transactionLog">
                                       <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
                                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
-                                      <td>{{customersObjects[dt.name] | titlecase}}</td>
+                                      <td>{{dt.desc}}</td>
                                       <td>{{dt.type | titlecase}}</td>
                                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                       <td colspan="3" class="font-weight-bold text-right">Total</td>
                                       <td>{{ paymentData.finalTotal }} CAD</td>
                                       <td>{{ paymentData.finalTotal }} CAD</td>
-                                   </tr>
+                                   </tr> -->
                                   </tbody>
                                 </table>
                               </div>

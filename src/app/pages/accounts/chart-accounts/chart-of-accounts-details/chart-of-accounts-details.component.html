@@ -93,7 +93,7 @@
                           <span *ngIf="trx.name === undefined">-</span>
                         </td>
                         <td>{{trx.type | titlecase}}</td>
-                        <td>{{trx.desc}}</td>
+                        <td>{{trx.desc | titlecase}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>

@@ -34,6 +34,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
     transactionLog: []
   };
   accounts = [];
+  accountsObjects = {};
+  accountsIntObjects = {};
 
   constructor(
     private listService: ListService,
@@ -49,7 +51,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
     this.fetchContactsList();
     this.fetchSettlement();
     this.fetchPaymentDetail();
-    this.fetchAllAccounts();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
   }
 
   fetchDrivers() {
@@ -82,9 +85,14 @@ export class DriverPaymentsDetailComponent implements OnInit {
     });
   }
 
-  fetchAllAccounts() {
-    this.accountService.getData(`chartAc/get/all/list`).subscribe((result: any) => {
-      this.accounts = result;
+  fetchAccountsByIDs() {
+    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+      this.accountsObjects = result;
+    });
+  }
+  fetchAccountsByInternalIDs() {
+    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+      this.accountsIntObjects = result;
     });
   }
 }

@@ -126,7 +126,8 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let data of paymentData.transactionLog">
-                                                <td>{{ accounts[data.accountID] }}</td>
+                                              <td><span *ngIf="data.actIDType === 'actID'">{{accountsObjects[data.accountID] | titlecase}}</span>
+                                                <span *ngIf="data.actIDType === 'actIntID'">{{accountsIntObjects[data.accountID] | titlecase}}</span></td>
                                                 <td>
                                                     <span *ngIf="paymentData.paymentTo == 'driver'">
                                                         {{ drivers[paymentData.entityId] }}
@@ -139,11 +140,11 @@
                                                 <td>{{ (data.trxType === 'debit') ? data.amount + ' '+ data.currency : '0.00' }}</td>
                                                 <td>{{ (data.trxType === 'credit') ? data.amount + ' ' + data.currency : '0.00' }}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td colspan="3" class="font-weight-bold text-right">Total</td>
                                                 <td>{{ paymentData.finalAmount }} CAD</td>
                                                 <td>{{ paymentData.finalAmount }} CAD</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
