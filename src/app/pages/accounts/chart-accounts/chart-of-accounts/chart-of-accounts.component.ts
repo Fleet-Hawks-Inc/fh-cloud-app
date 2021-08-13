@@ -50,6 +50,7 @@ export class ChartOfAccountsComponent implements OnInit {
     $('#addAccountModal').modal('show');
   }
   searchFilter() {
+    this.lastItemSK = '';
     let name = null;
     let type = null;
     if (this.filter.actType !== null || this.filter.actName !== null) {

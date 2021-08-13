@@ -134,7 +134,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.fetchPaymentDetail();
     }
     this.fetchEmployees();
-    this.fetchAccounts();
+   // this.fetchAccounts();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     this.fetchPayPeriods();
@@ -147,7 +147,11 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.employees = result;
     })
   }
-
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
+  }
   fetchEmployeDetail() {
     this.paymentData.payroll.type = null;
     this.paymentData.payroll.amount = 0;
@@ -170,7 +174,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.paymentData.finalTotal = this.paymentData.payroll.amount;
         this.paymentData.subTotal = this.paymentData.payroll.amount;
       }
-      
+
     })
     this.fetchLastAdded();
     this.fetchAdvancePayments();
@@ -398,11 +402,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     });
   }
 
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
-      this.accList = result;
-    });
-  }
+  // fetchAccounts() {
+  //   this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
+  //     this.accList = result;
+  //   });
+  // }
 
   selectedAdvancepayments() {
     this.paymentData.advancePayIds = [];
@@ -493,7 +497,7 @@ export class AddEmployeePaymentComponent implements OnInit {
           this.paymentData.taxdata.emplEI = result.employerEI;
           this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
           this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-    
+
           this.calculateFinalTotal();
         })
       } else {
