@@ -14,7 +14,7 @@ export class ReceiptsListComponent implements OnInit {
   receipts = [];
   customersObjects: any = {};
   accountsObject: any = {};
-
+  lastItemSK = '';
   filter = {
     startDate: null,
     endDate: null,
@@ -23,17 +23,39 @@ export class ReceiptsListComponent implements OnInit {
   constructor(private accountService: AccountService, private toastr: ToastrService, private apiService: ApiService, ) {}
 
   ngOnInit() {
+    this.receipts = [];
     this.fetchReceipts();
     this.fetchCustomersByIDs();
     this.fetchAccounts();
   }
 
-  fetchReceipts() {
-    this.accountService.getData('receipts').subscribe((res) => {
-    this.receipts = res;
-    });
+  fetchReceipts(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.receipts = [];
+    }
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`receipts?lastKey=${this.lastItemSK}`)
+      .subscribe(async (result: any) => {
+        if (result.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        if (result.length > 0) {
+          for (const element of result) {
+            this.receipts.push(element);
+          }
+          if (this.receipts[this.receipts.length - 1].sk !== undefined) {
+            this.lastItemSK = encodeURIComponent(this.receipts[this.receipts.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+        }
+      });
+    }
   }
-
+  onScroll() {
+    this.fetchReceipts();
+  }
   deleteReceipt(recID: string) {
     this.accountService.deleteData(`receipts/delete/${recID}`).subscribe(() => {
       this.toastr.success('Receipt Deleted Successfully.');
@@ -55,6 +77,7 @@ export class ReceiptsListComponent implements OnInit {
         });
     }
     searchFilter() {
+      this.lastItemSK = '';
       if ( this.filter.endDate !== null || this.filter.startDate !== null || this.filter.recNo !== null) {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchDetails();
@@ -74,6 +97,8 @@ export class ReceiptsListComponent implements OnInit {
         endDate: null,
         recNo: null
       };
+      this.receipts = [];
+      this.lastItemSK = '';
       this.fetchReceipts();
     }
 }

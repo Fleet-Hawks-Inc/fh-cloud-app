@@ -107,10 +107,9 @@ export class AddInvoiceComponent implements OnInit {
     this.listService.fetchCustomers();
     this.getCurrentuser();
     this.customers = this.listService.customersList;
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
     this.fetchStateTaxes();
-    this.fetchUsers();
+   // this.fetchUsers();
+    this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
       this.pageTitle = 'Edit Invoice';
@@ -123,6 +122,11 @@ export class AddInvoiceComponent implements OnInit {
   fetchUsers() {
     this.apiService.getData('contacts/get/type/employee').subscribe((result: any) => {
       this.users = result;
+    });
+  }
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
     });
   }
   getCurrentuser = async () => {

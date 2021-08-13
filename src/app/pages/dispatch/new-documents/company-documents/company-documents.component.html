@@ -360,9 +360,10 @@
 
                 </div>
                 <div class="modal-footer">
+                    
+                    <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
                     <button *ngIf="ifEdit" (click)="updateDocument()"
                         class="btn btn-success modal-confirm">Update</button>
-                    <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
                     <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm" [disabled]="!doc.form.valid">Save</button>
                 </div>
             </form>

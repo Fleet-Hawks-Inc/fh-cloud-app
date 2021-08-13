@@ -16,12 +16,28 @@ export class CompanyProfileComponent implements OnInit {
  countryList: any = {};
  stateList: any  = {};
  cityList; any  = {};
+ showData = false;
  bank: any = {
   branchName: '',
   accountNumber: '',
   transitNumber: '',
   routingNumber: '',
   institutionNumber: '',
+  addressDetails: [{
+    addressType: '',
+    countryName: '',
+    countryCode: '',
+    stateCode: '',
+    stateName: '',
+    cityName: '',
+    zipCode: '',
+    address: '',
+    geoCords: {
+      lat: '',
+      lng: ''
+    },
+    manual: false,
+  }]
 };
   constructor( private route: ActivatedRoute, private apiService: ApiService) { }
 
@@ -33,6 +49,9 @@ export class CompanyProfileComponent implements OnInit {
     this.apiService.getData(`carriers/${this.companyID}`)
         .subscribe((result: any) => {
           this.carriers = result.Items[0];
+          if(result.Items.length > 0) {
+            this.showData = true;
+          }
           this.fetchAddress(this.carriers.addressDetails);
           if (this.carriers.uploadedLogo !== '') {
             this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;

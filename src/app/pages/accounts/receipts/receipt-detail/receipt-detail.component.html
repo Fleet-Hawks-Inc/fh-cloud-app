@@ -23,7 +23,8 @@
                       <div class="text-center p-4 cerbor">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.txnDate | date : 'yyyy/MM/dd'}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.txnDate | date: 'yyyy/MM/dd'}}</p>
+
                         <p class="mb-0">DATE</p>
                       </div>
                     </div>
@@ -67,7 +68,7 @@
                         <tbody>
                           <tr>
                             <td class="back-color-gray font-weight-bold">{{receiptData.paymentMode | titlecase}}#, Date</td>
-                            <td>{{receiptData.paymentModeNo}}, {{receiptData.paymentModeDate}}</td>
+                            <td>{{receiptData.paymentModeNo}}, {{receiptData.paymentModeDate | date : 'yyyy/MM/dd'}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -76,7 +77,6 @@
                 </div>
               </div>
               <div class="row">
-
                 <div class="col-lg-6 pr-0">
                   <div class="row">
                     <div class="col-lg-12">
@@ -85,13 +85,15 @@
                           <tr>
                             <th>Invoice#</th>
                             <th>Invoice Amount</th>
-                            <th>Amount Received</th>
+                            <th>Balance Amount</th>
+                            <th>Total Amount Received</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let inv of receiptData.fetchedInvoices">
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.finalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.balance}} {{inv.invCur}}</td>
                             <td>{{inv.amountReceived}} {{inv.invCur}}</td>
                           </tr>
                         </tbody>
