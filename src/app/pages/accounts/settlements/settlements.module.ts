@@ -9,7 +9,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SettlementsListComponent } from './settlements-list/settlements-list.component';
 import { SettlementsDetailComponent } from './settlements-detail/settlements-detail.component';
-import { AddSettlementComponent } from './add-settlement/add-settlement.component';
+import { AddSettlementComponent } from './add-settlement/add-settlement.component'; 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -94,6 +95,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    InfiniteScrollModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
