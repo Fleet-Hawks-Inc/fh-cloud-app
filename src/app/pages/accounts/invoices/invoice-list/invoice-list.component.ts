@@ -55,6 +55,7 @@ export class InvoiceListComponent implements OnInit {
   }
   fetchInvoices() {
     this.accountService.getData('order-invoice/all/invoices').subscribe((res: any) => {
+
       this.fetchedOrderInvoices = res;
       this.getTotalInvoices(this.fetchedOrderInvoices);
     });
@@ -76,7 +77,7 @@ export class InvoiceListComponent implements OnInit {
         } else if (element.invStatus === 'emailed') {
           this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
-        } else if (element.invStatus === 'partially paid') {
+        } else if (element.invStatus === 'partially_paid') {
           this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
         } else if (element.invStatus === 'voided') {
@@ -100,7 +101,7 @@ export class InvoiceListComponent implements OnInit {
         } else if (element.invStatus === 'emailed') {
           this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
-        } else if (element.invStatus === 'partially paid') {
+        } else if (element.invStatus === 'partially_paid') {
           this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
         } else if (element.invStatus === 'voided') {
@@ -287,6 +288,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   searchFilter() {
+    this.lastItemSK = '';
     if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDetails();
