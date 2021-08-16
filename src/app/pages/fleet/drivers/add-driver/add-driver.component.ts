@@ -464,10 +464,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (str === 'driver_type') {
       if (value === 'employee') {
         delete this.driverData.ownerOperator;
+        delete this.driverData.corporationType;
+        delete this.driverData.vendor;
+        delete this.driverData.corporation;
         delete this.driverData.contractStart;
         delete this.driverData.contractEnd;
       } else {
-        // delete this.driverData.employeeId;
         delete this.driverData.startDate;
         delete this.driverData.terminationDate;
       }

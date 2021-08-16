@@ -173,10 +173,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'owner_operator'">
-                                <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
-                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                              </div>
+                             
                               <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'company'">
                                 <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
                                   class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
@@ -867,8 +864,15 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 text-right"> <a href="javascript:;" *ngIf="i != 0"  (click)="remove('document', i)"
-                      class="btn btn-danger"><i class="fa fa-minus"></i></a>
+                  <div class="col-lg-6 text-right mt-4"> 
+                    <div class="row">
+                      <div class="col-5"></div>
+                      <div class="col-5 text-right">
+                        <a href="javascript:;" *ngIf="i != 0"  (click)="remove('document', i)"
+                          class="btn btn-danger"><i class="fa fa-minus"></i></a>
+                      </div>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
