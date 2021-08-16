@@ -88,6 +88,7 @@ export class AddIncomeComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   carrierID = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  catDisabled = false;
 
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
 
@@ -273,7 +274,7 @@ export class AddIncomeComponent implements OnInit {
   }
 
   addCategory() {
-    this.submitDisabled = true;
+    this.catDisabled = true;
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -290,11 +291,11 @@ export class AddIncomeComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
               // this.throwErrors();
             },
             error: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
             },
             next: () => {
             },
@@ -302,7 +303,7 @@ export class AddIncomeComponent implements OnInit {
       },
       next: (res) => {
         this.fetchIncomeCategories();
-        this.submitDisabled = false;
+        this.catDisabled = false;
         this.response = res;
         $('#addIncomeCategoryModal').modal('hide');
         this.categoryData = {

@@ -11,6 +11,7 @@ import { AddExpenseComponent } from './add-expense/add-expense.component';
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseDetailComponent } from './expense-detail/expense-detail.component';
 import { AddAccountModule } from '../add-account/add-account.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -94,7 +95,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
-    AddAccountModule
+    AddAccountModule,
+    InfiniteScrollModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

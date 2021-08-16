@@ -25,6 +25,8 @@ export class ExpenseListComponent implements OnInit {
     endDate: null,
     typeId: null,
   }
+  lastItemSK = '';
+
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -34,12 +36,23 @@ export class ExpenseListComponent implements OnInit {
   }
 
   fetchExpenses() {
-    this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}`).subscribe((res: any) => {
-      if(res.length == 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      this.expenses = res;
-    });
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+        if(result.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        if(result.length > 0) {
+          if (result[result.length - 1].sk !== undefined) {
+            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+          result.map((v) => {
+            this.expenses.push(v);
+          })
+        }
+      });
+    }
   }
 
   fetchVendors() {
@@ -70,9 +83,27 @@ export class ExpenseListComponent implements OnInit {
 
   searchFilter() {
     if(this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
-      this.expenses = [];
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchExpenses();
+      if (
+        this.filter.startDate != "" &&
+        this.filter.endDate == ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (
+        this.filter.startDate == "" &&
+        this.filter.endDate != ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (this.filter.startDate > this.filter.endDate) {
+        this.toaster.error("Start date should be less then end date");
+        return false;
+      } else {
+        this.expenses = [];
+        this.lastItemSK = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchExpenses();
+      }
     }
   }
 
@@ -84,7 +115,13 @@ export class ExpenseListComponent implements OnInit {
       endDate: null,
       typeId: null,
     }
+    this.lastItemSK = '';
+    this.expenses = [];
     this.fetchExpenses();
 
+  }
+
+  onScroll() {
+    this.fetchExpenses(); 
   }
 }

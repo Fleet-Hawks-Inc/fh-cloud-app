@@ -497,7 +497,6 @@ export class AddEmployeePaymentComponent implements OnInit {
           this.paymentData.taxdata.emplEI = result.employerEI;
           this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
           this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-
           this.calculateFinalTotal();
         })
       } else {
