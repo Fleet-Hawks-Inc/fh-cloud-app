@@ -387,10 +387,10 @@
                                                     </div>
                                                     <div class="col-lg-5"></div>
                                                 </div>
-                                                <div class="row pt-1" id="chequeDivDriver" *ngIf="paymentData.payMode">
+                                                <div class="row pt-1"  *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel" required>
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                         <div *ngIf="payNoo.invalid && (payNoo.dirty || payNoo.touched)" class="text-danger">
                                                             <div *ngIf="payNoo.errors.required">
                                                                 {{ payModeLabel }} Reference is required.
@@ -411,6 +411,26 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row pt-1" id="chequeDivDriver" *ngIf="paymentData.payMode && paymentData.payMode === 'cheque'">
+                                                  <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                      <input type="text" class="form-control" placeholder="hello" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" readonly="paymentData.payMode && paymentData.payMode === 'cheque'">
+
+                                                  </div>
+                                                  <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                      <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                                                          placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                                                          #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+
+                                                      <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                                                          <div *ngIf="payDate.errors.required">
+                                                              {{ payModeLabel }} Date is required.
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
                                             </div>
                                             <div class="col-lg-3 offset-lg-2">
                                                 <div class="row">

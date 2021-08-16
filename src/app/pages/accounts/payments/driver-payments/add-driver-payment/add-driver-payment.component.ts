@@ -141,19 +141,24 @@ export class AddDriverPaymentComponent implements OnInit {
     let label = "";
     if (type == "cash") {
       label = "Cash";
+      this.paymentData.payModeNo = null;
     } else if (type == "cheque") {
       label = "Cheque";
+      this.paymentData.payModeNo = Date.now().toString();
     } else if (type == "eft") {
       label = "EFT";
+      this.paymentData.payModeNo = null;
     } else if (type == "credit_card") {
       label = "Credit Card";
+      this.paymentData.payModeNo = null;
     } else if (type == "debit_card") {
       label = "Debit Card";
+      this.paymentData.payModeNo = null;
     } else if (type == "demand_draft") {
       label = "Demand Draft";
+      this.paymentData.payModeNo = null;
     }
     this.payModeLabel = label;
-    this.paymentData.payModeNo = null;
     this.paymentData.payModeDate = null;
   }
 
@@ -527,7 +532,7 @@ export class AddDriverPaymentComponent implements OnInit {
     $('#chequeModal').modal('show');
   }
 
-  
+
   openPayrollModel() {
     $('#payrollModal').modal('show');
   }
@@ -544,7 +549,7 @@ export class AddDriverPaymentComponent implements OnInit {
           this.paymentData.taxdata.emplEI = result.employerEI;
           this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
           this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-    
+
           this.calculateFinalTotal();
         })
       } else {

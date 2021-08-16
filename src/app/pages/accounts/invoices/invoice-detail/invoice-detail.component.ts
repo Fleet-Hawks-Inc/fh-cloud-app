@@ -99,7 +99,7 @@ export class InvoiceDetailComponent implements OnInit {
 
   fetchAddress(address: any) {
    for (const adr of address) {
-     if (adr.addressType === 'yard') {
+     if (adr.addressType === 'yard' && adr.defaultYard === true) {
         if (adr.manual) {
            adr.countryName =  CountryStateCity.GetSpecificCountryNameByCode(adr.countryCode);
            adr.stateName = CountryStateCity.GetStateNameFromCode(adr.stateCode, adr.countryCode);
@@ -166,8 +166,8 @@ export class InvoiceDetailComponent implements OnInit {
           }
         });
         newCusAddress = newCusAddress[0];
-        if(result.address.length > 0) {
-          if(newCusAddress.manual) {
+        if (result.address.length > 0) {
+          if (newCusAddress.manual) {
             this.customerAddress = newCusAddress.address1;
           } else {
             this.customerAddress = newCusAddress.userLocation;

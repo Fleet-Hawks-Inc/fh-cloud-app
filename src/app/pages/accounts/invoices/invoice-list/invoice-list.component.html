@@ -176,7 +176,7 @@
                         <td colspan="13">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let inv of orderInvoices; let i = index;">
-                        <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
+                        <td class="cursorpoint font-weight-bold" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
                         <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                           {{inv.txnDate | date : 'yyyy/MM/dd'}}</td>
                         <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
