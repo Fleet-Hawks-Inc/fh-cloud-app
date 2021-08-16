@@ -138,14 +138,14 @@
 
                                 <div class="col-lg-6 text-dark">
                                     <div id="vehicle-details" class="">
-                                        <div class="row m-0">
+                                        <!-- <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Customer PO#:
                                             </div>
                                             <div class="col-lg-8 p-2 border-box">
                                                 {{ customerPo }}
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Reference:
@@ -288,6 +288,14 @@
                                                                                                     Date/Time:</strong>
                                                                                                 {{pick.dateAndTime |
                                                                                                 date:'yyyy/MM/dd hh:mm a' }}
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark">
+                                                                                                <strong>Customer PO#</strong>
+                                                                                                <span *ngFor="let po of pick.customerPO">
+                                                                                                    <span class="badge badge-dark">
+                                                                                                        {{po}} 
+                                                                                                    </span>
+                                                                                                </span>
                                                                                             </p>
                                                                                             <p class="mb-0 text-dark">
                                                                                                 <strong>Pickup
@@ -461,7 +469,7 @@
                                                                     </div>
                                                                 </section>
                                                                 <p class="mb-0 text-dark">
-                                                                    <strong>Will Driver Load ?:</strong>
+                                                                    <strong>Will Driver Unload ?:</strong>
                                                                     {{receiver.driverUnload
                                                                     ? 'Yes': 'No'}}
                                                                 </p>
@@ -494,12 +502,17 @@
                                         </div>
                                         <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
-                                                Drop Asset:
+                                                Seal Type:
                                             </div>
-                                            <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes'
-                                                : 'No'}}</div>
+                                            <div class="col-lg-8 p-2 border-box text-capitalize">{{additionalDetails.sealType}}</div>
                                         </div>
-                                        <div class="row m-0" *ngIf="!additionalDetails.dropTrailer">
+                                        <div class="row m-0" *ngIf="additionalDetails.sealType != ''">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Seal#:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{additionalDetails.sealNo}}</div>
+                                        </div>
+                                        <div class="row m-0" *ngIf="!additionalDetails.trailerType">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Asset Type:
                                             </div>

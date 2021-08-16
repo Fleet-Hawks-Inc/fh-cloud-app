@@ -197,7 +197,7 @@
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"
-            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button></div>
+            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</button></div>
         </div>
         <div class="row">
           <div class="col-6">
@@ -214,10 +214,18 @@
               <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Type:</div>
+              <div class="col-lg-6 p-2 bor_half">{{corporationType}}</div>
+            </div>
+            <div class="row m-0" *ngIf="corporationType == 'company' || corporationType == 'corporation'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation:</div>
+              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
+              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">owner Operator:</div>
               <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
             </div>
-
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>

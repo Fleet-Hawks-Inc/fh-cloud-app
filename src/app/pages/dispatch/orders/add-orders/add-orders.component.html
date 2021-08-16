@@ -448,17 +448,7 @@
                                                            
                                                          </div>
                                                       </div>
-                                                      <div class="row mt-3 mr-4">
-
-                                                         <div class="col-12">
-                                                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                                               PO#
-                                                            </label>
-                                                            <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="item.shippers.customerPO" name="customerPOs" type="text"
-                                                               class="form-control h-auto"></ng-select>
-                           
-                                                         </div>
-                                                      </div>
+                                                      
                                                       <div class="addsr-scrollbar addsr-scroll-y pickup-location__main">
                                                          <div *ngFor="let pick of item.shippers.pickupPoint; let w = index;" [ngClass]="{'p-3 bg-grey mt-2': w != 0}">
                                                             <div class="row mt-3" [ngClass]="{'mr-4': w == 0}">
@@ -477,10 +467,10 @@
                                                                            {{item.userLocation}}
                                                                         </span>
                                                                         <span *ngIf="item.manual">
-                                                                           {{item.address1}} <span *ngIf="item.address1">,</span> 
-                                                                           {{item.address2}} <span *ngIf="item.address2">,</span> 
-                                                                           {{item.cityName}} <span *ngIf="item.cityName">,</span> 
-                                                                           {{item.stateName}} <span *ngIf="item.cityName">,</span> 
+                                                                           {{item.address1}}<span *ngIf="item.address1">,</span> 
+                                                                           {{item.address2}}<span *ngIf="item.address2">,</span> 
+                                                                           {{item.cityName}}<span *ngIf="item.cityName">,</span> 
+                                                                           {{item.stateName}}<span *ngIf="item.cityName">,</span> 
                                                                            {{item.countryName}}
                                                                            {{item.zipCode}}
                                                                         </span>
@@ -682,7 +672,17 @@
                                                                </div>
       
                                                             </div>
-                                                            
+                                                            <div class="row mt-3 mr-4">
+
+                                                               <div class="col-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
+                                                                     PO#
+                                                                  </label>
+                                                                  <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="pick.customerPO" name="customerPO_{{i}}{{w}}" type="text"
+                                                                     class="form-control h-auto"></ng-select>
+                                 
+                                                               </div>
+                                                            </div>
                                                             <div *ngFor="let commodity of pick.commodity; let z = index;">
                                                                <div class="row mt-3 mr-4 align-items-center">
                                                                   
@@ -710,7 +710,7 @@
                                                                      <a class="btn btn-success btn-sm btn btn-success btn-sm mt-2" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
                                                                   </div>
                                                                </div>
-      
+                                                               
                                                 
       
                                                                <div class="row mt-3 mr-4">
@@ -961,8 +961,8 @@
                                                                <div class="col-lg-6 text-center">
                                                                   <div class="checkbox-custom checkbox-default pl-0">
                                                                      <input [(ngModel)]="dropItem.unit"
-                                                                     name="unit_{{i}}{{y}}" type="checkbox" id="locationaddBtn3">
-                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn3"> Type Unit Number Manually</label>
+                                                                     name="unit_{{i}}{{y}}" type="checkbox" id="locationaddBtn4">
+                                                                     <label class="control-label mt-2 font-weight-bold" for="locationaddBtn4"> Type Unit Number Manually</label>
                                                                   </div>
                                                                </div>
                                                             </div>
@@ -1442,13 +1442,17 @@
                                        <label class="control-label font-weight-bold text-3 text-dark"
                                           for="inputDefault">Seal#</label>
 
-                                       <ng-select [clearable]="false" placeholder="" [(ngModel)]="orderData.additionalDetails.sealNo" name="sealNo"
+                                       <ng-select [clearable]="false" placeholder="Select seal type" [(ngModel)]="orderData.additionalDetails.sealType" name="sealType"
                                           class="form-control populate" >
 
                                            <ng-option value="customer_seal">Customer Seal</ng-option>
                                            <ng-option value="company_seal">Company Seal</ng-option>
                                        
                                        </ng-select>
+                                       <div *ngIf="orderData.additionalDetails.sealType != ''">
+                                          <input class="form-control" placeholder="Type seal number" name="sealNo" [(ngModel)]="orderData.additionalDetails.sealNo" type="text">
+                                       </div>
+                                       
                                     </div>
                                  </div>
 
