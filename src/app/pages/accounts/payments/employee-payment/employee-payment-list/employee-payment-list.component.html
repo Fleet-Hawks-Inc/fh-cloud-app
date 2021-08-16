@@ -54,49 +54,54 @@
             <div class="row">
                 <div class="col pr-0">
                     <section class="card">
-
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped
-                                mb-0 simple-table">
-                                <thead>
-                                    <tr class="bgcol2">
-                                        <th class="text-2">Date</th>
-                                        <th class="text-2">Payment#</th>
-                                        <th class="text-2">Payment Mode</th>
-                                        <th class="text-2">Employee </th>
-                                        <th class="text-2">Amount</th>
-                                        <th class="text-2">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="payments.length === 0" class="text-center">
-                                        <td colspan="6">
-                                            {{ dataMessage }}
-                                        </td>
-                                    </tr>
-                                    <tr *ngFor="let data of payments; let i=index">
-                                        <td routerLink="/accounts/payments/employee-payments/detail/{{data.paymentID}}">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
-                                        <td>{{ data.paymentNo }}</td>
-                                        <td>{{ data.payMode }}</td>
-                                        <td>{{ employees[data.entityId] }}</td>
-                                        <td>{{ data.finalTotal }} CAD</td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                   aria-haspopup="true" aria-expanded="false">
-                                                   <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                   attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                   <a class="dropdown-item"
-                                                      routerLink="/accounts/payments/employee-payments/edit/{{ data.paymentID }}">Edit</a>
+                        <div infiniteScroll 
+                        [infiniteScrollDistance]="1" 
+                        [infiniteScrollUpDistance]="1" 
+                        [infiniteScrollThrottle]="5" 
+                        (scrolled)="onScroll()">
+                            <div class="card-body">
+                                <table class="table table-bordered table-striped
+                                    mb-0 simple-table">
+                                    <thead>
+                                        <tr class="bgcol2">
+                                            <th class="text-2">Date</th>
+                                            <th class="text-2">Payment#</th>
+                                            <th class="text-2">Payment Mode</th>
+                                            <th class="text-2">Employee </th>
+                                            <th class="text-2">Amount</th>
+                                            <th class="text-2">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="payments.length === 0" class="text-center">
+                                            <td colspan="6">
+                                                {{ dataMessage }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let data of payments; let i=index">
+                                            <td routerLink="/accounts/payments/employee-payments/detail/{{data.paymentID}}">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                                            <td>{{ data.paymentNo }}</td>
+                                            <td>{{ data.payMode }}</td>
+                                            <td>{{ employees[data.entityId] }}</td>
+                                            <td>{{ data.finalTotal | number }} CAD</td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/accounts/payments/employee-payments/edit/{{ data.paymentID }}">Edit</a>
+                                                    </div>
                                                 </div>
-                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </section>
                 </div>

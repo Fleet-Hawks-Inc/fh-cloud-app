@@ -453,7 +453,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right">
-                                    <button type="button" class="btn btn-default mr-2">Cancel</button>
+                                    <button type="button" class="btn btn-default mr-2" routerLink="/accounts/expense/list">Cancel</button>
                                     <button type="submit" (click)="addRecord()" *ngIf="!expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Save</button>
                                     <button type="submit" (click)="updateRecord()" *ngIf="expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Update</button>
                                 </div>
@@ -477,24 +477,32 @@
                 </button>
             </div>
             <div class="modal-body text-dark">
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <label class="control-label font-weight-bold">Name</label>
-                        <input type="text" class="form-control" name="categoryName" [(ngModel)]="categoryData.catName">
+                <form class="form-horizontal form-bordered" method="get" #expCatForm="ngForm">
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label class="control-label font-weight-bold">Name</label>
+                            <input type="text" class="form-control" name="categoryName" [(ngModel)]="categoryData.catName" #expCatNew="ngModel" required>
+                            <div *ngIf="expCatNew.invalid && (expCatNew.dirty || expCatNew.touched)" class="text-danger">
+                                <div *ngIf="expCatNew.errors.required">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <label class="control-label font-weight-bold">Description</label>
-                        <textarea rows="3" class="form-control h-auto" name="catDesc" [(ngModel)]="categoryData.catDesc"></textarea>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label class="control-label font-weight-bold">Description</label>
+                            <textarea rows="3" class="form-control h-auto" name="catDesc" [(ngModel)]="categoryData.catDesc"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row mt-2">
-                    <div class="col-lg-12 text-right">
-                        <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
-                        <button class="btn btn-success modal-dismiss" (click)="addCategory()">Save</button>
+                    <div class="form-row mt-2">
+                        <div class="col-lg-12 text-right">
+                            <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal" >Cancel</button>
+                            <button class="btn btn-success modal-dismiss" (click)="addCategory()" [disabled]="!expCatForm.form.valid || catDisabled">Save</button>
+                        </div>
                     </div>
-                </div>
+                </form>
+                
             </div>
         </div>
     </div>

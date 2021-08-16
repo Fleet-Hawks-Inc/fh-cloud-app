@@ -17,7 +17,7 @@ export class DriverDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   platform: any;
-  profile: string;
+  profile: string = '';
   driverName: string;
   CDL: string;
   phone: string;
@@ -121,6 +121,11 @@ export class DriverDetailComponent implements OnInit {
   documentsTypesObects: any = {};
   dataMessage = Constants.NO_RECORDS_FOUND;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
+  corporationType: any;
+  vendor: any;
+  corporation: any;
+  
   constructor(
     private hereMap: HereMapService,
     private apiService: ApiService,
@@ -222,6 +227,9 @@ export class DriverDetailComponent implements OnInit {
           }
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeContractorId;
+          this.corporationType = this.driverData.corporationType ? this.driverData.corporationType.replace('_', ' ') : '';
+          this.vendor = this.driverData.vendor;
+          this.corporation = this.driverData.corporation;
           this.ownerOperator = this.driverData.ownerOperator;
           this.companyId = this.driverData.companyId;
           this.companyName = this.driverData.companyName;

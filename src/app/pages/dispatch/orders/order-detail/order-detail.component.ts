@@ -92,7 +92,8 @@ export class OrderDetailComponent implements OnInit {
   additionalEmail = '';
 
   additionalDetails = {
-    dropTrailer: false,
+    sealType: '',
+    sealNo: '',
     loadType: {
       hazMat: false,
       oversize: false,
@@ -198,7 +199,6 @@ export class OrderDetailComponent implements OnInit {
           this.customerID = result.customerID;
           this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;
-          this.customerPo = result.customerPO;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
           this.createdTime = result.timeCreated;
@@ -226,7 +226,8 @@ export class OrderDetailComponent implements OnInit {
               // }
 
 
-          this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
+          this.additionalDetails.sealType = result.additionalDetails.sealType ? result.additionalDetails.sealType.replace('_', ' ') : '-';;
+          this.additionalDetails.sealNo = result.additionalDetails.sealNo;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
           this.additionalDetails.trailerType = result.additionalDetails.trailerType ? result.additionalDetails.trailerType.replace('_', ' ') : '-';

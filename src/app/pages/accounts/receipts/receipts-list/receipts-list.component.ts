@@ -77,6 +77,7 @@ export class ReceiptsListComponent implements OnInit {
         });
     }
     searchFilter() {
+      this.lastItemSK = '';
       if ( this.filter.endDate !== null || this.filter.startDate !== null || this.filter.recNo !== null) {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchDetails();

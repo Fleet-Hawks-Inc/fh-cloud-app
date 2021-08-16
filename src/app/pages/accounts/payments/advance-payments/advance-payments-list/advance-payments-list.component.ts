@@ -22,6 +22,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   drivers = [];
   contacts = [];
+  lastItemSK = '';
 
   constructor(
     private apiService: ApiService,
@@ -36,23 +37,33 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   fetchPayments() {
-    this.accountService.getData(`advance/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`).subscribe((result: any) => {
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`advance/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.payments = result;
-        this.payments.map((v) => {
-          v.paymentTo = v.paymentTo.replace("_"," ");
-          if(v.payMode) {
-            v.payMode = v.payMode.replace("_"," ");  
+        if (result.length > 0) {
+          if (result[result.length - 1].sk !== undefined) {
+            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
-            v.payMode= '-';
+            this.lastItemSK = 'end';
           }
-          v.status = v.status.replace("_"," ");
-          v.paidAmount = v.amount - v.pendingPayment;
-          v.paidAmount = v.paidAmount.toFixed(2);
-        })
+          result.map((v) => {
+            v.paymentTo = v.paymentTo.replace("_"," ");
+            if(v.payMode) {
+              v.payMode = v.payMode.replace("_"," ");  
+            } else {
+              v.payMode= '-';
+            }
+            v.status = v.status.replace("_"," ");
+            v.paidAmount = v.amount - v.pendingPayment;
+            v.paidAmount = v.paidAmount.toFixed(2);
+            this.payments.push(v);
+          })
+        }
       });
+    }
+      
   }
 
   fetchDrivers() {
@@ -100,6 +111,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.payments = [];
+        this.lastItemSK = '';                                  
         this.fetchPayments();
       }
     }
@@ -113,6 +125,12 @@ export class AdvancePaymentsListComponent implements OnInit {
         type: null,
         amount: ''
     }
+    this.payments = [];
+    this.lastItemSK = '';
     this.fetchPayments();
+  }
+
+  onScroll() {
+    this.fetchPayments(); 
   }
 }

@@ -227,7 +227,7 @@ fetchReceivers() {
 
   // fetch accounts of chart of accounts
   fetchChartAccounts() {
-    this.accountService.getData('chartAc').subscribe((res: any) => {
+    this.accountService.getData('chartAc/fetch/list').subscribe((res: any) => {
       this.accountsDataSource.next(res);
       });
   }
@@ -247,6 +247,6 @@ fetchReceivers() {
   public changeButton(value: boolean){
 
     this.isTrueDataSource.next(value);
-   
+
    }
 }

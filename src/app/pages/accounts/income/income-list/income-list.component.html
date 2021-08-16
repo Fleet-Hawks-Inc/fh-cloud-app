@@ -51,47 +51,49 @@
             <div class="row">
                 <div class="col pr-0">
                     <section class="card">
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr class="bgcol2">
-                                        <th class="text-2">Income Date</th>
-                                        <th class="text-2">Invoice#</th>
-                                        <th class="text-2">Customer</th>
-                                        <th class="text-2">Income Category</th>
-                                        <th class="text-2">Payment Mode</th>
-                                        <th class="text-2">Description</th>
-                                        <th class="text-2">Amount</th>
-                                        <th class="text-2">Balance</th>
-                                        <th class="text-2">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="incomeAccounts.length === 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
-                                    </tr>
-                                    <tr *ngFor="let data of incomeAccounts">
-                                        <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                        <td>{{ (data.invoiceID) ? invoices[data.invoiceID] : '-' }}</td>
-                                        <td>{{ (data.customerID) ? customers[data.customerID] : '-' }}</td>
-                                        <td>{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
-                                        <td>{{ data.paymentMode }}</td>
-                                        <td>{{ (data.description) ? data.description : '-' }}</td>
-                                        <td>{{ data.recAmount }} {{ data.recCurr }}</td>
-                                        <td>-</td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="mb-1 mt-1 mr-1 btn"
-                                                    data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" routerLink="/accounts/income/edit/{{ data.incomeID }}">Edit</a>
-                                                    <a class="dropdown-item text-1" (click)="deleteIncome(data.incomeID)">Delete</a>
+                        <div infiniteScroll 
+                            [infiniteScrollDistance]="1" 
+                            [infiniteScrollUpDistance]="1" 
+                            [infiniteScrollThrottle]="5" 
+                            (scrolled)="onScroll()">
+                            <div class="card-body">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr class="bgcol2">
+                                            <th class="text-2">Income Date</th>
+                                            <th class="text-2">Invoice#</th>
+                                            <th class="text-2">Customer</th>
+                                            <th class="text-2">Income Category</th>
+                                            <th class="text-2">Payment Mode</th>
+                                            <th class="text-2">Amount</th>
+                                            <th class="text-2">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="incomeAccounts.length === 0" class="text-center">
+                                            <td colspan="9">{{ dataMessage }}</td>
+                                        </tr>
+                                        <tr *ngFor="let data of incomeAccounts">
+                                            <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
+                                            <td>{{ (data.invoiceID) ? invoices[data.invoiceID] : '-' }}</td>
+                                            <td>{{ (data.customerID) ? customers[data.customerID] : '-' }}</td>
+                                            <td>{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
+                                            <td>{{ data.paymentMode }}</td>
+                                            <td>{{ data.recAmount | number }} {{ data.recCurr }}</td>
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="mb-1 mt-1 mr-1 btn"
+                                                        data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item text-1" routerLink="/accounts/income/edit/{{ data.incomeID }}">Edit</a>
+                                                        <a class="dropdown-item text-1" (click)="deleteIncome(data.incomeID)">Delete</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </section>
                 </div>

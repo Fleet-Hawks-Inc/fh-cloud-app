@@ -22,6 +22,7 @@ export class EmployeePaymentListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  lastItemSK = '';
   constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
@@ -36,15 +37,26 @@ export class EmployeePaymentListComponent implements OnInit {
   }
 
   fetchPayments() {
-    this.accountService.getData(`employee-payments/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`).subscribe((result: any) => {
-      if(result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      this.payments = result;
-      this.payments.map((v) => {
-        v.payMode = v.payMode.replace("_", " ");
+    if (this.lastItemSK !== 'end') {
+      this.accountService.getData(`employee-payments/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+        if(result.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        if(result.length > 0) {
+          if (result[result.length - 1].sk !== undefined) {
+            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+          } else {
+            this.lastItemSK = 'end';
+          }
+  
+          result.map((v) => {
+            v.payMode = v.payMode.replace("_", " ");
+            this.payments.push(v);
+          })
+        }
+        
       })
-    })
+    }
   }
 
   searchFilter() {
@@ -67,6 +79,7 @@ export class EmployeePaymentListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.payments = [];
+        this.lastItemSK = '';
         this.fetchPayments();
       }
     }
@@ -79,6 +92,12 @@ export class EmployeePaymentListComponent implements OnInit {
           endDate: null,
           amount: ''
       }
+      this.payments = [];
+      this.lastItemSK = '';
       this.fetchPayments();
+  }
+
+  onScroll() {
+    this.fetchPayments(); 
   }
 }

@@ -122,8 +122,8 @@ export class AddOrdersComponent implements OnInit {
     invoiceEmail: false,
     additionalDetails: {
       trailerType: '',
-      dropTrailer: false,
       sealNo: '',
+      sealType: '',
       uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
@@ -133,7 +133,7 @@ export class AddOrdersComponent implements OnInit {
       },
     },
 
-    orderStatus: "confirmed",
+    orderStatus: "created",
     orderMode: "FTL",
     tripType: "Regular",
     shippersReceiversInfo: [],
@@ -207,7 +207,6 @@ export class AddOrdersComponent implements OnInit {
     {
       shippers: {
         shipperID: null,
-        customerPO : [],
         pickupPoint: [
           {
             unit: false,
@@ -219,7 +218,7 @@ export class AddOrdersComponent implements OnInit {
               zipCode: '',
               address: '',
               
-              pickupLocation: '',
+              pickupLocation: null,
               manual: false,
               countryCode: null,
               stateCode: null,
@@ -232,7 +231,7 @@ export class AddOrdersComponent implements OnInit {
             pickupInstruction: "",
             contactPerson: "",
             phone: "",
-          
+            customerPO : [],
             commodity: [
               {
                 name: "",
@@ -261,7 +260,7 @@ export class AddOrdersComponent implements OnInit {
             address: {
               zipCode: '',
               address: '',
-              dropOffLocation: '',
+              dropOffLocation: null,
               manual: false,
               countryName: '',
               countryCode: null,
@@ -442,7 +441,18 @@ export class AddOrdersComponent implements OnInit {
 
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload.carrierID;
-    this.apiService.getData(`carriers/${carrierID}`).subscribe(res => {})
+    let result: any = await this.apiService.getData(`carriers/${carrierID}`).toPromise(); 
+      let carrierAddress = result.Items[0].addressDetails;
+      let defaultAddress = [];
+      for (let index = 0; index < carrierAddress.length; index++) {
+        const element = carrierAddress[index];
+        if(element.default != undefined && element.default) {
+          defaultAddress.push(element);
+        }
+        
+      }
+      return defaultAddress;
+    
     
   }
 
@@ -456,7 +466,7 @@ export class AddOrdersComponent implements OnInit {
     this.listService.fetchShippersByIDs();
     this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
-
+    // this.getCarrierState();
     this.disableButton();
 
     $('.modal').on('hidden.bs.modal',(e) => {
@@ -492,11 +502,6 @@ export class AddOrdersComponent implements OnInit {
 
     this.fetchCountries();
     
-    this.shippersReceivers.forEach(elem => {
-      elem.shippers.customerPO.forEach((c, i) => {
-        elem.shippers.customerPO.push(c);
-    });
-    })
     
   }
 
@@ -507,20 +512,28 @@ export class AddOrdersComponent implements OnInit {
       .getData("stateTaxes").toPromise();
         this.stateTaxes = result.Items;
         if (!this.getOrderID) {
-          this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+          let getAddress = await this.getCarrierState();
+          let data: any;
+          if(getAddress.length > 0) {
+            data = this.stateTaxes.filter(elem => elem.stateCode === getAddress[0].stateCode);
+          } else {
+            data = this.stateTaxes;
+          }
+          
+          this.orderData.stateTaxID = data[0].stateTaxID;
 
           this.orderData.taxesInfo = [
             {
               name: 'GST',
-              amount: result.Items[0].GST,
+              amount: data[0].GST,
             },
             {
               name: 'HST',
-              amount: result.Items[0].HST,
+              amount: data[0].HST,
             },
             {
               name: 'PST',
-              amount: result.Items[0].PST,
+              amount: data[0].PST,
             },
           ];
         } else {
@@ -573,26 +586,30 @@ export class AddOrdersComponent implements OnInit {
     
     if(arr === 'shipper') {
       if(value === true) {
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = ''
-      } else {
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.address= '';
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = '';
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = ''
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = ''
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = ''
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = {};
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = null;
       }
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.address= '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName = '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = '';
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = ''
+      this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = {};
+      
     } else {
       if(value === true) {
-        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = ''
-      } else {
-        this.shippersReceivers[i].receivers.dropPoint[w].address.address= '';
-        this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = '';
-        this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = ''
-        this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = ''
-        this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = ''
-        this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = {};
-      }
+        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = null;
+      } 
+      this.shippersReceivers[i].receivers.dropPoint[w].address.address = '';
+      this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = '';
+      this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = ''
+      this.shippersReceivers[i].receivers.dropPoint[w].address.stateName = '';
+      this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = ''
+      this.shippersReceivers[i].receivers.dropPoint[w].address.countryName = '';
+      this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = ''
+      this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = {};
+      
     }
     
   }
@@ -669,14 +686,17 @@ export class AddOrdersComponent implements OnInit {
       }
     }
     let newPosData = [];
-    this.shippersReceivers[i].shippers.customerPO.forEach(element => {
-      newPosData.push(element.label)
+    this.shippersReceivers[i].shippers.pickupPoint.forEach(element => {
+      element.customerPO.forEach((po: any) => {
+        newPosData.push(po.label)
+      })
+      element.customerPO = newPosData;
     });
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupPoint: this.shippersReceivers[i].shippers.pickupPoint,
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
-      customerPO:  newPosData,
+      liveLoad: this.shippersReceivers[i].shippers.liveLoad,
     };
 
     this.finalShippersReceivers[i].shippers.push(currentShipper);
@@ -686,6 +706,7 @@ export class AddOrdersComponent implements OnInit {
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Shipper added successfully.");
     await this.emptyShipper(i);
+    
   }
 
   async newGeoCode(data: any) {
@@ -789,7 +810,7 @@ export class AddOrdersComponent implements OnInit {
       receiverID: this.shippersReceivers[i].receivers.receiverID,
       dropPoint: this.shippersReceivers[i].receivers.dropPoint,
       driverUnload: this.shippersReceivers[i].receivers.driverUnload,
-
+      liveUnLoad: this.shippersReceivers[i].receivers.liveUnLoad,
     };
 
     this.finalShippersReceivers[i].receivers.push(currentReceiver);
@@ -800,7 +821,6 @@ export class AddOrdersComponent implements OnInit {
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     await this.emptyReceiver(i);
     
-   
 }
 
   async shipperReceiverMerge() {
@@ -872,7 +892,6 @@ export class AddOrdersComponent implements OnInit {
   async emptyShipper(i) {
     this.shippersReceivers[i].shippers.shipperID = null;
     this.customerPOs = [];
-    this.shippersReceivers[i].shippers.customerPO = [];
     this.shippersReceivers[i].shippers.pickupPoint = [{
       unit: false,
       unitNumber: '',
@@ -893,6 +912,7 @@ export class AddOrdersComponent implements OnInit {
       pickupDate: "",
       pickupTime: "",
       pickupInstruction: "",
+      customerPO: [],
       contactPerson: "",
       phone: "",
     
@@ -960,17 +980,19 @@ export class AddOrdersComponent implements OnInit {
   async getMiles(value) {
     
     this.getAllCords = [];
-    let flag = true;
+    let flag = true; 
+    let flag1 = true;  
     // check if exiting accoridan has atleast one shipper and one receiver
+    
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
       let shippers = this.finalShippersReceivers[k].shippers;
       let receivers = this.finalShippersReceivers[k].receivers;
 
       if (shippers.length == 0) flag = false;
-      if (receivers.length == 0) flag = false;
+      if (receivers.length == 0) flag1 = false;
     }
 
-    if (!flag && (value == 'google' || value == 'pcmiles')) {
+    if ((!flag && !flag1) && (value == 'google' || value == 'pcmiles')) {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
       );
@@ -1036,11 +1058,13 @@ export class AddOrdersComponent implements OnInit {
             element['isChecked'] = false;
           }
           this.customerSelected[0].address[0].isChecked = true;
-          this.cusAdditionalContact = result.Items[0].additionalContact;
-          
-          if(this.cusAdditionalContact.length === 1 && this.cusAdditionalContact[0].firstName == '') {
-            this.cusAdditionalContact = []
+          if(result.Items[0].additionalContact != undefined) {
+            this.cusAdditionalContact = result.Items[0].additionalContact;
+            if(this.cusAdditionalContact.length === 1 && this.cusAdditionalContact[0].firstName == '') {
+              this.cusAdditionalContact = []
+            }
           }
+          
           if(this.customerSelected[0].address.length > 0) {
             this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
           }
@@ -1164,16 +1188,17 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     
     let flag = true;
+    let flag1 = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
       let shippers = this.finalShippersReceivers[k].shippers;
       let receivers = this.finalShippersReceivers[k].receivers;
 
       if (shippers.length == 0) flag = false;
-      if (receivers.length == 0) flag = false;
+      if (receivers.length == 0) flag1 = false;
     }
 
-    if (!flag) {
+    if (!flag && !flag1) {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
       );
@@ -1390,43 +1415,39 @@ export class AddOrdersComponent implements OnInit {
     this.showReceiverUpdate = false;
   }
 
-  assignLocation(i:number, w: number,  elem: any, id: string) {
+  assignLocation(i:number, w: number,  value: any, id: string) {
     let getAddress;
-    if(elem === 'shipper') {
+    if(value === 'shipper') {
       getAddress = this.shipAddresses.filter(elem => elem.addressID == id);
     }
-    if (elem === 'shipper') {
+    if (value === 'shipper') {
      
       if(getAddress[0].manual) {
         let newAddress = '';
-        if(getAddress[0].address1 != '') {
+        if (getAddress[0].address1 != undefined && getAddress[0].address1 != '') {
           newAddress = `${getAddress[0].address1}`;
         }
-        if(getAddress[0].address2 != '') {
-          if(getAddress[0].address1 != '') {
-            newAddress = `${getAddress[0].address2}`;
+        if (getAddress[0].address2 != undefined && getAddress[0].address2 != '') {
+          if (newAddress != '') {
+            newAddress += `, ${getAddress[0].address2}`
           } else {
-            newAddress = `${newAddress}, ${getAddress[0].address2}`;
+            newAddress += `${getAddress[0].address2}`
           }
+  
         }
-
-        if(getAddress[0].cityName != '') {
-          if(getAddress[0].address2 != '') {
-            newAddress = `${newAddress}, ${getAddress[0].cityName}`;
-          } else {
-            newAddress = `${getAddress[0].cityName}`;
-          }
-          
-        } 
-        if(getAddress[0].stateName != '') {
-          newAddress = `${newAddress}, ${getAddress[0].stateName}`;
+        if (getAddress[0].cityName != undefined && getAddress[0].cityName != '') {
+          newAddress += `, ${getAddress[0].cityName}`
         }
-        if(getAddress[0].countryName != '') {
-          newAddress = `${newAddress}, ${getAddress[0].countryName}`;
+        if (getAddress[0].stateName != undefined && getAddress[0].stateName != '') {
+          newAddress += `, ${getAddress[0].stateName}`
         }
-        if(getAddress[0].zipCode != '') {
-          newAddress = `${newAddress}, ${getAddress[0].zipCode}`;
+        if (getAddress[0].countryName != undefined && getAddress[0].countryName != '') {
+          newAddress += `, ${getAddress[0].countryName}`
         }
+        if (getAddress[0].zipCode != undefined && getAddress[0].zipCode != '') {
+          newAddress += `. ${getAddress[0].zipCode}`
+        }
+        
         this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = newAddress;
       } else {
         this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = getAddress[0].userLocation;
@@ -1440,38 +1461,32 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = getAddress[0].countryCode;
       this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = getAddress[0].countryName;
       this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = getAddress[0].zipCode;
-      
     } else {
       let getAddress = this.receiverAddresses.filter(elem => elem.addressID == id);
       if(getAddress[0].manual) {
         let newAddress = '';
-        if(getAddress[0].address1 != '') {
+        if (getAddress[0].address1 != undefined && getAddress[0].address1 != '') {
           newAddress = `${getAddress[0].address1}`;
         }
-        if(getAddress[0].address2 != '') {
-          if(getAddress[0].address1 != '') {
-            newAddress = `${getAddress[0].address2}`;
+        if (getAddress[0].address2 != undefined && getAddress[0].address2 != '') {
+          if (newAddress != '') {
+            newAddress += `, ${getAddress[0].address2}`
           } else {
-            newAddress = `${newAddress}, ${getAddress[0].address2}`;
+            newAddress += `${getAddress[0].address2}`
           }
+  
         }
-
-        if(getAddress[0].cityName != '') {
-          if(getAddress[0].address2 != '') {
-            newAddress = `${newAddress}, ${getAddress[0].cityName}`;
-          } else {
-            newAddress = `${getAddress[0].cityName}`;
-          }
-          
-        } 
-        if(getAddress[0].stateName != '') {
-          newAddress = `${newAddress}, ${getAddress[0].stateName}`;
+        if (getAddress[0].cityName != undefined && getAddress[0].cityName != '') {
+          newAddress += `, ${getAddress[0].cityName}`
         }
-        if(getAddress[0].countryName != '') {
-          newAddress = `${newAddress}, ${getAddress[0].countryName}`;
+        if (getAddress[0].stateName != undefined && getAddress[0].stateName != '') {
+          newAddress += `, ${getAddress[0].stateName}`
         }
-        if(getAddress[0].zipCode != '') {
-          newAddress = `${newAddress}, ${getAddress[0].zipCode}`;
+        if (getAddress[0].countryName != undefined && getAddress[0].countryName != '') {
+          newAddress += `, ${getAddress[0].countryName}`
+        }
+        if (getAddress[0].zipCode != undefined && getAddress[0].zipCode != '') {
+          newAddress += `. ${getAddress[0].zipCode}`
         }
         this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = newAddress;
       } else {
@@ -1514,7 +1529,7 @@ export class AddOrdersComponent implements OnInit {
         pickupInstruction: "",
         contactPerson: "",
         phone: "",
-      
+        customerPO: [],
         commodity: [
           {
             name: "",
@@ -1574,7 +1589,13 @@ export class AddOrdersComponent implements OnInit {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
-      this.shippersReceivers[j].shippers.customerPO = data.customerPO;
+      let newPosData = [];
+      data.pickupPoint.forEach(element => {
+        element.customerPO.forEach((po: any) => {
+          newPosData.push({label: po})
+        })
+        element.customerPO = newPosData;
+      });
       this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
       for (let index = 0; index < this.shippersReceivers[j].shippers.pickupPoint.length; index++) {
         const element = this.shippersReceivers[j].shippers.pickupPoint[index];
@@ -1623,9 +1644,16 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].shipperID = data.shipperID;
-      this.finalShippersReceivers[i].shippers[
-        this.stateShipperIndex
-      ].customerPO = data.customerPO;
+      
+
+      let newPosData = [];
+      data.pickupPoint.forEach(element => {
+        element.customerPO.forEach((po: any) => {
+          newPosData.push(po.label)
+        })
+        element.customerPO = newPosData;
+      });
+
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].pickupPoint = data.pickupPoint;
@@ -1785,8 +1813,6 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.stateTaxID = result.stateTaxID;
         this.orderData["tripType"] = result.tripType;
 
-        this.orderData.additionalDetails["dropTrailer"] =
-          result.additionalDetails.dropTrailer;
         this.orderData.additionalDetails["trailerType"] =
           result.additionalDetails.trailerType;
 
@@ -2021,7 +2047,7 @@ export class AddOrdersComponent implements OnInit {
             pickupInstruction: "",
             contactPerson: "",
             phone: "",
-          
+            customerPO: [],
             commodity: [
               {
                 name: "",
@@ -2315,6 +2341,7 @@ export class AddOrdersComponent implements OnInit {
 
   setValue() {
     localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
   }
 
   fetchData(value: string) {
