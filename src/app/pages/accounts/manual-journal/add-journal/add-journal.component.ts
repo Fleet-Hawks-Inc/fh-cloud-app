@@ -48,7 +48,7 @@ export class AddJournalComponent implements OnInit {
     transactionLog: [],
   };
   difference = 0;
-  accounts = [];
+  accounts: any = [];
 
   contacts: any = [];
   errors = {};
@@ -74,9 +74,10 @@ export class AddJournalComponent implements OnInit {
       this.fetchJournalByID();
       this.submitDisabled = false;
     }
-    this.fetchAccounts();
+    this.listService.fetchChartAccounts();
     this.listService.fetchCustomers();
     this.contacts = this.listService.customersList;
+    this.accounts = this.listService.accountsList;
   }
 
   addMoreDetails() {
@@ -167,7 +168,7 @@ export class AddJournalComponent implements OnInit {
   fetchJournalByID() {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
-        if(result[0] !== undefined) {
+        if (result[0] !== undefined) {
           this.journal = result[0];
           this.journal.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
@@ -244,12 +245,12 @@ export class AddJournalComponent implements OnInit {
   }
 
   fetchAccounts() {
-    this.accountService.getData(`chartAc`)
+    this.accountService.getData(`chartAc/fetch/list`)
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.accounts = result;
         }
-      })
+      });
   }
 
   checkSelectedAccount(accountID, selectedIndex) {

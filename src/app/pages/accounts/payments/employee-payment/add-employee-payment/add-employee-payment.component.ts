@@ -262,20 +262,26 @@ export class AddEmployeePaymentComponent implements OnInit {
     let label = "";
     if (type == "cash") {
       label = "Cash";
+      this.paymentData.payModeNo = '';
     } else if (type == "cheque") {
       label = "Cheque";
+      this.paymentData.payModeNo = Date.now().toString();
     } else if (type == "eft") {
       label = "EFT";
+      this.paymentData.payModeNo = '';
     } else if (type == "credit_card") {
       label = "Credit Card";
+      this.paymentData.payModeNo = '';
     } else if (type == "debit_card") {
       label = "Debit Card";
+      this.paymentData.payModeNo = '';
     } else if (type == "demand_draft") {
       label = "Demand Draft";
+      this.paymentData.payModeNo = '';
     }
     this.payModeLabel = label;
     this.paymentData.payModeDate = null;
-    this.paymentData.payModeNo = '';
+
   }
 
   showAcModal() {
@@ -287,6 +293,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.toaster.error('Please enter valid amount');
       return false;
     }
+
     this.submitDisabled = true;
     this.accountService.postData('employee-payments', this.paymentData).subscribe({
         complete: () => { },

@@ -55,10 +55,10 @@
             <div class="row">
                 <div class="col pr-0">
                     <section class="card">
-                        <div infiniteScroll 
-                        [infiniteScrollDistance]="1" 
-                        [infiniteScrollUpDistance]="1" 
-                        [infiniteScrollThrottle]="5" 
+                        <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
                         (scrolled)="onScroll()">
                             <div class="card-body">
                                 <table class="table table-bordered table-striped mb-0 simple-table">
@@ -104,7 +104,7 @@
                                                 <div class="dropdown dropright">
                                                     <button class="bg-transparent border-0" type="button"
                                                         id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
+                                                        aria-haspopup="true" aria-expanded="false" [disabled]="data.status === 'deducted' ||  data.status === 'partially deducted'">
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <div class="dropdown-menu"
@@ -112,7 +112,7 @@
                                                         <a class="dropdown-item"
                                                             routerLink="/accounts/payments/advance-payments/edit/{{ data.paymentID }}">Edit</a>
                                                         <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
-                                                            (click)="deletePayment(data.paymentID)">Delete</a>
+                                                            (click)="deletePayment(data.paymentID)">Void</a>
                                                     </div>
                                                 </div>
                                             </td>
