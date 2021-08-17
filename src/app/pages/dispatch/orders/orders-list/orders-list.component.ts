@@ -175,7 +175,7 @@ export class OrdersListComponent implements OnInit {
       //   }
       // }
 
-      if(element.orderStatus == 'confirmed') {
+      if(element.orderStatus === 'confirmed') {
 
         this.confirmOrders.push(element);
       } else if(element.orderStatus == 'dispatched') {
@@ -425,8 +425,20 @@ export class OrdersListComponent implements OnInit {
   }
 
   async changeStatus(id) {
-    let result = await this.apiService.getData('orders/update/orderStatus/' + id + '/confirmed').toPromise();
-    console.log('result', result);
-    await this.fetchAllTypeOrderCount();
+    if (confirm('Are you sure you want to confirm the order?') === true) {
+      const result = await this.apiService.getData('orders/update/orderStatus/' + id + '/confirmed').toPromise();
+      console.log('result', result);
+      if (result) {
+        this.orders = [];
+        this.confirmOrders = [];
+        this.dispatchOrders = [];
+        this.deliveredOrders = [];
+        this.cancelledOrders = [];
+        this.invoicedOrders = [];
+        this.partiallyOrders = [];
+        this.fetchAllTypeOrderCount();
+      }
+    }
+
   }
 }

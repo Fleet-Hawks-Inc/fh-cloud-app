@@ -10,6 +10,8 @@
                     </div>
 
                     <div class="col-md-8 col-lg-8 text-right pr-1">
+                      <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" class="btn btn-default btn-sm mr-2"><i
+                        class="fas fa-pencil-alt"></i> Edit Trip</a>
                         <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
                         <!-- <div class="btn-group flex-wrap mr-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -171,7 +173,7 @@
                       </div>
                    </div>
                 </div>
-                
+
                 <div class="row mb-3">
                    <div class="col-lg-12">
                       <div class="bg-white p-3 text-dark">
@@ -262,7 +264,7 @@
                                         <div class="tripbarn"></div>
                                     </div>
                                 </div>
-        
+
                                 <div class="tripinfoscroll">
                                     <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
                                         <div class="text-center" *ngFor="let trip of trips">
@@ -304,13 +306,24 @@
                                 <div class="widgetload">
                                     <div class="widgettbload">
                                         <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                                class="fas fa-user"></i> Driver Activity</h2>
+                                                class="fas fa-user"></i> Trip Log</h2>
                                     </div>
                                 </div>
                                 <div class="timeline timeline-simple changelog"
                                     style="max-height: 497px;overflow-x: auto;width: 100%;">
                                     <div class="tm-body text-dark">
-                                        <ol class="tm-items">
+                                       <ol class="tm-items">
+                                            <li *ngFor="let trip of tripLog">
+                                                <div class="tm-box">
+                                                    <span class="release-date">{{trip.createdDate}} - {{trip.createdTime}}</span>
+                                                    <ul class="list-unstyled">
+                                                        <li> {{trip.eventParams.message}}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                        <!-- <ol class="tm-items">
                                             <li>
                                                 <div class="tm-box">
                                                     <span class="release-date">16 May 2020 04:10 PM</span>
@@ -387,12 +400,12 @@
                                                     </ul>
                                                 </div>
                                             </li>
-                                        </ol>
+                                        </ol> -->
                                     </div>
                                 </div>
                             </div>
                             </div>
-                            
+
                             <div class="col-6">
                                 <div class="vehicle-common-box w100 pull-left mb-3">
                                     <div class="widgetload">
@@ -404,10 +417,10 @@
                                                         <i class="fas fa-dollar-sign"></i> Expenses</h2>
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
-                                                    <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
+                                                    <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
                                                     <a href="javascript:;" class="btn btn-xs btn-dark ml-3"> Other
-                                                        Expenses</a>
+                                                        Expenses</a> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -424,28 +437,24 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td> 05/25/2020</td>
-                                                    <td> Meal Expense</td>
-                                                    <td> Other Expense</td>
-                                                    <td> 25.00 CAD</td>
+
+                                                    <td>&nbsp; </td>
+                                                    <td> &nbsp;</td>
+                                                    <td> &nbsp;</td>
+                                                    <td> &nbsp;</td>
                                                 </tr>
                                                 <tr>
-                                                    <td> 05/25/2020</td>
-                                                    <td> Parking</td>
-                                                    <td> Other Expense</td>
-                                                    <td> 50.00 CAD</td>
+                                                    <td> &nbsp;</td>
+                                                    <td>&nbsp; </td>
+                                                    <td>&nbsp; </td>
+                                                    <td> &nbsp;</td>
                                                 </tr>
                                                 <tr>
-                                                    <td> 05/25/2020</td>
-                                                    <td> Meal Expense</td>
-                                                    <td> Other Expense</td>
-                                                    <td> 25.00 CAD</td>
-                                                </tr>
-                                                <tr>
-                                                    <td> 05/25/2020</td>
-                                                    <td> Parking</td>
-                                                    <td> Other Expense</td>
-                                                    <td> 50.00 CAD</td>
+                                                    <td>&nbsp; </td>
+                                                    <td> &nbsp;</td>
+                                                    <td> &nbsp;</td>
+                                                    <td> &nbsp;</td>
+
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -453,7 +462,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="font-weight-bold">Total Amount</td>
-                                                    <td class="font-weight-bold">234 CAD</td>
+
+                                                    <td class="font-weight-bold">0</td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -496,7 +506,7 @@
                                                             </span>
                                                         </span>
                                                         <span *ngIf="!tripData.notifications">No</span>
-                                                        
+
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -525,7 +535,7 @@
                                                 <tr>
                                                     <td>
                                                         <span class="line-height-xl">
-                                                            <i class="fa fa-map-marker-alt"></i> Pick-up 
+                                                            <i class="fa fa-map-marker-alt"></i> Pick-up
                                                             {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ trips[0].pickupTime }} </span>
                                                         </span>
                                                     </td>
@@ -549,8 +559,8 @@
                                                 <tr>
                                                     <td>
                                                         <span class="line-height-xl">
-                                                            <i class="fa fa-map-marker-alt"></i> Delivery  
-                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ lastDelivery }} </span>    
+                                                            <i class="fa fa-map-marker-alt"></i> Delivery
+                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ lastDelivery }} </span>
                                                         </span>
                                                     </td>
 
@@ -602,11 +612,11 @@
                        </div>
                     </div>
                  </div>
-                
+
              </section>
 
 
-       
+
         </section>
     </div>
 </section>

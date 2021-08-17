@@ -418,9 +418,27 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" [(ngModel)]="paymentData.taxes" name="taxes" (input)="paymentCalculation(); checkInput('tax')" disabled>
-                                                        <label class="error">{{ taxErr }}</label>
+                                                        <label class="error" *ngIf="taxErr">{{ taxErr }}</label>
                                                     </div>
                                                 </div>
+                                                <div class="row pt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                                                  <div class="col-lg-6 text-right">
+                                                      <label class="control-label font-weight-bold">CPP</label>
+                                                  </div>
+                                                  <div class="col-lg-6">
+                                                      <input type="text" class="form-control" [(ngModel)]="paymentData.taxdata.cpp" name="taxdata.cpp" (input)="paymentCalculation(); checkInput('tax')" disabled>
+
+                                                  </div>
+                                              </div>
+                                              <div class="row pt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                                                <div class="col-lg-6 text-right">
+                                                    <label class="control-label font-weight-bold">EI</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.taxdata.ei" name="taxdata.ei" (input)="paymentCalculation(); checkInput('tax')" disabled>
+
+                                                </div>
+                                            </div>
                                                 <div class="row pt-1">
                                                     <div class="col-lg-6 text-right">
                                                         <label class="control-label font-weight-bold">Advance</label>
@@ -446,7 +464,7 @@
                                         <div class="col-lg-11 text-right">
                                             <!-- <button type="button" class="btn btn-success modal-with-form mr-2" (click)="showCheque()">Cheque preview</button> -->
 
-                                            <button type="button" class="btn btn-default mr-2" routerLink="/accounts/payments/driver-payments/list">Cancel</button>
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                             <button type="button" class="btn btn-success modal-with-form" [disabled]="!paymentForm.form.valid || submitDisabled" *ngIf="!paymentID" (click)="addRecord()">Save</button>
                                         </div>
                                     </div>
