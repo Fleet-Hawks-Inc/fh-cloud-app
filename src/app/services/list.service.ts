@@ -1,9 +1,11 @@
-import { EventEmitter, Injectable, Output } from "@angular/core";
+import { EventEmitter, Injectable, Output, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable, Subject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
 import { HttpClient } from "@angular/common/http"
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { NewAddressBookComponent } from "../shared/popups/new-address-book/new-address-book.component";
 @Injectable({
   providedIn: "root",
 })
@@ -78,7 +80,9 @@ export class ListService {
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
-  constructor(private apiService: ApiService,private accountService: AccountService,private httpClient:HttpClient) {}
+  public popup: Subject<any> = new Subject<any>();
+
+  constructor(private apiService: ApiService,private accountService: AccountService,private modalService: NgbModal) {}
 
   fetchVendors() {
     this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
@@ -248,5 +252,13 @@ fetchReceivers() {
 
     this.isTrueDataSource.next(value);
 
-   }
+  }
+
+  triggerModal(content: any) {
+    let ngbModalOptions: NgbModalOptions = {
+        backdrop : 'static',
+        keyboard : false
+  };
+    this.modalService.open(content, ngbModalOptions)
+  }
 }

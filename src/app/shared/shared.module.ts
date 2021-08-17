@@ -22,6 +22,7 @@ import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-p
 import { AllCarriersComponent } from './all-carriers/all-carriers.component';
 import { MustMatchDirective } from '../directives/must-match.directive';
 import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
+import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
 
 
 /**
@@ -99,7 +100,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SharedModalsComponent,
     AllCarriersComponent,
     MustMatchDirective,
-    AbsoluteValuePipe
+    AbsoluteValuePipe,
+    NewAddressBookComponent
 
   ],
   exports: [

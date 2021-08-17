@@ -2376,6 +2376,7 @@ table.dataTable thead th, table.dataTable thead td {
     bottom: 130px;
     left: 23px;
     background: #ffffff;
+    z-index: 999;
     padding: 10px;
     width: 40px;
     height: 40px;

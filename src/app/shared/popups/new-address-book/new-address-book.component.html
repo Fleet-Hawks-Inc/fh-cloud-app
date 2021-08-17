@@ -1,0 +1,2273 @@
+<!-- Add CUSTOMER Modal -->
+<a
+  href="javascript:;"
+  (click)="openModal(newUnitModal)"
+  class="modal-with-form address-book-icon"
+  title="Address Book"
+>
+  <i class="far fa-address-book text-dark" style="font-size: 16px"></i>
+</a>
+
+<ng-template #newUnitModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Entry</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-dark">
+    <form
+      id="customerForm"
+      class="form-horizontal form-bordered bg-white"
+      method="get"
+      name="form"
+    >
+      <div class="">
+        <!-- Basic Details start -->
+        <div class="row mb-3">
+          <div class="col-lg-8">
+            <label
+              class="control-label font-weight-bold text-lg-right text-5 pt-3"
+              >Basic Details</label
+            >
+          </div>
+
+          <div class="col-lg-4 text-right">
+            <div
+              class="
+                btn btn-sm btn-success
+                overflow-hidden
+                mt-3
+                position-relative
+              "
+              style="cursor: pointer"
+            >
+              <em class="fas fa-plus"></em> {{ imageText }}
+              <input
+                (change)="uploadDriverImg($event)"
+                type="file"
+                class="hidden_input1 w-100 imgField"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label class="control-label font-weight-bold text-lg-right pt-2"
+              >Do you want this entry to act as
+              <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+            </label>
+            <ng-select
+              [(ngModel)]="unitData.eTypes"
+              name="eTypes"
+              [multiple]="true"
+              (change)="unitChange($event)"
+              #eType="ngModel"
+              class="form-control populate h-auto"
+              placeholder="Select address type"
+            >
+              <ng-option value="broker">Broker</ng-option>
+              <ng-option value="carrier">Carrier</ng-option>
+              <ng-option value="shipper">Shipper</ng-option>
+              <ng-option value="receiver">Receiver</ng-option>
+
+              <ng-option value="customer">Customer</ng-option>
+              <ng-option value="fc">Factoring Company</ng-option>
+              <ng-option value="owner_operator">Owner Operator</ng-option>
+              <ng-option value="vendor">Vendor</ng-option>
+            </ng-select>
+            <div
+              *ngIf="eType.invalid && (eType.dirty || eType.touched)"
+              class="text-danger"
+            >
+              <div *ngIf="eType.errors.required">Company name is required.</div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="control-label font-weight-bold text-lg-right pt-2"
+              >Company Name
+              <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+            </label>
+            <input
+              [(ngModel)]="unitData.cName"
+              name="companyName"
+              type="text"
+              class="form-control"
+              placeholder="eg. Carroll Group"
+              #customerName="ngModel"
+              required
+              pattern="^[a-zA-Z0-9\s\.]{4,120}$"
+            />
+            <div
+              *ngIf="
+                customerName.invalid &&
+                (customerName.dirty || customerName.touched)
+              "
+              class="text-danger"
+            >
+              <div *ngIf="customerName.errors.required">
+                Company name is required.
+              </div>
+              <div *ngIf="customerName.errors.pattern">
+                Company name can only contain alphanumeric characters.
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <label class="control-label font-weight-bold text-lg-right pt-2"
+              >DBA Name</label
+            >
+            <input
+              [(ngModel)]="unitData.dba"
+              name="dbaName"
+              type="text"
+              class="form-control"
+              placeholder="eg. Bookstore"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-lg-6">
+                <label
+                  class="control-label font-weight-bold text-lg-right pt-2"
+                >
+                  Phone
+                </label>
+                <input
+                  [(ngModel)]="unitData.workPhone"
+                  name="workPhone"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. 2234567891"
+                />
+              </div>
+
+              <div class="col-lg-6">
+                <label
+                  class="control-label font-weight-bold text-lg-right pt-2"
+                >
+                  Email
+                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                </label>
+                <input
+                  [(ngModel)]="unitData.workEmail"
+                  name="workEmail"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. johnsmith@gmail.com "
+                  #customerem="ngModel"
+                  required
+                  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
+                />
+                <div
+                  *ngIf="
+                    customerem.invalid &&
+                    (customerem.dirty || customerem.touched)
+                  "
+                  class="text-danger"
+                >
+                  <div *ngIf="customerem.errors.required">
+                    Email is required.
+                  </div>
+                  <div *ngIf="customerem.errors.pattern">
+                    Enter valid email eg. johnsmith@gmail.com .
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Basic Details end -->
+        <div
+          class="pb-4 address-item"
+          *ngFor="let unit of unitData.data; let y = index"
+        >
+            <!-- Broker Data -->
+          <div *ngIf="unit.brokerData">
+            <label
+              class="control-label font-weight-bold text-lg-right text-5 pt-3"
+              >Broker Details</label
+            >
+
+            <div class="row">
+              <div class="col-2">
+                <label class="control-label font-weight-bold text-lg-right"
+                  >Broker Type:</label
+                >
+              </div>
+              <div class="col-lg-8">
+                <div class="btn-group-toggle" data-toggle="buttons">
+                  <label
+                    class="btn btn-outline btn-fleet mr-2"
+                    [class.active]="unit.brokerData.type === 'company'"
+                    style="width: 110px"
+                    (click)="brokerType('company')"
+                  >
+                    <input
+                      type="radio"
+                      [(ngModel)]="unit.brokerData.type"
+                      name="brokerType"
+                      checked
+                      value="company"
+                    />
+                    Company
+                  </label>
+
+                  <label
+                    class="btn btn-outline btn-fleet mr-2"
+                    [class.active]="unit.brokerData.type === 'individual'"
+                    style="width: 110px"
+                    (click)="brokerType('individual')"
+                  >
+                    <input
+                      type="radio"
+                      [(ngModel)]="unit.brokerData.type"
+                      name="brokerType"
+                      value="individual"
+                    />
+                    Individual
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3" *ngIf="unit.brokerData.type === 'individual'">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Contact First Name<span class="mandfield text-2 ml-1"
+                    ><sup>*</sup></span
+                  >
+                </label>
+                <input
+                  [(ngModel)]="unit.brokerData.fn"
+                  name="unit.brokerData.fn"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. John"
+                  #bfName="ngModel"
+                  required
+                  pattern="^[a-zA-Z]{2,30}$"
+                />
+                <div
+                  *ngIf="bfName.invalid && (bfName.dirty || bfName.touched)"
+                  class="text-danger"
+                >
+                  <div *ngIf="bfName.errors.required">
+                    Contact First name is required.
+                  </div>
+                  <div *ngIf="bfName.errors.pattern">
+                    Contact First name can only contains letters.
+                  </div>
+                </div>
+              </div>
+              <div class="col-3" *ngIf="unit.brokerData.type === 'individual'">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Contact Last Name
+                </label>
+                <input
+                  [(ngModel)]="unit.brokerData.ln"
+                  name="unit.brokerData.ln"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. Smith"
+                />
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >EIN &nbsp;<i
+                    class="fas fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "
+                  ></i>
+                </label>
+
+                <input
+                  [(ngModel)]="unit.brokerData.ein"
+                  name="ein"
+                  type="text"
+                  class="form-control"
+                  placeholder="Employer identification number used for internal revenue"
+                />
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >MC# &nbsp;<i
+                    class="fas fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                              in other words hauling cargo across state lines."
+                  ></i>
+                </label>
+
+                <input
+                  [(ngModel)]="unit.brokerData.mc"
+                  name="mc"
+                  type="text"
+                  class="form-control"
+                  placeholder="6 digits , eg. 123456"
+                />
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >DOT# &nbsp;<i
+                    class="fas fa-exclamation-circle"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."
+                  ></i>
+                </label>
+
+                <input
+                  [(ngModel)]="unit.brokerData.dot"
+                  name="unit.brokerData.dot"
+                  type="text"
+                  class="form-control"
+                  placeholder="Carrier’s US DOT number"
+                />
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Account#
+                </label>
+
+                <input
+                  [(ngModel)]="unit.brokerData.acc"
+                  name="unit.brokerData.acc"
+                  type="text"
+                  class="form-control"
+                  placeholder="7-12 digits , eg. 897567567456"
+                />
+               
+              </div>
+            </div>
+          </div>
+
+          <!-- Carrier Data -->
+          <div *ngIf="unit.carrierData">
+            <label
+                class="control-label font-weight-bold text-lg-right text-5 pt-3"
+                >Carrier Details</label
+            >
+            <div class="row">
+                <div class="col-6 d-flex mt-2">
+                    <div class="checkbox-custom pt-1 mr-3">
+                      <input
+                        [(ngModel)]="unit.carrierData.csa"
+                        name="csa"
+                        type="checkbox"
+                        name="csa"
+                      />
+                      <label for="csa"
+                        >CSA&nbsp;<i
+                          class="fas fa-exclamation-circle"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"
+                        ></i
+                      ></label>
+                    </div>
+                    <div class="checkbox-custom pt-1 mr-3">
+                      <input
+                        [(ngModel)]="unit.carrierData.ctpat"
+                        name="ctpat"
+                        type="checkbox"
+                        name="ctpat"
+                      />
+                      <label for="ctpat"
+                        >CTPAT&nbsp;<i
+                          class="fas fa-exclamation-circle"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Customs Trade Partnership Against Terrorism (CTPAT) is but one layer in U.S. Customs and Border Protection’s (CBP) multi-layered cargo enforcement strategy.CBP works with the trade community to strengthen international supply chains and improve United States border security."
+                        ></i
+                      ></label>
+                    </div>
+                    <div class="checkbox-custom pt-1 mr-3">
+                      <input
+                        [(ngModel)]="unit.carrierData.pip"
+                        name="pip"
+                        type="checkbox"
+                        name="pip"
+                      />
+                      <label for="pip"
+                        >PIP&nbsp;<i
+                          class="fas fa-exclamation-circle"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="PIP stands for Partners in Protection,it’s in partnership with the Canada Border Service Agency (CBSA).The goal of the PIP program is to strengthen security of both the Canadian-American border and the trade chain."
+                        ></i
+                      ></label>
+                    </div>
+                </div>
+                <div class="col-3 mt-2">
+                    <div class="checkbox-custom pt-1">
+                      <input
+                        [(ngModel)]="unit.carrierData.inBonded"
+                        name="inBonded"
+                        type="checkbox"
+                        name="in-bond-carrier"
+                      />
+                      <label for="in-bond-carrier">In-Bonded Carrier</label>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">MC# &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."
+                      ></i>
+                    </label>
+
+                    <input
+                      [(ngModel)]="unit.carrierData.mc"
+                      name="mc"
+                      type="text"
+                      class="form-control"
+                      placeholder="6 digits , eg. 123456"
+                    />
+                    <!-- <div *ngIf="carriermc.invalid && (carriermc.dirty || carriermc.touched)" class="text-danger">
+                                                  <div *ngIf="carriermc.errors.pattern">
+                                                      MC number must contain 6 digits.
+                                                      </div>  
+
+
+                                              </div> -->
+                  </div>
+                  <div class="col-3">
+                    <label
+                      class="
+                        control-label
+                        font-weight-bold
+                        text-lg-right
+                        pt-2
+                      "
+                      >DOT# &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."
+                      ></i>
+                    </label>
+
+                    <input
+                      [(ngModel)]="unit.carrierData.dot"
+                      name="dot"
+                      type="text"
+                      class="form-control"
+                      placeholder="Carrier’s US DOT number"
+                    />
+                    
+                  </div>
+                  <div class="col-3">
+                    <label
+                      class="
+                        control-label
+                        font-weight-bold
+                        text-lg-right
+                        pt-2
+                      "
+                      >FAST Card# &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"
+                      ></i>
+                    </label>
+                    <input
+                      [(ngModel)]="unit.carrierData.fast"
+                      name="fast"
+                      type="text"
+                      class="form-control"
+                      placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
+                      #fastcardcarrier="ngModel"
+                      pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
+                      maxlength="14"
+                    />
+                    <div
+                      *ngIf="
+                        fastcardcarrier.invalid &&
+                        (fastcardcarrier.dirty || fastcardcarrier.touched)
+                      "
+                      class="text-danger"
+                    >
+                      <div *ngIf="fastcardcarrier.errors.pattern">
+                        Fast Card should be of 14 numbers beginning with
+                        4270/4110 and ending with 00/01.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- fast expiry -->
+                  <div class="col-3">
+                    <label
+                      class="
+                        control-label
+                        font-weight-bold
+                        text-lg-right
+                        pt-2
+                      "
+                      >FAST Expiry
+                    </label>
+                    <input
+                      [(ngModel)]="unit.carrierData.fastExpiry"
+                      name="fastExpiry"
+                      type="text"
+                      placeholder="yyyy/mm/dd"
+                      (click)="carrexp.toggle()"
+                      ngbDatepicker
+                      #carrexp="ngbDatepicker"
+                      class="form-control"
+                      autocomplete="off"
+                      [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit"
+                    />
+                  </div>
+                  
+                  <!-- CCC -->
+                  <div class="col-3">
+                    <label
+                      class="
+                        control-label
+                        font-weight-bold
+                        text-lg-right
+                        pt-2
+                      "
+                      >CCC &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail"
+                      ></i
+                    ></label>
+                    <input
+                      [(ngModel)]="unit.carrierData.ccc"
+                      name="ccc"
+                      type="text"
+                      class="form-control"
+                      placeholder="4 digits , eg. AB7Y"
+                    />
+                    
+                  </div>
+
+                  <!-- SCAC -->
+                  <div class="col-3">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">SCAC &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection"
+                      ></i
+                    ></label>
+                    <input
+                      [(ngModel)]="unit.carrierData.scac"
+                      name="scac"
+                      type="text"
+                      class="form-control"
+                      placeholder="2-4 alphabets , eg. ABFS"
+                    />
+
+                  </div>
+
+                  <!-- CVOR -->
+                   <div class="col-3">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">CVOR &nbsp;<i
+                        class="fas fa-exclamation-circle"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Commercial vehicle operator's registration ( CVOR ) mandatory for commercial vehicle operators in Ontario"
+                      >
+                      </i>
+                    </label>
+                    <input
+                      [(ngModel)]="unit.carrierData.cvor"
+                      name="cvor"
+                      type="text"
+                      class="form-control"
+                      placeholder="9 digits , eg. 123456789"
+                    />
+
+                    
+                   </div>
+                  
+                    <div class="col-3">
+                        <label
+                        class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                        "
+                        >Local Tax (in Percentage)
+                        </label>
+                        <input
+                        [(ngModel)]="unit.carrierData.localTax"
+                        name="localTax"
+                        type="text"
+                        class="form-control"
+                        placeholder="eg. 5 "
+                        />
+                    </div>
+                    <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Federal Tax (in Percentage)
+                        </label>
+                        <input
+                          [(ngModel)]="unit.carrierData.federalTax"
+                          name="federalTax"
+                          type="text"
+                          class="form-control"
+                          placeholder="eg. 5"
+                        />
+
+                        
+                    </div>
+                    <div class="col-3">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Payroll Type</label>
+                        <ng-select
+                          [(ngModel)]="unit.carrierData.payrollType"
+                          class="form-control"
+                          name="unit.carrierData.payrollType"
+                          placeholder="Select payroll type">
+                          <ng-option value="Pay Per Mile" selected="true"
+                            >Pay Per Mile</ng-option
+                          >
+                          <ng-option value="Percentage">Percentage</ng-option>
+                          <ng-option value="Pay Per Hour"
+                            >Pay Per Hour</ng-option
+                          >
+                          <ng-option value="Pay Per Delivery"
+                            >Pay Per Delivery</ng-option
+                          >
+                        </ng-select>
+                        
+                    </div>
+                    <div class="col-3">
+                        <div class="checkbox-custom mt-5">
+                          <input
+                            [(ngModel)]="unit.carrierData.applyTax"
+                            name="applyTax"
+                            type="checkbox"
+                            name="terms"
+                          />
+                          <label for="w1-terms"
+                            >Apply Tax (on Settlement)</label
+                          >
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="checkbox-custom mt-5">
+                            <input
+                            [(ngModel)]="unit.carrierData.wsib"
+                            name="wsib"
+                            (change)="carrierWSIB($event.target.value)"
+                            type="checkbox"
+                            id="wsib-fields"
+                            />
+                            <label for="wsib">WSIB</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row" id="payPerHourForm" *ngIf="
+                            unit.carrierData.payrollType ==
+                            'Pay Per Hour'
+                          "
+                        >
+                          <div class="col-3">
+                            <label class="control-label font-weight-bold text-lg-right pt-2"
+                              >Rate</label
+                            >
+                            <input
+                              type="number"
+                              min="0"
+                              class="form-control"
+                              [(ngModel)]="
+                                unit.carrierData.payrollRate
+                              "
+                              name="paymentDetails.payrollRate"
+                              placeholder="eg. 5 "
+                            />
+                            <!-- <div *ngIf="carrierrate.invalid && (carrierrate.dirty || carrierrate.touched)" class="text-danger">
+                                                              <div *ngIf="carrierrate.errors.pattern">
+                                                                  Rate must contain digits and only one special character (dot) only.
+                                                                </div>
+
+
+                                                          </div> -->
+                          </div>
+                          <div class="col-3">
+                            <label class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                pt-4
+                              "
+                            ></label>
+                            <ng-select
+                              [(ngModel)]="
+                                unit.carrierData.payrollRateCurrency
+                              "
+                              (change)="updateCurrency($event, 'carrier')"
+                              class="form-control"
+                              name="paymentDetails.payrollRateCurrency"
+                              placeholder="Select Currency"
+                            >
+                              <ng-option value="CAD">CAD</ng-option>
+                              <ng-option value="USD">USD</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+
+                        <div class="row align-items-center"
+                          id="payPercentageForm" *ngIf="
+                            unit.carrierData.payrollType ==
+                            'Percentage'">
+                          <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
+                            <div class="row">
+                              <div class="col-3">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  class="form-control"
+                                  [(ngModel)]="
+                                    unit.carrierData.payrollPercent
+                                  "
+                                  name="paymentDetails.payrollPercent"
+                                />
+
+                                <!-- <div *ngIf="carrierloadpaypercent.invalid && (carrierloadpaypercent.dirty || carrierloadpaypercent.touched)" class="text-danger">
+                                                                      <div *ngIf="carrierloadpaypercent.errors.pattern">
+                                                                          Load Pay Percent must contain digits and only one special character (dot) only.
+                                                                        </div> 
+
+
+                                                                  </div> -->
+                              </div>
+                              <div class="col-1">
+                                <label class="font-weight-bold">% of</label>
+                              </div>
+                              <div class="col-5">
+                                <ng-select
+                                  [(ngModel)]="
+                                    unit.carrierData.percentType
+                                  "
+                                  class="form-control"
+                                  name="paymentDetails.percentType"
+                                  placeholder="Select Percent Type"
+                                >
+                                  <ng-option
+                                    value="Freight Fees"
+                                    selected="true"
+                                    >Freight Fees</ng-option
+                                  >
+                                  <ng-option value="Freight + Fuel Surcharge"
+                                    >Freight + Fuel Surcharge</ng-option
+                                  >
+                                  <ng-option value="Total Income"
+                                    >Total Income</ng-option
+                                  >
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="row" id="payPerMileForm"
+                            *ngIf="
+                              unit.carrierData.payrollType ==
+                              'Pay Per Mile'
+                            ">
+                            <div class="col-3">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
+                              <input type="number"
+                                min="0"
+                                [(ngModel)]="
+                                  unit.carrierData.loadedMiles
+                                "
+                                name="paymentDetails.loadedMiles"
+                                class="form-control"
+                                placeholder="eg. 5 "
+                              />
+                              <!-- <div  *ngIf="carrierloadedmiles.invalid && (carrierloadedmiles.dirty || carrierloadedmiles.touched)" class="text-danger" >
+                                                                      <div *ngIf="carrierloadedmiles.errors.pattern">
+                                                                          Loaded Miles must contain digits and only one special character (dot) only.
+                                                                        </div>
+
+                                                                  </div> -->
+                            </div>
+
+                            <div class="col-3">
+                              <label class="control-label font-weight-bold text-lg-right pt-4"></label>
+                              <ng-select
+                                [(ngModel)]="
+                                  unit.carrierData
+                                    .loadedMilesCurrency
+                                "
+                                (change)="updateCurrency($event, 'carrier')"
+                                class="form-control"
+                                name="paymentDetails.loadedMilesCurrency"
+                                placeholder="Select Currency"
+                              >
+                                <ng-option value="CAD">CAD</ng-option>
+                                <ng-option value="USD">USD</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-3">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Empty Miles</label
+                                >
+                                <input
+                                  type="number"
+                                  [(ngModel)]="
+                                  unit.carrierData.emptyMiles
+                                  "
+                                  name="paymentDetails.emptyMiles"
+                                  class="form-control"
+                                  placeholder="eg. 5"
+                                />
+  
+                                <!-- <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
+                                                                      <div *ngIf="carrieremptymiles.errors.pattern">
+                                                                          Empty Miles must contain digits and only one special character (dot) only.
+                                                                        </div>
+  
+  
+  
+                                                                  </div> -->
+                              </div>
+                              <div class="col-3">
+                                <label class="control-label font-weight-bold text-lg-right pt-4"></label>
+                                <ng-select
+                                  [(ngModel)]="
+                                  unit.carrierData.emptyMilesCurrency
+                                  "
+                                  (change)="updateCurrency($event, 'carrier')"
+                                  class="form-control"
+                                  name="paymentDetails.emptyMilesCurrency"
+                                  placeholder="Select Currency"
+                                >
+                                  <ng-option value="CAD">CAD</ng-option>
+                                  <ng-option value="USD">USD</ng-option>
+                                </ng-select>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row"
+                          id="payPerDeliveryForm"
+                          *ngIf="
+                            unit.carrierData.payrollType ==
+                            'Pay Per Delivery'
+                          "
+                        >
+                          <div class="col-3">
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >Delivery Rate</label
+                            >
+                            <input
+                              [(ngModel)]="
+                                unit.carrierData.deliveryRate
+                              "
+                              name="paymentDetails.deliveryRate"
+                              type="text"
+                              class="form-control"
+                              placeholder="eg. 30 "
+                            />
+
+                            <!-- <div *ngIf="carrierdeliveryrate.invalid && (carrierdeliveryrate.dirty || carrierdeliveryrate.touched)" class="text-danger">
+                                                          <div *ngIf="carrierdeliveryrate.errors.pattern">
+                                                              Delivery Rate must contain digits and only one special character (dot) only.
+                                                            </div>
+
+
+
+                                                         </div> -->
+                          </div>
+                          <div class="col-3 pt-2
+                          mt-1">
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                
+                              "
+                            ></label>
+                            <ng-select
+                              class=""
+                              [(ngModel)]="
+                                unit.carrierData
+                                  .deliveryRateCurrency
+                              "
+                              (change)="updateCurrency($event, 'carrier')"
+                              name="paymentDetails.deliveryRateCurrency"
+                              placeholder="Select Currency"
+                            >
+                              <ng-option value="CAD">CAD</ng-option>
+                              <ng-option value="USD">USD</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                        
+                        
+                          <div class="row wsib-wrapper"
+                            *ngIf="unit.carrierData.wsib">
+                            <div class="col-3">
+                              <label
+                                class="
+                                  control-label
+                                  font-weight-bold
+                                  text-lg-right
+                                  pt-2
+                                "
+                                >WSIB Account#
+                                <span class="text-1 optional-label-color"
+                                  >(optional)</span
+                                ></label
+                              >
+                              <input
+                                [(ngModel)]="
+                                  unit.carrierData.wsibAccountNumber
+                                "
+                                name="wsibAccountNumber"
+                                type="text"
+                                class="form-control"
+                                placeholder=" Work safety insurance board no."
+                              />
+  
+                              <!-- <div *ngIf="carrierwsib.invalid && (carrierwsib.dirty || carrierwsib.touched)" class="text-danger">
+                                                                  <div *ngIf="carrierwsib.errors.required">
+                                                                      WSIB Account# is required 
+                                                                    </div>
+                                                                  <div *ngIf="carrierwsib.errors.pattern">
+                                                                      WSIB Account# must contain numbers .
+                                                                    </div>
+  
+  
+                                                              </div> -->
+                            </div>
+                            <div class="col-3">
+                              <label
+                                class="
+                                  control-label
+                                  font-weight-bold
+                                  text-lg-right
+                                  pt-2
+                                "
+                                >WSIB Expiry
+                                <span class="text-1 optional-label-color"
+                                  >(optional)</span
+                                ></label
+                              >
+                              <input
+                                [(ngModel)]="
+                                  unit.carrierData.wsibExpiry
+                                "
+                                name="wsibExpiry"
+                                type="text"
+                                placeholder="yyyy/mm/dd"
+                                (click)="wsibexp.toggle()"
+                                ngbDatepicker
+                                #wsibexp="ngbDatepicker"
+                                class="form-control"
+                                autocomplete="off"
+                                [minDate]="dateMinLimit"
+                                [maxDate]="futureDatesLimit"
+                              />
+                              <!-- <div *ngIf="wsib.invalid && (wsib.dirty || wsib.touched)" class="text-danger">
+                                                                <div *ngIf="wsib.errors.required">
+                                                                  WSIB is required and must contain yyyy/mm/dd format.
+                                                                </div>
+                                                              </div> -->
+                            </div>
+                          </div>
+                    </div>
+            </div>
+          </div>
+
+            <!-- Shipper Data -->
+            <div *ngIf="unit.shipperData">
+                <label
+                class="control-label font-weight-bold text-lg-right text-5"
+                >Shipper Details</label>
+                <div class="row">
+                    <div class="col-3">
+                        <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                        "
+                        >MC#&nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                in other words hauling cargo across state lines."
+                        ></i>
+                        </label>
+
+                        <input
+                        [(ngModel)]="unit.shipperData.mc"
+                        name="unit.shipperData.mc"
+                        type="text"
+                        class="form-control"
+                        placeholder="6 digits , eg. 123456"
+                        />
+                        <!-- <div *ngIf="consignormc.invalid && (consignormc.dirty || consignormc.touched)" class="text-danger">
+                                                <div *ngIf="consignormc.errors.pattern">
+                                                    MC number must contain 6 digits.
+                                                </div>
+                                                </div> -->
+                    </div>
+                    <div class="col-3">
+                        <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                        "
+                        >DOT# &nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."
+                        ></i>
+                        </label>
+
+                        <input
+                        [(ngModel)]="unit.shipperData.dot"
+                        name="unit.shipperData.dot"
+                        type="text"
+                        class="form-control"
+                        placeholder="Carrier’s US DOT number"
+                        />
+                        <!-- <div *ngIf="consignordot.invalid && (consignordot.dirty || consignordot.touched)" class="text-danger">
+                                                <div *ngIf="consignordot.errors.pattern">
+                                                    DOT number must contain 8 digits.
+                                                </div>
+                                                </div> -->
+                    </div>
+                </div>
+            </div>
+
+             <!-- Receiver Data -->
+            <div *ngIf="unit.receiverData">
+                <label
+                class="control-label font-weight-bold text-lg-right text-5"
+                >Receiver Details</label
+            >
+                <div class="row">
+                    <div class="col-3">
+                        <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                        "
+                        >MC#&nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                in other words hauling cargo across state lines."
+                        ></i>
+                        </label>
+
+                        <input
+                        [(ngModel)]="unit.receiverData.mc"
+                        name="unit.receiverData.mc"
+                        type="text"
+                        class="form-control"
+                        placeholder="6 digits , eg. 123456"
+                        />
+                        
+                    </div>
+                    <div class="col-3">
+                        <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                        "
+                        >DOT# &nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."
+                        ></i>
+                        </label>
+
+                        <input
+                        [(ngModel)]="unit.receiverData.dot"
+                        name="unit.receiverData.dot"
+                        type="text"
+                        class="form-control"
+                        placeholder="Carrier’s US DOT number"
+                        />
+                        
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="unit.customerData">
+                <label
+                    class="control-label font-weight-bold text-lg-right text-5"
+                    >Customer Details</label
+                >
+                <div class="row">
+                    <div class="col-lg-12 d-flex">
+                        <div class="checkbox-custom pt-1 mr-3 mt-2">
+                          <input
+                            [(ngModel)]="unit.customerData.csa"
+                            name="csa"
+                            type="checkbox"
+                          />
+                          <label for="csa"
+                            >CSA&nbsp;<i
+                              class="fas fa-exclamation-circle"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"
+                            ></i
+                          ></label>
+                        </div>
+                        <div class="checkbox-custom pt-1 mr-3 mt-2">
+                          <input
+                            [(ngModel)]="unit.customerData.ctpat"
+                            name="ctpat"
+                            type="checkbox"
+                          />
+                          <label for="ctpat"
+                            >CTPAT&nbsp;<i
+                              class="fas fa-exclamation-circle"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              title="Customs Trade Partnership Against Terrorism (CTPAT) is but one layer in U.S. Customs and Border Protection’s (CBP) multi-layered cargo enforcement strategy.CBP works with the trade community to strengthen international supply chains and improve United States border security."
+                            ></i
+                          ></label>
+                        </div>
+                        <div class="checkbox-custom pt-1 mr-3 mt-2">
+                          <input
+                            [(ngModel)]="unit.customerData.pip"
+                            name="pip"
+                            type="checkbox"
+                          />
+                          <label for="pip"
+                            >PIP&nbsp;<i
+                              class="fas fa-exclamation-circle"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              title="PIP stands for Partners in Protection,it’s in partnership with the Canada Border Service Agency (CBSA).The goal of the PIP program is to strengthen security of both the Canadian-American border and the trade chain."
+                            ></i
+                          ></label>
+                        </div>
+                      </div>
+                    <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >EIN &nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "
+                          ></i>
+                        </label>
+                        <input
+                          [(ngModel)]="unit.customerData.ein"
+                          name="unit.customerData.ein"
+                          type="text"
+                          class="form-control"
+                          placeholder="Employer identification number  used for internal revenue"
+                        />
+
+                        <!-- <div *ngIf="customerein.invalid && (customerein.dirty || customerein.touched)" class="text-danger">
+                                                      <div *ngIf="customerein.errors.pattern">
+                                                        EIN must contain 9 digits.
+                                                      </div>
+                                                    </div> -->
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Account#
+                        </label>
+                        <input
+                          [(ngModel)]="unit.customerData.acc"
+                          name="unit.customerData.acc"
+                          type="text"
+                          class="form-control"
+                          placeholder="7-12 digits , eg. 897567567456"
+                        />
+                        
+                      </div>
+                      <div class="col-3">
+                            <label class="control-label font-weight-bold text-lg-right pt-2"
+                              >MC#&nbsp;<i
+                                class="fas fa-exclamation-circle"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                            in other words hauling cargo across state lines."
+                              ></i>
+                            </label>
+                            <input
+                              [(ngModel)]="unit.customerData.mc"
+                              name="mc"
+                              type="text"
+                              class="form-control"
+                              placeholder="6 digits , eg. 123456"
+                            />
+                            
+                          </div>
+                          <div class="col-3">
+                            <label class="control-label font-weight-bold text-lg-right pt-2"
+                              >DOT# &nbsp;<i
+                                class="fas fa-exclamation-circle"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."
+                              ></i>
+                            </label>
+                            <input
+                              [(ngModel)]="unit.customerData.dot"
+                              name="dot"
+                              type="text"
+                              class="form-control"
+                              placeholder="Carrier’s US DOT number"
+                            />
+                            
+                          </div> 
+                           <div class="col-3">
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >FAST Card# &nbsp;<i
+                                class="fas fa-exclamation-circle"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"
+                              ></i>
+                            </label>
+                            <input
+                              [(ngModel)]="unit.customerData.fast"
+                              name="fast"
+                              type="text"
+                              class="form-control"
+                              placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
+                              #customerfastcard="ngModel"
+                              pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
+                              maxlength="14"
+                            />
+                            <div
+                              *ngIf="
+                                customerfastcard.invalid &&
+                                (customerfastcard.dirty ||
+                                  customerfastcard.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <div *ngIf="customerfastcard.errors.pattern">
+                                Fast Card should be of 14 numbers beginning with
+                                4270/4110 and ending with 00/01.
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3">
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >FAST Card Expiry
+                            </label>
+                            <input
+                              [(ngModel)]="unit.customerData.fastExp"
+                              name="fastExpiry"
+                              type="text"
+                              placeholder="yyyy/mm/dd"
+                              (click)="custexp.toggle()"
+                              ngbDatepicker
+                              #custexp="ngbDatepicker"
+                              class="form-control"
+                              autocomplete="off"
+                              [minDate]="dateMinLimit"
+                              [maxDate]="futureDatesLimit"
+                            />
+                          </div>
+                            
+                </div>
+            </div>
+
+            <div *ngIf="unit.fcData">
+                <label
+                class="control-label font-weight-bold text-lg-right text-5"
+                >Factoring Company Details</label>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Account#
+                        </label>
+                        <input
+                          [(ngModel)]="
+                          unit.fcData.acc
+                          "
+                          name="unit.fcData.acc"
+                          type="text"
+                          class="form-control"
+                          placeholder="7-12 digits , eg. 897567567456"
+                        />
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label
+                            font-weight-bold text-lg-right pt-2"
+                          >Factoring Rate
+                        </label>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <input
+                              [(ngModel)]="
+                              unit.fcData.fcRate
+                              "
+                              name="factoringRate"
+                              type="text"
+                              class="form-control"
+                              placeholder="eg. 5 "
+                            />
+                            <!-- <div *ngIf="fcrate.invalid && (fcrate.dirty || fcrate.touched)" class="text-danger" >
+                                                                    <div *ngIf="fcac.errors.pattern">
+                                                                    Rate must contain digits and only one special character (dot) only .
+                                                                    </div>
+
+                                                                </div> -->
+                          </div>
+                          <div class="col-lg-6">
+                            <ng-select
+                              [(ngModel)]="
+                              unit.fcData.fcUnit
+                              "
+                              name="factoringUnit"
+                              class="form-control populate address_city"
+                              placeholder="Select factoring unit"
+                            >
+                              <ng-option value="%">%</ng-option>
+                              <ng-option value="$">$</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div *ngIf="unit.opData">
+                <label
+                class="control-label font-weight-bold text-lg-right text-5"
+                >Owner Operator Details</label>
+                <div class="row">
+                    <div class="col-lg-12 d-flex mt-2">
+                        <div class="checkbox-custom pt-2">
+                            <input
+                            [(ngModel)]="unit.opData.csa"
+                            name="unit.opData.csa"
+                            type="checkbox"
+                            />
+                            <label for="csa"
+                            >CSA&nbsp;<i
+                                class="fas fa-exclamation-circle"
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"
+                            ></i
+                            ></label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >FAST Card#&nbsp;<i
+                            class="fas fa-exclamation-circle"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"
+                          ></i>
+                        </label>
+                        <input
+                          [(ngModel)]="unit.opData.fast"
+                          name="fast"
+                          type="text"
+                          class="form-control"
+                          placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
+                          #fastcardowner="ngModel"
+                          pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
+                          maxlength="14"
+                        />
+                        <div
+                          *ngIf="
+                            fastcardowner.invalid &&
+                            (fastcardowner.dirty || fastcardowner.touched)
+                          "
+                          class="text-danger"
+                        >
+                          <div *ngIf="fastcardowner.errors.pattern">
+                            Fast Card should be of 14 numbers beginning with
+                            4270/4110 and ending with 00/01.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >FAST Expiry
+                        </label>
+                        <input
+                          [(ngModel)]="unit.opData.fastExp"
+                          name="fastExpiry"
+                          type="text"
+                          placeholder="yyyy/mm/dd"
+                          (click)="fastexp.toggle()"
+                          ngbDatepicker
+                          #fastexp="ngbDatepicker"
+                          class="form-control"
+                          autocomplete="off"
+                          [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit"
+                        />
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >SIN
+                        </label>
+                        <input
+                          [(ngModel)]="unit.opData.sin"
+                          name="sin"
+                          type="text"
+                          class="form-control"
+                          placeholder="9 digits , eg. 123456789"
+                        />
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                        >
+                          Payroll Type
+                        </label>
+                        <ng-select
+                          [(ngModel)]="unit.opData.payTy"
+                          class="form-control"
+                          name="paymentDetails.payrollType"
+                          placeholder="Select payroll type"
+                        >
+                          <ng-option value="Pay Per Mile"
+                            >Pay Per Mile</ng-option
+                          >
+                          <ng-option value="Percentage"
+                            >Percentage</ng-option
+                          >
+                          <ng-option value="Pay Per Hour"
+                            >Pay Per Hour</ng-option
+                          >
+                          <ng-option value="Pay Per Delivery"
+                            >Pay Per Delivery</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                      <div class="row"
+                      id="payPerHourForm" *ngIf="
+                      unit.opData.payTy ==
+                        'Pay Per Hour'">
+                      <div class="col-lg-6">
+                        <label class="control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2">Rate</label>
+                        <input
+                          type="number"
+                          min="0"
+                          class="form-control"
+                          [(ngModel)]="
+                          unit.opData.payrollRate
+                          "
+                          name="unit.opData.payrollRate"
+                          placeholder="eg. 5"
+                        />
+
+                        <!-- <div *ngIf="ownerrate.invalid && (ownerrate.dirty || ownerrate.touched)" class="text-danger">
+                                                          <div *ngIf="ownerrate.errors.pattern">
+                                                            Rate must contain digits and only one special character (dot) only . 
+                                                          </div>
+                                                        </div> -->
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-4
+                          "
+                        ></label>
+                        <ng-select
+                          [(ngModel)]="
+                          unit.opData.payrollRateCurrency
+                          "
+                          class="form-control"
+                          (change)="
+                            updateCurrency($event, 'ownerOperator')
+                          "
+                          placeholder="eg. 1,2,3 "
+                          name="unit.opData.payrollRateCurrency"
+                          placeholder="Select Currency"
+                        >
+                          <ng-option value="CAD">CAD</ng-option>
+                          <ng-option value="USD">USD</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                      id="payPercentageForm"
+                      *ngIf="
+                        unit.opData.payTy ==
+                        'Percentage'
+                      "
+                    >
+                      <div class="col-12">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Load Pay Percent</label
+                        >
+                        <div class="row">
+                          <div class="col-3">
+                            <input
+                              type="number"
+                              min="0"
+                              class="form-control"
+                              placeholder="eg. 5 "
+                              [(ngModel)]="
+                              unit.opData.payrollPercent
+                              "
+                              name="paymentDetails.payrollPercent"
+                            />
+
+                            <!-- <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
+                                                                  <div *ngIf="ownerloadpaypercent.errors.pattern">
+                                                                    Load Pay Percent must contain digits and only one special character (dot) only . 
+                                                                  </div>
+                                                                </div> -->
+                          </div>
+                          <div class="col-1">
+                            <label class="font-weight-bold">% of</label>
+                          </div>
+                          <div class="col-5">
+                            <ng-select
+                              [(ngModel)]="
+                              unit.opData.percentType
+                              "
+                              class="form-control"
+                              name="paymentDetails.percentType"
+                              placeholder="Select Percent Type"
+                            >
+                              <ng-option
+                                value="Freight Fees"
+                                selected="true"
+                                >Freight Fees</ng-option
+                              >
+                              <ng-option
+                                value="Freight + Fuel Surcharge"
+                                >Freight + Fuel Surcharge</ng-option
+                              >
+                              <ng-option value="Total Income"
+                                >Total Income</ng-option
+                              >
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                        class="row"
+                        id="payPerMileForm"
+                        *ngIf="
+                        unit.opData.payTy ==
+                          'Pay Per Mile'
+                        "
+                      >
+                        <div class="col-3">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Loaded Miles</label
+                          >
+                          <input
+                            type="number"
+                            min="0"
+                            [(ngModel)]="
+                            unit.opData.loadedMiles
+                            "
+                            name="paymentDetails.loadedMiles"
+                            class="form-control"
+                            placeholder="eg. 5"
+                          />
+
+                          <!-- <div *ngIf="ownerloadedmiles.invalid && (ownerloadedmiles.dirty || ownerloadedmiles.touched)" class="text-danger">
+                                                                  <div *ngIf="ownerloadedmiles.errors.pattern">
+                                                                    Loaded Miles must contain digits and only one special character (dot) only . 
+                                                                  </div>
+                                                                </div> -->
+                        </div>
+                        <div class="col-3">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold
+                              text-lg-right
+                              pt-4
+                            "
+                          ></label>
+                          <ng-select
+                            [(ngModel)]="
+                            unit.opData.loadedMilesCurrency
+                            "
+                            class="form-control"
+                            (change)="
+                              updateCurrency($event, 'ownerOperator')
+                            "
+                            name="paymentDetails.loadedMilesCurrency"
+                            placeholder="Select Currency"
+                          >
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-3">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Empty Miles</label
+                          >
+                          <input
+                            type="number"
+                            min="0"
+                            [(ngModel)]="
+                            unit.opData.emptyMiles
+                            "
+                            name="unit.opData.emptyMiles"
+                            class="form-control"
+                            placeholder="eg. 5"
+                          />
+
+                          <!-- <div *ngIf="ownerempty.invalid && (ownerempty.dirty || ownerempty.touched)" class="text-danger">
+                                                                  <div *ngIf="ownerempty.errors.pattern">
+                                                                    Empty Miles must contain digits and only one special character (dot) only . 
+                                                                  </div>
+                                                                </div> -->
+                        </div>
+                        <div class="col-3">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold
+                              text-lg-right
+                              pt-4
+                            "
+                          ></label>
+                          <ng-select
+                            [(ngModel)]="
+                            unit.opData.emptyMilesCurrency
+                            "
+                            class="form-control"
+                            (change)="
+                              updateCurrency($event, 'ownerOperator')
+                            "
+                            name="paymentDetails.emptyMilesCurrency"
+                            placeholder="Select Currency"
+                          >
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                    <div
+                      class="row"
+                      id="payPerDeliveryForm"
+                      *ngIf="
+                      unit.opData.payTy ==
+                        'Pay Per Delivery'
+                      "
+                    >
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Delivery Rate</label
+                        >
+                        <input
+                          [(ngModel)]="
+                          unit.opData.deliveryRate
+                          "
+                          name="unit.opData.deliveryRate"
+                          type="text"
+                          class="form-control"
+                          placeholder="eg. 30"
+                        />
+
+                        <!-- <div *ngIf="ownerdeliveryrate.invalid && (ownerdeliveryrate.dirty || ownerdeliveryrate.touched)" class="text-danger">
+                                                         <div *ngIf="ownerdeliveryrate.errors.pattern">
+                                                           Delivery Rate must contain digits and only one special character (dot) only . 
+                                                         </div>
+                                                       </div> -->
+                      </div>
+                      <div class="col-3">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                            mt-1
+                          "
+                        ></label>
+                        <ng-select
+                          class="mt-2"
+                          [(ngModel)]="
+                          unit.opData
+                              .deliveryRateCurrency
+                          "
+                          (change)="
+                            updateCurrency($event, 'ownerOperator')
+                          "
+                          name="unit.opData.deliveryRateCurrency"
+                          placeholder="Select Currency"
+                        >
+                          <ng-option value="CAD">CAD</ng-option>
+                          <ng-option value="USD">USD</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="unit.vendorData">
+                <label
+                class="control-label font-weight-bold text-lg-right text-5"
+                >Vendor Details</label>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Account#
+                        </label>
+                        <input
+                          [(ngModel)]="unit.vendorData.acc"
+                          name="unit.vendorData.acc"
+                          type="text"
+                          class="form-control"
+                          placeholder="7-12 digits , eg. 897567567456"
+                        />
+                        <!-- <div *ngIf="vendorAc.invalid && (vendorAc.dirty || vendorAc.touched)" class="text-danger">
+                                                  <div *ngIf="vendorAc.errors.pattern">
+                                                      Account number must be between 7-12 numbers.
+
+                                                  </div>
+
+                                              </div> -->
+                      </div>
+                </div>
+            </div>
+        </div>
+        <!-- Address start -->
+        <div
+          class="row pb-4 address-item"
+          *ngFor="let item of unitData.address; let i = index"
+        >
+          <div class="col-12">
+            <label
+              class="control-label font-weight-bold text-lg-right text-5 m-0"
+              >Address</label
+            >
+          </div>
+
+          <div class="col-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Address Type</label
+                >
+
+                <ng-select
+                  [(ngModel)]="item.addressType"
+                  name="addressType{{ i }}"
+                  class="form-control populate"
+                  placeholder="Select address type"
+                >
+                  <ng-option value="Billing Address">Billing Address</ng-option>
+                  <ng-option value="Shipping Address"
+                    >Shipping Address</ng-option
+                  >
+                  <ng-option value="Office">Office</ng-option>
+                  <ng-option value="Other">Other</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <label class="control-label font-weight-bold text-lg-right pt-2"
+              >Type Your Location</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="item.userLocation"
+              name="userLocation{{ i }}"
+              (keyup)="searchTerm.next($event)"
+              class="form-control"
+              placeholder="eg. 1107 Port washington road"
+              [disabled]="item.manual"
+            />
+            <div class="map-search__results bg-white">
+              <ul class="p-0 m-0 text-left">
+                <li *ngFor="let item of searchResults">
+                  <a
+                    href="javascript:;"
+                    (click)="userAddress(unitData, i, item)"
+                    >{{ item.address.label }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="checkbox-custom pt-2">
+              <input
+                [(ngModel)]="item.manual"
+                name="manual{{ i }}"
+                (change)="manAddress($event, i)"
+                type="checkbox"
+              />
+              <label for="man_address">Type Manually</label>
+            </div>
+          </div>
+          <div class="col-lg-2 mar-top-37 text-right">
+            <a
+              class="btn btn-dark mr-2"
+              href="javascript:;"
+              (click)="clearAddress(i, 'customer')"
+              >Clear</a
+            >
+            <a
+              *ngIf="i == 0"
+              (click)="addAddress(unitData)"
+              class="btn btn-success"
+              href="javascript:;"
+              ><i class="fa fa-plus fa-fw"></i
+            ></a>
+            <a
+              *ngIf="i != 0"
+              (click)="removeAddress(i)"
+              class="btn btn-danger"
+              href="javascript:;"
+              ><i class="fa fa-minus fa-fw"></i
+            ></a>
+          </div>
+          <div *ngIf="item.manual" class="row pl-3 w100">
+            <div class="col-6 pt-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select Country</label
+                  >
+                  <ng-select
+                    (change)="getStates($event, 'customer', i)"
+                    [(ngModel)]="item.countryCode"
+                    name="countryID{{ i }}"
+                    class="form-control populate address_country"
+                    placeholder="Select country"
+                  >
+                    <ng-option
+                      *ngFor="let country of countries"
+                      value="{{ country.countryCode }}"
+                    >
+                      {{ country.countryName }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+                <div class="col-lg-6">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select Province/State</label
+                  >
+                  <ng-select
+                    (change)="getCities($event, 'customer', i)"
+                    [(ngModel)]="item.stateCode"
+                    name="stateCode{{ i }}"
+                    class="form-control populate address_state"
+                    placeholder="Select province/state"
+                  >
+                    <ng-option
+                      *ngFor="let state of item.states"
+                      value="{{ state.stateCode }}"
+                      >{{ state.stateName }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+                <div class="col-lg-6">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Select City</label
+                  >
+                  <ng-select
+                    [(ngModel)]="item.cityName"
+                    name="cityCode{{ i }}"
+                    class="form-control populate address_city"
+                    placeholder="Select city"
+                  >
+                    <ng-option
+                      *ngFor="let city of item.cities"
+                      value="{{ city.cityName }}"
+                      >{{ city.cityName }}</ng-option
+                    >
+                  </ng-select>
+                </div>
+                <div class="col-lg-6">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Zip Code</label
+                  >
+                  <input
+                    [(ngModel)]="item.zipCode"
+                    name="zipCode{{ i }}"
+                    type="text"
+                    class="form-control address_zip"
+                    placeholder="T2C 5J4"
+                  />
+
+                  <!-- <div *ngIf="customerzip.invalid && (customerzip.dirty || customerzip.touched)" class="text-danger">
+                                                      <div *ngIf="customerzip.errors.pattern">
+                                                        Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                    </div>
+                                                    </div> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="col-4 pr-0 pt-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Address 1</label
+                  >
+                  <input
+                    [(ngModel)]="item.address1"
+                    name="address1{{ i }}"
+                    type="text"
+                    class="form-control address_one"
+                    placeholder=" eg. 1107 Port washington road"
+                  />
+                </div>
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold text-lg-right pt-2"
+                    >Address 2</label
+                  >
+                  <input
+                    [(ngModel)]="item.address2"
+                    name="address2{{ i }}"
+                    type="text"
+                    class="form-control"
+                    placeholder=" eg. 1107 Port washington road"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Address end -->
+
+        <!-- Additional Contact Details start -->
+        <div
+          class="row pt-3"
+          *ngFor="
+            let additionData of unitData.additionalContact;
+            let ad = index
+          "
+        >
+          <div class="col-12">
+            <label
+              class="control-label font-weight-bold text-lg-right text-5 m-0"
+              >Additional Contact Details</label
+            >
+          </div>
+
+          <div class="col-6">
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >First Name
+                </label>
+                <input
+                  [(ngModel)]="additionData.firstName"
+                  name="firstName1_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. John"
+                />
+                <!-- <div *ngIf="customerfname1.invalid && (customerfname1.dirty || customerfname1.touched)" class="text-danger">
+                                                  
+                                                  <div *ngIf="customerfname1.errors.pattern">
+                                                    First name must contain uppercase , lowercase characters only.     
+                                                 </div>
+                                                </div> -->
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Last Name
+                </label>
+                <input
+                  [(ngModel)]="additionData.lastName"
+                  name="lastName1_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. Smith"
+                />
+                <!-- <div *ngIf="customerlname1.invalid && (customerlname1.dirty || customerlname1.touched)" class="text-danger">
+                                                 
+                                                  <div *ngIf="customerlname1.errors.pattern">
+                                                    last name must contain uppercase , lowercase characters only.               
+                                                    </div>
+                                                </div> -->
+              </div>
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Designation
+                </label>
+                <input
+                  [(ngModel)]="additionData.designation"
+                  name="designation_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. Manager "
+                />
+                <!-- <div *ngIf="customerdname2.invalid && (customerdname2.dirty || customerdname2.touched)" class="text-danger">
+                                                 
+                                                  <div *ngIf="customerdname2.errors.pattern">
+                                                  Designation must contain uppercase , lowercase characters only.         
+                                                 </div>
+                                                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-lg-6">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Phone
+                </label>
+                <input
+                  [(ngModel)]="additionData.phone"
+                  name="phone_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. 2234567891"
+                />
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Email
+                </label>
+                <input
+                  [(ngModel)]="additionData.email"
+                  name="email_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="eg. johnsmith@gmail.com "
+                  #customerem1="ngModel"
+                  required
+                  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
+                />
+                <div
+                  *ngIf="
+                    customerem1.invalid &&
+                    (customerem1.dirty || customerem1.touched)
+                  "
+                  class="text-danger"
+                >
+                  <div *ngIf="customerem1.errors.pattern">
+                    Enter valid email eg. johnsmith@gmail.com .
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right pt-2"
+                  >Fax
+                </label>
+                <input
+                  [(ngModel)]="additionData.fax"
+                  name="fax_{{ ad }}"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter FAX number"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mt-3 mb-2 text-right">
+            <button
+              [disabled]="additionalDisabled"
+              *ngIf="ad == 0"
+              id="add-document"
+              class="btn btn-success"
+              (click)="addAdditionalContact(data)"
+            >
+              <i class="fa fa-plus"></i> Add More
+            </button>
+            <a
+              href="javascript:;"
+              *ngIf="ad > 0"
+              class="btn btn-danger"
+              (click)="delAdditionalContact(ad)"
+              ><i class="fa fa-minus"></i> Delete</a
+            >
+          </div>
+        </div>
+        <!-- Additional Contact Details end -->
+
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <p class="text text-danger" *ngIf="hasError">
+              {{ Error }}
+            </p>
+            <p class="text text-success" *ngIf="hasSuccess">
+              {{ Success }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Close
+    </button>
+    <button
+      type="button"
+      *ngIf="!updateButton"
+      (click)="addCustomer()"
+      class="btn btn-success"
+      [disabled]="customerDisabled"
+    >
+      Submit
+    </button>
+    <button
+      type="button"
+      *ngIf="updateButton"
+      (click)="updateCustomer()"
+      class="btn btn-success"
+      [disabled]="customerDisabled"
+    >
+      Update
+    </button>
+  </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(newUnitModal)">
+  Launch demo modal
+</button>
