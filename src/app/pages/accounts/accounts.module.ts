@@ -9,7 +9,6 @@ import { HomeComponent } from './home/home.component';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartAccountsModule } from './chart-accounts/chart-accounts.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-// import { PaymentChequeComponent } from './payment-cheque/payment-cheque.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */

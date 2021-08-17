@@ -9,6 +9,6 @@ import { PaymentChequeComponent } from './payment-cheque.component';
   imports: [
     CommonModule
   ],
-  exports: [PaymentChequeComponent],
+  // exports: [PaymentChequeComponent],
 }) 
 export class PaymentChequeModule { } 
