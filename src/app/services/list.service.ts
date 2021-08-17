@@ -75,6 +75,9 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
+  paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentModelList = this.paymentModelDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -248,5 +251,9 @@ fetchReceivers() {
 
     this.isTrueDataSource.next(value);
 
+   }
+
+   openPaymentChequeModal(value){
+      this.paymentModelDataSource.next(value);
    }
 }
