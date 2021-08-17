@@ -26,8 +26,8 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { DomSanitizer} from '@angular/platform-browser';
 import { CountryStateCity } from "src/app/shared/utilities/countryStateCities";
-import { element } from "protractor";
 import { Auth } from "aws-amplify";
+import { Location } from '@angular/common';
 
 declare var $: any;
 declare var H: any;
@@ -367,7 +367,8 @@ export class AddOrdersComponent implements OnInit {
     private pdfService: PdfAutomationService,
     private httpClient: HttpClient,
     private listService: ListService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private location: Location,
   ) {
     const current = new Date();
     // config.minDate = {
@@ -438,7 +439,9 @@ export class AddOrdersComponent implements OnInit {
       // .subscribe((v: any) => {
       // });
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload.carrierID;
     let result: any = await this.apiService.getData(`carriers/${carrierID}`).toPromise();
@@ -1296,7 +1299,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.router.navigateByUrl("/dispatch/orders");
+        this.cancel();
       },
     });
   }
@@ -1995,7 +1998,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-       this.router.navigateByUrl("/dispatch/orders");
+        this.cancel();
       },
     });
   }
