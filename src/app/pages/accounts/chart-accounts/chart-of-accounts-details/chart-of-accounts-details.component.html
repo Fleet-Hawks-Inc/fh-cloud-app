@@ -107,10 +107,7 @@
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Period Variance</td>
                         <td></td>
-                        <td><span
-                            *ngIf="account.closingAmt > account.opnBal">{{account.closingAmt - account.opnBal}}&nbsp;{{account.opnBalCurrency}}</span>
-                          <span
-                            *ngIf="account.opnBal > account.closingAmt || account.opnBal === account.closingAmt">{{account.opnBal - account.closingAmt}}&nbsp;{{account.opnBalCurrency}}</span>
+                        <td>{{periodVariance | absoluteValue}}&nbsp;{{account.opnBalCurrency}}
                         </td>
                         <td></td>
                       </tr>

@@ -22,6 +22,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     closingAmt: 0,
     transactionLog: [],
   };
+  periodVariance = 0;
   dataMessage: string = Constants.FETCHING_DATA;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -45,6 +46,17 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       for (const element of this.account.transactionLog) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
+      if (this.account.closingAmt > this.account.opnBal) {
+        this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
+      } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt > 0) {
+        this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
+      } else if (this.account.opnBal === this.account.closingAmt) {
+        this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
+      } else if (this.account.closingAmt < 0 && this.account.opnBal > 0) {
+        this.periodVariance = +(this.account.opnBal + this.account.closingAmt).toFixed(2);
+      } else if (this.account.opnBal === 0 && this.account.closingAmt < 0) {
+        this.periodVariance = -1 * +(this.account.closingAmt).toFixed(2);
+      }
     });
   }
   /*
@@ -57,7 +69,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   }
 
   searchFilter() {
-    if ( this.filter.endDate !== null || this.filter.startDate !== null ) {
+    if (this.filter.endDate !== null || this.filter.startDate !== null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDetails();
     }
@@ -71,12 +83,28 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.fetchAccount();
   }
   fetchDetails() {
+
     this.accountService.getData(`chartAc/search/detail-page?actID=${this.actID}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
       .subscribe((result: any) => {
-       this.account = result[0];
-       for (const element of this.account.transactionLog) {
-        element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
-      }
+        this.account = result[0];
+        this.periodVariance = 0;
+        for (const element of this.account.transactionLog) {
+          element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
+        }
+        if (this.account.closingAmt > this.account.opnBal) {
+          this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
+        } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt > 0) {
+          this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
+        } else if (this.account.opnBal === this.account.closingAmt) {
+          this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
+        } else if (this.account.closingAmt < 0 && this.account.opnBal > 0) {
+          this.periodVariance = +(this.account.opnBal + this.account.closingAmt).toFixed(2);
+        } else if (this.account.opnBal === 0 && this.account.closingAmt < 0) {
+          this.periodVariance = -1 * +(this.account.closingAmt).toFixed(2);
+        }
       });
   }
+
+
+
 }

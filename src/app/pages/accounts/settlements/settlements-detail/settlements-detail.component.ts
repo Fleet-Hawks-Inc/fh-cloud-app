@@ -47,6 +47,7 @@ export class SettlementsDetailComponent implements OnInit {
         paymentTotal: 0,
         taxes: 0,
         finalTotal: 0,
+        subTotal: 0,
         transactionLog: [],
     }
     tripsObj = [];
