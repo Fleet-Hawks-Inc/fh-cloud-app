@@ -125,7 +125,6 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`invoices?lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
-          console.log('manual result', result);
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
@@ -158,7 +157,6 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemOrderSK !== 'end') {
       this.accountService.getData(`order-invoice?lastKey=${this.lastItemOrderSK}`)
         .subscribe(async (result: any) => {
-          console.log('order result', result);
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }

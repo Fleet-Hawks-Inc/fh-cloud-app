@@ -14,7 +14,7 @@
       <div class="row mb-3">
         <div class="col-lg-6 offset-lg-3">
           <section class="invoice-wrapper p-0" style="background-color: #fff; border-bottom: 0px !important;" id="print_wrap">
-            <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <table width="90%" border="0" align="center" valign="top" cellpadding="0" cellspacing="0">
               <tbody>
                 <tr>
                   <td colspan="2">&nbsp;</td>
@@ -29,9 +29,10 @@
                 <tr>
                   <td width="50%" valign="top">
                   <h2 class="text-dark mb-0 font-weight-bold text-5">{{carrier.carrierName | titlecase}}</h2>
-                  <p class="text-dark"><span *ngIf="!carrierAddress.manual">{{carrierAddress.userLocation}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.address}},</span>{{carrierAddress.cityName}},
-                    <span *ngIf="!carrierAddress.manual">{{carrierAddress.stateName}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.stateName}},</span>
-                    <span *ngIf="!carrierAddress.manual">{{carrierAddress.countryName}},</span><span *ngIf="carrierAddress.manual">{{carrierAddress.countryName}},</span>{{carrierAddress.zipCode}}
+                  <p class="text-dark">{{carrierAddress.address}},{{carrierAddress.cityName}},
+                    {{carrierAddress.stateName}},
+  {{carrierAddress.countryName}},
+                    {{carrierAddress.zipCode}}
                     <br>
                   <strong>Phone:</strong> {{carrier.phone}}<br>
                   <strong>Email:</strong> {{carrier.email}}
@@ -189,25 +190,22 @@
                 <tr>
                   <td colspan="2">&nbsp;</td>
                 </tr>
+              </tbody>
+            </table>
+            <table width="90%" border="0" align="center" valign="top" cellpadding="0" cellspacing="0">
+              <tbody>
                 <tr>
-                  <td>
-                    <p class="text-dark mb-0 text-3"><strong>Remarks:</strong>
-                    </p>
-                  </td>
-                  <td>
-                    {{invoice.remarks}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
+                  <td width="12%"> <p class="text-dark mb-0 text-3"><strong>Remarks:</strong>
+                  </p></td>
+                  <td>{{invoice.remarks}}</td>
                 </tr>
               </tbody>
             </table>
           </section>
-          <section class="mt-5 bg-white p-2">
-            <p class="font-weight-bold text-5 text-dark">Journal Details</p>
+          <section class="mt-5 bg-white p-4">
+            <p class="font-weight-bold text-5 text-dark" style="margin-left: 15px;">Journal Details</p>
             <div class="col-xl-12 col-12 mb-3">
-              <table class="table table-bordered table-hover">
+              <table class="table table-bordered table-hover" width="90%">
                 <thead>
                   <tr>
                     <th>Account Name</th>

@@ -136,7 +136,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" (change)="findReceivedAmtFn()"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" min="0" (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>

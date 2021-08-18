@@ -50,7 +50,7 @@ pipeline {
         script {
           codeBuildOutput = awsCodeBuild credentialsId: 'aws-code-build-groovy',
             credentialsType: 'jenkins', projectName: "${AWS_CODE_BUILD_PROJECT_DEV}",
-          region: AWS_ECR_REGION_DEV, sourceControlType: 'project'
+          region: AWS_ECR_REGION_DEV, sourceControlType: 'project', sourceVersion: 'develop'
 
           echo(codeBuildOutput.getBuildId())
         }
@@ -66,7 +66,7 @@ pipeline {
         script {
           codeBuildOutput = awsCodeBuild credentialsId: 'aws-code-build-groovy',
             credentialsType: 'jenkins', projectName: "${AWS_CODE_BUILD_PROJECT_PREPROD}",
-          region: AWS_ECR_REGION_PREPROD, sourceControlType: 'project'
+          region: AWS_ECR_REGION_PREPROD, sourceControlType: 'project', sourceVersion: 'master'
 
           echo(codeBuildOutput.getBuildId())
         }
@@ -83,7 +83,7 @@ pipeline {
           withAWS(roleAccount:'479550359270', role:'cross-account-role-jenkins') {
             codeBuildOutput = awsCodeBuild credentialsId: 'code-groovy-production',
               credentialsType: 'jenkins', projectName: "${AWS_CODE_BUILD_PROJECT_PROD}",
-            region: AWS_ECR_REGION_PROD, sourceControlType: 'project'
+            region: AWS_ECR_REGION_PROD, sourceControlType: 'project', sourceVersion: 'production'
 
             echo(codeBuildOutput.getBuildId())
           }

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -20,6 +21,7 @@ export class AddInvoiceComponent implements OnInit {
     private apiService: ApiService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
+    private location: Location,
     private router: Router) { }
     pageTitle = 'Add Invoice';
     dateMinLimit = { year: 2021, month: 1, day: 1 };
@@ -128,6 +130,9 @@ export class AddInvoiceComponent implements OnInit {
     this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
       this.accounts = res;
     });
+  }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
@@ -327,13 +332,10 @@ export class AddInvoiceComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Invoice Added Successfully.');
-        this.router.navigateByUrl('/accounts/invoices/list');
+        this.cancel();
       },
     });
   }
- cancelFn() {
-  this.router.navigateByUrl('/accounts/invoices/list');
- }
   async calculateAmount() {
     this.midAmt = 0;
     for (const element of this.invoiceData.details) {

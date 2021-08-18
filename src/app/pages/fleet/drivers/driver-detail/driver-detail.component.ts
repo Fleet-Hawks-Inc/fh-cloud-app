@@ -24,7 +24,7 @@ export class DriverDetailComponent implements OnInit {
   email: string;
   homeTerminal: string;
   cycle: string;
-  private driverID: string;
+  public driverID: string;
   private driverData: any;
   private driverDataUpdate: any;
   carrierID: any;
@@ -125,7 +125,7 @@ export class DriverDetailComponent implements OnInit {
   corporationType: any;
   vendor: any;
   corporation: any;
-  
+
   constructor(
     private hereMap: HereMapService,
     private apiService: ApiService,
