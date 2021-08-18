@@ -77,6 +77,9 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
+  addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  addressList = this.addressDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -254,11 +257,7 @@ fetchReceivers() {
 
   }
 
-  triggerModal(content: any) {
-    let ngbModalOptions: NgbModalOptions = {
-        backdrop : 'static',
-        keyboard : false
-  };
-    this.modalService.open(content, ngbModalOptions)
+  triggerModal(value: any) {
+    this.addressDataSource.next(value)
   }
 }

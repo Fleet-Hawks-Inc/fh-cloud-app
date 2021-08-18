@@ -4,3 +4,9 @@
 .map-search__results {
     display: none;
 }
+.address-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+}

@@ -1,7 +1,1652 @@
-<!-- Add CUSTOMER Modal -->
+<ng-template #allUnitModal let-modal>
+  
+    <div class="modal-content">
+      <div class="modal-header py-3">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <div class="">
+            <h5 class="modal-title">Address Book</h5>
+          </div>
+          <div class="text-right">
+            <div class="btn-group flex-wrap pull-right">
+              <button
+                type="button"
+                class="mb-1 btn btn-success cus-btn-padd mt-0 dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <i class="fas fa-plus"></i> Add New
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addBrokerModal"
+                  (click)="resetModal('broker')"
+                  href="javascript:;"
+                  >Broker</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addCarrierModal"
+                  (click)="resetModal('carrier')"
+                  href="javascript:;"
+                  >Carrier</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addConsigneeModal"
+                  (click)="resetModal('consignee')"
+                  href="javascript:;"
+                  >Receiver</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addShipperModal"
+                  (click)="resetModal('shipper')"
+                  href="javascript:;"
+                  >Shipper</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addCustomerModal"
+                  (click)="resetModal('customer')"
+                  href="javascript:;"
+                  >Customer</a
+                >
+                <!-- <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a> -->
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addFCModal"
+                  (click)="resetModal('company')"
+                  href="javascript:;"
+                  >Factoring Company</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addOwnerOperatorModal"
+                  (click)="resetModal('operator')"
+                  href="javascript:;"
+                  >Owner Operator</a
+                >
+                <a
+                  class="dropdown-item text-1"
+                  data-toggle="modal"
+                  data-dismiss="modal"
+                  data-target="#addVendorModal"
+                  (click)="resetModal('vendor')"
+                  href="javascript:;"
+                  >Vendor</a
+                >
+              </div>
+            </div>
+            <div
+              class="btn-group flex-wrap pull-right mr-2"
+              *ngIf="!environment"
+            >
+              <button
+                type="button"
+                class="mb-1 btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                Actions<span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a
+                  class="modal-with-form dropdown-item text-1"
+                  href="#importExcelForm"
+                  >Import from Excel</a
+                >
+                <a href="" class="dropdown-item text-1 pull-right" id="excelbtn"
+                  >Export to Excel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="card-body p-0" style="min-height: 600px">
+          <form class="form-horizontal form-bordered" method="get">
+            <div class="mb-3">
+              <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="broker-tab" data-toggle="tab" href="#broker"
+                    role="tab" aria-controls="broker" aria-selected="false"
+                    (click)="setActiveDiv('broker')"
+                    >Broker</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="carrier-tab" data-toggle="tab" href="#carrier"
+                    role="tab" aria-controls="carrier" aria-selected="false"
+                    (click)="setActiveDiv('carrier')"
+                    >Carrier</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="consignee-tab" data-toggle="tab"
+                    href="#consignee" role="tab" aria-controls="consignee"
+                    aria-selected="false"  (click)="setActiveDiv('consignee')"
+                    >Receiver</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link"  id="shipper-tab" data-toggle="tab" href="#shipper" role="tab"
+                    aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')"
+                    >Shipper</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="customer-tab" data-toggle="tab"
+                    href="#customer" role="tab" aria-controls="customer"
+                    aria-selected="false" (click)="setActiveDiv('customer')"
+                    >Customer</a>
+                </li>
+                <!-- <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li> -->
+                <li class="nav-item">
+                  <a class="nav-link" id="fc-tab" data-toggle="tab"
+                    href="#fc" role="tab" aria-controls="fc" aria-selected="false"
+                    (click)="setActiveDiv('company')" >Factoring Company</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator"
+                    role="tab" aria-controls="ownerOperator" aria-selected="false"
+                    (click)="setActiveDiv('operator')" >Owner Operator</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab"
+                    aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')"
+                    >Vendor</a>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-content shadow-none border-0 p-0" id="myTabContent">
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="customer"
+                role="tabpanel"
+                aria-labelledby="customer-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="customerCompanyName"
+                        [(ngModel)]="filterVal.customerCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'customer',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedCustomerCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedCustomerCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues(
+                              '',
+                              suggestedUser,
+                              'customerCompany'
+                            )
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-3 col-lg-3 pr-1">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Customer Name" name="customerName"
+                                            [(ngModel)]="filterVal.customerName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'customer','name')">
+                                    </div>
+                                    <div *ngIf="suggestedCustomers?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedCustomers" style="cursor: pointer;"
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'customer')"> {{
+                                                suggestedUser.name }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('customer')"
+                      class="btn cus-btn-padd btn-success mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('customer')"
+                      class="btn cus-btn-padd btn-success"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+
+                <table
+                  id="customerTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Customer Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="customers.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageCustomer }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let customer of customers; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td (click)="openDetail(content, customer, 'Customer')">
+                        {{ customer.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td> -->
+                      <td>{{ customer.workEmail }}</td>
+                      <td>{{ customer.workPhone }}</td>
+                      <td *ngIf="customer.address[0]">
+                        <span *ngIf="customer.address[0].manual">
+                          {{ customer.address[0].address1 }}
+                          {{ customer.address[0].address2 }},
+                          {{ customer.address[0].cityName }},
+                          {{ customer.address[0].stateName }},
+                          {{ customer.address[0].countryName }},
+                          {{ customer.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!customer.address[0].manual">
+                          {{ customer.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="!customer.address[0]"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(customer)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateCustomer(customer, customer.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="customers.length > 0">
+                  <div class="col-6">
+                    Showing {{ custtStartPoint }} to {{ custtEndPoint }} of
+                    {{ totalRecordsCustomer }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('customer')"
+                      [disabled]="customerPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('customer')"
+                      [disabled]="customerNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Broker -->
+              <div
+                class="tab-pane fade active show px-2 py-3 shadow-none"
+                id="broker"
+                role="tabpanel"
+                aria-labelledby="broker-tab"
+              >
+                <div class="row">
+                  <div class="col-3">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="brokerCompanyName"
+                        [(ngModel)]="filterVal.brokerCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'broker',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedBrokerCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="let suggestedUser of suggestedBrokerCompanies"
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues('', suggestedUser, 'brokerCompany')
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div class="col-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('broker')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('broker')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="broker-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Broker</a>
+                  </div>
+                </div>
+
+                <table
+                  id="brokerTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="20%">Company/Broker Name</th>
+                      <!-- <th width="15%">Broker Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="35%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageBroker }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let broker of units; let i = index"
+                      class="cursorpoint text-capitalize"
+                    >
+                      <td (click)="openDetail(content, broker, 'Broker')">
+                        {{
+                          broker.cName != ""
+                            ? broker.cName
+                            : broker.firstName + broker.lastName
+                        }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td> -->
+                      <td>{{ broker.workEmail }}</td>
+                      <td>{{ broker.workPhone }}</td>
+                      <td *ngIf="broker.address[0] != undefined">
+                        <span *ngIf="broker.address[0].manual">
+                          {{ broker.address[0].add1 }}
+                          {{ broker.address[0].add2 }},
+                          {{ broker.address[0].ctyName }},
+                          {{ broker.address[0].sName }},
+                          {{ broker.address[0].cName }},
+                          {{ broker.address[0].zip }}
+                        </span>
+                        <span *ngIf="!broker.address[0].manual">
+                          {{ broker.address[0].userLoc }}
+                        </span>
+                      </td>
+                      <td *ngIf="broker.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(broker)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateBroker(broker, broker.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="brokers.length > 0">
+                  <div class="col-6">
+                    Showing {{ brokerStartPoint }} to {{ brokerEndPoint }} of
+                    {{ totalRecordsBroker }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('broker')"
+                      [disabled]="brokerPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('broker')"
+                      [disabled]="brokerNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="vendor"
+                role="tabpanel"
+                aria-labelledby="vendor-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="vendorCompanyName"
+                        [(ngModel)]="filterVal.vendorCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'vendor',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedVendorCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="let suggestedUser of suggestedVendorCompanies"
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues('', suggestedUser, 'vendorCompany')
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                 
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('vendor')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('vendor')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="vendor-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Vendor</a>
+                  </div>
+                </div>
+                <table
+                  id="vendorTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Vendor Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageVendor }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let vendor of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td (click)="openDetail(content, vendor, 'Vendor')">
+                        {{ vendor.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td> -->
+                      <td>{{ vendor.workEmail }}</td>
+                      <td>{{ vendor.workPhone }}</td>
+                      <td *ngIf="vendor.address[0] != undefined">
+                        <span *ngIf="vendor.address[0].manual">
+                          {{ vendor.address[0].address1 }}
+                          {{ vendor.address[0].address2 }},
+                          {{ vendor.address[0].cityName }},
+                          {{ vendor.address[0].stateName }},
+                          {{ vendor.address[0].countryName }},
+                          {{ vendor.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!vendor.address[0].manual">
+                          {{ vendor.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="vendor.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(vendor)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateVendor(vendor, vendor.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="vendors.length > 0">
+                  <div class="col-6">
+                    Showing {{ vendorStartPoint }} to {{ vendorEndPoint }} of
+                    {{ totalRecordsVendor }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('vendor')"
+                      [disabled]="vendorPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('vendor')"
+                      [disabled]="vendorNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="carrier"
+                role="tabpanel"
+                aria-labelledby="carrier-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="carrierCompanyName"
+                        [(ngModel)]="filterVal.carrierCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'carrier',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedCarrierCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedCarrierCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues('', suggestedUser, 'carrierCompany')
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('carrier')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('carrier')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="carrier-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Carrier</a>
+                  </div>
+                </div>
+                <table
+                  id="carrierTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Carrier Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageCarrier }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let carrier of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td (click)="openDetail(content, carrier, 'Carrier')">
+                        {{ carrier.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td> -->
+                      <td>{{ carrier.workEmail }}</td>
+                      <td>{{ carrier.workPhone }}</td>
+                      <td *ngIf="carrier.address[0] != undefined">
+                        <span *ngIf="carrier.address[0].manual">
+                          {{ carrier.address[0].address1 }}
+                          {{ carrier.address[0].address2 }},
+                          {{ carrier.address[0].cityName }},
+                          {{ carrier.address[0].stateName }},
+                          {{ carrier.address[0].countryName }},
+                          {{ carrier.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!carrier.address[0].manual">
+                          {{ carrier.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="carrier.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(carrier)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateCarrier(carrier, carrier.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="carriers.length > 0">
+                  <div class="col-6">
+                    Showing {{ carrierStartPoint }} to {{ carrierEndPoint }} of
+                    {{ totalRecordsCarrier }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('carrier')"
+                      [disabled]="carrierPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('carrier')"
+                      [disabled]="carrierNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="ownerOperator"
+                role="tabpanel"
+                aria-labelledby="owner-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="operatorCompanyName"
+                        [(ngModel)]="filterVal.operatorCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'operator',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedOperatorCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedOperatorCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues(
+                              '',
+                              suggestedUser,
+                              'operatorCompany'
+                            )
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('operator')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('operator')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="carrier-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Owner Operator</a>
+                  </div>
+                </div>
+                <table
+                  id="operatorTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Owner Operator Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageOwner }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let operator of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td
+                        (click)="
+                          openDetail(content, operator, 'Owner operator')
+                        "
+                      >
+                        {{ operator.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td> -->
+                      <td>{{ operator.workEmail }}</td>
+                      <td>{{ operator.workPhone }}</td>
+                      <td *ngIf="operator.address[0] != undefined">
+                        <span *ngIf="operator.address[0].manual">
+                          {{ operator.address[0].address1 }}
+                          {{ operator.address[0].address2 }},
+                          {{ operator.address[0].cityName }},
+                          {{ operator.address[0].stateName }},
+                          {{ operator.address[0].countryName }},
+                          {{ operator.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!operator.address[0].manual">
+                          {{ operator.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="operator.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(operator)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateOperator(operator, operator.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="row mt-3 dtPaginate"
+                  *ngIf="units.length > 0"
+                >
+                  <div class="col-6">
+                    Showing {{ ownerOperatorStartPoint }} to
+                    {{ ownerOperatorEndPoint }} of
+                    {{ totalRecordsOperator }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('operator')"
+                      [disabled]="ownerOperatorPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('operator')"
+                      [disabled]="ownerOperatorNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="shipper"
+                role="tabpanel"
+                aria-labelledby="shipper-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="shipperCompanyName"
+                        [(ngModel)]="filterVal.shipperCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'shipper',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedShipperCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedShipperCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues('', suggestedUser, 'shipperCompany')
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-3 col-lg-3 pr-1">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Consignor Name" name="shipperName"
+                                            [(ngModel)]="filterVal.shipperName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'shipper','name')">
+                                    </div>
+                                    <div *ngIf="suggestedShipper?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedShipper" style="cursor: pointer;"
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'shipper')"> {{
+                                                suggestedUser.name }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('shipper')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('shipper')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="shipper-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Shipper</a>
+                  </div>
+                </div>
+
+                <table
+                  id="shipperTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Consignor Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageConsignor }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let shipper of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td (click)="openDetail(content, shipper, 'Consignor')">
+                        {{ shipper.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.firstName}} {{shipper.lastName}}</td> -->
+                      <td>{{ shipper.workEmail }}</td>
+                      <td>{{ shipper.workPhone }}</td>
+                      <td *ngIf="shipper.address[0] != undefined">
+                        <span *ngIf="shipper.address[0].manual">
+                          {{ shipper.address[0].address1 }}
+                          {{ shipper.address[0].address2 }},
+                          {{ shipper.address[0].cityName }},
+                          {{ shipper.address[0].stateName }},
+                          {{ shipper.address[0].countryName }},
+                          {{ shipper.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!shipper.address[0].manual">
+                          {{ shipper.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="shipper.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(shipper)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateShipper(shipper, shipper.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="shippers.length > 0">
+                  <div class="col-6">
+                    Showing {{ shipperStartPoint }} to {{ shipperEndPoint }} of
+                    {{ totalRecordsShipper }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('shipper')"
+                      [disabled]="shipperPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('shipper')"
+                      [disabled]="shipperNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="consignee"
+                role="tabpanel"
+                aria-labelledby="consignee-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="receiverCompanyName"
+                        [(ngModel)]="filterVal.receiverCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'consignee',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedConsigneeCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedConsigneeCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues(
+                              '',
+                              suggestedUser,
+                              'consigneeCompany'
+                            )
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-3 col-lg-3 pr-1">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Consignee Name" name="consigneeName"
+                                            [(ngModel)]="filterVal.consigneeName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'consignee','name')">
+                                    </div>
+                                    <div *ngIf="suggestedConsignees?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedConsignees" style="cursor: pointer;"
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'consignee')"> {{
+                                                suggestedUser.name }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('consignee')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('consignee')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn btn-success btn-sm"
+                    id="receiver-tab"
+                    (click)="openModal('form', newUnitModal);"
+                    >Add Receiver</a>
+                  </div>
+                </div>
+                <table
+                  id="consigneeTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Consignee Name</th> -->
+                      <th width="20%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="45%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageConsignee }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let receiver of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td (click)="openDetail(content, receiver, 'Consignee')">
+                        {{ receiver.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td> -->
+                      <td>{{ receiver.workEmail }}</td>
+                      <td>{{ receiver.workPhone }}</td>
+                      <td *ngIf="receiver.address[0] != undefined">
+                        <span *ngIf="receiver.address[0].manual">
+                          {{ receiver.address[0].address1 }}
+                          {{ receiver.address[0].address2 }},
+                          {{ receiver.address[0].cityName }},
+                          {{ receiver.address[0].stateName }},
+                          {{ receiver.address[0].countryName }},
+                          {{ receiver.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!receiver.address[0].manual">
+                          {{ receiver.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="receiver.address[0] == undefined"></td>
+
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(receiver)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateReceiver(receiver, receiver.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="receivers.length > 0">
+                  <div class="col-6">
+                    Showing {{ consigneeStartPoint }} to
+                    {{ consigneeEndPoint }} of
+                    {{ totalRecordsConsignee }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('consignee')"
+                      [disabled]="consigneePrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('consignee')"
+                      [disabled]="consigneeNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade px-2 py-3 shadow-none"
+                id="fc"
+                role="tabpanel"
+                aria-labelledby="fc-tab"
+              >
+                <div class="row pr-1 mr-1">
+                  <div class="col-md-3 col-lg-3 pr-1">
+                    <div class="input-group input-group-md mb-3">
+                      <input
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search By Company Name"
+                        name="factoringCompanyName"
+                        [(ngModel)]="filterVal.factoringCompanyName"
+                        class="form-control"
+                        (input)="
+                          getSuggestions(
+                            $event.target.value,
+                            'company',
+                            'company'
+                          )
+                        "
+                      />
+                    </div>
+                    <div
+                      *ngIf="suggestedFactoringCompanies?.length > 0"
+                      class="result-suggestions"
+                    >
+                      <ul>
+                        <li
+                          *ngFor="
+                            let suggestedUser of suggestedFactoringCompanies
+                          "
+                          style="cursor: pointer"
+                          (click)="
+                            setSearchValues(
+                              '',
+                              suggestedUser,
+                              'factoringCompany'
+                            )
+                          "
+                        >
+                          {{ suggestedUser }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-3 col-lg-3 pr-1">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Factoring Company Name" name="fcompanyName"
+                                            [(ngModel)]="filterVal.fcompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'company','name')">
+                                    </div>
+                                    <div *ngIf="suggestedCompany?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUserq of suggestedCompany" style="cursor: pointer;"
+                                                (click)="setSearchValues(suggestedUserq.searchVall, suggestedUserq.name, 'company')"> {{
+                                                suggestedUserq.name }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+
+                  <div class="col-md-3 col-lg-3">
+                    <button
+                      type="submit"
+                      (click)="searchFilter('company')"
+                      class="btn cus-btn-padd btn-success mt-0 mr-3"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      (click)="resetFilter('company')"
+                      class="btn cus-btn-padd btn-success mt-0"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+                <table
+                  id="companyTable"
+                  class="
+                    table table-responsive-lg table-bordered table-striped
+                    mb-0
+                    simple-table
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th width="15%">Company Name</th>
+                      <!-- <th width="15%">Factoring Company Name</th> -->
+                      <th width="15%">Email</th>
+                      <th width="15%">Phone</th>
+                      <th width="20%">Address</th>
+                      <th width="5%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="units.length == 0" class="text-center">
+                      <td colspan="6">{{ dataMessageFactoring }}</td>
+                    </tr>
+                    <tr
+                      *ngFor="let company of units; let i = index"
+                      class="cursorpoint"
+                    >
+                      <td
+                        (click)="
+                          openDetail(content, company, 'Factoring Company')
+                        "
+                      >
+                        {{ company.companyName }}
+                      </td>
+                      <!-- <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td> -->
+                      <td>{{ company.workEmail }}</td>
+                      <td>{{ company.workPhone }}</td>
+                      <td *ngIf="company.address[0] != undefined">
+                        <span *ngIf="company.address[0].manual">
+                          {{ company.address[0].address1 }}
+                          {{ company.address[0].address2 }},
+                          {{ company.address[0].cityName }},
+                          {{ company.address[0].stateName }},
+                          {{ company.address[0].countryName }},
+                          {{ company.address[0].zipCode }}
+                        </span>
+                        <span *ngIf="!company.address[0].manual">
+                          {{ company.address[0].userLocation }}
+                        </span>
+                      </td>
+                      <td *ngIf="company.address[0] == undefined"></td>
+                      <td>
+                        <div class="dropdown dropright">
+                          <button
+                            class="bg-transparent border-0"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="editUser(company)"
+                              >Edit</a
+                            >
+                            <a
+                              class="dropdown-item"
+                              href="javascript:;"
+                              (click)="
+                                deactivateCompany(company, company.contactID)
+                              "
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="fcCompanies.length > 0">
+                  <div class="col-6">
+                    Showing {{ companyStartPoint }} to {{ companyEndPoint }} of
+                    {{ totalRecordsCompany }} entries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      (click)="prevResults('company')"
+                      [disabled]="companyPrev"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      (click)="nextResults('company')"
+                      [disabled]="companyNext"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  
+</ng-template>
+
+<!-- Add entry Modal -->
 <a
   href="javascript:;"
-  (click)="openModal(newUnitModal)"
+  (click)="openModal('list', allUnitModal)"
   class="modal-with-form address-book-icon"
   title="Address Book"
 >
@@ -20,7 +1665,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body text-dark">
+  <div class="modal-body text-dark" style="max-height: 650px; overflow-y: auto;">
     <form
       id="customerForm"
       class="form-horizontal form-bordered bg-white"
@@ -131,7 +1776,7 @@
             />
           </div>
         </div>
-        <div class="row">
+        <div class="row mb-3">
           <div class="col-6">
             <div class="row">
               <div class="col-lg-6">
@@ -207,7 +1852,7 @@
                   <label
                     class="btn btn-outline btn-fleet mr-2"
                     [class.active]="unit.brokerData.type === 'company'"
-                    style="width: 110px"
+                    style="width: 110px; background-color: #d4d4d4;"
                     (click)="brokerType('company')"
                   >
                     <input
@@ -223,7 +1868,7 @@
                   <label
                     class="btn btn-outline btn-fleet mr-2"
                     [class.active]="unit.brokerData.type === 'individual'"
-                    style="width: 110px"
+                    style="width: 110px; background-color: #d4d4d4;"
                     (click)="brokerType('individual')"
                   >
                     <input
@@ -237,7 +1882,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
               <div class="col-3" *ngIf="unit.brokerData.type === 'individual'">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Contact First Name<span class="mandfield text-2 ml-1"
@@ -410,7 +2055,7 @@
                 <div class="col-3 mt-2">
                     <div class="checkbox-custom pt-1">
                       <input
-                        [(ngModel)]="unit.carrierData.inBonded"
+                        [(ngModel)]="unit.carrierData.bond"
                         name="inBonded"
                         type="checkbox"
                         name="in-bond-carrier"
@@ -520,8 +2165,8 @@
                       >FAST Expiry
                     </label>
                     <input
-                      [(ngModel)]="unit.carrierData.fastExpiry"
-                      name="fastExpiry"
+                      [(ngModel)]="unit.carrierData.fastExp"
+                      name="fastExp"
                       type="text"
                       placeholder="yyyy/mm/dd"
                       (click)="carrexp.toggle()"
@@ -611,7 +2256,7 @@
                         >Local Tax (in Percentage)
                         </label>
                         <input
-                        [(ngModel)]="unit.carrierData.localTax"
+                        [(ngModel)]="unit.carrierData.lTax"
                         name="localTax"
                         type="text"
                         class="form-control"
@@ -629,7 +2274,7 @@
                           >Federal Tax (in Percentage)
                         </label>
                         <input
-                          [(ngModel)]="unit.carrierData.federalTax"
+                          [(ngModel)]="unit.carrierData.fTax"
                           name="federalTax"
                           type="text"
                           class="form-control"
@@ -641,9 +2286,9 @@
                     <div class="col-3">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Payroll Type</label>
                         <ng-select
-                          [(ngModel)]="unit.carrierData.payrollType"
+                          [(ngModel)]="unit.carrierData.pType"
                           class="form-control"
-                          name="unit.carrierData.payrollType"
+                          name="unit.carrierData.pType"
                           placeholder="Select payroll type">
                           <ng-option value="Pay Per Mile" selected="true"
                             >Pay Per Mile</ng-option
@@ -661,8 +2306,8 @@
                     <div class="col-3">
                         <div class="checkbox-custom mt-5">
                           <input
-                            [(ngModel)]="unit.carrierData.applyTax"
-                            name="applyTax"
+                            [(ngModel)]="unit.carrierData.aTax"
+                            name="aTax"
                             type="checkbox"
                             name="terms"
                           />
@@ -683,202 +2328,10 @@
                             <label for="wsib">WSIB</label>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="row" id="payPerHourForm" *ngIf="
-                            unit.carrierData.payrollType ==
-                            'Pay Per Hour'
-                          "
-                        >
-                          <div class="col-3">
-                            <label class="control-label font-weight-bold text-lg-right pt-2"
-                              >Rate</label
-                            >
-                            <input
-                              type="number"
-                              min="0"
-                              class="form-control"
-                              [(ngModel)]="
-                                unit.carrierData.payrollRate
-                              "
-                              name="paymentDetails.payrollRate"
-                              placeholder="eg. 5 "
-                            />
-                            <!-- <div *ngIf="carrierrate.invalid && (carrierrate.dirty || carrierrate.touched)" class="text-danger">
-                                                              <div *ngIf="carrierrate.errors.pattern">
-                                                                  Rate must contain digits and only one special character (dot) only.
-                                                                </div>
-
-
-                                                          </div> -->
-                          </div>
-                          <div class="col-3">
-                            <label class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-4
-                              "
-                            ></label>
-                            <ng-select
-                              [(ngModel)]="
-                                unit.carrierData.payrollRateCurrency
-                              "
-                              (change)="updateCurrency($event, 'carrier')"
-                              class="form-control"
-                              name="paymentDetails.payrollRateCurrency"
-                              placeholder="Select Currency"
-                            >
-                              <ng-option value="CAD">CAD</ng-option>
-                              <ng-option value="USD">USD</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-
-                        <div class="row align-items-center"
-                          id="payPercentageForm" *ngIf="
-                            unit.carrierData.payrollType ==
-                            'Percentage'">
-                          <div class="col-lg-12">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
-                            <div class="row">
-                              <div class="col-3">
-                                <input
-                                  type="number"
-                                  min="0"
-                                  class="form-control"
-                                  [(ngModel)]="
-                                    unit.carrierData.payrollPercent
-                                  "
-                                  name="paymentDetails.payrollPercent"
-                                />
-
-                                <!-- <div *ngIf="carrierloadpaypercent.invalid && (carrierloadpaypercent.dirty || carrierloadpaypercent.touched)" class="text-danger">
-                                                                      <div *ngIf="carrierloadpaypercent.errors.pattern">
-                                                                          Load Pay Percent must contain digits and only one special character (dot) only.
-                                                                        </div> 
-
-
-                                                                  </div> -->
-                              </div>
-                              <div class="col-1">
-                                <label class="font-weight-bold">% of</label>
-                              </div>
-                              <div class="col-5">
-                                <ng-select
-                                  [(ngModel)]="
-                                    unit.carrierData.percentType
-                                  "
-                                  class="form-control"
-                                  name="paymentDetails.percentType"
-                                  placeholder="Select Percent Type"
-                                >
-                                  <ng-option
-                                    value="Freight Fees"
-                                    selected="true"
-                                    >Freight Fees</ng-option
-                                  >
-                                  <ng-option value="Freight + Fuel Surcharge"
-                                    >Freight + Fuel Surcharge</ng-option
-                                  >
-                                  <ng-option value="Total Income"
-                                    >Total Income</ng-option
-                                  >
-                                </ng-select>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row" id="payPerMileForm"
-                            *ngIf="
-                              unit.carrierData.payrollType ==
-                              'Pay Per Mile'
-                            ">
-                            <div class="col-3">
-                              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
-                              <input type="number"
-                                min="0"
-                                [(ngModel)]="
-                                  unit.carrierData.loadedMiles
-                                "
-                                name="paymentDetails.loadedMiles"
-                                class="form-control"
-                                placeholder="eg. 5 "
-                              />
-                              <!-- <div  *ngIf="carrierloadedmiles.invalid && (carrierloadedmiles.dirty || carrierloadedmiles.touched)" class="text-danger" >
-                                                                      <div *ngIf="carrierloadedmiles.errors.pattern">
-                                                                          Loaded Miles must contain digits and only one special character (dot) only.
-                                                                        </div>
-
-                                                                  </div> -->
-                            </div>
-
-                            <div class="col-3">
-                              <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                              <ng-select
-                                [(ngModel)]="
-                                  unit.carrierData
-                                    .loadedMilesCurrency
-                                "
-                                (change)="updateCurrency($event, 'carrier')"
-                                class="form-control"
-                                name="paymentDetails.loadedMilesCurrency"
-                                placeholder="Select Currency"
-                              >
-                                <ng-option value="CAD">CAD</ng-option>
-                                <ng-option value="USD">USD</ng-option>
-                              </ng-select>
-                            </div>
-                            <div class="col-3">
-                                <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
-                                  >Empty Miles</label
-                                >
-                                <input
-                                  type="number"
-                                  [(ngModel)]="
-                                  unit.carrierData.emptyMiles
-                                  "
-                                  name="paymentDetails.emptyMiles"
-                                  class="form-control"
-                                  placeholder="eg. 5"
-                                />
-  
-                                <!-- <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
-                                                                      <div *ngIf="carrieremptymiles.errors.pattern">
-                                                                          Empty Miles must contain digits and only one special character (dot) only.
-                                                                        </div>
-  
-  
-  
-                                                                  </div> -->
-                              </div>
-                              <div class="col-3">
-                                <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                <ng-select
-                                  [(ngModel)]="
-                                  unit.carrierData.emptyMilesCurrency
-                                  "
-                                  (change)="updateCurrency($event, 'carrier')"
-                                  class="form-control"
-                                  name="paymentDetails.emptyMilesCurrency"
-                                  placeholder="Select Currency"
-                                >
-                                  <ng-option value="CAD">CAD</ng-option>
-                                  <ng-option value="USD">USD</ng-option>
-                                </ng-select>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="row"
+                    <div class="row ng-star-inserted w-100 m-0"
                           id="payPerDeliveryForm"
                           *ngIf="
-                            unit.carrierData.payrollType ==
+                            unit.carrierData.pType ==
                             'Pay Per Delivery'
                           "
                         >
@@ -894,9 +2347,9 @@
                             >
                             <input
                               [(ngModel)]="
-                                unit.carrierData.deliveryRate
+                                unit.carrierData.dr
                               "
-                              name="paymentDetails.deliveryRate"
+                              name="unit.carrierData.dr"
                               type="text"
                               class="form-control"
                               placeholder="eg. 30 "
@@ -925,10 +2378,10 @@
                               class=""
                               [(ngModel)]="
                                 unit.carrierData
-                                  .deliveryRateCurrency
+                                  .drCur
                               "
-                              (change)="updateCurrency($event, 'carrier')"
-                              name="paymentDetails.deliveryRateCurrency"
+                              (change)="updateCurrency($event)"
+                              name="unit.carrierData.drCur"
                               placeholder="Select Currency"
                             >
                               <ng-option value="CAD">CAD</ng-option>
@@ -936,6 +2389,197 @@
                             </ng-select>
                           </div>
                         </div>
+                    <div class="col-lg-12">
+                        <div class="row" id="payPerHourForm" *ngIf="
+                            unit.carrierData.pType ==
+                            'Pay Per Hour'
+                          "
+                        >
+                          <div class="col-3">
+                            <label class="control-label font-weight-bold text-lg-right pt-2"
+                              >Rate</label
+                            >
+                            <input
+                              type="number"
+                              min="0"
+                              class="form-control"
+                              [(ngModel)]="
+                                unit.carrierData.pRate
+                              "
+                              name="paymentDetails.pRate"
+                              placeholder="eg. 5 "
+                            />
+                            <!-- <div *ngIf="carrierrate.invalid && (carrierrate.dirty || carrierrate.touched)" class="text-danger">
+                                                              <div *ngIf="carrierrate.errors.pattern">
+                                                                  Rate must contain digits and only one special character (dot) only.
+                                                                </div>
+
+
+                                                          </div> -->
+                          </div>
+                          <div class="col-3">
+                            <label class="
+                                control-label
+                                font-weight-bold
+                                text-lg-right
+                                pt-4
+                              "
+                            ></label>
+                            <ng-select
+                              [(ngModel)]="
+                                unit.carrierData.pRCurr
+                              "
+                              (change)="updateCurrency($event)"
+                              class="form-control"
+                              name="unit.carrierData.pRCurr"
+                              placeholder="Select Currency"
+                            >
+                              <ng-option value="CAD">CAD</ng-option>
+                              <ng-option value="USD">USD</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+
+                        <div class="row align-items-center"
+                          id="payPercentageForm" *ngIf="
+                            unit.carrierData.pType ==
+                            'Percentage'">
+                          <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
+                            <div class="row">
+                              <div class="col-3">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  class="form-control"
+                                  [(ngModel)]="
+                                    unit.carrierData.pPnt
+                                  "
+                                  name="unit.carrierData.pPnt"
+                                />
+
+                                <!-- <div *ngIf="carrierloadpaypercent.invalid && (carrierloadpaypercent.dirty || carrierloadpaypercent.touched)" class="text-danger">
+                                                                      <div *ngIf="carrierloadpaypercent.errors.pattern">
+                                                                          Load Pay Percent must contain digits and only one special character (dot) only.
+                                                                        </div> 
+
+
+                                                                  </div> -->
+                              </div>
+                              <div class="col-1">
+                                <label class="font-weight-bold">% of</label>
+                              </div>
+                              <div class="col-5">
+                                <ng-select
+                                  [(ngModel)]="
+                                    unit.carrierData.perType
+                                  "
+                                  class="form-control"
+                                  name="unit.carrierData.perType"
+                                  placeholder="Select Percent Type"
+                                >
+                                  <ng-option
+                                    value="Freight Fees"
+                                    selected="true"
+                                    >Freight Fees</ng-option
+                                  >
+                                  <ng-option value="Freight + Fuel Surcharge"
+                                    >Freight + Fuel Surcharge</ng-option
+                                  >
+                                  <ng-option value="Total Income"
+                                    >Total Income</ng-option
+                                  >
+                                </ng-select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" id="payPerMileForm"
+                            *ngIf="
+                              unit.carrierData.pType ==
+                              'Pay Per Mile'
+                            ">
+                            <div class="col-3">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
+                              <input type="number"
+                                min="0"
+                                [(ngModel)]="
+                                  unit.carrierData.lm
+                                "
+                                name="unit.carrierData.lm"
+                                class="form-control"
+                                placeholder="eg. 5 "
+                              />
+                              <!-- <div  *ngIf="carrierloadedmiles.invalid && (carrierloadedmiles.dirty || carrierloadedmiles.touched)" class="text-danger" >
+                                                                      <div *ngIf="carrierloadedmiles.errors.pattern">
+                                                                          Loaded Miles must contain digits and only one special character (dot) only.
+                                                                        </div>
+
+                                                                  </div> -->
+                            </div>
+
+                            <div class="col-3">
+                              <label class="control-label font-weight-bold text-lg-right pt-4"></label>
+                              <ng-select
+                                [(ngModel)]="
+                                  unit.carrierData
+                                    .lmCur
+                                "
+                                (change)="updateCurrency($event)"
+                                class="form-control"
+                                name="unit.carrierData.lmCur"
+                                placeholder="Select Currency"
+                              >
+                                <ng-option value="CAD">CAD</ng-option>
+                                <ng-option value="USD">USD</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-3">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Empty Miles</label
+                                >
+                                <input
+                                  type="number"
+                                  [(ngModel)]="
+                                  unit.carrierData.em
+                                  "
+                                  name="unit.carrierData.em"
+                                  class="form-control"
+                                  placeholder="eg. 5"
+                                />
+  
+                                <!-- <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
+                                                                      <div *ngIf="carrieremptymiles.errors.pattern">
+                                                                          Empty Miles must contain digits and only one special character (dot) only.
+                                                                        </div>
+  
+  
+  
+                                                                  </div> -->
+                              </div>
+                              <div class="col-3">
+                                <label class="control-label font-weight-bold text-lg-right pt-4"></label>
+                                <ng-select
+                                  [(ngModel)]="
+                                  unit.carrierData.emCur
+                                  "
+                                  (change)="updateCurrency($event)"
+                                  class="form-control"
+                                  name="unit.carrierData.emCur"
+                                  placeholder="Select Currency"
+                                >
+                                  <ng-option value="CAD">CAD</ng-option>
+                                  <ng-option value="USD">USD</ng-option>
+                                </ng-select>
+                              </div>
+                          </div>
+                        
                         
                         
                           <div class="row wsib-wrapper"
@@ -955,24 +2599,14 @@
                               >
                               <input
                                 [(ngModel)]="
-                                  unit.carrierData.wsibAccountNumber
+                                  unit.carrierData.wsibAcc
                                 "
-                                name="wsibAccountNumber"
+                                name="unit.carrierData.wsibAcc"
                                 type="text"
                                 class="form-control"
                                 placeholder=" Work safety insurance board no."
                               />
   
-                              <!-- <div *ngIf="carrierwsib.invalid && (carrierwsib.dirty || carrierwsib.touched)" class="text-danger">
-                                                                  <div *ngIf="carrierwsib.errors.required">
-                                                                      WSIB Account# is required 
-                                                                    </div>
-                                                                  <div *ngIf="carrierwsib.errors.pattern">
-                                                                      WSIB Account# must contain numbers .
-                                                                    </div>
-  
-  
-                                                              </div> -->
                             </div>
                             <div class="col-3">
                               <label
@@ -989,9 +2623,9 @@
                               >
                               <input
                                 [(ngModel)]="
-                                  unit.carrierData.wsibExpiry
+                                  unit.carrierData.wsibExp
                                 "
-                                name="wsibExpiry"
+                                name="unit.carrierData"
                                 type="text"
                                 placeholder="yyyy/mm/dd"
                                 (click)="wsibexp.toggle()"
@@ -1002,14 +2636,172 @@
                                 [minDate]="dateMinLimit"
                                 [maxDate]="futureDatesLimit"
                               />
-                              <!-- <div *ngIf="wsib.invalid && (wsib.dirty || wsib.touched)" class="text-danger">
-                                                                <div *ngIf="wsib.errors.required">
-                                                                  WSIB is required and must contain yyyy/mm/dd format.
-                                                                </div>
-                                                              </div> -->
+                              
                             </div>
                           </div>
                     </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Bank
+                  Detail</label>
+              </div>
+            </div>
+            <div class="row" *ngFor="let bank of unit.carrierData.banks;let b = index;">
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
+                 </label>
+                <input type="text" class="form-control" [(ngModel)]="bank.bName"
+                  [attr.name]="'banks['+b+'].bName'" [ngModelOptions]="{standalone: true}" #bName="ngModel"
+                  pattern="^[a-zA-Z0-9\s]{2,30}$" placeholder="eg. Bank of Nova Scotia">
+               
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
+                  </label>
+                <input type="number" min="0" class="form-control" [(ngModel)]="bank.acc"
+                  [ngModelOptions]="{standalone: true}" placeholder="eg. 12123456701"
+                  [attr.name]="'banks['+b+'].acc'" #ac="ngModel">
+                
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
+                    class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                    title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
+                 </label>
+                <input type="number" min="0" class="form-control" [(ngModel)]="bank.rNo"
+                  [ngModelOptions]="{standalone: true}" [attr.name]="'banks['+b+'].rNo'"
+                  #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
+                
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Transit#&nbsp;<i
+                    class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                    title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry.
+                      This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
+                    The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
+                  </label>
+                <input type="text" class="form-control" [(ngModel)]="bank.trnNo"
+                  [attr.name]="'banks['+b+'].trnNo'" [ngModelOptions]="{standalone: true}"
+                  placeholder="eg. 12345789">
+                
+              </div>
+              <div class="col-3">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
+                    class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                    title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
+                  </label>
+                <input type="number" min="0" class="form-control" [(ngModel)]="bank.insNo"
+                  [ngModelOptions]="{standalone: true}" #ins="ngModel" placeholder="eg. 219"
+                  [attr.name]="'banks['+b+'].insNo'">
+               
+              </div>
+              
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Bank Address</label>
+                  </div>
+                  <div class="col-lg-12">
+                    <div *ngFor="let item of bank.adrs; let i = index;" class="address-item p-0">
+                      <div class="row">
+                        <div class="col-6">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                            Type<span *ngIf="item.aType==='yard'"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="item.aType" name="bank.addressDetails[{{i}}].aType"
+                            placeholder="Select address type">
+                            <ng-option value="branch">Branch</ng-option>
+                          </ng-select>
+
+                        </div>
+                        <div class="col-4">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Start
+                            typing
+                            your
+                            location <span *ngIf="!item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle"
+                              data-toggle="tooltip" data-placement="top"
+                              title="we'll pull address automatically from Map"></i></label>
+                          <input type="text" class="form-control" placeholder="Type address"
+                            [(ngModel)]="item.userLoc" name="bank.addressDetails[{{i}}].userLoc" [disabled]="item.manual"
+                            [required]="!item.manual" (keyup)="searchTerm.next($event);">
+                          <div class="checkbox-custom pt-2">
+                            <input [(ngModel)]="item.manual" name="bank.addressDetails[{{i}}].manual" (change)="manBankAddress($event, i,b)"
+                              type="checkbox">
+                            <label>Type Manually</label>
+                          </div>
+                          <div class="map-search__results bg-white" style="width: 96.5%; margin-top: 5px;">
+                            <ul class="p-0 m-0 text-left">
+                              <li *ngFor="let item of searchResults;">
+                                <a href="javascript:;" (click)="userAddress('bank', bank, i, item)">{{item.address.label}}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-lg-1 mar-top-37 text-right">
+                          <button class="btn btn-dark ml-2 mr-2" type="button" (click)="clearBankLocation(bank, i,b);">Clear</button>
+                        </div>
+                      </div>
+                      <div class="form-group row" *ngIf="item.manual">
+                        <div class="col-3">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                            Country<span *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="item.cCode" name="bank.addressDetails[{{i}}].cCode"
+                            [required]="item.manual" (change)="getBankStates($event, i,b)"
+                            class="form-control populate" placeholder="Select country">
+                            <ng-option value="CA">Canada</ng-option>
+                            <ng-option value="US">United States</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-3">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                            Province/State<span *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select (change)="getBankCities($event, i,item.countryCode,b)" [(ngModel)]="item.sCode"
+                          name="bank.addressDetails[{{i}}].sCode" [required]="item.manual"
+                            placeholder="Select province/state">
+                            <ng-option class="text-capitalize" *ngFor="let state of item.bankStates"
+                              value="{{state.stateCode}}">{{state.stateName}}</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-4">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address<span
+                              *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="item.adrs" name="bank.addressDetails[{{i}}].adrs" type="text" class="form-control"
+                            placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel"
+                            [required]="item.manual">
+                        </div>
+                        <div class="col-3">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                            City<span *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="item.ctyName"  name="bank.addressDetails[{{i}}].ctyName"
+                            [required]="item.manual" placeholder="Select city">
+
+                            <ng-option class="text-capitalize" *ngFor="let city of item.bankCities"
+                              value="{{city.cityName}}">
+                              {{city.cityName}}</ng-option>
+
+                          </ng-select>
+                        </div>
+                        <div class="col-3">
+
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code<span
+                              *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="item.zip"  name="bank.addressDetails[{{i}}].zip" type="text" class="form-control"
+                            [required]="item.manual" placeholder="eg. 7V2 3R4"
+                            #zip="ngModel">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -1524,9 +3316,9 @@
                           Payroll Type
                         </label>
                         <ng-select
-                          [(ngModel)]="unit.opData.payTy"
+                          [(ngModel)]="unit.opData.pType"
                           class="form-control"
-                          name="paymentDetails.payrollType"
+                          name="unit.opData.pType"
                           placeholder="Select payroll type"
                         >
                           <ng-option value="Pay Per Mile"
@@ -1543,11 +3335,11 @@
                           >
                         </ng-select>
                       </div>
-                      <div class="row"
+                      <div class="row m-0 w-100"
                       id="payPerHourForm" *ngIf="
-                      unit.opData.payTy ==
+                      unit.opData.pType ==
                         'Pay Per Hour'">
-                      <div class="col-lg-6">
+                      <div class="col-3">
                         <label class="control-label
                             font-weight-bold
                             text-lg-right
@@ -1557,9 +3349,9 @@
                           min="0"
                           class="form-control"
                           [(ngModel)]="
-                          unit.opData.payrollRate
+                          unit.opData.pRate
                           "
-                          name="unit.opData.payrollRate"
+                          name="unit.opData.pRate"
                           placeholder="eg. 5"
                         />
 
@@ -1580,14 +3372,14 @@
                         ></label>
                         <ng-select
                           [(ngModel)]="
-                          unit.opData.payrollRateCurrency
+                          unit.opData.pRCur
                           "
                           class="form-control"
                           (change)="
-                            updateCurrency($event, 'ownerOperator')
+                            updateCurrency($event)
                           "
                           placeholder="eg. 1,2,3 "
-                          name="unit.opData.payrollRateCurrency"
+                          name="unit.opData.pRCur"
                           placeholder="Select Currency"
                         >
                           <ng-option value="CAD">CAD</ng-option>
@@ -1596,10 +3388,10 @@
                       </div>
                     </div>
                     <div
-                      class="row"
+                      class="row m-0 w-100"
                       id="payPercentageForm"
                       *ngIf="
-                        unit.opData.payTy ==
+                        unit.opData.pType ==
                         'Percentage'
                       "
                     >
@@ -1621,9 +3413,9 @@
                               class="form-control"
                               placeholder="eg. 5 "
                               [(ngModel)]="
-                              unit.opData.payrollPercent
+                              unit.opData.pPnt
                               "
-                              name="paymentDetails.payrollPercent"
+                              name="paymentDetails.pPnt"
                             />
 
                             <!-- <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
@@ -1638,10 +3430,10 @@
                           <div class="col-5">
                             <ng-select
                               [(ngModel)]="
-                              unit.opData.percentType
+                              unit.opData.perType
                               "
                               class="form-control"
-                              name="paymentDetails.percentType"
+                              name="paymentDetails.perType"
                               placeholder="Select Percent Type"
                             >
                               <ng-option
@@ -1662,10 +3454,10 @@
                       </div>
                     </div>
                     <div
-                        class="row"
+                        class="row m-0 w-100"
                         id="payPerMileForm"
                         *ngIf="
-                        unit.opData.payTy ==
+                        unit.opData.pType ==
                           'Pay Per Mile'
                         "
                       >
@@ -1683,9 +3475,9 @@
                             type="number"
                             min="0"
                             [(ngModel)]="
-                            unit.opData.loadedMiles
+                            unit.opData.lm
                             "
-                            name="paymentDetails.loadedMiles"
+                            name="unit.opData.lm"
                             class="form-control"
                             placeholder="eg. 5"
                           />
@@ -1707,13 +3499,13 @@
                           ></label>
                           <ng-select
                             [(ngModel)]="
-                            unit.opData.loadedMilesCurrency
+                            unit.opData.lmCur
                             "
                             class="form-control"
                             (change)="
-                              updateCurrency($event, 'ownerOperator')
+                              updateCurrency($event)
                             "
-                            name="paymentDetails.loadedMilesCurrency"
+                            name="unit.opData.lmCur"
                             placeholder="Select Currency"
                           >
                             <ng-option value="CAD">CAD</ng-option>
@@ -1734,9 +3526,9 @@
                             type="number"
                             min="0"
                             [(ngModel)]="
-                            unit.opData.emptyMiles
+                            unit.opData.em
                             "
-                            name="unit.opData.emptyMiles"
+                            name="unit.opData.em"
                             class="form-control"
                             placeholder="eg. 5"
                           />
@@ -1758,13 +3550,13 @@
                           ></label>
                           <ng-select
                             [(ngModel)]="
-                            unit.opData.emptyMilesCurrency
+                            unit.opData.emCur
                             "
                             class="form-control"
                             (change)="
-                              updateCurrency($event, 'ownerOperator')
+                              updateCurrency($event)
                             "
-                            name="paymentDetails.emptyMilesCurrency"
+                            name="unit.opData.emCur"
                             placeholder="Select Currency"
                           >
                             <ng-option value="CAD">CAD</ng-option>
@@ -1773,10 +3565,10 @@
                         </div>
                       </div>
                     <div
-                      class="row"
+                      class="row m-0 w-100"
                       id="payPerDeliveryForm"
                       *ngIf="
-                      unit.opData.payTy ==
+                      unit.opData.pType ==
                         'Pay Per Delivery'
                       "
                     >
@@ -1792,19 +3584,14 @@
                         >
                         <input
                           [(ngModel)]="
-                          unit.opData.deliveryRate
+                          unit.opData.dr
                           "
-                          name="unit.opData.deliveryRate"
+                          name="unit.opData.dr"
                           type="text"
                           class="form-control"
                           placeholder="eg. 30"
                         />
 
-                        <!-- <div *ngIf="ownerdeliveryrate.invalid && (ownerdeliveryrate.dirty || ownerdeliveryrate.touched)" class="text-danger">
-                                                         <div *ngIf="ownerdeliveryrate.errors.pattern">
-                                                           Delivery Rate must contain digits and only one special character (dot) only . 
-                                                         </div>
-                                                       </div> -->
                       </div>
                       <div class="col-3">
                         <label
@@ -1820,12 +3607,12 @@
                           class="mt-2"
                           [(ngModel)]="
                           unit.opData
-                              .deliveryRateCurrency
+                              .drCur
                           "
                           (change)="
-                            updateCurrency($event, 'ownerOperator')
+                            updateCurrency($event)
                           "
-                          name="unit.opData.deliveryRateCurrency"
+                          name="unit.opData.drCur"
                           placeholder="Select Currency"
                         >
                           <ng-option value="CAD">CAD</ng-option>
@@ -1871,205 +3658,207 @@
         </div>
         <!-- Address start -->
         <div
-          class="row pb-4 address-item"
-          *ngFor="let item of unitData.address; let i = index"
+          class="py-4 border-bottom"
+          *ngFor="let item of unitData.adrs; let i = index"
         >
-          <div class="col-12">
-            <label
-              class="control-label font-weight-bold text-lg-right text-5 m-0"
-              >Address</label
-            >
-          </div>
+        <div>
+          <label
+          class="control-label font-weight-bold text-lg-right text-5 m-0"
+          >Address </label
+        >
+        </div>
 
-          <div class="col-6">
-            <div class="row">
-              <div class="col-lg-12">
-                <label class="control-label font-weight-bold text-lg-right pt-2"
-                  >Address Type</label
-                >
-
-                <ng-select
-                  [(ngModel)]="item.addressType"
-                  name="addressType{{ i }}"
-                  class="form-control populate"
-                  placeholder="Select address type"
-                >
-                  <ng-option value="Billing Address">Billing Address</ng-option>
-                  <ng-option value="Shipping Address"
-                    >Shipping Address</ng-option
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2"
+                    >Address Type</label
                   >
-                  <ng-option value="Office">Office</ng-option>
-                  <ng-option value="Other">Other</ng-option>
-                </ng-select>
+  
+                  <ng-select
+                    [(ngModel)]="item.aType"
+                    name="aType{{ i }}"
+                    class="form-control populate"
+                    placeholder="Select address type"
+                  >
+                    <ng-option value="Billing Address">Billing Address</ng-option>
+                    <ng-option value="Shipping Address"
+                      >Shipping Address</ng-option
+                    >
+                    <ng-option value="Office">Office</ng-option>
+                    <ng-option value="Other">Other</ng-option>
+                  </ng-select>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="col-4">
-            <label class="control-label font-weight-bold text-lg-right pt-2"
-              >Type Your Location</label
-            >
-            <input
-              type="text"
-              [(ngModel)]="item.userLocation"
-              name="userLocation{{ i }}"
-              (keyup)="searchTerm.next($event)"
-              class="form-control"
-              placeholder="eg. 1107 Port washington road"
-              [disabled]="item.manual"
-            />
-            <div class="map-search__results bg-white">
-              <ul class="p-0 m-0 text-left">
-                <li *ngFor="let item of searchResults">
-                  <a
-                    href="javascript:;"
-                    (click)="userAddress(unitData, i, item)"
-                    >{{ item.address.label }}</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="checkbox-custom pt-2">
+  
+            <div class="col-4">
+              <label class="control-label font-weight-bold text-lg-right pt-2"
+                >Type Your Location</label
+              >
               <input
-                [(ngModel)]="item.manual"
-                name="manual{{ i }}"
-                (change)="manAddress($event, i)"
-                type="checkbox"
+                type="text"
+                [(ngModel)]="item.userLoc"
+                name="userLoc{{ i }}"
+                (keyup)="searchTerm.next($event)"
+                class="form-control"
+                placeholder="eg. 1107 Port washington road"
+                [disabled]="item.manual"
               />
-              <label for="man_address">Type Manually</label>
-            </div>
-          </div>
-          <div class="col-lg-2 mar-top-37 text-right">
-            <a
-              class="btn btn-dark mr-2"
-              href="javascript:;"
-              (click)="clearAddress(i, 'customer')"
-              >Clear</a
-            >
-            <a
-              *ngIf="i == 0"
-              (click)="addAddress(unitData)"
-              class="btn btn-success"
-              href="javascript:;"
-              ><i class="fa fa-plus fa-fw"></i
-            ></a>
-            <a
-              *ngIf="i != 0"
-              (click)="removeAddress(i)"
-              class="btn btn-danger"
-              href="javascript:;"
-              ><i class="fa fa-minus fa-fw"></i
-            ></a>
-          </div>
-          <div *ngIf="item.manual" class="row pl-3 w100">
-            <div class="col-6 pt-4">
-              <div class="row">
-                <div class="col-lg-6">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Select Country</label
-                  >
-                  <ng-select
-                    (change)="getStates($event, 'customer', i)"
-                    [(ngModel)]="item.countryCode"
-                    name="countryID{{ i }}"
-                    class="form-control populate address_country"
-                    placeholder="Select country"
-                  >
-                    <ng-option
-                      *ngFor="let country of countries"
-                      value="{{ country.countryCode }}"
+              <div class="map-search__results bg-white">
+                <ul class="p-0 m-0 text-left">
+                  <li *ngFor="let item of searchResults">
+                    <a
+                      href="javascript:;"
+                      (click)="userAddress('unit', unitData, i, item)"
+                      >{{ item.address.label }}</a
                     >
-                      {{ country.countryName }}</ng-option
-                    >
-                  </ng-select>
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Select Province/State</label
-                  >
-                  <ng-select
-                    (change)="getCities($event, 'customer', i)"
-                    [(ngModel)]="item.stateCode"
-                    name="stateCode{{ i }}"
-                    class="form-control populate address_state"
-                    placeholder="Select province/state"
-                  >
-                    <ng-option
-                      *ngFor="let state of item.states"
-                      value="{{ state.stateCode }}"
-                      >{{ state.stateName }}</ng-option
-                    >
-                  </ng-select>
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Select City</label
-                  >
-                  <ng-select
-                    [(ngModel)]="item.cityName"
-                    name="cityCode{{ i }}"
-                    class="form-control populate address_city"
-                    placeholder="Select city"
-                  >
-                    <ng-option
-                      *ngFor="let city of item.cities"
-                      value="{{ city.cityName }}"
-                      >{{ city.cityName }}</ng-option
-                    >
-                  </ng-select>
-                </div>
-                <div class="col-lg-6">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Zip Code</label
-                  >
-                  <input
-                    [(ngModel)]="item.zipCode"
-                    name="zipCode{{ i }}"
-                    type="text"
-                    class="form-control address_zip"
-                    placeholder="T2C 5J4"
-                  />
-
-                  <!-- <div *ngIf="customerzip.invalid && (customerzip.dirty || customerzip.touched)" class="text-danger">
-                                                      <div *ngIf="customerzip.errors.pattern">
-                                                        Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
-                                                    </div>
-                                                    </div> -->
-                </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="checkbox-custom pt-2">
+                <input
+                  [(ngModel)]="item.manual"
+                  name="manual{{ i }}"
+                  (change)="manAddress($event, i)"
+                  type="checkbox"
+                />
+                <label for="man_address">Type Manually</label>
               </div>
             </div>
-
-            <div class="col-4 pr-0 pt-4">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Address 1</label
-                  >
-                  <input
-                    [(ngModel)]="item.address1"
-                    name="address1{{ i }}"
-                    type="text"
-                    class="form-control address_one"
-                    placeholder=" eg. 1107 Port washington road"
-                  />
+            <div class="col-lg-2 mar-top-37 text-right">
+              <a
+                class="btn btn-dark mr-2"
+                href="javascript:;"
+                (click)="clearAddress(i)"
+                >Clear</a
+              >
+              <a
+                *ngIf="i == 0"
+                (click)="addAddress(unitData)"
+                class="btn btn-success"
+                href="javascript:;"
+                ><i class="fa fa-plus fa-fw"></i
+              ></a>
+              <a
+                *ngIf="i != 0"
+                (click)="removeAddress(i)"
+                class="btn btn-danger"
+                href="javascript:;"
+                ><i class="fa fa-minus fa-fw"></i
+              ></a>
+            </div>
+            <div *ngIf="item.manual" class="row pl-3 w100">
+              <div class="col-6 pt-4">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Select Country</label
+                    >
+                    <ng-select
+                      (change)="getStates($event, 'customer', i)"
+                      [(ngModel)]="item.cCode"
+                      name="cCode{{ i }}"
+                      class="form-control populate address_country"
+                      placeholder="Select country"
+                    >
+                      <ng-option
+                        *ngFor="let country of countries"
+                        value="{{ country.countryCode }}"
+                      >
+                        {{ country.countryName }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Select Province/State</label
+                    >
+                    <ng-select
+                      (change)="getCities($event, 'customer', i)"
+                      [(ngModel)]="item.sCode"
+                      name="sCode{{ i }}"
+                      class="form-control populate address_state"
+                      placeholder="Select province/state"
+                    >
+                      <ng-option
+                        *ngFor="let state of item.states"
+                        value="{{ state.stateCode }}"
+                        >{{ state.stateName }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Select City</label
+                    >
+                    <ng-select
+                      [(ngModel)]="item.ctyName"
+                      name="ctyName{{ i }}"
+                      class="form-control populate address_city"
+                      placeholder="Select city"
+                    >
+                      <ng-option
+                        *ngFor="let city of item.cities"
+                        value="{{ city.cityName }}"
+                        >{{ city.cityName }}</ng-option
+                      >
+                    </ng-select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Zip Code</label
+                    >
+                    <input
+                      [(ngModel)]="item.zip"
+                      name="zip{{ i }}"
+                      type="text"
+                      class="form-control address_zip"
+                      placeholder="T2C 5J4"
+                    />
+  
+                    <!-- <div *ngIf="customerzip.invalid && (customerzip.dirty || customerzip.touched)" class="text-danger">
+                                                        <div *ngIf="customerzip.errors.pattern">
+                                                          Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                      </div>
+                                                      </div> -->
+                  </div>
                 </div>
-                <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Address 2</label
-                  >
-                  <input
-                    [(ngModel)]="item.address2"
-                    name="address2{{ i }}"
-                    type="text"
-                    class="form-control"
-                    placeholder=" eg. 1107 Port washington road"
-                  />
+              </div>
+  
+              <div class="col-4 pr-0 pt-4">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Address 1</label
+                    >
+                    <input
+                      [(ngModel)]="item.add1"
+                      name="add1{{ i }}"
+                      type="text"
+                      class="form-control address_one"
+                      placeholder=" eg. 1107 Port washington road"
+                    />
+                  </div>
+                  <div class="col-lg-12">
+                    <label
+                      class="control-label font-weight-bold text-lg-right pt-2"
+                      >Address 2</label
+                    >
+                    <input
+                      [(ngModel)]="item.add2"
+                      name="add2{{ i }}"
+                      type="text"
+                      class="form-control"
+                      placeholder=" eg. 1107 Port washington road"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -2081,7 +3870,7 @@
         <div
           class="row pt-3"
           *ngFor="
-            let additionData of unitData.additionalContact;
+            let additionData of unitData.addlCnt;
             let ad = index
           "
         >
@@ -2092,67 +3881,67 @@
             >
           </div>
 
-          <div class="col-6">
+          <div class="col-12">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >First Name
                 </label>
                 <input
-                  [(ngModel)]="additionData.firstName"
-                  name="firstName1_{{ ad }}"
+                  [(ngModel)]="additionData.fName"
+                  name="fName_{{ ad }}"
                   type="text"
                   class="form-control"
                   placeholder="eg. John"
                 />
-                <!-- <div *ngIf="customerfname1.invalid && (customerfname1.dirty || customerfname1.touched)" class="text-danger">
-                                                  
-                                                  <div *ngIf="customerfname1.errors.pattern">
-                                                    First name must contain uppercase , lowercase characters only.     
-                                                 </div>
-                                                </div> -->
+                
               </div>
-              <div class="col-lg-6">
+              <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Last Name
                 </label>
                 <input
-                  [(ngModel)]="additionData.lastName"
-                  name="lastName1_{{ ad }}"
+                  [(ngModel)]="additionData.lName"
+                  name="lName_{{ ad }}"
                   type="text"
                   class="form-control"
                   placeholder="eg. Smith"
                 />
-                <!-- <div *ngIf="customerlname1.invalid && (customerlname1.dirty || customerlname1.touched)" class="text-danger">
-                                                 
-                                                  <div *ngIf="customerlname1.errors.pattern">
-                                                    last name must contain uppercase , lowercase characters only.               
-                                                    </div>
-                                                </div> -->
+                
               </div>
-              <div class="col-lg-12">
+              <div class="col-4">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Designation
                 </label>
                 <input
-                  [(ngModel)]="additionData.designation"
-                  name="designation_{{ ad }}"
+                  [(ngModel)]="additionData.des"
+                  name="des_{{ ad }}"
                   type="text"
                   class="form-control"
                   placeholder="eg. Manager "
                 />
-                <!-- <div *ngIf="customerdname2.invalid && (customerdname2.dirty || customerdname2.touched)" class="text-danger">
-                                                 
-                                                  <div *ngIf="customerdname2.errors.pattern">
-                                                  Designation must contain uppercase , lowercase characters only.         
-                                                 </div>
-                                                </div> -->
+                
               </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="row">
-              <div class="col-lg-6">
+              <div class="col-2 text-right mt-2">
+                <button
+                  [disabled]="additionalDisabled"
+                  *ngIf="ad == 0"
+                  id="add-document"
+                  class="btn btn-success mt-4"
+                  (click)="addAdditionalContact(unitData)"
+                >
+                  <i class="fa fa-plus"></i> Add More
+                </button>
+                <a
+                  href="javascript:;"
+                  *ngIf="ad > 0"
+                  class="btn btn-danger mt-4"
+                  (click)="delAdditionalContact(ad)"
+                  ><i class="fa fa-minus"></i> Delete</a
+                >
+              </div>
+             
+              <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Phone
                 </label>
@@ -2164,7 +3953,7 @@
                   placeholder="eg. 2234567891"
                 />
               </div>
-              <div class="col-lg-6">
+              <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Email
                 </label>
@@ -2190,7 +3979,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-12">
+              <div class="col-4">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Fax
                 </label>
@@ -2204,25 +3993,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-12 mt-3 mb-2 text-right">
-            <button
-              [disabled]="additionalDisabled"
-              *ngIf="ad == 0"
-              id="add-document"
-              class="btn btn-success"
-              (click)="addAdditionalContact(data)"
-            >
-              <i class="fa fa-plus"></i> Add More
-            </button>
-            <a
-              href="javascript:;"
-              *ngIf="ad > 0"
-              class="btn btn-danger"
-              (click)="delAdditionalContact(ad)"
-              ><i class="fa fa-minus"></i> Delete</a
-            >
-          </div>
+          
         </div>
         <!-- Additional Contact Details end -->
 
@@ -2250,24 +4021,22 @@
     <button
       type="button"
       *ngIf="!updateButton"
-      (click)="addCustomer()"
+      (click)="addEntry()"
       class="btn btn-success"
-      [disabled]="customerDisabled"
+      [disabled]="unitDisabled"
     >
       Submit
     </button>
     <button
       type="button"
       *ngIf="updateButton"
-      (click)="updateCustomer()"
+      (click)="updateEntry()"
       class="btn btn-success"
-      [disabled]="customerDisabled"
+      [disabled]="unitDisabled"
     >
       Update
     </button>
   </div>
 </ng-template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(newUnitModal)">
-  Launch demo modal
-</button>
+

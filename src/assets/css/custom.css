@@ -2587,3 +2587,6 @@ input:checked + .sliderbtn:before {
 .form-control[readonly] {
   background-color: #fff;
 }
+.units-list__main .modal-dialog {
+  max-width: 1200px !important;
+}
