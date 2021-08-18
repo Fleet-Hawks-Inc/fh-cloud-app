@@ -109,6 +109,7 @@ export class AddExpenseComponent implements OnInit {
     catName: '',
     catDesc: ''
   };
+  catDisabled = false;
 
   constructor(private listService: ListService, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
@@ -318,7 +319,7 @@ export class AddExpenseComponent implements OnInit {
   }
 
   addCategory() {
-    this.submitDisabled = true;
+    this.catDisabled = true;
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -335,11 +336,11 @@ export class AddExpenseComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
               // this.throwErrors();
             },
             error: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
             },
             next: () => {
             },
@@ -347,7 +348,7 @@ export class AddExpenseComponent implements OnInit {
       },
       next: (res) => {
         this.fetchExpenseCategories();
-        this.submitDisabled = false;
+        this.catDisabled = false;
         this.response = res;
         $('#addExpenseTypeModal').modal('hide');
         this.categoryData = {

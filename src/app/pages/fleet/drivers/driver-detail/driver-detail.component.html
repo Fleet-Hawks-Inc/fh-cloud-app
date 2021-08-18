@@ -8,8 +8,10 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <a class="text-uppercase btn btn-sm btn-dark mr-3" data-toggle="modal"
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
               data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+              <a routerLink="/fleet/drivers/edit/{{driverID}}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Driver</a>
             <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
               List</a>
           </div>
@@ -72,7 +74,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          <!-- <div class="col-lg-6 pr-1 pl-2 mt-3">
             <div class="bg-white ssdriver p-2">
               <h2 class="font-weight-bold text-dark text-5 mt-0 mb-2">Safety Summary</h2>
               <div class="row text-center">
@@ -146,8 +148,8 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          </div> -->
+          <div class="col-lg-12 pr-1 pl-2 mt-3">
             <div class="bg-white p-2">
               <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Trips</h2>
               <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
@@ -197,7 +199,7 @@
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"
-            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button></div>
+            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</button></div>
         </div>
         <div class="row">
           <div class="col-6">
@@ -214,10 +216,18 @@
               <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Type:</div>
+              <div class="col-lg-6 p-2 bor_half">{{corporationType}}</div>
+            </div>
+            <div class="row m-0" *ngIf="corporationType == 'company' || corporationType == 'corporation'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation:</div>
+              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
+              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">owner Operator:</div>
               <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
             </div>
-
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>

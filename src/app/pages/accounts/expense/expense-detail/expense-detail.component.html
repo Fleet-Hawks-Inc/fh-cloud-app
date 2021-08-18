@@ -80,7 +80,7 @@
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Start Date</td>
                                                         <td>
-                                                            <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.startDate | date:'yyyy/MM/dd' }}</span>
+                                                            <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.txnDate | date:'yyyy/MM/dd' }}</span>
                                                             <span *ngIf="!expenseData.recurring.status">-</span>
                                                         </td>
                                                     </tr>

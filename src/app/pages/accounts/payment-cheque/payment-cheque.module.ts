@@ -5,10 +5,10 @@ import { PaymentChequeComponent } from './payment-cheque.component';
 
 
 @NgModule({
-  declarations: [PaymentChequeComponent],
+  declarations: [],
   imports: [
     CommonModule
   ],
-  exports: [PaymentChequeComponent],
-})
+  // exports: [PaymentChequeComponent],
+}) 
 export class PaymentChequeModule { } 

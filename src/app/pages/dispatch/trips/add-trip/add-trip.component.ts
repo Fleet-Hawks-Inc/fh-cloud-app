@@ -10,6 +10,8 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
 import * as moment from "moment";
+import { Location } from '@angular/common';
+
 
 declare var $: any;
 
@@ -34,7 +36,8 @@ export class AddTripComponent implements OnInit {
     carriers = [];
     routes = [];
     constructor(private apiService: ApiService, private route: ActivatedRoute,
-        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
+        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService,
+        private location: Location, private hereMap: HereMapService) { }
     public orderMiles={
         calculateBy:'manual',
         totalMiles:0
@@ -192,7 +195,7 @@ export class AddTripComponent implements OnInit {
         } else {
             this.pageTitle = 'Add Trip';
             this.fetchLastTripNumber();
-        } 
+        }
         this.fetchOrders();
         this.fetchCustomerByIDs();
         this.fetchCarriers();
@@ -203,7 +206,7 @@ export class AddTripComponent implements OnInit {
         this.fetchDrivers();
         this.searchLocation();
         this.getCurrentuser();
-        
+
         if (this.tripID != undefined) {
            await this.fetchTripDetail();
         }
@@ -216,7 +219,7 @@ export class AddTripComponent implements OnInit {
     fetchCarriers() {
         this.apiService.getData('contacts/get/type/carrier')
             .subscribe((result: any) => {
-                this.carriers = result; 
+                this.carriers = result;
 
 
                 this.carriersObject = result.reduce((a: any, b: any) => {
@@ -258,7 +261,9 @@ export class AddTripComponent implements OnInit {
         this.actualMiles = 0;
         this.getMiles();
     }
-
+    cancel() {
+      this.location.back(); // <-- go back to previous location on cancel
+    }
     async addRow() {
         if (this.textFieldValues.type !== '' && this.textFieldValues.locationName !== '') {
 
@@ -279,7 +284,7 @@ export class AddTripComponent implements OnInit {
                     this.getSingleRowMiles(endingPoint, this.trips.length);
                 }
 
-                
+
             }
             this.trips.push(this.textFieldValues);
 
@@ -335,8 +340,8 @@ export class AddTripComponent implements OnInit {
                 this.resetMap()
             }
 
-            
-            
+
+
         } else {
             this.toastr.error('Please fill type and location to add trip plan.');
             return false;
@@ -576,23 +581,23 @@ export class AddTripComponent implements OnInit {
         let totalMilesOrder = 0;
         let calculateBy = '';
         this.orderStops = [];
-        
+
         for (let i = 0; i < this.OrderIDs.length; i++) {
             const element = this.OrderIDs[i];
 
             let locations = [];
             this.allFetchedOrders.map(function (v) {
-               
+
                 if (element == v.orderID) {
                     current.tripData.orderType = v.orderMode;
                     calculateBy = v.milesInfo.calculateBy;
                     totalMilesOrder += parseFloat(v.milesInfo.totalMiles);
-                    
+
                     if (v.shippersReceiversInfo) {
                         v.shippersReceiversInfo.map((m) => {
                             let PDate = moment().format('YYYY-MM-DD');
                             let PTime = '';
-                            
+
                             m.shippers.map(async (n) => {
                                 n.pickupPoint.map((pk) => {
                                     if (pk.dateAndTime != undefined && pk.dateAndTime != '') {
@@ -606,7 +611,7 @@ export class AddTripComponent implements OnInit {
                                     } else {
                                         pickLocation = pk.address.pickupLocation;
                                     }
-                                    let pickupMiles = 0; 
+                                    let pickupMiles = 0;
                                     let obj = {
                                         type: 'Pickup',
                                         date: PDate,
@@ -634,15 +639,15 @@ export class AddTripComponent implements OnInit {
                                         locations.push(n.pickupLocation)
                                     }
                                     tripPlans.push(obj);
-                                    // tripPlans.sort((a, b) => b.type.localeCompare(a.type)); 
-    
+                                    // tripPlans.sort((a, b) => b.type.localeCompare(a.type));
+
                                     tripPlans.sort((a, b) => {
                                         return (
                                           new Date(a.dateTime).valueOf() - new Date(b.dateTime).valueOf()
                                         );
                                     });
                                 })
-                                
+
                             })
                         })
 
@@ -663,7 +668,7 @@ export class AddTripComponent implements OnInit {
                                         DrDate = dmy[0];
                                         DrTime = dmy[1];
                                     }
-                                    
+
                                     let deliveryMiles = 0;
                                     let obj = {
                                         type: 'Delivery',
@@ -690,7 +695,7 @@ export class AddTripComponent implements OnInit {
                                     if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
                                         locations.push(k.dropOffLocation)
                                     }
-                                    
+
                                     tripPlans.push(obj);
                                     // tripPlans.sort((a, b) => b.type.localeCompare(a.type));
                                     tripPlans.sort((a, b) => {
@@ -699,7 +704,7 @@ export class AddTripComponent implements OnInit {
                                         );
                                     });
                                 })
-                                
+
                             })
                         })
                     }
@@ -723,15 +728,15 @@ export class AddTripComponent implements OnInit {
             this.getMiles();
         }
         this.orderStops = tripPlans;
-       
+
     }
 
     async getMiles(){
         let savedCord='';
-        
+
         for (let i = 0; i < this.trips.length; i++) {
             const element = this.trips[i];
-            
+
             if(i > 0) {
                 if (element.lng != undefined && element.lat != undefined) {
                     let endingPoint = element.lng + "," + element.lat;
@@ -757,13 +762,13 @@ export class AddTripComponent implements OnInit {
     }
 
     async getSingleRowMiles(endingPoint, tripLength){
-        
+
         let savedCord='';
         savedCord = this.trips[tripLength-1].lng + "," + this.trips[tripLength-1].lat;
         try {
             let newsMiles = savedCord + ";" + endingPoint;
             this.apiService.getData('trips/calculate/pc/miles?type=mileReport&stops='+newsMiles).subscribe((result) => {
-               
+
                 // this.textFieldValues.miles = result;
                 this.trips[tripLength].miles = result;
                 this.calculateActualMiles(result);
@@ -774,7 +779,7 @@ export class AddTripComponent implements OnInit {
             throw new Error(error);
         }
     }
-   
+
     calculateActualMiles(miles){
         this.actualMiles+= parseFloat(miles);
     }
@@ -872,7 +877,7 @@ export class AddTripComponent implements OnInit {
         if(this.tempTextFieldValues.trailerName == undefined) {
             this.tempTextFieldValues.trailerName = '';
         }
-        
+
         if (this.tempTextFieldValues.type === 'add') {
             this.textFieldValues.vehicleName = this.tempTextFieldValues.vehicleName;
             this.textFieldValues.vehicleID = this.tempTextFieldValues.vehicleID;
@@ -894,11 +899,11 @@ export class AddTripComponent implements OnInit {
             } else {
                 $("#cell11").prop('disabled', false);
             }
-            
+
             $('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
             let index = this.tempTextFieldValues.index;
-            
+
             this.trips[index].vehicleName = this.tempTextFieldValues.vehicleName;
             this.trips[index].vehicleID = this.tempTextFieldValues.vehicleID;
             this.trips[index].trailer = this.tempTextFieldValues.trailer;
@@ -910,7 +915,7 @@ export class AddTripComponent implements OnInit {
             this.trips[index].driverID = this.tempTextFieldValues.driverID;
             this.trips[index].coDriverID = this.tempTextFieldValues.coDriverID;
             this.trips[index].trailerID = this.informationAsset;
-            
+
             if(this.trips[index].vehicleID != '' || this.trips[index].driverUsername != '' || this.trips[index].coDriverUsername != '' || this.trips[index].trailerName != '') {
                 $("#editCell11"+index).prop('disabled', true);
             } else {
@@ -1072,11 +1077,11 @@ export class AddTripComponent implements OnInit {
     async createTrip() {
         this.hideErrors();
         this.submitDisabled = true;
-        
+
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
         this.tripData.orderId = this.OrderIDs;
         this.tripData.mapFrom = (this.mapOrderActive === 'active') ? 'order' : 'route';
-        this.tripData.tripPlanning = []; 
+        this.tripData.tripPlanning = [];
         let planData = this.trips
 
         if(this.tripData.orderId.length == 0) {
@@ -1248,7 +1253,7 @@ export class AddTripComponent implements OnInit {
                 this.response = res;
                 // this.updateOrderStatus();
                 this.toastr.success('Trip added successfully.');
-                this.router.navigateByUrl('/dispatch/trips/trip-list');
+                this.cancel();
             },
         });
     }
@@ -1260,7 +1265,7 @@ export class AddTripComponent implements OnInit {
               .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
               .addClass('error');
           });
-    
+
         this.spinner.hide();
       }
 
@@ -1312,14 +1317,14 @@ export class AddTripComponent implements OnInit {
                                 dateTime = moment(dmy[0]).format("YYYY/MM/DD") + ' ' + dmy[1];
                             }
                             if(dr.address.manual) {
-                                i.deliveryLocations += ind + '. ' + dr.address.address + ' <br/>' + dateTime + ' <br/>';    
+                                i.deliveryLocations += ind + '. ' + dr.address.address + ' <br/>' + dateTime + ' <br/>';
                             } else {
                                 i.deliveryLocations += ind + '. ' + dr.address.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
                             }
-                            
+
                             ind++;
                         })
-                        
+
                     })
                 })
 
@@ -1338,7 +1343,7 @@ export class AddTripComponent implements OnInit {
                             }
                             ind2++;
                         })
-                        
+
                     })
                 })
             }
@@ -1347,21 +1352,21 @@ export class AddTripComponent implements OnInit {
             } else {
                 element.selected = true;
             }
-            
+
             if (element.orderMode == 'FTL') {
                 if(type == 'all') {
                     this.ftlOrders.push(element);
                 } else {
                     this.ftlOrders.unshift(element);
                 }
-                
+
             } else if (element.orderMode == 'LTL') {
-                if(type == 'all') { 
+                if(type == 'all') {
                     this.ltlOrders.push(element);
                 } else {
                     this.ltlOrders.unshift(element);
                 }
-                
+
             }
 
             if(type != 'all') {
@@ -1373,7 +1378,7 @@ export class AddTripComponent implements OnInit {
 
         if(type == 'all') {
             this.allFetchedOrders = data;
-        } 
+        }
     }
 
     /*
@@ -1445,14 +1450,14 @@ export class AddTripComponent implements OnInit {
                 this.tripData['mapFrom'] = result.mapFrom;
                 this.tripData['settlmnt'] = result.settlmnt;
                 this.dateCreated = result.dateCreated;
-                this.orderNo = ''; 
-                
+                this.orderNo = '';
+
                 if(result.mapFrom == 'order') {
                     this.mapOrderActive = 'active';
-                    this.mapRouteActive = '';    
+                    this.mapRouteActive = '';
                 } else {
                     this.mapOrderActive = '';
-                    this.mapRouteActive = 'active';    
+                    this.mapRouteActive = 'active';
                 }
 
                 //fetch order details
@@ -1460,7 +1465,7 @@ export class AddTripComponent implements OnInit {
                     this.fetchOrderDetails(result.orderId);
                     this.OrderIDs = result.orderId;
                 }
-                
+
                 this.tripData['orderType'] = result.orderType;
                 this.tripData['timeCreated'] = result.timeCreated;
                 this.tripData['tripStatus'] = result.tripStatus;
@@ -1620,12 +1625,12 @@ export class AddTripComponent implements OnInit {
             obj.lng = element.lng;
             obj.driverID = element.driverID;
             obj.coDriverID = element.coDriverID;
-            
+
             if (element.trailer != undefined && element.trailer != null) {
                 for (let j = 0; j < element.trailer.length; j++) {
                     const element1 = element.trailer[j];
                     obj.assetID.push(element1.id);
- 
+
                     if(element1.id != '' && element1.id != undefined) {
                         if(!selectedAssets.includes(element1.id)) {
                             selectedAssets.push(element1.id);
@@ -1666,7 +1671,7 @@ export class AddTripComponent implements OnInit {
                     stlStatus.push(carrStatus);
                 }
             }
-    
+
             if(element.locationName != '' && element.locationName != undefined) {
                 element.locationName = element.locationName.replace(/,/g, "");
                 selectedLocations += element.locationName.toLowerCase() + '|';
@@ -1717,7 +1722,7 @@ export class AddTripComponent implements OnInit {
                 this.spinner.hide();
                 this.response = res;
                 this.toastr.success('Trip updated successfully.');
-                this.router.navigateByUrl('/dispatch/trips/trip-list');
+                this.cancel();
             },
         });
     }
@@ -1782,7 +1787,7 @@ export class AddTripComponent implements OnInit {
                     v.shippersReceiversInfo.map((m) => {
                         let PDate = '';
                         let PTime = '';
-                        
+
                         m.shippers.map(async (n) => {
                             n.pickupPoint.map((pk) => {
                                 if (pk.dateAndTime != undefined && pk.dateAndTime != '') {
@@ -1840,7 +1845,7 @@ export class AddTripComponent implements OnInit {
                                 } else {
                                     dropLocation = dr.address.dropOffLocation;
                                 }
-                                
+
                                 let deliveryMiles = 0;
                                 let obj = {
                                     type: 'Delivery',
@@ -1863,7 +1868,7 @@ export class AddTripComponent implements OnInit {
                                     lat:dr.address.geoCords.lat,
                                     lng:dr.address.geoCords.lng
                                 }
-                                
+
                                 this.orderStops.push(obj);
                                 this.orderStops.sort((a, b) => b.type.localeCompare(a.type));
                             })
@@ -1892,18 +1897,18 @@ export class AddTripComponent implements OnInit {
                     let routeData = result.Items[0];
                     let routePath:any = [];
                     this.newCoords = [];
-                    
+
                     if(routeData.stops.length > 0) {
-                        
+
                         for (let i = 0; i < routeData.stops.length; i++) {
                             const element = routeData.stops[i];
-                            routePath.push(element.stopName); 
+                            routePath.push(element.stopName);
                             let routeType = '';
                             if(i == 0) {
                                 routeType = 'Pickup';
                             } else if(i > 0 && i < routeData.stops.length) {
                                 routeType = 'Stop';
-                            } 
+                            }
                             if(i == routeData.stops.length-1) {
                                 routeType = 'Delivery';
                             }
@@ -1935,7 +1940,7 @@ export class AddTripComponent implements OnInit {
                     }
                     await this.getMiles();
                 });
-                
+
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';

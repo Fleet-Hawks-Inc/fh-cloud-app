@@ -75,6 +75,9 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
+  paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentModelList = this.paymentModelDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -227,7 +230,7 @@ fetchReceivers() {
 
   // fetch accounts of chart of accounts
   fetchChartAccounts() {
-    this.accountService.getData('chartAc').subscribe((res: any) => {
+    this.accountService.getData('chartAc/fetch/list').subscribe((res: any) => {
       this.accountsDataSource.next(res);
       });
   }
@@ -247,6 +250,10 @@ fetchReceivers() {
   public changeButton(value: boolean){
 
     this.isTrueDataSource.next(value);
-   
+
+   }
+
+   openPaymentChequeModal(value){
+      this.paymentModelDataSource.next(value);
    }
 }

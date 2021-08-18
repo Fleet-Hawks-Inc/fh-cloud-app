@@ -93,7 +93,7 @@
                           <span *ngIf="trx.name === undefined">-</span>
                         </td>
                         <td>{{trx.type | titlecase}}</td>
-                        <td>{{trx.desc}}</td>
+                        <td>{{trx.desc | titlecase}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
                         <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>
@@ -107,10 +107,7 @@
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Period Variance</td>
                         <td></td>
-                        <td><span
-                            *ngIf="account.closingAmt > account.opnBal">{{account.closingAmt - account.opnBal}}&nbsp;{{account.opnBalCurrency}}</span>
-                          <span
-                            *ngIf="account.opnBal > account.closingAmt || account.opnBal === account.closingAmt">{{account.opnBal - account.closingAmt}}&nbsp;{{account.opnBalCurrency}}</span>
+                        <td>{{periodVariance | absoluteValue}}&nbsp;{{account.opnBalCurrency}}
                         </td>
                         <td></td>
                       </tr>

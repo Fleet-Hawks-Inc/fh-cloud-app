@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
+import { Location } from '@angular/common';
 import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service';
 import * as moment from 'moment';
@@ -117,6 +118,7 @@ export class AddAssetsComponent implements OnInit {
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
+              private location: Location,
               private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
   }
@@ -159,7 +161,9 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
@@ -270,7 +274,7 @@ export class AddAssetsComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Asset added successfully.');
-        this.router.navigateByUrl('/fleet/assets/list');
+        this.cancel();
       },
     });
   }
@@ -466,7 +470,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully.');
-        this.router.navigateByUrl('/fleet/assets/list');
+        this.cancel();
         this.Success = '';
       },
     });

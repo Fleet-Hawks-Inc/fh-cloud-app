@@ -55,6 +55,7 @@ export class InvoiceListComponent implements OnInit {
   }
   fetchInvoices() {
     this.accountService.getData('order-invoice/all/invoices').subscribe((res: any) => {
+
       this.fetchedOrderInvoices = res;
       this.getTotalInvoices(this.fetchedOrderInvoices);
     });
@@ -76,7 +77,7 @@ export class InvoiceListComponent implements OnInit {
         } else if (element.invStatus === 'emailed') {
           this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
-        } else if (element.invStatus === 'partially paid') {
+        } else if (element.invStatus === 'partially_paid') {
           this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
         } else if (element.invStatus === 'voided') {
@@ -100,7 +101,7 @@ export class InvoiceListComponent implements OnInit {
         } else if (element.invStatus === 'emailed') {
           this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
           this.emailedTotal = +(this.emailedTotal).toFixed(2);
-        } else if (element.invStatus === 'partially paid') {
+        } else if (element.invStatus === 'partially_paid') {
           this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
           this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
         } else if (element.invStatus === 'voided') {
@@ -124,7 +125,6 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`invoices?lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
-          console.log('manual result', result);
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
@@ -157,7 +157,6 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemOrderSK !== 'end') {
       this.accountService.getData(`order-invoice?lastKey=${this.lastItemOrderSK}`)
         .subscribe(async (result: any) => {
-          console.log('order result', result);
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
@@ -287,6 +286,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   searchFilter() {
+    this.lastItemSK = '';
     if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDetails();
