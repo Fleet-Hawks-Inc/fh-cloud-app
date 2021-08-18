@@ -35,8 +35,6 @@ export class AddDeviceComponent implements OnInit {
 
   public deviceID='';
   
-public vehicle:any;
-public asset:any;
 public vehicles:any;
 public assets:any=[];
 attachedWith="Vehicle"
