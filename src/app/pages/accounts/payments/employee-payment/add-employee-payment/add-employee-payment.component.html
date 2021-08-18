@@ -462,7 +462,7 @@
                                                         <input type="text" class="form-control" name="dedddd" [(ngModel)]="paymentData.deductionTotal" placeholder="e.g 150" disabled>
                                                     </div>
                                                     <div class="col-lg-6 offset-lg-6 pt-2"><a href="javascript:;" (click)="openPayrollModel()"
-                                                            class="btn btn-default modal-with-form btn-sm">Calculate
+                                                            class="btn btn-success font-weight-semibold modal-with-form btn-sm">Calculate
                                                             Payroll</a></div>
                                                 </div>
                                                 <div class="row pt-1">
@@ -471,9 +471,27 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" class="form-control" name="taxes" [(ngModel)]="paymentData.taxes" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('tax')" disabled>
-                                                        <label class="error">{{ taxErr }}</label>
+                                                        <label class="error" *ngIf="taxErr">{{ taxErr }}</label>
                                                     </div>
                                                 </div>
+                                                <div class="row pt-1">
+                                                  <div class="col-lg-6 text-right"><label
+                                                          class="control-label font-weight-bold">CPP</label>
+                                                  </div>
+                                                  <div class="col-lg-6">
+                                                      <input type="text" class="form-control" name="taxdata.cpp" [(ngModel)]="paymentData.taxdata.cpp" placeholder="e.g 150" (input)="calculateFinalTotal()" disabled>
+
+                                                  </div>
+                                              </div>
+                                              <div class="row pt-1">
+                                                <div class="col-lg-6 text-right"><label
+                                                        class="control-label font-weight-bold">EI</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="taxdata.ei" [(ngModel)]="paymentData.taxdata.ei" placeholder="e.g 150" (input)="calculateFinalTotal()" disabled>
+
+                                                </div>
+                                            </div>
                                                 <div class="row pt-1">
                                                     <div class="col-lg-6 text-right"><label
                                                             class="control-label font-weight-bold">Advance</label>
@@ -497,7 +515,7 @@
 
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
-                                            <button type="button" class="btn btn-default mr-2" routerLink="">Cancel</button>
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                             <button class="btn btn-success" (click)="addRecord()" [disabled]="!empPaymentForm.form.valid || submitDisabled" *ngIf="!paymentID">Save</button>
                                         </div>
                                     </div>

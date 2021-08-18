@@ -5,7 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "src/app/services";
-
+import { Location } from "@angular/common";
 @Component({
   selector: "app-add-advance-payment",
   templateUrl: "./add-advance-payment.component.html",
@@ -21,7 +21,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     payMode: null,
     payModeNo: "",
     payModeDate: null,
-    txnDate: moment().format('YYYY-MM-DD'),
+    txnDate: moment().format("YYYY-MM-DD"),
     referenceNo: "",
     notes: "",
     accountID: null,
@@ -41,11 +41,11 @@ export class AddAdvancePaymentComponent implements OnInit {
   accounts = [];
   payModeLabel = "";
   errors = {};
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error: string = "";
+  Success: string = "";
   submitDisabled = false;
   paymentID;
 
@@ -55,12 +55,13 @@ export class AddAdvancePaymentComponent implements OnInit {
     private router: Router,
     private toaster: ToastrService,
     private accountService: AccountService,
-    private apiService: ApiService
-  ) {}
+    private apiService: ApiService,
+    private location: Location
+  ) { }
 
   ngOnInit() {
-    this.paymentID = this.route.snapshot.params['paymentID'];
-    if(this.paymentID) {
+    this.paymentID = this.route.snapshot.params["paymentID"];
+    if (this.paymentID) {
       this.fetchPaymentDetails();
     }
     this.fetchDrivers();
@@ -68,7 +69,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchOwnerOperators();
     this.fetchEmployee();
     // this.fetchVendor();
-   // this.fetchCustomer();
+    // this.fetchCustomer();
     // this.listService.fetchChartAccounts();
     // this.accounts = this.listService.accountsList;
     this.fetchAccounts();
@@ -123,11 +124,13 @@ export class AddAdvancePaymentComponent implements OnInit {
         this.customers = result;
       });
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   addRecord() {
     this.submitDisabled = true;
     this.accountService.postData("advance", this.paymentData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -144,14 +147,14 @@ export class AddAdvancePaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Advance payment added successfully.");
-        this.router.navigateByUrl("/accounts/payments/advance-payments/list");
+        this.cancel();
       },
     });
   }
@@ -177,7 +180,8 @@ export class AddAdvancePaymentComponent implements OnInit {
   }
 
   fetchPaymentDetails() {
-    this.accountService.getData(`advance/detail/${this.paymentID}`)
+    this.accountService
+      .getData(`advance/detail/${this.paymentID}`)
       .subscribe((result: any) => {
         this.paymentData = result[0];
         this.changePaymentMode(this.paymentData.payMode);
@@ -186,34 +190,36 @@ export class AddAdvancePaymentComponent implements OnInit {
 
   updateRecord() {
     this.submitDisabled = true;
-    this.accountService.putData(`advance/${this.paymentID}`, this.paymentData).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.submitDisabled = false;
-        this.response = res;
-        this.toaster.success("Advance payment updated successfully.");
-        this.router.navigateByUrl("/accounts/payments/advance-payments/list");
-      },
-    });
+    this.accountService
+      .putData(`advance/${this.paymentID}`, this.paymentData)
+      .subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.submitDisabled = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                this.submitDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.submitDisabled = false;
+          this.response = res;
+          this.toaster.success("Advance payment updated successfully.");
+          this.cancel();
+        },
+      });
   }
 
   resetEntityVal() {

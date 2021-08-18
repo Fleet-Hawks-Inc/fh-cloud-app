@@ -8,8 +8,10 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <a class="text-uppercase btn btn-sm btn-dark mr-3" data-toggle="modal"
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
               data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+              <a routerLink="/fleet/drivers/edit/{{driverID}}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Driver</a>
             <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
               List</a>
           </div>
@@ -72,7 +74,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          <!-- <div class="col-lg-6 pr-1 pl-2 mt-3">
             <div class="bg-white ssdriver p-2">
               <h2 class="font-weight-bold text-dark text-5 mt-0 mb-2">Safety Summary</h2>
               <div class="row text-center">
@@ -146,8 +148,8 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          </div> -->
+          <div class="col-lg-12 pr-1 pl-2 mt-3">
             <div class="bg-white p-2">
               <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Trips</h2>
               <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">

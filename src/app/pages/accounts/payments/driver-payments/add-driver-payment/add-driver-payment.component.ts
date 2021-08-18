@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,7 @@ import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService, ListService } from 'src/app/services';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -89,7 +90,8 @@ export class AddDriverPaymentComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private httpClient: HttpClient,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private location: Location,
   ) {}
 
   ngOnInit() {
@@ -299,10 +301,13 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
     this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
     this.paymentData.totalAmount = (this.paymentData.totalAmount) ? Number(this.paymentData.totalAmount) : 0;
-    this.paymentData.finalAmount = this.paymentData.totalAmount - this.paymentData.taxes - this.paymentData.advance;
-    this.paymentData.finalAmount = Number(this.paymentData.finalAmount);
+    this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
+    this.paymentData.finalAmount = this.paymentData.totalAmount - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
+    this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(2);
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   addRecord() {
     if(this.paymentData.settlementIds.length === 0) {
       this.toaster.error("Please select settlement(s)");
@@ -555,9 +560,9 @@ export class AddDriverPaymentComponent implements OnInit {
             this.paymentData.taxdata.provincialTax = result.provncTax;
             this.paymentData.taxdata.emplCPP = result.employerCpp;
             this.paymentData.taxdata.emplEI = result.employerEI;
-            this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+            this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
             this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-  
+
             this.calculateFinalTotal();
           })
         }
@@ -592,7 +597,7 @@ export class AddDriverPaymentComponent implements OnInit {
       if(this.paymentData.taxdata.stateCode === v.stateCode) {
         this.provincalClaimCodes = v.codes;
       }
-    })
+    });
     this.paymentData.taxdata.provincialCode = 'claim_code_1';
     this.calculatePayroll();
   }
@@ -603,8 +608,8 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.taxdata.federalTax = 0;
     this.paymentData.taxdata.provincialTax = 0;
     this.paymentData.taxdata.emplCPP = 0;
-      this.paymentData.taxdata.emplEI = 0;
-    this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+    this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
     this.calculateFinalTotal();
   }
 }

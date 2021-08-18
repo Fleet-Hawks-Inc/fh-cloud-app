@@ -183,7 +183,7 @@
                                                         <tr *ngFor="let trp of settledTrips; let t=index;">
                                                             <td *ngIf="!settlementData.paymentLinked">
                                                                 <span *ngIf="settledTrips.length > 1">
-                                                                    <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)"> 
+                                                                    <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)">
                                                                         <i class="fa fa-trash"></i>
                                                                     </a>
                                                                 </span>
@@ -193,7 +193,7 @@
                                                                         <i class="fa fa-trash" style="color: #CCC"></i>
                                                                     <!-- </a> -->
                                                                 </span>
-                                                                
+
                                                             </td>
                                                             <td>{{ trp.tripNo }}</td>
                                                             <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
@@ -829,7 +829,7 @@
 
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
-                                            <button class="btn btn-default mr-2" routerLink="/accounts/settlements/list">Cancel</button>
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                             <button class="btn btn-success" *ngIf="!settlementID" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="addRecord()">Save</button>
                                             <button class="btn btn-success" *ngIf="settlementID && !settlementData.paymentLinked" [disabled]="!settlementForm.form.valid || submitDisabled" (click)="updateRecord()">Update</button>
                                         </div>
