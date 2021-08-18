@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service'
 import {Router, ActivatedRoute} from '@angular/router'
+import {ToastrService} from 'ngx-toastr'
 
 @Component({
   selector: 'app-device-detail',
@@ -18,24 +19,28 @@ export class DeviceDetailComponent implements OnInit {
     vehicle:{
       vehicleID:'',
       vehicleIdentification:''
-    }
+    },
+    asset:{}
   };
   public deviceID
 
   constructor(private apiService: ApiService,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private toastr: ToastrService,
+    private router:Router) { }
 
   ngOnInit() {
     let deviceType = this.route.snapshot.params['deviceType'];
     let deviceSerialNo=this.route.snapshot.params['deviceSerialNo']
-    this.deviceID=`${deviceType}#${deviceSerialNo}`;
-    this.deviceID=encodeURIComponent(this.deviceID);
+    this.deviceID=`${deviceType}/${deviceSerialNo}`;
+    //this.deviceID=encodeURIComponent(this.deviceID);
     this.fetchDevice();
   }
 
   private fetchDevice(){
     try{
-      this.apiService.getData(`devices/${this.deviceID}`).subscribe((result)=>{
+      this.apiService.getData(`devices/getDeviceBySerialNo/${this.deviceID}`).subscribe((result)=>{
+        console.log(result)
         if(result.Count>0){
         this.device={
           deviceName:result.Items[0].deviceName,
@@ -46,7 +51,8 @@ export class DeviceDetailComponent implements OnInit {
           vehicle:{
             vehicleID:result.Items[0].vehicle.vehicleID,
             vehicleIdentification:result.Items[0].vehicle.vehicleIdentification
-          }
+          },
+          asset:result.Items[0].asset
         }
       }
       })
@@ -57,5 +63,25 @@ export class DeviceDetailComponent implements OnInit {
     }
   }
 
+  public deactivateDevice(){
+    try{
+     let deviceSerialNo=this.device.deviceSerialNo.split('#')
+     let body:any={
+       deviceType:deviceSerialNo[0],
+       deviceSerialNo:deviceSerialNo[1]
+     }
+      this.apiService.putData(`devices/deactivate`,body).subscribe((result)=>{
+        if(result){
+          
+          this.toastr.success("Device Deaacativated Successfully")
+          this.router.navigate(['/manage/devices/list'])
+        }
+      })
+    }
+    catch(error){
+      console.error(error)
+      throw new Error(error)
+    }
+}
 
 }

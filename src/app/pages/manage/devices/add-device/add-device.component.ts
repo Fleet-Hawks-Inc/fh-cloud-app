@@ -7,6 +7,7 @@ import {  map } from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router'
 
 
+
 @Component({
   selector: 'app-add-device',
   templateUrl: './add-device.component.html',
@@ -22,49 +23,97 @@ export class AddDeviceComponent implements OnInit {
   public device: any = {
     deviceName: '',
     deviceSerialNo: '',
-    devicesSK:'',
+    vehicle:{},
+    asset:{},
+    
     deviceStatus: '',
-    vehicle: {
-      vehicleID:'',
-      vehicleIdentification:''
-    },
+    
     description: '',
     deviceType: '',
     
   };
 
- public deviceID='';
+  public deviceID='';
   
-
-  public vehicles:any;
+public vehicle:any;
+public asset:any;
+public vehicles:any;
+public assets:any=[];
+attachedWith="Vehicle"
   ngOnInit() {
     let deviceType = this.route.snapshot.params['deviceType'];
-    let deviceSerialNo=this.route.snapshot.params['deviceSerialNo']
+     let deviceSerialNo=this.route.snapshot.params['deviceSerialNo']
     if(deviceType&&deviceSerialNo){
-    this.deviceID=`${deviceType}#${deviceSerialNo}`;
-    this.deviceID=encodeURIComponent(this.deviceID);
+     this.deviceID=`${deviceType}/${deviceSerialNo}`;
+     
+    // this.deviceID=encodeURIComponent(this.deviceID);
     this.fetchDevices();
     }
+    this.deviceAttachedVehicle();
+  }
+  deviceAttachedVehicle(){
+    this.attachedWith="Vehicle"
     this.fetchVehicles();
   }
 
+  deviceAttachedAsset(){
+    this.attachedWith="Asset"
+    this.fetchAssets();
+  }
+  fetchAssets(){
+    this.device.vehicle={}
+    try{
+      this.apiService.getData('assets/get/list').subscribe((result)=>{
+        
+        if(result){
+          for(let key in result){
+          let obj={
+            assetIdentification:result[key],
+            assetID:key
+          }
+          
+          this.assets.push(obj)
+        }
+  
+        }  
+      })
+    }
+    catch(error){
+      console.error(error)
+      throw new Error(error);
+  
+    }
+
+
+  }
+
+
+
   private fetchDevices(){
     try{
-      this.apiService.getData(`devices/${this.deviceID}`).subscribe((result)=>{
+      this.apiService.getData(`devices/getDeviceBySerialNo/${this.deviceID}`).subscribe((result)=>{
         if(result.Count>0){
-        this.device={
-          deviceName:result.Items[0].deviceName,
-          deviceStatus:result.Items[0].deviceStatus,
-          deviceSerialNo:result.Items[0].deviceSerialNo,
-          devicesSK:result.Items[0].devicesSK,
-          description:result.Items[0].description,
-          deviceType:result.Items[0].deviceType,
-          vehicle:{
-            vehicleID:result.Items[0].vehicle.vehicleID,
-            vehicleIdentification:result.Items[0].vehicle.vehicleIdentification
+          console.log(result.Items[0  ])
+          this.device={
+            deviceName:result.Items[0].deviceName,
+            deviceStatus:result.Items[0].deviceStatus,
+            deviceSerialNo:result.Items[0].deviceSerialNo,
+            devicesSK:result.Items[0].devicesSK,
+            description:result.Items[0].description,
+            deviceType:result.Items[0].deviceType,
+            vehicle:result.Items[0].vehicle,
+            asset:result.Items[0].asset
           }
-        }
-      }
+          
+          if(Object.keys(this.device.asset).length != 0){
+            this.deviceAttachedAsset();
+          }
+          else{
+            this.deviceAttachedVehicle();
+          }
+
+        }      
+    
         })
     }
     catch(error){
@@ -73,6 +122,9 @@ export class AddDeviceComponent implements OnInit {
     }
   }
   private fetchVehicles() {
+    this.device.asset={}
+    
+
     try{
     this.apiService.getData('vehicles').subscribe((result)=>{
       if(result){
@@ -97,25 +149,9 @@ export class AddDeviceComponent implements OnInit {
   }
   public submit(){
     if(this.device){
-      const today=new Date()
-      const dd=today.getDate()
-      const mm= today.getMonth()+1;
-      const yyyy=today.getFullYear();
+      console.log(this.device)
+    
 
-      const HH=today.getHours();
-      const MM =today.getMinutes();
-      const SS=today.getSeconds();
-      this.device.devicesSK=`${this.device.deviceType}#${this.device.deviceSerialNo}#${yyyy}-${mm}-${dd}#${HH}:${MM}:${SS}`
-      if(this.device.vehicle.vehicleID){
-      this.vehicles.forEach(element => {
-        if(element.vehicleID==this.device.vehicle.vehicleID){
-          
-          this.device.vehicle.vehicleIdentification=element.vehicleIdentification
-        }
-        
-      });
-      
-    }
       try{
         this.apiService.postData('devices',this.device).subscribe({
           complete: () => { },
@@ -151,16 +187,16 @@ export class AddDeviceComponent implements OnInit {
   }
  public  updateAndSubmit(){
   if(this.device){
-    if(this.device.vehicle.vehicleID){
-    this.vehicles.forEach(element => {
-      if(element.vehicleID==this.device.vehicle.vehicleID){
+  //   if(this.device.vehicle.vehicleID){
+  //   this.vehicles.forEach(element => {
+  //     if(element.vehicleID==this.device.vehicle.vehicleID){
         
-        this.device.vehicle.vehicleIdentification=element.vehicleIdentification
-      }
+  //       this.device.vehicle.vehicleIdentification=element.vehicleIdentification
+  //     }
       
-    });
+  //   });
     
-  }
+   }
     try{
       this.apiService.putData('devices',this.device).subscribe({
         complete: () => { },
@@ -194,7 +230,7 @@ export class AddDeviceComponent implements OnInit {
   }
 
 
-  }
+//   }
 
 
 
