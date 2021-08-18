@@ -66,8 +66,9 @@
                         <table class="table table-bordered table-striped mb-0 simple-table">
                            <thead>
                               <tr class="bgcol2">
-                                 <th class="text-2">Date</th>
+
                                  <th class="text-2">Payment#</th>
+                                 <th class="text-2">Date</th>
                                  <th class="text-2">Payment Mode Information</th>
                                  <th class="text-2">Settlement#</th>
                                  <th class="text-2">Paid To</th>
@@ -82,9 +83,10 @@
                                  </td>
                               </tr>
                               <tr *ngFor="let data of payments; let i=index;">
+
+                                 <td class="font-weight-bold">{{ data.paymentNo }}</td>
                                  <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
-                                    date:"yyyy/MM/dd" }}</td>
-                                 <td>{{ data.paymentNo }}</td>
+                                  date:"yyyy/MM/dd" }}</td>
                                  <td>{{ data.payMode }}</td>
                                  <td>
                                     <span *ngFor="let stl of data.settlData; let s=index;">

@@ -173,7 +173,7 @@
                                   </div>
                                 </div>
                               </div>
-                             
+
                               <div class="col-lg-1  mar-top-37 text-left pl-2" *ngIf="driverData.corporationType == 'company'">
                                 <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
                                   class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
@@ -864,7 +864,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 text-right mt-4"> 
+                  <div class="col-lg-6 text-right mt-4">
                     <div class="row">
                       <div class="col-5"></div>
                       <div class="col-5 text-right">
@@ -872,7 +872,7 @@
                           class="btn btn-danger"><i class="fa fa-minus"></i></a>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
@@ -1122,16 +1122,15 @@
                       </div>
                       <div class="col-lg-10" *ngIf="driverData.driverType === 'employee'">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SIN
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                         </label>
                         <input (change)="onChangeHideErrors('SIN')"
                           [(ngModel)]="driverData.SIN" name="SIN"
-                          required
                           type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" pattern="^[0-9]{9}$"
                            >
                            <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
-                            <div *ngIf="sin1.errors.required">
+                            <!-- <div *ngIf="sin1.errors.required">
                               SIN is required.
-                            </div>
+                            </div> -->
                             <div *ngIf="sin1.errors.pattern">
                               SIN must contain 9 numbers.
                             </div>
