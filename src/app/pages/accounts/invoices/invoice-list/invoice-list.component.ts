@@ -45,9 +45,10 @@ export class InvoiceListComponent implements OnInit {
   lastItemSK = '';
   lastItemOrderSK = '';
   constructor(private accountService: AccountService,
-              private apiService: ApiService,
-              private toaster: ToastrService,
-              private router: Router) { }
+    private apiService: ApiService,
+    private toaster: ToastrService,
+    private router: Router) { }
+
 
   ngOnInit() {
     this.invoices = [];
@@ -304,20 +305,50 @@ export class InvoiceListComponent implements OnInit {
   searchFilter() {
     this.lastItemSK = '';
     if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
+     // this.dataMessage = Constants.FETCHING_DATA;
+     if (
+      this.filter.startDate !== "" &&
+      this.filter.endDate === ""
+    ) {
+      this.toaster.error("Please select both start and end dates.");
+      return false;
+    } else if (
+      this.filter.startDate === "" &&
+      this.filter.endDate !== ""
+    ) {
+      this.toaster.error("Please select both start and end dates.");
+      return false;
+    } else if (this.filter.startDate > this.filter.endDate) {
+      this.toaster.error("Start date should be less than end date");
+      return false;
+    } else {
+      this.invoices = [];
+      this.orderInvoices = [];
+      this.lastItemSK = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDetails();
+    }
+
     }
   }
 
   fetchDetails() {
-    this.accountService.getData(`invoices/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
+    const searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+    this.accountService.getData(`order-invoice/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
+    .subscribe((result: any) => {
+      this.orderInvoices = result;
+      this.setMessage();
+    });
+    this.accountService.getData(`invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
       .subscribe((result: any) => {
         this.invoices = result;
+        this.setMessage();
       });
-    this.accountService.getData(`order-invoice/paging?invNo=${this.filter.invNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
-      .subscribe((result: any) => {
-        this.orderInvoices = result;
-      });
+  }
+  setMessage() {
+    if (this.invoices.length === 0 && this.orderInvoices.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
   }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;

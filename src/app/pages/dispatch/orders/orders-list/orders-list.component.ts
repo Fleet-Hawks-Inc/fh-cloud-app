@@ -337,7 +337,7 @@ export class OrdersListComponent implements OnInit {
       //   eventID: eventData.orderID,
       //   status: eventData.orderStatus
       // }
-      this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderStatus}`).subscribe((result: any) => {
+      this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderNumber}/${eventData.orderStatus}`).subscribe((result: any) => {
           this.orders = [];
           this.confirmOrders = [];
           this.dispatchOrders = [];
@@ -427,8 +427,8 @@ export class OrdersListComponent implements OnInit {
   async changeStatus(id) {
     if (confirm('Are you sure you want to confirm the order?') === true) {
       const result = await this.apiService.getData('orders/update/orderStatus/' + id + '/confirmed').toPromise();
-      console.log('result', result);
       if (result) {
+        this.dataMessage = Constants.FETCHING_DATA;
         this.orders = [];
         this.confirmOrders = [];
         this.dispatchOrders = [];
@@ -436,6 +436,7 @@ export class OrdersListComponent implements OnInit {
         this.cancelledOrders = [];
         this.invoicedOrders = [];
         this.partiallyOrders = [];
+        this.lastEvaluatedKey = '';
         this.fetchAllTypeOrderCount();
       }
     }

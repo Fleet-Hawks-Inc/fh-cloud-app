@@ -96,7 +96,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchTrips();
     this.fetchTripsByIDs();
     // this.fetchLastDocumentNumber();
-    
+
     $(document).ready(() => {
       // this.form = $('#form_').validate();
     });
@@ -117,7 +117,7 @@ export class CompanyDocumentsComponent implements OnInit {
     });
   }
 
-  selectDoc(event) { 
+  selectDoc(event) {
     let files = [...event.target.files];
     let condition = true;
 
@@ -125,7 +125,7 @@ export class CompanyDocumentsComponent implements OnInit {
       const element = files[i];
       let name = element.name.split('.');
       let ext = name[name.length - 1].toLowerCase();
-      
+
 
       if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
       && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
@@ -137,7 +137,7 @@ export class CompanyDocumentsComponent implements OnInit {
     }
 
     if(condition) {
-      this.uploadeddoc = []; 
+      this.uploadeddoc = [];
       this.uploadeddoc.push(files[0])
     }
   }
@@ -148,7 +148,7 @@ export class CompanyDocumentsComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        
+
         this.totalRecords = result.Count;
       }
     });
@@ -254,14 +254,14 @@ export class CompanyDocumentsComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-    
+
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        
+
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
@@ -325,26 +325,26 @@ export class CompanyDocumentsComponent implements OnInit {
       });
   }
 
-  deactivateAsset(value, docID) {
+  deactivateAsset(value, docID, docNo: any) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-        .deleteData(`documents/isDeleted/${docID}/${value}`)
+        .deleteData(`documents/isDeleted/${docID}/${docNo}/${value}`)
         .subscribe((result: any) => {
           this.documents = [];
           this.docDraw = 0;
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
 
-          this.toastr.success('Document deleted successfully.'); 
+          this.toastr.success('Document deleted successfully.');
           this.fetchDocuments();
-          this.initDataTable(); 
+          this.initDataTable();
         });
     }
   }
 
   initDataTable() {
     this.spinner.show();
-    
+
     this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
@@ -366,7 +366,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.docPrevEvauatedKeys.push(lastEvalKey);
           }
           this.lastEvaluatedKey = lastEvalKey;
-          
+
         } else {
           this.docNext = true;
           this.lastEvaluatedKey = '';
@@ -407,7 +407,7 @@ export class CompanyDocumentsComponent implements OnInit {
       }else if(this.filterValues.startDate>this.filterValues.endDate){
         this.toastr.error('Start date should be less then end date');
         return false;
-      } else { 
+      } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.documents = [];
         this.suggestions = [];
@@ -442,7 +442,7 @@ export class CompanyDocumentsComponent implements OnInit {
       };
       this.resetCountResult();
       this.fetchDocumentsCount();
-      
+
     } else {
       return false;
     }

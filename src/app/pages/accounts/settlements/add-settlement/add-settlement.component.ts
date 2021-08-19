@@ -368,7 +368,6 @@ export class AddSettlementComponent implements OnInit {
         if(this.settledTrips.length > 0) {
             this.paymentCalculation(this.settledTrips);
         }
-        console.log('this.settledTrips', this.settledTrips);
     }
 
     paymentCalculation(trips) {
@@ -381,8 +380,8 @@ export class AddSettlementComponent implements OnInit {
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
                 }
-// console.log('this.settlementData.tripIds', this.settlementData.tripIds);
-// this.fetchExpenses(this.settlementData.tripIds);
+console.log('this.settlementData.tripIds', this.settlementData.tripIds);
+this.fetchExpenses(this.settlementData.tripIds);
                 this.selectedTrips.push(element);
 
                 if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
@@ -714,8 +713,8 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
-    fetchExpenses(expenses: any) {
-      this.accountService.getData(`expense`).subscribe((result: any) => {
+    fetchExpenses(trips: any) {
+      this.accountService.getData(`expense/trip-expenses/${trips}`).subscribe((result: any) => {
 
         // this.expenses = result.filter((e: any) => {
         //   return e.tripID === this.tripID;
