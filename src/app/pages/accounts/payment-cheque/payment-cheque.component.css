@@ -1,5 +1,7 @@
 @font-face {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif, 'micr';
+  /* font-family: micr; */
+  /* src: url(css/fonts/MICR.ttf); */
 }
 
 .routingNo {

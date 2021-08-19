@@ -92,7 +92,13 @@ export class AddDriverPaymentComponent implements OnInit {
     private httpClient: HttpClient,
     private modalService: NgbModal,
     private location: Location,
-  ) {}
+  ) {
+    this.listService.paymentSaveList.subscribe((res: any) => {
+      if(res === 'driver' || res === 'carrier' || res === 'owner_operator') {
+        this.addRecord();
+      }
+    })
+  }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -537,9 +543,12 @@ export class AddDriverPaymentComponent implements OnInit {
 
   showCheque() {
     let obj = {
-      entityName: this.paymentData.entityId,
+      entityId: this.paymentData.entityId,
       chequeDate: this.paymentData.payModeDate,
-      chequeAmount: this.paymentData.finalAmount
+      chequeAmount: this.paymentData.finalAmount,
+      type: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
     }
     this.listService.openPaymentChequeModal(obj);
   }
