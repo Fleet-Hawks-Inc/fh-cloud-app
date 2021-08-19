@@ -86,19 +86,28 @@
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">
                                                         Reference#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required />
+                                                    <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required pattern="^[a-zA-Z0-9\s]+$"/>
 
                                                     <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
                                                         <div *ngIf="refNo.errors.required">
                                                             Reference# is required.
                                                         </div>
+                                                        <div *ngIf="refNo.errors.pattern">
+                                                            Reference# must contain alphanumeric characters.
+                                                           </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row pt-2">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2 ">Notes</label>
-                                                    <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto"></textarea>
+                                                    <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto" #Nmanual="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                    <div *ngIf="Nmanual.invalid && (Nmanual.dirty || Nmanual.touched)" class="text-danger">
+                                                        <div *ngIf="Nmanual.errors.pattern">
+                                                         Only 500 characters are allowed.
+                                                        </div>
+                                                
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>

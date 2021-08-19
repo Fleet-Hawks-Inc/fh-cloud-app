@@ -457,7 +457,13 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
                                             <textarea class="form-control h-auto" placeholder="Enter notes of the expense transaction"rows="3" name="notes"
-                                                [(ngModel)]="expenseData.notes"></textarea>
+                                                [(ngModel)]="expenseData.notes" #Nexpense="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                <div *ngIf="Nexpense.invalid && (Nexpense.dirty || Nexpense.touched)" class="text-danger">
+                                                    <div *ngIf="Nexpense.errors.pattern">
+                                                     Only 500 characters are allowed.
+                                                    </div>
+                                            
+                                                 </div>
                                         </div>
                                     </div>
                                 </div>

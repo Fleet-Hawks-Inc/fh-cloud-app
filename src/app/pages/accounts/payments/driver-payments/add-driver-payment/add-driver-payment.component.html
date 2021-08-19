@@ -350,11 +350,14 @@
                                                 <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$">
                                                         <div *ngIf="modeNo.invalid && (modeNo.dirty || modeNo.touched)" class="text-danger">
                                                             <div *ngIf="modeNo.errors.required">
                                                                 {{ payModeLabel }} Reference is required.
                                                             </div>
+                                                            <div *ngIf="modeNo.errors.pattern">
+                                                                {{ payModeLabel }} Reference must contain alphanumeric characters.
+                                                               </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-5">
@@ -364,7 +367,7 @@
                                                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
                                                             [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel" required>
 
-                                                        <div *ngIf="modeDate.invalid && (modeDate.dirty || modeDate.touched)" class="text-danger">
+                                                        <div *ngIf="modeDate.invalid && (modeDate.dirty || modeDate.touched)" class="text-danger"> 
                                                             <div *ngIf="modeDate.errors.required">
                                                                 {{ payModeLabel }} date is required.
                                                             </div>
