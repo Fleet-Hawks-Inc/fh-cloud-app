@@ -95,7 +95,13 @@ export class ChartOfAccountsComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if (result.length > 0) {
+        //  this.accounts = result;
           for (const element of result) {
+            const acName =  element.actName.split(' ');
+            if (acName[0] === 'cpp' || acName[0] === 'ei') {
+                acName[0] = acName[0].toUpperCase();
+            }
+            element.actName = acName.join(' ');
             this.accounts.push(element);
           }
           if (this.accounts[this.accounts.length - 1].sk !== undefined) {
