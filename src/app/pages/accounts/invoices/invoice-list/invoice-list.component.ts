@@ -44,7 +44,10 @@ export class InvoiceListComponent implements OnInit {
   };
   lastItemSK = '';
   lastItemOrderSK = '';
-  constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private router: Router) { }
+  constructor(private accountService: AccountService,
+              private apiService: ApiService,
+              private toaster: ToastrService,
+              private router: Router) { }
 
   ngOnInit() {
     this.invoices = [];
@@ -117,6 +120,7 @@ export class InvoiceListComponent implements OnInit {
     if (refresh === true) {
       this.lastItemSK = '';
       this.invoices = [];
+      this.openInvoices = [];
       this.paidInvoices = [];
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
@@ -190,6 +194,11 @@ export class InvoiceListComponent implements OnInit {
   }
   categorizeOrderInvoices(invoices: any) {
     if (invoices.length > 0) {
+      this.openOrderInvoices = [];
+      this.paidOrderInvoices = [];
+      this.emailedOrderInvoices = [];
+      this.partiallyPaidOrderInvoices = [];
+      this.voidedOrderInvoices = [];
       for (const element of invoices) {
         if (element.invStatus === 'open') {
           this.openOrderInvoices.push(element);
@@ -207,6 +216,11 @@ export class InvoiceListComponent implements OnInit {
   }
   categorizeInvoices(invoices: any) {
     if (invoices.length > 0) {
+      this.openInvoices = [];
+      this.paidInvoices = [];
+      this.emailedInvoices = [];
+      this.partiallyPaidInvoices = [];
+      this.voidedInvoices = [];
       this.findOverDueInvoice(this.openInvoices);
       for (const element of invoices) {
         if (element.invStatus === 'open') {
@@ -252,6 +266,7 @@ export class InvoiceListComponent implements OnInit {
       this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
         this.toaster.success('Invoice Deleted Successfully.');
         this.fetchInvoices();
+        this.getInvoices();
       });
     }
   }
@@ -280,6 +295,7 @@ export class InvoiceListComponent implements OnInit {
           }
         });
         this.fetchInvoices();
+        this.getInvoices();
       });
     }
 
@@ -331,4 +347,5 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
 
   }
+
 }
