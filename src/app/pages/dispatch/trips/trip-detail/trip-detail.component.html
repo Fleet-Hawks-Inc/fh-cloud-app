@@ -314,7 +314,7 @@
                     <div class="col-lg-12">
                        <div class="bg-white p-3 text-dark">
                           <div class="form-group row">
-                            <div class=" col-6 mb-3">
+                            <div class=" col-6">
                                 <div class="boxshadow1">
                                 <div class="widgetload">
                                     <div class="widgettbload">
@@ -451,6 +451,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 <tr  *ngFor="let expense of expenses">
                                                     <td>{{expense.txnDate | date: 'yyyy/MM/dd'}}</td>
                                                     <td> {{categories[expense.categoryID]}}</td>
@@ -464,6 +465,7 @@
                                                     <td></td>
                                                     <td class="font-weight-bold">Total Amount</td>
                                                     <td class="font-weight-bold">{{totalExp}}</td>
+
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -471,7 +473,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <table class="table table-responsive-sm table-bordered table-sm mb-0">
                                             <thead>
