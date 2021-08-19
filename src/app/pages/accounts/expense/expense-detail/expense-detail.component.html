@@ -100,8 +100,8 @@
                                                         <td>{{ invoices[expenseData.invoiceID] }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="back-color-gray font-weight-bold">Unit Type</td>
-                                                        <td>{{ expenseData.unitType }}</td>
+                                                        <td class="back-color-gray font-weight-bold">Unit Type, Unit Name</td>
+                                                        <td>{{ expenseData.unitType }}, {{ units[expenseData.unitID] }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -135,8 +135,8 @@
                                                         <td>{{ expenseData.notes }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="back-color-gray font-weight-bold">Unit Name</td>
-                                                        <td>{{ units[expenseData.unitID] }}</td>
+                                                        <td class="back-color-gray font-weight-bold">Trip#</td>
+                                                        <td>{{ trips[expenseData.tripID] }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

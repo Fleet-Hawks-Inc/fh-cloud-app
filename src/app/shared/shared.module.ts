@@ -22,7 +22,9 @@ import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-p
 import { AllCarriersComponent } from './all-carriers/all-carriers.component';
 import { MustMatchDirective } from '../directives/must-match.directive';
 import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
+import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -86,6 +88,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     NgbModule,
     SlickCarouselModule,
+    InfiniteScrollModule
   ],
   declarations: [
     SidebarComponent,
@@ -99,7 +102,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SharedModalsComponent,
     AllCarriersComponent,
     MustMatchDirective,
-    AbsoluteValuePipe
+    AbsoluteValuePipe,
+    NewAddressBookComponent
 
   ],
   exports: [

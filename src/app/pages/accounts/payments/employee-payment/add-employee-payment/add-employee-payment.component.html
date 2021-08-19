@@ -516,6 +516,7 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
                                             <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                                            <button type="button" class="btn btn-success modal-with-form mr-2" *ngIf="paymentData.payMode == 'cheque'" (click)="showCheque()">Cheque preview</button>
                                             <button class="btn btn-success" (click)="addRecord()" [disabled]="!empPaymentForm.form.valid || submitDisabled" *ngIf="!paymentID">Save</button>
                                         </div>
                                     </div>
@@ -618,3 +619,5 @@
         </div>
     </div>
 </div>
+
+<app-payment-cheque></app-payment-cheque>

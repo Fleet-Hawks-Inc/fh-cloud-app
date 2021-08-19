@@ -414,12 +414,6 @@ export class AddEmployeePaymentComponent implements OnInit {
     });
   }
 
-  // fetchAccounts() {
-  //   this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
-  //     this.accList = result;
-  //   });
-  // }
-
   selectedAdvancepayments() {
     this.paymentData.advancePayIds = [];
     this.paymentData.advData = [];
@@ -570,5 +564,17 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.taxdata.emplEI = 0;
     this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
     this.calculateFinalTotal();
+  }
+
+  showCheque() {
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalTotal ,
+      type: 'employee',
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+    }
+    this.listService.openPaymentChequeModal(obj);
   }
 }

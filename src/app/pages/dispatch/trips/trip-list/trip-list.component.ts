@@ -255,7 +255,7 @@ export class TripListComponent implements OnInit {
         this.cancelledTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'delivered') {
         this.deliveredTrips.push(result.Items[i]);
-      } 
+      }
 
       trpArr.push(result.Items[i]);
     }
@@ -265,7 +265,7 @@ export class TripListComponent implements OnInit {
   fetchAllTripsCount() {
     this.allTripsCount = 0;
 
-    this.apiService.getData('trips/get/allTypes/count').subscribe(async (result: any) => { 
+    this.apiService.getData('trips/get/allTypes/count').subscribe(async (result: any) => {
       this.allTripsCount = result.allCount;
       this.totalRecords = result.allCount;
 
@@ -298,7 +298,7 @@ export class TripListComponent implements OnInit {
         status: eventData.tripStatus,
         stl: eventData.settlmnt
       }
-      this.apiService.deleteData(`trips/delete/${eventData.tripID}/${eventData.settlmnt}/${eventData.tripStatus}`).subscribe({
+      this.apiService.deleteData(`trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
@@ -309,7 +309,7 @@ export class TripListComponent implements OnInit {
           this.enrouteTrips = [];
           this.cancelledTrips = [];
           this.deliveredTrips = [];
-          
+
           this.hasSuccess = true;
           this.tripDraw = 0;
           this.lastEvaluatedKey = '';
@@ -318,7 +318,7 @@ export class TripListComponent implements OnInit {
 
           this.toastr.success('Trip deleted successfully');
         }
-      })
+      });
     }
   }
 
@@ -374,18 +374,18 @@ export class TripListComponent implements OnInit {
         allowedStatus = [];
         break;
     }
-    
+
     if(!allowedStatus.includes(this.tripStatus)) {
       this.toastr.error('Please select a valid status');
       return false;
-    } 
+    }
 
     let tripObj = {
       entryID : this.tripID,
       status: this.tripStatus,
       settlement: this.settlement,
     }
-    this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => { 
+    this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
       if(result) {
         if(this.activeTab == 'all') {
           this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
@@ -406,7 +406,7 @@ export class TripListComponent implements OnInit {
           }
           this.resetMainTabValues();
         }
-        
+
         $("#tripStatusModal").modal('hide');
         this.toastr.success('Trip status updated successfully');
       } else {
@@ -462,7 +462,7 @@ export class TripListComponent implements OnInit {
         // disable prev btn
         if (this.tripDraw == 0) {
           this.tripPrev = true;
-        } 
+        }
 
         // disable next btn when no records at last
         if(this.fetchedRecordsCount < this.totalRecords ){
@@ -481,12 +481,12 @@ export class TripListComponent implements OnInit {
   }
 
   filterTrips() {
-    
+
 
     if(this.tripsFiltr.startDate===null) this.tripsFiltr.startDate=''
     if(this.tripsFiltr.endDate===null) this.tripsFiltr.endDate=''
-    
-    if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
+
+    if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== ''
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
 
       if(this.tripsFiltr.startDate != '' && this.tripsFiltr.endDate == '') {
@@ -513,7 +513,7 @@ export class TripListComponent implements OnInit {
         this.enrouteTrips = [];
         this.cancelledTrips = [];
         this.deliveredTrips = [];
-        
+
         this.records = false;
         this.trips = [];
         if(this.tripsFiltr.startDate !== '') {
@@ -579,7 +579,7 @@ export class TripListComponent implements OnInit {
   fetchAllCarrierIDs() {
     this.apiService.getData('contacts/get/list/carrier')
       .subscribe((result: any) => {
-        this.carriersObject = result; 
+        this.carriersObject = result;
       });
   }
 
@@ -593,7 +593,7 @@ export class TripListComponent implements OnInit {
   fetchAllOrderIDs() {
     this.apiService.getData('orders/get/list')
       .subscribe((result: any) => {
-        this.ordersObject = result; 
+        this.ordersObject = result;
       });
   }
 
@@ -602,7 +602,7 @@ export class TripListComponent implements OnInit {
       this.tripStartPoint = this.tripDraw * this.pageLength + 1;
       this.tripEndPoint = this.tripStartPoint + this.pageLength - 1;
 
-    } 
+    }
   }
 
   // next button func
@@ -629,7 +629,7 @@ export class TripListComponent implements OnInit {
         this.getStartandEndVal('all');
         this.tripEndPoint = this.tripStartPoint+this.trips[this.tripDraw].length-1;
       }
-    } 
+    }
   }
 
   // prev button func
@@ -650,7 +650,7 @@ export class TripListComponent implements OnInit {
         this.tripNext = false;
         this.getStartandEndVal('all');
       }
-    } 
+    }
   }
 
   resetCountResult() {
@@ -680,7 +680,7 @@ export class TripListComponent implements OnInit {
     this.deliveredTrips = [];
     for (let i = 0; i < this.trips.length; i++) {
       const element = this.trips[i];
-      
+
       for (let x = 0; x < element.length; x++) {
         if(this.tripID == element[x].tripID) {
           element[x].tripStatus = this.tripStatus;
@@ -698,7 +698,7 @@ export class TripListComponent implements OnInit {
           this.cancelledTrips.push(element[x]);
         } else if (element[x].tripStatus == 'delivered') {
           this.deliveredTrips.push(element[x]);
-        } 
+        }
       }
     }
   }
