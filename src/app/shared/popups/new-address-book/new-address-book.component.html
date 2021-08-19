@@ -232,7 +232,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateCustomer(customer, customer.contactID)
+                                deactivate(customer.contactID)
                               "
                               >Delete</a
                             >
@@ -336,7 +336,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateBroker(item, item.contactID)
+                              deactivate(item.contactID)
                               "
                               >Delete</a
                             >
@@ -430,7 +430,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateBroker(broker, broker.contactID)
+                              deactivate(broker.contactID)
                               "
                               >Delete</a
                             >
@@ -541,7 +541,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateVendor(vendor, vendor.contactID)
+                              deactivate(vendor.contactID)
                               "
                               >Delete</a
                             >
@@ -652,7 +652,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateCarrier(carrier, carrier.contactID)
+                              deactivate(carrier.contactID)
                               "
                               >Delete</a
                             >
@@ -744,7 +744,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateOperator(operator, operator.contactID)
+                              deactivate(operator.contactID)
                               "
                               >Delete</a
                             >
@@ -831,7 +831,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateShipper(shipper, shipper.contactID)
+                              deactivate(shipper.contactID)
                               "
                               >Delete</a
                             >
@@ -920,7 +920,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateReceiver(receiver, receiver.contactID)
+                              deactivate(receiver.contactID)
                               "
                               >Delete</a
                             >
@@ -1012,7 +1012,7 @@
                               class="dropdown-item"
                               href="javascript:;"
                               (click)="
-                                deactivateCompany(company, company.contactID)
+                              deactivate(company.contactID)
                               "
                               >Delete</a
                             >
@@ -2144,7 +2144,7 @@
                             Country<span *ngIf="item.manual"
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="item.cCode" name="bank.addressDetails[{{i}}].cCode"
-                            [required]="item.manual" (change)="getBankStates($event, i,b)"
+                            [required]="item.manual" (change)="getStates($event, i,b)"
                             class="form-control populate" placeholder="Select country">
                             <ng-option value="CA">Canada</ng-option>
                             <ng-option value="US">United States</ng-option>
@@ -2154,7 +2154,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                             Province/State<span *ngIf="item.manual"
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select (change)="getBankCities($event, i,item.countryCode,b)" [(ngModel)]="item.sCode"
+                          <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.sCode"
                           name="bank.addressDetails[{{i}}].sCode" [required]="item.manual"
                             placeholder="Select province/state">
                             <ng-option class="text-capitalize" *ngFor="let state of item.bankStates"
@@ -3400,9 +3400,9 @@
             <p class="text text-danger" *ngIf="hasError">
               {{ Error }}
             </p>
-            <p class="text text-success" *ngIf="hasSuccess">
+            <!-- <p class="text text-success" *ngIf="hasSuccess">
               {{ Success }}
-            </p>
+            </p> -->
           </div>
         </div>
       </div>

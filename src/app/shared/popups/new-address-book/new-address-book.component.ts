@@ -106,6 +106,9 @@ export class NewAddressBookComponent implements OnInit {
   states = [];
   cities = [];
   lastKey: any = '';
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor( private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService, private listService: ListService) {
     this.listService.addressList.subscribe((res: any) => {
@@ -877,6 +880,19 @@ export class NewAddressBookComponent implements OnInit {
     });
   }
 
+  deactivate(id) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.apiService
+      .deleteData(`contacts/delete/${id}`)
+      .subscribe(async(result: any) => {
+        this.lastKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.units = [];
+        this.fetchUnits();
+        this.toastr.success('Entry deleted successfully');
+      });
+    }
+  }
 
   async updateEntry() {
     this.hasError = false;
