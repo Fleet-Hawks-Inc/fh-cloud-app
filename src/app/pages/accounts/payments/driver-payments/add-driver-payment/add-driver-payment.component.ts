@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService, ListService } from 'src/app/services';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 declare var $: any;
 
@@ -89,6 +90,7 @@ export class AddDriverPaymentComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private httpClient: HttpClient,
+    private modalService: NgbModal,
     private location: Location,
   ) {}
 
@@ -534,7 +536,12 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   showCheque() {
-    $('#chequeModal').modal('show');
+    let obj = {
+      entityName: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalAmount
+    }
+    this.listService.openPaymentChequeModal(obj);
   }
 
 
@@ -545,18 +552,20 @@ export class AddDriverPaymentComponent implements OnInit {
   calculatePayroll() {
     if(!this.paymentID) {
       if(this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
-        this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.totalAmount}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
-          this.paymentData.taxdata.cpp = result.cpp;
-          this.paymentData.taxdata.ei = result.insurance;
-          this.paymentData.taxdata.federalTax = result.federalTax;
-          this.paymentData.taxdata.provincialTax = result.provncTax;
-          this.paymentData.taxdata.emplCPP = result.employerCpp;
-          this.paymentData.taxdata.emplEI = result.employerEI;
-          this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
-          this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
+        if(this.paymentData.totalAmount > 0) {
+          this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.totalAmount}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
+            this.paymentData.taxdata.cpp = result.cpp;
+            this.paymentData.taxdata.ei = result.insurance;
+            this.paymentData.taxdata.federalTax = result.federalTax;
+            this.paymentData.taxdata.provincialTax = result.provncTax;
+            this.paymentData.taxdata.emplCPP = result.employerCpp;
+            this.paymentData.taxdata.emplEI = result.employerEI;
+            this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+            this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
 
-          this.calculateFinalTotal();
-        })
+            this.calculateFinalTotal();
+          })
+        }
       } else {
         this.resetPayrollCalculations();
       }

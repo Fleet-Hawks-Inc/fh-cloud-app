@@ -181,6 +181,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     })
     this.fetchLastAdded();
     this.fetchAdvancePayments();
+    this.calculatePayroll();
   }
 
   EmpRateCalc() {
@@ -193,6 +194,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.payroll.amount = Number(this.paymentData.payroll.amount);
     this.paymentData.paymentTotal = this.paymentData.payroll.amount;
     this.calculateFinalTotal();
+    this.calculatePayroll();
   }
 
   addAdditionalExp() {
@@ -353,7 +355,7 @@ export class AddEmployeePaymentComponent implements OnInit {
 
   checkInput(type) {
     if(type == 'tax') {
-      if(this.paymentData.taxes > this.paymentData.subTotal) {
+      if(Number(this.paymentData.taxes) > Number(this.paymentData.subTotal)) {
         this.taxErr = 'Tax amount should be less than sub total';
         this.submitDisabled = true;
       } else {
@@ -361,7 +363,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.submitDisabled = false;
       }
     } else if(type == 'advance') {
-      if(this.paymentData.advance > this.paymentData.subTotal) {
+      if(Number(this.paymentData.advance) > Number(this.paymentData.subTotal)) {
         this.advErr = 'Advance amount should be less than sub total';
         this.submitDisabled = true;
       } else {
@@ -459,6 +461,9 @@ export class AddEmployeePaymentComponent implements OnInit {
 
     for (const element of this.advancePayments) {
       if(element.selected) {
+        if(Number(element.paidAmount > 0)) {
+          selectCount += 1;
+        }
         this.paymentData.advance += Number(element.paidAmount);
         this.paymentData.advData.map((v) => {
           if(element.paymentID === v.paymentID) {
@@ -488,7 +493,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.paymentTotal = (this.paymentData.paymentTotal) ? Number(this.paymentData.paymentTotal) : 0;
 
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
-    this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
+    this.paymentData.finalTotal = this.paymentData.subTotal - this.paymentData.taxes - this.paymentData.advance;
   }
 
   openPayrollModel() {
@@ -496,19 +501,28 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   calculatePayroll() {
-    if (!this.paymentID) {
-      if (this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
-        this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.subTotal}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
-          this.paymentData.taxdata.cpp = result.cpp;
-          this.paymentData.taxdata.ei = result.insurance;
-          this.paymentData.taxdata.federalTax = result.federalTax;
-          this.paymentData.taxdata.provincialTax = result.provncTax;
-          this.paymentData.taxdata.emplCPP = result.employerCpp;
-          this.paymentData.taxdata.emplEI = result.employerEI;
-          this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
-          this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-          this.calculateFinalTotal();
-        })
+    this.paymentData.taxdata.cpp = 0;
+    this.paymentData.taxdata.ei = 0;
+    this.paymentData.taxdata.federalTax = 0;
+    this.paymentData.taxdata.provincialTax = 0;
+    this.paymentData.taxdata.emplCPP = 0;
+    this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = 0;
+    if(!this.paymentID) {
+      if(this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
+        if(this.paymentData.subTotal > 0) {
+          this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.subTotal}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
+            this.paymentData.taxdata.cpp = result.cpp;
+            this.paymentData.taxdata.ei = result.insurance;
+            this.paymentData.taxdata.federalTax = result.federalTax;
+            this.paymentData.taxdata.provincialTax = result.provncTax;
+            this.paymentData.taxdata.emplCPP = result.employerCpp;
+            this.paymentData.taxdata.emplEI = result.employerEI;
+            this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+            this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
+            this.calculateFinalTotal();
+          })
+        }
       } else {
         this.resetPayrollCalculations();
         this.calculateFinalTotal();
