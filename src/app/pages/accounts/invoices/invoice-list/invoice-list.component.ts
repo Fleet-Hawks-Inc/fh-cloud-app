@@ -49,6 +49,7 @@ export class InvoiceListComponent implements OnInit {
     private toaster: ToastrService,
     private router: Router) { }
 
+
   ngOnInit() {
     this.invoices = [];
     this.orderInvoices = [];

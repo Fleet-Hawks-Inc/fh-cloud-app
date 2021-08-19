@@ -93,6 +93,7 @@ export class ChartOfAccountsComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+
           }
           if (result.length > 0) {
             //  this.accounts = result;

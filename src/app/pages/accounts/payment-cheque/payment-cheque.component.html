@@ -1,102 +1,80 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <ng-template #content let-modal>
-
-
-    <!-- <div class="modal fade" id="chequeModal" role="dialog" tabindex="-1"> 
-        <div class="modal-dialog" role="document" style="max-width: 1000px;"> -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Cheque</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form>
-                    <div class="modal-body">
-                        <div class="form-group col-lg-12 col-md-12">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Cheque</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="form-group col-lg-12 col-md-12">
+                    <div class="row">
+                        <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="50%"
-                                                            class="back-color-gray
-                                                            font-weight-bold">Recipient
-                                                            Name</td>
-                                                        <td width="50%">Driver 1</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="back-color-gray
-                                                            font-weight-bold">Cheque
-                                                            Date</td>
-                                                        <td>02/02/2022</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="back-color-gray
-                                                            font-weight-bold">Cheque
-                                                            Amount</td>
-                                                        <td>6700 CAD</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12 text-center"> 
-                                            <!-- <img
-                                                src="images/cheque.jpg"
-                                                class="img-fluid" height="110px;"
-                                                width="130px;">  -->
-                                            </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-lg-12 text-center"> <a
-                                                href="javascript:;" (click)="prevCheck()"
-                                                class="btn btn-dark btn-fleet btn-sm
-                                                modal-with-form">Preview Cheque</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="btn-group-toggle"
-                                        data-toggle="buttons">
-                                        <label class="btn btn-outline btn-fleet mr-2
-                                            active" style="width:125px;" id="stop"
-                                            onclick="show_manual_sequence()">
-                                            <input id="multiplePickupRadio"
-                                                name="routeType" type="radio"> Print
-                                            Now </label>
-                                        <label class="btn btn-outline btn-fleet mr-2"style="width:125px;"
-                                            id="yard"
-                                            onclick="show_automatic_sequence()">
-                                            <input id="permanentRouteRadio"
-                                                name="routeType" type="radio"> Print
-                                            Later</label>
-                                    </div>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td width="50%"
+                                                    class="back-color-gray
+                                                    font-weight-bold">Select Company
+                                                </td>
+                                                <td width="50%">
+                                                    <ng-select [items]="carriers" name="carriers" bindLabel="companyName" (change)="selectedCarrier($event)" bindValue="contactID" [(ngModel)]="carrierID" placeholder="Select Company"></ng-select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="50%"
+                                                    class="back-color-gray
+                                                    font-weight-bold">Select Address</td>
+                                                <td width="50%">
+                                                    <ng-select [items]="addresses" name="carrAddr" bindLabel="fullAddr" bindValue="fullAddr" [(ngModel)]="cheqdata.companyAddress" placeholder="Select Company Address"></ng-select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="50%"
+                                                    class="back-color-gray
+                                                    font-weight-bold">Recipient
+                                                    Name</td>
+                                                <td width="50%">{{ paydata.entityName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray
+                                                    font-weight-bold">Cheque
+                                                    Date</td>
+                                                <td>{{ paydata.chequeDate }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray
+                                                    font-weight-bold">Cheque
+                                                    Amount</td>
+                                                <td>{{ paydata.chequeAmount }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                        
+                    </div>
+                    
+                </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" (click)="modal.dismiss()">Close</button>
-                        <button type="button" class="btn btn-success">Save</button>
-                    </div>
-                </form>
             </div>
-        <!-- </div>
-    </div> -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="modal.dismiss()">Close</button>
+                <button type="button" class="btn btn-success" (click)="prevCheck()">Preview Cheque</button>
+            </div>
+        </form>
+    </div>
 </ng-template>
 
+<!-- cheque preview modal -->
 <div class="modal fade" id="chequeModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document" style="max-width: 1000px;">
-        <!-- Modal content-->
+    <div class="modal-dialog" role="document" style="max-width: 750px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Cheque</h4>
@@ -104,7 +82,7 @@
             </div>
             <form>
                 <div class="modal-body">
-                    <section class="cheque-wrapper">
+                    <section class="cheque-wrapper" id="print_wrap">
                         <table width="100%">
                             <tbody>
                                 <tr>
@@ -112,18 +90,17 @@
                                         <table width="100%">
                                             <tr>
                                                 <td width="40%" class="title text-left" valign="top">
-                                                    <h3 class="margin_bottom0 margin_top0"> XYZ INC</h3>
-                                                    <p class="font10 margin_top1"> N. Enterprise St <br>
-                                                        Orange, USA 92865</p>
+                                                    <h3 class="margin_bottom0 margin_top0">{{ cheqdata.companyName }}</h3>
+                                                    <p class="font10 margin_top1"> {{ cheqdata.companyAddress }} </p>
                                                 </td>
                                                 <td width="30%" class="title text-center" valign="top">
                                                     <p class="font12 font-bold margin_top0"> DATE</p>
-                                                    22-Jul-2021
+                                                    {{ cheqdata.date | date:"dd-MMM-yyyy" }}
                                                 </td>
                                                 <td width="30%" class="title text-center" valign="top">
                                                     <p class="font12 font-bold  line_height99 margin_top0" style="margin-bottom: 7px; padding-top: 5px;"> CHEQUE NUMBER<br>
                                                         NUMERO DE CH&#201;QUE</p>                                        
-                                                    <span class="font16">2298972021</span>
+                                                    <span class="font16">{{ cheqdata.chqNo }}</span>
                                                 </td>
                                             </tr>
                                         </table>
@@ -150,16 +127,16 @@
                                                             <tr style="height: 490px;">
                                                                 <div>
                                                                     <td class="p10 border_right" valign="top"></td>
-                                                                    <td class="p10 border_right" valign="top">19-Jul-2021</td>
-                                                                    <td class="p10 border_right" valign="top">Mr. Smith</td>
-                                                                    <td class="p10 text-right" valign="top">4,789.67</td>
+                                                                    <td class="p10 border_right" valign="top">{{ cheqdata.date | date:"dd-MMM-yyyy" }}</td>
+                                                                    <td class="p10 border_right" valign="top">{{ cheqdata.entityName }}</td>
+                                                                    <td class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
                                                                 </div>
                                                             </tr>
                                                             <tr>
                                                                 <td class="p10 border_right" valign="top"></td>
                                                                 <td class="p10 border_right" valign="top"></td>
                                                                 <td class="p10 border_right text-right" valign="top">TOTAL</td>
-                                                                <td class="p10 text-right" valign="top">4,789.67</td>
+                                                                <td class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -187,21 +164,20 @@
                                         <table width="100%">
                                             <tr>
                                                 <td width="40%" class="title text-left" valign="middle">
-                                                    <h3 class="margin_bottom0"> XYZ INC</h3>
-                                                    <p class="font10 margin_top1"> N. Enterprise St <br>
-                                                        Orange, USA 92865</p>
+                                                    <h3 class="margin_bottom0">{{ cheqdata.companyName }}</h3>
+                                                    <p class="font10 margin_top1"> {{ cheqdata.companyAddress }}</p>
                                                 </td>
                                                 <td width="20%" class="title text-left line_height90" valign="middle">
-                                                    <span  class="font-bold font10">TD Canada Trust</span><br>
-                                                    <span class="font9">206 Saddletone Circle NE<br></span>
-                                                    <span class="font9">Calgary, AB, T3J0C9</span>
+                                                    <span  class="font-bold font10">{{ cheqdata.bankName }}</span><br>
+                                                    <span class="font9">{{ cheqdata.bankAddress }}</span>
+                                                    <!-- <span class="font9">Calgary, AB, T3J0C9</span> -->
                                                 </td>
                                                 <td width="20%" class="title text-right " valign="middle">
                                                     <p class="margin_top1 font12 font-bold line_height99"> CHEQUE NUMBER
                                                         NUMERO DE CH&#201;QUE</p>
                                                 </td>
                                                 <td width="15%" class="title text-right font16" style="padding-top: 25px;" valign="top">
-                                                    2298972021
+                                                    {{ cheqdata.chqNo }}
                                                 </td>
                                             </tr>
                                         </table>
@@ -217,11 +193,10 @@
                                                     <td width="45%" style="position: relative;">
                                                         <div class="back-class"></div>
                                                         <div class="front-class font33 font-bold" style="letter-spacing: 1.6px;">
-                                                            *******$4,789.67
+                                                            <span *ngFor="let num of cdnFund">{{num}}</span>
                                                         </div>
                                                         <div style="padding-top: 30px;" class="font4">
-                                                         <span style="word-spacing: 11.5px; padding-left: 3px;">AST AST AST AST AST AST AST</span> 
-                                                         <span  style="word-spacing: 6.5px; padding-left: 10px;">DOLLAR FOUR COM SEVEN EIGHT NINE PER SIX SEVEN</span>
+                                                            <span style="word-spacing: 11.5px; padding-left: 10px;" *ngFor="let num of cdnFundSmall">{{num}}</span>
                                                         </div>
                                                     </td>
                     
@@ -231,13 +206,15 @@
                                                                 <tr class="text-right">
                                                                     <td width="50%" class="font-bold" style="padding-top: 2;" valign="top">DATE</td>
                                                                     <td width="50%">
-                                                                        <div class="font17" style="letter-spacing: 6px;">12012021</div>
+                                                                        <div class="font17" style="letter-spacing: 6px;">{{ cheqdata.date | date:"ddMMyyyy" }}</div>
                                                                         <div class="font10" style="letter-spacing: 8.5px;">DDMMYYYY</div>
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="text-right">
                                                                     <td class="font-bold font19">$</td>
-                                                                    <td class="font19" style="letter-spacing: 1.4px;">***4,789.67</td>
+                                                                    <td class="font19" style="letter-spacing: 1.4px;">
+                                                                        <span *ngFor="let num of sideVal">{{num}}</span>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -245,16 +222,16 @@
                                                     </td>
                                                 </tr>
                                                     <tr>
-                                                        <td width="10%" class="font9 font-bold" style="line-height: 90%;">PAY TO THE ORDER<br><br>A PAYER
+                                                        <td width="10%" *ngIf="cheqdata.type == 'owner_operator' || cheqdata.type == 'carrier'" class="font9 font-bold" style="line-height: 90%;">PAY TO THE ORDER<br><br>A PAYER
                                                             A L'ORDRE DE</td>
-                                                        <td width="40%">
+                                                        <td width="40%" *ngIf="cheqdata.type == 'owner_operator' || cheqdata.type == 'carrier'">
                                                             <div class="font10" style="line-height: 100%;">
-                                                                174457 Alberta Ltd.<br>
-                                                                432 East LakeView Pl<br>
-                                                                Chestermere, AB<br>
-                                                                T1X 1W3
+                                                                {{ cheqdata.carrAddress }}
                                                             </div>
                                                         </td>
+
+                                                        <td *ngIf="cheqdata.type == 'driver'"></td>
+                                                        <td *ngIf="cheqdata.type == 'driver'"></td>
                     
                                                         <td width="50%">
                                                             <table width="100%">
@@ -292,7 +269,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center">
-                                        <p style="margin-bottom: 0px;" class="routingNo"> O00012544O T81069D004T 8106D5019107O</p>
+                                        <p style="margin-bottom: 0px;" class="routingNo"> O{{cheqdata.chqNo}}O T{{cheqdata.bankTransit}}T {{cheqdata.bankAccount}}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -304,7 +281,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-success" (click)="generatePDF()">Download</button>
+                    <button type="button" class="btn btn-success" (click)="saveDownload()">Save and download</button>
                 </div>
             </form>
         </div>

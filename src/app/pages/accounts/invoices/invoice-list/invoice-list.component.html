@@ -429,6 +429,7 @@
                           </thead>
                           <tbody>
                             <tr *ngIf="paidInvoices.length == 0 && paidOrderInvoices.length === 0" class="text-center">
+
                               <td colspan="13">{{ dataMessage }}</td>
                             </tr>
                             <tr *ngFor="let inv of paidOrderInvoices; let i = index;">
