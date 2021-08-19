@@ -282,26 +282,39 @@
                        </div>
                     </div>
                  </div>
-
                  <div class="row mb-3">
-                    <div class="col-lg-12">
-                       <div class="bg-white p-3 text-dark">
-                          <div class="form-group row">
-                            <div class="col-lg-12">
-                                <div class="mapclass vehiclemain" id="map_view">
-                                    <div id="map" style="height: calc(100vh - 150px);"></div>
+                  <div class="col-12">
+                    <mat-accordion>
+                      <mat-expansion-panel hideToggle >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <label
+                            class="control-label text-lg-right text-5">Map View</label>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row mb-3">
+                          <div class="col-lg-12">
+                              <div class="bg-white p-3 text-dark">
+                                <div class="form-group row">
+                                  <div class="col-lg-12">
+                                      <div class="mapclass vehiclemain" id="map_view">
+                                          <div id="map" style="height: calc(100vh - 150px);"></div>
+                                      </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
                           </div>
-                       </div>
-                    </div>
-                 </div>
+                      </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
 
                  <div class="row mb-3">
                     <div class="col-lg-12">
                        <div class="bg-white p-3 text-dark">
                           <div class="form-group row">
-                            <div class=" col-6 mb-3">
+                            <div class=" col-6">
                                 <div class="boxshadow1">
                                 <div class="widgetload">
                                     <div class="widgettbload">
@@ -417,6 +430,8 @@
                                                         <i class="fas fa-dollar-sign"></i> Expenses</h2>
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
+                                                  <a routerLink="/accounts/expense/add" class="btn btn-success btn-xs"
+                                    style="color:white;"><i class="fas fa-plus"></i> Add Expense </a>
                                                     <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
                                                     <a href="javascript:;" class="btn btn-xs btn-dark ml-3"> Other
@@ -436,23 +451,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>&nbsp; </td>
-                                                    <td> &nbsp;</td>
-                                                    <td> &nbsp;</td>
-                                                    <td> &nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td> &nbsp;</td>
-                                                    <td>&nbsp; </td>
-                                                    <td>&nbsp; </td>
-                                                    <td> &nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>&nbsp; </td>
-                                                    <td> &nbsp;</td>
-                                                    <td> &nbsp;</td>
-                                                    <td> &nbsp;</td>
+
+                                                <tr  *ngFor="let expense of expenses">
+                                                    <td>{{expense.txnDate | date: 'yyyy/MM/dd'}}</td>
+                                                    <td> {{categories[expense.categoryID]}}</td>
+                                                    <td> Other Expense</td>
+                                                    <td>{{expense.amount}} {{expense.currency}}</td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -460,7 +464,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td class="font-weight-bold">Total Amount</td>
-                                                    <td class="font-weight-bold">0</td>
+                                                    <td class="font-weight-bold">{{totalExp}}</td>
+
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -468,7 +473,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-3">
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <table class="table table-responsive-sm table-bordered table-sm mb-0">
                                             <thead>

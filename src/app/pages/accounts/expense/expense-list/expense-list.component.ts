@@ -35,13 +35,17 @@ export class ExpenseListComponent implements OnInit {
     this.fetchExpenseCategories();
   }
 
-  fetchExpenses() {
+  fetchExpenses(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.expenses = [];
+    }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-        if(result.length == 0) {
+        if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if(result.length > 0) {
+        if (result.length > 0) {
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -49,7 +53,7 @@ export class ExpenseListComponent implements OnInit {
           }
           result.map((v) => {
             this.expenses.push(v);
-          })
+          });
         }
       });
     }
@@ -114,7 +118,7 @@ export class ExpenseListComponent implements OnInit {
       startDate: null,
       endDate: null,
       typeId: null,
-    }
+    };
     this.lastItemSK = '';
     this.expenses = [];
     this.fetchExpenses();
@@ -122,6 +126,6 @@ export class ExpenseListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchExpenses(); 
+    this.fetchExpenses();
   }
 }

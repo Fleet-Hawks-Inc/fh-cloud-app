@@ -337,8 +337,8 @@
                                                         <label class="control-label font-weight-bold">Select
                                                             Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountID="ngModel" required>
-                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actName }} - {{
-                                                                data.actNo }}</ng-option>
+                                                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{
+                                                                data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                         </ng-select>
                                                         <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
                                                             <div *ngIf="accountID.errors.required">
