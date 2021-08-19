@@ -78,6 +78,9 @@ export class ListService {
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
 
+  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentSaveList = this.paymentSaveDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -248,12 +251,14 @@ fetchReceivers() {
   }
 
   public changeButton(value: boolean){
-
     this.isTrueDataSource.next(value);
+  }
 
-   }
+  openPaymentChequeModal(value){
+    this.paymentModelDataSource.next(value);
+  }
 
-   openPaymentChequeModal(value){
-      this.paymentModelDataSource.next(value);
-   }
+  triggerPaymentSave(value) {
+    this.paymentSaveDataSource.next(value);
+  }
 }
