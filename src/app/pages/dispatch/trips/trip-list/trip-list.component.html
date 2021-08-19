@@ -11,7 +11,7 @@
                             <ng-select [(ngModel)]="tripsFiltr.category" name="category" placeholder="Search by Category" (change)="categoryChange($event)" >
                                 <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
                             </ng-select>
-                        </div> 
+                        </div>
                         <div class="col-md-2 col-lg-2 pr-1">
                             <div class="input-group input-group-md mb-3" *ngIf="tripsFiltr.category != 'driver' && tripsFiltr.category != 'vehicle' && tripsFiltr.category != 'asset' && tripsFiltr.category != 'tripType' && tripsFiltr.category != 'orderNo'  && tripsFiltr.category != 'tripStatus'">
                                 <input type="text" class="form-control" placeholder="Search" name="searchValue" [(ngModel)]="tripsFiltr.searchValue">
@@ -42,7 +42,7 @@
                                 <ng-option *ngFor="let data of ordersObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                             </ng-select>
                         </div>
-                        
+
                         <div class="col-lg-3 col-md-3 pr-1">
                             <div class="input-daterange input-group">
                                 <span class="input-group-prepend">
@@ -181,7 +181,7 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus | titlecase}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -213,7 +213,7 @@
                                             <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="tripNext">Next</button>
                                         </div>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'confirmed'}" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab" *ngIf="activeTab == 'confirmed'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="confirmedTripsDT">
                                             <thead>
@@ -294,7 +294,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'dispatched'}" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="dispatchedTripsDT">
                                             <thead>
@@ -375,7 +375,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'started'}" id="started" role="tabpanel" aria-labelledby="started-tab" *ngIf="activeTab == 'started'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="startedTripsDT">
                                             <thead>
@@ -456,7 +456,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'enroute'}" id="enroute" role="tabpanel" aria-labelledby="enroute-tab" *ngIf="activeTab == 'enroute'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="enrouteTripsDT">
                                             <thead>
@@ -537,7 +537,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'cancelled'}" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab" *ngIf="activeTab == 'cancelled'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="cancelledTripsDT">
                                             <thead>
@@ -617,7 +617,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-            
+
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'delivered'}" id="delivered" role="tabpanel" aria-labelledby="delivered-tab" *ngIf="activeTab == 'delivered'">
                                         <table class="row-border hover table table-bordered table-striped mb-0" id="deliveredTripsDT">
                                             <thead>
@@ -700,15 +700,15 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                          </div>
                       </div>
                    </div>
                 </div>
              </section>
 
-           
-             
+
+
         </section>
     </div>
 </section>

@@ -50,7 +50,9 @@
       <label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
       <div class="row">
         <div class="col-lg-3 pr-0">
-          <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog">
+          <!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
+          <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog">
+
           <div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
             <div *ngIf="actBal.errors.required">
               Account balance is required.
@@ -58,7 +60,8 @@
           </div>
          </div>
         <div class="col-lg-3 pl-0">
-          <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
+          <!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
+            <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog">
             <ng-option value="CAD">CAD</ng-option>
             <ng-option value="USD">USD</ng-option>
           </ng-select>
@@ -74,7 +77,7 @@
         <div class="col-lg-4 pr-0">
           <input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
             ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
-            [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" [disabled]="transLog">
+            [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" >
           <div *ngIf="accountDate.invalid && (accountDate.dirty || accountDate.touched)" class="text-danger">
             <div *ngIf="accountDate.errors.required">
               Account date is required.

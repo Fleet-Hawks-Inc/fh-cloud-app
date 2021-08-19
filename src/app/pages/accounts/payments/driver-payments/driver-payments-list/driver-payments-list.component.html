@@ -47,17 +47,6 @@
                      <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                   </div>
                   <div class="col-md-3 col-lg-3 text-right pr-5">
-
-                     <div class="btn-group flex-wrap">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                           aria-expanded="false">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                           style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-
-                           <a class="dropdown-item text-1" href="">Import</a>
-                           <a class="dropdown-item text-1" href="">Export</a>
-                        </div>
-                     </div>
                      <a routerLink="/accounts/payments/driver-payments/add" class="btn btn-success btn-sm ml-2"
                         style="color:white;"><i class="fas fa-plus"></i> Add Payment </a>
 
@@ -68,70 +57,76 @@
          <div class="row">
             <div class="col pr-0">
                <section class="card">
-                  <div infiniteScroll 
-                     [infiniteScrollDistance]="1" 
-                     [infiniteScrollUpDistance]="1" 
-                     [infiniteScrollThrottle]="5" 
-                     (scrolled)="onScroll()">
-                     <div class="card-body">
-                        <table class="table table-bordered table-striped mb-0 simple-table">
-                           <thead>
-                              <tr class="bgcol2">
-                                 <th class="text-2">Date</th>
-                                 <th class="text-2">Payment#</th>
-                                 <th class="text-2">Payment Mode Information</th>
-                                 <th class="text-2">Settlement#</th>
-                                 <th class="text-2">Paid To</th>
-                                 <th class="text-2">Amount</th>
-                                 <th class="text-2">Action</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr class="text-center" *ngIf="payments.length === 0">
-                                 <td colspan="7">
-                                    {{ dataMessage }}
-                                 </td>
-                              </tr>
-                              <tr *ngFor="let data of payments; let i=index;">
-                                 <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
-                                    date:"yyyy/MM/dd" }}</td>
-                                 <td>{{ data.paymentNo }}</td>
-                                 <td>{{ data.payMode }}</td>
-                                 <td>
-                                    <span *ngFor="let stl of data.settlData; let s=index;">
-                                       <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
-                                       <span *ngIf="s< data.settlementIds.length-1">,</span>
-                                    </span>
-                                 </td>
-                                 <td>
-                                    <strong class="text-capitalize">{{ data.paymentTo }}:</strong> 
-                                    <span *ngIf="data.paymentTo === 'driver'">
-                                       {{ drivers[data.entityId] }}
-                                    </span>
-                                    <span *ngIf="data.paymentTo !== 'driver'">
-                                       {{ contacts[data.entityId] }}
-                                    </span>
-                                 </td>
-                                 <td>{{ data.finalAmount | number }} CAD</td>
-                                 <td>
-                                    <div class="dropdown dropright">
-                                       <button class="bg-transparent border-0" type="button"
-                                          id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                          aria-haspopup="true" aria-expanded="false">
-                                          <i class="fas fa-ellipsis-v"></i>
-                                       </button>
-                                       <div class="dropdown-menu"
-                                          attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                          <a class="dropdown-item"
-                                             routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
-                                       </div>
+                <div class="main-panel">
+                  <div infiniteScroll
+                  [infiniteScrollDistance]="1"
+                  [infiniteScrollUpDistance]="1"
+                  [infiniteScrollThrottle]="5"
+                  (scrolled)="onScroll()">
+                  <div class="card-body" style="display: block">
+                    <div class="main-panel">
+                      <table class="table table-bordered table-striped mb-0 simple-table">
+                        <thead>
+                           <tr class="bgcol2">
+                              <th class="text-2">Payment#</th>
+                              <th class="text-2">Date</th>
+                              <th class="text-2">Payment Mode Information</th>
+                              <th class="text-2">Settlement#</th>
+                              <th class="text-2">Paid To</th>
+                              <th class="text-2">Amount</th>
+                              <th class="text-2">Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr class="text-center" *ngIf="payments.length === 0">
+                              <td colspan="7">
+                                 {{ dataMessage }}
+                              </td>
+                           </tr>
+                           <tr *ngFor="let data of payments; let i=index;">
+
+                              <td class="font-weight-bold">{{ data.paymentNo }}</td>
+                              <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
+                               date:"yyyy/MM/dd" }}</td>
+                              <td>{{ data.payMode }}</td>
+                              <td>
+                                 <span *ngFor="let stl of data.settlData; let s=index;">
+                                    <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
+                                    <span *ngIf="s< data.settlementIds.length-1">,</span>
+                                 </span>
+                              </td>
+                              <td>
+                                 <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
+                                 <span *ngIf="data.paymentTo === 'driver'">
+                                    {{ drivers[data.entityId] }}
+                                 </span>
+                                 <span *ngIf="data.paymentTo !== 'driver'">
+                                    {{ contacts[data.entityId] }}
+                                 </span>
+                              </td>
+                              <td>{{ data.finalAmount | number }} CAD</td>
+                              <td>
+                                 <div class="dropdown dropright">
+                                    <button class="bg-transparent border-0" type="button"
+                                       id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                       aria-haspopup="true" aria-expanded="false">
+                                       <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu"
+                                       attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                       <a class="dropdown-item"
+                                          routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
                                     </div>
-                                 </td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                    </div>
                   </div>
+               </div>
+                </div>
+
                </section>
             </div>
          </div>

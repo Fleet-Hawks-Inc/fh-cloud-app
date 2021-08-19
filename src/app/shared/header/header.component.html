@@ -38,7 +38,7 @@
                         </li>
 
                         <li class="" [class.active]="navSelected === 'accounts'" *ngIf="isAccountsEnabled">
-                            <a class="nav-link" [routerLink]="['/accounts','overview']" (click)="onNavSelected('accounts')">
+                            <a class="nav-link" [routerLink]="['/accounts','chart-accounts', 'list']" (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>
                         </li>
@@ -92,6 +92,7 @@
         </div>
     </div>
 </header>
+
 <app-new-address-book></app-new-address-book>
-<!-- <app-address-book></app-address-book> -->
 <app-shared-modals></app-shared-modals>
+

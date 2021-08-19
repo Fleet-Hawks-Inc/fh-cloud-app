@@ -46,7 +46,8 @@
               [infiniteScrollUpDistance]="1"
               [infiniteScrollThrottle]="5"
               (scrolled)="onScroll()">
-              <div class="card-body">
+              <div class="card-body"  style="display: block">
+               <div class="main-panel">
                 <div class="row bg-white">
                   <div class="col-lg-12">
                     <table class="table table-bordered table-hover table-striped mb-0 simple-table">
@@ -67,7 +68,7 @@
                        </tr>
                         <!-- <tr *ngFor="let ac of accounts | async"> -->
                           <tr *ngFor="let ac of accounts">
-                          <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actName | titlecase}}</td>
+                          <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}"><span *ngIf="ac.first === 'cpp' || ac.first === 'ei'">{{ac.first | uppercase}}</span><span *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'">{{ac.first | titlecase}}</span>&nbsp;{{ac.last | titlecase}}</td>
                           <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>
                           <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType | titlecase}}</td>
                           <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actDesc}}</td>
@@ -88,6 +89,7 @@
                     </table>
                   </div>
                 </div>
+               </div>
               </div>
             </div>
 </div>

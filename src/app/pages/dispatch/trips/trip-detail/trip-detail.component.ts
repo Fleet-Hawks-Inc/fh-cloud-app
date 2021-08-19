@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
-import {from} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
 import { environment } from 'src/environments/environment';
@@ -18,16 +18,17 @@ export class TripDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   constructor(private apiService: ApiService, private route: ActivatedRoute,
+    private accountService: AccountService,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
-      this.selectedFileNames = new Map<any, any>();
-     }
+    this.selectedFileNames = new Map<any, any>();
+  }
 
   tripData = {
     tripNo: '',
     tripStatus: '',
     documents: [],
     carrierID: '',
-    reeferTemperature:'',
+    reeferTemperature: '',
     reeferTemperatureUnit: '',
     notifications: {
       changeRoute: false,
@@ -35,7 +36,7 @@ export class TripDetailComponent implements OnInit {
       dropOff: false,
       tripToDriver: false,
       tripToDispatcher: false
-    }, 
+    },
     bol: '',
     dateCreated: ''
   };
@@ -75,7 +76,10 @@ export class TripDetailComponent implements OnInit {
   driversObject: any = {};
   lastDelivery = '';
   stops = 0;
-
+  totalExp = 0;
+  tripLog = [];
+  expenses = [];
+  categories = [];
   ngOnInit() {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetIDs();
@@ -85,11 +89,24 @@ export class TripDetailComponent implements OnInit {
     this.tripID = this.route.snapshot.params['tripID'];
     this.fetchTripDetail();
     this.mapShow();
-
+    this.fetchTripLog();
+    this.fetchExpenses();
+    this.fetchExpenseCategories();
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
+  fetchTripLog() {
+    const lastEvaluatedKey = '';
+    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + lastEvaluatedKey).subscribe((res: any) => {
+      // console.log('trip', res.Items);
 
+      for (const element of res.Items) {
+        if (element.eventParams.eventID === this.tripID) {
+          this.tripLog.push(element);
+        }
+      }
+    });
+  }
   mapShow() {
     this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
@@ -100,7 +117,23 @@ export class TripDetailComponent implements OnInit {
       this.customersObjects = result;
     });
   }
+  fetchExpenses() {
+    this.accountService.getData(`expense`).subscribe((result: any) => {
+      this.expenses = result.filter((e: any) => {
+        return e.tripID === this.tripID;
+      });
+      for (const element of this.expenses) {
+        this.totalExp = this.totalExp + element.amount;
+      }
+    });
 
+  }
+  fetchExpenseCategories() {
+    this.accountService.getData(`expense/categories/list`)
+      .subscribe((result: any) => {
+        this.categories = result;
+      })
+  }
   fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
@@ -108,24 +141,24 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-        
-        if(result.documents == undefined) {
+
+        if (result.documents == undefined) {
           result.documents = [];
         }
         this.tripData = result;
         let tripPlanning = result.tripPlanning;
-        if(result.orderId.length > 0){
+        if (result.orderId.length > 0) {
           this.fetchOrderDetails(result.orderId);
         }
 
-        if(result.routeID != '' && result.routeID != undefined) {
+        if (result.routeID != '' && result.routeID != undefined) {
           this.apiService.getData('routes/' + result.routeID).
-            subscribe((result: any) => { 
+            subscribe((result: any) => {
               this.routeName = result.Items[0].routeName;
             })
         }
 
-        if(result.documents.length > 0) {
+        if (result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
 
@@ -152,7 +185,7 @@ export class TripDetailComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-          
+
           let obj = {
             assetID: element.assetID,
             carrierID: element.carrierID,
@@ -165,7 +198,7 @@ export class TripDetailComponent implements OnInit {
             coDriverID: element.coDriverID,
             driverUsername: element.driverUsername,
             locationName: element.location,
-            mileType: element.mileType, 
+            mileType: element.mileType,
             miles: element.miles,
             name: element.name,
             trailer: '',
@@ -180,20 +213,20 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime
           };
 
-          if(element.type == 'Delivery') {
+          if (element.type == 'Delivery') {
             this.lastDelivery = element.dropTime;
           }
 
-          if(element.type == 'Stop'){
+          if (element.type == 'Stop') {
             this.stops += 1;
           }
 
-          this.plannedMiles += parseFloat(element.miles); 
+          this.plannedMiles += parseFloat(element.miles);
           this.newCoords.push(`${element.lat},${element.lng}`);
-          this.trips.push(obj);     
+          this.trips.push(obj);
         }
 
-        if(this.newCoords.length > 0) {
+        if (this.newCoords.length > 0) {
           this.getCoords();
         }
         this.spinner.hide();
@@ -335,27 +368,27 @@ export class TripDetailComponent implements OnInit {
 
   fetchOrderDetails(orderIds) {
     orderIds = JSON.stringify(orderIds);
-    this.apiService.getData('orders/fetch/selectedOrders?orderIds='+orderIds).subscribe((result: any) => {
+    this.apiService.getData('orders/fetch/selectedOrders?orderIds=' + orderIds).subscribe((result: any) => {
       for (let i = 0; i < result.length; i++) {
-          const element = result[i];
+        const element = result[i];
 
-          this.orderNumbers = element.orderNumber;
-          if(i>0 && i<result.length-1) {
-            this.orderNumbers = this.orderNumbers+', ';
-          }
+        this.orderNumbers = element.orderNumber;
+        if (i > 0 && i < result.length - 1) {
+          this.orderNumbers = this.orderNumbers + ', ';
+        }
       }
     })
   }
 
-   /*
-   * Selecting files before uploading
-   */
+  /*
+  * Selecting files before uploading
+  */
   selectDocuments(event: any) {
     this.uploadedDocs = [];
     let files = [...event.target.files];
-    let totalCount = this.tripData.documents.length+files.length;
+    let totalCount = this.tripData.documents.length + files.length;
 
-    if(totalCount > 4) {
+    if (totalCount > 4) {
       $('#bolUpload').val('');
       this.toastr.error('Only 4 documents can be uploaded');
       return false;
@@ -381,14 +414,14 @@ export class TripDetailComponent implements OnInit {
       }
 
       //append docs if any
-      for(let j = 0; j < this.uploadedDocs.length; j++){
+      for (let j = 0; j < this.uploadedDocs.length; j++) {
         let file = this.uploadedDocs[j];
         formData.append(`uploadedDocs-${j}`, file);
       }
-      
+
       formData.append('data', JSON.stringify(this.tripData.documents));
 
-      this.apiService.postData('trips/update/bol/'+this.tripID,formData, true).subscribe({
+      this.apiService.postData('trips/update/bol/' + this.tripID, formData, true).subscribe({
         complete: () => { },
         error: (err: any) => {
           from(err.error)
@@ -407,9 +440,9 @@ export class TripDetailComponent implements OnInit {
               next: () => { },
             });
         },
-        next: (res:any) => {
-          this.tripData.documents = res; 
-          
+        next: (res: any) => {
+          this.tripData.documents = res;
+
           this.uploadedDocSrc = [];
           if (res.length > 0) {
             for (let k = 0; k < res.length; k++) {

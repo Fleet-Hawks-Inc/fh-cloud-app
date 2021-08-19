@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService, ListService } from 'src/app/services';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -87,8 +89,16 @@ export class AddDriverPaymentComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService,
-    private httpClient: HttpClient
-  ) {}
+    private httpClient: HttpClient,
+    private modalService: NgbModal,
+    private location: Location,
+  ) {
+    this.listService.paymentSaveList.subscribe((res: any) => {
+      if(res === 'driver' || res === 'carrier' || res === 'owner_operator') {
+        this.addRecord();
+      }
+    })
+  }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -141,19 +151,24 @@ export class AddDriverPaymentComponent implements OnInit {
     let label = "";
     if (type == "cash") {
       label = "Cash";
+      this.paymentData.payModeNo = null;
     } else if (type == "cheque") {
       label = "Cheque";
+      this.paymentData.payModeNo = Date.now().toString();
     } else if (type == "eft") {
       label = "EFT";
+      this.paymentData.payModeNo = null;
     } else if (type == "credit_card") {
       label = "Credit Card";
+      this.paymentData.payModeNo = null;
     } else if (type == "debit_card") {
       label = "Debit Card";
+      this.paymentData.payModeNo = null;
     } else if (type == "demand_draft") {
       label = "Demand Draft";
+      this.paymentData.payModeNo = null;
     }
     this.payModeLabel = label;
-    this.paymentData.payModeNo = null;
     this.paymentData.payModeDate = null;
   }
 
@@ -292,10 +307,13 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
     this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
     this.paymentData.totalAmount = (this.paymentData.totalAmount) ? Number(this.paymentData.totalAmount) : 0;
-    this.paymentData.finalAmount = this.paymentData.totalAmount + this.paymentData.taxes - this.paymentData.advance;
-    this.paymentData.finalAmount = Number(this.paymentData.finalAmount);
+    this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
+    this.paymentData.finalAmount = this.paymentData.totalAmount - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
+    this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(2);
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   addRecord() {
     if(this.paymentData.settlementIds.length === 0) {
       this.toaster.error("Please select settlement(s)");
@@ -524,10 +542,18 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   showCheque() {
-    $('#chequeModal').modal('show');
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalAmount,
+      type: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+    }
+    this.listService.openPaymentChequeModal(obj);
   }
 
-  
+
   openPayrollModel() {
     $('#payrollModal').modal('show');
   }
@@ -535,18 +561,20 @@ export class AddDriverPaymentComponent implements OnInit {
   calculatePayroll() {
     if(!this.paymentID) {
       if(this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
-        this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.totalAmount}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
-          this.paymentData.taxdata.cpp = result.cpp;
-          this.paymentData.taxdata.ei = result.insurance;
-          this.paymentData.taxdata.federalTax = result.federalTax;
-          this.paymentData.taxdata.provincialTax = result.provncTax;
-          this.paymentData.taxdata.emplCPP = result.employerCpp;
-          this.paymentData.taxdata.emplEI = result.employerEI;
-          this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
-          this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
-    
-          this.calculateFinalTotal();
-        })
+        if(this.paymentData.totalAmount > 0) {
+          this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.totalAmount}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
+            this.paymentData.taxdata.cpp = result.cpp;
+            this.paymentData.taxdata.ei = result.insurance;
+            this.paymentData.taxdata.federalTax = result.federalTax;
+            this.paymentData.taxdata.provincialTax = result.provncTax;
+            this.paymentData.taxdata.emplCPP = result.employerCpp;
+            this.paymentData.taxdata.emplEI = result.employerEI;
+            this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+            this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
+
+            this.calculateFinalTotal();
+          })
+        }
       } else {
         this.resetPayrollCalculations();
       }
@@ -578,7 +606,7 @@ export class AddDriverPaymentComponent implements OnInit {
       if(this.paymentData.taxdata.stateCode === v.stateCode) {
         this.provincalClaimCodes = v.codes;
       }
-    })
+    });
     this.paymentData.taxdata.provincialCode = 'claim_code_1';
     this.calculatePayroll();
   }
@@ -589,8 +617,8 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.taxdata.federalTax = 0;
     this.paymentData.taxdata.provincialTax = 0;
     this.paymentData.taxdata.emplCPP = 0;
-      this.paymentData.taxdata.emplEI = 0;
-    this.paymentData.taxes = this.paymentData.taxdata.cpp + this.paymentData.taxdata.ei + this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+    this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
     this.calculateFinalTotal();
   }
 }

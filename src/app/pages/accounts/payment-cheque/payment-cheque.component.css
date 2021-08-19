@@ -1,7 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap");
-
 @font-face {
-  font-family: micr;
+  font-family: 'Open Sans', sans-serif, 'micr';
+  /* font-family: micr; */
   /* src: url(css/fonts/MICR.ttf); */
 }
 

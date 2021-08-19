@@ -38,7 +38,7 @@
                                             <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
-                                                        Payment To/From<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                        Payment To<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <ng-select [(ngModel)]="paymentData.paymentTo" name="paymentTo"
                                                         placeholder="Select type" #payTo="ngModel" required (change)="resetEntityVal();">
@@ -265,7 +265,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-10 text-right">
-                                            <a type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</a>
+                                            <button type="button" accounts class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                             <button type="button" *ngIf="!paymentID" (click)="addRecord()" [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
                                             <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()" [disabled]="!payForm.form.valid || submitDisabled"  class="btn btn-success">Update</button>
                                         </div>

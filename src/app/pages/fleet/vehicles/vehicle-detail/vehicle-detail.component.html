@@ -7,18 +7,11 @@
             <h4 class="text-4 mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
+            <a routerLink="/fleet/vehicles/edit/{{vehicleID}}" class="btn btn-default btn-sm mr-2"><i
+              class="fas fa-pencil-alt"></i> Edit Vehicle</a>
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles
               List</a>
-            <div class="btn-group flex-wrap" *ngIf="!environment.isFeatureEnabled">
-              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">Actions<span class="caret"></span></button>
-              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                <a class="dropdown-item text-1" routerLink="/fleet/vehicles/edit/{{vehicleID }}"
-                  href="javascript:;">Edit</a>
-                <a class="modal-with-form dropdown-item text-1" (click)="deleteVehicle()" href="javascript:;">Delete</a>
-              </div>
-            </div>
+
           </div>
         </div>
       </header>
@@ -830,7 +823,7 @@
                   Default Inspection Form:
                 </div>
                 <div class="col-lg-9">
-                  <span *ngIf="inspectionForms"> 
+                  <span *ngIf="inspectionForms">
                     <span *ngIf="inspectionForms.isDefaultInspectionType=='0'">NO</span>
                     <span *ngIf="inspectionForms.isDefaultInspectionType=='1'">YES</span>
                   </span>

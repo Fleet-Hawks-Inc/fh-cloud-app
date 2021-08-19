@@ -436,7 +436,7 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <a class="btn btn-default mr-2" (click)="cancelFn()">Cancel</a>
+                      <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                       <button class="btn btn-success mr-2" type="button" *ngIf="!invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="addInvoice()">Save</button>
                       <button class="btn btn-success mr-2" type="button" *ngIf="invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="updateInvoice()">Update</button>
                       <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a> -->

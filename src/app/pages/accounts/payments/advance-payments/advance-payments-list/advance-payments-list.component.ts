@@ -39,6 +39,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   fetchPayments() {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`advance/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -51,7 +52,7 @@ export class AdvancePaymentsListComponent implements OnInit {
           result.map((v) => {
             v.paymentTo = v.paymentTo.replace("_"," ");
             if(v.payMode) {
-              v.payMode = v.payMode.replace("_"," ");  
+              v.payMode = v.payMode.replace("_"," ");
             } else {
               v.payMode= '-';
             }
@@ -63,7 +64,7 @@ export class AdvancePaymentsListComponent implements OnInit {
         }
       });
     }
-      
+
   }
 
   fetchDrivers() {
@@ -81,7 +82,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   deletePayment(paymentID) {
-    if (confirm('Are you sure you want to delete?') === true) {
+    if (confirm('Are you sure you want to void?') === true) {
       this.accountService.deleteData(`advance/delete/${paymentID}`).subscribe((result: any) => {
         this.payments = [];
         this.dataMessage = Constants.FETCHING_DATA;
@@ -111,7 +112,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.payments = [];
-        this.lastItemSK = '';                                  
+        this.lastItemSK = '';
         this.fetchPayments();
       }
     }
@@ -131,6 +132,6 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchPayments(); 
+    this.fetchPayments();
   }
 }

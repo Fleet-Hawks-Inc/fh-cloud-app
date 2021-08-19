@@ -77,8 +77,16 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
+
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
+
+  paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentModelList = this.paymentModelDataSource.asObservable();
+
+  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentSaveList = this.paymentSaveDataSource.asObservable();
+
 
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
@@ -252,12 +260,19 @@ fetchReceivers() {
   }
 
   public changeButton(value: boolean){
-
     this.isTrueDataSource.next(value);
-
   }
+
 
   triggerModal(value: any) {
     this.addressDataSource.next(value)
+  }
+  openPaymentChequeModal(value){
+    this.paymentModelDataSource.next(value);
+  }
+
+  triggerPaymentSave(value) {
+    this.paymentSaveDataSource.next(value);
+
   }
 }

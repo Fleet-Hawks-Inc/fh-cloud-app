@@ -108,7 +108,7 @@ export class OrdersListComponent implements OnInit {
 
   fetchAllTypeOrderCount = () => {
     this.allordersCount = 0;
-    
+
     this.apiService.getData('orders/get/allTypes/count').subscribe({
       complete: () => {},
       error: () => {},
@@ -147,7 +147,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   allignOrders(orders) {
-    
+
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 
@@ -161,7 +161,7 @@ export class OrdersListComponent implements OnInit {
       //       element.date = (dateTime[0] != undefined) ? dateTime[0] : '';
       //       element.time = (dateTime[1] != undefined) ? dateTime[1] : '';
       //     });
-          
+
       //   }
 
       //   for (let m = 0; m < element2.receivers.length; m++) {
@@ -171,12 +171,12 @@ export class OrdersListComponent implements OnInit {
       //       element.date = (dateTime[0] != undefined) ? dateTime[0] : '';
       //       element.time = (dateTime[1] != undefined) ? dateTime[1] : '';
       //     });
-          
+
       //   }
       // }
 
-      if(element.orderStatus == 'confirmed') {
-        
+      if(element.orderStatus === 'confirmed') {
+
         this.confirmOrders.push(element);
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
@@ -231,7 +231,7 @@ export class OrdersListComponent implements OnInit {
         // disable prev btn
         if (this.ordersDraw == 0) {
           this.ordersPrev = true;
-        } 
+        }
 
         // disable next btn when no records at last
         if(this.fetchedRecordsCount < this.totalRecords ){
@@ -244,7 +244,7 @@ export class OrdersListComponent implements OnInit {
           status: this.ordersNext
         }
 
-        this.spinner.hide(); 
+        this.spinner.hide();
       }, err => {
         this.spinner.hide();
       });
@@ -255,7 +255,7 @@ export class OrdersListComponent implements OnInit {
       this.toastr.error('Please select category');
       return false;
     }
-    
+
     if(this.orderFiltr.startDate===null) this.orderFiltr.startDate=''
     if(this.orderFiltr.endDate===null) this.orderFiltr.endDate=''
     if (this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== ''
@@ -331,13 +331,13 @@ export class OrdersListComponent implements OnInit {
 
   deactivateOrder(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      // let record = { 
+      // let record = {
       //   date: eventData.createdDate,
       //   time: eventData.createdTime,
       //   eventID: eventData.orderID,
       //   status: eventData.orderStatus
       // }
-      this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderStatus}`).subscribe((result: any) => {
+      this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderNumber}/${eventData.orderStatus}`).subscribe((result: any) => {
           this.orders = [];
           this.confirmOrders = [];
           this.dispatchOrders = [];
@@ -360,7 +360,7 @@ export class OrdersListComponent implements OnInit {
       this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
       this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
 
-    } 
+    }
   }
 
   // next button func
@@ -371,7 +371,7 @@ export class OrdersListComponent implements OnInit {
 
       if(this.orders[this.ordersDraw] == undefined) {
         this.records = false;
-        
+
         this.initDataTable();
         this.ordersPrev = false;
       } else {
@@ -409,7 +409,7 @@ export class OrdersListComponent implements OnInit {
         this.ordersNext = false;
         this.getStartandEndVal('all');
       }
-    }   
+    }
   }
 
   setActiveDiv(type){
@@ -422,5 +422,24 @@ export class OrdersListComponent implements OnInit {
     } else {
       this.orderFiltr.searchValue = '';
     }
+  }
+
+  async changeStatus(id) {
+    if (confirm('Are you sure you want to confirm the order?') === true) {
+      const result = await this.apiService.getData('orders/update/orderStatus/' + id + '/confirmed').toPromise();
+      if (result) {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.orders = [];
+        this.confirmOrders = [];
+        this.dispatchOrders = [];
+        this.deliveredOrders = [];
+        this.cancelledOrders = [];
+        this.invoicedOrders = [];
+        this.partiallyOrders = [];
+        this.lastEvaluatedKey = '';
+        this.fetchAllTypeOrderCount();
+      }
+    }
+
   }
 }

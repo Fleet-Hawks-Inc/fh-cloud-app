@@ -70,7 +70,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ChartsModule,
     FormsModule,
     ChartAccountsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
