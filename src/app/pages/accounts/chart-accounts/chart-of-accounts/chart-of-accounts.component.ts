@@ -54,14 +54,14 @@ export class ChartOfAccountsComponent implements OnInit {
     let name = null;
     let type = null;
     if (this.filter.actType !== null || this.filter.actName !== null) {
-     if (this.filter.actType !== null && this.filter.actType !== '') {
-      type = this.filter.actType.toLowerCase();
-     }
-     if (this.filter.actName !== null && this.filter.actName !== '') {
-      name = this.filter.actName.toLowerCase();
-     }
-     this.dataMessage = Constants.FETCHING_DATA;
-     this.searchAccounts(name, type);
+      if (this.filter.actType !== null && this.filter.actType !== '') {
+        type = this.filter.actType.toLowerCase();
+      }
+      if (this.filter.actName !== null && this.filter.actName !== '') {
+        name = this.filter.actName.toLowerCase();
+      }
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.searchAccounts(name, type);
     }
   }
   searchAccounts(actName: string, actType: null) {
@@ -90,27 +90,27 @@ export class ChartOfAccountsComponent implements OnInit {
     }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`chartAc?lastKey=${this.lastItemSK}`)
-      .subscribe(async (result: any) => {
-        if (result.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        if (result.length > 0) {
-        //  this.accounts = result;
-          for (const element of result) {
-            const acName =  element.actName.split(' ');
-            if (acName[0] === 'cpp' || acName[0] === 'ei') {
-                acName[0] = acName[0].toUpperCase();
+        .subscribe(async (result: any) => {
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+
+          }
+          if (result.length > 0) {
+            //  this.accounts = result;
+            if (result) {
+              result.map((v) => {
+                v.first = v.actName.substring(0, v.actName.indexOf(' '));
+                v.last = v.actName.substring(v.actName.indexOf(' ') + 1, v.actName.length);
+              });
+              this.accounts = result;
             }
-            element.actName = acName.join(' ');
-            this.accounts.push(element);
+            if (this.accounts[this.accounts.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
           }
-          if (this.accounts[this.accounts.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
-          }
-        }
-      });
+        });
     }
 
   }

@@ -88,19 +88,19 @@ export class ExpenseListComponent implements OnInit {
   searchFilter() {
     if(this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
-        this.toaster.error("Start date should be less then end date");
+        this.toaster.error('Start date should be less than end date');
         return false;
       } else {
         this.expenses = [];
