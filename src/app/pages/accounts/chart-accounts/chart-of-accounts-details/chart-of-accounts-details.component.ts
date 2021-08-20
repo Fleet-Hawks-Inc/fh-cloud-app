@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AccountService, ApiService } from '../../../../services';
 import Constants from '../../../fleet/constants';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-chart-of-accounts-details',
   templateUrl: './chart-of-accounts-details.component.html',
@@ -31,7 +32,10 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     startDate: null,
     endDate: null,
   };
-  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private accountService: AccountService,
+              private toaster: ToastrService,
+              private route: ActivatedRoute,
+              private apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchCustomersByIDs();
@@ -69,9 +73,40 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   }
 
   searchFilter() {
+    this.periodVariance = 0;
     if (this.filter.endDate !== null || this.filter.startDate !== null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchDetails();
+      if (
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
+      ) {
+        this.toaster.error('Please select both start and end dates.');
+        return false;
+      } else if (
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
+      ) {
+        this.toaster.error('Please select both start and end dates.');
+        return false;
+      } else if (this.filter.startDate > this.filter.endDate) {
+        this.toaster.error('Start date should be less than end date');
+        return false;
+      } else {
+        this.account = {
+          actName: '',
+          actType: '',
+          actNo: 0,
+          actDesc: '',
+          opnBal: 0,
+          opnBalCurrency: '',
+          actDash: false,
+          actDate: '',
+          closingAmt: 0,
+          transactionLog: [],
+        };
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchDetails();
+      }
+
     }
   }
   resetFilter() {
