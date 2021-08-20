@@ -96,22 +96,15 @@ export class AddReceiptComponent implements OnInit {
     this.listService.fetchCustomers();
     this.customers = this.listService.customersList;
     this.fetchCustomersByIDs();
-    // this.listService.fetchChartAccounts();
-    // this.accounts = this.listService.accountsList;
+    this.listService.fetchChartAccounts();
+    this.accounts = this.listService.accountsList;
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.pageTitle = 'Edit Receipt';
     } else {
       this.pageTitle = 'Add Receipt';
     }
-    this.fetchAccounts();
   }
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
-      this.accounts = res;
-    });
-  }
-
   async getInvoices() {
     this.newTotal = 0;
     this.advancePayments = [];
