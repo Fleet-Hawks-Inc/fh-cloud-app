@@ -144,21 +144,25 @@ export class NewAddressBookComponent implements OnInit {
     this.countries = CountryStateCity.GetAllCountries();
   }
   
-  getStates(countryCode, type, index='') {
+  getStates(countryCode, type, index='', data: any) {
     let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
     let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
     if(type === 'unit') {
       this.unitData.adrs[index].cName = countryName;
       this.unitData.adrs[index].states = states;
     } else {
-
+      data.adrs[index].cName = countryName;
+      data.adrs[index].states = states;
     }
+    console.log('css', this.unitData)
   }
 
-  getCities(stateCode, type='', index='') {
+  getCities(stateCode, type='', index='', data) {
     let countryCode = '';
     if(type == 'unit') {
       countryCode = this.unitData.adrs[index].cCode;
+    }  else {
+      countryCode = data.adrs[index].cCode;
     }
     
     let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
@@ -167,7 +171,11 @@ export class NewAddressBookComponent implements OnInit {
     if(type === 'unit') {
       this.unitData.adrs[index].sName = stateResult;
       this.unitData.adrs[index].cities = cities;
+    }  else {
+      data.adrs[index].sName = stateResult;
+      data.adrs[index].cities = cities;
     }
+    console.log('css', this.unitData)
   }
 
   getSuggestions = _.debounce(function (value) {
@@ -400,7 +408,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   unitChange(types: any) {
-    
+    console.log('this.newArr', this.newArr)
     this.unitData.eTypes.forEach(element => {
       if(element === 'broker') {
         if(!this.newArr.includes('broker')){
@@ -462,7 +470,8 @@ export class NewAddressBookComponent implements OnInit {
                   sName: '',
                   ctyName: null,
                   zip: '',
-                  add: '',
+                  add1: '',
+                  add2: '',
                   geoCords: {
                     lat: '',
                     lng: ''
@@ -587,7 +596,7 @@ export class NewAddressBookComponent implements OnInit {
       } else if(elem === 'carrier') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.brokerData) {
+          if(element.carrierData) {
             this.unitData.data.splice(index, 1);
           }
         }
@@ -799,6 +808,35 @@ export class NewAddressBookComponent implements OnInit {
       })
   }
 
+  async checkCarrierBank(newUnitData: any){
+    newUnitData.data.forEach(element => {
+      if(element.carrierData) {
+        element.carrierData.banks.forEach(elem => {
+          elem.adrs.forEach(async (res: any) => {
+            delete res.states;
+            delete res.cities;
+            if(res.manual === true){
+              let data = {
+                address1: res.add1,
+                address2: res.add2,
+                cityName: res.ctyName,
+                stateName: res.sName,
+                countryName: res.cName,
+                zipCode: res.zip
+              }
+      
+              let result = await this.newGeoCode(data);
+              console.log('resullt', result);
+              if(result != undefined || result != null){
+                res.geoCords = result;
+              }
+            }
+          });
+        });
+      }
+    });
+  }
+
   async addEntry () {
     
     this.unitDisabled = true;
@@ -820,16 +858,17 @@ export class NewAddressBookComponent implements OnInit {
 
         let result = await this.newGeoCode(data);
         
-        if(result != undefined){
+        if(result != undefined || result != null){
           element.geoCords = result;
         }
       }
     }
-    
+    await this.checkCarrierBank(this.unitData);
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' '+ element.lName;
     }
+   
     // create form data instance
     const formData = new FormData();
 
@@ -883,7 +922,7 @@ export class NewAddressBookComponent implements OnInit {
   deactivate(id) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/${id}`)
+      .deleteData(`contacts/delete/CONT/${id}`)
       .subscribe(async(result: any) => {
         this.lastKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
@@ -1004,24 +1043,29 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   fetchUnits(){
-    if (this.lastKey != 'end') {
-      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
-      
-        if(res.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        res.forEach(element => {
-          this.units.push(element);
-        });
-        
-        if(this.units[this.units.length - 1].contactSK != undefined) {
-          this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g,'--')
-        } else {
-          this.lastKey = 'end';
-        }
-        this.allData = this.units;
-      })
+    this.dataMessage = Constants.FETCHING_DATA;
+    if(this.lastKey != 'end') {
+      this.lastKey = ''
     }
+    this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
+    
+      if(res.length == 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      res.forEach(element => {
+        this.units.push(element);
+      });
+      if(this.units.length > 0) {
+        if(this.units[this.units.length - 1].contactSK != undefined) {
+        this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g,'--')
+      } else {
+        this.lastKey = 'end';
+      }
+        this.allData = this.units;
+      }
+      
+    })
+   
     
   }
 

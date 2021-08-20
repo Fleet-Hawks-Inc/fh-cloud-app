@@ -59,7 +59,7 @@
                   <div class="text-center p-4 cerbor">
                     <i class="far fa-envelope text-7"></i>
                     <br>
-                    <p class="mb-0 text-4 font-weight-bold text-dark">{{email ? email : '-'}}</p>
+                    <p class="mb-0 text-4 font-weight-bold text-dark text-lowercase">{{email ? email : '-'}}</p>
                     <p class="mb-0">EMAIL</p>
                   </div>
                 </div>
@@ -224,7 +224,7 @@
               <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
               <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
             </div>
-            <div class="row m-0" *ngIf="driverType == 'employee'">
+            <div class="row m-0" *ngIf="driverType != 'employee' && corporationType != 'company' && corporationType != 'corporation'">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">owner Operator:</div>
               <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
             </div>
@@ -286,7 +286,7 @@
             </div>
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Email:</div>
-              <div class="col-lg-6 p-2 bor_half">{{email ? email : '-'}}</div>
+              <div class="col-lg-6 p-2 bor_half text-lowercase">{{email ? email : '-'}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
@@ -569,7 +569,7 @@
                     <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}<span *ngIf="deliveryRateUnit != undefined">{{deliveryRateUnit}}</span></div>
                   </div>
 
-                  <div class="row  m-0">
+                  <div class="row  m-0" *ngIf="driverType == 'employee'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN:</div>
                     <div class="col-lg-6 p-2 bor_half">{{SIN}}</div>
                   </div>

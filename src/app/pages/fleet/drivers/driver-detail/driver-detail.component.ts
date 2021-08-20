@@ -297,7 +297,7 @@ export class DriverDetailComponent implements OnInit {
           this.SIN = this.driverData.SIN;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
-          this.payPeriod = this.driverData.paymentDetails.payPeriod;
+          this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
           //  this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.hosStatus = this.driverData.hosDetails.hosStatus;
           this.hosRemarks = this.driverData.hosDetails.hosRemarks;

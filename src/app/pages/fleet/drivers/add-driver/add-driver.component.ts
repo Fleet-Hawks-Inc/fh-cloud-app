@@ -425,11 +425,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  gotoVehiclePage() {
-    $('#addVehicleModelDriver').modal('show');
+  
+  refreshVehicleData() {
+    this.listService.fetchVehicles();
   }
-
-
+  
   clearUserLocation(i) {
     this.driverData.address[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
@@ -513,6 +513,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.groups = result.Items;
     });
   }
+  refreshGroupsData() {
+    this.fetchGroups();
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+  refreshOpData() {
+    this.listService.fetchOwnerOperators();
+  }
+
   fetchCountries() {
     this.docCountries = CountryStateCity.GetAllCountries();
   }
@@ -745,7 +755,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             $('#addErr'+i).css('display','block');
             return false;
           }
-         if(result != undefined){
+         if(result != undefined || result != null){
            element.geoCords = result;
          }
 
