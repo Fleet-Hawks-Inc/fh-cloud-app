@@ -131,87 +131,13 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div>
-
-                  </div>
                 </div>
-                <div class="col">
-                  <div class="text-center cmaindiv p-4">
-                    <i class="far fa-calendar-alt text-7"></i>
-                    <br>
-                    <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actType | titlecase}}</p>
-                    <p class="mb-0">Account Type</p>
-                  </div>
-                </div>
-              
-            
            </div>
           </div>
+          </section>
          </div>
         </div>
-        
-        <div class="row mb-3">
-         <div class="col-lg-12">
-          <div class="bg-white p-3 text-dark">
-           <div class="form-group row">
-            <div class="col-lg-12">
-              <table class="table table-bordered table-hover table-responsive-lg table-striped simple-table mb-0">
-                <thead>
-                  <tr class="bgcol2">
-                    <th class="text-2">Trx #</th>
-                    <th class="text-2">Date</th>
-                    <th class="text-2">Name</th>
-                    <th class="text-2">Type</th>
-                    <th class="text-2">Description</th>
-                    <th class="text-2">Debit</th>
-                    <th class="text-2">Credit</th>
-                    <th class="text-2">Running Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="5" class="text-right font-weight-bold">Opening Balance</td>
-                    <td></td>
-                    <td>{{account.opnBal}}&nbsp; {{account.opnBalCurrency}}</td>
-                    <td></td>
-                  </tr>
-                  <tr *ngFor="let trx of account.transactionLog; let i= index">
-                    <td>{{i+1}}</td>
-                    <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
-                    <td><span *ngIf="trx.name !== undefined">{{customersObject[trx.name] |  titlecase}}</span>
-                      <span *ngIf="trx.name === undefined">-</span>
-                    </td>
-                    <td>{{trx.type | titlecase}}</td>
-                    <td>{{trx.desc | titlecase}}</td>
-                    <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
-                    <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
-                    <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="5" class="text-right font-weight-bold">Closing Balance</td>
-                    <td></td>
-                    <td>{{account.closingAmt | absoluteValue}}&nbsp;{{account.opnBalCurrency}}</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td colspan="5" class="text-right font-weight-bold">Period Variance</td>
-                    <td></td>
-                    <td>{{periodVariance | absoluteValue}}&nbsp;{{account.opnBalCurrency}}
-                    </td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-              </div>
-            </div>
-           </div>
-          </div>
-         </div>
-        </div>
-        
-     </section>
-
     </section>
   </div>
 </section>
+
