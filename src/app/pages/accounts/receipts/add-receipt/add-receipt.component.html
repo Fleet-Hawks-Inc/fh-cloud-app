@@ -288,7 +288,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
-                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required>
+                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required >
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
                             </ng-option>
                           </ng-select>
@@ -296,6 +296,7 @@
                             <div *ngIf="receiptPay.errors.required">
                               Payment mode is required.
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -304,12 +305,15 @@
                           <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} <span *ngIf="paymentLabel === 'Cash'">Reference</span>
                             <span *ngIf="paymentLabel !== 'Cash'">Number</span>
                             <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required
+                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
                             class="form-control">
                             <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
                               <div *ngIf="receiptPayNo.errors.required">
-                                Payment number is required.
+                                {{ paymentLabel }} reference is required.
                               </div>
+                              <div *ngIf="receiptPayNo.errors.pattern">
+                                {{ paymentLabel }} reference must contain alphanumeric characters.
+                               </div>
                             </div>
                         </div>
                         <div class="col-lg-5">

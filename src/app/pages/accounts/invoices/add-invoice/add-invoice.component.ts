@@ -280,7 +280,7 @@ export class AddInvoiceComponent implements OnInit {
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -365,7 +365,7 @@ export class AddInvoiceComponent implements OnInit {
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -430,7 +430,7 @@ export class AddInvoiceComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Invoice Updated Successfully.');
-        this.router.navigateByUrl('/accounts/invoices/list');
+        this.cancel();
       },
     });
   }

@@ -152,11 +152,22 @@ export class DispatchOverviewComponent implements OnInit {
           k.eventParams.message = k.eventParams.message.replace('consignor','shipper');
           k.eventParams.message = k.eventParams.message.replace('consignee','receiver');
         })
-        if(this.pageload){
+        if (this.pageload) {
           result.Items.map((v)=> {
-            v.rest = v.eventParams.message.substring(0, v.eventParams.message.lastIndexOf(" ") + 1);
-            v.last = v.eventParams.message.substring(v.eventParams.message.lastIndexOf(" ") + 1, v.eventParams.message.length);
-          })
+            if (v.eventParams.userName !== undefined) {
+              const newString = v.eventParams.userName.split('_');
+              v.userFirstName = newString[0];
+              v.userLastName = newString[1];
+            }
+            if (v.eventParams.number !== undefined) {
+              v.entityNumber = v.eventParams.number;
+            }
+            if (v.eventParams.name !== undefined) {
+              const newString = v.eventParams.name.split('_');
+              v.firstName = newString[0];
+              v.lastName = newString[1];
+            }
+          });
           this.activities = result['Items'];
           this.pageload = false;
         }

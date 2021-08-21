@@ -290,7 +290,13 @@
                               <div class="row">
                                 <div class="col-lg-6">
                                   <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" placeholder="Enter remarks of the invoice" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks"></textarea>
+                                  <textarea class="form-control" placeholder="Enter remarks of the invoice" rows="7" [(ngModel)]="invoiceData.remarks" name="remarks" #Iremarks="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                  <div *ngIf="Iremarks.invalid && (Iremarks.dirty || Iremarks.touched)" class="text-danger">
+                                    <div *ngIf="Iremarks.errors.pattern">
+                                     Only 500 characters are allowed.
+                                    </div>
+                            
+                                 </div>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="row">

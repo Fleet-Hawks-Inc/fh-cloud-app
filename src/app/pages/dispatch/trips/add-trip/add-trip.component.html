@@ -36,34 +36,6 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold text-3 text-dark">Trip#
-                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                </label>
-
-                                                <input type="text" class="form-control" name="tripNo"
-                                                    [(ngModel)]="tripData.tripNo" placeholder="eg. Trip 1234"
-                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9\-\/]+$"
-                                                    [disabled]="tripNoDisabled">
-                                                <div *ngIf="tripNumber.invalid && (tripNumber.dirty || tripNumber.touched)"
-                                                    class="text-danger">
-                                                    <div>
-
-                                                        <div *ngIf="tripNumber.errors.required">
-                                                            Trip number is required.
-                                                        </div>
-
-                                                        <div *ngIf="tripNumber.errors.pattern">
-                                                            Trip number must be alphanumeric numbers. eg. trip001-209
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-2">
-                                            <div class="col-lg-10">
-                                                <label
                                                     class="control-label font-weight-semibold text-3 text-dark">Select
                                                     Order# <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>

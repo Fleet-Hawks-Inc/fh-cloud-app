@@ -182,12 +182,16 @@
                                                     <div class="row pt-2" id="chequeDiv" *ngIf="incomeData.paymentMode !== null">
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required placeholder="{{ paymentLabel }} Reference">
+                                                            <input type="text" [(ngModel)]="incomeData.paymentModeNo" name="paymentModeNo" class="form-control" #modeNUmber="ngModel" required pattern="^[a-zA-Z0-9\s]+$" placeholder="{{ paymentLabel }} Reference">
 
                                                             <div *ngIf="modeNUmber.invalid && (modeNUmber.dirty || modeNUmber.touched)" class="text-danger">
                                                                 <div *ngIf="modeNUmber.errors.required">
                                                                     {{ paymentLabel }} reference is required.
                                                                 </div>
+                                                                <div *ngIf="modeNUmber.errors.pattern">
+                                                                    {{ paymentLabel }} reference must contain alphanumeric characters.
+                                                                   </div>
+
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-5">
@@ -244,7 +248,13 @@
                                                             <div class="col-lg-10">
                                                                 <label
                                                                     class="control-label font-weight-bold">Description</label>
-                                                                <textarea class="form-control h-auto" name="description" placeholder="Enter description of the income transaction" [(ngModel)]="incomeData.description" rows="3"></textarea>
+                                                                <textarea class="form-control h-auto" name="description" placeholder="Enter description of the income transaction" [(ngModel)]="incomeData.description" rows="3" #incomed="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                                <div *ngIf="incomed.invalid && (incomed.dirty || incomed.touched)" class="text-danger">
+                                                                    <div *ngIf="incomed.errors.pattern">
+                                                                     Only 500 characters are allowed.
+                                                                    </div>
+                                                            
+                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -252,7 +262,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-11 text-right">
-                                                    <a routerLink="/accounts/income/list" type="button" class="btn btn-default mr-2">Cancel</a>
+                                                    <button type="button" (click)="cancel()" type="button" class="btn btn-default mr-2">Cancel</button>
                                                     <button type="submit" class="btn btn-success" *ngIf="!incomeID" (click)="addRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Save</button>
                                                     <button type="submit" class="btn btn-success" *ngIf="incomeID" (click)="updateRecord()" [disabled]="!incomeForm.form.valid || submitDisabled">Update</button>
                                                 </div>

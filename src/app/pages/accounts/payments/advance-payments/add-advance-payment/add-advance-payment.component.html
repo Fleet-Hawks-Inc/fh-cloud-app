@@ -160,7 +160,7 @@
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <div class="row">
                                                         <div class="col-lg-5">
-                                                            <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount" placeholder="Enter amount" #amount="ngModel" required>
+                                                            <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount" min="0" placeholder="Enter amount" #amount="ngModel" required>
                                                             <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
                                                                 <div *ngIf="amount.errors.required">
                                                                     Amount is required.
@@ -213,6 +213,8 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference</label>
                                                     <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference">
+                                            
+
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date</label>
@@ -258,7 +260,13 @@
                                                         font-bold text-lg-right
                                                         pt-2">Notes
                                                     </label>
-                                                    <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes"></textarea>
+                                                    <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes" #advancenotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                    <div *ngIf="advancenotes.invalid && (advancenotes.dirty || advancenotes.touched)" class="text-danger">
+                                                        <div *ngIf="advancenotes.errors.pattern">
+                                                         Only 500 characters are allowed.
+                                                        </div>
+                                                
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>

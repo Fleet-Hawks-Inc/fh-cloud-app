@@ -5,6 +5,8 @@
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Expense Details</div>
                     <div class="col-md-8  col-lg-8 text-right pr-4">
+                      <a routerLink="/accounts/expense/edit/{{ expenseID }}"  class="btn btn-default btn-sm mr-2"><i
+                        class="fas fa-pencil-alt"></i> Edit Expense</a>
                         <a routerLink="/accounts/expense/list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i> Other Expenses List</a>
                     </div>
@@ -22,7 +24,7 @@
                                 </div>
                                 <div class="col-lg-12 mb-4">
                                     <div class="row cmaindiv">
-                                        <div class="col-md-2 col-lg-2">
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-alt text-7"></i>
                                                 <br>
@@ -32,14 +34,14 @@
                                                 <p class="mb-0">DATE</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 col-lg-2">
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor"> <i class="fa fa-user text-7"></i>
                                                 <br>
                                                 <p class="mb-0 text-5 font-weight-bold text-dark">{{ categories[expenseData.categoryID] }}</p>
                                                 <p class="mb-0">EXPENSE TYPE</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 col-lg-2">
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-check text-7"></i>
                                                 <br>
@@ -47,7 +49,7 @@
                                                 <p class="mb-0">AMOUNT</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 col-lg-2">
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-check text-7"></i>
                                                 <br>
@@ -55,7 +57,7 @@
                                                 <p class="mb-0">FINAL AMOUNT</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 col-lg-2">
+                                        <div class="col">
                                             <div class="text-center p-4"> <i class="fas fa-map-marker-alt text-7"></i>
                                                 <br>
                                                 <p class="mb-0 text-5 font-weight-bold text-dark">{{ vendors[expenseData.vendorID] }}</p>
@@ -128,7 +130,7 @@
                                                         <td width="60%">{{ expenseData.countryName }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="back-color-gray font-weight-bold">State</td>
+                                                        <td class="back-color-gray font-weight-bold">Province/State</td>
                                                         <td>{{ expenseData.stateName }}</td>
                                                     </tr>
                                                     <tr>
