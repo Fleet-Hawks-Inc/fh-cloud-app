@@ -108,6 +108,7 @@
                         <td>{{i+1}}</td>
                         <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
                         <td><span *ngIf="trx.name !== undefined">{{merged[trx.name] |  titlecase}}</span>
+
                           <span *ngIf="trx.name === undefined">-</span>
                         </td>
                         <td>{{trx.type | titlecase}}</td>
@@ -140,3 +141,4 @@
     </section>
   </div>
 </section>
+
