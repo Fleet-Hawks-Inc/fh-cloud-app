@@ -47,11 +47,14 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   fetchAccount() {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
+      console.log('this.account', this.account);
       for (const element of this.account.transactionLog) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
       if (this.account.closingAmt > this.account.opnBal) {
         this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
+      } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt === 0) {
+        this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
       } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt > 0) {
         this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
       } else if (this.account.opnBal === this.account.closingAmt) {
@@ -129,6 +132,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         if (this.account.closingAmt > this.account.opnBal) {
           this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);
         } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt > 0) {
+          this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
+        } else if (this.account.opnBal > this.account.closingAmt && this.account.closingAmt === 0) {
           this.periodVariance = +(this.account.opnBal - this.account.closingAmt).toFixed(2);
         } else if (this.account.opnBal === this.account.closingAmt) {
           this.periodVariance = +(this.account.closingAmt - this.account.opnBal).toFixed(2);

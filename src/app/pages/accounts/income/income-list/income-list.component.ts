@@ -31,9 +31,9 @@ export class IncomeListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAccounts();
-    this.fetchCustomers();
+   // this.fetchCustomers();
     this.fetchIncomeCategories();
-    this.fetchInvoices();
+   // this.fetchInvoices();
   }
 
   fetchAccounts() {
@@ -66,7 +66,7 @@ export class IncomeListComponent implements OnInit {
             this.incomeAccounts.push(v);
           })
         }
-        
+
       })
     }
   }
@@ -120,7 +120,7 @@ export class IncomeListComponent implements OnInit {
         this.toaster.error("Start date should be less then end date");
         return false;
       } else {
-        this.dataMessage = Constants.FETCHING_DATA; 
+        this.dataMessage = Constants.FETCHING_DATA;
         this.lastItemSK = '';
         this.incomeAccounts = [];
         this.fetchAccounts();
@@ -142,6 +142,6 @@ export class IncomeListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchAccounts(); 
+    this.fetchAccounts();
   }
 }

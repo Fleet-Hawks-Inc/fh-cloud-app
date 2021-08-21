@@ -118,6 +118,8 @@ export class InvoiceListComponent implements OnInit {
     }
   }
   getInvoices(refresh?: boolean) {
+    let searchParam = null;
+    let searchParamOrder = null;
     if (refresh === true) {
       this.lastItemSK = '';
       this.invoices = [];
@@ -128,22 +130,26 @@ export class InvoiceListComponent implements OnInit {
       this.voidedInvoices = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`invoices?lastKey=${this.lastItemSK}`)
+      if (this.filter.invNo !== null && this.filter.invNo !== '') {
+         searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+      } else {
+        searchParam = null;
+      }
+
+      this.accountService.getData(`invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
-            for (const element of result) {
-              this.invoices.push(element);
-            }
-            if (this.invoices[this.invoices.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
-            this.invoices.map((v: any) => {
+            result.map((v) => {
               v.invStatus = v.invStatus.replace('_', ' ');
+              this.invoices.push(v);
             });
             this.categorizeInvoices(this.invoices);
           }
@@ -160,24 +166,28 @@ export class InvoiceListComponent implements OnInit {
       this.voidedOrderInvoices = [];
     }
     if (this.lastItemOrderSK !== 'end') {
-      this.accountService.getData(`order-invoice?lastKey=${this.lastItemOrderSK}`)
+      if (this.filter.invNo !== null && this.filter.invNo !== '' && this.filter.invNo !== '%22null%22') {
+         searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+      } else {
+        searchParamOrder = null;
+      }
+      this.accountService.getData(`order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
-            for (const element of result) {
-              this.orderInvoices.push(element);
-            }
-            if (this.orderInvoices[this.orderInvoices.length - 1].sk !== undefined) {
-              this.lastItemOrderSK = encodeURIComponent(this.orderInvoices[this.orderInvoices.length - 1].sk);
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
             } else {
               this.lastItemOrderSK = 'end';
             }
-            this.orderInvoices.map((v: any) => {
+            result.map((v) => {
               v.invStatus = v.invStatus.replace('_', ' ');
+              this.orderInvoices.push(v);
             });
             this.categorizeOrderInvoices(this.orderInvoices);
+
           }
         });
     }
@@ -325,26 +335,14 @@ export class InvoiceListComponent implements OnInit {
       this.invoices = [];
       this.orderInvoices = [];
       this.lastItemSK = '';
+      this.lastItemOrderSK = '';
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchDetails();
+      this.getInvoices();
     }
 
     }
   }
 
-  fetchDetails() {
-    const searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
-    this.accountService.getData(`order-invoice/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
-    .subscribe((result: any) => {
-      this.orderInvoices = result;
-      this.setMessage();
-    });
-    this.accountService.getData(`invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
-      .subscribe((result: any) => {
-        this.invoices = result;
-        this.setMessage();
-      });
-  }
   setMessage() {
     if (this.invoices.length === 0 && this.orderInvoices.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;

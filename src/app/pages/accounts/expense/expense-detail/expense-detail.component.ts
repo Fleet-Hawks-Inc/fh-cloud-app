@@ -73,9 +73,9 @@ export class ExpenseDetailComponent implements OnInit {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     this.fetchExpenseByID();
     this.fetchVendors();
-    this.fetchInvoices();
+    // this.fetchInvoices();
     this.fetchExpenseCategories();
-    this.fetchCustomersByIDs();
+    // this.fetchCustomersByIDs();
     this.fetchAccountsByIDs();
     this.fetchAccountsByInternalIDs();
     this.fetchTrips();

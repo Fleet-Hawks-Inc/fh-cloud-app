@@ -35,20 +35,20 @@ export class ReceiptsListComponent implements OnInit {
       this.receipts = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`receipts?lastKey=${this.lastItemSK}`)
+      this.accountService.getData(`receipts/paging?recNo=${this.filter.recNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
-            for (const element of result) {
-              this.receipts.push(element);
-            }
-            if (this.receipts[this.receipts.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(this.receipts[this.receipts.length - 1].sk);
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
+            result.map((v) => {
+              this.receipts.push(v);
+            });
           }
         });
     }
@@ -100,20 +100,11 @@ export class ReceiptsListComponent implements OnInit {
         this.receipts = [];
         this.lastItemSK = '';
         this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchDetails();
+        this.fetchReceipts();
       }
     }
   }
 
-  fetchDetails() {
-    this.accountService.getData(`receipts/paging?recNo=${this.filter.recNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
-      .subscribe((result: any) => {
-        this.receipts = result;
-        if (this.receipts.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-      });
-  }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
