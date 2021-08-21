@@ -87,6 +87,9 @@ export class ListService {
   paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentSaveList = this.paymentSaveDataSource.asObservable();
 
+  contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  contactsList = this.contactsObjectDataSource.asObservable();
+
 
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
@@ -256,6 +259,12 @@ fetchReceivers() {
   fetchReceiversByIDs() {
     this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
       this.receiverObjectDataSource.next(result);
+    });
+  }
+
+  fetchContactsByIDs() {
+    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
+      this.contactsObjectDataSource.next(result);
     });
   }
 

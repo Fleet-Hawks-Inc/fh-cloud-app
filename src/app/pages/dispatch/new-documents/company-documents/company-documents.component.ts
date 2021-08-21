@@ -44,9 +44,9 @@ export class CompanyDocumentsComponent implements OnInit {
   carrierID: any;
   documentData = {
     categoryType: 'company',
-    tripID: '',
+    tripID: null,
     documentNumber: '',
-    docType: '',
+    docType: null,
     // documentName: '',
     description: '',
     uploadedDocs: [],
@@ -199,8 +199,8 @@ export class CompanyDocumentsComponent implements OnInit {
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
           this.documentData.documentNumber = '';
-          this.documentData.docType = '';
-          this.documentData.tripID = '';
+          this.documentData.docType = null;
+          this.documentData.tripID = null;
           // this.documentData.documentName = '';
           this.documentData.description = '';
           this.lastEvaluatedKey='';
@@ -509,9 +509,9 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchLastDocumentNumber();
     this.documentData = {
       categoryType: 'company',
-      tripID: '',
+      tripID: null,
       documentNumber: '',
-      docType: '',
+      docType: null,
       // documentName: '',
       description: '',
       uploadedDocs: [],

@@ -215,7 +215,6 @@ export class AddTripComponent implements OnInit {
             this.pageTitle = 'Edit Trip';
         } else {
             this.pageTitle = 'Add Trip';
-            this.fetchLastTripNumber();
         }
         this.fetchOrders();
         this.fetchCustomerByIDs();
@@ -1992,13 +1991,6 @@ export class AddTripComponent implements OnInit {
                 this.toastr.error('Please select order');
             }
         }
-    }
-
-    fetchLastTripNumber(){
-        this.apiService.getData('trips/get/last/tripNo').subscribe((result) => {
-            this.tripNoDisabled = result.prevData;
-            this.tripData.tripNo = result.tripNo.toString();
-        });
     }
 
     makeRoutePlan() {

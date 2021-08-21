@@ -72,7 +72,7 @@ export class AddInvoiceComponent implements OnInit {
   customers: any = [];
   customerSelected = [{
     additionalContact: [],
-    address: [],
+    adrs: [],
     officeAddr: false,
     email: '',
     phone: ''
@@ -146,23 +146,23 @@ export class AddInvoiceComponent implements OnInit {
         if (result.Items.length > 0) {
 
           this.customerSelected = result.Items;
-          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
-            const element = this.customerSelected[0].address[i];
+          for (let i = 0; i < this.customerSelected[0].adrs.length; i++) {
+            const element = this.customerSelected[0].adrs[i];
             element[`isChecked`] = false;
           }
           if (this.invID) {
-            this.customerSelected[0].address.filter( elem => {
+            this.customerSelected[0].adrs.filter( elem => {
               if (elem.addressID === this.invoiceData.cusAddressID) {
                 elem.isChecked = true;
               }
             });
           } else {
-            this.customerSelected[0].address[0].isChecked = true;
-            if (this.customerSelected[0].address.length > 0) {
-              this.invoiceData.cusAddressID = this.customerSelected[0].address[0].addressID;
+            this.customerSelected[0].adrs[0].isChecked = true;
+            if (this.customerSelected[0].adrs.length > 0) {
+              this.invoiceData.cusAddressID = this.customerSelected[0].adrs[0].addressID;
             }
-            const addressLength = this.customerSelected[0].address.length;
-            const getType = this.customerSelected[0].address[0].addressType;
+            const addressLength = this.customerSelected[0].adrs.length;
+            const getType = this.customerSelected[0].adrs[0].aType;
 
             if (addressLength === 1 && (getType === '' || getType === null)) {
               this.notOfficeAddress = true;
@@ -177,11 +177,11 @@ export class AddInvoiceComponent implements OnInit {
   getAddressID(value: boolean, i: number, id: string) {
     if (value === true) {
       this.invoiceData.cusAddressID = id;
-      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
-        const element = this.customerSelected[0].address[index];
+      for (let index = 0; index < this.customerSelected[0].adrs.length; index++) {
+        const element = this.customerSelected[0].adrs[index];
         element.isChecked = false;
       }
-      this.customerSelected[0].address[i].isChecked = true;
+      this.customerSelected[0].adrs[i].isChecked = true;
     }
   }
   getInvDueDate(e: any) {

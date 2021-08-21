@@ -154,7 +154,6 @@ export class NewAddressBookComponent implements OnInit {
       data.adrs[index].cName = countryName;
       data.adrs[index].states = states;
     }
-    console.log('css', this.unitData)
   }
 
   getCities(stateCode, type='', index='', data) {
@@ -175,7 +174,6 @@ export class NewAddressBookComponent implements OnInit {
       data.adrs[index].sName = stateResult;
       data.adrs[index].cities = cities;
     }
-    console.log('css', this.unitData)
   }
 
   getSuggestions = _.debounce(function (value) {
@@ -408,7 +406,6 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   unitChange(types: any) {
-    console.log('this.newArr', this.newArr)
     this.unitData.eTypes.forEach(element => {
       if(element === 'broker') {
         if(!this.newArr.includes('broker')){
@@ -826,7 +823,6 @@ export class NewAddressBookComponent implements OnInit {
               }
       
               let result = await this.newGeoCode(data);
-              console.log('resullt', result);
               if(result != undefined || result != null){
                 res.geoCords = result;
               }
@@ -911,7 +907,7 @@ export class NewAddressBookComponent implements OnInit {
         this.unitDisabled = false;
         this.listService.triggerModal('list');
         this.dataMessage = Constants.FETCHING_DATA;
-        
+        this.emptyTabs();
         this.fetchUnits();
         
         this.toastr.success('Entry added successfully');
@@ -1005,7 +1001,7 @@ export class NewAddressBookComponent implements OnInit {
         this.hasSuccess = true;
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
-        
+        this.emptyTabs();
         this.fetchUnits();
         this.listService.triggerModal('list');
         this.toastr.success('Entry updated successfully');
@@ -1032,7 +1028,7 @@ export class NewAddressBookComponent implements OnInit {
           this.errorClass = true;
           this.errorClassMsg = this.errors[v];
         } else {
-          if(v == 'companyName' || v == 'email') {
+          if(v == 'cName' || v == 'email') {
             $('[name="' + v + '"]')
             .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
             .addClass('error');
@@ -1044,7 +1040,7 @@ export class NewAddressBookComponent implements OnInit {
 
   fetchUnits(){
     this.dataMessage = Constants.FETCHING_DATA;
-    if(this.lastKey != 'end') {
+    if(this.lastKey == 'end') {
       this.lastKey = ''
     }
     this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
@@ -1126,6 +1122,19 @@ export class NewAddressBookComponent implements OnInit {
 
   onModalScrollDown() {
     this.fetchUnits();
+  }
+
+  emptyTabs() {
+    this.units = [];
+    this.customers = [];
+    this.brokers = [];
+    this.vendors = [];
+    this.carriers = [];
+    this.shippers = [];
+    this.receivers = [];
+    this.fcCompanies = [];
+    this.owners = [];
+    this.allData = [];
   }
 
   
