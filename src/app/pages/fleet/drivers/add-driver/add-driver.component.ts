@@ -22,6 +22,7 @@ import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
 import { passwordStrength } from 'check-password-strength'
 import { ThemeService } from 'ng2-charts';
+import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -80,9 +81,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     DOB: '',
     abstractDocs: [],
     corporationType: null,
-    vendor: '',
+    vendor: null,
     corporation: '',
-    ownerOperator: '',
+    ownerOperator: null,
     driverStatus: null,
     userName: '',
     firstName: '',
@@ -425,11 +426,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  gotoVehiclePage() {
-    $('#addVehicleModelDriver').modal('show');
+  
+  refreshVehicleData() {
+    this.listService.fetchVehicles();
   }
-
-
+  
   clearUserLocation(i) {
     this.driverData.address[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
@@ -513,6 +514,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.groups = result.Items;
     });
   }
+  refreshGroupsData() {
+    this.fetchGroups();
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+  refreshOpData() {
+    this.listService.fetchOwnerOperators();
+  }
+
   fetchCountries() {
     this.docCountries = CountryStateCity.GetAllCountries();
   }
@@ -681,14 +692,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   changeCompany(value) {
     if(value === 'company') {
-      this.driverData.corporation = '';
-      this.driverData.ownerOperator = '';
+      this.driverData.corporation = null;
+      this.driverData.ownerOperator = null;
     } else if(value === 'corporation') {
-      this.driverData.vendor = '';
-      this.driverData.ownerOperator = '';
+      this.driverData.vendor = null;
+      this.driverData.ownerOperator = null;
     } else {
-      this.driverData.vendor = '';
-      this.driverData.corporation = '';
+      this.driverData.vendor = null;
+      this.driverData.corporation = null;
     }
   }
 
@@ -745,7 +756,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             $('#addErr'+i).css('display','block');
             return false;
           }
-         if(result != undefined){
+         if(result != undefined || result != null){
            element.geoCords = result;
          }
 

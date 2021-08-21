@@ -1029,7 +1029,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss('Cross click')">
           Close
         </button>
       </div>
@@ -1049,7 +1049,8 @@
 
 <ng-template #newUnitModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Entry</h4>
+    <h4 class="modal-title" id="modal-basic-title" *ngIf="!updateButton">Add Entry</h4>
+    <h4 class="modal-title" id="modal-basic-title" *ngIf="updateButton">Update Entry</h4>
     <button
       type="button"
       class="close"
@@ -1135,7 +1136,7 @@
             </label>
             <input
               [(ngModel)]="unitData.cName"
-              name="companyName"
+              name="cName"
               type="text"
               class="form-control"
               placeholder="eg. Carroll Group"
@@ -2144,7 +2145,7 @@
                             Country<span *ngIf="item.manual"
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="item.cCode" name="bank.addressDetails[{{i}}].cCode"
-                            [required]="item.manual" (change)="getStates($event, i,b)"
+                            [required]="item.manual" (change)="getStates($event, 'bank', i, bank)"
                             class="form-control populate" placeholder="Select country">
                             <ng-option value="CA">Canada</ng-option>
                             <ng-option value="US">United States</ng-option>
@@ -2154,21 +2155,22 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                             Province/State<span *ngIf="item.manual"
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.sCode"
+                          <ng-select (change)="getCities($event, 'bank', i, bank)" [(ngModel)]="item.sCode"
                           name="bank.addressDetails[{{i}}].sCode" [required]="item.manual"
                             placeholder="Select province/state">
-                            <ng-option class="text-capitalize" *ngFor="let state of item.bankStates"
+                            <ng-option class="text-capitalize" *ngFor="let state of item.states"
                               value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-4">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Address<span
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address 1<span
                               *ngIf="item.manual"
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="item.adrs" name="bank.addressDetails[{{i}}].adrs" type="text" class="form-control"
-                            placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine="ngModel"
+                          <input [(ngModel)]="item.add1" name="bank.addressDetails[{{i}}].add1" type="text" class="form-control"
+                            placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine1="ngModel"
                             [required]="item.manual">
                         </div>
+                       
                         <div class="col-3">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                             City<span *ngIf="item.manual"
@@ -2176,7 +2178,7 @@
                           <ng-select [(ngModel)]="item.ctyName"  name="bank.addressDetails[{{i}}].ctyName"
                             [required]="item.manual" placeholder="Select city">
 
-                            <ng-option class="text-capitalize" *ngFor="let city of item.bankCities"
+                            <ng-option class="text-capitalize" *ngFor="let city of item.cities"
                               value="{{city.cityName}}">
                               {{city.cityName}}</ng-option>
 
@@ -2190,6 +2192,14 @@
                           <input [(ngModel)]="item.zip"  name="bank.addressDetails[{{i}}].zip" type="text" class="form-control"
                             [required]="item.manual" placeholder="eg. 7V2 3R4"
                             #zip="ngModel">
+                        </div>
+                        <div class="col-4">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Address 2<span
+                              *ngIf="item.manual"
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="item.add2" name="bank.addressDetails[{{i}}].add2" type="text" class="form-control"
+                            placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine2="ngModel"
+                            [required]="item.manual">
                         </div>
                       </div>
                     </div>
@@ -3156,7 +3166,7 @@
                       >Select Country</label
                     >
                     <ng-select
-                      (change)="getStates($event, 'unit', i)"
+                      (change)="getStates($event, 'unit', i, '')"
                       [(ngModel)]="item.cCode"
                       name="cCode{{ i }}"
                       class="form-control populate address_country"
@@ -3176,7 +3186,7 @@
                       >Select Province/State</label
                     >
                     <ng-select
-                      (change)="getCities($event, 'unit', i)"
+                      (change)="getCities($event, 'unit', i, '')"
                       [(ngModel)]="item.sCode"
                       name="sCode{{ i }}"
                       class="form-control populate address_state"

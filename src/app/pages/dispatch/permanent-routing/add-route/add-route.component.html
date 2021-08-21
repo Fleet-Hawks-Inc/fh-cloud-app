@@ -101,10 +101,14 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-2">
-                                        <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                            href="javascript:;" (click)="gotoVehiclePage();"><i
+                                    <div class="col-2">
+                                        <a class="btn btn-success btn-sm modal-with-form mar-top-37 mr-3"
+                                            href="javascript:;" routerLink="/fleet/vehicles/add" target="_blank"><i
                                                 class="fas fa-plus"></i></a>
+                                        <a href="javascript:;" (click)="refreshVehicleData()"
+                                        data-toggle="tooltip" title="Refresh vehicle data"
+                                        class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                            class="fas fa-sync"></i></a>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -120,10 +124,14 @@
                                             </ng-option>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-2">
-                                        <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                            (click)="gotoAssetPage()" href="javascript:;"><i
+                                    <div class="col-2">
+                                        <a class="btn btn-success btn-sm modal-with-form mar-top-37 mr-3"
+                                        routerLink="/fleet/assets/add" target="_blank" href="javascript:;"><i
                                                 class="fas fa-plus"></i></a>
+                                        <a href="javascript:;" (click)="refreshAssetData()"
+                                        data-toggle="tooltip" title="Refresh asset data"
+                                        class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                            class="fas fa-sync"></i></a>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -138,17 +146,16 @@
                                                 value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-1">
-                                        <a href="#/fleet/drivers/add" target="_blank"
-                                            class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                    <div class="col-2">
+                                        <a routerLink="/fleet/drivers/add" target="_blank"
+                                            class="btn btn-success btn-sm modal-with-form mar-top-37 mr-3"><i
                                                 class="fas fa-plus"></i></a>
+                                        <a href="javascript:;" (click)="refreshDriverData()"
+                                        data-toggle="tooltip" title="Refresh driver data"
+                                        class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                            class="fas fa-sync"></i></a>
                                     </div>
-                                    <div class="col-lg-1 pl-0">
-                                        <a href="javascript:;" (click)="refreshDrivrData()"
-                                            data-toggle="tooltip" title="Refresh driver data"
-                                            class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-sync"></i></a>
-                                    </div>
+                                    
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-lg-10">
@@ -165,17 +172,16 @@
                                             </ng-container>
                                         </ng-select>
                                     </div>
-                                    <div class="col-lg-1">
-                                        <a href="#/fleet/drivers/add" target="_blank"
-                                            class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                    <div class="col-2">
+                                        <a routerLink="/fleet/drivers/add" target="_blank"
+                                            class="btn btn-success btn-sm modal-with-form mar-top-37 mr-3"><i
                                                 class="fas fa-plus"></i></a>
+                                        <a href="javascript:;" (click)="refreshDriverData()"
+                                        data-toggle="tooltip" title="Refresh driver data"
+                                        class="btn btn-success btn-sm modal-with-form mar-top-37"><i
+                                            class="fas fa-sync"></i></a>
                                     </div>
-                                    <div class="col-lg-1 pl-0">
-                                        <a href="javascript:;" (click)="refreshDrivrData()"
-                                            data-toggle="tooltip" title="Refresh driver data"
-                                            class="btn btn-success btn-sm modal-with-form mar-top-37"><i
-                                                class="fas fa-sync"></i></a>
-                                    </div>
+                                    
                                 </div>
                             </div>
                          </div>
@@ -575,20 +581,36 @@
                                     </div>
 
                                     <div class="col-lg-12 mt-3">
-                                        <div class="mapclass vehiclemain" id="map_view">
-                                            <div id="map" class="" style="height: calc(100vh - 150px);"></div>
-                                        </div>
+                                        <mat-accordion>
+                                            <mat-expansion-panel hideToggle >
+                                              <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                  <label
+                                                  class="control-label text-lg-right text-5">Map View</label>
+                                                </mat-panel-title>
+                                              </mat-expansion-panel-header>
+                                              <div class="row mb-3">
+                                                <div class="col-lg-12">
+                                                    <div class="bg-white p-0 text-dark">
+                                                        <div class="form-group row pt-2">
+                                                            <div class="col-lg-12 mb-2">
+                                                                <div class="mapclass vehiclemain" id="map_view">
+                                                                    <div id="map" class="" style="height: calc(100vh - 150px);"></div>
+                                                                </div>
+                                                            </div>
+                  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </mat-expansion-panel>
+                                          </mat-accordion>
+                                        
                                     </div>
 
                                     
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-12">
-                              <div class="mapclass vehiclemain" id="map_view">
-                                  <div id="map" class="" style="height: calc(100vh - 150px);"></div>
-                              </div>
-                          </div> -->
-
                           </div>
                        </div>
                     </div>

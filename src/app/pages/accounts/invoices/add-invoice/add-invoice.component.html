@@ -97,35 +97,35 @@
                                          </div>
                                       </div>
 
-                                      <div class="row border-top mb-1 pt-2 pb-2 pr-3 position-relative" style="margin-left: 15px;" *ngFor="let address of item.address; let i = index;">
+                                      <div class="row border-top mb-1 pt-2 pb-2 pr-3 position-relative" style="margin-left: 15px;" *ngFor="let address of item.adrs; let i = index;">
                                          <div class="col-12">
                                             <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
-                                               {{address.address1}}
-                                               {{address.address2}}</label>
+                                               {{address.add1}}
+                                               {{address.add2}}</label>
 
                                             <label class="control-label" *ngIf="!address.manual"><span class=" font-weight-bold">Address:</span>
-                                               {{address.userLocation}}</label>
+                                               {{address.userLoc}}</label>
                                          </div>
 
 
                                          <div class="col-6">
                                             <label class="control-label"><span class=" font-weight-bold">City:</span>
-                                               {{address.cityName}}</label>
+                                               {{address.ctyName}}</label>
                                          </div>
                                          <div class="col-6">
                                             <label class="control-label"><span class=" font-weight-bold">Province/State:</span>
-                                               {{address.stateName}}</label>
+                                               {{address.sName}}</label>
                                          </div>
                                          <div class="col-6">
                                             <label class="control-label"><span class=" font-weight-bold">Country:</span>
-                                               {{address.countryName}}</label>
+                                               {{address.cName}}</label>
                                          </div>
                                          <div class="col-6">
                                             <label class="control-label"><span class=" font-weight-bold">Type:</span>
-                                               {{address.addressType}}</label>
+                                               {{address.aType}}</label>
                                          </div>
 
-                                         <input *ngIf="item.address.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
+                                         <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
 
 
                                       </div>
@@ -191,8 +191,8 @@
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Salesperson:-  </label>
-                          <label class="control-label font-semi-bold">  {{ currentUser }} </label>
+                            Salesperson: &nbsp;</label>
+                          <label class="control-label font-semi-bold">  {{ currentUser }}</label>
                         </div>
                       </div>
 
