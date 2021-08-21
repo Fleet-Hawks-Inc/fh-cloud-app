@@ -216,7 +216,28 @@
                                     <span class="release-date">{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</span>
                                     <ul class="list-unstyled">
                                        <li>
-                                         {{ data.firstName | titlecase }}  {{ data.lastName | titlecase }} {{ data.rest }} <b class="text-success">{{ data.last }}</b>
+                                         {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
+                                           <a  routerLink="/fleet/drivers/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b></a>
+                                         </span>
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
+                                          <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                                        </span>
+                                         <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/trips/trip-details/{{ data.eventParams.eventID }}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/orders/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'document'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
                                        </li>
                                     </ul>
                                  </div>
