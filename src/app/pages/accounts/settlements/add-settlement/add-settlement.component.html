@@ -568,13 +568,13 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="text-center" *ngIf="settlementData.expenses.length === 0">
+                                                        <tr class="text-center" *ngIf="finalTripExpenses.length === 0">
                                                             <td colspan="4">{{ noRecordMsg }}</td>
                                                         </tr>
-                                                        <tr *ngFor="let data of settlementData.expenses">
+                                                        <tr *ngFor="let data of finalTripExpenses">
                                                             <td>{{ tripsObject[data.tripID] }}</td>
-                                                            <td>{{ data.expName }}</td>
-                                                            <td>{{ data.desc }}</td>
+                                                            <td>{{ categories[data.categoryID] }}</td>
+                                                            <td>{{ data.notes }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
                                                         </tr>
                                                     </tbody>

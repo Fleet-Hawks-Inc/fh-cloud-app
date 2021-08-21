@@ -3,7 +3,7 @@
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header">
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Other Expenses </div>
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}}</div>
                     <div class="col-md-8  col-lg-8 text-right"> <a routerLink="/accounts/expense/list"
                             class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Other
                             Expenses
@@ -254,8 +254,11 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="expenseData.countryCode" name="countryCode"
                                                 placeholder="Select Country" (change)="getStates($event)" #country="ngModel" required>
-                                                <ng-option value="{{ data.countryCode }}"
-                                                    *ngFor="let data of countries">{{ data.countryName }} </ng-option>
+                                                <!-- <ng-option value="{{ data.countryCode }}"
+                                                    *ngFor="let data of countries">{{ data.countryName }} </ng-option> -->
+                                                    <ng-option value="CA">Canada</ng-option>
+                                                    <ng-option value="US">United States</ng-option>
+                                                    <ng-option value="MX">Mexico</ng-option>
                                             </ng-select>
 
                                             <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
@@ -374,7 +377,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <!-- <div class="row mt-3">
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -390,8 +393,8 @@
                                                 data-toggle="modal" data-target="#addCustomerModal"
                                                 class="btn modal-with-form btn-success btn-sm"><i
                                                     class="fas fa-plus"></i></a> </div>
-                                    </div>
-                                    <div class="row mt-3">
+                                    </div> -->
+                                    <!-- <div class="row mt-3">
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -402,7 +405,7 @@
                                                     data.invNo }}</ng-option>
                                             </ng-select>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-group row">

@@ -86,7 +86,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate !== '' &&
         this.filter.endDate === ''

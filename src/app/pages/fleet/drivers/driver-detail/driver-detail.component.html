@@ -220,7 +220,8 @@
               <div class="col-lg-6 p-2 bor_half">{{corporationType}}</div>
             </div>
             <div class="row m-0" *ngIf="corporationType == 'company' || corporationType == 'corporation'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation:</div>
+              <div *ngIf="corporationType == 'company'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vendor:</div>
+              <div *ngIf="corporationType == 'corporation'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Name:</div>
               <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
               <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
             </div>
