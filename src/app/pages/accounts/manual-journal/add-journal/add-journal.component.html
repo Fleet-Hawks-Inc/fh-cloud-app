@@ -85,14 +85,16 @@
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                        Reference#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required />
+                                                        Reference#</label>
+                                                        <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" />
 
-                                                    <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
+                                                    <!-- <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required /> -->
+
+                                                    <!-- <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
                                                         <div *ngIf="refNo.errors.required">
                                                             Reference# is required.
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="row pt-2">
@@ -195,7 +197,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
-                                            <button type="button" class="btn btn-default mr-2" routerLink="/accounts/manual-journal/list">
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">
                                                 Cancel
                                             </button>
                                             <button *ngIf="!journalID" type="submit" (click)="addJournal()"  [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
