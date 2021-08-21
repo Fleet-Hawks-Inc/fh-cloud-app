@@ -18,7 +18,7 @@ declare var $: any;
   styleUrls: ['./add-expense.component.css']
 })
 export class AddExpenseComponent implements OnInit {
-
+pageTitle = 'Add Other Expense';
   expenseData = {
     categoryID: null,
     expAccountID: null,
@@ -121,20 +121,21 @@ export class AddExpenseComponent implements OnInit {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     if (this.expenseID != undefined) {
       this.fetchExpenseByID();
+      this.pageTitle = 'Edit Other Expense';
     }
     this.fetchTrips();
     this.fetchCountries();
     this.fetchExpenseCategories();
     this.fetchStateTaxes();
-    this.fetchInvoices();
+  //  this.fetchInvoices();
     this.listService.fetchChartAccounts();
-    this.listService.fetchCustomers();
+  //  this.listService.fetchCustomers();
     this.listService.fetchAssets();
     this.listService.fetchVehicles();
     this.listService.fetchVendors();
     this.expenseAccounts = this.listService.accountsList;
     this.paidThroughAccounts = this.listService.accountsList;
-    this.customers = this.listService.customersList;
+  //  this.customers = this.listService.customersList;
     this.vehicles = this.listService.vehicleList;
     this.assets = this.listService.assetsList;
     this.vendors = this.listService.vendorList;

@@ -15,7 +15,7 @@ declare var $: any;
   styleUrls: ['./add-income.component.css']
 })
 export class AddIncomeComponent implements OnInit {
-
+  pageTitle = 'Add Income';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -95,15 +95,16 @@ export class AddIncomeComponent implements OnInit {
   ngOnInit() {
     this.incomeID = this.route.snapshot.params['incomeID'];
     if(this.incomeID != undefined) {
+      this.pageTitle = 'Edit Income';
       this.fetchIncomeByID();
     }
     this.listService.fetchChartAccounts();
-    this.listService.fetchCustomers();
+   //  this.listService.fetchCustomers();
     this.incomeAccounts = this.listService.accountsList;
     this.depositAccounts = this.listService.accountsList;
-    this.customers = this.listService.customersList;
+   // this.customers = this.listService.customersList;
     this.fetchIncomeCategories();
-    this.fetchInvoices();
+   // this.fetchInvoices();
   }
 
   showPaymentFields(type) {
