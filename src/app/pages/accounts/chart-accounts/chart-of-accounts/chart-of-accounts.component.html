@@ -2,17 +2,18 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
+      <header class="page-header pr19 pl7">
         <div class="row" style="padding-top:10px;">
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-md mb-3">
               <input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName"
                 name="actName">
             </div>
           </div>
-          <div class="col-lg-2 col-md-2">
-            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"
-              [(ngModel)]="filter.actType" name="actType">
+
+          <div class="col-lg-2 col-md-2 pr-0">
+            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"[(ngModel)]="filter.actType" name="actType">
+
               <ng-option value="current assets">Current Assets</ng-option>
               <ng-option value="bank">Bank</ng-option>
               <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
@@ -98,8 +99,14 @@
               </div>
             </div>
           </section>
+
         </div>
-      </div>
+        
+     
+        
+     </section>
+
+
     </section>
   </div>
 </section>
@@ -238,6 +245,7 @@
             </div>
           </div>
         </form>
+
       </div>
     </div>
   </div>

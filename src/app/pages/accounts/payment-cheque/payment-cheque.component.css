@@ -228,6 +228,10 @@
 .margin_top0 {
   margin-top: 0px;
 }
+.line_height100 {
+  line-height: 100%;
+}
+
 .line_height95 {
   line-height: 95%;
 }
@@ -237,3 +241,15 @@
 .line_height99 {
   line-height: 99%;
 }
+
+/* created by pankaj */
+.amt-words{float: left;}
+.amt-words ul{list-style: none; padding-left: 0px;}
+.amt-words ul li+li{padding-left: 10px;}
+
+
+
+
+
+
+
