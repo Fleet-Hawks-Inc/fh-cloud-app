@@ -54,6 +54,7 @@
                         <table class="row-border hover table table-bordered table-striped mb-0 ">
                           <thead>
                              <tr class="bgcol2">
+                                <th class="text-2">Journal#</th>
                                 <th class="text-2">Journal Date</th>
                                 <th class="text-2">Reference</th>
                                 <th class="text-2">Amount</th>
@@ -66,6 +67,7 @@
                                 <td colspan="5">{{ dataMessage }}</td>
                              </tr>
                              <tr *ngFor="let data of journals; let i=index;">
+                                <td class="font-weight-bold" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.jrNo }}</td>
                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.referenceNo }} </td>
                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.debitTotalAmount | number }} {{ data.currency }} </td>

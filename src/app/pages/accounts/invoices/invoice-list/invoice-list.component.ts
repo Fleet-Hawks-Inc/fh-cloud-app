@@ -140,6 +140,7 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.categorizeInvoices(result);
           }
           if (result.length > 0) {
             if (result[result.length - 1].sk !== undefined) {
@@ -175,6 +176,7 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
             if (result[result.length - 1].sk !== undefined) {
@@ -223,6 +225,12 @@ export class InvoiceListComponent implements OnInit {
           this.voidedOrderInvoices.push(element);
         }
       }
+    } else {
+      this.openOrderInvoices = [];
+      this.paidOrderInvoices = [];
+      this.emailedOrderInvoices = [];
+      this.partiallyPaidOrderInvoices = [];
+      this.voidedOrderInvoices = [];
     }
   }
   categorizeInvoices(invoices: any) {
@@ -236,6 +244,7 @@ export class InvoiceListComponent implements OnInit {
       for (const element of invoices) {
         if (element.invStatus === 'open') {
           this.openInvoices.push(element);
+          console.log('this.openInvoices', this.openInvoices);
           this.findOverDueInvoice(this.openInvoices);
         } else if (element.invStatus === 'paid') {
           this.paidInvoices.push(element);
@@ -247,6 +256,12 @@ export class InvoiceListComponent implements OnInit {
           this.voidedInvoices.push(element);
         }
       }
+    } else {
+      this.openInvoices = [];
+      this.paidInvoices = [];
+      this.emailedInvoices = [];
+      this.partiallyPaidInvoices = [];
+      this.voidedInvoices = [];
     }
   }
   findOverDueInvoice(invoices: any) {
