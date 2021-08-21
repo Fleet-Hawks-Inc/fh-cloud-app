@@ -61,6 +61,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   fetchAccount() {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
+      console.log('this.account', this.account);
       for (const element of this.account.transactionLog) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
