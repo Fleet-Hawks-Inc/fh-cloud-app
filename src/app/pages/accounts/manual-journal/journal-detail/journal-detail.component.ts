@@ -13,6 +13,7 @@ export class JournalDetailComponent implements OnInit {
 
   journalID;
   journal = {
+    jrNo: null,
     txnDate: null,
     referenceNo: '',
     currency: null,

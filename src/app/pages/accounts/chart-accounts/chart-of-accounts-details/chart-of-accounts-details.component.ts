@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ChartOfAccountsDetailsComponent implements OnInit {
   customersObject: any = {};
+  drivers: any = {};
   actID = '';
   account = {
     actName: '',
@@ -32,22 +33,34 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     startDate: null,
     endDate: null,
   };
+  merged = null;
   constructor(private accountService: AccountService,
               private toaster: ToastrService,
               private route: ActivatedRoute,
               private apiService: ApiService) { }
 
   ngOnInit() {
-    this.fetchCustomersByIDs();
+    this.getEntityList();
     this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       this.fetchAccount();
     }
   }
+  getEntityList() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.customersObject = result;
+      if (result) {
+        this.apiService.getData(`drivers/get/list`).subscribe((result1: any) => {
+          this.drivers = result1;
+          this.merged = {...result, ...result1};
+        });
+      }
+    });
+
+  }
   fetchAccount() {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
-      console.log('this.account', this.account);
       for (const element of this.account.transactionLog) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
@@ -64,14 +77,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       } else if (this.account.opnBal === 0 && this.account.closingAmt < 0) {
         this.periodVariance = -1 * +(this.account.closingAmt).toFixed(2);
       }
-    });
-  }
-  /*
-  * Get all customers's IDs of names from api
-  */
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObject = result;
     });
   }
 

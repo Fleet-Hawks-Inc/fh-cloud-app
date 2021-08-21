@@ -7,6 +7,8 @@
                         Journal Details
                     </div>
                     <div class="col-md-8  col-lg-8 text-right pr-4">
+                    <a  routerLink="/accounts/manual-journal/edit/{{ journalID }}"  class="btn btn-default btn-sm mr-2"><i
+                      class="fas fa-pencil-alt"></i> Edit Journal</a>
                         <a routerLink="/accounts/manual-journal/list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i>
                             Manual Journals</a>
@@ -23,7 +25,15 @@
                                 </div>
                                 <div class="col-lg-12 mb-4">
                                     <div class="row cmaindiv">
-                                        <div class="col-md-4 col-lg-4">
+                                      <div class="col">
+                                        <div class="text-center p-4 cerbor">
+                                            <i class="far fa-calendar-alt text-7"></i>
+                                            <br>
+                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ journal.jrNo }}</p>
+                                            <p class="mb-0">JOURNAL#</p>
+                                        </div>
+                                    </div>
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor">
                                                 <i class="far fa-calendar-alt text-7"></i>
                                                 <br>
@@ -32,7 +42,7 @@
                                                 <p class="mb-0">DATE</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-lg-4">
+                                        <div class="col">
                                             <div class="text-center p-4 cerbor">
                                                 <i class="far fa-calendar-check text-7"></i>
                                                 <br>
@@ -41,7 +51,7 @@
                                                 <p class="mb-0">REFERENCE#</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-lg-4">
+                                        <div class="col">
                                             <div class="text-center p-4">
                                                 <i class="fas fa-money-bill-wave text-7"></i>
                                                 <br>
