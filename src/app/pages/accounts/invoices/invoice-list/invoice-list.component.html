@@ -428,7 +428,8 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngIf="paidInvoices.length == 0 && paidOrderInvoices.length" class="text-center">
+                            <tr *ngIf="paidInvoices.length == 0 && paidOrderInvoices.length === 0" class="text-center">
+
                               <td colspan="13">{{ dataMessage }}</td>
                             </tr>
                             <tr *ngFor="let inv of paidOrderInvoices; let i = index;">
@@ -563,39 +564,29 @@
                                 {{inv.txnDate | date : 'yyyy/MM/dd'}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                {{customersObjects[inv.customerID] | titlecase}}</td>
-                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                  *ngIf="inv.invType==='orderInvoice'">{{inv.invNo}}</span></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                  *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount}}{{inv.charges.freightFee.currency}}</span>
+                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount}}{{inv.charges.freightFee.currency}}
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                  {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}</span><br>
-                                <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                  {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</span></td>
+                                Add:
+                                  {{inv.charges.accessorialDeductionInfo.total}}{{inv.charges.freightFee.currency}}<br>
+                                Deduct:
+                                  {{inv.charges.accessorialFeeInfo.total}}{{inv.charges.freightFee.currency}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span
-                                  *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</span>
+                            {{inv.taxesAmt}}{{inv.charges.freightFee.currency}}
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='orderInvoice'">
+
                                   {{inv.finalAmount}} {{inv.charges.freightFee.currency}}
-                                </span>
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-
-                                <span *ngIf="inv.invType==='orderInvoice'">
                                   {{inv.amountReceived}} {{inv.charges.freightFee.currency}}
-                                </span>
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-
-                                <span *ngIf="inv.invType==='orderInvoice'">
                                   {{inv.balance}} {{inv.charges.freightFee.currency}}
-                                </span>
                               </td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 <span *ngIf="inv.invStatus !== 'overdue'"
@@ -619,32 +610,30 @@
                                 {{inv.txnDate | date : 'yyyy/MM/dd'}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                {{customersObjects[inv.customerID] | titlecase}}</td>
-                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                  *ngIf="inv.invType==='manual'">{{inv.taxAmount}}{{inv.invCur}}</span>
-                                <span
-                                  *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</span>
+                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount}}{{inv.invCur}}
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 {{inv.finalAmount}}{{inv.invCur}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
+
                                   {{inv.amountReceived}} {{inv.invCur}}
-                                </span>
+
 
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
+
                                   {{inv.balance}} {{inv.invCur}}
-                                </span>
+
 
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
+
                                   {{inv.invDueDate | date : 'yyyy/MM/dd'}}
-                                </span>
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                   class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
@@ -851,17 +840,12 @@
                                 </span>
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
-                                  {{inv.balance}} {{inv.invCur}}
-                                </span>
-                                <span *ngIf="inv.invType==='orderInvoice'">
+
                                   {{inv.balance}} {{inv.charges.freightFee.currency}}
-                                </span>
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
-                                  {{inv.invDueDate | date : 'yyyy/MM/dd'}}
-                                </span>
+                              -
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 <span *ngIf="inv.invStatus !== 'overdue'"
@@ -885,36 +869,23 @@
                                 {{inv.txnDate | date : 'yyyy/MM/dd'}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                {{customersObjects[inv.customerID] | titlecase}}</td>
-                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                  *ngIf="inv.invType==='manual'">{{inv.taxAmount}}{{inv.invCur}}</span>
-                                <span
-                                  *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt}}{{inv.charges.freightFee.currency}}</span>
+                              <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
+                              <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount}}{{inv.invCur}}
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 {{inv.finalAmount}}{{inv.invCur}}</td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
                                   {{inv.amountReceived}} {{inv.invCur}}
-                                </span>
-                                <span *ngIf="inv.invType==='orderInvoice'">
-                                  {{inv.amountReceived}} {{inv.charges.freightFee.currency}}
-                                </span>
+
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
                                   {{inv.balance}} {{inv.invCur}}
-                                </span>
-                                <span *ngIf="inv.invType==='orderInvoice'">
-                                  {{inv.balance}} {{inv.charges.freightFee.currency}}
-                                </span>
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                <span *ngIf="inv.invType==='manual'">
                                   {{inv.invDueDate | date : 'yyyy/MM/dd'}}
-                                </span>
                               </td>
                               <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                   class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
@@ -937,8 +908,6 @@
                       </div>
                     </div>
                 </div>
-
-
             </div>
           </div>
 

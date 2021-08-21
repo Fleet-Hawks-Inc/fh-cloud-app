@@ -2,7 +2,7 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header">
-                <h2>Add Income</h2>
+                <h2>{{pageTitle}}</h2>
                 <div class="right-wrapper text-right">
                     <div class="pull-right pr-2">
                         <a routerLink="/accounts/income/list" class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i
@@ -110,7 +110,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-5 offset-lg-1">
-                                                    <div class="row">
+                                                    <!-- <div class="row">
                                                         <div class="col-lg-10">
                                                             <label
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -120,8 +120,8 @@
                                                             </ng-select>
 
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+                                                    </div> -->
+                                                    <!-- <div class="row">
                                                         <div class="col-lg-10">
                                                             <label
                                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -130,7 +130,7 @@
                                                                 <ng-option value="{{ data.contactID }}" *ngFor="let data of customers | async">{{ data.companyName }}</ng-option>
                                                             </ng-select>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="row pt-2">
                                                         <div class="col-lg-5">
                                                             <label

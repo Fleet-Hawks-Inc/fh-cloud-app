@@ -270,7 +270,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
-                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actNo }} -
+                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
                               {{ item.actName | titlecase}}</ng-option>
                           </ng-select>
                           <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">

@@ -1,9 +1,9 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header">
+      <header class="page-header pr19 pl7">
         <div class="row" style="padding-top:10px;">
-          <div class="col-lg-3 col-md-3">
+          <div class="col-lg-3 col-md-3 pr-0">
             <div class="input-daterange input-group">
                <span class="input-group-prepend">
                   <span class="input-group-text">
@@ -23,11 +23,11 @@
                   autocomplete="off">
             </div>
          </div>
-          <div class="col-md-2  col-lg-2">
+          <div class="col-md-2 col-lg-2">
             <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
-            <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
+            <button type="button" class="btn btn-sm btn-success ml-2" (click)="resetFilter()">Reset</button>
           </div>
-          <div class="col-md-7  col-lg-7 text-right"> <a routerLink="/accounts/chart-accounts/list"
+          <div class="col-md-7 col-lg-7 text-right pr-1"> <a routerLink="/accounts/chart-accounts/list"
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> Chart Of Accounts</a>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="card-body">
               <div class="row text-dark">
                 <div class="col-lg-12">
-                  <div class="row cmaindiv mb-3">
+                  <div class="row cmaindiv">
                     <div class="col cerbor ">
                       <div class="text-center p-4 ">
                         <i class="fas fa-file-invoice-dollar text-7"></i>
@@ -55,7 +55,7 @@
                         <p class="mb-0">Account Number</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col cerbor">
                       <div class="text-center p-4">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
@@ -63,7 +63,25 @@
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
+                    <div class="col">
+                      <div class="text-center p-4">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actDate | date:'yyyy/MM/dd'}}</p>
+                        <p class="mb-0">Account Date</p>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                <div class="col-lg-12" *ngIf="account.actDesc !== '' && account.actDesc !== null && account.actDesc !== undefined">
+                 <table>
+                   <tbody>
+                     <tr>
+                       <td class="font-weight-bold">Description:</td>
+                       <td>{{account.actDesc}}</td>
+                     </tr>
+                   </tbody>
+                 </table>
                 </div>
                 <div class="col-lg-12">
                   <table class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
@@ -113,14 +131,13 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div>
-                  </div>
                 </div>
-              </div>
-            </div>
+           </div>
+          </div>
           </section>
+         </div>
         </div>
-      </div>
     </section>
   </div>
 </section>
+

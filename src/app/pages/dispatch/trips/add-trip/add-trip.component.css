@@ -55,3 +55,9 @@ canvas {
 }
 
 .emptyp{margin-bottom: 2px !important;}
+.manCheck {
+    max-height: 10px;
+    cursor: pointer;
+    margin-top: 6%;
+    max-width: 15px;
+}
