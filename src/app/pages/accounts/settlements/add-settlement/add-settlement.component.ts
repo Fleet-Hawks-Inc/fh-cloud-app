@@ -45,7 +45,7 @@ export class AddSettlementComponent implements OnInit {
         deduction: [],
         additionTotal: 0,
         deductionTotal: 0,
-        taxObj:{
+        taxObj: {
             gstPrcnt:0,
             pstPrcnt:0,
             hstPrcnt:0,
@@ -108,7 +108,7 @@ export class AddSettlementComponent implements OnInit {
     operatorDriversList = [];
     searchDisabled = false;
     finalPayment = 0;
-
+    expenses = [];
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -380,7 +380,8 @@ export class AddSettlementComponent implements OnInit {
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
                 }
-
+console.log('this.settlementData.tripIds', this.settlementData.tripIds);
+this.fetchExpenses(this.settlementData.tripIds);
                 this.selectedTrips.push(element);
 
                 if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
@@ -712,7 +713,17 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
+    fetchExpenses(trips: any) {
+      this.accountService.getData(`expense/trip-expenses/${trips}`).subscribe((result: any) => {
 
+        // this.expenses = result.filter((e: any) => {
+        //   return e.tripID === this.tripID;
+        // });
+        // for (const element of this.expenses) {
+        //   this.totalExp = this.totalExp + element.amount;
+        // }
+      });
+    }
     remStldTrip(tripID, index) {
         if (confirm('Are you sure you want to remove the selected trip?') === true) {
             //  Function to remove specific trip

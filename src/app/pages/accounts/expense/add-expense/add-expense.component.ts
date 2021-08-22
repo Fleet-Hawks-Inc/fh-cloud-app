@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ListService } from 'src/app/services/list.service';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -33,6 +34,8 @@ export class AddExpenseComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     unitType: null,
     unitID: null,
+    tripID: null,
+    stlStatus: null,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -110,14 +113,16 @@ export class AddExpenseComponent implements OnInit {
     catDesc: ''
   };
   catDisabled = false;
-
-  constructor(private listService: ListService, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
+  trips: any = [];
+  constructor(private listService: ListService,
+              private location: Location, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
-    if(this.expenseID != undefined) {
+    if (this.expenseID != undefined) {
       this.fetchExpenseByID();
     }
+    this.fetchTrips();
     this.fetchCountries();
     this.fetchExpenseCategories();
     this.fetchStateTaxes();
@@ -152,7 +157,7 @@ export class AddExpenseComponent implements OnInit {
     this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.expenseData.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
 
-    if(stateCode !== undefined && stateCode != null) {
+    if (stateCode !== undefined && stateCode != null) {
       let selected:any = this.stateTaxes.filter(o => o.stateCode === stateCode);
       this.expenseData.taxes.gstPercent = selected[0].GST;
       this.expenseData.taxes.pstPercent = selected[0].PST;
@@ -161,7 +166,14 @@ export class AddExpenseComponent implements OnInit {
       this.calculateFinalTotal();
     }
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+  fetchTrips() {
+    this.apiService.getData('trips').subscribe((result: any) => {
+     this.trips = result.Items;
+    });
+  }
   fetchStateTaxes() {
     this.apiService.getData('stateTaxes').subscribe((res: any) => {
       this.stateTaxes = res.Items;
@@ -192,6 +204,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasSuccess = false;
 
     this.expenseData.amount = parseFloat(this.expenseData.amount);
+    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -229,7 +242,7 @@ export class AddExpenseComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Expense transaction added successfully.');
-        this.router.navigateByUrl('/accounts/expense/list');
+        this.cancel();
       },
     });
   }
@@ -239,6 +252,7 @@ export class AddExpenseComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.expenseData = result[0];
+
           this.expenseData.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
@@ -275,7 +289,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-
+    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -313,7 +327,7 @@ export class AddExpenseComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Expense transaction updated successfully.');
-        this.router.navigateByUrl('/accounts/expense/list');
+        this.cancel();
       },
     });
   }
