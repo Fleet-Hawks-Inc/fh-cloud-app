@@ -7,12 +7,12 @@
    <div class="inner-wrapper">
        <section role="main" class="content-body pagebody">
          <header class="page-header">
-         
+
             <div class="row" style="padding-top:10px;">
                <div class="col-md-3 col-lg-3">
                   <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Routing &amp; Dispatch Overview</h4>
                </div>
-         
+
                <div class="col-md-9 col-lg-9 text-right">
                   <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
                      routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
@@ -216,7 +216,28 @@
                                     <span class="release-date">{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</span>
                                     <ul class="list-unstyled">
                                        <li>
-                                          {{ data.rest }} <b class="text-success">{{ data.last }}</b>
+                                         {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
+                                           <a  routerLink="/fleet/drivers/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b></a>
+                                         </span>
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
+                                          <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                                        </span>
+                                         <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/trips/trip-details/{{ data.eventParams.eventID }}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/orders/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'document'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
                                        </li>
                                     </ul>
                                  </div>
@@ -231,7 +252,7 @@
                </div>
             </div>
             <div class="row mt-3">
-               
+
                <!-- <div class="col-6 pl-2">
                   <div class="bg-white p-2">
                      <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>

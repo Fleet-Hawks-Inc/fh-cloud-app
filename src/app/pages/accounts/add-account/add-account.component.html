@@ -37,10 +37,14 @@
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Account Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-      <input type="text" class="form-control" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+      <input type="text" class="form-control" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required pattern="^[a-zA-Z0-9\s]+$" >
       <div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
         <div *ngIf="accountName.errors.required">
           Account name is required.
+
+        </div>
+        <div *ngIf="accountName.errors.pattern">
+         Account name must contain alphanumeric characters.
         </div>
       </div>
     </div>
@@ -49,7 +53,7 @@
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
       <div class="row">
-        <div class="col-lg-3 pr-0">
+        <div class="col-lg-3">
           <!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
           <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog">
 
@@ -59,7 +63,7 @@
             </div>
           </div>
          </div>
-        <div class="col-lg-3 pl-0">
+        <div class="col-lg-3">
           <!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
             <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog">
             <ng-option value="CAD">CAD</ng-option>
@@ -71,10 +75,10 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-1 pr-0">
+        <div class="col-lg-2 text-center">
           <label class="control-label font-weight-bold">as of</label>
         </div>
-        <div class="col-lg-4 pr-0">
+        <div class="col-lg-4">
           <input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
             ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
             [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" >
@@ -98,14 +102,22 @@
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <label class="control-label font-weight-bold">Description</label>
-      <textarea rows="3" class="form-control" placeholder="Enter description of the account"[(ngModel)]="actDesc" name="actDesc"></textarea>
-    </div>
+
+      <textarea rows="3" class="form-control heighta" placeholder="Enter description of the account"[(ngModel)]="actDesc" name="actDesc" #adescription="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+      <div *ngIf="adescription.invalid && (adescription.dirty || adescription.touched)" class="text-danger">
+        <div *ngIf="adescription.errors.pattern">
+         Only 500 characters are allowed.
+        </div>
+
+     </div>
+
+  </div>
   </div>
   <div class="form-row mt-2">
     <div class="col-lg-12 text-right">
       <button class="btn btn-default mr-2" (click)="hideModal()">Cancel</button>
-      <button type="button" class="btn btn-success" *ngIf="!childMessage" [disabled]="!actForm.form.valid || submitDisabled" (click)="addAccount()">Save</button>
-      <button type="button" class="btn btn-success" *ngIf="childMessage" [disabled]="!actForm.form.valid || submitDisabled" (click)="updateAccount()" >Update</button>
+      <button type="button" class="btn btn-success"  [disabled]="!actForm.form.valid || submitDisabled" (click)="addAccount()">Save</button>
+      <!-- <button type="button" class="btn btn-success" *ngIf="childMessage" [disabled]="!actForm.form.valid || submitDisabled" (click)="updateAccount()" >Update</button> -->
     </div>
   </div>
 </form>

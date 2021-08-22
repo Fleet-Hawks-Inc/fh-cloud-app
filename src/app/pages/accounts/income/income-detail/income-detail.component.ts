@@ -24,7 +24,8 @@ export class IncomeDetailComponent implements OnInit {
     customerID: null,
     recAmount: 0,
     recCurr: null,
-    description: ''
+    description: '',
+    transactionLog: []
   }
   paymentLabel = 'Cash';
   customers = [];
@@ -41,10 +42,10 @@ export class IncomeDetailComponent implements OnInit {
   ngOnInit() {
     this.incomeID = this.route.snapshot.params['incomeID'];
     this.fetchIncomeByID();
-    this.fetchCustomers();
+  //  this.fetchCustomers();
     this.fetchAccounts();
     this.fetchIncomeCategories();
-    this.fetchInvoices();
+  //  this.fetchInvoices();
   }
 
   fetchIncomeByID() {
@@ -52,6 +53,9 @@ export class IncomeDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.incomeData = result[0];
+          this.incomeData.transactionLog.map((v: any) => {
+            v.type = v.type.replace('_', ' ');
+          });
           if (result[0].attachments != undefined && result[0].attachments.length > 0) {
             result[0].attachments.map((x) => {
               let obj = {
@@ -118,7 +122,7 @@ export class IncomeDetailComponent implements OnInit {
     this.accountService.deleteData(`income/uploadDelete/${this.incomeID}/${name}`).subscribe((result: any) => {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 
   fetchInvoices() {

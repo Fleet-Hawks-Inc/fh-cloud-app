@@ -207,35 +207,35 @@
                                                 </div>
                                              </div>
 
-                                             <div class="row border-top mb-1 pt-2 pb-2 position-relative" [ngClass]="{'pl-4' : item.address.length > 1}" *ngFor="let address of item.address; let i = index;">
+                                             <div class="row border-top mb-1 pt-2 pb-2 position-relative" [ngClass]="{'pl-4' : item.adrs.length > 1}" *ngFor="let address of item.adrs; let i = index;">
                                                 <div class="col-12">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
-                                                      {{address.address1}}
-                                                      {{address.address2}}</label>
+                                                      {{address.add1}}
+                                                      {{address.add2}}</label>
 
                                                    <label class="control-label" *ngIf="!address.manual"><span class=" font-weight-bold">Address:</span>
-                                                      {{address.userLocation}}</label>
+                                                      {{address.userLoc}}</label>
                                                 </div>
 
 
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">City:</span>
-                                                      {{address.cityName}}</label>
+                                                      {{address.ctyName}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Province/State:</span>
-                                                      {{address.stateName}}</label>
+                                                      {{address.sName}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Country:</span>
-                                                      {{address.countryName}}</label>
+                                                      {{address.cName}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Type:</span>
-                                                      {{address.addressType}}</label>
+                                                      {{address.aType}}</label>
                                                 </div>
 
-                                                <input *ngIf="item.address.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
+                                                <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
 
 
                                              </div>
@@ -458,25 +458,24 @@
                                                                      for="inputDefault">Pickup Location <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                   </label>
                                                                   <ng-select (change)="assignLocation(i, w, 'shipper', $event)" placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
-                                                                  name="pickupLocation_{{i}}{{w}}" class="form-control " #pickupLocation="ngModel" required
-                                                                  pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                                  #location="ngModel" required>
+                                                                     name="pickupLocation_{{i}}{{w}}" class="form-control " #pickupLocation="ngModel" required
+                                                                     pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
+                                                                     #location="ngModel" required>
+                                                                     <ng-container *ngFor="let item of shipAddresses">
+                                                                        <ng-option *ngIf="!item.manual" value="{{item.addressID}}">
+                                                                           {{item.userLoc}}
+                                                                        </ng-option>
+                                                                        <ng-option *ngIf="item.manual" value="{{item.addressID}}">
+                                                                           {{item.add1}}<span *ngIf="item.add1">,</span>
+                                                                           {{item.add2}}<span *ngIf="item.add2">,</span>
+                                                                           {{item.ctyName}}<span *ngIf="item.ctyName">,</span>
+                                                                           {{item.sName}}<span *ngIf="item.sName">,</span>
+                                                                           {{item.cName}}
+                                                                           {{item.zip}}
+                                                                        </ng-option>
+                                                                     </ng-container>
 
-                                                                     <ng-option *ngFor="let item of shipAddresses" value="{{item.addressID}}">
-                                                                        <span *ngIf="!item.manual">
-                                                                           {{item.userLocation}}
-                                                                        </span>
-                                                                        <span *ngIf="item.manual">
-                                                                           {{item.address1}}<span *ngIf="item.address1">,</span>
-                                                                           {{item.address2}}<span *ngIf="item.address2">,</span>
-                                                                           {{item.cityName}}<span *ngIf="item.cityName">,</span>
-                                                                           {{item.stateName}}<span *ngIf="item.cityName">,</span>
-                                                                           {{item.countryName}}
-                                                                           {{item.zipCode}}
-                                                                        </span>
-                                                                     </ng-option>
-
-                                                               </ng-select>
+                                                                  </ng-select>
                                                                   <!-- <input placeholder="eg. Calgary,Alberta" [disabled]="pick.address.manual" [(ngModel)]="pick.address.pickupLocation"
                                                                      name="pickupLocation_{{i}}{{w}}" (keyup)="searchTerm.next($event);"
                                                                      class="form-control " #pickupLocation="ngModel" required
@@ -903,25 +902,23 @@
                                                                      <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                   </label>
                                                                   <ng-select (change)="assignLocation(i, y, 'receiver', $event)" placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
-                                                                  name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
-                                                                  required dropLoc class="form-control" autocomplete="off"
-                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required >
-
-                                                                     <ng-option *ngFor="let item of receiverAddresses" value="{{item.addressID}}">
-                                                                        <span *ngIf="!item.manual">
-                                                                           {{item.userLocation}}
-                                                                        </span>
-                                                                        <span *ngIf="item.manual">
-                                                                           {{item.address1}} <span *ngIf="item.address1">,</span>
-                                                                           {{item.address2}} <span *ngIf="item.address2">,</span>
-                                                                           {{item.cityName}} <span *ngIf="item.cityName">,</span>
-                                                                           {{item.stateName}} <span *ngIf="item.cityName">,</span>
-                                                                           {{item.countryName}}
-                                                                           {{item.zipCode}}
-                                                                        </span>
-                                                                     </ng-option>
-
-                                                               </ng-select>
+                                                                     name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
+                                                                     required dropLoc class="form-control" autocomplete="off"
+                                                                     tabindex="-1" aria-hidden="true" #drop="ngModel" required >
+                                                                     <ng-container *ngFor="let item of receiverAddresses">
+                                                                        <ng-option value="{{item.addressID}}" *ngIf="!item.manual">
+                                                                           {{item.userLoc}}
+                                                                        </ng-option>
+                                                                        <ng-option value="{{item.addressID}}" *ngIf="item.manual">
+                                                                           {{item.add1}} <span *ngIf="item.add1">,</span>
+                                                                           {{item.add2}} <span *ngIf="item.add2">,</span>
+                                                                           {{item.ctyName}} <span *ngIf="item.ctyName">,</span>
+                                                                           {{item.sName}} <span *ngIf="item.sName">,</span>
+                                                                           {{item.cName}}
+                                                                           {{item.zip}}
+                                                                        </ng-option>
+                                                                     </ng-container>
+                                                                  </ng-select>
                                                                   <!-- <input placeholder="eg. Calgary,Alberta" [disabled]="dropItem.address.manual" [(ngModel)]="dropItem.address.dropOffLocation"
                                                                      name="dropOffLocation_{{i}}{{y}}" #dropLoc="ngModel"
                                                                      required dropLoc

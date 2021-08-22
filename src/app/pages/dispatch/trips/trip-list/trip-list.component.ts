@@ -24,6 +24,7 @@ export class TripListComponent implements OnInit {
   dataMessageEnroute: string = Constants.NO_RECORDS_FOUND;
   dataMessageCancel: string = Constants.NO_RECORDS_FOUND;
   dataMessageDeliver: string = Constants.NO_RECORDS_FOUND;
+  dataMessageTono: string = Constants.NO_RECORDS_FOUND;
   form;
   title = "Trips";
   tripID = '';
@@ -44,6 +45,7 @@ export class TripListComponent implements OnInit {
   enrouteTrips = [];
   cancelledTrips = [];
   deliveredTrips = [];
+  tonoTrips = [];
   allTripsCount = 0;
   statusData = [
     {
@@ -63,12 +65,16 @@ export class TripListComponent implements OnInit {
       value: 'enroute'
     },
     {
-      name: "Cancelled",
-      value: 'cancelled'
-    },
-    {
       name: "Delivered",
       value: 'delivered'
+    },
+    {
+      name: "TONO",
+      value: 'tono'
+    },
+    {
+      name: "Cancelled",
+      value: 'cancelled'
     },
   ]
 
@@ -157,6 +163,7 @@ export class TripListComponent implements OnInit {
     status: false
   }
   settlement;
+  cancelOrd = 'no';
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -244,17 +251,27 @@ export class TripListComponent implements OnInit {
       }
 
       if (element.tripStatus == 'confirmed') {
+        element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'dispatched') {
+        element.showStatus = true;
         this.dispatchedTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'started') {
+        element.showStatus = true;
         this.startedTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'enroute') {
+        element.showStatus = true;
         this.enrouteTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'cancelled') {
+        element.showStatus = false;
         this.cancelledTrips.push(result.Items[i]);
       } else if (element.tripStatus == 'delivered') {
+        element.showStatus = false;
         this.deliveredTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'tono') {
+        element.tripStatus = element.tripStatus.toUpperCase();
+        element.showStatus = false;
+        this.tonoTrips.push(result.Items[i]);
       }
 
       trpArr.push(result.Items[i]);
@@ -309,6 +326,7 @@ export class TripListComponent implements OnInit {
           this.enrouteTrips = [];
           this.cancelledTrips = [];
           this.deliveredTrips = [];
+          this.tonoTrips = [];
 
           this.hasSuccess = true;
           this.tripDraw = 0;
@@ -334,6 +352,88 @@ export class TripListComponent implements OnInit {
         this.tripTime = result.createdTime;
         this.settlement = result.settlmnt;
 
+        // show change status acc to trip
+        if(this.tripStatus == 'confirmed') {
+          this.statusData = [
+            {
+              name: "Confirmed",
+              value: 'confirmed'
+            },
+            {
+              name: "Dispatched",
+              value: 'dispatched'
+            },
+          ];
+        } else if (this.tripStatus == 'dispatched') {
+          this.statusData = [
+            {
+              name: "Dispatched",
+              value: 'dispatched'
+            },
+            {
+              name: "Started",
+              value: 'started'
+            },
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONO",
+              value: 'tono'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        } else if (this.tripStatus == 'started') {
+          this.statusData = [
+            {
+              name: "Started",
+              value: 'started'
+            },
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONO",
+              value: 'tono'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        } else if (this.tripStatus == 'enroute') {
+          this.statusData = [
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONO",
+              value: 'tono'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        }
         $("#tripStatusModal").modal('show');
       })
   }
@@ -356,19 +456,19 @@ export class TripListComponent implements OnInit {
     let allowedStatus = [];
     switch(this.prevStatus){
       case 'confirmed':
-        allowedStatus = ['dispatched','started','enroute','cancelled','delivered'];
+        allowedStatus = ['dispatched','started','enroute','cancelled','delivered','tono'];
         break;
       case 'dispatched':
-        allowedStatus = ['started','enroute','cancelled','delivered'];
+        allowedStatus = ['started','enroute','cancelled','delivered','tono'];
         break;
       case 'started':
-        allowedStatus = ['enroute','cancelled','delivered'];
+        allowedStatus = ['enroute','cancelled','delivered','tono'];
         break;
       case 'enroute':
-        allowedStatus = ['cancelled','delivered'];
+        allowedStatus = ['cancelled','delivered','tono'];
         break;
       case 'cancelled':
-        allowedStatus = ['delivered'];
+        allowedStatus = [];
         break;
       case 'delivered':
         allowedStatus = [];
@@ -379,16 +479,31 @@ export class TripListComponent implements OnInit {
       this.toastr.error('Please select a valid status');
       return false;
     }
+    this.cancelOrd = 'no';
+    if(this.tripStatus === 'cancelled' && this.tripStatus != this.prevStatus) {
+      $("#assignConfirmationModal").modal('show');
+    } else {
+      this.updateTrip();
+    }
+  }
 
+  cancelOrder(status) {
+    this.cancelOrd = status;
+    this.updateTrip();
+  }
+
+  updateTrip() {
     let tripObj = {
       entryID : this.tripID,
       status: this.tripStatus,
       settlement: this.settlement,
+      cancelOrder: this.cancelOrd,
     }
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
       if(result) {
         if(this.activeTab == 'all') {
           this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
+          this.trips[this.tripDraw][this.recIndex].showStatus = false;
           this.resetMainTabValues();
         } else {
           if(this.activeTab  == 'confirmed') {
@@ -403,11 +518,15 @@ export class TripListComponent implements OnInit {
             this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'delivered') {
             this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'tono') {
+            this.tonoTrips[this.recIndex].tripStatus = this.tripStatus;
+            this.tonoTrips[this.recIndex].tripStatus = this.tonoTrips[this.recIndex].tripStatus.toUpperCase();
           }
           this.resetMainTabValues();
         }
 
         $("#tripStatusModal").modal('hide');
+        $("#assignConfirmationModal").modal('hide');
         this.toastr.success('Trip status updated successfully');
       } else {
         this.toastr.error('Internal Server error');
@@ -513,6 +632,7 @@ export class TripListComponent implements OnInit {
         this.enrouteTrips = [];
         this.cancelledTrips = [];
         this.deliveredTrips = [];
+        this.tonoTrips = [];
 
         this.records = false;
         this.trips = [];
@@ -554,8 +674,8 @@ export class TripListComponent implements OnInit {
       this.enrouteTrips = [];
       this.cancelledTrips = [];
       this.deliveredTrips = [];
+      this.tonoTrips = [];
       this.fetchTripsCount();
-      // this.initDataTable();
       this.getStartandEndVal('all');
     } else {
       return false;
@@ -695,9 +815,15 @@ export class TripListComponent implements OnInit {
         } else if (element[x].tripStatus == 'enroute') {
           this.enrouteTrips.push(element[x]);
         } else if (element[x].tripStatus == 'cancelled') {
+          element[x].showStatus = false;
           this.cancelledTrips.push(element[x]);
         } else if (element[x].tripStatus == 'delivered') {
+          element[x].showStatus = false;
           this.deliveredTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'tono') {
+          element[x].showStatus = false;
+          element[x].tripStatus = element[x].tripStatus.toUpperCase();
+          this.tonoTrips.push(element[x]);
         }
       }
     }

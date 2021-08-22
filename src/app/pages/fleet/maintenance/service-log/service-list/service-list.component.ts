@@ -151,7 +151,7 @@ export class ServiceListComponent implements OnInit {
     this.apiService.getData(`contacts/detail/${vendorID}`).subscribe(res => {
       this.vendorTextStatus = false;
       this.vendorsData =  res.Items[0];
-      this.vendorAddress = res.Items[0].address;
+      this.vendorAddress = res.Items[0].adrs;
     })
   }
   initDataTable() {

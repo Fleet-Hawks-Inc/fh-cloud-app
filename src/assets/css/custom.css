@@ -2590,3 +2590,6 @@ input:checked + .sliderbtn:before {
 .units-list__main .modal-dialog {
   max-width: 1200px !important;
 }
+.mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
+  cursor: pointer;
+}

@@ -390,11 +390,14 @@
                                                 <div class="row pt-1"  *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$">
                                                         <div *ngIf="payNoo.invalid && (payNoo.dirty || payNoo.touched)" class="text-danger">
                                                             <div *ngIf="payNoo.errors.required">
                                                                 {{ payModeLabel }} Reference is required.
                                                             </div>
+                                                            <div *ngIf="payNoo.errors.pattern">
+                                                                {{ payModeLabel }} Reference must contain alphanumeric characters.
+                                                               </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-5">

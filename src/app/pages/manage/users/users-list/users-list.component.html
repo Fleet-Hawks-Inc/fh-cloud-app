@@ -1,9 +1,9 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header">
-                <div class="row px-4" style="padding-top: 10px">
-                    <div class="col-md-2 col-lg-2 pr-0 pl-0">
+        <section role="main" class="content-body pr-0 pt-0 pl-0">
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-2 col-lg-2 pr-0">
                       <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="searchUserName" [(ngModel)]="searchUserName"
                           placeholder="Search user by name" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -16,18 +16,20 @@
                         </ul>
                      </div>
                     </div>
-                    <div class="col-md-2 col-lg-2 pl-2">
+                    <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
                         
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
                         <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
                             style="color: white"><i class="fas fa-plus"></i> Add User</a>
                     </div>
                 </div>
             </header>
+
             <div class="row"> 
                 <div class="col-lg-12 pr-0">
                     <section class="card">
@@ -77,16 +79,29 @@
                             <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
                                 <div class="col-6">
                                     Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
+
                                 </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
+                                <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
+                                    <div class="col-6">
+                                        Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
+                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                           
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+                
+                
+             </section>
+
+
         </section>
     </div>
     <div id="assignrole" style="max-width: 600px;"class="modal fade" role="dialog" aria-hidden="true" aria-labelledby="assignrole">
