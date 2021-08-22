@@ -142,10 +142,30 @@ export class AddAccountComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getCarrierData();
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
       // this.carrierForm = $('#carrierForm').validate();
     });
+  }
+
+  getCarrierData(){
+    this.apiService.getData('carriers/getCarrier').subscribe((res)=>{
+      if(res.Items.length>0){
+        let data=res.Items[0]
+
+        this.firstName=data.firstName
+        this.lastName=data.lastName
+        this.phone=data.phone
+        this.fax=data.fax
+        this.userName=data.userName
+        this.email=data.email
+        this.findingWay=data.findingWay
+        this.carrierID=data.carrierID
+
+
+      }
+    })
   }
   geocodingSearch(value) {
     this.HereMap.geoCode(value);
@@ -383,6 +403,7 @@ if (event === 'mailing') {
     }
     if (this.yardAddress && this.yardDefault) {
       const data = {
+        carrierID:this.carrierID,
         entityType: 'carrier',
         CCC: this.CCC,
         DBAName: this.DBAName,
@@ -429,7 +450,7 @@ if (event === 'mailing') {
       }
       // append other fields
       formData.append('data', JSON.stringify(data));
-      this.apiService.postData('carriers/add', formData, true).subscribe({
+      this.apiService.putData('carriers', formData, true).subscribe({
         complete: () => {
 
          },

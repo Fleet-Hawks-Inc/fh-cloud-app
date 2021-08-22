@@ -11,7 +11,7 @@
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
-                    <h2 class="mt-1">Create Your Fleet Hawks Account</h2>
+                    <h2 class="mt-1">Complete Your Fleet Hawks Account</h2>
                   </div>
                 </div>
                 <div class="row">
@@ -68,7 +68,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -125,7 +125,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> 
 
                       </div>
                       <div class="col-lg-5">
@@ -151,7 +151,7 @@
                           <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
                         </div>
                       </div>
-                    </div>
+                    </div>-->
 
 
 
@@ -225,6 +225,7 @@
                     <hr class="solid mt-4">
                   </div>
                 </div>
+                
                 <div class="row">
                   <div class="col-lg-12">
                     <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Business
@@ -888,10 +889,11 @@
                           </div>
                   </div>
                 </div>
+                
                 <div class="row mt-2 ">
 
                   <div class="col-lg-12 text-right">
-                    <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                     <button type="button" class="btn btn-success" (click)="onSubmit()"
                       [disabled]="!cForm.form.valid">Save</button>
 

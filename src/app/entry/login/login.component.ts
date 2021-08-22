@@ -4,8 +4,12 @@ import { ApiService } from '../../services';
 import { AuthService } from '../../services';
 import { Role, User } from '../../models/objects';
 import { Auth } from 'aws-amplify';
+import { from, Subject, throwError } from 'rxjs';
 import jwt_decode from "jwt-decode";
-
+import { passwordStrength } from 'check-password-strength'
+import {map} from 'rxjs/operators'
+import {ToastrService} from 'ngx-toastr'
+declare var $: any;
 
 @Component({
   selector: 'app-login',
@@ -15,6 +19,7 @@ import jwt_decode from "jwt-decode";
 export class LoginComponent implements OnInit {
 
   userName: string = null;
+  errors = {};
   email: string;
   password: string = null;
   response: any = '';
@@ -24,11 +29,34 @@ export class LoginComponent implements OnInit {
   signUpCode = '';
   error = '';
   fieldTextType: boolean;
+  fieldTextType1: boolean;
+  cpwdfieldTextType:boolean;
+
   submitDisabled = false;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  }
+  firstName:any;
+  lastName:any;
+  newUserName:any;
+  newPassword:any;
+  phone:any;
+  fax:any;
+  newEmail:any;
+  findingWay:any;
+
+
+
+
 
   constructor(private apiService: ApiService,
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private toaster: ToastrService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -97,7 +125,24 @@ export class LoginComponent implements OnInit {
     if ((this.userName) && (this.password)) {
       try {
         this.userName = this.userName.trim();
-        await Auth.signIn(this.userName, this.password);
+        let loginResponse=await Auth.signIn(this.userName, this.password);
+        if(loginResponse){
+        let carrierID=await this.apiService.getCarrierID();
+        this.apiService.getData(`carriers/${carrierID}`).subscribe((res)=>{
+          if('isProfileComplete' in res.Items[0]){
+            if(res.Items[0].isProfileComplete){
+
+              this.router.navigate(['/Map-Dashboard'])
+            }
+            else{
+              this.router.navigate(['/onboard'])
+            }
+          }else{
+            this.router.navigate(['/Map-Dashboard'])
+          }
+          
+        })
+        }
         const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
         const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
         const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
@@ -152,11 +197,120 @@ export class LoginComponent implements OnInit {
 
     }
   }
+    // Show password
+    toggleFieldTextType1() {
+      this.fieldTextType1 = !this.fieldTextType1;
+    }
+    togglecpwdfieldTextType() {
+      this.cpwdfieldTextType = !this.cpwdfieldTextType;
+    }
   submitConfirmationCode = async () => {
     if (this.signUpCode !== '') {
       await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
     } else {
       this.Error = 'Invalid Sigup Code';
     }
+  }
+
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else {
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else {
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else {
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else {
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true;
+    } else {
+      this.passwordValidation.length = false;
+
+
+    }
+    if (password.includes('.') || password.includes('-')) {
+      this.passwordValidation.specialCharacters = true;
+    }
+
+
+  }
+
+  onSubmit(){
+    const data:any={
+      entityType:'carrier',
+      firstName:this.firstName,
+      lastName:this.lastName,
+      userName:this.newUserName,
+      password:this.newPassword,
+      phone:this.phone,
+      email:this.newEmail,
+      fax:this.fax,
+      findingWay:this.findingWay
+    }
+    try{
+    this.apiService.postData('carriers/onBoard',data).subscribe({
+      complete:()=>{
+
+      },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+
+              // val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+
+              this.throwErrors();
+              this.submitDisabled = true;
+            },
+            error: () => { },
+            next: () => { this.submitDisabled = true; },
+          });
+      },
+      next:(res)=>{
+        this.toaster.success("Carrier is Created successfully")
+        this.cancel();
+      }
+     })
+  }
+  catch(error){
+
+    this.errors[error.context.key] = error.message;
+  }
+
+  }
+  cancel() {
+    $('#userSignUp').modal('hide');
+  }
+  throwErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if (v === 'userName' || v === 'email' || v === 'carrierName') {
+          $('[name="' + v + '"]')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
+        }
+        if (v === 'cognito') {
+          this.toaster.error(this.errors[v]);
+        }
+      });
   }
 }
