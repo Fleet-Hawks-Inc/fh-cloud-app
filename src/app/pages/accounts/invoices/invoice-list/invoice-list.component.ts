@@ -244,7 +244,6 @@ export class InvoiceListComponent implements OnInit {
       for (const element of invoices) {
         if (element.invStatus === 'open') {
           this.openInvoices.push(element);
-          console.log('this.openInvoices', this.openInvoices);
           this.findOverDueInvoice(this.openInvoices);
         } else if (element.invStatus === 'paid') {
           this.paidInvoices.push(element);
@@ -311,17 +310,18 @@ export class InvoiceListComponent implements OnInit {
       $('#updateStatusModal').modal('hide');
     });
   }
-  voidOrderInvoice(invID: string, orderID: string) {
+  voidOrderInvoice(invID: string, orderID: string, orderNo: any) {
     if (confirm('Are you sure you want to void?') === true) {
       this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
         this.invGenStatus = false;
-        this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
+        this.apiService.getData(`orders/invoiceStatus/${orderID}/${orderNo}/${this.invGenStatus}`).subscribe((res) => {
           if (res) {
+            this.fetchInvoices();
+            this.getInvoices();
             this.toaster.success('Invoice Voided Successfully.');
           }
         });
-        this.fetchInvoices();
-        this.getInvoices();
+
       });
     }
 

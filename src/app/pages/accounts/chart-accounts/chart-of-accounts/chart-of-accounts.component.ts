@@ -183,11 +183,11 @@ export class ChartOfAccountsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Account Added Successfully.');
-        $('#addAccountModal').modal('hide');
         this.lastItemSK = '';
         this.accounts = [];
         this.fetchAccounts();
+        this.toaster.success('Account Added Successfully.');
+        $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
         this.actNo = null;
@@ -286,11 +286,11 @@ export class ChartOfAccountsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Account Updated Successfully.');
-        $('#addAccountModal').modal('hide');
         this.lastItemSK = '';
         this.accounts = [];
         this.fetchAccounts();
+        this.toaster.success('Account Updated Successfully.');
+        $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
         this.actNo = null;

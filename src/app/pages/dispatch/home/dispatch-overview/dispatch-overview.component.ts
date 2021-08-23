@@ -163,12 +163,14 @@ export class DispatchOverviewComponent implements OnInit {
               v.entityNumber = v.eventParams.number;
             }
             if (v.eventParams.name !== undefined) {
-              const newString = v.eventParams.name.split('_');
-              v.firstName = newString[0];
-              v.lastName = newString[1];
+              if (v.eventParams.name.includes('_')) {
+                const newString = v.eventParams.name.split('_');
+                v.firstName = newString[0];
+                v.lastName = newString[1];
+              }
             }
           });
-          this.activities = result['Items'];
+          this.activities = result[`Items`];
           this.pageload = false;
         }
         this.allActivities = result['Items'];

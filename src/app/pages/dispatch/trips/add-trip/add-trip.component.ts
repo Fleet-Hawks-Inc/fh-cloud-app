@@ -293,7 +293,7 @@ export class AddTripComponent implements OnInit {
                 this.getSingleRowMiles(endingPoint, this.trips.length);
             }
 
-            this.textFieldValues[`planID`] = uuidv4(); 
+            this.textFieldValues[`planID`] = uuidv4();
             this.textFieldValues[`splitDone`] = false;
             this.trips.push(this.textFieldValues);
             this.disableSplit = false;
@@ -1799,8 +1799,8 @@ export class AddTripComponent implements OnInit {
                 }
                 calcultedBy = element.milesInfo.calculateBy;
                 totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
-                this.orderNo += element.orderNumber
-                if(i < result.length-1){
+                this.orderNo += element.orderNumber;
+                if(i < result.length-1) {
                     this.orderNo = this.orderNo+', ';
                 }
 
@@ -2064,7 +2064,7 @@ export class AddTripComponent implements OnInit {
         if(this.locObj.type == 'add') {
             this.textFieldValues.locationName = '';
         }
-        
+
         if(this.textFieldValues.locMan || this.trips[index].locMan) {
             this.locObj.type = type;
             this.locObj.index = index;
@@ -2076,10 +2076,10 @@ export class AddTripComponent implements OnInit {
                 this.locObj.zipCode = this.trips[index].locData.zip;
                 this.locObj.sCode = this.trips[index].locData.sCode;
                 this.locObj.cCode = this.trips[index].locData.cCode;
-            } 
+            }
             $("#manualLocationModal").modal('show');
         }
-        
+
     }
 
     fetchCountries() {

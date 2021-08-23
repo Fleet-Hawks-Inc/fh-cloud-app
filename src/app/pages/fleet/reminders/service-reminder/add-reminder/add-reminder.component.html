@@ -44,11 +44,11 @@
                            </div>
                         </div>
 
-                        <div class="row pt-2"> 
+                        <div class="row pt-2">
                            <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
                                  Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
+                              <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control text-lowercase"
                                  placeholder="e.g johnsmith@gmail.com, maria@email.com" #sMail="ngModel" required pattern=^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$>
                                  <div *ngIf="sMail.invalid && (sMail.dirty || sMail.touched)" class="text-danger">
                                     <div *ngIf="sMail.errors.required">
@@ -100,7 +100,7 @@
                                        <ng-option value="time">Time </ng-option>
                                        <ng-option value="odometer">Odometer </ng-option>
                                     </ng-select>
-                                 
+
                                  </div>
 
                                  <div class="col-lg-7" *ngIf="reminderData.tasks.remindByUnit == 'time'">
@@ -169,9 +169,9 @@
                                     </div>
                                  </div>
                            </div>
-                           
+
                         </div>
-                        
+
                      </div>
 
                      <div class="col-lg-5" *ngIf="!reminderID && reminderData.tasks.remindByUnit == 'odometer'">
@@ -196,22 +196,22 @@
                   <div class="form-group row adddriverpl">
                      <div class="col-lg-11 text-right pb-3">
                         <div class="row">
-                           
+
                            <div class="col-12">
                               <div class="row">
                                  <div class="col-11 pr-1">
                                     <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2">Cancel</a>
                                     <!-- if there is some error in validation  -->
-                                   
+
                                     <button *ngIf="!reminderID && !serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Save</button>
-                                   
-                                   <!--- if validations are ok and now the button will disable on submit click  --> 
+
+                                   <!--- if validations are ok and now the button will disable on submit click  -->
                                     <button *ngIf="!reminderID && serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="submitDisabled">Save</button>
                                         <!-- update case -->
                                     <button *ngIf="reminderID  && !serviceF.form.valid" (click)="updateReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Update</button>
                                     <button *ngIf="reminderID  && serviceF.form.valid" (click)="updateReminder()" class="btn btn-success" [disabled]="submitDisabled">Update</button>
-                                    
-                                       
+
+
                                  </div>
                               </div>
                            </div>
@@ -222,9 +222,9 @@
                 </div>
               </div>
             </div>
-            
+
          </form>
-            
+
          </section>
 
       </section>
@@ -243,7 +243,7 @@
             </button>
          </div>
          <div class="modal-body text-dark">
-            
+
                <div class="row">
                   <div class="col-lg-12">
                      <label class="control-label font-weight-bold font-bold text-lg-right">Service Task Name<span
@@ -253,14 +253,14 @@
                         <div *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)" class="text-danger">
                            <div *ngIf="txtTask.errors.required">
                              Service task name is required.
-                           </div>     
+                           </div>
                            <div *ngIf="txtTask.errors.pattern">
                                   Service task name must contain alphanumeric characters.
                            </div>
                          </div>
                   </div>
                </div>
-               
+
                <div class="row mt-2">
                   <div class="col-lg-12">
                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task
@@ -276,7 +276,7 @@
                         </div>
                   </div>
                </div>
-   
+
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
