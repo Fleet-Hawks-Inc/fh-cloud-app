@@ -32,11 +32,11 @@
                     <tbody>
                       <tr>
                         <th width="40%" class="back-color-gray">First Name:</th>
-                        <td>{{userData.firstName ? userData.firstName : '-'}}</td>
+                        <td class="text-capitalize">{{userData.firstName ? userData.firstName : '-'}}</td>
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Last Name:</th>
-                        <td>{{userData.lastName ? userData.lastName : '-'}}</td>
+                        <td class="text-capitalize">{{userData.lastName ? userData.lastName : '-'}}</td>
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Employee ID:</th>
@@ -81,21 +81,21 @@
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
-                        <td width="60%">{{address.addressType ? address.addressType : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.addressType ? address.addressType : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 1</td>
-                        <td><span *ngIf="address.manual">{{address.address1 ? address.address1: '-'}}</span>
+                        <td class="text-capitalize"><span *ngIf="address.manual">{{address.address1 ? address.address1: '-'}}</span>
                           <span *ngIf="!address.manual">{{address.userLocation ? address.userLocation: '-'}}</span>
                         </td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 2</td>
-                        <td>{{address.address2 ? address.address2 : '-'}}</td>
+                        <td class="text-capitalize">{{address.address2 ? address.address2 : '-'}}</td>
                       </tr>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Country</td>
-                        <td width="60%">{{address.countryName ? address.countryName : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.countryName ? address.countryName : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -105,11 +105,11 @@
                     <tbody>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Province/State</td>
-                        <td>{{address.stateName ? address.stateName : '-'}}</td>
+                        <td class="text-capitalize">{{address.stateName ? address.stateName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">City</td>
-                        <td>{{address.cityName ? address.cityName : '-'}}</td>
+                        <td class="text-capitalize">{{address.cityName ? address.cityName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Zip Code</td>
@@ -143,7 +143,7 @@
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Username</td>
-                        <td>{{userData.userLoginData.userName ? userData.userLoginData.userName : '-'}}</td>
+                        <td class="text-lowercase">{{userData.userLoginData.userName ? userData.userLoginData.userName : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -153,15 +153,15 @@
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Department</td>
-                        <td width="60%">{{userData.userAccount.department ? userData.userAccount.department : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{userData.userAccount.department ? userData.userAccount.department : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Designation</td>
-                        <td>{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
+                        <td class="text-capitalize">{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">User Type</td>
-                        <td>{{userData.userLoginData.userType ? userData.userLoginData.userType : '-'}}</td>
+                        <td class="text-capitalize">{{userData.userLoginData.userType ? userData.userLoginData.userType : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -183,11 +183,11 @@
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Payroll type</td>
-                        <td width="60%">{{userData.paymentDetails.payrollType ? userData.paymentDetails.payrollType : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{userData.paymentDetails.payrollType ? userData.paymentDetails.payrollType : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Pay Period</td>
-                        <td>{{userData.paymentDetails.payPeriod ? userData.paymentDetails.payPeriod : '-'}}</td>
+                        <td class="text-capitalize">{{userData.paymentDetails.payPeriod ? userData.paymentDetails.payPeriod : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>

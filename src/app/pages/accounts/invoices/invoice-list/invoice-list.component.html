@@ -224,7 +224,7 @@
                                     <!-- <button type="button" (click)="changeStatus(inv.invID)" class="dropdown-item text-1">Change
                                       Status</button> -->
                                     <button type="button" *ngIf="inv.invStatus !== 'paid' && inv.invStatus !== 'voided' && inv.invStatus !== 'partially paid'"
-                                      class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID)">Void</button>
+                                      class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID, inv.invNo)">Void</button>
                                   </div>
                                 </div>
                               </td>
@@ -350,7 +350,7 @@
                                       class="fas fa-ellipsis-v"></i></button>
                                   <div class="dropdown-menu" role="menu">
                                     <button type="button"
-                                      class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID)">Void</button>
+                                      class="dropdown-item text-1" (click)="voidOrderInvoice(inv.invID, inv.orderID, inv.invNo)">Void</button>
                                   </div>
                                 </div>
                               </td>

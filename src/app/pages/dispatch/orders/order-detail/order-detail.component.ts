@@ -174,7 +174,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchInvoiceData();
+   // this.fetchInvoiceData(); Daljit plz uncomment when u work on this as it was showing  errors
   }
 
   /**
@@ -493,7 +493,7 @@ export class OrderDetailComponent implements OnInit {
 
   invoiceGenerated() {
     this.invGenStatus = true;
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.invGenStatus}`).subscribe((res) => {});
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {
