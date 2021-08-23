@@ -253,6 +253,18 @@
                                       <span *ngIf="data.eventParams.type === 'vehicle' && data.eventParams.message === 'deleted'" >
                                        <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
                                      </span>
+                                     <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message !== 'deleted'" >
+                                      <a routerLink="/fleet/maintenance/issues/detail/{{data.eventParams.eventID}}"  href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message === 'deleted'" >
+                                     <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                   </span>
+                                   <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message !== 'deleted'" >
+                                    <a routerLink="/fleet/maintenance/service-program/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                  </span>
+                                  <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message === 'deleted'" >
+                                   <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                 </span>
                                      <!-- <span *ngIf="data.eventParams.type === 'contact' && data.eventParams.message !== 'deleted'">
                                       <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
                                     </span>

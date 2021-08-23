@@ -151,7 +151,7 @@ export class DispatchOverviewComponent implements OnInit {
         result.Items.map((k)=> {
           k.eventParams.message = k.eventParams.message.replace('consignor','shipper');
           k.eventParams.message = k.eventParams.message.replace('consignee','receiver');
-        })
+        });
         if (this.pageload) {
           result.Items.map((v)=> {
             if (v.eventParams.userName !== undefined) {
@@ -171,6 +171,7 @@ export class DispatchOverviewComponent implements OnInit {
             }
           });
           this.activities = result[`Items`];
+          console.log('this.activities', this.activities);
           this.pageload = false;
         }
         this.allActivities = result['Items'];
