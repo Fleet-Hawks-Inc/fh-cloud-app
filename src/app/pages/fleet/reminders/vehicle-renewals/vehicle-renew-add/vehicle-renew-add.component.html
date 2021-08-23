@@ -85,10 +85,14 @@
 
                               </div>
                            </div>
-                           <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
+                           <div class="col-2 pl-0" style="margin-top: 38px !important;">
                               <button type="button" data-toggle="modal" data-target="#addServiceTasks"
-                                 class="modal-with-form btn cus-btn-padd btn-success"><i
+                                 class="modal-with-form btn cus-btn-padd btn-success mr-1"><i
                                     class="fas fa-plus"></i></button>
+                              <a href="javascript:;" (click)="refreshTypeData()"
+                              data-toggle="tooltip" title="Refresh task data"
+                              class="btn btn-success btn-sm modal-with-form"><i
+                                    class="fas fa-sync"></i></a>
                            </div>
                         </div>
                         <div class="row pt-2">

@@ -247,4 +247,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       this.serviceData.unselectedVehicles.push(vehicle.value)
     }
   }
+
+  getTasks() {
+    this.listService.fetchTasks();
+  }
+
+  refreshVehicleData() {
+    this.listService.fetchVehicles();
+  }
 }

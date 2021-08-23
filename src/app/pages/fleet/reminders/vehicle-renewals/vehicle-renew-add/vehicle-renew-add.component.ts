@@ -293,4 +293,8 @@ export class VehicleRenewAddComponent implements OnInit {
       },
     });
   }
+
+  refreshTypeData() {
+    this.fetchServiceTasks();
+  }
 }

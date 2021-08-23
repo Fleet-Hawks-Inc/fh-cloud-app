@@ -385,6 +385,10 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
+  getGroups(){
+    this.fetchGroups();
+  }
+
   fetchInspectionForms() {
     this.apiService
       .getData('inspectionForms/type/vehicle')
@@ -1241,7 +1245,23 @@ export class AddVehicleNewComponent implements OnInit {
       description: '',
     };
   }
-  refreshDrivrData() {
+  refreshDriverData() {
     this.listService.fetchDrivers();
   }
+
+  refreshProgramData() {
+    this.listService.fetchServicePrograms();
+  }
+  
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
 }

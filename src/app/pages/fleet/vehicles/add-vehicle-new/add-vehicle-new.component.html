@@ -249,8 +249,8 @@
                                     <a href="#/fleet/drivers/add" target="_blank"
                                        class="btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></a>
                                  </div>
-                                 <div class="col-lg-1 mar-top-37">
-                                    <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip"
+                                 <div class="col-lg-1 mar-top-37 pl-0">
+                                    <a href="javascript:;" (click)="refreshDriverData()" data-toggle="tooltip"
                                        title="Refresh driver data" class="btn cus-btn-padd btn-success"><i
                                           class="fas fa-sync"></i></a>
                                  </div>
@@ -274,8 +274,8 @@
                                     <a href="#/fleet/drivers/add" target="_blank"
                                        class="btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></a>
                                  </div>
-                                 <div class="col-lg-1 mar-top-37">
-                                    <a href="javascript:;" (click)="refreshDrivrData()" data-toggle="tooltip"
+                                 <div class="col-lg-1 mar-top-37 pl-0">
+                                    <a href="javascript:;" (click)="refreshDriverData()" data-toggle="tooltip"
                                        title="Refresh driver data" class="btn cus-btn-padd btn-success"><i
                                           class="fas fa-sync"></i></a>
                                  </div>
@@ -352,9 +352,12 @@
                                        </ng-option>
                                     </ng-select>
                                  </div>
-                                 <div class="col-lg-2 mar-top-37">
+                                 <div class="col-lg-2 mar-top-37 pl-0 text-right">
                                     <button data-toggle="modal" data-target="#addVehicleProgramModal" type="button"
-                                       class="btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></button>
+                                       class="btn cus-btn-padd btn-success mr-2"><i class="fas fa-plus"></i></button>
+                                    <a href="javascript:;" (click)="refreshProgramData()" data-toggle="tooltip"
+                                    title="Refresh program data" class="btn cus-btn-padd btn-success"><i
+                                       class="fas fa-sync"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -428,10 +431,11 @@
                                        <optgroup>
                                     </ng-select>
                                  </div>
-                                 <div class="col-lg-1 pl-0 mar-top-37">
+                                 <div class="col-2 pl-0 mar-top-37">
                                     <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                       class="modal-with-form btn cus-btn-padd btn-success text-light"><i
+                                       class="modal-with-form btn cus-btn-padd btn-success text-light  mr-2"><i
                                           class="fas fa-plus"></i></button>
+                                    <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getGroups()" data-toggle="tooltip" href="javascript:;" title="Refresh groups data"><i class="fas fa-sync"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -923,10 +927,14 @@
                                        </ng-option>
                                     </ng-select>
                                  </div>
-                                 <div class="col-lg-2  mar-top-37">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                       class="btn cus-btn-padd btn-success modal-with-form"><i
+                                 <div class="col-lg-2  mar-top-37 pl-0">
+                                    <a href="javascript:;" (click)="openModal('form');"
+                                       class="btn cus-btn-padd btn-success modal-with-form mr-3"><i
                                           class="fas fa-plus"></i></a>
+                                    <a href="javascript:;" (click)="refreshVendorData()"
+                                    data-toggle="tooltip" title="Refresh vendor data"
+                                    class="btn btn-success btn-sm modal-with-form"><i
+                                          class="fas fa-sync"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -1351,10 +1359,11 @@
                                           {{vendor.companyName}}</ng-option>
                                     </ng-select>
                                  </div>
-                                 <div class="col-lg-2  mar-top-37">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                       class="btn cus-btn-padd btn-success modal-with-form">
+                                 <div class="col-lg-2  mar-top-37 pl-0">
+                                    <a href="javascript:;" (click)="openModal('form');"
+                                       class="btn cus-btn-padd btn-success modal-with-form mr-2" >
                                        <em class="fas fa-plus"></em></a>
+                                       <a class="btn btn-success btn-sm modal-with-form" (click)="refreshVendorData()" data-toggle="tooltip" href="javascript:;" title="Refresh vendor data"><i class="fas fa-sync"></i></a>
                                  </div>
                               </div>
 
@@ -1459,10 +1468,11 @@
                                        </ng-option>
                                     </ng-select>
                                  </div>
-                                 <div class="col-lg-2  mar-top-37">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                       class="btn cus-btn-padd btn-success modal-with-form"><i
-                                          class="fas fa-plus"></i></a>
+                                 <div class="col-lg-2  mar-top-37 pl-0">
+                                    <a href="javascript:;" (click)="openModal('form');"
+                                       class="btn cus-btn-padd btn-success modal-with-form mr-2" >
+                                       <em class="fas fa-plus"></em></a>
+                                       <a class="btn btn-success btn-sm modal-with-form" (click)="refreshVendorData()" data-toggle="tooltip" href="javascript:;" title="Refresh vendor data"><i class="fas fa-sync"></i></a>
                                  </div>
                               </div>
                               <div class="row">
