@@ -195,7 +195,7 @@
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
-      <div class="modal-body text-dark text-capitalize" style="max-height: 500px;overflow: scroll;">
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"
@@ -205,7 +205,7 @@
           <div class="col-6">
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
-              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}} </div>
             </div>
             <div class="row m-0" *ngIf="driverType == 'employee'">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
@@ -217,17 +217,17 @@
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Type:</div>
-              <div class="col-lg-6 p-2 bor_half">{{corporationType}}</div>
+              <div class="col-lg-6 p-2 bor_half  text-capitalize">{{corporationType}}</div>
             </div>
             <div class="row m-0" *ngIf="corporationType == 'company' || corporationType == 'corporation'">
               <div *ngIf="corporationType == 'company'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vendor:</div>
               <div *ngIf="corporationType == 'corporation'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Name:</div>
-              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
-              <div class="col-lg-6 p-2 bor_half" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee' && corporationType != 'company' && corporationType != 'corporation'">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">owner Operator:</div>
-              <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
+              <div class="col-lg-6 p-2 bor_half  text-capitalize">{{contactsObject[ownerOperator]}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
@@ -235,7 +235,7 @@
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
-              <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
+              <div class="col-lg-6 p-2 bor_half text-lowercase">{{ userName }}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>

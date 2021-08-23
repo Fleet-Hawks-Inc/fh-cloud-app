@@ -424,9 +424,9 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  async changeStatus(id) {
+  async changeStatus(id: any, orderNo: any) {
     if (confirm('Are you sure you want to confirm the order?') === true) {
-      const result = await this.apiService.getData('orders/update/orderStatus/' + id + '/confirmed').toPromise();
+      const result = await this.apiService.getData(`orders/update/orderStatus/${id}/${orderNo}/confirmed`).toPromise();
       if (result) {
         this.dataMessage = Constants.FETCHING_DATA;
         this.orders = [];
