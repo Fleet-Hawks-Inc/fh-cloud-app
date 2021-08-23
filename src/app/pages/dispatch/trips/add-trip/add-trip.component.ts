@@ -2156,12 +2156,14 @@ export class AddTripComponent implements OnInit {
                 tripDriver.push(element);
             }
         }
-        if(this.dummySplitArr.length === this.trips.length) {
-            this.disableSplit = true;
-        } else {
-            this.disableSplit = false;
+        if(tripDriver.length > 0) {
+            if(this.dummySplitArr.length === this.trips.length) {
+                this.disableSplit = true;
+            } else {
+                this.disableSplit = false;
+            }
+            this.splitArr.push(tripDriver);
         }
-        this.splitArr.push(tripDriver);
     }
 
     delSubTrip(index) {
