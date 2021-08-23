@@ -56,6 +56,9 @@ export class EventListComponent implements OnInit {
   async getLocation(location: string) {
     try {
       const cords = location.split(',');
+      
+      console.log('location', location)
+      console.log('cords', cords)
       if (cords.length == 2) {
         const params = {
           lat: cords[0].trim(),
@@ -76,6 +79,13 @@ export class EventListComponent implements OnInit {
       return 'NA';
     }
   }
+
+  async reverseGeoCode(cords: any) {
+
+    cords = `${cords.lng},${cords.lat}`;
+    let result = await this.apiService.getData(`pcMiles/reverse/${cords}`).toPromise();
+    
+ }
 
   
   fetchVehicles() {

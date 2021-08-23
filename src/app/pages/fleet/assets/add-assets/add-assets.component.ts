@@ -180,6 +180,24 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  getManufactures(){
+    this.listService.fetchAssetManufacturers();
+  }
+
+  getModels(){
+    this.listService.fetchAssetModels();
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
   /*
    * Add new asset
    */
@@ -508,6 +526,10 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
+  }
+
+  getGroups(){
+    this.fetchGroups();
   }
 
 

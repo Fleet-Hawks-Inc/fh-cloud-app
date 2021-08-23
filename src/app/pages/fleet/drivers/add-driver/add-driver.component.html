@@ -140,8 +140,8 @@
                                 </div>
                               </div>
                               <div class="col-2  mar-top-37 text-left pl-1" *ngIf="driverData.corporationType == 'owner_operator'">
-                                <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
-                                  class="btn btn-sm btn-success modal-with-form mr-3"><i class="fas fa-plus"></i></a>
+                                <a href="javascript:;" (click)="openModal('form');"
+                                  class="btn btn-sm btn-success mr-3"><i class="fas fa-plus"></i></a>
                                 <a href="javascript:;" (click)="refreshOpData()"
                                 data-toggle="tooltip" title="Refresh owner operator data"
                                 class="btn btn-success btn-sm modal-with-form"><i
@@ -179,7 +179,7 @@
                               </div>
 
                               <div class="col-2  mar-top-37 text-left pl-1" *ngIf="driverData.corporationType == 'company'">
-                                <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                <a href="javascript:;" (click)="openModal('form');"
                                   class="btn btn-sm btn-success modal-with-form mr-3"><i class="fas fa-plus"></i></a>
                                   <a href="javascript:;" (click)="refreshVendorData()"
                                   data-toggle="tooltip" title="Refresh vendor data"

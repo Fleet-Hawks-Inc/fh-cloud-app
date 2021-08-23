@@ -515,4 +515,12 @@ export class AddInventoryComponent implements OnInit {
       return false;
     }
   }
+
+  getWarehouses() {
+    this.fetchWarehouses();
+  }
+
+  getVendors() {
+    this.listService.fetchVendors();
+  }
 }
