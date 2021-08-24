@@ -142,7 +142,7 @@
                                                     <td colspan="10">{{ dataMessage }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of orders[ordersDraw];let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}" class="font-weight-bold">
                                                         {{ order.orderNumber }}</td>
                                                     <td>{{order.orderMode}}</td>
                                                     <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
