@@ -57,8 +57,6 @@ export class EventListComponent implements OnInit {
     try {
       const cords = location.split(',');
       
-      console.log('location', location)
-      console.log('cords', cords)
       if (cords.length == 2) {
         const params = {
           lat: cords[0].trim(),
@@ -106,14 +104,8 @@ export class EventListComponent implements OnInit {
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.events = [];
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          const location = await this.getLocation(element.location);
-          element.location = location;
-          this.events.push(element);
-
-        }
+        this.events = result;
+         
       })
   }
 
@@ -130,13 +122,8 @@ export class EventListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if(result.length > 0) {
-            for (let index = 0; index < result.length; index++) {
-              const element = result[index];
-              const location = await this.getLocation(element.location);
-              element.location = location;
-              this.events.push(element);
-  
-            }
+            this.events = result;
+            
             if (this.events[this.events.length - 1].sk != undefined) {
               this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
             } else {

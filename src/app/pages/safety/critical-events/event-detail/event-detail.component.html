@@ -472,7 +472,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">
-          View Incident Gallery
+          View Events Gallery
         </h5>
         <button
           type="button"
@@ -484,8 +484,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="col-lg-12">
-          <div class="mb-3">
+        <div class="col-lg-12" *ngIf="eventImages?.length > 0">
+          <div class="mb-3" >
             <div class="row">
               <div class="col-12">
                 <ngx-slick-carousel
@@ -508,6 +508,11 @@
                 </ngx-slick-carousel>
               </div>
             </div>
+           </div>
+        </div>
+        <div *ngIf="eventImages?.length === 0">
+          <div class="alert alert-secondary m-0" role="alert">
+            No photo(s) found
           </div>
         </div>
       </div>
@@ -532,7 +537,7 @@
   <div class="modal-dialog" style="max-width: 600px" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewDocModalLabel">View Incident Videos</h5>
+        <h5 class="modal-title" id="viewDocModalLabel">View Events Videos</h5>
         <button
           type="button"
           class="close"
@@ -579,6 +584,11 @@
                 </ngx-slick-carousel>
               </div>
             </div>
+          </div>
+        </div>
+        <div *ngIf="eventVideos?.length === 0">
+          <div class="alert alert-secondary m-0" role="alert">
+            No video(s) found
           </div>
         </div>
       </div>
