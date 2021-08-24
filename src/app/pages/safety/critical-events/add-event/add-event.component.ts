@@ -27,8 +27,10 @@ export class AddEventComponent implements OnInit {
         eventType: null,
         eventSource: 'manual',
         createdBy: '',
-        locationText: '',
-        location: '',
+        location: {
+            label: '',
+            cords: '',
+        },
         notes: '',
         status: 'open',
     };
@@ -79,6 +81,7 @@ export class AddEventComponent implements OnInit {
     trips = [];
     photoSizeError = '';
     videoSizeError = '';
+    isSuggest: boolean = false;
 
     public searchResults: any;
     private readonly search: any;
@@ -152,6 +155,11 @@ export class AddEventComponent implements OnInit {
     }
 
     addEvent() {
+        
+        if(!this.isSuggest) {
+            this.toastr.error('Please select valid location');
+            return;
+        }
         this.disableButton = true;
         this.hideErrors();
 
@@ -215,7 +223,7 @@ export class AddEventComponent implements OnInit {
 
     disabledButton() {
         if (this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == null ||
-                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.locationText == '' || this.event.status == '' || 
+                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.location.label == '' || this.event.status == '' || 
                 this.event.eventSource == '' || this.event.notes.length > 500) {
             return true
         } else {
@@ -255,13 +263,14 @@ export class AddEventComponent implements OnInit {
 
     async assignLocation(position: any, title: string) {
         if (position) {
-            this.event.location = `${position.lat},${position.lng}`;
-            this.event.locationText = title;
+            this.event.location.cords = `${position.lat},${position.lng}`;
+            this.event.location.label = title;
             this.searchResults = false;
+            this.isSuggest = true;
             $('div').removeClass('show-search__result');
         } else {
-            this.event.locationText = title;
-            this.event.location = '0,0';
+            this.event.location.label = title;
+            this.event.location.cords = '0,0';
         }
     }
 
