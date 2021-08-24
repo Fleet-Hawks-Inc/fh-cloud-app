@@ -26,7 +26,7 @@ export class DeviceListComponent implements OnInit {
   private fetchDevices() {
     try {
       this.apiService.getData('devices').subscribe((result) => {
-        console.log(result)
+        
         if (result) {
           if(result.Items.length==0){
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -51,10 +51,18 @@ export class DeviceListComponent implements OnInit {
                 device.deviceSerialNo=item.deviceSerialNo,
                 device.description=item.description,
                 device.deviceType=item.deviceType,
-                device.devicesSK=item.devicesSK,
-                device.vehicle.vehicleID=item.vehicle.vehicleID,
-                device.vehicle.vehicleIdentification=item.vehicle.vehicleIdentification
-                device.asset=item.asset
+                device.devicesSK=item.devicesSK
+                
+                
+                if(item.vehicle){
+                  device.vehicle.vehicleID=item.vehicle.vehicleID,
+                  device.vehicle.vehicleIdentification=item.vehicle.vehicleIdentification
+                  }
+
+                  if(item.asset){
+                    device.asset=item.asset
+                  }
+                
                 return device
           })
         }

@@ -10,20 +10,17 @@ import {ToastrService} from 'ngx-toastr'
 })
 export class DeviceDetailComponent implements OnInit {
 
-  public device={
+  public device:any={
     deviceName:'',
     deviceStatus:'',
     description:'',
     deviceSerialNo:'',
     deviceType:'',
     vehicle:{
-      vehicleID:'',
-      vehicleIdentification:''
+      vehicleID:''
     },
-    asset:{
-      assetID:'',
-      assetIdentification:''
-    }
+    asset:{}
+    
   };
   public deviceID
 
@@ -51,12 +48,14 @@ export class DeviceDetailComponent implements OnInit {
           deviceSerialNo:result.Items[0].deviceSerialNo,
           description:result.Items[0].description,
           deviceType:result.Items[0].deviceType,
-          vehicle:{
-            vehicleID:result.Items[0].vehicle.vehicleID,
-            vehicleIdentification:result.Items[0].vehicle.vehicleIdentification
-          },
-          asset:result.Items[0].asset
         }
+        if(result.Items[0].vehicle && Object.keys(result.Items[0].vehicle).length!=0){
+       
+          this.device.vehicle=result.Items[0].vehicle
+        }
+      }
+      if(result.Items[0].asset){
+        this.device.asset=result.Items[0].asset
       }
       })
     }

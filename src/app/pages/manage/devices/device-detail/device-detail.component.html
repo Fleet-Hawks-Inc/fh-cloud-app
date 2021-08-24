@@ -83,14 +83,14 @@
                            <div class="col-lg-12">
                               <table class="table table-bordered table-responsive-lg">
                                  <tbody>
-                                    <ng-template [ngIf]="device.vehicle.vehicleID" [ngIfElse]="elseBlock">
+                                    <ng-template [ngIf]="device.vehicle" [ngIfElse]="elseBlock">
                                     <tr>
                                        <td width="40%" class="back-color-gray font-weight-bold">Associated With</td>
                                        <td  width="60%">Vehicle</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Name</td>
-                                       <td><a class="text-info" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">{{device.vehicle.vehicleIdentification}}</a></td>
+                                       <td><a class="text-info" *ngIf="device.vehicle" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">{{device.vehicle.vehicleIdentification}}</a></td>
                                     </tr>
                                  </ng-template>
                                  <ng-template #elseBlock>
@@ -100,7 +100,7 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Name</td>
-                                       <td><a class="text-info" routerLink="/fleet/assets/detail/{{device.asset.assetID}}">{{device.asset.assetIdentification}}</a></td>
+                                       <td><a class="text-info" *ngIf="device.asset" routerLink="/fleet/assets/detail/{{device.asset.assetID}}">{{device.asset.assetIdentification}}</a></td>
                                     </tr>
                                  </ng-template>
                                  </tbody>

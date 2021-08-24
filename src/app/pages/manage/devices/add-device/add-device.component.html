@@ -72,9 +72,9 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1">*</span></label>
-                        <ng-select required name="asset" [(ngModel)]="device.asset" class="form-control populate">
+                        <ng-select required name="asset" [(ngModel)]="device.asset.assetID" class="form-control populate">
 
-                          <ng-option *ngFor="let asset of assets" [value]="asset">{{asset.assetIdentification}}
+                          <ng-option *ngFor="let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}
                           </ng-option>
 
                         </ng-select>

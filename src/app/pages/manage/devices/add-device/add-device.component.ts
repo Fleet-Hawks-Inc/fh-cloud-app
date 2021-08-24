@@ -147,7 +147,6 @@ attachedWith="Vehicle"
   }
   public submit(){
     if(this.device){
-      console.log(this.device)
       if(this.device.vehicle.vehicleID){
         this.vehicles.forEach(element => {
           if(this.device.vehicle.vehicleID==element.vehicleID){
@@ -155,6 +154,14 @@ attachedWith="Vehicle"
           }
           
         });
+        
+      }
+      else if(this.device.asset.assetID){
+        this.assets.forEach(element=>{
+          if(this.device.asset.assetID==element.assetID){
+            this.device.asset.assetIdentification=element.assetIdentification
+          }
+        })
       }
     
 
@@ -224,7 +231,7 @@ attachedWith="Vehicle"
             )
             .subscribe({
               complete: () => {
-                
+
               },
               error: () => { },
               next: () => { },
