@@ -288,10 +288,34 @@ export class InvoiceListComponent implements OnInit {
 
   voidInvoice(invID: string) {
     if (confirm('Are you sure you want to void?') === true) {
-      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
-        this.toaster.success('Invoice Deleted Successfully.');
-        this.fetchInvoices();
-        this.getInvoices();
+      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe((result) => {
+        if (result !== undefined) {
+          this.lastItemSK = '';
+          this.lastItemOrderSK = '';
+          this.total = 0;
+          this.openInvoices = [];
+          this.openTotal = 0;
+          this.paidInvoices = [];
+          this.paidTotal = 0;
+          this.emailedInvoices = [];
+          this.emailedTotal = 0;
+          this.partiallyPaidInvoices = [];
+          this.partiallyPaidTotal = 0;
+          this.voidedInvoices = [];
+          this.voidedTotal = 0;
+          this.invoices = [];
+          this.fetchedManualInvoices = [];
+          this.orderInvoices = [];
+          this.openOrderInvoices = [];
+          this.paidOrderInvoices = [];
+          this.emailedOrderInvoices = [];
+          this.partiallyPaidOrderInvoices = [];
+          this.voidedOrderInvoices = [];
+          this.fetchedOrderInvoices = [];
+          this.fetchInvoices();
+          this.getInvoices();
+          this.toaster.success('Invoice Deleted Successfully.');
+        }
       });
     }
   }
@@ -315,10 +339,32 @@ export class InvoiceListComponent implements OnInit {
       this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
         this.invGenStatus = false;
         this.apiService.getData(`orders/invoiceStatus/${orderID}/${orderNo}/${this.invGenStatus}`).subscribe((res) => {
-          if (res) {
+          if (res !== undefined) {
+            this.lastItemSK = '';
+            this.lastItemOrderSK = '';
+            this.total = 0;
+            this.openInvoices = [];
+            this.openTotal = 0;
+            this.paidInvoices = [];
+            this.paidTotal = 0;
+            this.emailedInvoices = [];
+            this.emailedTotal = 0;
+            this.partiallyPaidInvoices = [];
+            this.partiallyPaidTotal = 0;
+            this.voidedInvoices = [];
+            this.voidedTotal = 0;
+            this.invoices = [];
+            this.fetchedManualInvoices = [];
+            this.orderInvoices = [];
+            this.openOrderInvoices = [];
+            this.paidOrderInvoices = [];
+            this.emailedOrderInvoices = [];
+            this.partiallyPaidOrderInvoices = [];
+            this.voidedOrderInvoices = [];
+            this.fetchedOrderInvoices = [];
             this.fetchInvoices();
             this.getInvoices();
-            this.toaster.success('Invoice Voided Successfully.');
+            this.toaster.success('Invoice Deleted Successfully.');
           }
         });
 

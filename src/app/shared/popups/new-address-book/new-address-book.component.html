@@ -1,17 +1,17 @@
 <ng-template #allUnitModal let-modal>
-  
+
     <div class="modal-content">
       <div class="modal-header pr-0">
         <div class="row w-100 align-items-center">
           <div class="col-2">
             <h5 class="modal-title">Address Book</h5>
           </div>
-          
-          
-          
+
+
+
           <div class="col-10 text-right pr-0">
             <div class="row w-100 m-0">
-              <div class="col-4 ml-auto text-capitalize">
+              <div class="col-4 ml-auto">
                 <div class="input-group input-group-md mb-0">
                   <input
                     type="text"
@@ -47,8 +47,8 @@
                   </ul>
                 </div>
               </div>
-             
-    
+
+
               <div class="col-2 p-0">
                 <button
                   type="submit"
@@ -65,7 +65,7 @@
                   Reset
                 </button>
               </div>
-               
+
               <div
                 class="btn-group flex-wrap pull-right mr-2"
                 *ngIf="!environment"
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="modal-body">
-        
+
         <div class="card-body p-0">
           <form class="form-horizontal form-bordered" method="get">
             <div class="mb-3">
@@ -162,8 +162,8 @@
                 role="tabpanel"
                 aria-labelledby="customer-tab"
               >
-                
-                 
+
+
                 <table
                   id="customerTable"
                   class="
@@ -194,7 +194,7 @@
                         {{ customer.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td> -->
-                      <td>{{ customer.workEmail }}</td>
+                      <td  class="text-lowercase">{{ customer.workEmail }}</td>
                       <td>{{ customer.workPhone }}</td>
                       <td *ngIf="customer.address[0]">
                         <span *ngIf="customer.address[0].manual">
@@ -242,7 +242,7 @@
                     </tr>
                   </tbody>
                 </table>
-              
+
               </div>
 
               <!-- All -->
@@ -253,7 +253,7 @@
                 aria-labelledby="all-tab"
                 style="height: 100%;"
               >
-                
+
                 <div
                 infinite-scroll
                 [infiniteScrollDistance]="2"
@@ -289,18 +289,18 @@
                     </tr>
                     <tr
                       *ngFor="let item of units; let i = index"
-                      class="cursorpoint text-capitalize"
+                      class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, item)">
+                      <td (click)="openDetail(unitDetailModal, item)" class="text-capitalize">
                         {{
                           item.cName != ""
                             ? item.cName
                             : item.fn + item.ln
                         }}
                       </td>
-                      <td>{{ item.workEmail }}</td>
+                      <td  class="text-lowercase">{{ item.workEmail }}</td>
                       <td>{{ item.workPhone }}</td>
-                      <td *ngIf="item.address[0] != undefined">
+                      <td *ngIf="item.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="item.address[0].manual">
                           {{ item.address[0].add1 }}
                           {{ item.address[0].add2 }},
@@ -347,7 +347,7 @@
                   </tbody>
                   </table>
                 </div>
-                
+
               </div>
               </div>
 
@@ -382,9 +382,9 @@
                     </tr>
                     <tr
                       *ngFor="let broker of brokers; let i = index"
-                      class="cursorpoint text-capitalize"
+                      class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, broker)">
+                      <td (click)="openDetail(unitDetailModal, broker)"  class="text-capitalize">
                         {{
                           broker.cName != ""
                             ? broker.cName
@@ -392,9 +392,9 @@
                         }}
                       </td>
                       <!-- <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td> -->
-                      <td>{{ broker.workEmail }}</td>
+                      <td  class="text-lowercase">{{ broker.workEmail }}</td>
                       <td>{{ broker.workPhone }}</td>
-                      <td *ngIf="broker.address[0] != undefined">
+                      <td *ngIf="broker.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="broker.address[0].manual">
                           {{ broker.address[0].add1 }}
                           {{ broker.address[0].add2 }},
@@ -472,7 +472,7 @@
                 role="tabpanel"
                 aria-labelledby="vendor-tab"
               >
-                
+
                 <table
                   id="vendorTable"
                   class="
@@ -499,13 +499,13 @@
                       *ngFor="let vendor of vendors; let i = index"
                       class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, vendor)">
+                      <td (click)="openDetail(unitDetailModal, vendor)"   class="text-capitalize">
                         {{ vendor.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td> -->
-                      <td>{{ vendor.workEmail }}</td>
+                      <td  class="text-lowercase">{{ vendor.workEmail }}</td>
                       <td>{{ vendor.workPhone }}</td>
-                      <td *ngIf="vendor.address[0] != undefined">
+                      <td *ngIf="vendor.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="vendor.address[0].manual">
                           {{ vendor.address[0].add1 }}
                           {{ vendor.address[0].add2 }},
@@ -583,7 +583,7 @@
                 role="tabpanel"
                 aria-labelledby="carrier-tab"
               >
-                
+
                 <table
                   id="carrierTable"
                   class="
@@ -610,13 +610,13 @@
                       *ngFor="let carrier of carriers; let i = index"
                       class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, carrier)">
+                      <td (click)="openDetail(unitDetailModal, carrier)"  class="text-capitalize">
                         {{ carrier.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td> -->
-                      <td>{{ carrier.workEmail }}</td>
+                      <td  class="text-lowercase">{{ carrier.work }}</td>
                       <td>{{ carrier.workPhone }}</td>
-                      <td *ngIf="carrier.address[0] != undefined">
+                      <td *ngIf="carrier.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="carrier.address[0].manual">
                           {{ carrier.address[0].add1 }}
                           {{ carrier.address[0].add2 }},
@@ -662,7 +662,7 @@
                     </tr>
                   </tbody>
                 </table>
-                
+
               </div>
 
               <div
@@ -671,7 +671,7 @@
                 role="tabpanel"
                 aria-labelledby="owner-tab"
               >
-                
+
                 <table
                   id="operatorTable"
                   class="
@@ -698,7 +698,7 @@
                       *ngFor="let operator of owners; let i = index"
                       class="cursorpoint"
                     >
-                      <td
+                      <td  class="text-capitalize"
                         (click)="
                           openDetail(unitDetailModal, operator)
                         "
@@ -706,9 +706,9 @@
                         {{ operator.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td> -->
-                      <td>{{ operator.workEmail }}</td>
+                      <td  class="text-lowercase">{{ operator.workEmail }}</td>
                       <td>{{ operator.workPhone }}</td>
-                      <td *ngIf="operator.address[0] != undefined">
+                      <td *ngIf="operator.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="operator.address[0].manual">
                           {{ operator.address[0].add1 }}
                           {{ operator.address[0].add2 }},
@@ -754,7 +754,7 @@
                     </tr>
                   </tbody>
                 </table>
-                
+
               </div>
 
               <div
@@ -789,11 +789,11 @@
                       *ngFor="let shipper of shippers; let i = index"
                       class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, shipper)">
+                      <td (click)="openDetail(unitDetailModal, shipper)"  class="text-capitalize">
                         {{ shipper.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.firstName}} {{shipper.lastName}}</td> -->
-                      <td>{{ shipper.workEmail }}</td>
+                      <td  class="text-lowercase">{{ shipper.workEmail }}</td>
                       <td>{{ shipper.workPhone }}</td>
                       <td *ngIf="shipper.address[0] != undefined">
                         <span *ngIf="shipper.address[0].manual">
@@ -841,7 +841,7 @@
                     </tr>
                   </tbody>
                 </table>
-                
+
               </div>
 
               <div
@@ -850,7 +850,7 @@
                 role="tabpanel"
                 aria-labelledby="consignee-tab"
               >
-                
+
                 <table
                   id="consigneeTable"
                   class="
@@ -877,11 +877,11 @@
                       *ngFor="let receiver of receivers; let i = index"
                       class="cursorpoint"
                     >
-                      <td (click)="openDetail(unitDetailModal, receiver)">
+                      <td (click)="openDetail(unitDetailModal, receiver)"  class="text-capitalize">
                         {{ receiver.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td> -->
-                      <td>{{ receiver.workEmail }}</td>
+                      <td  class="text-lowercase">{{ receiver.workEmail }}</td>
                       <td>{{ receiver.workPhone }}</td>
                       <td *ngIf="receiver.address[0] != undefined">
                         <span *ngIf="receiver.address[0].manual">
@@ -930,7 +930,7 @@
                     </tr>
                   </tbody>
                 </table>
-                
+
               </div>
 
               <div
@@ -939,7 +939,7 @@
                 role="tabpanel"
                 aria-labelledby="fc-tab"
               >
-                
+
                 <table
                   id="companyTable"
                   class="
@@ -966,7 +966,7 @@
                       *ngFor="let company of fcCompanies; let i = index"
                       class="cursorpoint"
                     >
-                      <td
+                      <td  class="text-capitalize"
                         (click)="
                           openDetail(unitDetailModal, company)
                         "
@@ -974,7 +974,7 @@
                         {{ company.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td> -->
-                      <td>{{ company.workEmail }}</td>
+                      <td class="text-lowercase">{{ company.workEmail }}</td>
                       <td>{{ company.workPhone }}</td>
                       <td *ngIf="company.address[0] != undefined">
                         <span *ngIf="company.address[0].manual">
@@ -1022,7 +1022,7 @@
                     </tr>
                   </tbody>
                 </table>
-                
+
               </div>
             </div>
           </form>
@@ -1034,7 +1034,7 @@
         </button>
       </div>
     </div>
-  
+
 </ng-template>
 
 <!-- Add entry Modal -->
@@ -1201,7 +1201,7 @@
                   [(ngModel)]="unitData.workEmail"
                   name="workEmail"
                   type="text"
-                  class="form-control"
+                  class="form-control text-lowercase"
                   placeholder="eg. johnsmith@gmail.com "
                   #customerem="ngModel"
                   required
@@ -1386,7 +1386,7 @@
                   class="form-control"
                   placeholder="7-12 digits , eg. 897567567456"
                 />
-               
+
               </div>
             </div>
           </div>
@@ -1480,7 +1480,7 @@
                     <!-- <div *ngIf="carriermc.invalid && (carriermc.dirty || carriermc.touched)" class="text-danger">
                                                   <div *ngIf="carriermc.errors.pattern">
                                                       MC number must contain 6 digits.
-                                                      </div>  
+                                                      </div>
 
 
                                               </div> -->
@@ -1508,7 +1508,7 @@
                       class="form-control"
                       placeholder="Carrier’s US DOT number"
                     />
-                    
+
                   </div>
                   <div class="col-3">
                     <label
@@ -1548,7 +1548,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- fast expiry -->
                   <div class="col-3">
                     <label
@@ -1574,7 +1574,7 @@
                       [maxDate]="futureDatesLimit"
                     />
                   </div>
-                  
+
                   <!-- CCC -->
                   <div class="col-3">
                     <label
@@ -1598,7 +1598,7 @@
                       class="form-control"
                       placeholder="4 digits , eg. AB7Y"
                     />
-                    
+
                   </div>
 
                   <!-- SCAC -->
@@ -1638,9 +1638,9 @@
                       placeholder="9 digits , eg. 123456789"
                     />
 
-                    
+
                    </div>
-                  
+
                     <div class="col-3">
                         <label
                         class="
@@ -1677,7 +1677,7 @@
                           placeholder="eg. 5"
                         />
 
-                        
+
                     </div>
                     <div class="col-3">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Payroll Type</label>
@@ -1697,7 +1697,7 @@
                             >Pay Per Delivery</ng-option
                           >
                         </ng-select>
-                        
+
                     </div>
                     <div class="col-3">
                         <div class="checkbox-custom mt-5">
@@ -1767,7 +1767,7 @@
                                 control-label
                                 font-weight-bold
                                 text-lg-right
-                                
+
                               "
                             ></label>
                             <ng-select
@@ -1857,7 +1857,7 @@
                                 <!-- <div *ngIf="carrierloadpaypercent.invalid && (carrierloadpaypercent.dirty || carrierloadpaypercent.touched)" class="text-danger">
                                                                       <div *ngIf="carrierloadpaypercent.errors.pattern">
                                                                           Load Pay Percent must contain digits and only one special character (dot) only.
-                                                                        </div> 
+                                                                        </div>
 
 
                                                                   </div> -->
@@ -1949,14 +1949,14 @@
                                   class="form-control"
                                   placeholder="eg. 5"
                                 />
-  
+
                                 <!-- <div  *ngIf="carrieremptymiles.invalid && (carrieremptymiles.dirty || carrieremptymiles.touched)" class="text-danger">
                                                                       <div *ngIf="carrieremptymiles.errors.pattern">
                                                                           Empty Miles must contain digits and only one special character (dot) only.
                                                                         </div>
-  
-  
-  
+
+
+
                                                                   </div> -->
                               </div>
                               <div class="col-3">
@@ -1975,9 +1975,9 @@
                                 </ng-select>
                               </div>
                           </div>
-                        
-                        
-                        
+
+
+
                           <div class="row wsib-wrapper"
                             *ngIf="unit.carrierData.wsib">
                             <div class="col-3">
@@ -2002,7 +2002,7 @@
                                 class="form-control"
                                 placeholder=" Work safety insurance board no."
                               />
-  
+
                             </div>
                             <div class="col-3">
                               <label
@@ -2032,7 +2032,7 @@
                                 [minDate]="dateMinLimit"
                                 [maxDate]="futureDatesLimit"
                               />
-                              
+
                             </div>
                           </div>
                     </div>
@@ -2050,7 +2050,7 @@
                 <input type="text" class="form-control" [(ngModel)]="bank.bName"
                   [attr.name]="'banks['+b+'].bName'" [ngModelOptions]="{standalone: true}" #bName="ngModel"
                   pattern="^[a-zA-Z0-9\s]{2,30}$" placeholder="eg. Bank of Nova Scotia">
-               
+
               </div>
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
@@ -2058,7 +2058,7 @@
                 <input type="number" min="0" class="form-control" [(ngModel)]="bank.acc"
                   [ngModelOptions]="{standalone: true}" placeholder="eg. 12123456701"
                   [attr.name]="'banks['+b+'].acc'" #ac="ngModel">
-                
+
               </div>
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
@@ -2068,7 +2068,7 @@
                 <input type="number" min="0" class="form-control" [(ngModel)]="bank.rNo"
                   [ngModelOptions]="{standalone: true}" [attr.name]="'banks['+b+'].rNo'"
                   #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
-                
+
               </div>
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2">Transit#&nbsp;<i
@@ -2080,7 +2080,7 @@
                 <input type="text" class="form-control" [(ngModel)]="bank.trnNo"
                   [attr.name]="'banks['+b+'].trnNo'" [ngModelOptions]="{standalone: true}"
                   placeholder="eg. 12345789">
-                
+
               </div>
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
@@ -2090,9 +2090,9 @@
                 <input type="number" min="0" class="form-control" [(ngModel)]="bank.insNo"
                   [ngModelOptions]="{standalone: true}" #ins="ngModel" placeholder="eg. 219"
                   [attr.name]="'banks['+b+'].insNo'">
-               
+
               </div>
-              
+
               <div class="col-lg-12">
                 <div class="row">
                   <div class="col-lg-12">
@@ -2170,7 +2170,7 @@
                             placeholder="eg. 71, Edson drive,Alberta,Canada" #adLine1="ngModel"
                             [required]="item.manual">
                         </div>
-                       
+
                         <div class="col-3">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Select
                             City<span *ngIf="item.manual"
@@ -2306,7 +2306,7 @@
                         class="form-control"
                         placeholder="6 digits , eg. 123456"
                         />
-                        
+
                     </div>
                     <div class="col-3">
                         <label class="
@@ -2330,7 +2330,7 @@
                         class="form-control"
                         placeholder="Carrier’s US DOT number"
                         />
-                        
+
                     </div>
                 </div>
             </div>
@@ -2435,7 +2435,7 @@
                           class="form-control"
                           placeholder="7-12 digits , eg. 897567567456"
                         />
-                        
+
                       </div>
                       <div class="col-3">
                             <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -2454,7 +2454,7 @@
                               class="form-control"
                               placeholder="6 digits , eg. 123456"
                             />
-                            
+
                           </div>
                           <div class="col-3">
                             <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -2472,8 +2472,8 @@
                               class="form-control"
                               placeholder="Carrier’s US DOT number"
                             />
-                            
-                          </div> 
+
+                          </div>
                            <div class="col-3">
                             <label
                               class="
@@ -2537,7 +2537,7 @@
                               [maxDate]="futureDatesLimit"
                             />
                           </div>
-                            
+
                 </div>
             </div>
 
@@ -2764,7 +2764,7 @@
 
                         <!-- <div *ngIf="ownerrate.invalid && (ownerrate.dirty || ownerrate.touched)" class="text-danger">
                                                           <div *ngIf="ownerrate.errors.pattern">
-                                                            Rate must contain digits and only one special character (dot) only . 
+                                                            Rate must contain digits and only one special character (dot) only .
                                                           </div>
                                                         </div> -->
                       </div>
@@ -2827,7 +2827,7 @@
 
                             <!-- <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
                                                                   <div *ngIf="ownerloadpaypercent.errors.pattern">
-                                                                    Load Pay Percent must contain digits and only one special character (dot) only . 
+                                                                    Load Pay Percent must contain digits and only one special character (dot) only .
                                                                   </div>
                                                                 </div> -->
                           </div>
@@ -2891,7 +2891,7 @@
 
                           <!-- <div *ngIf="ownerloadedmiles.invalid && (ownerloadedmiles.dirty || ownerloadedmiles.touched)" class="text-danger">
                                                                   <div *ngIf="ownerloadedmiles.errors.pattern">
-                                                                    Loaded Miles must contain digits and only one special character (dot) only . 
+                                                                    Loaded Miles must contain digits and only one special character (dot) only .
                                                                   </div>
                                                                 </div> -->
                         </div>
@@ -2942,7 +2942,7 @@
 
                           <!-- <div *ngIf="ownerempty.invalid && (ownerempty.dirty || ownerempty.touched)" class="text-danger">
                                                                   <div *ngIf="ownerempty.errors.pattern">
-                                                                    Empty Miles must contain digits and only one special character (dot) only . 
+                                                                    Empty Miles must contain digits and only one special character (dot) only .
                                                                   </div>
                                                                 </div> -->
                         </div>
@@ -3083,7 +3083,7 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2"
                     >Address Type</label
                   >
-  
+
                   <ng-select
                     [(ngModel)]="item.aType"
                     name="aType{{ i }}"
@@ -3100,7 +3100,7 @@
                 </div>
               </div>
             </div>
-  
+
             <div class="col-4">
               <label class="control-label font-weight-bold text-lg-right pt-2"
                 >Type Your Location</label
@@ -3229,16 +3229,16 @@
                       class="form-control address_zip"
                       placeholder="T2C 5J4"
                     />
-  
+
                     <!-- <div *ngIf="customerzip.invalid && (customerzip.dirty || customerzip.touched)" class="text-danger">
                                                         <div *ngIf="customerzip.errors.pattern">
-                                                          Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only. 
+                                                          Zip code  must contain atleast 3 uppercase letters,numbers and no special characters except (space) only.
                                                       </div>
                                                       </div> -->
                   </div>
                 </div>
               </div>
-  
+
               <div class="col-4 pr-0 pt-4">
                 <div class="row">
                   <div class="col-lg-12">
@@ -3302,7 +3302,7 @@
                   class="form-control"
                   placeholder="eg. John"
                 />
-                
+
               </div>
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -3315,7 +3315,7 @@
                   class="form-control"
                   placeholder="eg. Smith"
                 />
-                
+
               </div>
               <div class="col-4">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -3328,7 +3328,7 @@
                   class="form-control"
                   placeholder="eg. Manager "
                 />
-                
+
               </div>
               <div class="col-2 text-right mt-2">
                 <button
@@ -3348,7 +3348,7 @@
                   ><i class="fa fa-minus"></i> Delete</a
                 >
               </div>
-             
+
               <div class="col-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
                   >Phone
@@ -3369,7 +3369,7 @@
                   [(ngModel)]="additionData.email"
                   name="email_{{ ad }}"
                   type="text"
-                  class="form-control"
+                  class="form-control text-lowercase"
                   placeholder="eg. johnsmith@gmail.com "
                   #customerem1="ngModel"
                   required
@@ -3401,7 +3401,7 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <!-- Additional Contact Details end -->
 
@@ -3471,11 +3471,11 @@
         <a href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</a>
       </div>
       <div class="col-12 mb-3">
-        <table class="table table-bordered m-0 text-capitalize">
+        <table class="table table-bordered m-0">
           <tbody>
             <tr *ngIf="unitData.eTypes">
               <th style="    width: 166px;" class="back-color-gray">Type:</th>
-              <td>
+              <td class="text-capitalize">
                 <span *ngFor="let type of unitData.eTypes; last as isLast">
                   <span *ngIf="type === 'fc'">Factoring Company</span>
                   <span *ngIf="type === 'owner_operator'">Owner Operator</span>
@@ -3493,11 +3493,11 @@
         </table>
       </div>
       <div class="col-lg-6">
-        <table class="table table-bordered m-0 text-capitalize">
+        <table class="table table-bordered m-0">
           <tbody>
             <tr *ngIf="unitData.cName">
               <th width="40%" class="back-color-gray">Company Name:</th>
-              <td>{{ unitData.cName }}</td>
+              <td class="text-capitalize">{{ unitData.cName }}</td>
             </tr>
 
             <tr *ngIf="unitData.workPhone">
@@ -3508,16 +3508,16 @@
         </table>
       </div>
       <div class="col-lg-6">
-        <table class="table table-bordered m-0 text-capitalize">
+        <table class="table table-bordered m-0">
           <tbody>
             <tr *ngIf="unitData.workEmail">
               <th width="40%" class="back-color-gray">Email:</th>
-              <td>{{ unitData.workEmail }}</td>
-            </tr> 
+              <td  class="text-lowercase"> {{ unitData.workEmail }}</td>
+            </tr>
             <tr *ngIf="unitData.dba">
               <th width="40%" class="back-color-gray">DBA:</th>
-              <td>{{ unitData.dba }}</td>
-            </tr> 
+              <td class="text-capitalize">{{ unitData.dba }}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -3546,7 +3546,7 @@
                     <th width="40%" class="back-color-gray">EIN:</th>
                     <td>{{ item.brokerData.ein ? item.brokerData.ein : "-" }}</td>
                   </tr>
-                  
+
                 </tbody>
               </table>
              </div>
@@ -3557,7 +3557,7 @@
                     <th width="40%" class="back-color-gray">Name:</th>
                     <td>{{ item.brokerData.fn ? item.brokerData.fn : "-" }} {{ item.brokerData.ln }}</td>
                   </tr>
-                  
+
                   <tr>
                     <th width="40%" class="back-color-gray">MC:</th>
                     <td>{{ item.brokerData.mc ? item.brokerData.mc : "-" }}</td>
@@ -3597,7 +3597,7 @@
                       <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
                       <td>{{ item.carrierData.bond ? "Yes" : "No"}}</td>
                     </tr>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">MC#:</th>
                       <td>{{ item.carrierData.mc ? item.carrierData.mc : "-" }}</td>
@@ -3628,7 +3628,7 @@
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">CVOR:</th>
                       <td>{{ item.carrierData.cvor ? item.carrierData.cvor : "-" }}</td>
@@ -3657,7 +3657,7 @@
                       <th width="40%" class="back-color-gray">Delivery Rate:</th>
                       <td>{{ item.carrierData.dr ? item.carrierData.dr : "-" }} {{item.carrierData.drCur}}</td>
                     </tr>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">Local Tax (in Percentage):</th>
                       <td>{{ item.carrierData.lTax ? item.carrierData.lTax : "-" }}</td>
@@ -3682,15 +3682,15 @@
                       <th width="40%" class="back-color-gray">WSIB Expiry:</th>
                       <td>{{ item.carrierData.wsibExp ? item.carrierData.wsibExp : "-" }}</td>
                     </tr>
-                   
-                    
+
+
                   </tbody>
                 </table>
               </div>
             </div>
-            
+
           </div>
-          
+
           <div *ngIf="item.shipperData">
             <label
               class="control-label font-weight-bold text-lg-right text-5 pt-3"
@@ -3700,7 +3700,7 @@
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">DOT#:</th>
                       <td>{{ item.shipperData.dot ? item.shipperData.dot : "-" }}</td>
@@ -3715,7 +3715,7 @@
                       <th width="40%" class="back-color-gray">MC:</th>
                       <td>{{ item.shipperData.mc ? item.shipperData.mc : "-" }}</td>
                     </tr>
-                   
+
                   </tbody>
                 </table>
               </div>
@@ -3731,12 +3731,12 @@
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">MC:</th>
                       <td>{{ item.receiverData.mc ? item.receiverData.mc : "-" }}</td>
                     </tr>
-                   
+
                   </tbody>
                 </table>
               </div>
@@ -3747,14 +3747,14 @@
                       <th width="40%" class="back-color-gray">MC:</th>
                       <td>{{ item.receiverData.mc ? item.receiverData.mc : "-" }}</td>
                     </tr>
-                   
+
                   </tbody>
                 </table>
               </div>
             </div>
-           
+
           </div>
-          
+
           <div *ngIf="item.customerData">
             <label
               class="control-label font-weight-bold text-lg-right text-5 pt-3"
@@ -3780,14 +3780,14 @@
                       <th width="40%" class="back-color-gray">Account#:</th>
                       <td>{{ item.customerData.acc ? item.customerData.acc : "-" }}</td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
               </div>
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">DOT#:</th>
                       <td>{{ item.customerData.dot ? item.customerData.dot : "-" }}</td>
@@ -3800,12 +3800,12 @@
                       <th width="40%" class="back-color-gray">MC:</th>
                       <td>{{ item.customerData.mc ? item.customerData.mc : "-" }}</td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
               </div>
             </div>
-            
+
           </div>
 
           <div *ngIf="item.fcData">
@@ -3817,29 +3817,29 @@
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">fcRate#:</th>
                       <td>{{ item.fcData.fcRate ? item.fcData.fcRate : "-" }} {{item.fcData.fcRate ? item.fcData.fcUnit : ''}}</td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
               </div>
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr>
                       <th width="40%" class="back-color-gray">fcRate#:</th>
                       <td>{{ item.fcData.fcRate ? item.fcData.fcRate : "-" }} {{item.fcData.fcRate ? item.fcData.fcUnit : ''}}</td>
                     </tr>
-                    
+
                   </tbody>
                 </table>
               </div>
             </div>
-            
+
           </div>
 
           <div *ngIf="item.opData">
@@ -3875,14 +3875,14 @@
                       <th width="40%" class="back-color-gray">Empty Miles:</th>
                       <td>{{ item.opData.em ? item.opData.em : "-" }} {{item.opData.em ? item.opData.emCur : ''}}</td>
                     </tr>
-                     
+
                   </tbody>
                 </table>
               </div>
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-                    
+
                     <tr *ngIf="item.opData.pType === 'Percentage'">
                       <th width="40%" class="back-color-gray">Load Pay Percent:</th>
                       <td>{{ item.opData.pPnt ? item.opData.pPnt : "-" }} {{item.opData.pPnt ? item.opData.perType : ''}}</td>
@@ -3903,7 +3903,7 @@
                 </table>
               </div>
             </div>
-            
+
           </div>
 
           <div *ngIf="item.vendorData">
@@ -3923,13 +3923,13 @@
                 </table>
               </div>
             </div>
-            
+
           </div>
- 
-          
+
+
         </div>
-        
-      </div>  
+
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-12 mb-2 mt-2">
@@ -3954,7 +3954,7 @@
             <th width="40%" class="back-color-gray">City:</th>
             <td>{{ item.ctyName ? item.ctyName : "-" }}</td>
           </tr>
-         
+
         </tbody>
       </table>
      </div>
@@ -3964,7 +3964,7 @@
       *ngFor="let item of unitData.adrs"
     >
       <tbody>
-        
+
         <tr *ngIf="item.manual">
           <th width="40%" class="back-color-gray">Zip Code:</th>
           <td>{{ item.zip ? item.zip : "-" }}</td>
@@ -3986,7 +3986,7 @@
     </div>
     </div>
 
-    
+
       <!-- Additional Start -->
 
       <div class="row">
@@ -4012,17 +4012,17 @@
               <th width="40%" class="back-color-gray">Phone:</th>
               <td>{{ addCont.phone ? addCont.phone : "-" }}</td>
             </tr>
-            
+
           </tbody>
         </table>
         </div>
         <div class="col-lg-6">
         <table class="table table-bordered m-0"  *ngFor="let addCont of unitData.addlCnt">
           <tbody>
-            
+
             <tr>
               <th width="40%" class="back-color-gray">Email:</th>
-              <td>{{ addCont.email ? addCont.email : "-" }}</td>
+              <td  class="text-lowercase">{{ addCont.email ? addCont.email : "-" }}</td>
             </tr>
             <tr>
               <th width="40%" class="back-color-gray">Fax:</th>
