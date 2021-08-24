@@ -268,7 +268,7 @@ export class InventoryListComponent implements OnInit {
         time: eventData.createdTime,
         eventID: eventData.itemID
       }
-      this.apiService.deleteData(`items/delete/item/${eventData.itemID}` ).subscribe((result: any) => {
+      this.apiService.deleteData(`items/delete/item/${eventData.itemID}/${eventData.itemName}` ).subscribe((result: any) => {
 
         this.items = [];
         this.inventoryDraw = 0;
@@ -339,6 +339,7 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('req');
 
         this.requiredItems = result[`Items`];
+        console.log('this.requiredItems', this.requiredItems);
         if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
           this.requiredInventoryStartPoint = 1;
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
@@ -407,7 +408,7 @@ export class InventoryListComponent implements OnInit {
       $('.col5').css('display', '');
     }
 
-    
+
 
     if (this.hideShow.unitCost === false) {
       $('.col7').css('display', 'none');
@@ -429,7 +430,7 @@ export class InventoryListComponent implements OnInit {
       $('.col9').css('display', '');
     }
 
-    
+
     if (this.hideShow.preferredVendor === false) {
       $('.col12').css('display', 'none');
     } else {
@@ -479,7 +480,7 @@ export class InventoryListComponent implements OnInit {
         // time: eventData.createdTime,
         eventID: eventData.itemID
       }
-      this.apiService.deleteData(`items/delete/required/item/${eventData.itemID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`items/delete/required/item/${eventData.itemID}/${eventData.itemName}`).subscribe((result: any) => {
 
         this.requiredItems = [];
         this.requiredInventoryDraw = 0;
@@ -604,9 +605,9 @@ export class InventoryListComponent implements OnInit {
       this.transfer.vendorID = result[0].warehouseVendorID;
       this.transfer.itemID = result[0].itemID;
       this.transfer.quantity = result[0].quantity;
-      
+
     }
-    
+
   }
 
   checkQuanity (value: any){
@@ -620,7 +621,7 @@ export class InventoryListComponent implements OnInit {
   }
 
   transferInventory() {
-    
+
       this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
         this.transfer = {
           itemID: '',
@@ -640,10 +641,10 @@ export class InventoryListComponent implements OnInit {
       });
   }
 
-  
+
   disableButton() {
-    if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null || 
-    this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null || 
+    if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null ||
+    this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null ||
     this.transfer.partNumber == '' || this.transfer.partNumber == null ||
     this.transfer.transferQuantity <= 0 || this.transfer.transferQuantity == null ||
     this.transfer.date == '' || this.transfer.date == null || this.quantityError || this.transfer.notes.length > 500
@@ -653,8 +654,8 @@ export class InventoryListComponent implements OnInit {
     } else {
       return false
     }
-    
-    
-    
+
+
+
   }
 }
