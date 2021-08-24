@@ -57,14 +57,14 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span class="mandfield text-2 ml-1">*</span></label>
                         
-                        <ng-select name="vehicle" [(ngModel)]="device.vehicle" class="form-control populate">
+                        <ng-select name="vehicle" [(ngModel)]="device.vehicle.vehicleID"  class="form-control populate">
 
-                          <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+                          <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
                             {{vehicle.vehicleIdentification}}</ng-option>
 
                         </ng-select>
 
-                        {{device.vehicle}}
+                        
                       </div>
                     </div>
                   </div>
@@ -87,12 +87,11 @@
                         for="inputDefault">Device Type<span class="mandfield text-2 ml-1">*</span></label>
                       <ng-select required name="deviceType" [(ngModel)]="device.deviceType" class="form-control populate">
 
-                        <ng-option value="SolaTracker">Solar Tracker</ng-option>
-                        <ng-option value="AssetGateway">Asset Gateway</ng-option>
-                        <ng-option value="DoorSensor">Sensor-Door</ng-option>
-                        <ng-option value="SensorTemp">Sensor-Temperature</ng-option>
-                        <ng-option value="SensorCargo ">Sensor-Cargo</ng-option>
-                        <ng-option value="SensorTPMS">Sensor-TPMS</ng-option>
+                        <ng-option value="Tracker">Solar Tracker</ng-option>
+                        <ng-option value="Tracker">Wired Tracker</ng-option>
+                        <ng-option value="DashCam">Dash Camera</ng-option>
+                        <ng-option value="ELD">ELD</ng-option>
+                        
 
                       </ng-select>
                     </div>

@@ -102,14 +102,14 @@ attachedWith="Vehicle"
             vehicle:result.Items[0].vehicle,
             asset:result.Items[0].asset
           }
-          
+          if(this.device.asset){
           if(Object.keys(this.device.asset).length != 0){
             this.deviceAttachedAsset();
           }
           else{
             this.deviceAttachedVehicle();
           }
-
+        }
         }      
     
         })
@@ -148,6 +148,14 @@ attachedWith="Vehicle"
   public submit(){
     if(this.device){
       console.log(this.device)
+      if(this.device.vehicle.vehicleID){
+        this.vehicles.forEach(element => {
+          if(this.device.vehicle.vehicleID==element.vehicleID){
+            this.device.vehicle.vehicleIdentification=element.vehicleIdentification
+          }
+          
+        });
+      }
     
 
       try{
@@ -193,6 +201,14 @@ attachedWith="Vehicle"
   //     }
       
   //   });
+  if(this.device.vehicle.vehicleID){
+    this.vehicles.forEach(element => {
+      if(this.device.vehicle.vehicleID==element.vehicleID){
+        this.device.vehicle.vehicleIdentification=element.vehicleIdentification
+      }
+      
+    });
+  }
     
    }
     try{
