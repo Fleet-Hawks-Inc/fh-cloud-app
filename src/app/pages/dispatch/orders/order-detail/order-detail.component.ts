@@ -174,7 +174,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchInvoiceData();
+   // this.fetchInvoiceData(); Daljit plz uncomment when u work on this as it was showing  errors
   }
 
   /**
@@ -399,21 +399,21 @@ export class OrderDetailComponent implements OnInit {
       if(result.Items.length > 0) {
         result = result.Items[0];
         this.customerName = `${result.companyName}`;
-        let newCusAddress = result.address.filter((elem: any) => {
+        let newCusAddress = result.adrs.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
             return elem;
           }
         });
         newCusAddress = newCusAddress[0];
-        if(result.address.length > 0) {
+        if(result.adrs.length > 0) {
           if(newCusAddress.manual) {
-            this.customerAddress = newCusAddress.address1;
+            this.customerAddress = newCusAddress.add1;
           } else {
-            this.customerAddress = newCusAddress.userLocation;
+            this.customerAddress = newCusAddress.userLoc;
           }
-          this.customerCityName = newCusAddress.cityName;
-          this.customerStateName = newCusAddress.stateName;
-          this.customerCountryName = newCusAddress.countryName;
+          this.customerCityName = newCusAddress.ctyName;
+          this.customerStateName = newCusAddress.sName;
+          this.customerCountryName = newCusAddress.cName;
           this.customerPhone = result.workPhone;
           this.customerEmail = result.workEmail;
         }
@@ -493,7 +493,7 @@ export class OrderDetailComponent implements OnInit {
 
   invoiceGenerated() {
     this.invGenStatus = true;
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.invGenStatus}`).subscribe((res) => {});
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {

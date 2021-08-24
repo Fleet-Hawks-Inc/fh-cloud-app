@@ -235,7 +235,7 @@ export class DriverListComponent implements OnInit {
       //   eventID: eventData.driverID,
       //   status: eventData.driverStatus
       // }
-      this.apiService.deleteData(`drivers/delete/${eventData.driverID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`drivers/delete/${eventData.driverID}/${eventData.firstName}/${eventData.lastName}`).subscribe((result: any) => {
 
         this.drivers = [];
         this.driverDraw = 0;

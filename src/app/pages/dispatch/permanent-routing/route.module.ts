@@ -13,7 +13,7 @@ import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { AddRouteComponent } from './add-route/add-route.component';
 import { RouteListComponent } from './route-list/route-list.component';
 import { RouteDetailComponent } from './route-detail/route-detail.component';
-
+import { MatExpansionModule } from '@angular/material/expansion';
 const routes: Routes = [
   { path: 'list', component: RouteListComponent},
   { path: 'add', component: AddRouteComponent },
@@ -36,7 +36,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    MatExpansionModule
   ],
   providers: [unsavedChangesGuard]
 })

@@ -716,7 +716,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, data, type) {
-    console.log('data----', data);
+    
     this.userDetailData = {};
     if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
       this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;

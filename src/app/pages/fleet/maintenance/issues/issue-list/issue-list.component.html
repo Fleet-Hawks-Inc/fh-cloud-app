@@ -126,7 +126,7 @@
                                                     <div class="dropdown-menu" role="menu">
                                                         <a routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</a>
                                                         <button type="button" class="dropdown-item text-1"
-                                                            (click)="deleteIssue(issue.issueID)">
+                                                            (click)="deleteIssue(issue.issueID, issue.issueName)">
                                                             Delete
                                                         </button>
                                                     </div>
@@ -148,17 +148,17 @@
                                 </div>
 
                             </div>
-                            
-                           
+
+
                          </div>
                       </div>
                    </div>
                 </div>
-              
+
              </section>
 
 
-             
+
         </section>
     </div>
 </section>

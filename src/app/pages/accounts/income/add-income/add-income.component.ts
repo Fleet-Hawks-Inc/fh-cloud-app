@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ListService } from 'src/app/services/list.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -15,7 +16,7 @@ declare var $: any;
   styleUrls: ['./add-income.component.css']
 })
 export class AddIncomeComponent implements OnInit {
-
+  pageTitle = 'Add Income';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -90,20 +91,22 @@ export class AddIncomeComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   catDisabled = false;
 
-  constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
+  constructor(private accountService: AccountService,
+    private location: Location, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.incomeID = this.route.snapshot.params['incomeID'];
     if(this.incomeID != undefined) {
+      this.pageTitle = 'Edit Income';
       this.fetchIncomeByID();
     }
     this.listService.fetchChartAccounts();
-    this.listService.fetchCustomers();
+   //  this.listService.fetchCustomers();
     this.incomeAccounts = this.listService.accountsList;
     this.depositAccounts = this.listService.accountsList;
-    this.customers = this.listService.customersList;
+   // this.customers = this.listService.customersList;
     this.fetchIncomeCategories();
-    this.fetchInvoices();
+   // this.fetchInvoices();
   }
 
   showPaymentFields(type) {
@@ -179,7 +182,7 @@ export class AddIncomeComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Income transaction added successfully.');
-        this.router.navigateByUrl('/accounts/income/list');
+        this.cancel();
       },
     });
   }
@@ -260,11 +263,13 @@ export class AddIncomeComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Income transaction updated successfully.');
-        this.router.navigateByUrl('/accounts/income/list');
+        this.cancel();
       },
     });
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   showAcModal() {
     $('#addAccountModal').modal('show');
   }

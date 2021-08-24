@@ -27,7 +27,7 @@ export class ScorecardListComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.fetchDrivers();
+   // this.fetchDrivers();
   }
 
   fetchDrivers(filter='') {
@@ -36,7 +36,7 @@ export class ScorecardListComponent implements OnInit {
     this.apiService.getData('drivers')
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        
+
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           if (element.isDeleted === 0) {
@@ -113,13 +113,13 @@ export class ScorecardListComponent implements OnInit {
   }
 
   searchFilter () {
-    
+
     if(this.filterData.driverID == '' && this.filterData.fromDistance == '' && this.filterData.toDistance == '') {
       this.toastr.error('Please select atleast one filter');
       return false;
     }
 
-    if(this.filterData.fromDistance !== '' || this.filterData.toDistance !== '') { 
+    if(this.filterData.fromDistance !== '' || this.filterData.toDistance !== '') {
       if(this.filterData.fromDistance > this.filterData.toDistance) {
         this.toastr.error('Please enter valid from and to distance values');
         return false;
@@ -151,7 +151,7 @@ export class ScorecardListComponent implements OnInit {
     } else {
       this.eventData = driversData;
     }
-    
+
   }
 
   getSuggestions(searchvalue='') {
@@ -164,7 +164,7 @@ export class ScorecardListComponent implements OnInit {
           this.suggestions = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             let obj = {
               id: element.driverID,
               name: element.firstName + ' ' + element.lastName
@@ -176,7 +176,7 @@ export class ScorecardListComponent implements OnInit {
           }
         }
       })
-    } 
+    }
   }
 
   searchSelectedDriver(data) {
@@ -198,7 +198,7 @@ export class ScorecardListComponent implements OnInit {
     } else {
       return false;
     }
-    
+
   }
 
 }

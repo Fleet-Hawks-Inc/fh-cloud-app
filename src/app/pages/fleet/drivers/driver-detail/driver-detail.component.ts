@@ -121,7 +121,6 @@ export class DriverDetailComponent implements OnInit {
   documentsTypesObects: any = {};
   dataMessage = Constants.NO_RECORDS_FOUND;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-
   corporationType: any;
   vendor: any;
   corporation: any;
@@ -202,6 +201,7 @@ export class DriverDetailComponent implements OnInit {
       .subscribe(async (result: any) => {
         if (result) {
           this.driverData = await result[`Items`][0];
+          this.userName = this.driverData.userName;
           this.driverDataUpdate = await result[`Items`][0];
           this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
@@ -234,7 +234,6 @@ export class DriverDetailComponent implements OnInit {
           this.companyId = this.driverData.companyId;
           this.companyName = this.driverData.companyName;
           this.driverStatus = this.driverData.driverStatus;
-          this.userName = this.driverData.userName;
           this.gender = this.driverData.gender;
           this.aceID = this.driverData.crossBorderDetails.ACE_ID;
           this.aciID = this.driverData.crossBorderDetails.ACI_ID;
@@ -297,7 +296,7 @@ export class DriverDetailComponent implements OnInit {
           this.SIN = this.driverData.SIN;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
-          this.payPeriod = this.driverData.paymentDetails.payPeriod;
+          this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
           //  this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.hosStatus = this.driverData.hosDetails.hosStatus;
           this.hosRemarks = this.driverData.hosDetails.hosRemarks;

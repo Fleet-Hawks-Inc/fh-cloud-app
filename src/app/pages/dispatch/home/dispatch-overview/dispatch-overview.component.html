@@ -7,12 +7,12 @@
    <div class="inner-wrapper">
        <section role="main" class="content-body pagebody">
          <header class="page-header">
-         
+
             <div class="row" style="padding-top:10px;">
                <div class="col-md-3 col-lg-3">
                   <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Routing &amp; Dispatch Overview</h4>
                </div>
-         
+
                <div class="col-md-9 col-lg-9 text-right">
                   <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
                      routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
@@ -216,7 +216,104 @@
                                     <span class="release-date">{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</span>
                                     <ul class="list-unstyled">
                                        <li>
-                                          {{ data.rest }} <b class="text-success">{{ data.last }}</b>
+                                         {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
+                                           <a  routerLink="/fleet/drivers/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b></a>
+                                         </span>
+                                         <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
+                                          <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                                        </span>
+                                         <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/trips/trip-details/{{ data.eventParams.eventID }}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'route' && data.eventParams.message !== 'deleted'">
+                                          <a routerLink="/dispatch/routes/detail/{{ data.eventParams.eventID }}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'route' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message !== 'deleted'">
+                                          <a  routerLink="/dispatch/orders/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message === 'deleted'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'asset' && data.eventParams.message !== 'deleted'" >
+                                          <a routerLink="/fleet/assets/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                        </span>
+                                        <span *ngIf="data.eventParams.type === 'asset' && data.eventParams.message === 'deleted'" >
+                                         <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                       </span>
+                                       <span *ngIf="data.eventParams.type === 'vehicle' && data.eventParams.message !== 'deleted'" >
+                                        <a routerLink="/fleet/vehicles/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                      </span>
+                                      <span *ngIf="data.eventParams.type === 'vehicle' && data.eventParams.message === 'deleted'" >
+                                       <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                     </span>
+                                     <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message !== 'deleted'" >
+                                      <a routerLink="/fleet/maintenance/issues/detail/{{data.eventParams.eventID}}"  href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message === 'deleted'" >
+                                     <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                   </span>
+                                   <span *ngIf="data.eventParams.type === 'fuelEntry' && data.eventParams.message !== 'deleted'" >
+                                    <a routerLink="/fleet/fuel/detail/{{data.eventParams.eventID}}"  href="javascript:;"> for <b class="text-success">  {{ data.eventParams.name | titlecase}} </b></a>
+                                  </span>
+                                  <span *ngIf="data.eventParams.type === 'fuelEntry' && data.eventParams.message === 'deleted'" >
+                                     <b class="text-success">  {{ data.eventParams.name | titlecase}}</b>
+                                 </span>
+                                   <span *ngIf="data.eventParams.type === 'geofence' && data.eventParams.message !== 'deleted'" >
+                                    <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                                  </span>
+                                  <span *ngIf="data.eventParams.type === 'geofence' && data.eventParams.message === 'deleted'" >
+                                   <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                 </span>
+                                   <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message !== 'deleted'" >
+                                    <a routerLink="/fleet/maintenance/service-program/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                  </span>
+                                  <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message === 'deleted'" >
+                                   <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                                 </span>
+                                 <span *ngIf="data.eventParams.type === 'serviceLog' && data.eventParams.message !== 'deleted'" >
+                                  <a routerLink="/fleet/maintenance/service-log/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                                </span>
+                                <span *ngIf="data.eventParams.type === 'serviceLog' && data.eventParams.message === 'deleted'" >
+                                 <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                               </span>
+                               <span *ngIf="data.eventParams.type === 'warehouse' && data.eventParams.message !== 'deleted'" >
+                                <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                              </span>
+                               <span *ngIf="data.eventParams.type === 'inventory' && data.eventParams.message !== 'deleted'" >
+                                <a routerLink="/fleet/inventory/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.name | titlecase}} </b></a>
+                              </span>
+
+                              <span *ngIf="data.eventParams.type === 'inventory' && data.eventParams.message === 'deleted'" >
+                               <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                             </span>
+                             <span *ngIf="data.eventParams.type === 'requiredInventory'" >
+                              <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                            </span>
+                                     <!-- <span *ngIf="data.eventParams.type === 'contact' && data.eventParams.message !== 'deleted'">
+                                      <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'contact' && data.eventParams.message === 'deleted'">
+                                      <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                                    </span> -->
+                                    <span *ngIf="data.eventParams.type === 'contact' && data.eventType === 'add'">
+                                      <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles">{{role | titlecase}},</span>
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
+                                      <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'reminder'">
+                                      <b class="text-success"> {{ data.eventParams.eventType | titlecase}} </b>
+                                    </span>
+                                        <span *ngIf="data.eventParams.type === 'document'">
+                                          <b class="text-success">{{ data.entityNumber }}</b>
+                                        </span>
                                        </li>
                                     </ul>
                                  </div>
@@ -231,7 +328,7 @@
                </div>
             </div>
             <div class="row mt-3">
-               
+
                <!-- <div class="col-6 pl-2">
                   <div class="bg-white p-2">
                      <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
@@ -277,7 +374,105 @@
                        <tr *ngFor="let data of allActivities">
                            <td>{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</td>
                            <!-- <td>Dispatcher</td> -->
-                           <td>{{ data.eventParams.message }}</td>
+                           <td> {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
+                            <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
+                              <b class="text-success " (click)="goToDetails(data.eventParams.eventID, 'driver')"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                            </span>
+                            <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
+                             <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                           </span>
+                            <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
+                             <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'trip')">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message === 'deleted'">
+                             <b class="text-success">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'route' && data.eventParams.message !== 'deleted'">
+                             <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'route')">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'route' && data.eventParams.message === 'deleted'">
+                             <b class="text-success">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message !== 'deleted'">
+                             <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'order')">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'order' && data.eventParams.message === 'deleted'">
+                             <b class="text-success">{{ data.entityNumber }}</b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'asset' && data.eventParams.message !== 'deleted'" >
+                            <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'asset')"> {{ data.eventParams.name | titlecase}} </b>
+                           </span>
+                           <span *ngIf="data.eventParams.type === 'asset' && data.eventParams.message === 'deleted'" >
+                            <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                          </span>
+                          <span *ngIf="data.eventParams.type === 'vehicle' && data.eventParams.message !== 'deleted'" >
+                            <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'vehicle')"> {{ data.eventParams.name | titlecase}} </b>
+
+                           <!-- <a routerLink="/fleet/vehicles/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'vehicle')"> {{ data.eventParams.name | titlecase}} </b></a> -->
+                         </span>
+                         <span *ngIf="data.eventParams.type === 'vehicle' && data.eventParams.message === 'deleted'" >
+                          <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                        </span>
+                        <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message !== 'deleted'" >
+                         <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'issue')"> {{ data.eventParams.name | titlecase}} </b>
+                       </span>
+                       <span *ngIf="data.eventParams.type === 'issue' && data.eventParams.message === 'deleted'" >
+                        <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'geofence' && data.eventParams.message !== 'deleted'" >
+                        <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'geofence' && data.eventParams.message === 'deleted'" >
+                        <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'serviceLog' && data.eventParams.message !== 'deleted'" >
+                        <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'serviceLog')"> {{ data.eventParams.name | titlecase}} </b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'serviceLog' && data.eventParams.message === 'deleted'" >
+                       <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                     </span>
+                      <span *ngIf="data.eventParams.type === 'fuelEntry' && data.eventParams.message !== 'deleted'" >
+                       for <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'fuelEntry')"> {{ data.eventParams.name | titlecase}} </b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'fuelEntry' && data.eventParams.message === 'deleted'" >
+                        <b class="text-success">  {{ data.eventParams.name | titlecase}} </b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message !== 'deleted'" >
+                   <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'serviceProgram')"> {{ data.eventParams.name | titlecase}} </b>
+                     </span>
+                     <span *ngIf="data.eventParams.type === 'serviceProgram' && data.eventParams.message === 'deleted'" >
+                      <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                    </span>
+                    <span *ngIf="data.eventParams.type === 'warehouse' && data.eventParams.message !== 'deleted'" >
+                      <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                    </span>
+                    <span *ngIf="data.eventParams.type === 'inventory' && data.eventParams.message !== 'deleted'" >
+                      <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'inventory')"> {{ data.eventParams.name | titlecase}} </b>
+                    </span>
+                    <span *ngIf="data.eventParams.type === 'inventory' && data.eventParams.message === 'deleted'" >
+                     <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                   </span>
+                   <span *ngIf="data.eventParams.type === 'requiredInventory'" >
+                    <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>
+                  </span>
+                        <!-- <span *ngIf="data.eventParams.type === 'contact' && data.eventParams.message !== 'deleted'">
+                         <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                       </span>
+                       <span *ngIf="data.eventParams.type === 'contact' && data.eventParams.message === 'deleted'">
+                         <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                       </span> -->
+                       <span *ngIf="data.eventParams.type === 'contact' && data.eventType === 'add'">
+                         <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles">{{role | titlecase}},</span>
+                       </span>
+                       <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
+                         <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
+                       </span>
+                       <span *ngIf="data.eventParams.type === 'reminder'">
+                         <b class="text-success"> {{ data.eventParams.eventType | titlecase}} </b>
+                       </span>
+                           <span *ngIf="data.eventParams.type === 'document'">
+                             <b class="text-success">{{ data.entityNumber }}</b>
+                           </span></td>
                        </tr>
                    </tbody>
                </table>

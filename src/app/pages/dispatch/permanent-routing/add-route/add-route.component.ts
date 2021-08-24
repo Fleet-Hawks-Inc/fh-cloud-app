@@ -565,20 +565,14 @@ export class AddRouteComponent implements OnInit {
     }
   }
 
-  gotoVehiclePage() {
-    $('#addVehicleModelDriver').modal('show');
-  }
-
-  gotoDriverPage() {
-    $('#addDriverModelVehicle').modal('show');
-  }
-
-  gotoAssetPage() {
-    $('#addAsset').modal('show');
-  }
-
-  refreshDrivrData() {
+  refreshDriverData() {
     this.listService.fetchDrivers();
+  }
+  refreshAssetData() {
+    this.listService.fetchAssets();
+  }
+  refreshVehicleData() {
+    this.listService.fetchVehicles()
   }
 }
 

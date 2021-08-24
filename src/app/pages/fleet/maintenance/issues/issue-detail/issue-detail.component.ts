@@ -56,7 +56,7 @@ export class IssueDetailComponent implements OnInit {
     this.fetchAssetList();
     // if(localStorage.getItem('issueID') != null) {
     //   this.route.paramMap.subscribe(res=> {
-    
+
     //   })
     // }
   }
@@ -114,9 +114,9 @@ export class IssueDetailComponent implements OnInit {
         this.router.navigateByUrl('/fleet/maintenance/issues/list');
       });
   }
-  setStatus(issueID) {
+  setStatus(issueID: any, issueName: any) {
     const issueStatus = 'CLOSED';
-    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {
+    this.apiService.getData(`issues/setStatus/${issueID}/${issueName}/${issueStatus}`).subscribe((result: any) => {
       this.toastr.success('Issue Status Updated Successfully!');
       this.currentStatus = 'CLOSED';
     });

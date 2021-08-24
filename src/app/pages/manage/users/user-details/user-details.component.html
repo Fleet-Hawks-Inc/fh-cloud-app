@@ -1,9 +1,9 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 mr50">
-      <header class="page-header pr-5 zindex9910" id="pageheaderindex">
+    <section role="main" class="content-body pl-0 pt-0">
+      <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
-          <div class="row pr-1 mr-1" style="padding-top:10px;">
+          <div class="row" style="padding-top:10px;">
             <div class="col-md-1 col-lg-1 pr-0">
               <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">User Details</h4>
             </div>
@@ -18,7 +18,7 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl pt-3">
+              <div class="form-group row adddriverpl">
                 <div class="col-lg-9">
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Basic
                     Details</label>
@@ -27,16 +27,16 @@
                   <button type="button" data-toggle="modal" data-target="#userProfileModal"
                     class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button>
                 </div>
-                <div class="col-lg-5 mb-3">
+                <div class="col-lg-5 mb-1">
                   <table class="table table-bordered m-0">
                     <tbody>
                       <tr>
                         <th width="40%" class="back-color-gray">First Name:</th>
-                        <td>{{userData.firstName ? userData.firstName : '-'}}</td>
+                        <td class="text-capitalize">{{userData.firstName ? userData.firstName : '-'}}</td>
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Last Name:</th>
-                        <td>{{userData.lastName ? userData.lastName : '-'}}</td>
+                        <td class="text-capitalize">{{userData.lastName ? userData.lastName : '-'}}</td>
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Employee ID:</th>
@@ -45,7 +45,7 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-5 offset-lg-1 mb-3">
+                <div class="col-lg-5 offset-lg-1 mb-1">
                   <table class="table table-bordered m-0">
                     <tbody>
                       <tr>
@@ -70,46 +70,46 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="row adddriverpl pt-3">
+              <div class="form-group row adddriverpl">
                 <div class="col-lg-10">
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Address</label>
                 </div>
               </div>
-              <div class="row" *ngFor="let address of userData.address">
-                <div class="col-lg-5 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+              <div class="row adddriverpl" *ngFor="let address of userData.address">
+                <div class="col-lg-5 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
-                        <td width="60%">{{address.addressType ? address.addressType : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.addressType ? address.addressType : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 1</td>
-                        <td><span *ngIf="address.manual">{{address.address1 ? address.address1: '-'}}</span>
+                        <td class="text-capitalize"><span *ngIf="address.manual">{{address.address1 ? address.address1: '-'}}</span>
                           <span *ngIf="!address.manual">{{address.userLocation ? address.userLocation: '-'}}</span>
                         </td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 2</td>
-                        <td>{{address.address2 ? address.address2 : '-'}}</td>
+                        <td class="text-capitalize">{{address.address2 ? address.address2 : '-'}}</td>
                       </tr>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Country</td>
-                        <td width="60%">{{address.countryName ? address.countryName : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.countryName ? address.countryName : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-5 offset-lg-1 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+                <div class="col-lg-5 offset-lg-1 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Province/State</td>
-                        <td>{{address.stateName ? address.stateName : '-'}}</td>
+                        <td class="text-capitalize">{{address.stateName ? address.stateName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">City</td>
-                        <td>{{address.cityName ? address.cityName : '-'}}</td>
+                        <td class="text-capitalize">{{address.cityName ? address.cityName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Zip Code</td>
@@ -125,13 +125,13 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl pt-3">
+              <div class="form-group row adddriverpl">
                 <div class="col-lg-10">
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">User
                     Account</label>
                 </div>
-                <div class="col-lg-5 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+                <div class="col-lg-5 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Contract Start Date</td>
@@ -143,25 +143,25 @@
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Username</td>
-                        <td>{{userData.userLoginData.userName ? userData.userLoginData.userName : '-'}}</td>
+                        <td class="text-lowercase">{{userData.userLoginData.userName ? userData.userLoginData.userName : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-5 offset-lg-1 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+                <div class="col-lg-5 offset-lg-1 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Department</td>
-                        <td width="60%">{{userData.userAccount.department ? userData.userAccount.department : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{userData.userAccount.department ? userData.userAccount.department : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Designation</td>
-                        <td>{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
+                        <td class="text-capitalize">{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">User Type</td>
-                        <td>{{userData.userLoginData.userType ? userData.userLoginData.userType : '-'}}</td>
+                        <td class="text-capitalize">{{userData.userLoginData.userType ? userData.userLoginData.userType : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -173,27 +173,27 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl pt-3">
+              <div class="form-group row adddriverpl">
                 <div class="col-lg-10">
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Payment
                     Details</label>
                 </div>
-                <div class="col-lg-5 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+                <div class="col-lg-5 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Payroll type</td>
-                        <td width="60%">{{userData.paymentDetails.payrollType ? userData.paymentDetails.payrollType : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{userData.paymentDetails.payrollType ? userData.paymentDetails.payrollType : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Pay Period</td>
-                        <td>{{userData.paymentDetails.payPeriod ? userData.paymentDetails.payPeriod : '-'}}</td>
+                        <td class="text-capitalize">{{userData.paymentDetails.payPeriod ? userData.paymentDetails.payPeriod : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-5 offset-lg-1 mb-3">
-                  <table class="table table-bordered table-responsive-lg">
+                <div class="col-lg-5 offset-lg-1 mb-1">
+                  <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Rate</td>

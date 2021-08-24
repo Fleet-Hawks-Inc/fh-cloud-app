@@ -40,7 +40,6 @@ export class AddSettlementComponent implements OnInit {
             driverLoadedTeam: 0,
             driverEmptyTeam: 0,
         },
-        expenses: [],
         addition: [],
         deduction: [],
         additionTotal: 0,
@@ -109,6 +108,9 @@ export class AddSettlementComponent implements OnInit {
     searchDisabled = false;
     finalPayment = 0;
     expenses = [];
+    categories =  [];
+    tripExpenses = [];
+    finalTripExpenses = [];
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -122,6 +124,7 @@ export class AddSettlementComponent implements OnInit {
         this.fetchVehicles();
         this.fetchAssets();
         this.fetchOrders();
+        this.fetchExpenseCategories();
     }
 
     fetchDrivers() {
@@ -167,6 +170,7 @@ export class AddSettlementComponent implements OnInit {
             .subscribe((result: any) => {
                 this.searchDisabled = false;
                 this.trips = result.Items;
+                this.fetchExpenses(this.trips);
                 if(result.Items.length === 0) {
                     this.tripMsg = Constants.NO_RECORDS_FOUND;
                 }
@@ -208,7 +212,12 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
-
+    fetchExpenseCategories() {
+      this.accountService.getData(`expense/categories/list`)
+        .subscribe((result: any) => {
+          this.categories = result;
+        })
+    }
     fetchCarriers() {
         this.apiService.getData(`contacts/get/list/carrier`)
             .subscribe((result: any) => {
@@ -355,7 +364,6 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.miles.driverLoadedTeam = 0;
         this.settlementData.miles.driverEmptyTeam = 0;
         this.selectedTrips = [];
-        this.settlementData.expenses = [];
         this.settlementData.miles.drivers.map((v) => {
             v.total = 0;
             v.loaded = 0;
@@ -368,7 +376,6 @@ export class AddSettlementComponent implements OnInit {
         if(this.settledTrips.length > 0) {
             this.paymentCalculation(this.settledTrips);
         }
-        console.log('this.settledTrips', this.settledTrips);
     }
 
     paymentCalculation(trips) {
@@ -378,11 +385,10 @@ export class AddSettlementComponent implements OnInit {
             const element = trips[i];
             let deliveryCount = 0;
             if (element.selected) {
+                this.filterExpenses(element.tripID);
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
                 }
-// console.log('this.settlementData.tripIds', this.settlementData.tripIds);
-// this.fetchExpenses(this.settlementData.tripIds);
                 this.selectedTrips.push(element);
 
                 if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
@@ -714,16 +720,27 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
-    fetchExpenses(expenses: any) {
-      this.accountService.getData(`expense`).subscribe((result: any) => {
+    fetchExpenses(trips: any) {
+        for (const trip of trips) {
+          this.accountService.getData(`expense/trip-expenses/${trip.tripID}`).subscribe((result: any) => {
+            for (const exp of result) {
+              const expobj = {
+                tripID: exp.tripID,
+                categoryID: exp.categoryID,
+                notes: exp.notes,
+                amount: exp.amount,
+                currency: exp.currency,
+              };
+              this.tripExpenses.push(expobj);
+            }
 
-        // this.expenses = result.filter((e: any) => {
-        //   return e.tripID === this.tripID;
-        // });
-        // for (const element of this.expenses) {
-        //   this.totalExp = this.totalExp + element.amount;
-        // }
-      });
+                  });
+        }
+          }
+    filterExpenses(tripID: any) {
+this.finalTripExpenses = this.tripExpenses.filter((e: any) => {
+ return e.tripID === tripID;
+});
     }
     remStldTrip(tripID, index) {
         if (confirm('Are you sure you want to remove the selected trip?') === true) {
@@ -734,12 +751,6 @@ export class AddSettlementComponent implements OnInit {
             let trpData = this.settledTrips[index];
             this.trips.push(trpData);
             this.settledTrips.splice(index, 1);
-
-            this.settlementData.expenses.map((v, expIndex)=> {
-                if(v.tripID == tripID) {
-                    this.settlementData.expenses.splice(expIndex,1);
-                }
-            });
 
             this.settlementData.addition.map((v, addIndex) => {
                 if(v.tripID == tripID) {
@@ -917,7 +928,6 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.entityId = null;
         this.trips = [];
         this.settlementData.deduction = [];
-        this.settlementData.expenses = [];
         this.settlementData.addition = [];
         this.settlementData.miles.drivers = [];
         this.tripMsg = Constants.NO_RECORDS_FOUND;

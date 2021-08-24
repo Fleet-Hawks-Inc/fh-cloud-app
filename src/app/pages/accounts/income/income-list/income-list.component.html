@@ -63,8 +63,6 @@
                               <thead>
                                   <tr class="bgcol2">
                                       <th class="text-2">Income Date</th>
-                                      <th class="text-2">Invoice#</th>
-                                      <th class="text-2">Customer</th>
                                       <th class="text-2">Income Category</th>
                                       <th class="text-2">Payment Mode</th>
                                       <th class="text-2">Amount</th>
@@ -77,8 +75,6 @@
                                   </tr>
                                   <tr *ngFor="let data of incomeAccounts">
                                       <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                      <td>{{ (data.invoiceID) ? invoices[data.invoiceID] : '-' }}</td>
-                                      <td>{{ (data.customerID) ? customers[data.customerID] : '-' }}</td>
                                       <td>{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
                                       <td>{{ data.paymentMode }}</td>
                                       <td>{{ data.recAmount | number }} {{ data.recCurr }}</td>

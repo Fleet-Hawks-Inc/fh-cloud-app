@@ -32,7 +32,8 @@ export class JournalListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`journal/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
-          if(result.length == 0) {
+          console.log('result', result);
+          if(result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if(result.length > 0) {
@@ -99,6 +100,6 @@ export class JournalListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchJournals(); 
+    this.fetchJournals();
   }
 }

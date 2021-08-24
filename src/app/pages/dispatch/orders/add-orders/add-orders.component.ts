@@ -2,20 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService, ListService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { BehaviorSubject, from, Subject, throwError } from "rxjs";
-import {DragDropModule} from '@angular/cdk/drag-drop';
 import * as _ from 'lodash';
 import {
   NgbCalendar,
   NgbDateAdapter
 } from "@ng-bootstrap/ng-bootstrap";
-import {
-  map,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-  tap,
-} from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { HereMapService } from "../../../../services";
 import { environment } from "../../../../../environments/environment.prod";
 import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
@@ -23,7 +15,6 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
 import { DomSanitizer} from '@angular/platform-browser';
 import { CountryStateCity } from "src/app/shared/utilities/countryStateCities";
 import { Auth } from "aws-amplify";
@@ -466,8 +457,8 @@ export class AddOrdersComponent implements OnInit {
 
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
-    this.listService.fetchShippersByIDs();
-    this.listService.fetchReceiversByIDs();
+    this.listService.fetchContactsByIDs();
+    // this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
     // this.getCarrierState();
     this.disableButton();
@@ -495,13 +486,14 @@ export class AddOrdersComponent implements OnInit {
 
     this.receivers = this.listService.receiverList;
 
-    this.listService.receiverObjectList.subscribe(res => {
+    this.listService.contactsObjectDataSource.subscribe(res => {
       this.receiversObjects = res;
-    });
-
-    this.listService.shipperObjectList.subscribe(res => {
       this.shippersObjects = res;
     });
+
+    // this.listService.shipperObjectList.subscribe(res => {
+    //   this.shippersObjects = res;
+    // });
 
     this.fetchCountries();
 
@@ -1056,11 +1048,11 @@ export class AddOrdersComponent implements OnInit {
         if(result.Items.length > 0) {
 
           this.customerSelected = result.Items;
-          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
-            const element = this.customerSelected[0].address[i];
+          for (let i = 0; i < this.customerSelected[0].adrs.length; i++) {
+            const element = this.customerSelected[0].adrs[i];
             element['isChecked'] = false;
           }
-          this.customerSelected[0].address[0].isChecked = true;
+          this.customerSelected[0].adrs[0].isChecked = true;
           if(result.Items[0].additionalContact != undefined) {
             this.cusAdditionalContact = result.Items[0].additionalContact;
             if(this.cusAdditionalContact.length === 1 && this.cusAdditionalContact[0].firstName == '') {
@@ -1068,12 +1060,12 @@ export class AddOrdersComponent implements OnInit {
             }
           }
 
-          if(this.customerSelected[0].address.length > 0) {
-            this.orderData.cusAddressID = this.customerSelected[0].address[0].addressID;
+          if(this.customerSelected[0].adrs.length > 0) {
+            this.orderData.cusAddressID = this.customerSelected[0].adrs[0].addressID;
           }
 
-          let addressLength = this.customerSelected[0].address.length;
-          let getType = this.customerSelected[0].address[0].addressType;
+          let addressLength = this.customerSelected[0].adrs.length;
+          let getType = this.customerSelected[0].adrs[0].aType;
 
           if(addressLength === 1 && (getType == '' || getType == null)) {
             this.notOfficeAddress = true;
@@ -1236,16 +1228,20 @@ export class AddOrdersComponent implements OnInit {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
         h.dropPoint.map(elem => {
-          let newloc = elem.address.dropOffLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.dropOffLocation) {
+            let newloc = elem.address.dropOffLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
         })
 
       })
 
       element.shippers.map((h:any) => {
         h.pickupPoint.map(elem => {
-          let newloc = elem.address.pickupLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.pickupLocation) {
+            let newloc = elem.address.pickupLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
         })
 
       })
@@ -1425,85 +1421,90 @@ export class AddOrdersComponent implements OnInit {
     }
     if (value === 'shipper') {
 
-      if(getAddress[0].manual) {
-        let newAddress = '';
-        if (getAddress[0].address1 != undefined && getAddress[0].address1 != '') {
-          newAddress = `${getAddress[0].address1}`;
-        }
-        if (getAddress[0].address2 != undefined && getAddress[0].address2 != '') {
-          if (newAddress != '') {
-            newAddress += `, ${getAddress[0].address2}`
-          } else {
-            newAddress += `${getAddress[0].address2}`
+      if(getAddress.length > 0) {
+        if(getAddress[0].manual) {
+          let newAddress = '';
+          if (getAddress[0].add1 != undefined && getAddress[0].add1 != '') {
+            newAddress = `${getAddress[0].add1}`;
           }
-
+          if (getAddress[0].add2 != undefined && getAddress[0].add2 != '') {
+            if (newAddress != '') {
+              newAddress += `, ${getAddress[0].add2}`
+            } else {
+              newAddress += `${getAddress[0].add2}`
+            }
+  
+          }
+          if (getAddress[0].ctyName != undefined && getAddress[0].ctyName != '') {
+            newAddress += `, ${getAddress[0].ctyName}`
+          }
+          if (getAddress[0].sName != undefined && getAddress[0].sName != '') {
+            newAddress += `, ${getAddress[0].sName}`
+          }
+          if (getAddress[0].cName != undefined && getAddress[0].cName != '') {
+            newAddress += `, ${getAddress[0].cName}`
+          }
+          if (getAddress[0].zip != undefined && getAddress[0].zip != '') {
+            newAddress += `. ${getAddress[0].zip}`
+          }
+  
+          this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = newAddress;
+        } else {
+          this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = getAddress[0].userLoc;
         }
-        if (getAddress[0].cityName != undefined && getAddress[0].cityName != '') {
-          newAddress += `, ${getAddress[0].cityName}`
-        }
-        if (getAddress[0].stateName != undefined && getAddress[0].stateName != '') {
-          newAddress += `, ${getAddress[0].stateName}`
-        }
-        if (getAddress[0].countryName != undefined && getAddress[0].countryName != '') {
-          newAddress += `, ${getAddress[0].countryName}`
-        }
-        if (getAddress[0].zipCode != undefined && getAddress[0].zipCode != '') {
-          newAddress += `. ${getAddress[0].zipCode}`
-        }
-
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = newAddress;
-      } else {
-        this.shippersReceivers[i].shippers.pickupPoint[w].address.pickupLocation = getAddress[0].userLocation;
-
+  
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = getAddress[0].geoCords;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = getAddress[0].ctyName;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = getAddress[0].sCode;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName = getAddress[0].sName;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = getAddress[0].cCode;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = getAddress[0].cName;
+        this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = getAddress[0].zip;
       }
-
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.geoCords = getAddress[0].geoCords;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.cityName = getAddress[0].cityName;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateCode = getAddress[0].stateCode;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.stateName = getAddress[0].stateName;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryCode = getAddress[0].countryCode;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.countryName = getAddress[0].countryName;
-      this.shippersReceivers[i].shippers.pickupPoint[w].address.zipCode = getAddress[0].zipCode;
+      
     } else {
       let getAddress = this.receiverAddresses.filter(elem => elem.addressID == id);
-      if(getAddress[0].manual) {
-        let newAddress = '';
-        if (getAddress[0].address1 != undefined && getAddress[0].address1 != '') {
-          newAddress = `${getAddress[0].address1}`;
-        }
-        if (getAddress[0].address2 != undefined && getAddress[0].address2 != '') {
-          if (newAddress != '') {
-            newAddress += `, ${getAddress[0].address2}`
-          } else {
-            newAddress += `${getAddress[0].address2}`
+      if(getAddress.length > 0) {
+        if(getAddress[0].manual) {
+          let newAddress = '';
+          if (getAddress[0].add1 != undefined && getAddress[0].add1 != '') {
+            newAddress = `${getAddress[0].add1}`;
           }
-
+          if (getAddress[0].add2 != undefined && getAddress[0].add2 != '') {
+            if (newAddress != '') {
+              newAddress += `, ${getAddress[0].add2}`
+            } else {
+              newAddress += `${getAddress[0].add2}`
+            }
+  
+          }
+          if (getAddress[0].ctyName != undefined && getAddress[0].ctyName != '') {
+            newAddress += `, ${getAddress[0].ctyName}`
+          }
+          if (getAddress[0].sName != undefined && getAddress[0].sName != '') {
+            newAddress += `, ${getAddress[0].sName}`
+          }
+          if (getAddress[0].cName != undefined && getAddress[0].cName != '') {
+            newAddress += `, ${getAddress[0].cName}`
+          }
+          if (getAddress[0].zip != undefined && getAddress[0].zip != '') {
+            newAddress += `. ${getAddress[0].zip}`
+          }
+          this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = newAddress;
+        } else {
+          this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = getAddress[0].userLoc;
+  
         }
-        if (getAddress[0].cityName != undefined && getAddress[0].cityName != '') {
-          newAddress += `, ${getAddress[0].cityName}`
-        }
-        if (getAddress[0].stateName != undefined && getAddress[0].stateName != '') {
-          newAddress += `, ${getAddress[0].stateName}`
-        }
-        if (getAddress[0].countryName != undefined && getAddress[0].countryName != '') {
-          newAddress += `, ${getAddress[0].countryName}`
-        }
-        if (getAddress[0].zipCode != undefined && getAddress[0].zipCode != '') {
-          newAddress += `. ${getAddress[0].zipCode}`
-        }
-        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = newAddress;
-      } else {
-        this.shippersReceivers[i].receivers.dropPoint[w].address.dropOffLocation = getAddress[0].userLocation;
-
+  
+        this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = getAddress[0].geoCords;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = getAddress[0].ctyName;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = getAddress[0].sCode;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.stateName = getAddress[0].sName;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = getAddress[0].cCode;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.countryName = getAddress[0].cName;
+        this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = getAddress[0].zip;
       }
-
-      this.shippersReceivers[i].receivers.dropPoint[w].address.geoCords = getAddress[0].geoCords;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.cityName = getAddress[0].cityName;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.stateCode = getAddress[0].stateCode;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.stateName = getAddress[0].stateName;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.countryCode = getAddress[0].countryCode;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.countryName = getAddress[0].countryName;
-      this.shippersReceivers[i].receivers.dropPoint[w].address.zipCode = getAddress[0].zipCode;
+      
     }
     $("div").removeClass("show-search__result");
   }
@@ -2325,16 +2326,16 @@ export class AddOrdersComponent implements OnInit {
   shipperReceiverAddress(value, id) {
     this.apiService.getData(`contacts/detail/${id}`).subscribe(res => {
       if(value === 'shipper') {
-        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+        if(res.Items[0].adrs.length === 1 && (res.Items[0].adrs[0].aType === '' || res.Items[0].adrs[0].aType === null)) {
           this.shipAddresses = [];
         } else {
-          this.shipAddresses = res.Items[0].address;
+          this.shipAddresses = res.Items[0].adrs;
         }
       } else {
-        if(res.Items[0].address.length === 1 && (res.Items[0].address[0].addressType === '' || res.Items[0].address[0].addressType === null)) {
+        if(res.Items[0].adrs.length === 1 && (res.Items[0].adrs[0].aType === '' || res.Items[0].adrs[0].aType === null)) {
           this.receiverAddresses = [];
         } else {
-          this.receiverAddresses = res.Items[0].address;
+          this.receiverAddresses = res.Items[0].adrs;
         }
 
       }

@@ -2376,6 +2376,7 @@ table.dataTable thead th, table.dataTable thead td {
     bottom: 130px;
     left: 23px;
     background: #ffffff;
+    z-index: 999;
     padding: 10px;
     width: 40px;
     height: 40px;
@@ -2585,4 +2586,10 @@ input:checked + .sliderbtn:before {
 
 .form-control[readonly] {
   background-color: #fff;
+}
+.units-list__main .modal-dialog {
+  max-width: 1200px !important;
+}
+.mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
+  cursor: pointer;
 }
