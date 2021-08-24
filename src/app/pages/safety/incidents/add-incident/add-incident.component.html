@@ -166,7 +166,7 @@
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input type="text" class="form-control"
-                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.locationText"
+                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.location.label"
                                                         name="location"
                                                         placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                                                         autocomplete="off" #location="ngModel" required>

@@ -100,6 +100,7 @@ export class EventDetailComponent implements OnInit {
       .subscribe(async (res: any) => {
 
         let result = res[0];
+        console.log('result', result);
         this.deviceSerialNo = result.deviceSerialNo || 'NA';
         this.vehicle = result.vehicleID;
         this.trip = result.tripID;
@@ -113,9 +114,10 @@ export class EventDetailComponent implements OnInit {
         this.eventType = result.eventType;
         this.eventSpeed = parseInt(result.speed);
         this.deviceEventId = result.deviceEventId;
-        const location = await this.getLocation(result.location);
-        this.location = location;
-        await this.setMarker(result.location);
+        this.location = result.location.label ? result.location.label : 'NA';
+        if(result.location.cords != undefined) {
+          await this.setMarker(result.location.cords);  
+        }
         this.safetyNotes = result.safetyNotes;
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
           this.eventImages = result.uploadedPhotos.map(x => ({

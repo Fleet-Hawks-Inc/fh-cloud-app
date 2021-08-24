@@ -77,7 +77,7 @@ export class ServiceProgramListComponent implements  OnInit {
             this.serviceProgramPrevEvauatedKeys.push(result['LastEvaluatedKey'].programID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].programID;
-          
+
         } else {
           this.serviceProgramNext = true;
           this.lastEvaluatedKey = '';
@@ -125,10 +125,10 @@ export class ServiceProgramListComponent implements  OnInit {
     }
   }
 
-  deleteProgram(entryID) {
+  deleteProgram(entryID, programName) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .deleteData(`servicePrograms/isDeleted/${entryID}/`+1)
+      .deleteData(`servicePrograms/isDeleted/${entryID}/${programName}/` + 1)
       .subscribe((result: any) => {
         this.programs = [];
         this.serviceProgramDraw = 0;
@@ -180,7 +180,7 @@ export class ServiceProgramListComponent implements  OnInit {
           this.suggestions = result;
         }
       })
-    } 
+    }
   }, 800)
 
   setData(value) {

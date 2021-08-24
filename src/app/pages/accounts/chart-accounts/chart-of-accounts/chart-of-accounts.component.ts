@@ -54,8 +54,7 @@ export class ChartOfAccountsComponent implements OnInit {
   preAccounts() {
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
       this.toaster.success('Predefined  Accounts Created.');
-      this.listService.fetchChartAccounts();
-      this.accounts = this.listService.accountsList;
+      this.fetchAccounts();
     });
   }
   deleteAccount(actID: string) {

@@ -32,7 +32,6 @@ export class JournalListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`journal/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
-          console.log('result', result);
           if(result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
@@ -55,8 +54,13 @@ export class JournalListComponent implements OnInit {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.getData(`journal/delete/${journalID}`)
       .subscribe((result: any) => {
-        this.fetchJournals();
-        this.toaster.success('Manual journal deleted successfully.');
+        if (result !== undefined) {
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastItemSK = '';
+          this.journals = [];
+          this.fetchJournals();
+          this.toaster.success('Manual journal deleted successfully.');
+        }
       });
     }
   }
