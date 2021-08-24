@@ -48,8 +48,7 @@ export class LoginComponent implements OnInit {
   fax:any;
   newEmail:any;
   findingWay:any;
-
-
+confirmPassword:any;
 
 
 
