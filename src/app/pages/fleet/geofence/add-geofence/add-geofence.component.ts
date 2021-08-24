@@ -388,4 +388,8 @@ export class AddGeofenceComponent implements OnInit {
       description: '',
     };
   }
+
+  getTypes() {
+    this.fetchGeofenceTypes();
+  }
 } 

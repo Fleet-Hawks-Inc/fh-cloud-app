@@ -311,4 +311,8 @@ export class AddContactRenewComponent implements OnInit {
       },
     });
   }
+
+  refreshTaskData(){
+    this.fetchServiceTaks();
+  }
 }

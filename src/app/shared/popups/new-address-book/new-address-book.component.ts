@@ -112,6 +112,7 @@ export class NewAddressBookComponent implements OnInit {
 
   constructor( private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService, private listService: ListService) {
     this.listService.addressList.subscribe((res: any) => {
+      console.log('resadd', res);
       if(res === 'list') {
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
@@ -127,6 +128,8 @@ export class NewAddressBookComponent implements OnInit {
         };
         this.modalService.dismissAll();
         this.modalService.open(this.newUnitModal, ngbModalOptions)
+      } else {
+        this.modalService.dismissAll();
       }
     })
    }
@@ -903,16 +906,37 @@ export class NewAddressBookComponent implements OnInit {
       },
       next: (res) => {
         // this.response = res;
+        console.log('this.unitData', this.unitData)
         this.hasSuccess = true;
         this.unitDisabled = false;
-        this.listService.triggerModal('list');
         this.dataMessage = Constants.FETCHING_DATA;
         this.emptyTabs();
         this.fetchUnits();
-        
+        this.showMainModal();
+        if(this.unitData.eTypes.includes('owner_operator')) {
+          this.listService.fetchOwnerOperators();
+        } else if(this.unitData.eTypes.includes('shipper')) {
+          this.listService.fetchShippers();
+        } else if(this.unitData.eTypes.includes('receiver')) {
+          this.listService.fetchReceivers();
+        } else if(this.unitData.eTypes.includes('vendor')) {
+          this.listService.fetchVendors();
+        } else if(this.unitData.eTypes.includes('customer')) {
+          this.listService.fetchCustomers();
+        }
         this.toastr.success('Entry added successfully');
       }
     });
+  }
+
+  showMainModal() {
+    if(localStorage.getItem('isOpen') != 'true') {
+      this.listService.triggerModal('list');    
+    } else {
+      this.listService.triggerModal('');
+      localStorage.setItem('isOpen', 'false'); 
+    }
+    
   }
 
   deactivate(id) {

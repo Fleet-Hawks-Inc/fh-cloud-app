@@ -1389,5 +1389,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
   }
 
-
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
 }

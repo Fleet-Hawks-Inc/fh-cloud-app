@@ -336,4 +336,8 @@ export class AddReminderComponent implements OnInit {
       },
     });
   }
+
+  refreshTaskData(){
+    this.fetchServiceTaks();
+  }
 }
