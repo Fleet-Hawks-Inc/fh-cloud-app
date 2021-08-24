@@ -68,6 +68,9 @@
                                                 <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('investigating')">Investigating</a>
                                             </li>
                                             <li class="nav-item">
+                                                <a class="nav-link navtabs" id="coaching-tab" href="javascript:;" (click)="fetchTabData('coaching')">Coaching</a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Closed</a>
                                             </li>
                                         </ul>
@@ -101,7 +104,8 @@
                                                             <td class="text-capitalize">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
                                                             <td class="text-capitalize">{{convertTimeFormat(data.eventTime)}}</td>
                                                             <td class="text-capitalize">{{data.eventSource}}</td>
-                                                            <td class="text-capitalize">{{ data.location }}</td>
+                                                            <td class="text-capitalize"><span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
+                                                                <span *ngIf="data.location.label === undefined">NA</span></td>
                                                             
                                                             <td class="text-capitalize">{{ data.severity }}</td>
                                                             <td class="text-capitalize">{{ data.assigned }}</td>

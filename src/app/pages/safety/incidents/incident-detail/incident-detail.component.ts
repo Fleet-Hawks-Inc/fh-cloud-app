@@ -89,37 +89,6 @@ export class IncidentDetailComponent implements OnInit {
   }
 
 
-  async getLocation(location: string) {
-    try {
-      const cords = location.split(',');
-      if (cords.length == 2) {
-        const params = {
-          lat: cords[0].trim(),
-          lng: cords[1].trim()
-
-        }
-        const location = await this.hereMap.revGeoCode(params);
-
-        if (location && location.items.length > 0) {
-          return location.items[0].title;
-        } else {
-          this.showMap = false;
-          return 'NA';
-
-        }
-      } else {
-        this.showMap = false;
-        return 'NA';
-
-      }
-    } catch (error) {
-      this.showMap = false;
-      return 'NA';
-
-    }
-
-  }
-
   async fetchEventDetail() {
     this.safetyService.getData('incidents/detail/' + this.incidentID)
       .subscribe(async (res: any) => {
@@ -134,10 +103,11 @@ export class IncidentDetailComponent implements OnInit {
         this.assigned = result.assigned;
         this.eventSource = result.eventSource;
         this.eventTime =  await this.convertTimeFormat(result.eventTime);
+        this.location = result.location.label ? result.location.label : 'NA';
+        if(result.location.cords != undefined) {
+          await this.setMarker(result.location.cords);  
+        }
         
-        const location = await this.getLocation(result.location);
-        this.location = location;
-        await this.setMarker(result.location);
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.incidentImages = result.uploadedPhotos.map(x => ({
