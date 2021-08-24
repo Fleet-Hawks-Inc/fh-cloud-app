@@ -86,7 +86,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
-    
+
     this.fetchWexCategories();
     this.initDataTable();
     $(document).ready(() => {
@@ -102,8 +102,8 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchWexCategories(){
-    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {  
-      
+    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {
+
       this.wexCategories = result;
     })
   }
@@ -149,13 +149,13 @@ export class FuelEntryListComponent implements OnInit {
 
   fetchVendorList() {
     this.apiService.getData('vendors').subscribe((result: any) => {
-      
+
        result.forEach(element=>{
          this.vendorList[element.contactID]=element.companyName
-      
+
       });
     });
-  
+
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -190,7 +190,7 @@ export class FuelEntryListComponent implements OnInit {
   }
   fetchWEXCode() {
     this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
-      
+
       result.forEach(element => {
         this.WEXCodeList[element.code]=element.type
       });
@@ -279,12 +279,12 @@ export class FuelEntryListComponent implements OnInit {
           date=date.format('MMM Do YYYY')
         }
         element.dateTime=date
-        
+
          // element.fuelTime=moment(element.fuelTime).format('h:mm a')
-          
+
         }
 
-        
+
       });
       this.fuelList = result[`Items`];
 
@@ -293,14 +293,14 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelEndPoint = this.totalRecords;
       }
       if (result[`LastEvaluatedKey`] !== undefined) {
-        
+
         const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
         //console.log(this.fuelPrevEvauatedKeys)
         if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
           this.fuelPrevEvauatedKeys.push(lastEvalKey);
-        
+
         }
         this.lastEvaluatedKey = lastEvalKey;
 
