@@ -326,11 +326,11 @@
                                     style="max-height: 497px;overflow-x: auto;width: 100%;">
                                     <div class="tm-body text-dark">
                                        <ol class="tm-items">
-                                            <li *ngFor="let trip of tripLog">
+                                            <li *ngFor="let data of tripLog">
                                                 <div class="tm-box">
-                                                    <span class="release-date">{{trip.createdDate}} - {{trip.createdTime}}</span>
+                                                    <span class="release-date">{{data.createdDate}} - {{data.createdTime}}</span>
                                                     <ul class="list-unstyled">
-                                                        <li> {{trip.eventParams.message}}
+                                                        <li>  {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }} <b class="text-success">{{ data.entityNumber }}</b>
                                                         </li>
                                                     </ul>
                                                 </div>
