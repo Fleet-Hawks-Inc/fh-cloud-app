@@ -94,7 +94,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" class="form-control" (keyup)="searchTerm.next($event);"
-                                          [(ngModel)]="event.locationText" #loc="ngModel" required  name="location"
+                                          [(ngModel)]="event.location.label" #loc="ngModel" required  name="location"
                                           placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada" autocomplete="off">
                                        <div *ngIf="loc.invalid && (loc.dirty || loc.touched)" class="text-danger">
                                           <div *ngIf="loc.errors.required">

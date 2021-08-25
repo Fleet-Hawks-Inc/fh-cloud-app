@@ -2343,11 +2343,18 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  setValue() {
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
     localStorage.setItem('isOpen', 'true');
     this.listService.changeButton(false);
   }
-
+  
+  setValue(){
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  
   fetchData(value: string) {
     if(value === 'shipper') {
       this.listService.fetchShippers();

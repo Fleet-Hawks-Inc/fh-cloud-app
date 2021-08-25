@@ -107,14 +107,14 @@
                                               <div class="dropdown dropright">
                                                   <button class="bg-transparent border-0" type="button"
                                                       id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                      aria-haspopup="true" aria-expanded="false">
+                                                      aria-haspopup="true" aria-expanded="false" [disabled]="data.paymentLinked">
                                                       <i class="fas fa-ellipsis-v"></i>
                                                   </button>
                                                   <div class="dropdown-menu"
                                                       attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                       <a class="dropdown-item"
-                                                          routerLink="/accounts/settlements/edit/{{ data.sttlID }}">Edit</a>
-                                                      <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked" (click)="deleteSettlement(data.sttlID)">Delete</a>
+                                                          routerLink="/accounts/settlements/edit/{{ data.sttlID }}" >Edit</a>
+                                                      <a class="dropdown-item" href="javascript:;" (click)="deleteSettlement(data.sttlID)">Delete</a>
                                                   </div>
                                               </div>
                                           </td>

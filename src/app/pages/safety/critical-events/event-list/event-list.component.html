@@ -147,7 +147,8 @@
                           </td>
                           <td class="text-capitalize">{{ data.createdBy }}</td>
                           <td class="text-capitalize">
-                            {{ data.location }}
+                            <span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
+                            <span *ngIf="data.location.label === undefined">NA</span>
                           </td>
                           <td style="width: 180px">
                             <ng-select

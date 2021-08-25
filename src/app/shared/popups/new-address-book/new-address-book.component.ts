@@ -112,7 +112,6 @@ export class NewAddressBookComponent implements OnInit {
 
   constructor( private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService, private listService: ListService) {
     this.listService.addressList.subscribe((res: any) => {
-      console.log('resadd', res);
       if(res === 'list') {
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
