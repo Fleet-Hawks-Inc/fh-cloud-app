@@ -106,7 +106,10 @@ export class IncidentListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if(result.length > 0) {
-          this.events = result;
+          for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            this.events.push(element)
+          }
           
           if (this.events[this.events.length - 1].sk != undefined) {
             this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
