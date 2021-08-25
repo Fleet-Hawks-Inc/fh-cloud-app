@@ -38,7 +38,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  accounts = [];
+  accounts: any = [];
   payModeLabel = "";
   errors = {};
   response: any = "";
@@ -70,21 +70,17 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchEmployee();
     // this.fetchVendor();
     // this.fetchCustomer();
-    // this.listService.fetchChartAccounts();
-    // this.accounts = this.listService.accountsList;
-    this.fetchAccounts();
-  }
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
-      this.accounts = res;
-    });
+    this.listService.fetchChartAccounts();
+    this.accounts = this.listService.accountsList;
   }
   fetchDrivers() {
     this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
       this.drivers = result;
     });
   }
-
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchCarriers() {
     this.apiService
       .getData(`contacts/get/list/carrier`)
