@@ -627,7 +627,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
-        console.log('invoice', result);
+        
         this.invoiceData = result[0];
         this.isInvoice = true;
       });
