@@ -142,6 +142,9 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
 
     this.fetchAdvancePayments();
   }
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchAdvancePayments() {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     const fromDate = null;

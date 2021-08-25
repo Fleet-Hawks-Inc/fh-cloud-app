@@ -98,12 +98,29 @@ export class TripDetailComponent implements OnInit {
   fetchTripLog() {
     const lastEvaluatedKey = '';
     this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + lastEvaluatedKey).subscribe((res: any) => {
-      // console.log('trip', res.Items);
-
-      for (const element of res.Items) {
-        if (element.eventParams.eventID === this.tripID) {
-          this.tripLog.push(element);
+      res.Items.map((k) => {
+        if (k.eventParams.eventID === this.tripID) {
+          this.tripLog.push(k);
         }
+      });
+      if (this.tripLog.length > 0) {
+        this.tripLog.map((k) => {
+          if (k.eventParams.userName !== undefined) {
+            const newString = k.eventParams.userName.split('_');
+            k.userFirstName = newString[0];
+            k.userLastName = newString[1];
+          }
+          if (k.eventParams.number !== undefined) {
+            k.entityNumber = k.eventParams.number;
+          }
+          if (k.eventParams.name !== undefined) {
+            if (k.eventParams.name.includes('_')) {
+              const newString = k.eventParams.name.split('_');
+              k.firstName = newString[0];
+              k.lastName = newString[1];
+            }
+          }
+        });
       }
     });
   }
