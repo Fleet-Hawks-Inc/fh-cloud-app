@@ -163,11 +163,11 @@
                 aria-labelledby="customer-tab"
               >
 
-
+              <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="customerTable"
                   class="
-                    table table-responsive-lg table-bordered table-striped
+                    table table-responsive-lg text-capitalize table-bordered table-striped
                     mb-0
                     simple-table
                   "
@@ -242,6 +242,8 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+                
 
               </div>
 
@@ -358,7 +360,9 @@
                 role="tabpanel"
                 aria-labelledby="broker-tab"
               >
-               <table
+              <div style="max-height: 480px;
+              overflow: auto;">
+                  <table
                   id="brokerTable"
                   class="
                     table table-responsive-lg table-bordered table-striped
@@ -440,30 +444,8 @@
                     </tr>
                   </tbody>
                 </table>
-                <!-- <div class="row mt-3 dtPaginate" *ngIf="brokers.length > 0">
-                  <div class="col-6">
-                    Showing {{ brokerStartPoint }} to {{ brokerEndPoint }} of
-                    {{ totalRecordsBroker }} entries
-                  </div>
-                  <div class="col-6 text-right">
-                    <button
-                      type="button"
-                      class="btn btn-default mr-2"
-                      (click)="prevResults('broker')"
-                      [disabled]="brokerPrev"
-                    >
-                      Prev
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-default"
-                      (click)="nextResults('broker')"
-                      [disabled]="brokerNext"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div> -->
+              </div>
+                
               </div>
 
               <div
@@ -472,7 +454,7 @@
                 role="tabpanel"
                 aria-labelledby="vendor-tab"
               >
-
+                <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="vendorTable"
                   class="
@@ -551,30 +533,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <!-- <div class="row mt-3 dtPaginate" *ngIf="vendors.length > 0">
-                  <div class="col-6">
-                    Showing {{ vendorStartPoint }} to {{ vendorEndPoint }} of
-                    {{ totalRecordsVendor }} entries
-                  </div>
-                  <div class="col-6 text-right">
-                    <button
-                      type="button"
-                      class="btn btn-default mr-2"
-                      (click)="prevResults('vendor')"
-                      [disabled]="vendorPrev"
-                    >
-                      Prev
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-default"
-                      (click)="nextResults('vendor')"
-                      [disabled]="vendorNext"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div> -->
+                </div>
               </div>
 
               <div
@@ -583,7 +542,7 @@
                 role="tabpanel"
                 aria-labelledby="carrier-tab"
               >
-
+              <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="carrierTable"
                   class="
@@ -614,7 +573,7 @@
                         {{ carrier.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td> -->
-                      <td  class="text-lowercase">{{ carrier.work }}</td>
+                      <td  class="text-lowercase">{{ carrier.workEmail }}</td>
                       <td>{{ carrier.workPhone }}</td>
                       <td *ngIf="carrier.address[0] != undefined"  class="text-capitalize">
                         <span *ngIf="carrier.address[0].manual">
@@ -662,7 +621,8 @@
                     </tr>
                   </tbody>
                 </table>
-
+              </div>
+                
               </div>
 
               <div
@@ -671,7 +631,7 @@
                 role="tabpanel"
                 aria-labelledby="owner-tab"
               >
-
+              <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="operatorTable"
                   class="
@@ -754,7 +714,8 @@
                     </tr>
                   </tbody>
                 </table>
-
+              </div>
+                
               </div>
 
               <div
@@ -763,7 +724,8 @@
                 role="tabpanel"
                 aria-labelledby="shipper-tab"
               >
-                 <table
+                <div style="max-height: 480px;overflow: auto;">
+                  <table
                   id="shipperTable"
                   class="
                     table table-responsive-lg table-bordered table-striped
@@ -840,8 +802,8 @@
                       </td>
                     </tr>
                   </tbody>
-                </table>
-
+                  </table>
+                </div>
               </div>
 
               <div
@@ -850,7 +812,7 @@
                 role="tabpanel"
                 aria-labelledby="consignee-tab"
               >
-
+              <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="consigneeTable"
                   class="
@@ -932,6 +894,8 @@
                 </table>
 
               </div>
+                
+              </div>
 
               <div
                 class="tab-pane fade px-2 py-3 shadow-none"
@@ -939,7 +903,7 @@
                 role="tabpanel"
                 aria-labelledby="fc-tab"
               >
-
+              <div style="max-height: 480px;overflow: auto;">
                 <table
                   id="companyTable"
                   class="
@@ -1022,6 +986,8 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
+                
 
               </div>
             </div>
@@ -1110,7 +1076,7 @@
               (change)="unitChange($event)"
               #eType="ngModel"
               class="form-control populate h-auto"
-              placeholder="Select address type"
+              placeholder="Do you want this entry to act as"
             >
               <ng-option value="broker">Broker</ng-option>
               <ng-option value="carrier">Carrier</ng-option>
@@ -1563,6 +1529,7 @@
                     <input
                       [(ngModel)]="unit.carrierData.fastExp"
                       name="fastExp"
+                      readonly
                       type="text"
                       placeholder="yyyy/mm/dd"
                       (click)="carrexp.toggle()"
@@ -2026,6 +1993,7 @@
                                 placeholder="yyyy/mm/dd"
                                 (click)="wsibexp.toggle()"
                                 ngbDatepicker
+                                readonly
                                 #wsibexp="ngbDatepicker"
                                 class="form-control"
                                 autocomplete="off"
@@ -2530,6 +2498,7 @@
                               placeholder="yyyy/mm/dd"
                               (click)="custexp.toggle()"
                               ngbDatepicker
+                              readonly
                               #custexp="ngbDatepicker"
                               class="form-control"
                               autocomplete="off"
@@ -2686,6 +2655,7 @@
                           placeholder="yyyy/mm/dd"
                           (click)="fastexp.toggle()"
                           ngbDatepicker
+                          readonly
                           #fastexp="ngbDatepicker"
                           class="form-control"
                           autocomplete="off"
@@ -3460,7 +3430,7 @@
       <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
     </button>
   </div>
-  <div class="modal-body text-dark" style="max-height: 500px;
+  <div class="modal-body text-dark text-capitalize" style="max-height: 500px;
   overflow: auto;">
     <!-- Basic Details Start -->
     <div class="row">
@@ -3468,7 +3438,7 @@
         <label class="control-label  font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
      </div>
      <div class="col-lg-2 pt-1 text-right">
-        <a href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</a>
+        <a (click)="showPhoto()" href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</a>
       </div>
       <div class="col-12 mb-3">
         <table class="table table-bordered m-0">
@@ -3553,7 +3523,7 @@
              <div class="col-6">
               <table style="float: left" class="table table-bordered mb-2" >
                 <tbody>
-                  <tr>
+                  <tr *ngIf="item.brokerData.type">
                     <th width="40%" class="back-color-gray">Name:</th>
                     <td>{{ item.brokerData.fn ? item.brokerData.fn : "-" }} {{ item.brokerData.ln }}</td>
                   </tr>
@@ -3563,7 +3533,7 @@
                     <td>{{ item.brokerData.mc ? item.brokerData.mc : "-" }}</td>
                   </tr>
                   <tr>
-                    <th width="40%" class="back-color-gray">Boker Type#:</th>
+                    <th width="40%" class="back-color-gray">Broker Type:</th>
                     <td>{{ item.brokerData.type ? item.brokerData.type : "-" }}</td>
                   </tr>
                 </tbody>
@@ -3612,7 +3582,7 @@
                     </tr>
                     <tr>
                       <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                      <td>{{ item.carrierData.fastExp ? item.carrierData.fastExp : "-" }}</td>
+                      <td>{{ item.carrierData.fastExp ? (item.carrierData.fastExp | date:"yyyy/MM/dd" ) : "-" }}</td>
                     </tr>
                     <tr>
                       <th width="40%" class="back-color-gray">CCC:</th>
@@ -3622,6 +3592,10 @@
                       <th width="40%" class="back-color-gray">SCAC:</th>
                       <td>{{ item.carrierData.scac ? item.carrierData.scac : "-" }}</td>
                     </tr>
+                    <tr>
+                      <th width="40%" class="back-color-gray">CVOR:</th>
+                      <td>{{ item.carrierData.cvor ? item.carrierData.cvor : "-" }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -3629,10 +3603,7 @@
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
 
-                    <tr>
-                      <th width="40%" class="back-color-gray">CVOR:</th>
-                      <td>{{ item.carrierData.cvor ? item.carrierData.cvor : "-" }}</td>
-                    </tr>
+                   
                     <tr>
                       <th width="40%" class="back-color-gray">Payroll Type:</th>
                       <td>{{ item.carrierData.pType ? item.carrierData.pType : "-" }}</td>
@@ -3680,7 +3651,7 @@
                     </tr>
                     <tr *ngIf="item.carrierData.wsib">
                       <th width="40%" class="back-color-gray">WSIB Expiry:</th>
-                      <td>{{ item.carrierData.wsibExp ? item.carrierData.wsibExp : "-" }}</td>
+                      <td>{{ item.carrierData.wsibExp ? (item.carrierData.wsibExp | date:"yyyy/MM/dd" ) : "-" }}</td>
                     </tr>
 
 
@@ -3689,6 +3660,80 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-lg-12 mb-2 mt-2">
+                <label class="control-label  font-weight-bold text-lg-right text-5 pt-2"> Carrier Bank Details</label>
+             </div>
+             <div class="col-12 w-100">
+              <table style="float: left" class="table table-bordered" *ngFor="let bank of item.carrierData.banks">
+                <tbody>
+                  <tr>
+                    <th width="40%" class="back-color-gray">Bank Name:</th>
+                    <td>{{ bank.bName ? bank.bName : "-" }}</td>
+                  </tr>
+                  <tr>
+                    <th width="40%" class="back-color-gray">Account#:</th>
+                    <td>{{ bank.acc ? bank.acc : "-" }}</td>
+                  </tr>
+                  
+                  <tr>
+                    <th width="40%" class="back-color-gray">Routing#:</th>
+                    <td>{{ bank.insNo ? bank.insNo : "-" }}</td>
+                  </tr>
+                  <tr>
+                    <th width="40%" class="back-color-gray">Transit#:</th>
+                    <td>{{ bank.trnNo ? bank.trnNo : "-" }}</td>
+                  </tr>
+                  <tr>
+                    <th width="40%" class="back-color-gray">Institution#:</th>
+                    <td>{{ bank.insNo ? bank.insNo : "-" }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="p-0 border-none">
+                      <table style="float: left" class="table table-bordered mb-0" *ngFor="let bitem of bank.adrs">
+                        <tbody>
+                          <tr>
+                            <th width="40%" class="back-color-gray">Address Type:</th>
+                            <td>{{ bitem.aType ? bitem.aType : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">Country:</th>
+                            <td>{{ bitem.cName ? bitem.cName : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">Province/State:</th>
+                            <td>{{ bitem.sName ? bitem.sName : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">City:</th>
+                            <td>{{ bitem.ctyName ? bitem.ctyName : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">Zip Code:</th>
+                            <td>{{ bitem.zip ? bitem.zip : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">Address1:</th>
+                            <td>{{ bitem.add1 ? bitem.add1 : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="bitem.manual">
+                            <th width="40%" class="back-color-gray">Address2:</th>
+                            <td>{{ bitem.add2 ? bitem.add2 : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="!bitem.manual">
+                            <th width="40%" class="back-color-gray">Address:</th>
+                            <td>{{ bitem.userLoc ? bitem.userLoc : "-" }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+             </div>
+             
+            </div>
           </div>
 
           <div *ngIf="item.shipperData">
@@ -3712,7 +3757,7 @@
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
                     <tr>
-                      <th width="40%" class="back-color-gray">MC:</th>
+                      <th width="40%" class="back-color-gray">MC#:</th>
                       <td>{{ item.shipperData.mc ? item.shipperData.mc : "-" }}</td>
                     </tr>
 
@@ -3733,8 +3778,8 @@
                   <tbody>
 
                     <tr>
-                      <th width="40%" class="back-color-gray">MC:</th>
-                      <td>{{ item.receiverData.mc ? item.receiverData.mc : "-" }}</td>
+                      <th width="40%" class="back-color-gray">DOT#:</th>
+                      <td>{{ item.receiverData.dot ? item.receiverData.dot : "-" }}</td>
                     </tr>
 
                   </tbody>
@@ -3744,7 +3789,7 @@
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
                     <tr>
-                      <th width="40%" class="back-color-gray">MC:</th>
+                      <th width="40%" class="back-color-gray">MC#:</th>
                       <td>{{ item.receiverData.mc ? item.receiverData.mc : "-" }}</td>
                     </tr>
 
@@ -3780,27 +3825,32 @@
                       <th width="40%" class="back-color-gray">Account#:</th>
                       <td>{{ item.customerData.acc ? item.customerData.acc : "-" }}</td>
                     </tr>
-
+                    <tr>
+                      <th width="40%" class="back-color-gray">DOT#:</th>
+                      <td>{{ item.customerData.dot ? item.customerData.dot : "-" }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col-6">
                 <table style="float: left" class="table table-bordered mb-2" >
                   <tbody>
-
-                    <tr>
-                      <th width="40%" class="back-color-gray">DOT#:</th>
-                      <td>{{ item.customerData.dot ? item.customerData.dot : "-" }}</td>
-                    </tr>
                     <tr>
                       <th width="40%" class="back-color-gray">EIN:</th>
                       <td>{{ item.customerData.ein ? item.customerData.ein : "-" }}</td>
                     </tr>
                     <tr>
-                      <th width="40%" class="back-color-gray">MC:</th>
+                      <th width="40%" class="back-color-gray">MC#:</th>
                       <td>{{ item.customerData.mc ? item.customerData.mc : "-" }}</td>
                     </tr>
-
+                    <tr>
+                      <th width="40%" class="back-color-gray">FAST Card#:</th>
+                      <td>{{ item.customerData.fast ? item.customerData.fast : "-" }}</td>
+                    </tr>
+                    <tr>
+                      <th width="40%" class="back-color-gray">FAST Card Expiry:</th>
+                      <td>{{ item.customerData.fastExp ? ( item.customerData.fastExp | date:"yyyy/MM/dd" ) : "-" }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -3819,8 +3869,8 @@
                   <tbody>
 
                     <tr>
-                      <th width="40%" class="back-color-gray">fcRate#:</th>
-                      <td>{{ item.fcData.fcRate ? item.fcData.fcRate : "-" }} {{item.fcData.fcRate ? item.fcData.fcUnit : ''}}</td>
+                      <th width="40%" class="back-color-gray">Account#:</th>
+                      <td>{{ item.fcData.acc ? item.fcData.acc : "-" }}</td>
                     </tr>
 
                   </tbody>
@@ -3831,7 +3881,7 @@
                   <tbody>
 
                     <tr>
-                      <th width="40%" class="back-color-gray">fcRate#:</th>
+                      <th width="40%" class="back-color-gray">Factoring Rate:</th>
                       <td>{{ item.fcData.fcRate ? item.fcData.fcRate : "-" }} {{item.fcData.fcRate ? item.fcData.fcUnit : ''}}</td>
                     </tr>
 
@@ -3861,7 +3911,7 @@
                     </tr>
                     <tr>
                       <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                      <td>{{ item.opData.fastExp ? item.opData.fastExp : "-" }}</td>
+                      <td>{{ item.opData.fastExp ? ( item.opData.fastExp | date:"yyyy/MM/dd" ) : "-" }}</td>
                     </tr>
                     <tr>
                       <th width="40%" class="back-color-gray">Payroll Type:</th>
@@ -4000,8 +4050,7 @@
             <tr>
               <th width="40%" class="back-color-gray">Name:</th>
               <td>
-                {{ addCont.fn ? addCont.fn : "-" }}
-                {{ addCont.ln ? addCont.ln : "" }}
+                {{ addCont.flName ? addCont.flName : "-" }}
               </td>
             </tr>
             <tr>
@@ -4034,5 +4083,24 @@
       </div>
   </div>
 </ng-template>
+
+<ng-template #showPhotoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Profile Image</h5>
+    <button type="button"
+      (click)="modal.dismiss()"
+      class="close" data-dismiss="modal" aria-label="Close">
+      <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
+    </button>
+  </div>
+  <div class="modal-body text-dark">
+      <div class="row">
+        <div class="col-lg-12">
+          <img [src]="profilePath" class="img-fluid rounded" height="200px" width="100%">
+        </div>
+      </div>
+  </div>
+</ng-template>
+
 
 

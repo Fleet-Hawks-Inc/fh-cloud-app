@@ -1179,7 +1179,10 @@ export class AddOrdersComponent implements OnInit {
 
   onSubmit() {
     this.submitDisabled = true;
-
+    
+    if(this.orderData.additionalContact != null && this.orderData.additionalContact.label != undefined && this.orderData.additionalContact.label != null) {
+      this.orderData.additionalContact = this.orderData.additionalContact.label;
+    }
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
 
     let flag = true;
@@ -1249,7 +1252,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData['loc'] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
-
+    
     // create form data instance
     const formData = new FormData();
 
