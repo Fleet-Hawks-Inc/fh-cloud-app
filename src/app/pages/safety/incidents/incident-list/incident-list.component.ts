@@ -93,29 +93,6 @@ export class IncidentListComponent implements OnInit {
 
   }
 
-  async getLocation(location: string) {
-    try {
-      const cords = location.split(',');
-      if (cords.length == 2) {
-        const params = {
-          lat: cords[0].trim(),
-          lng: cords[1].trim()
-
-        }
-        const location = await this.hereMapService.revGeoCode(params);
-
-        if (location && location.items.length > 0) {
-          return location.items[0].title;
-        } else {
-          return 'NA';
-        }
-      } else {
-        return 'NA';
-      }
-    } catch (error) {
-      return 'NA';
-    }
-  }
 
   async fetchEvents(refresh?: boolean) {
     if (refresh === true) {
@@ -131,10 +108,9 @@ export class IncidentListComponent implements OnInit {
         if(result.length > 0) {
           for (let index = 0; index < result.length; index++) {
             const element = result[index];
-            const location = await this.getLocation(element.location);
-            element.location = location;
-            this.events.push(element);
+            this.events.push(element)
           }
+          
           if (this.events[this.events.length - 1].sk != undefined) {
             this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
           } else {
@@ -173,14 +149,8 @@ export class IncidentListComponent implements OnInit {
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.events = [];
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          const location = await this.getLocation(element.location);
-          element.location = location;
-          this.events.push(element);
-
-        }
+        this.events = result;
+        
       })
 
   }
@@ -201,6 +171,10 @@ export class IncidentListComponent implements OnInit {
     } else if (tabType === 'assigned') {
       $("#assigned-tab").addClass('active');
       this.events = this.events.filter(element => { return element.status != 'assigned'})
+
+    } else if (tabType === 'coaching') {
+      $("#coaching-tab").addClass('active');
+      this.events = this.events.filter(element => { return element.status == 'coaching'})
 
     } else if (tabType === 'investigating') {
       $("#under-review-tab").addClass('active');

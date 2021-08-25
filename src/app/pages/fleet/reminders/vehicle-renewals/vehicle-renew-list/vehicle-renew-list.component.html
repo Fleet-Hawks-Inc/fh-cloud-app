@@ -94,13 +94,13 @@
                                                         *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                                     <span class="text-danger font-weight-bold font-size-12 text-uppercase"
                                                         *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-    
+
                                                     <span class="font-weight-bold"
                                                         title="Task">{{tasksList[item.tasks.taskID]}}</span>
                                                 </td>
                                                 <td>{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</td>
                                                 <td>{{item.tasks.time}} {{item.tasks.timeUnit}}(s) Before</td>
-                                                <td>
+                                                <td  class="text-lowercase">
                                                     {{ item.subscribers }}
                                                 </td>
                                                 <td>
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
 
-                            
+
                          </div>
                       </div>
                    </div>

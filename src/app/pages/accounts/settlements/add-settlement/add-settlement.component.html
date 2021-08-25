@@ -23,7 +23,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
                                                         For <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.type" name="SettlementType"
-                                                        placeholder="Select Settlement For" (change)="resetFormValues()" #stlmntFor="ngModel" required>
+                                                        placeholder="Select Settlement For" [disabled]="editDisabled" (change)="resetFormValues()" #stlmntFor="ngModel" required>
                                                         <ng-option value="driver">Driver</ng-option>
                                                         <ng-option value="carrier">Carrier</ng-option>
                                                         <ng-option value="owner_operator">Owner Operator</ng-option>
@@ -79,7 +79,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event)" #driverID="ngModel" required>
+                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event); resetAlldata();" #driverID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of drivers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -99,7 +99,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Carrier" (change)="fetchCarrierDetails($event)" #carrierID="ngModel" required>
+                                                        placeholder="Select Carrier" (change)="fetchCarrierDetails($event); resetAlldata();" #carrierID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of carriers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -119,7 +119,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Owner Operator" #ownerID="ngModel" required (change)="fetchCarrierDetails($event)">
+                                                        placeholder="Select Owner Operator" #ownerID="ngModel" required (change)="fetchCarrierDetails($event); resetAlldata();" [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -727,7 +727,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'">
+                                            <!-- <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'">
                                                 <div class="row pt-2" *ngFor="let data of settlementData.miles.drivers; let d=index;">
                                                     <div class="col-lg-3 text-right">
                                                         <label class="control-label font-weight-bold">{{ drivers[data.driverID] }} 's Payment</label>
@@ -773,7 +773,8 @@
                                                         <input type="text" class="form-control" placeholder="HST Amount" disabled name="hstAmount" [(ngModel)]="settlementData.taxObj.hstAmount">
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
+                                            <div class="col-lg-7 offset-lg-1" *ngIf="settlementData.type == 'owner_operator'"></div>
                                             <div class="col-lg-3">
                                                 <div class="row">
                                                     <div class="col-lg-6 text-right">

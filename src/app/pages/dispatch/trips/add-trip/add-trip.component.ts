@@ -572,7 +572,7 @@ export class AddTripComponent implements OnInit {
                                     }
                                     let pickLocation = '';
                                     if(pk.address.manual) {
-                                        pickLocation = `${pk.address.address}, ${pk.address.city}, ${pk.address.state}. ${pk.address.country}`;
+                                        pickLocation = `${pk.address.address}, ${pk.address.cityName}, ${pk.address.stateName}. ${pk.address.countryName}`;
                                     } else {
                                         pickLocation = pk.address.pickupLocation;
                                     }
@@ -623,7 +623,7 @@ export class AddTripComponent implements OnInit {
                                 k.dropPoint.map((dr) => {
                                     let dropLocation = '';
                                     if(dr.address.manual) {
-                                        dropLocation = `${dr.address.address}, ${dr.address.city}, ${dr.address.state}, ${dr.address.country}`;
+                                        dropLocation = `${dr.address.address}, ${dr.address.cityName}, ${dr.address.stateName}, ${dr.address.countryName}`;
                                     } else {
                                         dropLocation = dr.address.dropOffLocation;
                                     }
@@ -1756,7 +1756,9 @@ export class AddTripComponent implements OnInit {
     updateOrderStatusToConfirmed() {
         for (let i = 0; i < this.OldOrderIDs.length; i++) {
             const orderID = this.OldOrderIDs[i];
-            this.apiService.getData('orders/update/orderStatus/' + orderID + '/confirmed').subscribe((result: any) => {});
+            const orderStatus = 'confirmed';
+            const orderNo = 0;
+            this.apiService.getData(`orders/update/orderStatus/${orderID}/${orderNo}/${orderStatus}`).subscribe((result: any) => {});
         }
     }
 

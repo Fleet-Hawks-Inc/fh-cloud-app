@@ -147,7 +147,7 @@
                                  </label>
                                  <ng-select [clearable]="false" (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
 
-                                    name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control" #customer="ngModel" required>
+                                    name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control text-capitalize" #customer="ngModel" required>
                                     <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
                                        {{customer.companyName}}
 
@@ -166,7 +166,7 @@
 
                               </div>
                               <div class="col-2 mar-top-37 p-0">
-                                 <a class="btn btn-success btn-sm text-light" (click)="setValue()" data-dismiss="modal" data-toggle="modal" data-target="#addOrderCustomerModal"><i
+                                 <a class="btn btn-success btn-sm text-light" (click)="openModal('form');"><i
                                        class="fas fa-plus"></i>
                                  </a>
                                  <a data-toggle="modal" (click)="fetchData('customer')" href="javascript:;"
@@ -210,29 +210,29 @@
                                              <div class="row border-top mb-1 pt-2 pb-2 position-relative" [ngClass]="{'pl-4' : item.adrs.length > 1}" *ngFor="let address of item.adrs; let i = index;">
                                                 <div class="col-12">
                                                    <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
-                                                      {{address.add1}}
-                                                      {{address.add2}}</label>
+                                                      {{address.add1 | titlecase}}
+                                                      {{address.add2 | titlecase}}</label>
 
                                                    <label class="control-label" *ngIf="!address.manual"><span class=" font-weight-bold">Address:</span>
-                                                      {{address.userLoc}}</label>
+                                                      {{address.userLoc | titlecase}}</label>
                                                 </div>
 
 
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">City:</span>
-                                                      {{address.ctyName}}</label>
+                                                      {{address.ctyName | titlecase}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Province/State:</span>
-                                                      {{address.sName}}</label>
+                                                      {{address.sName | titlecase}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Country:</span>
-                                                      {{address.cName}}</label>
+                                                      {{address.cName | titlecase}}</label>
                                                 </div>
                                                 <div class="col-6">
                                                    <label class="control-label"><span class=" font-weight-bold">Type:</span>
-                                                      {{address.aType}}</label>
+                                                      {{address.aType | titlecase}}</label>
                                                 </div>
 
                                                 <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
@@ -322,7 +322,7 @@
                                                             <tbody>
                                                                <tr *ngFor="let ship of list.shippers; let k = index;">
                                                                   <td class="" style="min-width: 100px;">
-                                                                     {{shippersObjects[ship.shipperID]}}
+                                                                     {{shippersObjects[ship.shipperID] | titlecase}}
                                                                   </td>
                                                                   <td class="p-0" style=" min-width: 300px;">
                                                                      <table class="border-0 w-100">
@@ -366,12 +366,12 @@
                                                             <tbody>
                                                                <tr *ngFor="let receive of list.receivers; let k = index;">
                                                                   <td class=""  style="min-width: 100px;">
-                                                                     {{receiversObjects[receive.receiverID]}}
+                                                                     {{receiversObjects[receive.receiverID] | titlecase}}
                                                                   </td>
                                                                   <td class="p-0"  style="min-width: 300px;">
                                                                      <table class="border-0 w-100">
                                                                         <tr *ngFor="let point of receive.dropPoint;">
-                                                                           <td class="border-left-0 border-top-0 border-bottom"  style="min-width: 250px; max-width: 250px;">
+                                                                           <td class="border-left-0 border-top-0 border-bottom text-capitalize"  style="min-width: 250px; max-width: 250px;">
                                                                               <span *ngIf="!point.address.manual">{{point.address.dropOffLocation}}</span>
                                                                               <span *ngIf="point.address.manual">{{point.address.address}}, {{point.address.cityName}}, {{point.address.stateName}}, {{point.address.countryName}} {{point.address.zipCode}}</span>
                                                                            </td>
@@ -428,7 +428,7 @@
                                                             <ng-select [clearable]="false" [(ngModel)]="item.shippers.shipperID"
                                                                name="shipperID_{{i}}"  placeholder="Select Shipper" class="form-control" (change)="shipperReceiverAddress('shipper', $event)" #conSlt1="ngModel" required>
 
-                                                                  <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
+                                                                  <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName | titlecase}}</ng-option>
 
                                                             </ng-select>
                                                             <div *ngIf="conSlt1.touched && (shippersReceivers[0].shippers.shipperID == null || shippersReceivers[0].shippers.shipperID == '') && finalShippersReceivers[0].shippers.length == 0" class="text-danger">
@@ -463,14 +463,14 @@
                                                                      #location="ngModel" required>
                                                                      <ng-container *ngFor="let item of shipAddresses">
                                                                         <ng-option *ngIf="!item.manual" value="{{item.addressID}}">
-                                                                           {{item.userLoc}}
+                                                                           {{item.userLoc | titlecase}}
                                                                         </ng-option>
                                                                         <ng-option *ngIf="item.manual" value="{{item.addressID}}">
-                                                                           {{item.add1}}<span *ngIf="item.add1">,</span>
-                                                                           {{item.add2}}<span *ngIf="item.add2">,</span>
-                                                                           {{item.ctyName}}<span *ngIf="item.ctyName">,</span>
-                                                                           {{item.sName}}<span *ngIf="item.sName">,</span>
-                                                                           {{item.cName}}
+                                                                           {{item.add1 | titlecase}}<span *ngIf="item.add1">,</span>
+                                                                           {{item.add2 | titlecase}}<span *ngIf="item.add2">,</span>
+                                                                           {{item.ctyName | titlecase}}<span *ngIf="item.ctyName">,</span>
+                                                                           {{item.sName | titlecase}}<span *ngIf="item.sName">,</span>
+                                                                           {{item.cName | titlecase}}
                                                                            {{item.zip}}
                                                                         </ng-option>
                                                                      </ng-container>
@@ -871,7 +871,7 @@
                                                                   name="receiverID" #receiverID="ngModel" required (change)="shipperReceiverAddress('receiver', $event)"
                                                                   receiverID placeholder="Select Receiver"class="form-control"
                                                                   tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
-                                                                  <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
+                                                                  <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName | titlecase}}</ng-option>
                                                                </ng-select>
                                                                <div *ngIf="consignee.touched && ( shippersReceivers[0].receivers.receiverID == null || shippersReceivers[0].receivers.receiverID == '') && finalShippersReceivers[0].receivers.length == 0" class="text-danger">
                                                                   Receiver is required.
