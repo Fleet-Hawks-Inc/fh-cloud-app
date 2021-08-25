@@ -102,6 +102,32 @@
                               </div>
                            </div>
                         </div>
+                        <div class="col-lg-6 pr-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <h5 class="font-weight-bold text-capitalize">{{ paymentData.paymentTo }} Payments</h5>
+                                 <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bgcol2">
+                                            <th>Payment#</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="advancePayments.length === 0" class="text-center">
+                                            <td colspan="3">{{ noRecordMsg }} </td>
+                                         </tr>
+                                        <tr *ngFor="let data of advancePayments;">
+                                            <td>{{ data.paymentNo }}</td>
+                                            <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                            <td>{{ data.amount | number }} CAD</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                           </div>
+                        </div>
                      </div>
 
 

@@ -310,6 +310,12 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
     this.paymentData.finalAmount = this.paymentData.totalAmount - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(2);
+
+    if(this.paymentData.finalAmount > 0) {
+      this.submitDisabled = false;
+    } else {
+      this.submitDisabled = true;
+    }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
