@@ -5,8 +5,20 @@
 }
 
 .routingNo {
-  font-family: micr;
+  font-family: 'micrFont'; font-size: 20px; color: #000;
 }
+
+
+@font-face {
+  font-family: 'micrFont';
+  src: url('../../../../assets/css/micrenc.eot'); /* IE9 Compat Modes */
+  src: url('../../../../assets/css/micrenc.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('../../../../assets/css/micrenc.woff2') format('woff2'), /* Super Modern Browsers */
+      url('../../../../assets/css/micrenc.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../../../../assets/css/micrenc.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../../../assets/css/micrenc.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
 
 .cheque-wrapper {
   background: #fff;
