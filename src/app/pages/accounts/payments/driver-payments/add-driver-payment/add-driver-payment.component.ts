@@ -138,7 +138,9 @@ export class AddDriverPaymentComponent implements OnInit {
         this.carriers = result;
       });
   }
-
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchOwnerOperators() {
     this.apiService
       .getData(`contacts/get/list/ownerOperator`)
