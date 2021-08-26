@@ -18,6 +18,7 @@ export class OrdersListComponent implements OnInit {
   confirmOrders = [];
   dispatchOrders = [];
   deliveredOrders = [];
+  tonuOrders = [];
   cancelledOrders = [];
   invoicedOrders = [];
   partiallyOrders = [];
@@ -150,33 +151,7 @@ export class OrdersListComponent implements OnInit {
 
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
-
-      // for (let k = 0; k < element.shippersReceiversInfo.length; k++) {
-      //   const element2 = element.shippersReceiversInfo[k];
-
-      //   for (let m = 0; m < element2.shippers.length; m++) {
-      //     const element3 = element2.shippers[m];
-      //     element3.pickupPoint.forEach(element => {
-      //       let dateTime = element.dateAndTime.split(' ');
-      //       element.date = (dateTime[0] != undefined) ? dateTime[0] : '';
-      //       element.time = (dateTime[1] != undefined) ? dateTime[1] : '';
-      //     });
-
-      //   }
-
-      //   for (let m = 0; m < element2.receivers.length; m++) {
-      //     const element3 = element2.receivers[m];
-      //     element3.dropPoint.forEach(element => {
-      //       let dateTime = element.dateAndTime.split(' ');
-      //       element.date = (dateTime[0] != undefined) ? dateTime[0] : '';
-      //       element.time = (dateTime[1] != undefined) ? dateTime[1] : '';
-      //     });
-
-      //   }
-      // }
-
       if(element.orderStatus === 'confirmed') {
-
         this.confirmOrders.push(element);
       } else if(element.orderStatus == 'dispatched') {
         this.dispatchOrders.push(element);
@@ -188,6 +163,9 @@ export class OrdersListComponent implements OnInit {
         this.cancelledOrders.push(element);
       } else if(element.orderStatus == 'delivered') {
         this.deliveredOrders.push(element);
+      } else if(element.orderStatus == 'tonu') {
+        element.orderStatus = element.orderStatus.toUpperCase();
+        this.tonuOrders.push(element);
       }
     }
 
@@ -291,6 +269,7 @@ export class OrdersListComponent implements OnInit {
         this.cancelledOrders = [];
         this.invoicedOrders = [];
         this.partiallyOrders = [];
+        this.tonuOrders = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = 'all';
         this.fetchOrdersCount();
@@ -319,6 +298,7 @@ export class OrdersListComponent implements OnInit {
       this.cancelledOrders = [];
       this.invoicedOrders = [];
       this.partiallyOrders = [];
+      this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
       // this.fetchAllTypeOrderCount();
       this.fetchOrdersCount();
@@ -331,12 +311,6 @@ export class OrdersListComponent implements OnInit {
 
   deactivateOrder(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      // let record = {
-      //   date: eventData.createdDate,
-      //   time: eventData.createdTime,
-      //   eventID: eventData.orderID,
-      //   status: eventData.orderStatus
-      // }
       this.apiService.deleteData(`orders/delete/${eventData.orderID}/${eventData.orderNumber}/${eventData.orderStatus}`).subscribe((result: any) => {
           this.orders = [];
           this.confirmOrders = [];
@@ -345,7 +319,7 @@ export class OrdersListComponent implements OnInit {
           this.cancelledOrders = [];
           this.invoicedOrders = [];
           this.partiallyOrders = [];
-
+          this.tonuOrders = [];
           this.records = false;
           this.ordersDraw = 0;
           this.lastEvaluatedKey = '';
@@ -436,10 +410,10 @@ export class OrdersListComponent implements OnInit {
         this.cancelledOrders = [];
         this.invoicedOrders = [];
         this.partiallyOrders = [];
+        this.tonuOrders = [];
         this.lastEvaluatedKey = '';
         this.fetchAllTypeOrderCount();
       }
     }
-
   }
 }
