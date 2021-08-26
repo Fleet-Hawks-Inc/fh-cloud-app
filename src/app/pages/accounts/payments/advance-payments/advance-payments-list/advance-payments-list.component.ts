@@ -36,7 +36,11 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.fetchContactsList();
   }
 
-  fetchPayments() {
+  fetchPayments(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.payments = [];
+    }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`advance/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
@@ -84,6 +88,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   deletePayment(paymentID) {
     if (confirm('Are you sure you want to void?') === true) {
       this.accountService.deleteData(`advance/delete/${paymentID}`).subscribe((result: any) => {
+        this.lastItemSK = '';
         this.payments = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchPayments();

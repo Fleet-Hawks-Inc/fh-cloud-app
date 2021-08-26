@@ -277,6 +277,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   modelID = '';
   empPrefix: any;
   submitDisabled = false;
+  groupSubmitDisabled = false;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
   passwordValidation = {
@@ -642,6 +643,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   addGroup() {
+    this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData('groups', this.groupData).subscribe({
       complete: () => { },
@@ -656,10 +658,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.submitDisabled = false;
+              this.groupSubmitDisabled = false;
+
             },
             error: () => {
-              this.submitDisabled = false;
+              this.groupSubmitDisabled = false;
             },
             next: () => { },
           });
@@ -667,7 +670,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.submitDisabled = false;
+        this.groupSubmitDisabled = false;
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addDriverGroupModal').modal('hide');

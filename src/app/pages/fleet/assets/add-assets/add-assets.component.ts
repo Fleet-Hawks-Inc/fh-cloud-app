@@ -112,6 +112,7 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
   submitDisabled = false;
+  groupSubmitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -190,7 +191,7 @@ export class AddAssetsComponent implements OnInit {
 
   openModal(unit: string) {
     this.listService.triggerModal(unit);
-        
+
     localStorage.setItem('isOpen', 'true');
     this.listService.changeButton(false);
   }
@@ -201,7 +202,7 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Add new asset
    */
-  addAsset() {
+  onAddAsset() {
     this.hideErrors();
     this.submitDisabled = true;
     const data = {
@@ -392,7 +393,7 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Update asset
   */
-  updateAsset() {
+  onUpdateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -541,6 +542,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   addGroup() {
+    this.groupSubmitDisabled = true;
     this.apiService.postData('groups', this.groupData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -553,13 +555,17 @@ export class AddAssetsComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.throwErrors();
+              this.throwErrors();
+              this.groupSubmitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.groupSubmitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
+        this.groupSubmitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
