@@ -400,7 +400,7 @@ export class AddVehicleNewComponent implements OnInit {
         this.inspectionForms = result.Items;
       });
   }
-  async addVehicle() {
+  async onAddVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
@@ -880,7 +880,7 @@ export class AddVehicleNewComponent implements OnInit {
       });
 
   }
-  async updateVehicle() {
+  async onUpdateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
@@ -1256,14 +1256,14 @@ export class AddVehicleNewComponent implements OnInit {
   refreshProgramData() {
     this.listService.fetchServicePrograms();
   }
-  
+
   openModal(unit: string) {
     this.listService.triggerModal(unit);
-        
+
     localStorage.setItem('isOpen', 'true');
     this.listService.changeButton(false);
   }
-  
+
   refreshVendorData() {
     this.listService.fetchVendors();
   }

@@ -132,6 +132,7 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '') {
          searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+         searchParam = searchParam.toUpperCase();
       } else {
         searchParam = null;
       }

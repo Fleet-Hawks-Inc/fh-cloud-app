@@ -346,6 +346,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-2" style="margin-top: 32px;">
+                                                      <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                                        class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                                                      </button>
+                                                      <a href="javascript:;" (click)="refreshAccount()"
+                                                        data-toggle="tooltip" title="Refresh account data"
+                                                        class="btn btn-success btn-sm modal-with-form"><i
+                                                            class="fas fa-sync"></i></a>
+                                                    </div>
                                                 </div>
                                                 <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                     <div class="col-lg-5">
@@ -367,7 +376,7 @@
                                                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
                                                             [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel" required>
 
-                                                        <div *ngIf="modeDate.invalid && (modeDate.dirty || modeDate.touched)" class="text-danger"> 
+                                                        <div *ngIf="modeDate.invalid && (modeDate.dirty || modeDate.touched)" class="text-danger">
                                                             <div *ngIf="modeDate.errors.required">
                                                                 {{ payModeLabel }} date is required.
                                                             </div>
@@ -571,3 +580,20 @@
 </div>
 
 <app-payment-cheque></app-payment-cheque>
+
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <app-add-account></app-add-account>
+      </div>
+    </div>
+  </div>
+</div>

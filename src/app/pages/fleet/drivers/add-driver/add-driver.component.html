@@ -57,7 +57,8 @@
                             <div class="input-group">
                               <input [disabled]="isEdit" (change)="onChangeHideErrors('employeeContractorId')"
                                 [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
-                                class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required [ngClass]="{ 'error' : driverF.submitted && dName.invalid }"
+                                class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
+                                 [ngClass]="{ 'error' : driverF.submitted && dName.invalid }"
                                 pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
 
                             </div>
@@ -1735,7 +1736,8 @@
   aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
-      <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form" #grouphide="ngForm">
+      <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form" #grouphide="ngForm"
+       (ngSubmit)="grouphide.form.valid && addGroup()" novalidate>
       <div class="modal-header">
         <h5 class="modal-title">Add Group</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
@@ -1744,7 +1746,6 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-
             <div class="form-row">
               <div class="form-group col-lg-12 mb-0">
                 <label class="control-label font-weight-bold" >Group Name
@@ -1752,8 +1753,9 @@
                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                   </label>
                 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
-                  placeholder="eg. Fleet Group " #groupModel="ngModel" required pattern="^[a-zA-Z\s]+$">
-                  <div *ngIf="groupModel.invalid && (groupModel.dirty || groupModel.touched)" class="text-danger">
+                  placeholder="eg. Fleet Group " #groupModel="ngModel" required pattern="^[a-zA-Z\s]+$"
+                  [ngClass]="{ 'error' : grouphide.submitted && groupModel.invalid }">
+                  <div *ngIf="groupModel.invalid && grouphide.submitted" class="text-danger">
                     <div *ngIf="groupModel.errors.required">
                       Group name is required.
                     </div>
@@ -1782,7 +1784,6 @@
                         <div *ngIf="dNotes.errors.pattern">
                          Only 500 characters are allowed.
                         </div>
-
                      </div>
                   </div>
                 </div>
@@ -1793,7 +1794,7 @@
       </div>
       <div class="modal-footer text-right">
         <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
-        <button class="btn btn-success" (click)="addGroup()" [disabled]="!grouphide.form.valid">Save</button>
+        <button type="submit" class="btn btn-success" [disabled]="groupSubmitDisabled">Save</button>
       </div>
     </form>
     </div>
