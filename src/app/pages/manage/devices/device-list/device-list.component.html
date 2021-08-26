@@ -64,10 +64,10 @@
                     id="simple-table" role="grid">
                     <thead>
                       <tr >
-                        <th width="10%" class="col1" style="width: 136px;">Status</th>
-                        <th width="25%" class="col2" style="width: 371px;">Device Name</th>
                         <th width="10%" class="col3" style="width: 135px;">Serial</th>
+                        <th width="25%" class="col2" style="width: 371px;">Device Name</th>
                         <th width="15%" class="col4" style="width: 213px;">Vehicle/Asset</th>
+                        <th width="10%" class="col1" style="width: 136px;">Status</th>
                         <th id="" class="minWidth50" style="width:20px;">Actions</th>
                       </tr>
                     </thead>
@@ -77,12 +77,12 @@
                     </tr>
 
                       <tr role="row" class="odd" *ngFor="let device of devices">
-                        <td ><span
-                            class="badge badge-success text-3">{{device.deviceStatus}}</span></td>
-                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceName}}</td>
                         <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceSerialNo}}</td>
+                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceName}}</td>
                         <td *ngIf="device.vehicle.vehicleIdentification; else elseBlock">{{device.vehicle.vehicleIdentification}}</td>
                         <ng-template #elseBlock><td  >{{device.asset.assetIdentification}}</td></ng-template>
+                        <td ><span
+                          class="badge badge-success text-3">{{device.deviceStatus}}</span></td>
                         <td class="border-0">
                           <div class="dropdown dropright">
                              <button class="bg-transparent border-0" type="button"

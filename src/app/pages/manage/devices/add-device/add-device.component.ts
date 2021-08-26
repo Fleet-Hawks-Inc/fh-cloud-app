@@ -38,10 +38,12 @@ export class AddDeviceComponent implements OnInit {
 public vehicles:any;
 public assets:any=[];
 attachedWith="Vehicle"
+editMode=false
   ngOnInit() {
     let deviceType = this.route.snapshot.params['deviceType'];
      let deviceSerialNo=this.route.snapshot.params['deviceSerialNo']
     if(deviceType&&deviceSerialNo){
+      this.editMode=true
      this.deviceID=`${deviceType}/${deviceSerialNo}`;
      
     // this.deviceID=encodeURIComponent(this.deviceID);

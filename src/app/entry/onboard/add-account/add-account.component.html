@@ -54,7 +54,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="userName"
+                        <input id="un" disabled type="text" class="form-control text-lowercase" [(ngModel)]="userName"
                           name="userName" minlength="6" placeholder="eg. john.smith" #uName1="ngModel" required
                           pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
                         <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
@@ -193,7 +193,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="email"
+                        <input id="mail" disabled type="text" class="form-control text-lowercase" [(ngModel)]="email"
                           name="email" placeholder="eg. johnsmith@gmail.com" #em="ngModel" required
                           pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                         <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">

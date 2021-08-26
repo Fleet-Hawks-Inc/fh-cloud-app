@@ -9,6 +9,7 @@ import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { passwordStrength } from 'check-password-strength'
+import {Router} from '@angular/router'
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -137,7 +138,8 @@ export class AddAccountComponent implements OnInit {
               private toaster: ToastrService,
               private accountService: AccountService,
               private location: Location,
-              private HereMap: HereMapService) {
+              private HereMap: HereMapService,
+              private router: Router) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -474,11 +476,12 @@ if (event === 'mailing') {
             });
         },
         next: (res) => {
+          localStorage.setItem("isProfileComplete","true")
           this.predefinedAccounts();
           this.response = res;
           this.submitDisabled = true;
-          this.toaster.success('Carrier created successfully.');
-          this.cancel();
+          this.toaster.success('Carrier completed successfully.');
+          this.router.navigate(['/Map-Dashboard'])
         },
       });
     } else {

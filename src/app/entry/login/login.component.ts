@@ -136,6 +136,7 @@ confirmPassword:any;
             else{
               this.router.navigate(['/onboard'])
             }
+            localStorage.setItem("isProfileComplete",res.Items[0].isProfileComplete)
           }else{
             this.router.navigate(['/Map-Dashboard'])
           }

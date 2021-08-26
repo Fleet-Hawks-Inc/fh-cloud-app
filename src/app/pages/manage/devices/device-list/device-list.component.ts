@@ -76,6 +76,7 @@ export class DeviceListComponent implements OnInit {
   }
 
   public deactivateDevice(devicesType:any, deviceSerialNo:any){
+    if (confirm('Are you sure you want to deactivate') === true){
       try{
        deviceSerialNo=deviceSerialNo.split('#')
        let body:any={
@@ -94,5 +95,5 @@ export class DeviceListComponent implements OnInit {
         throw new Error(error)
       }
   }
-
+  }
 }

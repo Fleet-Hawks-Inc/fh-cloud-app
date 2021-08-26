@@ -12,11 +12,13 @@
                <a routerLink="/manage/devices/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Devices List</a>  
               
                <div class="btn-group flex-wrap">
-                  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                  <a routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}" class="btn btn-default btn-sm mr-2"><i
+                     class="fas fa-pencil-alt"></i> Edit Driver</a>
+                  <!-- <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                   <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                      <a class="dropdown-item text-1" routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}">Edit </a>
                      <a class="modal-with-form dropdown-item text-1" (click)="deactivateDevice()">Deactivate</a>
-                  </div>
+                  </div> -->
                </div>
             </div>
          </div>
