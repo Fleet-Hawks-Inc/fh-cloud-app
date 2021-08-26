@@ -1,11 +1,12 @@
 const ct = require('countries-and-timezones');
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { from, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 import { ListService } from '../../../services';
 import * as moment from 'moment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 @Component({
@@ -14,6 +15,12 @@ declare var $: any;
   styleUrls: ['./shared-modals.component.css']
 })
 export class SharedModalsComponent implements OnInit {
+  @ViewChild('vehProgramModal', { static: true }) vehProgramModal: TemplateRef<any>;
+  @ViewChild('addIssueModal', { static: true }) addIssueModal: TemplateRef<any>;
+  @ViewChild('assetModelsModal', { static: true }) assetModelsModal: TemplateRef<any>;
+  
+  
+  
   countriesList: any= [];
   countries: any  = [];
   states: any = [];
@@ -36,7 +43,7 @@ export class SharedModalsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
-  constructor(private apiService: ApiService, private toastr: ToastrService,  private listService: ListService) {
+  constructor(private apiService: ApiService, private modalService: NgbModal, private toastr: ToastrService,  private listService: ListService) {
       const date = new Date();
       this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 12, day: date.getDate()};
@@ -47,8 +54,10 @@ export class SharedModalsComponent implements OnInit {
        this.issuesData.unitType = res.type;
        this.issuesData.odometer = res.odometer;
       })
+
+     
      }
-     errorAbstract = false;
+errorAbstract = false;
 stateData = {
   countryID : '',
   stateName: '',
@@ -158,24 +167,8 @@ activeTab = 1;
 users = [];
 
   async ngOnInit() {
+    this.fetchApis();
     
-    this.fetchAssetModels();
-    this.fetchVehicles();
-    this.fetchTasks();
-   
-    this.fetchUsers();
-    this.fetchInspectionForms();
-    
-    this.fetchGroups();
-    this.fetchAssets();
-    
-    this.listService.fetchVendors();
-
-    this.listService.fetchModels();
-    this.listService.fetchServicePrograms();
-    this.listService.fetchDrivers();
-    this.listService.fetchAssetManufacturers(); // exist
-
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
       this.form = $('#cityForm').validate();
@@ -186,12 +179,45 @@ users = [];
       this.form = $('#serviceProgramForm').validate();
     });
     
-    this.models = this.listService.modelList;
-    this.drivers = this.listService.driversList;
-    this.assetManufacturers = this.listService.assetManufacturesList;
+    
   }
  
+fetchApis() {
+  this.listService.otherModelList.subscribe((res: any) => {
+    if(res === 'program') {
 
+      const vehModal = this.modalService.open(this.vehProgramModal);
+      vehModal.result.then((data) => {
+        this.clearServiceProg();
+      }, (reason) => {
+        this.clearServiceProg();
+      });
+      this.fetchVehicles();
+      this.fetchTasks();
+    } else if(res === 'add-issue') {
+
+      const issueModal = this.modalService.open(this.addIssueModal);
+      issueModal.result.then((data) => {
+        this.clearIssueData();
+      }, (reason) => {
+        this.clearIssueData();
+      });
+      this.fetchVehicles();
+      this.fetchAssets();
+      this.fetchUsers();
+    } else if (res === 'models') {
+      
+      const assetModal = this.modalService.open(this.assetModelsModal);
+      assetModal.result.then((data) => {
+        this.clearAssetModal();
+      }, (reason) => {
+        this.clearAssetModal();
+      });
+      this.listService.fetchAssetManufacturers(); 
+      this.assetManufacturers = this.listService.assetManufacturesList;
+    }
+  })
+}
 
  fetchInspectionForms() {
   this.apiService
@@ -393,6 +419,7 @@ fetchDrivers(){
           $('#addVehicleProgramModal').modal('hide');
 
           this.toastr.success('Service added successfully');
+          this.modalService.dismissAll(); 
         }
       });
   }

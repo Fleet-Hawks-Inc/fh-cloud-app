@@ -389,6 +389,10 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchGroups();
   }
 
+  openProgram(value) {
+    this.listService.separateModals(value);
+  }
+
   fetchInspectionForms() {
     this.apiService
       .getData('inspectionForms/type/vehicle')
