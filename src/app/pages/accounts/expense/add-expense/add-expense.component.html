@@ -41,8 +41,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addExpenseTypeModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshCategory()"
+                                                    data-toggle="tooltip" title="Refresh category data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -64,8 +68,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshExpenseAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -90,8 +98,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshPaidAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -243,10 +255,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2  mar-top-37"> <a href="javascript:;" data-dismiss="modal"
-                                                data-toggle="modal" data-target="#addVendorModal"
-                                                class="btn btn-sm modal-with-form btn-success"><i
-                                                    class="fas fa-plus"></i></a> </div>
+                                        <div class="col-lg-2  mar-top-37 pr-0">
+                                          <a href="javascript:;" (click)="openModal('form');"
+                                  class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
+                                  <a href="javascript:;" (click)="refreshVendorData()"
+                                  data-toggle="tooltip" title="Refresh vendor data"
+                                  class="btn btn-success btn-sm modal-with-form"><i
+                                      class="fas fa-sync"></i></a>
+                                                   </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-5">
@@ -465,7 +481,7 @@
                                                     <div *ngIf="Nexpense.errors.pattern">
                                                      Only 500 characters are allowed.
                                                     </div>
-                                            
+
                                                  </div>
                                         </div>
                                     </div>

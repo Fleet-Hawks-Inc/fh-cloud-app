@@ -137,7 +137,12 @@ export class AddIncomeComponent implements OnInit {
       this.uploadedDocs.push(files[i])
     }
   }
-
+  refreshCategory() {
+    this.fetchIncomeCategories();
+  }
+  refreshAccounts() {
+    this.listService.fetchChartAccounts();
+  }
   addRecord() {
     this.submitDisabled = true;
     this.errors = {};

@@ -199,7 +199,7 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right">Account <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountNo="ngModel" required>
-                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
+                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                     </ng-select>
 
                                                     <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
@@ -208,12 +208,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-2" style="margin-top: 32px;">
+                                                  <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                                    class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                                                  </button>
+                                                  <a href="javascript:;" (click)="refreshAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
+                                                </div>
                                             </div>
                                             <div class="row pt-2" id="chequeDivDriver" *ngIf="paymentData.payMode">
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference</label>
                                                     <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference">
-                                            
+
 
                                                 </div>
                                                 <div class="col-lg-5">
@@ -265,7 +274,7 @@
                                                         <div *ngIf="advancenotes.errors.pattern">
                                                          Only 500 characters are allowed.
                                                         </div>
-                                                
+
                                                      </div>
                                                 </div>
                                             </div>
@@ -287,3 +296,19 @@
         </section>
     </div>
 </section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <app-add-account></app-add-account>
+      </div>
+    </div>
+  </div>
+</div>

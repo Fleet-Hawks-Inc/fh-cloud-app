@@ -66,8 +66,8 @@
                                 <table class="table table-bordered table-striped mb-0 simple-table">
                                   <thead>
                                       <tr class="bgcol2">
-                                          <th class="text-2">Date</th>
                                           <th class="text-2">Advance Payment#</th>
+                                          <th class="text-2">Date</th>
                                           <th class="text-2">Payment Mode</th>
                                           <th class="text-2">Paid To</th>
                                           <th class="text-2">Advance Amount</th>
@@ -82,11 +82,12 @@
                                           <td colspan="9">{{ dataMessage }} </td>
                                       </tr>
                                       <tr *ngFor="let data of payments; let i=index;">
+
+                                          <td class="font-weight-bold">{{ data.paymentNo }} </td>
                                           <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">
-                                              {{ data.txnDate | date:"yyyy/MM/dd" }}
-                                          </td>
-                                          <td>{{ data.paymentNo }} </td>
-                                          <td class="text-capitalize">{{ data.payMode }}</td>
+                                            {{ data.txnDate | date:"yyyy/MM/dd" }}
+                                        </td>
+                                          <td  routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}" class="text-capitalize">{{ data.payMode }}</td>
                                           <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>:
                                               <span *ngIf="data.paymentTo === 'driver'">
                                                   {{ drivers[data.entityId] | titlecase}}
@@ -97,9 +98,9 @@
                                               </span>
 
                                           </td>
-                                          <td>{{ data.amount | number }} {{ data.currency }}</td>
-                                          <td>{{ data.paidAmount | number }} {{ data.currency }}</td>
-                                          <td>{{ data.pendingPayment | number }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.amount | number }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.paidAmount | number }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.pendingPayment | number }} {{ data.currency }}</td>
                                           <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
                                           </td>
                                           <td>

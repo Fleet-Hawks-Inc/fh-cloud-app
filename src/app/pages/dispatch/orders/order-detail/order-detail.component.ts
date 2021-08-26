@@ -174,16 +174,16 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-   // this.fetchInvoiceData(); Daljit plz uncomment when u work on this as it was showing  errors
+    this.fetchInvoiceData();
   }
 
   /**
    * fetch Asset data
    */
-  fetchOrder() {
+  async fetchOrder() {
     this.apiService
       .getData(`orders/${this.orderID}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
           this.newOrderData = result;
           result = result.Items[0];
           if(result.stateTaxID != undefined) {
@@ -197,7 +197,7 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
-          this.fetchCustomersByID();
+          await this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
@@ -393,12 +393,12 @@ export class OrderDetailComponent implements OnInit {
      /*
    * Get all customers's IDs of names from api
    */
-  fetchCustomersByID() {
+ async fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
 
       if(result.Items.length > 0) {
         result = result.Items[0];
-        this.customerName = `${result.companyName}`;
+        this.customerName = `${result.cName}`;
         let newCusAddress = result.adrs.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
             return elem;
@@ -452,15 +452,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
-    // this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
-    //   if (res) {
-
-    //     $('#previewInvoiceModal').modal('hide');
-    //   }
-    //   this.toastr.success('Invoice Added Successfully.');
-    // });
-
-
+   
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -635,6 +627,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
+        
         this.invoiceData = result[0];
         this.isInvoice = true;
       });
