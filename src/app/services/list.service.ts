@@ -18,6 +18,7 @@ export class ListService {
 
   public isTrueDataSource = new BehaviorSubject<boolean>(false);
   isTrueList = this.isTrueDataSource.asObservable();
+  
 
   shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperObjectList = this.shipperObjectDataSource.asObservable();
@@ -77,12 +78,14 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
-
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
 
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
+
+  otherModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  otherModelList = this.otherModelDataSource.asObservable();
 
   paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentSaveList = this.paymentSaveDataSource.asObservable();
@@ -282,6 +285,9 @@ fetchReceivers() {
 
   triggerPaymentSave(value) {
     this.paymentSaveDataSource.next(value);
-
+  }
+  
+  separateModals(value){
+    this.otherModelDataSource.next(value);
   }
 }

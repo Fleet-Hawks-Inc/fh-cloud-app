@@ -125,6 +125,8 @@ export class NewAddressBookComponent implements OnInit {
         };
         this.modalService.dismissAll();
         this.modalService.open(this.allUnitModal, ngbModalOptions)
+        this.lastKey = '';
+        this.fetchUnits();
       } else if(res === 'form') {
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
@@ -146,7 +148,6 @@ export class NewAddressBookComponent implements OnInit {
 
   ngOnInit() {
     this.searchLocation();
-    this.fetchUnits();
     this.fetchCountries();
   }
 
@@ -208,10 +209,12 @@ export class NewAddressBookComponent implements OnInit {
 
   async searchFilter() {
     if(this.filterVal.cName != '') {
+        
         this.filterVal.cName = this.filterVal.cName.toLowerCase().trim();
         this.suggestions = [];
         this.units = [];
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastKey = '';
         this.fetchUnits();
       } else {
         return false
@@ -922,9 +925,11 @@ export class NewAddressBookComponent implements OnInit {
         this.hasSuccess = true;
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastKey = '';
         this.emptyTabs();
         this.fetchUnits();
         this.showMainModal();
+        
         if(this.unitData.eTypes.includes('owner_operator')) {
           this.listService.fetchOwnerOperators();
         } else if(this.unitData.eTypes.includes('shipper')) {
@@ -1131,7 +1136,6 @@ export class NewAddressBookComponent implements OnInit {
     this.updateButton = true;
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
-      
       this.unitData.eTypes = res.eTypes;
       this.newArr = this.unitData.eTypes;
       this.unitData.cName = res.cName;
