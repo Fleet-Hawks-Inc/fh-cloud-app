@@ -28,15 +28,15 @@ export class JournalListComponent implements OnInit {
     this.fetchJournals();
   }
 
-  fetchJournals(refresh?: boolean) {
+  async fetchJournals(refresh?: boolean) {
     if (refresh === true) {
       this.lastItemSK = '';
       this.journals = [];
     }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`journal/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
-        .subscribe((result: any) => {
-          if(result.length === 0) {
+        .subscribe(async(result: any) => {
+          if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if(result.length > 0) {
@@ -48,9 +48,9 @@ export class JournalListComponent implements OnInit {
 
             result.map((v) => {
               this.journals.push(v);
-            })
+            });
           }
-      })
+      });
     }
   }
 
