@@ -2353,11 +2353,6 @@ export class AddOrdersComponent implements OnInit {
     this.listService.changeButton(false);
   }
   
-  setValue(){
-    localStorage.setItem('isOpen', 'true');
-    this.listService.changeButton(false);
-  }
-  
   fetchData(value: string) {
     if(value === 'shipper') {
       this.listService.fetchShippers();
