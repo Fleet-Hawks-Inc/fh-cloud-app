@@ -175,11 +175,11 @@
                         <div class="col-lg-12">
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row pt-3">
-                                    <div class="col-lg-10">
+                                    <div class="col-lg-12 mb-2">
                                         <label
-                                            class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Plan
+                                            class="control-label font-weight-bold font-weight-bold text-lg-right text-5 m-0">Plan
                                             Trip</label>
-                                            <button (click)="splitTrip()" class="btn btn-sm btn-success ml-5 mb-1" [disabled]="disableSplit">Split</button>
+                                            <button (click)="splitTrip()" class="btn btn-sm btn-success pull-right ml-auto mb-1" [disabled]="disableSplit">Split Trip</button>
                                     </div>
 
                                     <div class="col-lg-12 mb-1">
@@ -189,25 +189,24 @@
                                                 id="locationTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>Select</th>
-                                                        <th>Type</th>
-                                                        <th>Date</th>
-                                                        <!-- <th>Time</th> -->
-                                                        <th>Pickup Time</th>
-                                                        <th>Drop Off Time</th>
-                                                        <th>Actual Pickup Time</th>
-                                                        <th>Actual Drop Off Time</th>
-                                                        <th>Name</th>
-                                                        <th>Manual Location</th>
-                                                        <th>Location</th>
-                                                        <th>Loaded/ Empty</th>
-                                                        <th>Miles</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Co- Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Action</th>
+                                                        <th width="4%">Select</th>
+                                                        <th width="6%">Type</th>
+                                                        <th width="6%">Date</th>
+                                                        <th width="6%">Pickup Time</th>
+                                                        <th width="6%">Drop Time</th>
+                                                        <!-- <th width="4%">Actual Pickup Time</th> -->
+                                                        <!-- <th width="4%">Actual Drop Off Time</th> -->
+                                                        <th width="8%">Name</th>
+                                                        <th width="4%">ML <i class="fas fa-exclamation-circle" data-placement="top" data-toggle="tooltip" title="Manual Location"></i></th>
+                                                        <th width="100px" style="max-width: 150px; width: 150px;min-width: 150px;">Location</th>
+                                                        <th width="7%">Loaded/ Empty</th>
+                                                        <th width="5%">Miles</th>
+                                                        <th width="5%">Vehicle</th>
+                                                        <th width="5%">Asset</th>
+                                                        <th width="6%">Driver</th>
+                                                        <th width="6%">Co-Driver</th>
+                                                        <th width="8%">Carrier</th>
+                                                        <th width="4%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="ui-sortable example-list txttt" cdkDropList
@@ -225,10 +224,10 @@
                                                             }}</td>
                                                         <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}
                                                         </td>
-                                                        <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
+                                                        <!-- <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
                                                             trip.actualPickupTime }}</td>
                                                         <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
-                                                            trip.actualDropTime }}</td>
+                                                            trip.actualDropTime }}</td> -->
 
                                                         <td id="labelCell3{{i}}" class="labelRow{{i}}">
                                                             <a class="modal-with-form">{{ trip.name }}</a>
@@ -237,7 +236,7 @@
                                                             <!-- <input type="checkbox" class="form-control" /> -->
                                                             <span class="badge badge-dark p-1 text-uppercase"> {{ (trip.locMan) ? 'yes' : 'no' }}</span>
                                                         </td>
-                                                        <td id="labelCell4{{i}}" class="labelRow{{i}}">
+                                                        <td style="min-width: 100px;max-width: 100px; width: 100px;word-wrap: break-word;white-space: normal;" id="labelCell4{{i}}" class="labelRow{{i}}">
                                                             {{ trip.locationName }}
                                                         </td>
 
@@ -296,14 +295,14 @@
                                                             <input type="time" class="form-control" id="editCell14{{i}}"
                                                                 name="editCell14" value="{{ trip.dropTime }}">
                                                         </td>
-                                                        <td class="rowStatus textRows editRow{{i}}">
+                                                        <!-- <td class="rowStatus textRows editRow{{i}}">
                                                             <input type="time" class="form-control" id="editCell15{{i}}"
                                                                 name="editCell15" value="{{ trip.actualPickupTime }}">
                                                         </td>
                                                         <td class="rowStatus textRows editRow{{i}}">
                                                             <input type="time" class="form-control" id="editCell16{{i}}"
                                                                 name="editCell16" value="{{ trip.actualDropTime }}">
-                                                        </td>
+                                                        </td> -->
 
                                                         <td class="rowStatus textRows editRow{{i}}">
                                                             <input type="text" class="form-control" id="editCell3{{i}}"
@@ -376,7 +375,7 @@
                                                     <tr class="ui-sortable-handle">
                                                         <td></td>
                                                         <td>
-                                                            <ng-select [(ngModel)]="textFieldValues.type" class="newRow" id="cell1" name="newTripType" placeholder="Select trip type">
+                                                            <ng-select [(ngModel)]="textFieldValues.type" class="newRow" id="cell1" name="newTripType" placeholder="Select type">
                                                                 <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
                                                             </ng-select>
                                                         </td>
@@ -395,14 +394,14 @@
                                                             <input type="time" [(ngModel)]="textFieldValues.dropTime" class="form-control newRow" id="cell14"
                                                                 name="cell14">
                                                         </td>
-                                                        <td>
+                                                        <!-- <td>
                                                             <input type="time" [(ngModel)]="textFieldValues.actualPickupTime" class="form-control newRow" id="cell15"
                                                                 name="cell15">
                                                         </td>
                                                         <td>
                                                             <input type="time" [(ngModel)]="textFieldValues.actualDropTime" class="form-control newRow" id="cell16"
                                                                 name="cell16">
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             <input type="text" [(ngModel)]="textFieldValues.name" name="shipName" id="cell3" class="form-control newRow" autocomplete="off">
                                                         </td>
@@ -430,7 +429,7 @@
                                                             </ul>
                                                         </td>
                                                         <td>
-                                                            <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5" name="newMileType" placeholder="Select miles type">
+                                                            <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5" name="newMileType" placeholder="Select type">
                                                                 <ng-option value="empty">EMPTY</ng-option>
                                                                 <ng-option value="loaded">LOADED</ng-option>
                                                             </ng-select>
@@ -504,8 +503,8 @@
                                                         <th>Date</th>
                                                         <th>Pickup Time</th>
                                                         <th>Drop Off Time</th>
-                                                        <th>Actual Pickup Time</th>
-                                                        <th>Actual Drop Off Time</th>
+                                                        <!-- <th>Actual Pickup Time</th>
+                                                        <th>Actual Drop Off Time</th> -->
                                                         <th>Name</th>
                                                         <th>Location</th>
                                                         <th>Loaded/ Empty</th>
@@ -523,8 +522,8 @@
                                                         <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
                                                         <td>{{ trip.pickupTime }}</td>
                                                         <td>{{ trip.dropTime }} </td>
-                                                        <td>{{ trip.actualPickupTime }}</td>
-                                                        <td>{{ trip.actualDropTime }}</td>
+                                                        <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                        <td>{{ trip.actualDropTime }}</td> -->
                                                         <td>{{ trip.name }}</td>
                                                         <td> {{ trip.locationName }} </td>
                                                         <td>

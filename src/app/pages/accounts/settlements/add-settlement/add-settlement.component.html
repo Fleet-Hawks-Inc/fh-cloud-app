@@ -206,7 +206,7 @@
                                                             <td [innerHTML]="trp.dropLocation"></td>
                                                             <td>
                                                                 <span *ngFor="let drv of trp.driverIDs; let d=index">
-                                                                    {{ drivers[drv] }}
+                                                                    {{ driversObj[drv] }}
                                                                     <span *ngIf="d<trp.driverIDs.length-1">,</span>
                                                                 </span>
                                                             </td>
@@ -283,7 +283,7 @@
                                                             <td [innerHTML]="trp.dropLocation"></td>
                                                             <td>
                                                                 <span *ngFor="let drv of trp.driverIDs; let d=index">
-                                                                    {{ drivers[drv] }}
+                                                                    {{ driversObj[drv] }}
                                                                     <span *ngIf="d<trp.driverIDs.length-1">,</span>
                                                                 </span>
                                                             </td>
@@ -508,7 +508,7 @@
                                                 <div class="col-lg-2 offset-lg-1">
                                                     <div class="row">
                                                         <div class="col-lg-6 text-right">
-                                                            <label class="control-label font-weight-bold mt-1">{{ drivers[data.driverID] }} 's
+                                                            <label class="control-label font-weight-bold mt-1">{{ driversObj[data.driverID] }} 's
                                                                 Miles</label>
                                                         </div>
                                                         <div class="col-lg-6">

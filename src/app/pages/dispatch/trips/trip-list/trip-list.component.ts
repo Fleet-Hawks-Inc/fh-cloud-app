@@ -24,7 +24,7 @@ export class TripListComponent implements OnInit {
   dataMessageEnroute: string = Constants.NO_RECORDS_FOUND;
   dataMessageCancel: string = Constants.NO_RECORDS_FOUND;
   dataMessageDeliver: string = Constants.NO_RECORDS_FOUND;
-  dataMessageTono: string = Constants.NO_RECORDS_FOUND;
+  dataMessageTonu: string = Constants.NO_RECORDS_FOUND;
   form;
   title = "Trips";
   tripID = '';
@@ -45,7 +45,7 @@ export class TripListComponent implements OnInit {
   enrouteTrips = [];
   cancelledTrips = [];
   deliveredTrips = [];
-  tonoTrips = [];
+  tonuTrips = [];
   allTripsCount = 0;
   statusData = [
     {
@@ -69,8 +69,8 @@ export class TripListComponent implements OnInit {
       value: 'delivered'
     },
     {
-      name: "TONO",
-      value: 'tono'
+      name: "TONU",
+      value: 'tonu'
     },
     {
       name: "Cancelled",
@@ -211,10 +211,14 @@ export class TripListComponent implements OnInit {
           }
         }
 
-        if (element2.carrierID !== '' && element2.carrierID !== undefined) {
+        if (element2.carrierID !== '' && element2.carrierID !== undefined && element2.carrierID !== null) {
           if (result.Items[i].planCarrierId == '') {
             result.Items[i].planCarrierId = element2.carrierID;
           }
+          if(element.carrierIDs) {
+            result.Items[i].carrierIdCount = element.carrierIDs.length;  
+          }
+          
         }
 
         if (element2.driverID !== '' && element2.driverID !== undefined) {
@@ -249,7 +253,6 @@ export class TripListComponent implements OnInit {
           }
         }
       }
-
       if (element.tripStatus == 'confirmed') {
         element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);
@@ -268,10 +271,10 @@ export class TripListComponent implements OnInit {
       } else if (element.tripStatus == 'delivered') {
         element.showStatus = false;
         this.deliveredTrips.push(result.Items[i]);
-      } else if (element.tripStatus == 'tono') {
+      } else if (element.tripStatus == 'tonu') {
         element.tripStatus = element.tripStatus.toUpperCase();
         element.showStatus = false;
-        this.tonoTrips.push(result.Items[i]);
+        this.tonuTrips.push(result.Items[i]);
       }
 
       trpArr.push(result.Items[i]);
@@ -326,7 +329,7 @@ export class TripListComponent implements OnInit {
           this.enrouteTrips = [];
           this.cancelledTrips = [];
           this.deliveredTrips = [];
-          this.tonoTrips = [];
+          this.tonuTrips = [];
 
           this.hasSuccess = true;
           this.tripDraw = 0;
@@ -383,8 +386,8 @@ export class TripListComponent implements OnInit {
               value: 'delivered'
             },
             {
-              name: "TONO",
-              value: 'tono'
+              name: "TONU",
+              value: 'tonu'
             },
             {
               name: "Cancelled",
@@ -406,8 +409,8 @@ export class TripListComponent implements OnInit {
               value: 'delivered'
             },
             {
-              name: "TONO",
-              value: 'tono'
+              name: "TONU",
+              value: 'tonu'
             },
             {
               name: "Cancelled",
@@ -425,8 +428,8 @@ export class TripListComponent implements OnInit {
               value: 'delivered'
             },
             {
-              name: "TONO",
-              value: 'tono'
+              name: "TONU",
+              value: 'tonu'
             },
             {
               name: "Cancelled",
@@ -456,16 +459,16 @@ export class TripListComponent implements OnInit {
     let allowedStatus = [];
     switch(this.prevStatus){
       case 'confirmed':
-        allowedStatus = ['dispatched','started','enroute','cancelled','delivered','tono'];
+        allowedStatus = ['dispatched','started','enroute','cancelled','delivered','tonu'];
         break;
       case 'dispatched':
-        allowedStatus = ['started','enroute','cancelled','delivered','tono'];
+        allowedStatus = ['started','enroute','cancelled','delivered','tonu'];
         break;
       case 'started':
-        allowedStatus = ['enroute','cancelled','delivered','tono'];
+        allowedStatus = ['enroute','cancelled','delivered','tonu'];
         break;
       case 'enroute':
-        allowedStatus = ['cancelled','delivered','tono'];
+        allowedStatus = ['cancelled','delivered','tonu'];
         break;
       case 'cancelled':
         allowedStatus = [];
@@ -473,6 +476,9 @@ export class TripListComponent implements OnInit {
       case 'delivered':
         allowedStatus = [];
         break;
+      case 'tonu':
+          allowedStatus = [];
+          break;
     }
 
     if(!allowedStatus.includes(this.tripStatus)) {
@@ -503,7 +509,10 @@ export class TripListComponent implements OnInit {
       if(result) {
         if(this.activeTab == 'all') {
           this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
-          this.trips[this.tripDraw][this.recIndex].showStatus = false;
+          if(this.tripStatus === 'tonu') {
+            this.trips[this.tripDraw][this.recIndex].tripStatus = this.trips[this.tripDraw][this.recIndex].tripStatus.toUpperCase();
+          }
+          // this.trips[this.tripDraw][this.recIndex].showStatus = false;
           this.resetMainTabValues();
         } else {
           if(this.activeTab  == 'confirmed') {
@@ -518,9 +527,9 @@ export class TripListComponent implements OnInit {
             this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'delivered') {
             this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
-          } else if(this.activeTab  == 'tono') {
-            this.tonoTrips[this.recIndex].tripStatus = this.tripStatus;
-            this.tonoTrips[this.recIndex].tripStatus = this.tonoTrips[this.recIndex].tripStatus.toUpperCase();
+          } else if(this.activeTab  == 'tonu') {
+            this.tonuTrips[this.recIndex].tripStatus = this.tripStatus;
+            this.tonuTrips[this.recIndex].tripStatus = this.tonuTrips[this.recIndex].tripStatus.toUpperCase();
           }
           this.resetMainTabValues();
         }
@@ -632,7 +641,7 @@ export class TripListComponent implements OnInit {
         this.enrouteTrips = [];
         this.cancelledTrips = [];
         this.deliveredTrips = [];
-        this.tonoTrips = [];
+        this.tonuTrips = [];
 
         this.records = false;
         this.trips = [];
@@ -674,7 +683,7 @@ export class TripListComponent implements OnInit {
       this.enrouteTrips = [];
       this.cancelledTrips = [];
       this.deliveredTrips = [];
-      this.tonoTrips = [];
+      this.tonuTrips = [];
       this.fetchTripsCount();
       this.getStartandEndVal('all');
     } else {
@@ -820,10 +829,10 @@ export class TripListComponent implements OnInit {
         } else if (element[x].tripStatus == 'delivered') {
           element[x].showStatus = false;
           this.deliveredTrips.push(element[x]);
-        } else if (element[x].tripStatus == 'tono') {
+        } else if (element[x].tripStatus == 'tonu') {
           element[x].showStatus = false;
           element[x].tripStatus = element[x].tripStatus.toUpperCase();
-          this.tonoTrips.push(element[x]);
+          this.tonuTrips.push(element[x]);
         }
       }
     }

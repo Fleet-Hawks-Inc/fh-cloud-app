@@ -346,7 +346,17 @@ export class AddTripComponent implements OnInit {
     }
 
     delRow(index) {
+        let planID = this.trips[index].planID;
         this.trips.splice(index, 1);
+
+        this.splitArr.map((v) => {
+            v.map((k) => {
+                if(planID === k.planID) {
+                    const ind = v.indexOf(k.planID);
+                    v.splice(ind, 1);
+                }
+            })
+        })
 
         let locations = [];
         for(const tripp of this.trips) {
@@ -454,11 +464,11 @@ export class AddTripComponent implements OnInit {
         $(".codriverClass").removeClass('td_border');
     }
 
-    showAssetModal(type, index) {
+    showAssetModal(type, index) { 
         this.emptyAsigneeModal();
 
         if (type === 'add') {
-            if ($('#cell11').val() == '') {
+            if (this.textFieldValues.carrierID == '' || this.textFieldValues.carrierID == null) {
                 this.tempTextFieldValues.type = 'add';
                 this.tempTextFieldValues.index = '';
                 $('#assetModal').modal('show');
@@ -1100,8 +1110,8 @@ export class AddTripComponent implements OnInit {
                     carrierID: null,
                     pickupTime: '',
                     dropTime: '',
-                    actualPickupTime: '',
-                    actualDropTime: '',
+                    // actualPickupTime: '',
+                    // actualDropTime: '',
                     lat: '',
                     lng: '',
                     driverID: '',
@@ -1122,8 +1132,8 @@ export class AddTripComponent implements OnInit {
                 obj.vehicleName=this.vehiclesObjects[element.vehicleID]
                 obj.pickupTime = element.pickupTime;
                 obj.dropTime = element.dropTime;
-                obj.actualPickupTime = element.actualPickupTime;
-                obj.actualDropTime = element.actualDropTime;
+                // obj.actualPickupTime = element.actualPickupTime;
+                // obj.actualDropTime = element.actualDropTime;
                 obj.lat = element.lat;
                 obj.lng = element.lng;
                 obj.driverID = element.driverID;
@@ -1608,8 +1618,8 @@ export class AddTripComponent implements OnInit {
                 // time: '',
                 pickupTime: '',
                 dropTime: '',
-                actualPickupTime: '',
-                actualDropTime: '',
+                // actualPickupTime: '',
+                // actualDropTime: '',
                 lat: '',
                 lng: '',
                 driverID: '',
@@ -1632,8 +1642,8 @@ export class AddTripComponent implements OnInit {
             //   obj.time = element.time;
             obj.pickupTime = element.pickupTime;
             obj.dropTime = element.dropTime;
-            obj.actualPickupTime = element.actualPickupTime;
-            obj.actualDropTime = element.actualDropTime;
+            // obj.actualPickupTime = element.actualPickupTime;
+            // obj.actualDropTime = element.actualDropTime;
             obj.lat = element.lat;
             obj.lng = element.lng;
             obj.driverID = element.driverID;
