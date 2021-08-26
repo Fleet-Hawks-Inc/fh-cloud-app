@@ -303,7 +303,8 @@
                                       <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
                                     </span> -->
                                     <span *ngIf="data.eventParams.type === 'contact' && data.eventType === 'add'">
-                                      <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles">{{role | titlecase}},</span>
+                                      <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles; let s = index;">{{role | titlecase}}
+                                        <span *ngIf= "s != data.eventParams.roles.length-1">,</span></span>
                                     </span>
                                     <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
                                       <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
@@ -462,7 +463,8 @@
                          <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
                        </span> -->
                        <span *ngIf="data.eventParams.type === 'contact' && data.eventType === 'add'">
-                         <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles">{{role | titlecase}},</span>
+                         <b class="text-success"> {{ data.eventParams.name | titlecase}}</b>  as <span *ngFor="let role of data.eventParams.roles; let s = index;">{{role | titlecase}}
+                           <span *ngIf= "s != data.eventParams.roles.length-1">,</span></span>
                        </span>
                        <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
                          <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
