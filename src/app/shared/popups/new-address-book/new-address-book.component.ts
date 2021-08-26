@@ -20,7 +20,12 @@ export class NewAddressBookComponent implements OnInit {
   @ViewChild('allUnitModal', { static: true }) allUnitModal: TemplateRef<any>;
   @ViewChild('newUnitModal', { static: true }) newUnitModal: TemplateRef<any>;
   @ViewChild('unitDetailModal', { static: true }) unitDetailModal: TemplateRef<any>;
+  @ViewChild('showPhotoModal', { static: true }) showPhotoModal: TemplateRef<any>;
   
+
+  Asseturl = this.apiService.AssetUrl;
+  public defaultProfilePath: any = 'assets/img/driver/driver.png';
+
   environment = environment.isFeatureEnabled;
   modalTitle = 'Add ';
   imageText = 'Add Picture';
@@ -126,7 +131,13 @@ export class NewAddressBookComponent implements OnInit {
           keyboard : false,
         };
         this.modalService.dismissAll();
-        this.modalService.open(this.newUnitModal, ngbModalOptions)
+        const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
+       
+        modalRef.result.then((data) => {
+          this.emptyEntry();
+        }, (reason) => {
+          this.emptyEntry();
+        });
       } else {
         this.modalService.dismissAll();
       }
@@ -192,6 +203,7 @@ export class NewAddressBookComponent implements OnInit {
 
   setSearchValues(searchValue) {
     this.filterVal.cName = searchValue;
+    this.suggestions = [];
   }
 
   async searchFilter() {
@@ -408,6 +420,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   unitChange(types: any) {
+    
     this.unitData.eTypes.forEach(element => {
       if(element === 'broker') {
         if(!this.newArr.includes('broker')){
@@ -877,7 +890,7 @@ export class NewAddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.unitData));
-
+     
     this.apiService.postData('contacts', formData, true).
     subscribe({
       complete: () => { },
@@ -905,7 +918,7 @@ export class NewAddressBookComponent implements OnInit {
       },
       next: (res) => {
         // this.response = res;
-        console.log('this.unitData', this.unitData)
+        
         this.hasSuccess = true;
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
@@ -1063,27 +1076,28 @@ export class NewAddressBookComponent implements OnInit {
 
   fetchUnits(){
     this.dataMessage = Constants.FETCHING_DATA;
-    if(this.lastKey == 'end') {
-      this.lastKey = ''
-    }
-    this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
     
-      if(res.length == 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      res.forEach(element => {
-        this.units.push(element);
-      });
-      if(this.units.length > 0) {
-        if(this.units[this.units.length - 1].contactSK != undefined) {
-        this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g,'--')
-      } else {
-        this.lastKey = 'end';
-      }
-        this.allData = this.units;
-      }
-      
-    })
+    if(this.lastKey != 'end') {
+      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
+    
+        if(res.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        res.forEach(element => {
+          this.units.push(element);
+        });
+        if(this.units.length > 0) {
+          if(this.units[this.units.length - 1].contactSK != undefined) {
+          this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g,'--')
+        } else {
+          this.lastKey = 'end';
+        }
+          this.allData = this.units;
+        }
+        
+      })
+    }
+    
    
     
   }
@@ -1127,6 +1141,15 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData.adrs = res.adrs;
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
+
+      //to show profile image
+      if(res.profileImg != '' && res.profileImg != undefined) {
+        this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;
+        this.imageText = 'Update Picture';
+      } else {
+        this.profilePath = this.defaultProfilePath;
+        this.imageText = 'Add Picture';
+      }
       this.unitData['contactID'] = res.contactID;
       this.unitData['createdDate'] = res.createdDate;
       this.unitData['createdTime'] = res.createdTime;
@@ -1134,6 +1157,14 @@ export class NewAddressBookComponent implements OnInit {
     })
   }
 
+  showPhoto() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop : 'static',
+      keyboard : false,
+      windowClass: 'photo__main'
+    };
+    this.modalService.open(this.showPhotoModal, ngbModalOptions)
+  }
 
   openDetail(targetModal, item) {
     this.editUser(item)
@@ -1160,5 +1191,46 @@ export class NewAddressBookComponent implements OnInit {
     this.allData = [];
   }
 
+  emptyEntry() {
+    this.newArr = [];
+    this.unitData = {
+      cName: '',
+      dba: '',
+      workPhone: '',
+      workEmail: '',
+      eTypes: [],
+      adrs: [{
+        aType: null,
+        cName: '',
+        sName: '',
+        ctyName: null,
+        zip: '',
+        add1: '',
+        add2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        userLoc: '',
+        manual: false,
+        cCode: null,
+        sCode: null,
+        houseNo: '',
+        street: '',
+        states: [],
+        cities: []
+      }],
+      addlCnt: [{
+        flName: '',
+        fName: '',
+        lName: '',
+        phone: '',
+        des: '',
+        email: '',
+        fax: ''
+      }],
+      data: []
+    }
+  }
   
 }
