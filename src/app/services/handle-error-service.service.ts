@@ -28,20 +28,20 @@ export class HandleErrorService {
           errorMessage = "You don't have permission to access the requested resource.";
           break;
         case 404:
-          errorMessage = "The requested resource does not exist.";
+          errorMessage = undefined;
           break;
-        case 412:
-          errorMessage = "Precondition Failed.";
-          break;
+        // case 412:
+        //   errorMessage = "Precondition Failed.";
+        //   break;
         case 500:
           errorMessage = "Internal Server Error.";
           break;
         case 503:
           errorMessage = "The requested service is not available.";
           break;
-        case 422:
-          errorMessage = "Validation Error!";
-          break;
+        // case 422:
+        //   errorMessage = "Validation Error!";
+        //   break;
         default:
           errorMessage = "Something went wrong!";
       }

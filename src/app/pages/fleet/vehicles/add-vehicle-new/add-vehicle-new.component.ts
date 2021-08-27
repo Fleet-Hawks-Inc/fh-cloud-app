@@ -338,18 +338,21 @@ export class AddVehicleNewComponent implements OnInit {
 
     });
   }
-  fetchModels(){
-    this.modals=[]
-    let manufacturer:any=this.manufacturerID.toLowerCase();
+  fetchModels() {
+    this.modals = [];
+    let manufacturer: any = '';
+    if (this.manufacturerID !== null) {
+      manufacturer = this.manufacturerID.toLowerCase();
+    }
     this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
       data.forEach(element => {
-        let output=[]
-        if(element[manufacturer]){
+        let output = [];
+        if (element[manufacturer]) {
           element[manufacturer].forEach(element => {
             output.push(element.toUpperCase());
 
           });
-        this.modals=output
+          this.modals = output;
         }
       });
 
@@ -387,6 +390,10 @@ export class AddVehicleNewComponent implements OnInit {
 
   getGroups(){
     this.fetchGroups();
+  }
+
+  openProgram(value) {
+    this.listService.separateModals(value);
   }
 
   fetchInspectionForms() {

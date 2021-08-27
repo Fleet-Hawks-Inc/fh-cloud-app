@@ -123,6 +123,7 @@ export class AddSettlementComponent implements OnInit {
     tripExpenses = [];
     finalTripExpenses = [];
     editDisabled = false;
+    driversObj = [];
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -131,6 +132,7 @@ export class AddSettlementComponent implements OnInit {
             this.fetchSettlementDetail();
         }
         this.fetchDrivers();
+        this.fetchAllDrivers();
         this.fetchCarriers();
         this.fetchOwnerOperators();
         this.fetchVehicles();
@@ -142,8 +144,14 @@ export class AddSettlementComponent implements OnInit {
     fetchDrivers() {
         this.apiService.getData(`drivers/settlements/get/list`)
             .subscribe((result: any) => {
-                console.log('driver  list result', result);
                 this.drivers = result;
+            })
+    }
+
+    fetchAllDrivers() {
+        this.apiService.getData(`drivers/get/list`)
+            .subscribe((result: any) => {
+                this.driversObj = result;
             })
     }
 

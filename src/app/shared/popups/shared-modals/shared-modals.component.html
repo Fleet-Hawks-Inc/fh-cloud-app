@@ -46,307 +46,280 @@
   </div>
 </div>
 <!-- add asset model modal remove - Amitoj-->
-<div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
-  aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
-    <div class="modal-content">
-      <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm" #amodel="ngForm">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Asset Model</h5>
-        <button type="button" (click)="clearAssetModal()" class="close" data-dismiss="modal" aria-label="Close">
-          <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <section class="card form-wizard">
-          <div class="card-body card-body-nopadding">
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset Make<span
-                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select [(ngModel)]="assetModelData.manufacturerID" name="manufacturerID"
-                    class="form-control populate" placeholder="Enter make of the asset" #sltMake="ngModel" required>
-                    <ng-option *ngFor="let manufacturer of assetManufacturers | async"
-                      [value]="manufacturer.manufacturerID">
-                      {{manufacturer.manufacturerName}}</ng-option>
-
-                  </ng-select>
-                  <div *ngIf="sltMake.invalid && (sltMake.dirty || sltMake.touched)" class="text-danger">
-                    <div *ngIf="sltMake.errors.required">
-                       Asset make is required.
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Model Name <span
-                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input [(ngModel)]="assetModelData.modelName" name="modelName" type="text" class="form-control"
-                    placeholder="eg. Cascadia" #txtModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
-                    <div *ngIf="txtModel.invalid && (txtModel.dirty || txtModel.touched)" class="text-danger">
-                      <div *ngIf="txtModel.errors.required">
-                        Asset model name is required.
-                      </div>
-                      <div *ngIf="txtModel.errors.pattern">
-                       Asset model name must contain alphanumeric characters.
-                      </div>
-                    </div>
-                </div>
-              </div>
-
-          </div>
-        </section>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" href="javascript:;" (click)="addAssetModel()" [disabled]="!amodel.form.valid">Save</button>
-      </div>
-    </form>
+<ng-template #assetModelsModal let-modal>
+  <div class="modal-content">
+    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm" #amodel="ngForm">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Asset Model</h5>
+      <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal" aria-label="Close">
+        <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
+      </button>
     </div>
+    <div class="modal-body text-dark">
+      <section class="card form-wizard">
+        <div class="card-body card-body-nopadding">
+
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset Make<span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <ng-select [(ngModel)]="assetModelData.manufacturerID" name="manufacturerID"
+                  class="form-control populate" placeholder="Enter make of the asset" #sltMake="ngModel" required>
+                  <ng-option *ngFor="let manufacturer of assetManufacturers | async"
+                    [value]="manufacturer.manufacturerID">
+                    {{manufacturer.manufacturerName}}</ng-option>
+
+                </ng-select>
+                <div *ngIf="sltMake.invalid && (sltMake.dirty || sltMake.touched)" class="text-danger">
+                  <div *ngIf="sltMake.errors.required">
+                     Asset make is required.
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Model Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <input [(ngModel)]="assetModelData.modelName" name="modelName" type="text" class="form-control"
+                  placeholder="eg. Cascadia" #txtModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                  <div *ngIf="txtModel.invalid && (txtModel.dirty || txtModel.touched)" class="text-danger">
+                    <div *ngIf="txtModel.errors.required">
+                      Asset model name is required.
+                    </div>
+                    <div *ngIf="txtModel.errors.pattern">
+                     Asset model name must contain alphanumeric characters.
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+        </div>
+      </section>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-success" href="javascript:;" (click)="addAssetModel()" [disabled]="!amodel.form.valid">Save</button>
+    </div>
+  </form>
   </div>
-</div>
+</ng-template>
 
 <!--Service program modal-->
-<div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal"
-  aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" style="max-width: 1190px" role="document">
-    <div class="modal-content">
-      <form class="form-horizontal form-bordered" id="serviceProgramForm" method="get" #sService="ngForm">
-      <div class="modal-header">
-        <h5 class="modal-title">New Service Program</h5>
-        <button type="button" (click)="clearServiceProg()" class="close" data-dismiss="modal" aria-label="Close">
-          <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
+<ng-template #vehProgramModal let-modal>
+  <div class="modal-content">
+    <form class="form-horizontal form-bordered" id="serviceProgramForm" method="get" #sService="ngForm">
+    <div class="modal-header">
+      <h5 class="modal-title">New Service Program</h5>
+      <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal" aria-label="Close">
+        <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
+      </button>
+    </div>
+    <div class="modal-body text-dark">
+      <section role="main" class="">
+        <div class="card-body p-0 text-dark">
 
-
-        <section role="main" class="">
-          <header class="page-header pr-5">
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
-
-              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">New Service Program</h4>
-              </div>
-
-              <div class="col-md-8  col-lg-8 text-right pr-1">
-                <a routerLink="/fleet/maintenance/service-program/list" class="btn btn-default btn-sm"
-                  style="color:black;">
-                  <em class="fas fa-list"></em> Service Programs List</a>
-              </div>
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <label
+                class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                Program Details</label>
             </div>
-
-          </header>
-          <div class="row">
-            <div class="col">
-              <div class="card-body text-dark">
-
-                  <div class="form-group row">
-                    <div class="col-lg-12">
-                      <label
-                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
-                        Program Details</label>
-                    </div>
-                    <div class="col-lg-5">
-                      <div class="row pt-2">
-                        <div class="col-lg-12">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service
-                            Program Name <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="serviceData.programName" name="programName" type="text"
-                            placeholder="eg. Heavy Vehicle" class="form-control" #sProgram1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
-                            <div *ngIf="sProgram1.invalid && (sProgram1.dirty || sProgram1.touched)" class="text-danger">
-                              <div *ngIf="sProgram1.errors.required">
-                               Service program name is required.
-                              </div>
-                              <div *ngIf="sProgram1.errors.pattern">
-                                Service program name must contain alphanumeric characters.
-                              </div>
-                            </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="col-lg-7">
-                      <div class="row pt-2">
-                        <div class="col-lg-12">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
-                            <span class="text-1 optional-label-color">(optional)</span></label>
-                          <textarea [(ngModel)]="serviceData.description" name="description"
-                            placeholder="eg. Brakes are not working" class="form-control h-auto" rows="3" #dNotes44="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                            <div *ngIf="dNotes44.invalid && (dNotes44.dirty || dNotes44.touched)" class="text-danger">
-                              <div *ngIf="dNotes44.errors.pattern">
-                               Only 500 characters are allowed.
-                              </div>
-
-                           </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-lg-12">
-                      <label
-                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
-                        Schedule Details </label>
-                    </div>
-                    <div class="col-lg-12 ">
-                      <div class="row" *ngFor="let task of serviceData.serviceScheduleDetails;let i = index">
-                        <div class="col-lg-5">
-                          <div class="row pt-2">
-                            <div class="col-lg-12">
-
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                Service Task  <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select placeholder="Select Service Task" [(ngModel)]="task.serviceTask"
-                                [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'"
-                                [ngModelOptions]="{standalone: true}" style="width: 100%;" #sTask='ngModel' required>
-                                <ng-option *ngFor="let task of tasks;" value="{{task.taskID}}">{{task.taskName}}
-                                </ng-option>
-                              </ng-select>
-                              <div *ngIf="sTask.invalid && (sTask.dirty || sTask.touched)" class="text-danger">
-                                <div *ngIf="sTask.errors.required">
-                                   Service task is required.
-                                </div>
-
-                              </div>
-
-                            </div>
-                            <!-- <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
-                                              <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                                           </div> -->
-                          </div>
-                        </div>
-                        <div class="col-lg-7">
-                          <div class="row pt-2">
-                            <div class="col-12">
-                              <div class="row">
-                                <div class="col-lg-5">
-                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
-                                    By Time  <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                  <div class="row">
-                                    <div class="col-lg-5 ">
-                                      <input [(ngModel)]="task.repeatByTime"
-                                        [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'"
-                                        [ngModelOptions]="{standalone: true}" type="text" placeholder="eg. 1,2,3"
-                                        class="form-control" #sTime="ngModel" required pattern="^[0-9]+$">
-                                        <div *ngIf="sTime.invalid && (sTime.dirty || sTime.touched)" class="text-danger">
-                                          <div *ngIf="sTime.errors.required">
-                                           Repeat by time is required.
-                                          </div>
-                                          <div *ngIf="sTime.errors.pattern">
-                                          Repeat by time must contains numbers.
-                                          </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-7 pl-0 pr-0">
-                                      <ng-select placeholder="eg. Days" [(ngModel)]="task.repeatByTimeUnit"
-                                        [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'"
-                                        [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
-                                        class="form-control populate" #sPeriod="ngModel" required>
-
-                                        <ng-option value="Day(s)">Day(s)</ng-option>
-                                        <ng-option value="Week(s)">Week(s)</ng-option>
-                                        <ng-option value="Month(s)">Month(s)</ng-option>
-
-                                      </ng-select>
-                                      <div *ngIf="sPeriod.invalid && (sPeriod.dirty || sPeriod.touched)" class="text-danger">
-                                        <div *ngIf="sPeriod.errors.required">
-                                          Select valid time period from the list is required.
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="col-lg-5">
-                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
-                                    By Odometer Miles  <span
+            <div class="col-lg-5">
+              <div class="row pt-2">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service
+                    Program Name <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                  <input [(ngModel)]="task.repeatByOdometer"
-                                    [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'"
-                                    [ngModelOptions]="{standalone: true}" type="text" placeholder="eg. 1000"
-                                    class="form-control" #sMiles="ngModel" required pattern="^[0-9\.]+$">
-                                    <div *ngIf="sMiles.invalid && (sMiles.dirty || sMiles.touched)" class="text-danger">
-                                      <div *ngIf="sMiles.errors.required">
-                                        Repeat by odometer miles is required.
-                                      </div>
-                                      <div *ngIf="sMiles.errors.pattern">
-                                        Repeat by odometer miles must contain numbers.
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 pt-4 mt-2 pl-0">
-                                  <button *ngIf="i == 0" (click)="addDocument()" class="btn btn-success add-more"><i
-                                      class="fas fa-plus"></i></button>
-                                  <button *ngIf="i != 0" class="btn btn-danger" (click)="removeTasks(i)"><i
-                                      class="fas fa-minus"></i></button>
-                                </div>
-                              </div>
-
-                            </div>
-                            <!-- <div class="col-lg-2 mar-top-37">
-
-                                              <button type="button"
-                                                 class="btn btn-success btn-sm"><i class="fas fa-plus"></i>
-                                              </button>
-                                           </div> -->
-
-                          </div>
-                        </div>
+                  <input [(ngModel)]="serviceData.programName" name="programName" type="text"
+                    placeholder="eg. Heavy Vehicle" class="form-control" #sProgram1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                    <div *ngIf="sProgram1.invalid && (sProgram1.dirty || sProgram1.touched)" class="text-danger">
+                      <div *ngIf="sProgram1.errors.required">
+                       Service program name is required.
                       </div>
-
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="col-lg-12">
-                      <label
-                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Vehicle
-                        Details</label>
-                    </div>
-                    <div class="col-lg-5">
-                      <div class="row pt-2">
-                        <div class="col-lg-12">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                            Vehicle for Service Program&nbsp; <span
-                              class="text-1 optional-label-color">(optional)</span></label>
-                          <ng-select placeholder="Select Vehicle for Service Program" [multiple]="true" [(ngModel)]="serviceData.vehicles"
-
-                            name="vehicles" style="width: 100%;">
-                            <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
-                              {{vehicle.vehicleIdentification}}</ng-option>
-                          </ng-select>
-
-                        </div>
-                        <!-- <div class="col-lg-2  mar-top-37">
-
-                                        <a href="javascript:;" (click)="vehicleModal = true;" data-toggle="modal" data-target="#addvehicleModal"  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                                     </div> -->
+                      <div *ngIf="sProgram1.errors.pattern">
+                        Service program name must contain alphanumeric characters.
                       </div>
                     </div>
-                    <div class="col-lg-5 offset-lg-1">
-                    </div>
-                  </div>
-
+                </div>
               </div>
+
+            </div>
+            <div class="col-lg-7">
+              <div class="row pt-2">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
+                    <span class="text-1 optional-label-color">(optional)</span></label>
+                  <textarea [(ngModel)]="serviceData.description" name="description"
+                    placeholder="eg. Brakes are not working" class="form-control h-auto" rows="3" #dNotes44="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                    <div *ngIf="dNotes44.invalid && (dNotes44.dirty || dNotes44.touched)" class="text-danger">
+                      <div *ngIf="dNotes44.errors.pattern">
+                       Only 500 characters are allowed.
+                      </div>
+
+                   </div>
+                </div>
+              </div>
+
             </div>
           </div>
-        </section>
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <label
+                class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                Schedule Details </label>
+            </div>
+            <div class="col-lg-12 ">
+              <div class="row" *ngFor="let task of serviceData.serviceScheduleDetails;let i = index">
+                <div class="col-lg-5">
+                  <div class="row pt-2">
+                    <div class="col-lg-12">
+
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                        Service Task  <span
+                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select placeholder="Select Service Task" [(ngModel)]="task.serviceTask"
+                        [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'"
+                        [ngModelOptions]="{standalone: true}" style="width: 100%;" #sTask='ngModel' required>
+                        <ng-option *ngFor="let task of tasks;" value="{{task.taskID}}">{{task.taskName}}
+                        </ng-option>
+                      </ng-select>
+                      <div *ngIf="sTask.invalid && (sTask.dirty || sTask.touched)" class="text-danger">
+                        <div *ngIf="sTask.errors.required">
+                           Service task is required.
+                        </div>
+
+                      </div>
+
+                    </div>
+                    <!-- <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
+                                      <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                   </div> -->
+                  </div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="row pt-2">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
+                            By Time  <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <div class="row">
+                            <div class="col-lg-5 ">
+                              <input [(ngModel)]="task.repeatByTime"
+                                [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'"
+                                [ngModelOptions]="{standalone: true}" type="text" placeholder="eg. 1,2,3"
+                                class="form-control" #sTime="ngModel" required pattern="^[0-9]+$">
+                                <div *ngIf="sTime.invalid && (sTime.dirty || sTime.touched)" class="text-danger">
+                                  <div *ngIf="sTime.errors.required">
+                                   Repeat by time is required.
+                                  </div>
+                                  <div *ngIf="sTime.errors.pattern">
+                                  Repeat by time must contains numbers.
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 pl-0 pr-0">
+                              <ng-select placeholder="eg. Days" [(ngModel)]="task.repeatByTimeUnit"
+                                [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'"
+                                [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
+                                class="form-control populate" #sPeriod="ngModel" required>
+
+                                <ng-option value="Day(s)">Day(s)</ng-option>
+                                <ng-option value="Week(s)">Week(s)</ng-option>
+                                <ng-option value="Month(s)">Month(s)</ng-option>
+
+                              </ng-select>
+                              <div *ngIf="sPeriod.invalid && (sPeriod.dirty || sPeriod.touched)" class="text-danger">
+                                <div *ngIf="sPeriod.errors.required">
+                                  Select valid time period from the list is required.
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
+                            By Odometer Miles  <span
+            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="task.repeatByOdometer"
+                            [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'"
+                            [ngModelOptions]="{standalone: true}" type="text" placeholder="eg. 1000"
+                            class="form-control" #sMiles="ngModel" required pattern="^[0-9\.]+$">
+                            <div *ngIf="sMiles.invalid && (sMiles.dirty || sMiles.touched)" class="text-danger">
+                              <div *ngIf="sMiles.errors.required">
+                                Repeat by odometer miles is required.
+                              </div>
+                              <div *ngIf="sMiles.errors.pattern">
+                                Repeat by odometer miles must contain numbers.
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 pt-4 mt-2 pl-0">
+                          <button *ngIf="i == 0" (click)="addDocument()" class="btn btn-success add-more"><i
+                              class="fas fa-plus"></i></button>
+                          <button *ngIf="i != 0" class="btn btn-danger" (click)="removeTasks(i)"><i
+                              class="fas fa-minus"></i></button>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- <div class="col-lg-2 mar-top-37">
+
+                                      <button type="button"
+                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i>
+                                      </button>
+                                   </div> -->
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <label
+                class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Vehicle
+                Details</label>
+            </div>
+            <div class="col-lg-5">
+              <div class="row pt-2">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                    Vehicle for Service Program&nbsp; <span
+                      class="text-1 optional-label-color">(optional)</span></label>
+                  <ng-select placeholder="Select Vehicle for Service Program" [multiple]="true" [(ngModel)]="serviceData.vehicles"
+
+                    name="vehicles" style="width: 100%;">
+                    <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
+                      {{vehicle.vehicleIdentification}}</ng-option>
+                  </ng-select>
+
+                </div>
+                <!-- <div class="col-lg-2  mar-top-37">
+
+                                <a href="javascript:;" (click)="vehicleModal = true;" data-toggle="modal" data-target="#addvehicleModal"  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                             </div> -->
+              </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+            </div>
+          </div>
+
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn" [disabled]="!sService.form.valid">Save</button>
-      </div>
-    </form>
+      </section>
     </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <button (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn" [disabled]="!sService.form.valid">Save</button>
+    </div>
+  </form>
   </div>
-</div>
+</ng-template>
 
 <!--Service task modal-->
 <div class="modal fade" id="addServiceTaskModal" tabindex="-1" role="dialog" aria-labelledby="addServiceTaskModal"
@@ -411,198 +384,195 @@
 </div>
 
 <!-- ADD ISSUES MODAL -->
-<div class="modal fade" id="addIssuesModal" tabindex="-1" role="dialog" aria-labelledby="addIssuesModal"
+<ng-template #addIssueModal let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Issue </h5>
+      <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal" aria-label="Close">
+        <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
+      </button>
 
-  aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Issue </h5>
-        <button type="button" (click)="clearIssueData()" class="close" data-dismiss="modal" aria-label="Close">
-          <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
-        </button>
-
-      </div>
-      <div class="modal-body">
-        <form id="issueForm" class="form-horizontal form-bordered" method="get" name="issueForm" #maintenance="ngForm">
-          <div class=" row">
-            <div class="col-lg-6">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label class="control-label font-weight-bold text-lg-right">Unit Type:</label>
-                    </div>
-                    <div class="col-lg-9">
-                      <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline btn-fleet mr-2" [class.active]="issuesData.unitType === 'vehicle'"
-                          style="width:110px;" (click)="issuesUnitType('vehicle')">
-                          <input type="radio" name="unitType" [(ngModel)]="issuesData.unitType" checked hidden
-                            value="vehicle"> Vehicle </label>
-                        <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
-                          [class.active]="issuesData.unitType === 'asset'" (click)="issuesUnitType('asset')">
-                          <input type="radio" name="unitType" [(ngModel)]="issuesData.unitType" hidden value="asset">
-                          Asset </label>
-                      </div>
+    </div>
+    <div class="modal-body">
+      <form id="issueForm" class="form-horizontal form-bordered" method="get" name="issueForm" #maintenance="ngForm">
+        <div class=" row">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label class="control-label font-weight-bold text-lg-right">Unit Type:</label>
+                  </div>
+                  <div class="col-lg-9">
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-outline btn-fleet mr-2" [class.active]="issuesData.unitType === 'vehicle'"
+                        style="width:110px;" (click)="issuesUnitType('vehicle')">
+                        <input type="radio" name="unitType" [(ngModel)]="issuesData.unitType" checked hidden
+                          value="vehicle"> Vehicle </label>
+                      <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                        [class.active]="issuesData.unitType === 'asset'" (click)="issuesUnitType('asset')">
+                        <input type="radio" name="unitType" [(ngModel)]="issuesData.unitType" hidden value="asset">
+                        Asset </label>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row pt-2">
-                <div class="col-12" *ngIf="issuesData.unitType == 'vehicle'">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Vehicle<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="issuesData.unitID" #mVehicle="ngModel" required>
-                    <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
-                      {{vehicle.vehicleIdentification}}</ng-option>
-                  </ng-select>
-                  <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
-                    <div *ngIf="mVehicle.errors.required">
-                       Vehicle is required.
-                    </div>
-
-                  </div>
-                </div>
-                <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Asset<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="issuesData.unitID" #mAsset="ngModel" required>
-
-                    <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}
-                    </ng-option>
-
-                  </ng-select>
-                  <div *ngIf="mAsset.invalid && (mAsset.dirty || mAsset.touched)" class="text-danger">
-                    <div *ngIf="mAsset.errors.required">
-                   Asset is required.
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="row pt-2">
-                <div class="col-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input type="text" class="form-control" id="issueName" name="issueName"
-                    [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z0-9\s]{1,30}$">
-                    <div *ngIf="mIssue.invalid && (mIssue.dirty || mIssue.touched)" class="text-danger">
-                      <div *ngIf="mIssue.errors.required">
-                       Issue name is required.
-                      </div>
-                      <div *ngIf="mIssue.errors.pattern">
-                        Issue name must contain alphanumeric characters.
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div class="row pt-2">
-                <div class="col-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported Date<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
-                  <input class="form-control" placeholder="yyyy/mm/dd" [(ngModel)]="issuesData.reportedDate"
-                    name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                    <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
-                      <div *ngIf="mDate.errors.required">
-                 Reported date is required.
-                      </div>
-
-                    </div>
-                </div>
-              </div>
-              <div class="row pt-2">
-                <div class="col-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
-                    <span class="text-1 optional-label-color">(optional)</span></label>
-                  <textarea [(ngModel)]="issuesData.description" name="description" class="form-control h-auto" rows="3"
-                    placeholder="Enter description of the issue" #remarks2= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                    <div *ngIf="remarks2.invalid && (remarks2.dirty || remarks2.touched)" class="text-danger">
-                      <div *ngIf="remarks2.errors.pattern">
-                       Only 500 characters are allowed.
-                      </div>
-
-                   </div>
-                </div>
-              </div>
-
             </div>
-            <div class="col-lg-6 mt-3">
+            <div class="row pt-2">
+              <div class="col-12" *ngIf="issuesData.unitType == 'vehicle'">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Vehicle<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="issuesData.unitID" #mVehicle="ngModel" required>
+                  <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">
+                    {{vehicle.vehicleIdentification}}</ng-option>
+                </ng-select>
+                <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
+                  <div *ngIf="mVehicle.errors.required">
+                     Vehicle is required.
+                  </div>
+
+                </div>
+              </div>
               <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
-                <label class="control-label font-weight-bold font-bold text-lg-right mb-0">&nbsp;</label>
-              </div>
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Asset<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="issuesData.unitID" #mAsset="ngModel" required>
 
-              <div class="row pt-4" *ngIf="issuesData.unitType === 'vehicle'">
-                <div class="col-lg-12 input-height">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Odometer(miles)<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <input [(ngModel)]="issuesData.odometer" name="odometer" min="0" type="number" class="form-control"
-                    placeholder="Enter odometer miles at which issue is reported. eg. 10000" #mOdometer="ngModel" required
-                    >
-                    <div *ngIf="mOdometer.invalid && (mOdometer.dirty || mOdometer.touched)" class="text-danger">
-                      <div *ngIf="mOdometer.errors.required">
-                        Odometer miles must contain numbers.
-                      </div>
+                  <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}
+                  </ng-option>
 
-                    </div>
+                </ng-select>
+                <div *ngIf="mAsset.invalid && (mAsset.dirty || mAsset.touched)" class="text-danger">
+                  <div *ngIf="mAsset.errors.required">
+                 Asset is required.
+                  </div>
+
                 </div>
               </div>
-
-              <div class="row pt-2 mt-1" *ngIf="issuesData.unitType === 'vehicle'">
-                <div class="col-lg-12 input-height">
-               </div>
+            </div>
+            <div class="row pt-2">
+              <div class="col-12">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <input type="text" class="form-control" id="issueName" name="issueName"
+                  [(ngModel)]="issuesData.issueName" placeholder="Enter issue name eg. brake issue" #mIssue="ngModel" required pattern="^[a-zA-Z0-9\s]{1,30}$">
+                  <div *ngIf="mIssue.invalid && (mIssue.dirty || mIssue.touched)" class="text-danger">
+                    <div *ngIf="mIssue.errors.required">
+                     Issue name is required.
+                    </div>
+                    <div *ngIf="mIssue.errors.pattern">
+                      Issue name must contain alphanumeric characters.
+                    </div>
+                  </div>
               </div>
+            </div>
+            <div class="row pt-2">
+              <div class="col-12">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported Date<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Reported By<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact" #mReport="ngModel" required>
-                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
-                      {{user.firstName}} {{user.lastName}}</ng-option>
-                  </ng-select>
-                  <div *ngIf="mReport.invalid && (mReport.dirty || mReport.touched)" class="text-danger">
-                    <div *ngIf="mReport.errors.required">
-                   Reported issue is required.
+                <input class="form-control" placeholder="yyyy/mm/dd" [(ngModel)]="issuesData.reportedDate"
+                  name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #mDate="ngModel" required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                  <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
+                    <div *ngIf="mDate.errors.required">
+               Reported date is required.
                     </div>
 
                   </div>
-                </div>
               </div>
+            </div>
+            <div class="row pt-2">
+              <div class="col-12">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
+                  <span class="text-1 optional-label-color">(optional)</span></label>
+                <textarea [(ngModel)]="issuesData.description" name="description" class="form-control h-auto" rows="3"
+                  placeholder="Enter description of the issue" #remarks2= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                  <div *ngIf="remarks2.invalid && (remarks2.dirty || remarks2.touched)" class="text-danger">
+                    <div *ngIf="remarks2.errors.pattern">
+                     Only 500 characters are allowed.
+                    </div>
 
-              <div class="row mt-1" *ngIf="issuesData.unitType === 'vehicle'">
-                <div class="col-lg-12 input-height">
-               </div>
+                 </div>
               </div>
+            </div>
 
-              <div class="row pt-2">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue" #mAssigned="ngModel" required>
-                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
-                      {{user.firstName}} {{user.lastName}}</ng-option>
-                  </ng-select>
-                  <div *ngIf="mAssigned.invalid && (mAssigned.dirty || mAssigned.touched)" class="text-danger">
-                    <div *ngIf="mAssigned.errors.required">
-                    Assigned to is required.
+          </div>
+          <div class="col-lg-6 mt-3">
+            <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
+              <label class="control-label font-weight-bold font-bold text-lg-right mb-0">&nbsp;</label>
+            </div>
+
+            <div class="row pt-4" *ngIf="issuesData.unitType === 'vehicle'">
+              <div class="col-lg-12 input-height">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Odometer(miles)<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <input [(ngModel)]="issuesData.odometer" name="odometer" min="0" type="number" class="form-control"
+                  placeholder="Enter odometer miles at which issue is reported. eg. 10000" #mOdometer="ngModel" required
+                  >
+                  <div *ngIf="mOdometer.invalid && (mOdometer.dirty || mOdometer.touched)" class="text-danger">
+                    <div *ngIf="mOdometer.errors.required">
+                      Odometer miles must contain numbers.
                     </div>
 
                   </div>
+              </div>
+            </div>
+
+            <div class="row pt-2 mt-1" *ngIf="issuesData.unitType === 'vehicle'">
+              <div class="col-lg-12 input-height">
+             </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-1">Reported By<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact" #mReport="ngModel" required>
+                  <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                    {{user.firstName}} {{user.lastName}}</ng-option>
+                </ng-select>
+                <div *ngIf="mReport.invalid && (mReport.dirty || mReport.touched)" class="text-danger">
+                  <div *ngIf="mReport.errors.required">
+                 Reported issue is required.
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-1" *ngIf="issuesData.unitType === 'vehicle'">
+              <div class="col-lg-12 input-height">
+             </div>
+            </div>
+
+            <div class="row pt-2">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue" #mAssigned="ngModel" required>
+                  <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                    {{user.firstName}} {{user.lastName}}</ng-option>
+                </ng-select>
+                <div *ngIf="mAssigned.invalid && (mAssigned.dirty || mAssigned.touched)" class="text-danger">
+                  <div *ngIf="mAssigned.errors.required">
+                  Assigned to is required.
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
-          <div class="form-group row">
-            <div class="col-lg-12 pr-0 text-right">
-              <a type="button" data-dismiss="modal" class="btn btn-default btnPrevious mr-2">Cancel</a>
-              <button type="button" (click)="addIssue()" class="btn btn-success" [disabled]="!maintenance.form.valid">Save</button>
-            </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-12 pr-0 text-right">
+            <a type="button" data-dismiss="modal" class="btn btn-default btnPrevious mr-2">Cancel</a>
+            <button type="button" (click)="addIssue()" class="btn btn-success" [disabled]="!maintenance.form.valid">Save</button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
-</div>
+</ng-template>
+
 
 

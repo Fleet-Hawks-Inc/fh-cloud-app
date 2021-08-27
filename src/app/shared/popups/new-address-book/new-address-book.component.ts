@@ -125,10 +125,13 @@ export class NewAddressBookComponent implements OnInit {
         };
         this.modalService.dismissAll();
         this.modalService.open(this.allUnitModal, ngbModalOptions)
+        this.lastKey = '';
+        this.fetchUnits();
       } else if(res === 'form') {
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
+          windowClass: 'units-form__main'
         };
         this.modalService.dismissAll();
         const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
@@ -146,7 +149,6 @@ export class NewAddressBookComponent implements OnInit {
 
   ngOnInit() {
     this.searchLocation();
-    this.fetchUnits();
     this.fetchCountries();
   }
 
@@ -208,10 +210,12 @@ export class NewAddressBookComponent implements OnInit {
 
   async searchFilter() {
     if(this.filterVal.cName != '') {
+        
         this.filterVal.cName = this.filterVal.cName.toLowerCase().trim();
         this.suggestions = [];
         this.units = [];
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastKey = '';
         this.fetchUnits();
       } else {
         return false
@@ -922,9 +926,11 @@ export class NewAddressBookComponent implements OnInit {
         this.hasSuccess = true;
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastKey = '';
         this.emptyTabs();
         this.fetchUnits();
         this.showMainModal();
+        
         if(this.unitData.eTypes.includes('owner_operator')) {
           this.listService.fetchOwnerOperators();
         } else if(this.unitData.eTypes.includes('shipper')) {
@@ -1131,7 +1137,6 @@ export class NewAddressBookComponent implements OnInit {
     this.updateButton = true;
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
-      
       this.unitData.eTypes = res.eTypes;
       this.newArr = this.unitData.eTypes;
       this.unitData.cName = res.cName;
@@ -1170,7 +1175,12 @@ export class NewAddressBookComponent implements OnInit {
     this.editUser(item)
     
     this.modalService.dismissAll();
-    this.modalService.open(targetModal);
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop : 'static',
+      keyboard : false,
+      windowClass: 'units-detail__main'
+    };
+    this.modalService.open(targetModal, ngbModalOptions);
     
   }
 

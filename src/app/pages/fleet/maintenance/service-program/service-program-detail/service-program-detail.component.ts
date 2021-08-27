@@ -43,7 +43,6 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.programID = this.route.snapshot.params['programID'];
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
-    this.fetchAllVehicles();
     this.fetchTasks();
     this.fetchTasksByIDs();
     $(document).ready(() => {
@@ -57,10 +56,11 @@ export class ServiceProgramDetailComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
+        console.log('result', result);
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
-        
+        this.fetchAllVehicles();
         this.spinner.hide(); // loader hide
       },
     });
@@ -174,6 +174,7 @@ export class ServiceProgramDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.allVehicles = result.Items;
         if(this.vehicles) {
+          console.log('this.programs', this.programs);
           this.updateVehicles(result.Items, this.programs[0].vehicles);
         }
       });
