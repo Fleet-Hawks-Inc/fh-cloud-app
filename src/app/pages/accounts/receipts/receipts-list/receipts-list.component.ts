@@ -57,9 +57,14 @@ export class ReceiptsListComponent implements OnInit {
     this.fetchReceipts();
   }
   deleteReceipt(recID: string) {
-    this.accountService.deleteData(`receipts/delete/${recID}`).subscribe(() => {
-      this.toastr.success('Receipt Deleted Successfully.');
-      this.fetchReceipts();
+    this.accountService.deleteData(`receipts/delete/${recID}`).subscribe((res) => {
+      if (res !== undefined) {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.receipts = [];
+        this.lastItemSK = '';
+        this.fetchReceipts();
+        this.toastr.success('Receipt Deleted Successfully.');
+      }
     });
   }
   /*

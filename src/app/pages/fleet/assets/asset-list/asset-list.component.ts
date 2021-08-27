@@ -179,7 +179,7 @@ export class AssetListComponent implements OnInit {
         //   eventID: eventData.assetID,
         //   status: eventData.currentStatus
         // }
-        this.apiService.deleteData(`assets/delete/${eventData.assetID}`).subscribe((result: any) => {
+        this.apiService.deleteData(`assets/delete/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
             this.allData = [];
             this.assetDraw = 0;
             this.dataMessage = Constants.FETCHING_DATA;
@@ -253,7 +253,7 @@ export class AssetListComponent implements OnInit {
       });
   }
 
-  searchFilter() { 
+  searchFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
       if(this.assetID == '') {

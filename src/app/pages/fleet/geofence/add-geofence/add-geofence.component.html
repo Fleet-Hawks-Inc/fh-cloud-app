@@ -92,7 +92,7 @@
                                     class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
                                     >Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
-                                    <div class="col-lg-11">
+                                    <div class="col-10">
                                        <ng-select
                                           placeholder="Select geofence type"
                                           class="form-control populate" name="geofenceType" #gType="ngModel" required [(ngModel)]="geofenceData.geofenceType">
@@ -107,8 +107,12 @@
                                            </div>
                                          </div>
                                     </div>
-                                    <div class="col-lg-1 pl-0">
-                                       <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn cus-btn-padd text-light btn-success"><i class="fas fa-plus"></i></a>
+                                    <div class="col-2 pl-0">
+                                       <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn cus-btn-padd text-light btn-success mr-1"><i class="fas fa-plus"></i></a>
+                                       <a href="javascript:;" (click)="getTypes()"
+                                       data-toggle="tooltip" title="Refresh geofenceTypes data"
+                                       class="btn btn-success btn-sm modal-with-form"><i
+                                             class="fas fa-sync"></i></a>
                                     </div>
                                  </div>
                               </div>

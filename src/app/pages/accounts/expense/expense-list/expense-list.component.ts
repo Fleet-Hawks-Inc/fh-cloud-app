@@ -70,9 +70,13 @@ export class ExpenseListComponent implements OnInit {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.getData(`expense/delete/${expenseID}`)
       .subscribe((result: any) => {
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchExpenses();
-        this.toaster.success('Expense transaction deleted successfully.');
+        if (result !== undefined) {
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.expenses = [];
+          this.lastItemSK = '';
+          this.fetchExpenses();
+          this.toaster.success('Expense transaction deleted successfully.');
+        }
       });
     }
 

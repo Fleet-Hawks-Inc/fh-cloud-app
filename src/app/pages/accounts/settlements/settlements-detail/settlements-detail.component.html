@@ -156,36 +156,34 @@
                                             </table>
                                         </div>
 
-                                        <!-- <div class="col-lg-12">
-                                            <h5 class="font-weight-bold">Driver Payments</h5>
+                                        <div class="col-lg-12">
+                                            <h5 class="font-weight-bold text-capitalize">{{ (settlementData.type === 'owner_operator') ? 'Owner Operator' : settlementData.type }} Payments</h5>
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="bgcol2">
-                                                        <th>Date</th>
                                                         <th>Payment#</th>
-                                                        <th>Paid To</th>
+                                                        <th>Date</th>
                                                         <th>Amount</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngIf="settlementData.deduction.length === 0" class="text-center">
-                                                        <td colspan="4">{{ noRecordMsg }} </td>
+                                                    <tr *ngIf="payments.length === 0" class="text-center">
+                                                        <td colspan="3">{{ noRecordMsg }} </td>
                                                      </tr>
-                                                    <tr>
-                                                        <td>-</td>
-                                                        <td>-</td>
-                                                        <td>-</td>
-                                                        <td>-</td>
+                                                    <tr *ngFor="let data of payments;">
+                                                        <td>{{ data.paymentNo }}</td>
+                                                        <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td>{{ data.amount | number }} CAD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h5 class="font-weight-bold">Trip Expenses</h5>
+                                            <h5 class="font-weight-bold">Trip Expenses</h5> 
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="bgcol2">
@@ -196,10 +194,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngIf="settlementData.expenses.length === 0" class="text-center">
+                                                    <tr *ngIf="expenses.length === 0" class="text-center">
                                                         <td colspan="4">{{ noRecordMsg }} </td>
                                                     </tr>
-                                                    <tr *ngFor="let data of settlementData.expenses">
+                                                    <tr *ngFor="let data of expenses">
                                                         <td>{{ tripsObj[data.tripID] }}</td>
                                                         <td>{{ data.expName }}</td>
                                                         <td>{{ (data.desc) ? data.desc : '-' }}</td>

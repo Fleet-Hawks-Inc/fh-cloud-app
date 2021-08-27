@@ -84,7 +84,7 @@
                                     </button>
                                     <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                        <a class="dropdown-item" routerLink="/fleet/geofence/edit/{{geofence.geofenceID}}">Edit</a>
-                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateGeofence(geofence.isDeleted, geofence.geofenceID)">Delete</a>
+                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateGeofence(geofence.isDeleted, geofence.geofenceID, geofence.geofenceName)">Delete</a>
                                     </div>
                                     </div>
                               </td>
@@ -109,13 +109,13 @@
 
 
                   </div>
-                  
-                 
+
+
                </div>
             </div>
          </div>
       </div>
-    
+
    </section>
 
 

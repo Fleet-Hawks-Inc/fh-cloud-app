@@ -338,18 +338,21 @@ export class AddVehicleNewComponent implements OnInit {
 
     });
   }
-  fetchModels(){
-    this.modals=[]
-    let manufacturer:any=this.manufacturerID.toLowerCase();
+  fetchModels() {
+    this.modals = [];
+    let manufacturer: any = '';
+    if (this.manufacturerID !== null) {
+      manufacturer = this.manufacturerID.toLowerCase();
+    }
     this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
       data.forEach(element => {
-        let output=[]
-        if(element[manufacturer]){
+        let output = [];
+        if (element[manufacturer]) {
           element[manufacturer].forEach(element => {
             output.push(element.toUpperCase());
 
           });
-        this.modals=output
+          this.modals = output;
         }
       });
 
@@ -385,6 +388,14 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
+  getGroups(){
+    this.fetchGroups();
+  }
+
+  openProgram(value) {
+    this.listService.separateModals(value);
+  }
+
   fetchInspectionForms() {
     this.apiService
       .getData('inspectionForms/type/vehicle')
@@ -392,7 +403,7 @@ export class AddVehicleNewComponent implements OnInit {
         this.inspectionForms = result.Items;
       });
   }
-  async addVehicle() {
+  async onAddVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
@@ -872,7 +883,7 @@ export class AddVehicleNewComponent implements OnInit {
       });
 
   }
-  async updateVehicle() {
+  async onUpdateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
@@ -1241,7 +1252,23 @@ export class AddVehicleNewComponent implements OnInit {
       description: '',
     };
   }
-  refreshDrivrData() {
+  refreshDriverData() {
     this.listService.fetchDrivers();
   }
+
+  refreshProgramData() {
+    this.listService.fetchServicePrograms();
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
 }

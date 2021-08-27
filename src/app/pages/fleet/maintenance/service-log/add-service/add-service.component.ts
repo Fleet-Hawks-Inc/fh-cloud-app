@@ -176,15 +176,13 @@ export class AddServiceComponent implements OnInit {
 
     this.fetchGroups();
     this.fetchVehicles();
-    // this.fetchVendors();
-
+    
     this.fetchInventory();
     this.fetchAssets();
-    // this.fetchTasks();
+   
     this.listService.fetchVendors();
     this.listService.fetchTasks();
     this.fetchAllTasksIDs();
-    // this.searchLocation();
     this.fetchInventoryItems();
     this.fetchInventoryQuanitity();
 
@@ -915,29 +913,6 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  public searchLocation() {
-    let target;
-    this.searchTerm.pipe(
-      map((e: any) => {
-        $('.map-search__results').hide();
-        $(e.target).closest('div').addClass('show-search__result');
-        target = e;
-        return e.target.value;
-      }),
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => {
-        return this.hereMap.searchEntries(term);
-      }),
-      catchError((e) => {
-        return throwError(e);
-      }),
-    ).subscribe(res => {
-      this.searchResults = res;
-    });
-  }
-
-
   async assignLocation(label) {
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
@@ -957,7 +932,7 @@ export class AddServiceComponent implements OnInit {
 
   gotoIssuePage() {
     // this.router.navigateByUrl('/fleet/maintenance/issues/add')
-    $('#addIssuesModal').modal('show');
+    this.listService.separateModals('add-issue');
     let selectedUnit: any = {
       type: this.serviceData.unitType,
       name: this.serviceData.unitID,
@@ -1251,5 +1226,19 @@ export class AddServiceComponent implements OnInit {
         this.logDocs.splice(index,1);
       }
     });
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
+  getTasks() {
+    this.listService.fetchTasks();
   }
 }

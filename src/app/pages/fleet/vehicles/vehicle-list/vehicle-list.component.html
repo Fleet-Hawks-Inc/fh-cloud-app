@@ -205,21 +205,21 @@
                                                 <td class="hand-icon" *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicle.VIN }}
                                                 </td>
-                                                
+
                                                 <td class="hand-icon" *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicleTypeObects[vehicle.vehicleType] }}
                                                 </td>
                                                 <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="hand-icon"  routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicleManufacturersList[vehicle.manufacturerID]}}
+                                                    {{vehicleManufacturersList[vehicle.manufacturerID] | titlecase}}
                                                 </td>
                                                 <td *ngIf="!vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="hand-icon"  routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.manufacturerID}}
+                                                    {{vehicle.manufacturerID | titlecase}}
                                                 </td>
                                                 <td *ngIf="vehicleModelList[vehicle.modelID] && hideShow.model" class="hand-icon" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicleModelList[vehicle.modelID]}}
+                                                    {{vehicleModelList[vehicle.modelID] | titlecase}}
                                                 </td>
                                                 <td *ngIf="!vehicleModelList[vehicle.modelID] && hideShow.model" class="hand-icon" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.modelID}}
+                                                    {{vehicle.modelID | titlecase}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.lastLocation" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     Ontario
@@ -308,7 +308,7 @@
              </section>
 
 
-           
+
 
             <!--Map view-->
             <div class="mapclass vehiclemain" id="map_view" *ngIf="currentView == 'map'">

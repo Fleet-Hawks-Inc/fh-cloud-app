@@ -118,8 +118,8 @@
                                                 Delivered : {{ deliveredTrips.length }}</a>
                                         </li>
                                         <li class="nav-item navtabs">
-                                            <a class="nav-link" id="tono-tab" href="javascript:;" (click)="setActiveDiv('tono')" [ngClass]="{'active': activeTab == 'tono'}">
-                                                TONO : {{ tonoTrips.length }}</a>
+                                            <a class="nav-link" id="tonu-tab" href="javascript:;" (click)="setActiveDiv('tonu')" [ngClass]="{'active': activeTab == 'tonu'}">
+                                                TONU : {{ tonuTrips.length }}</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="setActiveDiv('cancelled')" [ngClass]="{'active': activeTab == 'cancelled'}">
@@ -154,6 +154,7 @@
                                                 <tr class="cursorpoint" *ngFor="let trip of trips[tripDraw]; let i= index">
                                                     <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
                                                         {{ trip.tripNo }}
+                                                        <span *ngIf="trip.split && trip.split.length > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.split.length-1 }} </span>
                                                     </td>
                                                     <td>{{ trip.orderType }}</td>
                                                     <td>
@@ -186,7 +187,7 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus | titlecase}}</span></td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{ trip.tripStatus }}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -624,8 +625,8 @@
                                         </table>
                                     </div>
 
-                                    <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'tono'}" id="tono" role="tabpanel" aria-labelledby="tono-tab" *ngIf="activeTab == 'tono'">
-                                        <table class="row-border hover table table-bordered table-striped mb-0" id="tonoTripsDT">
+                                    <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'tonu'}" id="tonu" role="tabpanel" aria-labelledby="tonu-tab" *ngIf="activeTab == 'tonu'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0" id="tonuTripsDT">
                                             <thead>
                                                 <tr>
                                                     <th>Trip#</th>
@@ -642,10 +643,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngIf="tonoTrips.length == 0" class="text-center">
+                                                <tr *ngIf="tonuTrips.length == 0" class="text-center">
                                                     <td colspan="12">{{dataMessageCancel}}</td>
                                                 </tr>
-                                                <tr class="cursorpoint" *ngFor="let trip of tonoTrips; let i= index">
+                                                <tr class="cursorpoint" *ngFor="let trip of tonuTrips; let i= index">
                                                     <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
                                                         {{ trip.tripNo }}
                                                     </td>

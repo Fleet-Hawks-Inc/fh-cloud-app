@@ -145,6 +145,8 @@ export class SettlementsListComponent implements OnInit {
       this.accountService
         .deleteData(`settlement/delete/${settlementID}`)
         .subscribe((result: any) => {
+          this.lastItemSK = '';
+          this.settlements = [];
           this.fetchSettlements();
           this.toaster.success("Settlement deleted successfully.");
         });

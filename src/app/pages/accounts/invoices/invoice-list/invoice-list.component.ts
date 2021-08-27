@@ -132,6 +132,7 @@ export class InvoiceListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '') {
          searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+         searchParam = searchParam.toUpperCase();
       } else {
         searchParam = null;
       }
@@ -244,7 +245,6 @@ export class InvoiceListComponent implements OnInit {
       for (const element of invoices) {
         if (element.invStatus === 'open') {
           this.openInvoices.push(element);
-          console.log('this.openInvoices', this.openInvoices);
           this.findOverDueInvoice(this.openInvoices);
         } else if (element.invStatus === 'paid') {
           this.paidInvoices.push(element);
@@ -289,10 +289,34 @@ export class InvoiceListComponent implements OnInit {
 
   voidInvoice(invID: string) {
     if (confirm('Are you sure you want to void?') === true) {
-      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe(() => {
-        this.toaster.success('Invoice Deleted Successfully.');
-        this.fetchInvoices();
-        this.getInvoices();
+      this.accountService.deleteData(`invoices/manual/${invID}`).subscribe((result) => {
+        if (result !== undefined) {
+          this.lastItemSK = '';
+          this.lastItemOrderSK = '';
+          this.total = 0;
+          this.openInvoices = [];
+          this.openTotal = 0;
+          this.paidInvoices = [];
+          this.paidTotal = 0;
+          this.emailedInvoices = [];
+          this.emailedTotal = 0;
+          this.partiallyPaidInvoices = [];
+          this.partiallyPaidTotal = 0;
+          this.voidedInvoices = [];
+          this.voidedTotal = 0;
+          this.invoices = [];
+          this.fetchedManualInvoices = [];
+          this.orderInvoices = [];
+          this.openOrderInvoices = [];
+          this.paidOrderInvoices = [];
+          this.emailedOrderInvoices = [];
+          this.partiallyPaidOrderInvoices = [];
+          this.voidedOrderInvoices = [];
+          this.fetchedOrderInvoices = [];
+          this.fetchInvoices();
+          this.getInvoices();
+          this.toaster.success('Invoice Deleted Successfully.');
+        }
       });
     }
   }
@@ -311,17 +335,40 @@ export class InvoiceListComponent implements OnInit {
       $('#updateStatusModal').modal('hide');
     });
   }
-  voidOrderInvoice(invID: string, orderID: string) {
+  voidOrderInvoice(invID: string, orderID: string, orderNo: any) {
     if (confirm('Are you sure you want to void?') === true) {
       this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
         this.invGenStatus = false;
-        this.apiService.getData(`orders/invoiceStatus/${orderID}/${this.invGenStatus}`).subscribe((res) => {
-          if (res) {
-            this.toaster.success('Invoice Voided Successfully.');
+        this.apiService.getData(`orders/invoiceStatus/${orderID}/${orderNo}/${this.invGenStatus}`).subscribe((res) => {
+          if (res !== undefined) {
+            this.lastItemSK = '';
+            this.lastItemOrderSK = '';
+            this.total = 0;
+            this.openInvoices = [];
+            this.openTotal = 0;
+            this.paidInvoices = [];
+            this.paidTotal = 0;
+            this.emailedInvoices = [];
+            this.emailedTotal = 0;
+            this.partiallyPaidInvoices = [];
+            this.partiallyPaidTotal = 0;
+            this.voidedInvoices = [];
+            this.voidedTotal = 0;
+            this.invoices = [];
+            this.fetchedManualInvoices = [];
+            this.orderInvoices = [];
+            this.openOrderInvoices = [];
+            this.paidOrderInvoices = [];
+            this.emailedOrderInvoices = [];
+            this.partiallyPaidOrderInvoices = [];
+            this.voidedOrderInvoices = [];
+            this.fetchedOrderInvoices = [];
+            this.fetchInvoices();
+            this.getInvoices();
+            this.toaster.success('Invoice Deleted Successfully.');
           }
         });
-        this.fetchInvoices();
-        this.getInvoices();
+
       });
     }
 

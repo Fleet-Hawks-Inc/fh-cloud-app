@@ -87,14 +87,14 @@ export class ServiceListComponent implements OnInit {
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
-        this.vehiclesObject = result; 
+        this.vehiclesObject = result;
       });
   }
 
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result; 
+        this.vendorsObject = result;
       });
   }
 
@@ -175,21 +175,21 @@ export class ServiceListComponent implements OnInit {
           }
         })
         this.logs = result['Items'];
-        
+        console.log('this.logs', this.logs);
         if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          this.serviceLogNext = false; 
+          this.serviceLogNext = false;
           let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g,'--');
           // for prev button
           if (!this.serviceLogPrevEvauatedKeys.includes(lastEvalKey)) {
             this.serviceLogPrevEvauatedKeys.push(lastEvalKey);
           }
           this.lastEvaluatedKey = lastEvalKey;
-          
+
         } else {
           this.serviceLogNext = true;
           this.lastEvaluatedKey = '';
@@ -208,7 +208,7 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        
+
       });
   }
 
@@ -243,7 +243,7 @@ export class ServiceListComponent implements OnInit {
         eventID: eventData.logID,
         entityID: eventData.unitID
       }
-      this.apiService.deleteData(`serviceLogs/delete/${eventData.logID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`serviceLogs/delete/${eventData.logID}/${eventData.unitType}/${eventData.unitID}`).subscribe((result: any) => {
         this.logs = [];
         this.serviceLogDraw = 0;
         this.lastEvaluatedKey = '';
@@ -253,7 +253,7 @@ export class ServiceListComponent implements OnInit {
       });
     }
   }
-  
+
   getStartandEndVal() {
     this.serviceLogStartPoint = this.serviceLogDraw * this.pageLength + 1;
     this.serviceLogEndPoint = this.serviceLogStartPoint + this.pageLength - 1;

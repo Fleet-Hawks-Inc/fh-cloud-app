@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Auth } from 'aws-amplify';
 import { ApiService, ListService } from 'src/app/services';
 import * as html2pdf from 'html2pdf.js';
@@ -12,6 +12,8 @@ declare var $: any;
 })
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("content", {static: true}) modalContent: TemplateRef<any>;
+  @ViewChild("previewCheque", {static: true}) previewCheque: TemplateRef<any>;
+
   carriers = [];
   addresses = [];
   currCarrId = '';
@@ -24,6 +26,7 @@ export class PaymentChequeComponent implements OnInit {
     type: '',
     chequeNo: '',
     currency: '',
+    formType: '',
   };
   cheqdata = {
     type: '',
@@ -41,6 +44,7 @@ export class PaymentChequeComponent implements OnInit {
     bankAccount: '',
     bankInst: '',
     carrAddress: '',
+    formType: '',
   };
   driverData;
 
@@ -58,6 +62,7 @@ export class PaymentChequeComponent implements OnInit {
         this.cheqdata.date = this.paydata.chequeDate;
         this.cheqdata.amount = this.paydata.chequeAmount;
         this.cheqdata.currency = this.paydata.currency;
+        this.cheqdata.formType = this.paydata.formType;
         if(this.cheqdata.type == 'driver') {
           this.fetchDriver();
         } else {
@@ -65,7 +70,12 @@ export class PaymentChequeComponent implements OnInit {
         }
         
         this.arrangeNumbers();
-        this.modalService.open(this.modalContent).result.then((result) => {
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop : 'static',
+          keyboard : false,
+          windowClass: 'chekOptions-prog__main'
+        };
+        this.modalService.open(this.modalContent, ngbModalOptions).result.then((result) => {
         }, (reason) => {
         });
       }
@@ -80,7 +90,14 @@ export class PaymentChequeComponent implements OnInit {
 
   prevCheck() {
     this.modalService.dismissAll();
-    $('#chequeModal').modal('show');
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop : 'static',
+      keyboard : false,
+      windowClass: 'peviewCheque-prog__main'
+    };
+    this.modalService.open(this.previewCheque, ngbModalOptions).result.then((result) => {
+    }, (reason) => {
+    });
   }
 
   getCarriers() {
@@ -102,13 +119,17 @@ export class PaymentChequeComponent implements OnInit {
     this.apiService.getData(`carriers/detail/${carrierID}`).subscribe((result: any) => {
       result.type = 'main';
       result.contactID = result.carrierID;
+      result.cName = result.companyName;
       this.carriers.unshift(result);
     })
   }
 
   selectedCarrier(val) {
+    console.log('val-=-=-=', val);
     this.cheqdata.companyName = val.companyName;
     this.cheqdata.currency = 'CAD';
+    this.addresses = [];
+    this.cheqdata.companyAddress = null;
     if(val.type === 'main') {
 
       this.cheqdata.bankName = val.banks[0].branchName;
@@ -139,19 +160,19 @@ export class PaymentChequeComponent implements OnInit {
       this.cheqdata.bankInst = "9635";
       this.cheqdata.bankAddress = "bank address";
 
-      val.address.map((v) => {
+      val.adrs.map((v) => {
         if(v.manual) {
-          v.fullAddr = `${v.address1}, ${v.stateName}, ${v.cityName}, ${v.countryName}, ${v.zipCode}`;
+          v.fullAddr = `${v.add1}, ${v.add2} ${v.sName}, ${v.ctyName}, ${v.cName}, ${v.zip}`;
         } else {
-          v.fullAddr = v.userLocation;
+          v.fullAddr = v.userLoc;
         }
       });
-      this.addresses = val.address;
+      this.addresses = val.adrs;
     }
   }
 
-  generatePDF() {
-    var data = document.getElementById('print_wrap');
+  async generatePDF() {
+    var data = document.getElementById('print_chk');
     html2pdf(data, {
       margin:       0,
       filename:     `cheque-${this.cheqdata.chqNo}.pdf`,
@@ -179,6 +200,12 @@ export class PaymentChequeComponent implements OnInit {
       arrLen++;
       sideArrLen++;
     }
+
+    let newL = this.cdnFund.filter(function(value){
+      console.log('value', value);
+      return value === '*';
+    }).length;
+    // console.log('newL-=-=-=', newL);
   }
 
   numberToString(num) {

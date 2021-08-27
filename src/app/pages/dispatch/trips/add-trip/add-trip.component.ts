@@ -293,7 +293,7 @@ export class AddTripComponent implements OnInit {
                 this.getSingleRowMiles(endingPoint, this.trips.length);
             }
 
-            this.textFieldValues[`planID`] = uuidv4(); 
+            this.textFieldValues[`planID`] = uuidv4();
             this.textFieldValues[`splitDone`] = false;
             this.trips.push(this.textFieldValues);
             this.disableSplit = false;
@@ -346,7 +346,17 @@ export class AddTripComponent implements OnInit {
     }
 
     delRow(index) {
+        let planID = this.trips[index].planID;
         this.trips.splice(index, 1);
+
+        this.splitArr.map((v) => {
+            v.map((k) => {
+                if(planID === k.planID) {
+                    const ind = v.indexOf(k.planID);
+                    v.splice(ind, 1);
+                }
+            })
+        })
 
         let locations = [];
         for(const tripp of this.trips) {
@@ -454,11 +464,11 @@ export class AddTripComponent implements OnInit {
         $(".codriverClass").removeClass('td_border');
     }
 
-    showAssetModal(type, index) {
+    showAssetModal(type, index) { 
         this.emptyAsigneeModal();
 
         if (type === 'add') {
-            if ($('#cell11').val() == '') {
+            if (this.textFieldValues.carrierID == '' || this.textFieldValues.carrierID == null) {
                 this.tempTextFieldValues.type = 'add';
                 this.tempTextFieldValues.index = '';
                 $('#assetModal').modal('show');
@@ -572,7 +582,7 @@ export class AddTripComponent implements OnInit {
                                     }
                                     let pickLocation = '';
                                     if(pk.address.manual) {
-                                        pickLocation = `${pk.address.address}, ${pk.address.city}, ${pk.address.state}. ${pk.address.country}`;
+                                        pickLocation = `${pk.address.address}, ${pk.address.cityName}, ${pk.address.stateName}. ${pk.address.countryName}`;
                                     } else {
                                         pickLocation = pk.address.pickupLocation;
                                     }
@@ -623,7 +633,7 @@ export class AddTripComponent implements OnInit {
                                 k.dropPoint.map((dr) => {
                                     let dropLocation = '';
                                     if(dr.address.manual) {
-                                        dropLocation = `${dr.address.address}, ${dr.address.city}, ${dr.address.state}, ${dr.address.country}`;
+                                        dropLocation = `${dr.address.address}, ${dr.address.cityName}, ${dr.address.stateName}, ${dr.address.countryName}`;
                                     } else {
                                         dropLocation = dr.address.dropOffLocation;
                                     }
@@ -1100,8 +1110,8 @@ export class AddTripComponent implements OnInit {
                     carrierID: null,
                     pickupTime: '',
                     dropTime: '',
-                    actualPickupTime: '',
-                    actualDropTime: '',
+                    // actualPickupTime: '',
+                    // actualDropTime: '',
                     lat: '',
                     lng: '',
                     driverID: '',
@@ -1122,8 +1132,8 @@ export class AddTripComponent implements OnInit {
                 obj.vehicleName=this.vehiclesObjects[element.vehicleID]
                 obj.pickupTime = element.pickupTime;
                 obj.dropTime = element.dropTime;
-                obj.actualPickupTime = element.actualPickupTime;
-                obj.actualDropTime = element.actualDropTime;
+                // obj.actualPickupTime = element.actualPickupTime;
+                // obj.actualDropTime = element.actualDropTime;
                 obj.lat = element.lat;
                 obj.lng = element.lng;
                 obj.driverID = element.driverID;
@@ -1608,8 +1618,8 @@ export class AddTripComponent implements OnInit {
                 // time: '',
                 pickupTime: '',
                 dropTime: '',
-                actualPickupTime: '',
-                actualDropTime: '',
+                // actualPickupTime: '',
+                // actualDropTime: '',
                 lat: '',
                 lng: '',
                 driverID: '',
@@ -1632,8 +1642,8 @@ export class AddTripComponent implements OnInit {
             //   obj.time = element.time;
             obj.pickupTime = element.pickupTime;
             obj.dropTime = element.dropTime;
-            obj.actualPickupTime = element.actualPickupTime;
-            obj.actualDropTime = element.actualDropTime;
+            // obj.actualPickupTime = element.actualPickupTime;
+            // obj.actualDropTime = element.actualDropTime;
             obj.lat = element.lat;
             obj.lng = element.lng;
             obj.driverID = element.driverID;
@@ -1756,7 +1766,9 @@ export class AddTripComponent implements OnInit {
     updateOrderStatusToConfirmed() {
         for (let i = 0; i < this.OldOrderIDs.length; i++) {
             const orderID = this.OldOrderIDs[i];
-            this.apiService.getData('orders/update/orderStatus/' + orderID + '/confirmed').subscribe((result: any) => {});
+            const orderStatus = 'confirmed';
+            const orderNo = 0;
+            this.apiService.getData(`orders/update/orderStatus/${orderID}/${orderNo}/${orderStatus}`).subscribe((result: any) => {});
         }
     }
 
@@ -1799,8 +1811,8 @@ export class AddTripComponent implements OnInit {
                 }
                 calcultedBy = element.milesInfo.calculateBy;
                 totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
-                this.orderNo += element.orderNumber
-                if(i < result.length-1){
+                this.orderNo += element.orderNumber;
+                if(i < result.length-1) {
                     this.orderNo = this.orderNo+', ';
                 }
 
@@ -2064,7 +2076,7 @@ export class AddTripComponent implements OnInit {
         if(this.locObj.type == 'add') {
             this.textFieldValues.locationName = '';
         }
-        
+
         if(this.textFieldValues.locMan || this.trips[index].locMan) {
             this.locObj.type = type;
             this.locObj.index = index;
@@ -2076,10 +2088,10 @@ export class AddTripComponent implements OnInit {
                 this.locObj.zipCode = this.trips[index].locData.zip;
                 this.locObj.sCode = this.trips[index].locData.sCode;
                 this.locObj.cCode = this.trips[index].locData.cCode;
-            } 
+            }
             $("#manualLocationModal").modal('show');
         }
-        
+
     }
 
     fetchCountries() {
@@ -2156,12 +2168,14 @@ export class AddTripComponent implements OnInit {
                 tripDriver.push(element);
             }
         }
-        if(this.dummySplitArr.length === this.trips.length) {
-            this.disableSplit = true;
-        } else {
-            this.disableSplit = false;
+        if(tripDriver.length > 0) {
+            if(this.dummySplitArr.length === this.trips.length) {
+                this.disableSplit = true;
+            } else {
+                this.disableSplit = false;
+            }
+            this.splitArr.push(tripDriver);
         }
-        this.splitArr.push(tripDriver);
     }
 
     delSubTrip(index) {

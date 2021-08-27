@@ -47,17 +47,17 @@
                                  <div *ngIf="cnt.errors.required">
                                    Contact is required.
                                     </div>
-                                    
+
                                  </div>
                            </div>
                         </div>
 
 
-                        <div class="row pt-2"> 
+                        <div class="row pt-2">
                            <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
                                  Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control"
+                              <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control text-lowercase"
                                  placeholder="e.g james@email.com, maria@email.com" #sMail12="ngModel" required pattern="^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$">
                                  <div *ngIf="sMail12.invalid && (sMail12.dirty || sMail12.touched)" class="text-danger">
                                     <div *ngIf="sMail12.errors.required">
@@ -84,12 +84,16 @@
                                  <div *ngIf="rtSlt.errors.required">
                                      Renewal type is required.
                                  </div>
-                           
+
                               </div>
                            </div>
-                           <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
-                              <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
+                           <div class="col-2 pl-0" style="margin-top: 38px !important;">
+                              <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success mr-1"><i
                                     class="fas fa-plus"></i></button>
+                              <a href="javascript:;" (click)="refreshTaskData()"
+                              data-toggle="tooltip" title="Refresh task data"
+                              class="btn btn-success btn-sm modal-with-form"><i
+                                    class="fas fa-sync"></i></a>
                            </div>
                         </div>
                         <div class="row pt-2">
@@ -102,7 +106,7 @@
                                     <div *ngIf="exp.errors.required">
                                      Expiration date is required.
                                        </div>
-                                       
+
                                     </div>
                            </div>
                            <div class="col-lg-6">
@@ -118,11 +122,11 @@
                                  </div>
                                  <div class="col-lg-8 pl-0">
                                     <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="reminderData.tasks.timeUnit" #tZone1="ngModel" required>
-                                       
+
                                        <ng-option value="day">Day(s)</ng-option>
                                        <ng-option value="week">Week(s)</ng-option>
                                        <ng-option value="month">Month(s)</ng-option>
-                                       
+
 
                                     </ng-select>
                                     <div *ngIf="tZone1.invalid && (tZone1.dirty || tZone1.touched)" class="text-danger">
@@ -136,7 +140,7 @@
                            </div>
                         </div>
                      </div>
-                     
+
                   </div>
                   <div class="form-group row pt-2">
                      <div class="col-lg-12 text-right">
@@ -149,14 +153,14 @@
                                  <a href="javascript:;" class="btn btn-default mr-2" routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
                                     <button  *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid" (click)="addRenewal()" class="btn btn-success">Save</button>
                                     <button  *ngIf="!reminderID && contactF.form.valid" [disabled]="submitDisabled" (click)="addRenewal()" class="btn btn-success">Save</button>
-                                       
+
                                     <button  *ngIf="reminderID && !contactF.form.valid " [disabled]="!contactF.form.valid"  (click)="updateRenewal()" class="btn btn-success">Update</button>
                                     <button  *ngIf="reminderID &&  contactF.form.valid" [disabled]="submitDisabled" (click)="updateRenewal()" class="btn btn-success">Update</button>
-                                       
+
 
                                  </div>
                               </div>
-                           </div> 
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -164,12 +168,12 @@
                 </div>
               </div>
             </div>
-            
-        
-            
+
+
+
          </section>
 
-       
+
       </section>
    </div>
 </section>
@@ -179,7 +183,7 @@
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
-         
+
          <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get" #contactForm="ngForm">
          <div class="modal-header">
             <h5 class="modal-title" id="serviceTaskModalTitle">Add Renewal Type</h5>
@@ -198,14 +202,14 @@
                   <div *ngIf="nameR.invalid && (nameR.dirty || nameR.touched)" class="text-danger">
                      <div *ngIf="nameR.errors.required">
                        Renewal type is required.
-                     </div>     
+                     </div>
                      <div *ngIf="nameR.errors.pattern">
                             Renewal type must contain alphanumeric characters.
                      </div>
                    </div>
                 </div>
              </div>
-             
+
              <div class="row mt-2">
                <div class="col-lg-12">
                  <label
@@ -220,7 +224,7 @@
                </div>
                </div>
             </div>
-          
+
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

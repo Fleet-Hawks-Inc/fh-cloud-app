@@ -46,16 +46,17 @@ export class ChartOfAccountsComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
+  deactivatePredefined = true;
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
+    this.checkPredefinedAccounts();
     this.fetchAccounts();
   }
   preAccounts() {
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
       this.toaster.success('Predefined  Accounts Created.');
-      this.listService.fetchChartAccounts();
-      this.accounts = this.listService.accountsList;
+      this.fetchAccounts();
     });
   }
   deleteAccount(actID: string) {
@@ -83,11 +84,11 @@ export class ChartOfAccountsComponent implements OnInit {
   }
   searchAccounts() {
     if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
-        this.accounts = [];
-        this.lastItemSK = '';
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchAccounts();
-      }
+      this.accounts = [];
+      this.lastItemSK = '';
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchAccounts();
+    }
   }
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
@@ -136,12 +137,23 @@ export class ChartOfAccountsComponent implements OnInit {
           }
         });
     }
-
+    if (this.deactivatePredefined === false) {
+      this.dataMessage = 'Please add predefined accounts';
+    }
   }
   onScroll() {
     this.fetchAccounts();
   }
-
+  checkPredefinedAccounts() {
+    this.accountService.getData(`chartAc/get/internalID/list/all`).subscribe((res) => {
+      if (res.ACT0 !== undefined && res.ACT66 !== undefined) {
+        this.deactivatePredefined = true;
+      } else {
+        this.deactivatePredefined = false;
+        this.dataMessage = 'Please add predefined accounts';
+      }
+    });
+  }
 
   addAccount() {
     this.submitDisabled = true;
@@ -183,11 +195,11 @@ export class ChartOfAccountsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Account Added Successfully.');
-        $('#addAccountModal').modal('hide');
         this.lastItemSK = '';
         this.accounts = [];
         this.fetchAccounts();
+        this.toaster.success('Account Added Successfully.');
+        $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
         this.actNo = null;
@@ -286,11 +298,11 @@ export class ChartOfAccountsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Account Updated Successfully.');
-        $('#addAccountModal').modal('hide');
         this.lastItemSK = '';
         this.accounts = [];
         this.fetchAccounts();
+        this.toaster.success('Account Updated Successfully.');
+        $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
         this.actNo = null;

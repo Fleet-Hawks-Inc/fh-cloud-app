@@ -135,7 +135,6 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.fetchPaymentDetail();
     }
     this.fetchEmployees();
-   // this.fetchAccounts();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
     this.fetchPayPeriods();
@@ -154,6 +153,9 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
       this.accounts = res;
     });
+  }
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
   }
   fetchEmployeDetail() {
     this.paymentData.payroll.type = null;
@@ -574,6 +576,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       type: 'employee',
       chequeNo: this.paymentData.payModeNo,
       currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add'
     }
     this.listService.openPaymentChequeModal(obj);
   }

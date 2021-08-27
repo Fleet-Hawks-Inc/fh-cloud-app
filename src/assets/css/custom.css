@@ -2513,7 +2513,7 @@ input.placeholder-lowercase {
 
 .addsr-scrollbar {
   position: relative;
-  height: 600px;
+  height: 685px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 15px;
@@ -2592,4 +2592,8 @@ input:checked + .sliderbtn:before {
 }
 .mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
   cursor: pointer;
+}
+
+.modal.photo__main .modal-dialog {
+  max-width: 250px;
 }

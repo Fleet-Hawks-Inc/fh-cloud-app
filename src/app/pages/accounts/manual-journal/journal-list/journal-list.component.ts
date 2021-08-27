@@ -28,12 +28,15 @@ export class JournalListComponent implements OnInit {
     this.fetchJournals();
   }
 
-  fetchJournals() {
+  async fetchJournals(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.journals = [];
+    }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`journal/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
-        .subscribe((result: any) => {
-          console.log('result', result);
-          if(result.length === 0) {
+        .subscribe(async(result: any) => {
+          if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if(result.length > 0) {
@@ -45,9 +48,9 @@ export class JournalListComponent implements OnInit {
 
             result.map((v) => {
               this.journals.push(v);
-            })
+            });
           }
-      })
+      });
     }
   }
 
@@ -55,8 +58,13 @@ export class JournalListComponent implements OnInit {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.getData(`journal/delete/${journalID}`)
       .subscribe((result: any) => {
-        this.fetchJournals();
-        this.toaster.success('Manual journal deleted successfully.');
+        if (result !== undefined) {
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastItemSK = '';
+          this.journals = [];
+          this.fetchJournals();
+          this.toaster.success('Manual journal deleted successfully.');
+        }
       });
     }
   }

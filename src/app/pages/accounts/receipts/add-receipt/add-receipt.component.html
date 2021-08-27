@@ -281,7 +281,12 @@
                         </div>
                         <div class="col-lg-2" style="margin-top: 32px;">
                           <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i></button>
+                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                          </button>
+                          <a href="javascript:;" (click)="refreshAccount()"
+                            data-toggle="tooltip" title="Refresh account data"
+                            class="btn btn-success btn-sm modal-with-form"><i
+                                class="fas fa-sync"></i></a>
                         </div>
                       </div>
                       <div class="row">

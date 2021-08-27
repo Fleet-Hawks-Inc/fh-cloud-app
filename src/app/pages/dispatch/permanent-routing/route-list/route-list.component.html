@@ -59,7 +59,7 @@
                                         </tr>
                                         <tr class="cursorpoint" *ngFor="let route of routes; let i= index">
                                             <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">{{ route.routeName }}</td>
-                                            <td>
+                                            <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">
                                                 <span *ngIf="route.stops.length == 0">
                                                     -
                                                 </span>
@@ -67,7 +67,7 @@
                                                     {{ route.stops[0].name }}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">
                                                 <span *ngIf="route.stops.length <= 1">
                                                     -
                                                 </span>
@@ -75,8 +75,8 @@
                                                     {{ route.stops[route.stops.length-1].name }}
                                                 </span>
                                             </td>
-                                            <td>{{ route.miles }} miles</td>
-                                            <td>
+                                            <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">{{ route.miles }} miles</td>
+                                            <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">
                                                 <span *ngIf="route.recurring">
                                                     {{ route.recurring.type }}
                                                 </span>

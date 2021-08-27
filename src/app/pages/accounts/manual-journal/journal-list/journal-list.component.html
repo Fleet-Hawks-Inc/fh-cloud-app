@@ -42,16 +42,19 @@
             </div>
          </header>
          <div class="row">
-            <div class="col-lg-12 pr-0">
+            <div class="col pr-0">
                <section class="card">
-                  <div infiniteScroll
-                     [infiniteScrollDistance]="1"
-                     [infiniteScrollUpDistance]="1"
-                     [infiniteScrollThrottle]="5"
-                     (scrolled)="onScroll()">
-                     <div class="card-body pl-3 pt-3" style="display: block">
-                      <div class="main-panel">
-                        <table class="row-border hover table table-bordered table-striped mb-0 ">
+                <div class="main-panel">
+                  <div  infiniteScroll
+                  [infiniteScrollDistance]="1"
+                  [infiniteScrollUpDistance]="1"
+                  [infiniteScrollThrottle]="5"
+                  (scrolled)="onScroll()">
+                  <div class="card-body" style="display: block">
+                   <div class="main-panel">
+                     <div class="row bg-white">
+                       <div class="col">
+                        <table class="table table-bordered table-hover table-striped mb-0 simple-table">
                           <thead>
                              <tr class="bgcol2">
                                 <th class="text-2">Journal#</th>
@@ -64,7 +67,7 @@
                           </thead>
                           <tbody>
                              <tr *ngIf="journals.length === 0" class="text-center">
-                                <td colspan="5">{{ dataMessage }}</td>
+                                <td colspan="6">{{ dataMessage }}</td>
                              </tr>
                              <tr *ngFor="let data of journals; let i=index;">
                                 <td class="font-weight-bold" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.jrNo }}</td>
@@ -87,9 +90,14 @@
                              </tr>
                           </tbody>
                        </table>
-                      </div>
+                       </div>
                      </div>
+
+                   </div>
                   </div>
+               </div>
+                </div>
+
                </section>
             </div>
          </div>

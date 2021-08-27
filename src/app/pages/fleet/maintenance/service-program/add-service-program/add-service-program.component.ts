@@ -119,7 +119,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           )
           .subscribe({
             complete: () => {
-              // this.throwErrors();
+              this.throwErrors();
               this.submitDisabled = false;
             },
             error: () => { 
@@ -151,10 +151,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   throwErrors() {
     from(Object.keys(this.errors))
-      .subscribe((v) => {
-        $('[name="' + v + '"]')
+      .subscribe((v) => { 
+        if(v === 'programName') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
+        }
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -246,5 +248,13 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     if (this.selectedVehicles.includes(vehicle.value) ){
       this.serviceData.unselectedVehicles.push(vehicle.value)
     }
+  }
+
+  getTasks() {
+    this.listService.fetchTasks();
+  }
+
+  refreshVehicleData() {
+    this.listService.fetchVehicles();
   }
 }

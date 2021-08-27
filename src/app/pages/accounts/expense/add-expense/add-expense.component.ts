@@ -144,7 +144,12 @@ pageTitle = 'Add Other Expense';
   resetUnitVal() {
     this.expenseData.unitID = null;
   }
-
+  refreshExpenseAccount() {
+    this.listService.fetchChartAccounts();
+  }
+  refreshPaidAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchCountries() {
     this.countries = CountryStateCity.GetAllCountries();
   }
@@ -378,12 +383,15 @@ pageTitle = 'Add Other Expense';
   fetchExpenseCategories() {
     this.accountService.getData(`expense/categories`)
       .subscribe((result: any) => {
-        if (result[0] != undefined) {
+        if (result[0] !== undefined) {
           this.expenseCategories = result;
         }
-      })
+      });
   }
 
+  refreshCategory() {
+    this.fetchExpenseCategories();
+  }
   deleteDocument(name: string, index: number) {
     this.accountService.deleteData(`expense/uploadDelete/${this.expenseID}/${name}`).subscribe((result: any) => {
       this.existingDocs.splice(index, 1);
@@ -416,5 +424,14 @@ pageTitle = 'Add Other Expense';
     if(val === this.expenseData.paidAccountID) {
       this.expenseData.paidAccountID = null;
     }
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
   }
 }

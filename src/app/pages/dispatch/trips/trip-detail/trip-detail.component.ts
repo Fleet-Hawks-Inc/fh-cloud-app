@@ -6,9 +6,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
 import { environment } from 'src/environments/environment';
+import Constants from 'src/app/pages/fleet/constants';
 @Component({
   selector: 'app-trip-detail',
   templateUrl: './trip-detail.component.html',
@@ -22,7 +22,7 @@ export class TripDetailComponent implements OnInit {
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
-
+  noOrdersMsg = Constants.NO_RECORDS_FOUND;
   tripData = {
     tripNo: '',
     tripStatus: '',
@@ -80,6 +80,8 @@ export class TripDetailComponent implements OnInit {
   tripLog = [];
   expenses = [];
   categories = [];
+  splitArr = [];
+
   ngOnInit() {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetIDs();
@@ -96,14 +98,26 @@ export class TripDetailComponent implements OnInit {
     // this.initTemperatureChart();
   }
   fetchTripLog() {
-    const lastEvaluatedKey = '';
-    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + lastEvaluatedKey).subscribe((res: any) => {
-      // console.log('trip', res.Items);
-
-      for (const element of res.Items) {
-        if (element.eventParams.eventID === this.tripID) {
-          this.tripLog.push(element);
-        }
+    this.apiService.getData(`auditLogs/details/${this.tripID}`).subscribe((res: any) => {
+      this.tripLog = res.Items; 
+      if (this.tripLog.length > 0) {
+        this.tripLog.map((k) => {
+          if (k.eventParams.userName !== undefined) {
+            const newString = k.eventParams.userName.split('_');
+            k.userFirstName = newString[0];
+            k.userLastName = newString[1];
+          }
+          if (k.eventParams.number !== undefined) {
+            k.entityNumber = k.eventParams.number;
+          }
+          if (k.eventParams.name !== undefined) {
+            if (k.eventParams.name.includes('_')) {
+              const newString = k.eventParams.name.split('_');
+              k.firstName = newString[0];
+              k.lastName = newString[1];
+            }
+          }
+        });
       }
     });
   }
@@ -187,6 +201,7 @@ export class TripDetailComponent implements OnInit {
           const element = tripPlanning[i];
 
           let obj = {
+            planID: element.planID,
             assetID: element.assetID,
             carrierID: element.carrierID,
             carrierName: "",
@@ -206,8 +221,8 @@ export class TripDetailComponent implements OnInit {
             type: element.type,
             vehicleID: element.vehicleID,
             vehicleName: "",
-            actualDropTime: element.actualDropTime,
-            actualPickupTime: element.actualPickupTime,
+            // actualDropTime: element.actualDropTime,
+            // actualPickupTime: element.actualPickupTime,
             dropTime: element.dropTime,
             time: element.time,
             pickupTime: element.pickupTime
@@ -224,6 +239,19 @@ export class TripDetailComponent implements OnInit {
           this.plannedMiles += parseFloat(element.miles);
           this.newCoords.push(`${element.lat},${element.lng}`);
           this.trips.push(obj);
+        }
+
+        if(result.split) {
+          result.split.map((x, cind) => {
+              this.splitArr[cind] = [];
+              x.map((c) => {
+                  this.trips.map((t) => {
+                      if(t.planID === c) {
+                        this.splitArr[cind].push(t);
+                      }
+                  })
+              })
+          })
         }
 
         if (this.newCoords.length > 0) {

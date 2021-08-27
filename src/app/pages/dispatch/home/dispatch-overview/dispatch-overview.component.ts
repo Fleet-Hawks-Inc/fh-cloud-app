@@ -6,6 +6,7 @@ import  Constants  from '../../../fleet/constants';
 declare var $: any;
 import * as moment from 'moment';
 import { textChangeRangeIsUnchanged } from 'typescript';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dispatch-overview',
@@ -118,7 +119,7 @@ export class DispatchOverviewComponent implements OnInit {
   activitiesCount = 0;
   prevKeyExist = true;
 
-  constructor(private apiService: ApiService,
+  constructor(private apiService: ApiService,private router: Router,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
@@ -134,6 +135,7 @@ export class DispatchOverviewComponent implements OnInit {
     this.fetchAllVehicles();
     this.fetchAceManifest();
     this.fetchAciManifest();
+
   }
 
   initDataTable() {
@@ -151,28 +153,28 @@ export class DispatchOverviewComponent implements OnInit {
         result.Items.map((k)=> {
           k.eventParams.message = k.eventParams.message.replace('consignor','shipper');
           k.eventParams.message = k.eventParams.message.replace('consignee','receiver');
-        })
+
+          if (k.eventParams.userName !== undefined) {
+            const newString = k.eventParams.userName.split('_');
+            k.userFirstName = newString[0];
+            k.userLastName = newString[1];
+          }
+          if (k.eventParams.number !== undefined) {
+            k.entityNumber = k.eventParams.number;
+          }
+          if (k.eventParams.name !== undefined) {
+            if (k.eventParams.name.includes('_')) {
+              const newString = k.eventParams.name.split('_');
+              k.firstName = newString[0];
+              k.lastName = newString[1];
+            }
+          }
+        });
         if (this.pageload) {
-          result.Items.map((v)=> {
-            if (v.eventParams.userName !== undefined) {
-              const newString = v.eventParams.userName.split('_');
-              v.userFirstName = newString[0];
-              v.userLastName = newString[1];
-            }
-            if (v.eventParams.number !== undefined) {
-              v.entityNumber = v.eventParams.number;
-            }
-            if (v.eventParams.name !== undefined) {
-              const newString = v.eventParams.name.split('_');
-              v.firstName = newString[0];
-              v.lastName = newString[1];
-            }
-          });
-          this.activities = result['Items'];
+          this.activities = result[`Items`];
           this.pageload = false;
         }
         this.allActivities = result['Items'];
-
         if (result['LastEvaluatedKey'] !== undefined) {
           const lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
           this.dispatchNext = false;
@@ -207,7 +209,44 @@ export class DispatchOverviewComponent implements OnInit {
         this.totalRecords = result.Count;
       })
   }
-
+  goToDetails(eventID: string, type: string) {
+  //  console.log('eventID', eventID);
+  //  console.log('type', type);
+   if (type === 'driver') {
+     $('#acttimelinemodal').modal('hide');
+     this.router.navigateByUrl(`/fleet/drivers/detail/${eventID}`);
+   } else if (type === 'vehicle') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/vehicles/detail/${eventID}`);
+   } else if (type === 'asset') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/assets/detail/${eventID}`);
+   } else if (type === 'route') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/routes/detail/${eventID}`);
+   } else if (type === 'trip') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/trips/trip-details/${eventID}`);
+   } else if (type === 'issue') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/issues/detail/${eventID}`);
+   } else if (type === 'serviceProgram') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/service-program/detail/${eventID}`);
+   } else if (type === 'order') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/orders/detail/${eventID}`);
+   } else if (type === 'fuelEntry') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/fuel/detail/${eventID}`);
+   } else if (type === 'serviceLog') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/service-log/detail/${eventID}`);
+   } else if (type === 'inventory') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/inventory/detail/${eventID}`);
+   }
+  }
   fetchAllTrips() {
     this.spinner.show();
     this.apiService.getData('trips').

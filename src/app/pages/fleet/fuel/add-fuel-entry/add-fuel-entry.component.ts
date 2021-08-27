@@ -451,4 +451,13 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
 }

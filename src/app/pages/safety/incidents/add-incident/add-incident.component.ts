@@ -27,9 +27,11 @@ export class AddIncidentComponent implements OnInit {
         assigned: null,
         incidentType: null,
         eventSource: 'manual',
-        locationText:'',
+        location: {
+            label: '',
+            cords: '',
+        },
         severity: null,
-        location: '',
         notes: '',
         status: 'open',
     };
@@ -79,6 +81,8 @@ export class AddIncidentComponent implements OnInit {
     photoSizeError = '';
     videoSizeError = '';
     docSizeError = '';
+    
+    isSuggest: boolean = false;
 
     public searchResults: any;
     private readonly search: any;
@@ -116,7 +120,7 @@ export class AddIncidentComponent implements OnInit {
         if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
             this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == '' ||
             this.event.eventTime == null || this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
-            this.event.locationText == '' || this.event.status == '' || this.event.eventSource == '' || this.event.notes.length > 500) {
+            this.event.location.label == '' || this.event.status == '' || this.event.eventSource == '' || this.event.notes.length > 500) {
             return true
         } else {
             return false;
@@ -145,6 +149,11 @@ export class AddIncidentComponent implements OnInit {
     }
 
     addEvent() {
+        
+        if(!this.isSuggest) {
+            this.toastr.error('Please select valid location');
+            return;
+        }
         this.disableButton = true;
         this.hideErrors();
         
@@ -242,13 +251,14 @@ export class AddIncidentComponent implements OnInit {
 
     async assignLocation(position: any,title:string) {
         if (position) {
-            this.event.location = `${position.lat},${position.lng}`;
-            this.event.locationText=title;
+            this.event.location.cords = `${position.lat},${position.lng}`;
+            this.event.location.label = title;
             this.searchResults = false;
+            this.isSuggest = true;
             $('div').removeClass('show-search__result');
         } else {
-            this.event.locationText=title;
-            this.event.location = '0,0';
+            this.event.location.label = title;
+            this.event.location.cords = '0,0';
         }
     }
 
