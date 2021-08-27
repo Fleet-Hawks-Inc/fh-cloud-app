@@ -108,7 +108,6 @@ export class JournalListComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('hello journal');
     this.fetchJournals();
   }
 }
