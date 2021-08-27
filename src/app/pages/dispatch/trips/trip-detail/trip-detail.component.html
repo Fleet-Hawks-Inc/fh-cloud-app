@@ -183,7 +183,7 @@
                              <div class="vehicle-common-box pull-left w100 h-100">
                                 <div class="widgettbload">
                                     <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                            class="fas fa-route"></i> Trip Route</h2>
+                                        class="fas fa-route"></i> Trip Route</h2>
                                 </div>
 
                                 <div class="widgetload">
@@ -198,8 +198,8 @@
                                                     <!-- <th>Time</th> -->
                                                     <th>Pickup Time</th>
                                                     <th>Drop Off Time</th>
-                                                    <th>Actual Pickup Time</th>
-                                                    <th>Actual Drop Off Time</th>
+                                                    <!-- <th>Actual Pickup Time</th>
+                                                    <th>Actual Drop Off Time</th> -->
                                                     <!-- <th>Departure Date/Time</th> -->
                                                     <th>Name</th>
                                                     <th>Location</th>
@@ -219,8 +219,8 @@
                                                     <!-- <td>{{ trip.time }}</td> -->
                                                     <td>{{ trip.pickupTime }}</td>
                                                     <td>{{ trip.dropTime }}</td>
-                                                    <td>{{ trip.actualPickupTime }}</td>
-                                                    <td>{{ trip.actualDropTime }}</td>
+                                                    <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                    <td>{{ trip.actualDropTime }}</td> -->
                                                     <!-- <td>6/6/2020 10:00 AM</td> -->
                                                     <td>{{ trip.name }}</td>
                                                     <td>{{ trip.locationName }}</td>
@@ -251,6 +251,83 @@
                          </div>
                       </div>
                    </div>
+                </div>
+
+                <div class="row mb-3" *ngIf="splitArr.length > 0">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                           <div class="form-group row" *ngFor="let data of splitArr;  let o=index;">
+                                <div class="col-xl-12 col-12">
+                                    <div class="vehicle-common-box pull-left w100 h-100">
+                                        <div class="widgettbload">
+                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
+                                                class="fas fa-route"></i> Sub Trip - {{ tripData.tripNo }} ({{ o+1 }}) </h2>
+                                        </div>
+        
+                                        <div class="widgetload">
+                                            <div class="widgetlinfo">
+                                                <table class="table table-sm table-bordered table-striped"
+                                                    id="locationTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type</th>
+                                                            <th>Date</th>
+                                                            <!-- <th>Time</th> -->
+                                                            <th>Pickup Time</th>
+                                                            <th>Drop Off Time</th>
+                                                            <!-- <th>Actual Pickup Time</th>
+                                                            <th>Actual Drop Off Time</th> -->
+                                                            <!-- <th>Departure Date/Time</th> -->
+                                                            <th>Name</th>
+                                                            <th>Location</th>
+                                                            <th>Loaded/ Empty</th>
+                                                            <th>Miles</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Asset</th>
+                                                            <th>Driver</th>
+                                                            <th>Co-Driver</th>
+                                                            <th>Carrier</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let trip of data">
+                                                            <td>{{ trip.type }}</td>
+                                                            <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
+                                                            <!-- <td>{{ trip.time }}</td> -->
+                                                            <td>{{ trip.pickupTime }}</td>
+                                                            <td>{{ trip.dropTime }}</td>
+                                                            <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                            <td>{{ trip.actualDropTime }}</td> -->
+                                                            <!-- <td>6/6/2020 10:00 AM</td> -->
+                                                            <td>{{ trip.name }}</td>
+                                                            <td>{{ trip.locationName }}</td>
+                                                            <td>
+                                                                <span class="badge badge-dark p-1 text-uppercase" title=""
+                                                                    data-original-title="Empty Miles"
+                                                                    *ngIf="trip.mileType != ''">{{
+                                                                    trip.mileType }}</span>
+                                                            </td>
+                                                            <td>{{ trip.miles }}</td>
+                                                            <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                                                            <td>
+                                                                <span *ngFor="let asst of trip.assetID">
+                                                                    {{ assetsObject[asst] }}
+                                                                    <br>
+                                                                </span>
+                                                            </td>
+                                                            <td>{{ driversObject[trip.driverID] }}</td>
+                                                            <td>{{ driversObject[trip.coDriverID] }}</td>
+                                                            <td>{{ carriersObject[trip.carrierID] }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
@@ -324,7 +401,7 @@
                                 </div>
                                 <div class="timeline timeline-simple changelog"
                                     style="max-height: 497px;overflow-x: auto;width: 100%;">
-                                    <div class="tm-body text-dark">
+                                    <div class="tm-body text-dark" *ngIf="tripLog.length > 0">
                                        <ol class="tm-items">
                                             <li *ngFor="let data of tripLog">
                                                 <div class="tm-box">
@@ -336,84 +413,9 @@
                                                 </div>
                                             </li>
                                         </ol>
-                                        <!-- <ol class="tm-items">
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">16 May 2020 04:10 PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Arrival</span> - Driver
-                                                            Arrived
-                                                            at Pick-up location.
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">29 November 17 05:12 PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Departure</span> - Driver
-                                                            picked
-                                                            up load and departed
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">29 April 17 02:40PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge p-1 badge-dark">Stop</span> - Driver
-                                                            stopped for
-                                                            30min break
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">11 March 17 02:40PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Driving</span> - Driver
-                                                            Resumed
-                                                            Driving after break
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">11 March 17 12:23PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Stop</span> - Driver
-                                                            Stopped for
-                                                            8 hours
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">12 March 17 02:40PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Arrival</span> - Driver
-                                                            Arrived
-                                                            at Destination.
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="tm-box">
-                                                    <span class="release-date">11 March 17 03:40PM</span>
-                                                    <ul class="list-unstyled">
-                                                        <li><span class="badge badge-dark p-1">Departure</span> - Driver
-                                                            Departed from Destination.
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ol> -->
+                                    </div>
+                                    <div class="mt-3 mb-3 text-center" *ngIf="tripLog.length == 0">
+                                        {{ noOrdersMsg }}
                                     </div>
                                 </div>
                             </div>
@@ -431,7 +433,7 @@
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
                                                   <a routerLink="/accounts/expense/add" class="btn btn-success btn-xs"
-                                    style="color:white;"><i class="fas fa-plus"></i> Add Expense </a>
+                                                    style="color:white;"><i class="fas fa-plus"></i> Add Expense </a>
                                                     <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
                                                     <a href="javascript:;" class="btn btn-xs btn-dark ml-3"> Other
@@ -451,15 +453,17 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
-                                                <tr  *ngFor="let expense of expenses">
+                                                <tr *ngIf="expenses.length === 0" class="text-center">
+                                                    <td colspan="4">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr *ngFor="let expense of expenses">
                                                     <td>{{expense.txnDate | date: 'yyyy/MM/dd'}}</td>
                                                     <td> {{categories[expense.categoryID]}}</td>
                                                     <td> Other Expense</td>
                                                     <td>{{expense.amount}} {{expense.currency}}</td>
                                                 </tr>
                                             </tbody>
-                                            <tfoot>
+                                            <tfoot *ngIf="expenses.length > 0">
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
@@ -514,7 +518,7 @@
                                                 <tr>
                                                     <td>
                                                         <span class="line-height-xl"> <i class="fa fa-calendar-alt"></i>
-                                                            {{ stops }} Stops
+                                                            {{ stops }} Stop(s)
                                                         </span>
                                                     </td>
 

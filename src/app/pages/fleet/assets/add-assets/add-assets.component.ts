@@ -199,6 +199,10 @@ export class AddAssetsComponent implements OnInit {
     this.listService.fetchVendors();
   }
 
+  openProgram(value) {
+    this.listService.separateModals(value);
+  }
+
   /*
    * Add new asset
    */

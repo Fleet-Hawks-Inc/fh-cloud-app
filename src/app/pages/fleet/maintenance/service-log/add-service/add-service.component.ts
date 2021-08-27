@@ -932,7 +932,7 @@ export class AddServiceComponent implements OnInit {
 
   gotoIssuePage() {
     // this.router.navigateByUrl('/fleet/maintenance/issues/add')
-    $('#addIssuesModal').modal('show');
+    this.listService.separateModals('add-issue');
     let selectedUnit: any = {
       type: this.serviceData.unitType,
       name: this.serviceData.unitID,
