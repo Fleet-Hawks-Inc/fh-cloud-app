@@ -576,6 +576,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       type: 'employee',
       chequeNo: this.paymentData.payModeNo,
       currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add'
     }
     this.listService.openPaymentChequeModal(obj);
   }
