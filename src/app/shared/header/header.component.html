@@ -11,7 +11,7 @@
         <div class="header-nav collapse">
             <div class="header-nav-main header-nav-main-square">
                 <nav>
-                    <ul class="nav">
+                    <ul class="nav" *ngIf="navSelected!='onboard'">
                         <li class="" [class.active]="navSelected === 'fleet'" *ngIf="isFleetEnabled">
                             <a class="nav-link" [routerLink]="['/Map-Dashboard']" (click)="onNavSelected('fleet')">
                                 Fleet
