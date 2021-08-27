@@ -131,6 +131,7 @@ export class NewAddressBookComponent implements OnInit {
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
+          windowClass: 'units-form__main'
         };
         this.modalService.dismissAll();
         const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
@@ -1174,7 +1175,12 @@ export class NewAddressBookComponent implements OnInit {
     this.editUser(item)
     
     this.modalService.dismissAll();
-    this.modalService.open(targetModal);
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop : 'static',
+      keyboard : false,
+      windowClass: 'units-detail__main'
+    };
+    this.modalService.open(targetModal, ngbModalOptions);
     
   }
 
