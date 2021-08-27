@@ -545,7 +545,10 @@
                                  type="file">
                            </div>
                           </div>
-                          <div class="col-lg-12 text-right" *ngIf="driverF.submitted && abstractDocs.length == 0">
+                          <div class="col-lg-12 text-right" *ngIf="driverF.submitted && abstractDocs.length == 0 && !driverID">
+                            <label class ="text-danger">Add Abstract History Document</label>
+                          </div>
+                          <div class="col-lg-12 text-right" *ngIf="driverF.submitted && absDocs.length == 0 && abstractDocs.length == 0 && driverID">
                             <label class ="text-danger">Add Abstract History Document</label>
                           </div>
                           <!-- <div class="col-lg-12 text-right" *ngIf="errorAbstract && abstractDocs.length == 0">
