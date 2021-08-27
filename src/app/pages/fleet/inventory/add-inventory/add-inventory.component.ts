@@ -506,6 +506,13 @@ export class AddInventoryComponent implements OnInit {
     this.pdfSrc = '';
   }
 
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+
   disableButton() {
     if(this.partNumber == '' || this.costUnit == '' || this.costUnit == null || this.costUnitType == '' || this.costUnitType == null || 
       this.category == '' || this.category == null

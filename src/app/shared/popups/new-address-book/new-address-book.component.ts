@@ -124,7 +124,20 @@ export class NewAddressBookComponent implements OnInit {
           windowClass: 'units-list__main'
         };
         this.modalService.dismissAll();
-        this.modalService.open(this.allUnitModal, ngbModalOptions)
+        const allUnitModel = this.modalService.open(this.allUnitModal, ngbModalOptions)
+        allUnitModel.result.then((data) => {
+          this.units = [];
+          this.customers = [];
+          this.brokers = [];
+          this.vendors = [];
+          this.receivers = [];
+          this.shippers = [];
+          this.owners = [];
+          this.fcCompanies = [];
+          this.carriers = [];
+        }, (reason) => {
+          this.units = [];
+        });
         this.lastKey = '';
         this.fetchUnits();
       } else if(res === 'form') {
@@ -134,7 +147,7 @@ export class NewAddressBookComponent implements OnInit {
         };
         this.modalService.dismissAll();
         const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
-       
+        this.imageText = 'Add Picture';
         modalRef.result.then((data) => {
           this.emptyEntry();
         }, (reason) => {
@@ -226,7 +239,6 @@ export class NewAddressBookComponent implements OnInit {
   setActiveDiv (item){
     if(item === 'all') {
       this.units = this.allData;
-
     } else if(item === 'broker') {
       this.brokers = [];
       this.units.forEach(element => {
@@ -957,6 +969,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   deactivate(id) {
+    
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
       .deleteData(`contacts/delete/CONT/${id}`)
@@ -964,7 +977,16 @@ export class NewAddressBookComponent implements OnInit {
         this.lastKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
         this.units = [];
+        this.customers = [];
+        this.brokers = [];
+        this.vendors = [];
+        this.receivers = [];
+        this.shippers = [];
+        this.owners = [];
+        this.fcCompanies = [];
+        this.carriers = [];
         this.fetchUnits();
+        
         this.toastr.success('Entry deleted successfully');
       });
     }
@@ -1090,6 +1112,24 @@ export class NewAddressBookComponent implements OnInit {
         }
         res.forEach(element => {
           this.units.push(element);
+          if(element.eTypes.includes('customer')) {
+            this.customers.push(element)
+          } else if(element.eTypes.includes('broker')) {
+            this.brokers.push(element)
+          } else if(element.eTypes.includes('carrier')) {
+            this.carriers.push(element)
+          } else if(element.eTypes.includes('shipper')) {
+            this.shippers.push(element)
+          } else if(element.eTypes.includes('receiver')) {
+            this.receivers.push(element)
+          } else if(element.eTypes.includes('fc')) {
+            this.fcCompanies.push(element)
+          } else if(element.eTypes.includes('vendor')) {
+            this.vendors.push(element)
+          } else if(element.eTypes.includes('owner_operator')) {
+            this.owners.push(element)
+          }
+
         });
         if(this.units.length > 0) {
           if(this.units[this.units.length - 1].contactSK != undefined) {
@@ -1179,6 +1219,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   onModalScrollDown() {
+    console.log('scrolled')
     this.fetchUnits();
   }
 
