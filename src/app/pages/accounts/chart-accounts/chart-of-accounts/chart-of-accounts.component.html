@@ -29,8 +29,8 @@
 						<button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
 					</div>
 					<div class="col-md-6  col-lg-6 text-right">
+            <button type="button" class="btn btn-default btn-sm mr-1" *ngIf="!deactivatePredefined" (click)="preAccounts()">Add Predefined</button>
 						<button (click)="showAcModal()" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
-						<button type="button" class="btn btn-default" (click)="preAccounts()">Add Predefined</button>
 					</div>
 				</div>
 			</header>
