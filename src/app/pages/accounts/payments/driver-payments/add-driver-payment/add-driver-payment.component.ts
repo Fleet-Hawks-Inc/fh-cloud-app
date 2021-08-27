@@ -557,6 +557,7 @@ export class AddDriverPaymentComponent implements OnInit {
       type: this.paymentData.paymentTo,
       chequeNo: this.paymentData.payModeNo,
       currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add'
     }
     this.listService.openPaymentChequeModal(obj);
   }

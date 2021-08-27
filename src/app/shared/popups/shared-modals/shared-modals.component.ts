@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 import { ListService } from '../../../services';
 import * as moment from 'moment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 @Component({
@@ -185,8 +185,12 @@ users = [];
 fetchApis() {
   this.listService.otherModelList.subscribe((res: any) => {
     if(res === 'program') {
-
-      const vehModal = this.modalService.open(this.vehProgramModal);
+      let ngbModalOptions: NgbModalOptions = {
+        backdrop : 'static',
+        keyboard : false,
+        windowClass: 'vehicle-prog__main'
+      };
+      const vehModal = this.modalService.open(this.vehProgramModal, ngbModalOptions);
       vehModal.result.then((data) => {
         this.clearServiceProg();
       }, (reason) => {
@@ -195,8 +199,12 @@ fetchApis() {
       this.fetchVehicles();
       this.fetchTasks();
     } else if(res === 'add-issue') {
-
-      const issueModal = this.modalService.open(this.addIssueModal);
+      let ngbModalOptions: NgbModalOptions = {
+        backdrop : 'static',
+        keyboard : false,
+        windowClass: 'add-issue__main'
+      };
+      const issueModal = this.modalService.open(this.addIssueModal, ngbModalOptions);
       issueModal.result.then((data) => {
         this.clearIssueData();
       }, (reason) => {
@@ -206,8 +214,12 @@ fetchApis() {
       this.fetchAssets();
       this.fetchUsers();
     } else if (res === 'models') {
-      
-      const assetModal = this.modalService.open(this.assetModelsModal);
+      let ngbModalOptions: NgbModalOptions = {
+        backdrop : 'static',
+        keyboard : false,
+        windowClass: 'asset-models__main'
+      };
+      const assetModal = this.modalService.open(this.assetModelsModal, ngbModalOptions);
       assetModal.result.then((data) => {
         this.clearAssetModal();
       }, (reason) => {
