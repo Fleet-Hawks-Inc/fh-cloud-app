@@ -1,3 +1,5 @@
+<ng-template [ngIf]="active_nav =='onboard'"[ngIfElse]="elseBlock" ></ng-template>
+<ng-template #elseBlock>
 <aside id="sidebar-left" class="sidebar-left">
   <div class="sidebar-header">
     <div class="sidebar-title">
@@ -41,3 +43,4 @@
     </script>
   </div>
 </aside>
+</ng-template>

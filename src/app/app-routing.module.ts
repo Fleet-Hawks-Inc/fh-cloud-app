@@ -19,6 +19,7 @@ import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.compo
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AllCarriersComponent } from './shared/all-carriers/all-carriers.component';
 import { CheckUserService } from './services/check-user.service';
+import { CheckProfileServiceService } from './services/check-profile-service.service';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 
@@ -30,44 +31,44 @@ const routes: Routes = [
   {
     path: 'Dashboard',
     component: DashboardComponent,
-    canActivate: [AuthService],
+    canActivate: [AuthService,CheckProfileServiceService],
   },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
-    canActivate: [AuthService],
+    canActivate: [CheckProfileServiceService,AuthService],
   },
   {
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
     data: { preload: true },
-    canActivate: [AuthService, CheckUserService],
+    canActivate: [AuthService, CheckUserService,CheckProfileServiceService],
   },
   {
     path: 'compliance',
     loadChildren: () => import('./pages/compliance/compliance.module').then((m) => m.ComplianceModule),
     data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'dispatch',
     loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'accounts',
     loadChildren: () => import('./pages/accounts/accounts.module').then((m) => m.AccountsModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'manage',
     loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: "404",

@@ -17,7 +17,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { DashboardDriverComponent } from './index';
-import {DeviceModule} from './devices/devices.module';
+
 const COMPONENTS = [
   DashboardDriverComponent,
 ];
@@ -89,7 +89,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    DeviceModule
+    
   ],
   exports: [...COMPONENTS],
   declarations: [
